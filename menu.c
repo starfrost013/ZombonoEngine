@@ -1633,7 +1633,7 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 	}
 
 	sprintf(msg1, "Zombono/SQuake version %1.2f", (float)FITZQUAKE_VERSION);
-	sprintf(msg2, "by John Fitzgibbons");
+	sprintf(msg2, "by starfrost");
 	sprintf(msg3, "Press y to quit");
 
 	//okay, this is kind of fucked up.  M_DrawTextBox will always act as if
