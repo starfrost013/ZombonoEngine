@@ -1,5 +1,6 @@
 #include <string.h>
 #include <math.h>
+#include <limits.h>
 
 #include "fold.h"
 #include "ast.h"
@@ -66,9 +67,10 @@ struct sfloat_state_t {
 /* Counts the number of leading zero bits before the most-significand one bit. */
 #ifdef _MSC_VER
 /* MSVC has an intrinsic for this */
+
     static GMQCC_INLINE uint32_t sfloat_clz(uint32_t x) {
         int r = 0;
-        _BitScanForward(&r, x);
+        _BitScanForward((unsigned long*)&r, x);
         return r;
     }
 #   define SFLOAT_CLZ(X, SUB) \
@@ -1527,7 +1529,7 @@ ast_expression *fold::intrinsic_fabs(ast_value *a) {
     return constgen_float(fabsf(immvalue_float(a)), false);
 }
 ast_expression* fold::intrinsic_nan(void) {
-    return constgen_float(0.0f / 0.0f, false);
+    return constgen_float(nanf("ignored"), false);
 }
 ast_expression* fold::intrinsic_epsilon(void) {
   static bool calculated = false;
@@ -1542,7 +1544,7 @@ ast_expression* fold::intrinsic_epsilon(void) {
 }
 
 ast_expression* fold::intrinsic_inf(void) {
-  return constgen_float(1.0f / 0.0f, false);
+  return constgen_float(std::numeric_limits<float>::infinity(), false);
 }
 
 ast_expression *fold::intrinsic(const char *intrinsic, size_t n_args, ast_expression **args) {
