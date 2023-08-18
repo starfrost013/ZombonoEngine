@@ -678,8 +678,17 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	lpBuffer.dwLength = sizeof(MEMORYSTATUS);
 	GlobalMemoryStatus (&lpBuffer);
 
-	if (!GetCurrentDirectory (sizeof(cwd), cwd))
+	if (!GetModuleFileName (NULL, cwd, MAX_PATH)) //get filename of current binary for Edit and Continue MSVC debugging
 		Sys_Error ("Couldn't determine current directory");
+
+	// find last slash (after this is executable name)
+	char* lastChar = Q_strrchr(cwd, '\\');
+	
+	if (lastChar == NULL)
+		Sys_Error("Couldn't determine current directory (can't find trailing slashes)");
+
+	// lop off to folder
+	cwd[lastChar - &cwd] = 0;
 
 	if (cwd[Q_strlen(cwd)-1] == '/')
 		cwd[Q_strlen(cwd)-1] = 0;
