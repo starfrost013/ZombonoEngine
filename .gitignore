@@ -70,6 +70,11 @@ ScaffoldingReadMe.txt
 # StyleCop
 StyleCopReport.xml
 
+# QCC
+[Qq][Ww]progs.dat
+[Nn][Qq]progs.dat
+progs.dat
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
