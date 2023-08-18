@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	QUAKE_GAME			// as opposed to utilities
 
 #define	VERSION				1.09
-#define	FITZQUAKE_VERSION	0.86 //johnfitz
+#define	FITZQUAKE_VERSION	0.00 //johnfitz
 
 //define	PARANOID			// speed sapping error checking
 
