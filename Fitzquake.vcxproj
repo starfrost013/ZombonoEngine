@@ -36,6 +36,9 @@
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release With Symbols|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -174,6 +177,11 @@
       <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release With Symbols|Win32'">
+    <Link>
+      <AdditionalDependencies>.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cd_win.c" />
     <ClCompile Include="snd_dma.c" />
@@ -238,6 +246,28 @@
     <ClCompile Include="sys_win.c" />
     <ClCompile Include="test.c" />
     <ClCompile Include="zone.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="game\quake\id1\autoexec.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>id1\autoexec.cfg</Link>
+    </Content>
+    <Content Include="game\quake\id1\config.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>id1\config.cfg</Link>
+    </Content>
+    <Content Include="game\quake\id1\PAK0.PAK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>id1\PAK0.PAK</Link>
+    </Content>
+    <Content Include="game\quake\id1\PAK1.PAK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>id1\PAK1.PAK</Link>
+    </Content>
+    <Content Include="game\quake\id1\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>id1\readme.txt</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="fitzquake.ico" />
