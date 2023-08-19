@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "assetbuild": {
+      "commandName": "Project",
+      "commandLineArgs": "id1"
+    }
+  }
+}

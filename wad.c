@@ -138,7 +138,7 @@ void *W_GetLumpName (char *name)
 
 	if (!lump) return NULL; //johnfitz
 
-	return (void *)(wad_base + lump->filepos);
+	return (void *)(wad_base + lump->filepos) ; 
 }
 
 void *W_GetLumpNum (int num)

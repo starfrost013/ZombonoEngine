@@ -219,6 +219,7 @@ qpic_t *Draw_PicFromWad (char *name)
 
 	p = W_GetLumpName (name);
 	if (!p) return pic_nul; //johnfitz
+
 	gl = (glpic_t *)p->data;
 
 	// load little ones into the scrap

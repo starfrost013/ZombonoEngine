@@ -82,6 +82,9 @@
       <OutputFile>.\build\Debug\bin\$(TargetName).exe</OutputFile>
       <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe id1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -185,26 +188,28 @@
     <ClCompile Include="zone.c" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="game\quake\id1\autoexec.cfg">
+    <!-- Removed 
+    <Content Include="game\id1\id1\autoexec.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>id1\autoexec.cfg</Link>
     </Content>
-    <Content Include="game\quake\id1\config.cfg">
+    <Content Include="game\id1\id1\config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>id1\config.cfg</Link>
     </Content>
-    <Content Include="game\quake\id1\PAK0.PAK">
+    <Content Include="game\id1\id1\PAK0.PAK">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>id1\PAK0.PAK</Link>
     </Content>
-    <Content Include="game\quake\id1\PAK1.PAK">
+    <Content Include="game\id1\id1\PAK1.PAK">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>id1\PAK1.PAK</Link>
     </Content>
-    <Content Include="game\quake\id1\readme.txt">
+    <Content Include="game\id1\id1\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>id1\readme.txt</Link>
     </Content>
+	 -->
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="fitzquake.ico" />

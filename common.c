@@ -1068,50 +1068,6 @@ int COM_CheckParm (char *parm)
 	return 0;
 }
 
-/*
-================
-COM_CheckRegistered
-
-Looks for the pop.txt file and verifies it.
-Sets the "registered" cvar.
-Immediately exits out if an alternate game was attempted to be started without
-being registered.
-================
-*/
-void COM_CheckRegistered (void)
-{
-	int             h;
-	unsigned short  check[128];
-	int                     i;
-
-	COM_OpenFile("gfx/pop.lmp", &h);
-	static_registered = 0;
-
-	if (h == -1)
-	{
-#if WINDED
-	Sys_Error ("This dedicated server requires a full registered copy of Quake");
-#endif
-		Con_Printf ("Playing shareware version.\n");
-		if (com_modified)
-			Sys_Error ("You must have the registered version to use modified games");
-		return;
-	}
-
-	Sys_FileRead (h, check, sizeof(check));
-	COM_CloseFile (h);
-
-	for (i=0 ; i<128 ; i++)
-		if (pop[i] != (unsigned short)BigShort (check[i]))
-			Sys_Error ("Corrupted data file.");
-
-	Cvar_Set ("cmdline", com_cmdline+1); //johnfitz -- eliminate leading space
-	Cvar_Set ("registered", "1");
-	static_registered = 1;
-	Con_Printf ("Playing registered version.\n");
-}
-
-
 void COM_Path_f (void);
 
 
@@ -1227,7 +1183,11 @@ void COM_Init (char *basedir)
 	Cvar_RegisterVariable (&cmdline, NULL);
 	Cmd_AddCommand ("path", COM_Path_f);
 	COM_InitFilesystem ();
-	COM_CheckRegistered ();
+	
+	// temporary force registered version
+	Cvar_Set("registered", "1");
+	static_registered = 1;
+	Con_Printf("Playing registered version.\n");
 
 #ifdef _DEBUG
 	Cmd_AddCommand ("test", Test_f); //johnfitz
@@ -1457,7 +1417,7 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 	search = com_searchpaths;
 	if (proghack)
 	{	// gross hack to use quake 1 progs with quake 2 maps
-		if (!strcmp(filename, "progs.dat"))
+		if (!stricmp(filename, "progs.dat"))
 			search = search->next;
 	}
 
@@ -1468,24 +1428,31 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 		{
 		// look through all the pak file elements
 			pak = search->pack;
-			for (i=0 ; i<pak->numfiles ; i++)
-				if (!strcmp (pak->files[i].name, filename))
+			for (i = 0; i < pak->numfiles; i++)
+			{
+#ifdef _WIN32 // ugly hack use windows path seps on windows (because of stupid PAK tool!!) **REMOVE** when new pak tool 
+				char* slash = strchr(pak->files[i].name, '\\');
+
+				if (slash != NULL) *slash = '/';
+#endif
+				if (!stricmp(pak->files[i].name, filename))
 				{       // found it!
-					Sys_Printf ("PackFile: %s : %s\n",pak->filename, filename);
+					Sys_Printf("PackFile: %s : %s\n", pak->filename, filename);
 					if (handle)
 					{
 						*handle = pak->handle;
-						Sys_FileSeek (pak->handle, pak->files[i].filepos);
+						Sys_FileSeek(pak->handle, pak->files[i].filepos);
 					}
 					else
 					{       // open a new file on the pakfile
-						*file = fopen (pak->filename, "rb");
+						*file = fopen(pak->filename, "rb");
 						if (*file)
-							fseek (*file, pak->files[i].filepos, SEEK_SET);
+							fseek(*file, pak->files[i].filepos, SEEK_SET);
 					}
 					com_filesize = pak->files[i].filelen;
 					return com_filesize;
 				}
+			}
 		}
 		else
 		{
@@ -1866,7 +1833,7 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 			if (!com_argv[i] || com_argv[i][0] == '+' || com_argv[i][0] == '-')
 				break;
 			search = Hunk_Alloc (sizeof(searchpath_t));
-			if (!strcmp(COM_FileExtension(com_argv[i]), "pak") )
+			if (!stricmp(COM_FileExtension(com_argv[i]), "pak") )
 			{
 				search->pack = COM_LoadPackFile (com_argv[i]);
 				if (!search->pack)
