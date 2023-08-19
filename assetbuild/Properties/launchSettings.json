@@ -2,7 +2,7 @@
   "profiles": {
     "assetbuild": {
       "commandName": "Project",
-      "commandLineArgs": "id1"
+      "commandLineArgs": "zombono"
     }
   }
 }

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 const string ASSETBUILD_VERSION = "1.1.0";
 const string TOOLDIR = @"..\..\..\..\tools";
-const string DEFAULT_GAME_NAME = "id1";
+const string DEFAULT_GAME_NAME = "zombono";
 
 string[] validConfigs = { "Debug", "Release" }; // Valid build configs.
 string config = validConfigs[0]; // Current config.
