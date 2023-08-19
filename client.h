@@ -120,8 +120,8 @@ typedef struct
 
 // demo recording info must be here, because record is started before
 // entering a map (and clearing client_state_t)
-	qboolean	demorecording;
-	qboolean	demoplayback;
+	qboolean	demorecording;		// demo currently recording
+	qboolean	demoplayback;		// demo currently playing
 	qboolean	timedemo;
 	int			forcetrack;			// -1 = use normal cd track
 	FILE		*demofile;

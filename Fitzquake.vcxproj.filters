@@ -266,5 +266,8 @@
     <ClInclude Include="keys.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="server.h">
+      <Filter>Source Files\Server</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

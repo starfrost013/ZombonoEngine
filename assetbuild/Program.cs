@@ -173,6 +173,8 @@ try
         procPaktool.StartInfo.ArgumentList.Add(Path.GetFullPath($@"{finalDir}\pak0.pak"));
         procPaktool.StartInfo.ArgumentList.Add($@"{pak0FileNonFucked}");
 
+        Trace.WriteLine(procPaktool.StartInfo.Arguments);
+
         procPaktool.Start();
         procPaktool.WaitForExit();
 

@@ -83,7 +83,7 @@
       <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe id1</Command>
+      <Command>$(SolutionDir)\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -231,6 +231,7 @@
     <ClInclude Include="gl_warp_sin.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="keys.h" />
+    <ClInclude Include="server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

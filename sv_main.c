@@ -27,7 +27,7 @@ server_static_t	svs;
 
 char	localmodels[MAX_MODELS][5];			// inline model names for precache
 
-int sv_protocol = PROTOCOL_FITZQUAKE; //johnfitz
+int sv_protocol = PROTOCOL_ZOMBONO; //johnfitz
 
 extern qboolean		pr_alpha_supported; //johnfitz
 
@@ -49,9 +49,9 @@ void SV_Protocol_f (void)
 		break;
 	case 2:
 		i = atoi(Cmd_Argv(1));
-		if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE)
-			Con_Printf ("sv_protocol must be %i or %i\n", PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
-		else
+		if (i != PROTOCOL_ZOMBONO)
+			Con_Printf ("sv_protocol must be %i\n", PROTOCOL_ZOMBONO);
+		else // kept here just in case
 		{
 			sv_protocol = i;
 			if (sv.active)
@@ -182,7 +182,7 @@ void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
 
     if ( sound_num == MAX_SOUNDS || !sv.sound_precache[sound_num] )
     {
-        Con_Printf ("SV_StartSound: %s not precacheed\n", sample);
+        Con_Printf ("SV_StartSound: %s not precached\n", sample);
         return;
     }
 
@@ -196,15 +196,10 @@ void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (ent >= 8192)
-		if (sv.protocol == PROTOCOL_NETQUAKE)
-			return; //don't send any info protocol can't support
-		else
-			field_mask |= SND_LARGEENTITY;
+		field_mask |= SND_LARGEENTITY;
 	if (sound_num >= 256 || channel >= 8)
-		if (sv.protocol == PROTOCOL_NETQUAKE)
-			return; //don't send any info protocol can't support
-		else
-			field_mask |= SND_LARGESOUND;
+		field_mask |= SND_LARGESOUND;
+			
 	//johnfitz
 
 // directed messages go only to the entity the are targeted on
@@ -272,14 +267,14 @@ void SV_SendServerinfo (client_t *client)
 
 	MSG_WriteString (&client->message,message);
 
-	//johnfitz -- only send the first 256 model and sound precaches if protocol is 15
+	//send audio precaches
 	for (i=0,s = sv.model_precache+1 ; *s; s++,i++)
-		if (sv.protocol != PROTOCOL_NETQUAKE || i < 256)
-			MSG_WriteString (&client->message, *s);
+		MSG_WriteString(&client->message, *s);
+			
 	MSG_WriteByte (&client->message, 0);
 
+	// send sound precaches
 	for (i=0,s = sv.sound_precache+1 ; *s ; s++,i++)
-		if (sv.protocol != PROTOCOL_NETQUAKE || i < 256)
 			MSG_WriteString (&client->message, *s);
 	MSG_WriteByte (&client->message, 0);
 	//johnfitz
@@ -533,10 +528,6 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 			if (!ent->v.modelindex || !pr_strings[ent->v.model])
 				continue;
 
-			//johnfitz -- don't send model>255 entities if protocol is 15
-			if (sv_protocol == PROTOCOL_NETQUAKE && (int)ent->v.modelindex & 0xFF00)
-				continue;
-
 			// ignore if not touching a PV leaf
 			for (i=0 ; i < ent->num_leafs ; i++)
 				if (pvs[ent->leafnums[i] >> 3] & (1 << (ent->leafnums[i]&7) ))
@@ -611,18 +602,12 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 			continue;
 		//johnfitz
 
-		//johnfitz -- PROTOCOL_FITZQUAKE
-		if (sv.protocol != PROTOCOL_NETQUAKE)
-		{
-
-			if (ent->baseline.alpha != ent->alpha) bits |= U_ALPHA;
-			if (bits & U_FRAME && (int)ent->v.frame & 0xFF00) bits |= U_FRAME2;
-			if (bits & U_MODEL && (int)ent->v.modelindex & 0xFF00) bits |= U_MODEL2;
-			if (ent->sendinterval) bits |= U_LERPFINISH;
-			if (bits >= 65536) bits |= U_EXTEND1;
-			if (bits >= 16777216) bits |= U_EXTEND2;
-		}
-		//johnfitz
+		if (ent->baseline.alpha != ent->alpha) bits |= U_ALPHA;
+		if (bits & U_FRAME && (int)ent->v.frame & 0xFF00) bits |= U_FRAME2;
+		if (bits & U_MODEL && (int)ent->v.modelindex & 0xFF00) bits |= U_MODEL2;
+		if (ent->sendinterval) bits |= U_LERPFINISH;
+		if (bits >= 65536) bits |= U_EXTEND1;
+		if (bits >= 16777216) bits |= U_EXTEND2;
 
 		if (e >= 256)
 			bits |= U_LONGENTITY;
@@ -799,10 +784,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 //	if (ent->v.weapon)
 		bits |= SU_WEAPON;
 
-	//johnfitz -- PROTOCOL_FITZQUAKE
-	if (sv.protocol != PROTOCOL_NETQUAKE)
-	{
-		if (bits & SU_WEAPON && SV_ModelIndex(pr_strings+ent->v.weaponmodel) & 0xFF00) bits |= SU_WEAPON2;
+		if (bits & SU_WEAPON && SV_ModelIndex(pr_strings + ent->v.weaponmodel) & 0xFF00) bits |= SU_WEAPON2;
 		if ((int)ent->v.armorvalue & 0xFF00) bits |= SU_ARMOR2;
 		if ((int)ent->v.currentammo & 0xFF00) bits |= SU_AMMO2;
 		if ((int)ent->v.ammo_shells & 0xFF00) bits |= SU_SHELLS2;
@@ -813,8 +795,6 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 		if (bits & SU_WEAPON && ent->alpha != ENTALPHA_DEFAULT) bits |= SU_WEAPONALPHA; //for now, weaponalpha = client entity alpha
 		if (bits >= 65536) bits |= SU_EXTEND1;
 		if (bits >= 16777216) bits |= SU_EXTEND2;
-	}
-	//johnfitz
 
 // send the data
 
@@ -1147,23 +1127,12 @@ void SV_CreateBaseline (void)
 
 		//johnfitz -- PROTOCOL_FITZQUAKE
 		bits = 0;
-		if (sv.protocol == PROTOCOL_NETQUAKE) //still want to send baseline in PROTOCOL_NETQUAKE, so reset these values
-		{
-			if (svent->baseline.modelindex & 0xFF00)
-				svent->baseline.modelindex = 0;
-			if (svent->baseline.frame & 0xFF00)
-				svent->baseline.frame = 0;
-			svent->baseline.alpha = ENTALPHA_DEFAULT;
-		}
-		else //decide which extra data needs to be sent
-		{
-			if (svent->baseline.modelindex & 0xFF00)
-				bits |= B_LARGEMODEL;
-			if (svent->baseline.frame & 0xFF00)
-				bits |= B_LARGEFRAME;
-			if (svent->baseline.alpha != ENTALPHA_DEFAULT)
-				bits |= B_ALPHA;
-		}
+		if (svent->baseline.modelindex & 0xFF00)
+			bits |= B_LARGEMODEL;
+		if (svent->baseline.frame & 0xFF00)
+			bits |= B_LARGEFRAME;
+		if (svent->baseline.alpha != ENTALPHA_DEFAULT)
+			bits |= B_ALPHA;
 		//johnfitz
 
 	//

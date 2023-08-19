@@ -264,10 +264,10 @@ void CL_ParseServerInfo (void)
 
 // parse protocol version number
 	i = MSG_ReadLong ();
-	//johnfitz -- support multiple protocols
-	if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE) {
+	if (i != PROTOCOL_ZOMBONO) {
 		Con_Printf ("\n"); //becuase there's no newline after serverinfo print
-		Host_Error ("Server returned version %i, not %i or %i\n", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
+		if (cls.demoplayback) Host_Error("***DEMOS CURRENTLY DON'T WORK, THEY NEED TO BE RE-RECORDED***");
+		Host_Error ("Server returned version %i, not %i\n", i, PROTOCOL_ZOMBONO);
 	}
 	cl.protocol = i;
 	//johnfitz
@@ -421,13 +421,10 @@ void CL_ParseUpdate (int bits)
 	}
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
-	if (cl.protocol == PROTOCOL_FITZQUAKE)
-	{
-		if (bits & U_EXTEND1)
-			bits |= MSG_ReadByte() << 16;
-		if (bits & U_EXTEND2)
-			bits |= MSG_ReadByte() << 24;
-	}
+	if (bits & U_EXTEND1)
+		bits |= MSG_ReadByte() << 16;
+	if (bits & U_EXTEND2)
+		bits |= MSG_ReadByte() << 24;
 	//johnfitz
 
 	if (bits & U_LONGENTITY)
@@ -535,45 +532,22 @@ void CL_ParseUpdate (int bits)
 	//johnfitz
 
 	//johnfitz -- PROTOCOL_FITZQUAKE and PROTOCOL_NEHAHRA
-	if (cl.protocol == PROTOCOL_FITZQUAKE)
+	if (bits & U_ALPHA)
+		ent->alpha = MSG_ReadByte();
+	else
+		ent->alpha = ent->baseline.alpha;
+	if (bits & U_FRAME2)
+		ent->frame = (ent->frame & 0x00FF) | (MSG_ReadByte() << 8);
+	if (bits & U_MODEL2)
+		modnum = (modnum & 0x00FF) | (MSG_ReadByte() << 8);
+	if (bits & U_LERPFINISH)
 	{
-		if (bits & U_ALPHA)
-			ent->alpha = MSG_ReadByte();
-		else
-			ent->alpha = ent->baseline.alpha;
-		if (bits & U_FRAME2)
-			ent->frame = (ent->frame & 0x00FF) | (MSG_ReadByte() << 8);
-		if (bits & U_MODEL2)
-			modnum = (modnum & 0x00FF) | (MSG_ReadByte() << 8);
-		if (bits & U_LERPFINISH)
-		{
-			ent->lerpfinish = ent->msgtime + ((float)(MSG_ReadByte()) / 255);
-			ent->lerpflags |= LERP_FINISH;
-		}
-		else
-			ent->lerpflags &= ~LERP_FINISH;
+		ent->lerpfinish = ent->msgtime + ((float)(MSG_ReadByte()) / 255);
+		ent->lerpflags |= LERP_FINISH;
 	}
-	else if (cl.protocol == PROTOCOL_NETQUAKE)
-	{
-		//HACK: if this bit is set, assume this is PROTOCOL_NEHAHRA
-		if (bits & U_TRANS)
-		{
-			float a,b;
-
-			if (warn_about_nehahra_protocol) {
-				Con_Warning ("nonstandard update bit, assuming Nehahra protocol\n");
-				warn_about_nehahra_protocol = false;
-			}
-
-			a = MSG_ReadFloat();
-			b = MSG_ReadFloat(); //alpha
-			if (a == 2)
-				MSG_ReadFloat(); //fullbright (not using this yet)
-			ent->alpha = ENTALPHA_ENCODE(b);
-		}
-		else
-			ent->alpha = ent->baseline.alpha;
-	}
+	else
+		ent->lerpflags &= ~LERP_FINISH;
+	
 	//johnfitz
 
 	//johnfitz -- moved here from above
@@ -973,9 +947,8 @@ void CL_ParseServerMessage (void)
 
 		case svc_version:
 			i = MSG_ReadLong ();
-			//johnfitz -- support multiple protocols
-			if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE)
-				Host_Error ("Server returned version %i, not %i or %i\n", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
+			if (i != PROTOCOL_ZOMBONO)
+				Host_Error ("Server returned version %i, not %i\n", i, PROTOCOL_ZOMBONO);
 			cl.protocol = i;
 			//johnfitz
 			break;

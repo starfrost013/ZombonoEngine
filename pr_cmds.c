@@ -537,10 +537,8 @@ void PF_ambientsound (void)
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (soundnum > 255)
-		if (sv.protocol == PROTOCOL_NETQUAKE)
-			return; //don't send any info protocol can't support
-		else
-			large = true;
+		large = true;
+			
 	//johnfitz
 
 // add an svc_spawnambient command to the level signon packet
@@ -1490,24 +1488,12 @@ void PF_makestatic (void)
 	}
 	//johnfitz
 
-	//johnfitz -- PROTOCOL_FITZQUAKE
-	if (sv.protocol == PROTOCOL_NETQUAKE)
-	{
-		if (SV_ModelIndex(pr_strings + ent->v.model) & 0xFF00 || (int)(ent->v.frame) & 0xFF00)
-		{
-			ED_Free (ent);
-			return; //can't display the correct model & frame, so don't show it at all
-		}
-	}
-	else
-	{
-		if (SV_ModelIndex(pr_strings + ent->v.model) & 0xFF00)
-			bits |= B_LARGEMODEL;
-		if ((int)(ent->v.frame) & 0xFF00)
-			bits |= B_LARGEFRAME;
-		if (ent->alpha != ENTALPHA_DEFAULT)
-			bits |= B_ALPHA;
-	}
+	if (SV_ModelIndex(pr_strings + ent->v.model) & 0xFF00)
+		bits |= B_LARGEMODEL;
+	if ((int)(ent->v.frame) & 0xFF00)
+		bits |= B_LARGEFRAME;
+	if (ent->alpha != ENTALPHA_DEFAULT)
+		bits |= B_ALPHA;
 
 	if (bits)
 	{
