@@ -291,23 +291,6 @@ void Host_WriteConfiguration (void)
 		//johnfitz
 
 		fclose (f);
-
-//johnfitz -- also save fitzquake.rc
-#if 0
-		f = fopen (va("%s/fitzquake.rc", GAMENAME), "w"); //always save in id1
-		if (!f)
-		{
-			Con_Printf ("Couldn't write fitzquake.rc.\n");
-			return;
-		}
-
-		Cvar_WriteVariables (f);
-		fprintf (f, "vid_restart\n");
-		if (in_mlook.state & 1) fprintf (f, "+mlook\n");
-
-		fclose (f);
-#endif
-//johnfitz
 	}
 }
 
@@ -852,7 +835,6 @@ void Host_Init (quakeparms_t *parms)
 	}
 
 	Cbuf_InsertText ("exec quake.rc\n");
-//	Cbuf_InsertText ("exec fitzquake.rc\n"); //johnfitz (inserted second so it'll be executed first)
 
 	Cbuf_AddText ("\n\nvid_unlock\n"); //johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
 	//note: added two newlines to the front becuase the command buffer swallows one of them.
