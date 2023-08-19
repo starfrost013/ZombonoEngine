@@ -74,11 +74,11 @@ try
         }
     }
 
+    // could be first build of a new game so just create final dir if it exists
+    if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);   
     #endregion
 
     #region Main code
-
-
 
     /*
     does not generate valid gfx.wad files, and since we're removing it best to just work with what exists rn
@@ -146,8 +146,7 @@ try
         PrintErrorAndExit("An error occurred while running FTEQCC", 6);
     }
 
-    // Move qwprogs.dat to pak0 dir
-    File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // stupid kludge.
+    File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // copy to pak0 where it belongs
 
     // Lists don't work because the dirs are all wrong???
 
