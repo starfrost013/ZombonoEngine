@@ -147,7 +147,7 @@ try
     }
 
     // Move qwprogs.dat to pak0 dir
-    File.Move($@"{qcDir}\qwprogs.dat", $@"{pak0Dir}\progs.dat", true); // stupid kludge.
+    File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // stupid kludge.
 
     // Lists don't work because the dirs are all wrong???
 
