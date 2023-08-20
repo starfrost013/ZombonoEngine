@@ -577,7 +577,7 @@ void M_Save_Key (int k)
 /* MULTIPLAYER MENU */
 
 int	m_multiplayer_cursor;
-#define	MULTIPLAYER_ITEMS	3
+#define	MULTIPLAYER_ITEMS	2
 
 
 void M_Menu_MultiPlayer_f (void)
@@ -604,7 +604,7 @@ void M_MultiPlayer_Draw (void)
 
 	if (tcpipAvailable)
 		return;
-	M_PrintWhite ((320/2) - ((27*8)/2), 148, "No Communications Available");
+	M_PrintWhite ((320/2) - ((27*8)/2), 148, "No internet connection");
 }
 
 
@@ -633,11 +633,10 @@ void M_MultiPlayer_Key (int key)
 		switch (m_multiplayer_cursor)
 		{
 		case 0:
-		case 1:
 			M_Menu_LanConfig_f();	
 			break;
 
-		case 2:
+		case 1:
 			M_Menu_Setup_f ();
 			break;
 		}
