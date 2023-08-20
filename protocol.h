@@ -122,6 +122,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // these determine which intermission screen plays
 #define	GAME_COOP			0
 #define	GAME_DEATHMATCH		1
+#define GAME_ZOMBIES		2	//Zombie
 
 //==================
 // note that there are some defs.qc that mirror to these numbers
