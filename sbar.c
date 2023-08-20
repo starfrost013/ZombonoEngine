@@ -47,10 +47,6 @@ qpic_t	*sb_face_invis_invuln;
 qboolean	sb_showscores;
 
 int			sb_lines;			// scan lines to draw
-//MED 01/04/97 added array to simplify weapon parsing
-int         hipweapons[4] = {HIT_LASER_CANNON_BIT,HIT_MJOLNIR_BIT,4,HIT_PROXIMITY_GUN_BIT};
-//MED 01/04/97 added hipnotic items array
-
 
 void Sbar_MiniDeathmatchOverlay (void);
 void Sbar_DeathmatchOverlay (void);

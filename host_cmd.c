@@ -1819,7 +1819,7 @@ void Host_Give_f (void)
 	case IT_LIGHTNING:
 		sv_player->v.currentammo = sv_player->v.ammo_cells;
 		break;
-	//johnfitz
+	}
 }
 
 edict_t	*FindViewthing (void)
