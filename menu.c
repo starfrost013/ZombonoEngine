@@ -1431,7 +1431,7 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 		m_state = m_quit;
 	}
 
-	sprintf(msg1, "Zombono version %1.2f", (float)FITZQUAKE_VERSION);
+	sprintf(msg1, "Zombono version %1.2f", (float)QUAKE_VERSION);
 	sprintf(msg2, "by starfrost");
 	sprintf(msg3, "Press y to quit");
 
