@@ -1855,7 +1855,6 @@ void M_Menu_Search_f (void)
 	slistLocal = false;
 	searchComplete = false;
 	NET_Slist_f();
-
 }
 
 
