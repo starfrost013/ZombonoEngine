@@ -30,6 +30,9 @@
       <UniqueIdentifier>{0ae8af85-03c5-4f35-9275-975f8975f461}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Source Files\Defines">
+      <UniqueIdentifier>{ea118d36-6a75-460d-82fe-13b27440f43e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cd_win.c">
@@ -319,6 +322,18 @@
     </ClInclude>
     <ClInclude Include="progs.h">
       <Filter>Source Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="quakedef.h">
+      <Filter>Source Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="winquake.h">
+      <Filter>Source Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>Source Files\Client</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

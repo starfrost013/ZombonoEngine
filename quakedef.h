@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023 Digital Euphoria
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -175,7 +176,7 @@ void	VID_UnlockBuffer (void);
 #include "zone.h"
 #include "mathlib.h"
 
-typedef struct
+typedef struct entity_state_s
 {
 	vec3_t			origin;
 	vec3_t			angles;
@@ -185,6 +186,8 @@ typedef struct
 	unsigned char 	skin; //johnfitz -- was int
 	unsigned char	alpha; //johnfitz -- added
 	int				effects;
+	float			team; //zombono - all entities have teams
+	
 } entity_state_t;
 
 
@@ -197,6 +200,7 @@ typedef struct
 #include "cmd.h"
 #include "sbar.h"
 #include "sound.h"
+#include "zombie.h"
 #include "render.h"
 #include "client.h"
 #include "progs.h"

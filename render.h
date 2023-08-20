@@ -89,10 +89,11 @@ typedef struct entity_s
 	vec3_t					currentorigin;	//johnfitz -- transform lerping
 	vec3_t					previousangles;	//johnfitz -- transform lerping
 	vec3_t					currentangles;	//johnfitz -- transform lerping
+	float					team;			//team
 } entity_t;
 
 // !!! if this is changed, it must be changed in asm_draw.h too !!!
-typedef struct
+typedef struct refdef_s
 {
 	vrect_t		vrect;				// subwindow in video for refresh
 									// FIXME: not need vrect next field here?

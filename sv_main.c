@@ -258,10 +258,15 @@ void SV_SendServerinfo (client_t *client)
 	MSG_WriteLong (&client->message, sv.protocol); //johnfitz -- sv.protocol instead of PROTOCOL_VERSION
 	MSG_WriteByte (&client->message, svs.maxclients);
 
-	if (!coop.value && deathmatch.value)
-		MSG_WriteByte (&client->message, GAME_DEATHMATCH);
+	if (zombie.value == 0)
+		MSG_WriteByte(&client->message, GAME_ZOMBIES);
+	
+	/*
+	else if (!coop.value && deathmatch.value)
+		MSG_WriteByte(&client->message, GAME_DEATHMATCH);
 	else
 		MSG_WriteByte (&client->message, GAME_COOP);
+*/
 
 	sprintf (message, pr_strings+sv.edicts->v.message);
 

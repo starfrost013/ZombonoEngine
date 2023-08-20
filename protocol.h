@@ -214,3 +214,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define TE_BEAM				13
 // PGM 01/21/97
 
+// Zombono teams
+#define ZOMBONO_TEAM_CONTROLLER	0
+#define ZOMBONO_TEAM_PLAYER		1
+#define ZOMBONO_TEAM_MAX		1
