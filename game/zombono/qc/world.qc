@@ -34,9 +34,9 @@ void() main =
 	precache_file("end1.bin");
 	precache_file2 ("end2.bin");
 
-	precache_file("demo1.dem");
-	precache_file("demo2.dem");
-	precache_file("demo3.dem");
+	//precache_file("demo1.dem");
+	//precache_file("demo2.dem");
+	//precache_file("demo3.dem");
 
 //
 // these are all of the lumps from the cached.ls files
