@@ -16,7 +16,7 @@ string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\game\{gameName}"; // Complete relative path to game dir
 string cfgDir = $@"{gameDir}\basecfg"; // Config dir.
 // temp - pak0 and pak1 likely be merged
-string pak0Dir = $@"{gameDir}\content0"; // Package 0 dir.
+string pak0Dir = $@"{gameDir}\content"; // Package 0 dir.
 string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
 string gfxDir = $@"{gameDir}\gfx"; // GFX.WAD source dir.
 string finalDir = $@"..\..\..\..\build\{config}\bin\{gameName}"; // final directory
@@ -165,7 +165,7 @@ try
         // stupid stupid tool breaks the entire fucking game if it's not precisely right (TODO: WRITE NON SHITTY REPLACEMENT!!!)
 
         string pak0FileNonFucked = pak0File.Replace(@"..\", "");
-        pak0FileNonFucked = pak0FileNonFucked.Replace($@"game\{gameName}\content0\", "");
+        pak0FileNonFucked = pak0FileNonFucked.Replace($@"game\{gameName}\content\", "");
 
         procPaktool.StartInfo.ArgumentList.Clear();
         procPaktool.StartInfo.ArgumentList.Add(Path.GetFullPath($@"{finalDir}\pak0.pak"));
