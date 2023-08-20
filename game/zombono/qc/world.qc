@@ -64,10 +64,6 @@ void() main =
 
 	precache_file("gfx/menuplyr.lmp");
 	precache_file("gfx/bigbox.lmp");
-	precache_file("gfx/dim_modm.lmp");
-	precache_file("gfx/dim_drct.lmp");
-	precache_file("gfx/dim_ipx.lmp");
-	precache_file("gfx/dim_tcp.lmp");
 	precache_file("gfx/dim_mult.lmp");
 	precache_file("gfx/mainmenu.lmp");
 
@@ -91,20 +87,7 @@ void() main =
 
 	precache_file("gfx/mp_menu.lmp");
 
-	precache_file("gfx/netmen1.lmp");
-	precache_file("gfx/netmen2.lmp");
-	precache_file("gfx/netmen3.lmp");
-	precache_file("gfx/netmen4.lmp");
-	precache_file("gfx/netmen5.lmp");
-
 	precache_file("gfx/sell.lmp");
-
-	precache_file("gfx/help0.lmp");
-	precache_file("gfx/help1.lmp");
-	precache_file("gfx/help2.lmp");
-	precache_file("gfx/help3.lmp");
-	precache_file("gfx/help4.lmp");
-	precache_file("gfx/help5.lmp");
 
 	precache_file("gfx/pause.lmp");
 	precache_file("gfx/loading.lmp");
