@@ -31,8 +31,8 @@ void() main =
 	precache_file("quake.rc");
 	precache_file("default.cfg");
 
-	precache_file("end1.bin");
-	precache_file2 ("end2.bin");
+	//precache_file("end1.bin");
+	//precache_file2 ("end2.bin");
 
 	//precache_file("demo1.dem");
 	//precache_file("demo2.dem");
@@ -122,54 +122,9 @@ void() main =
 	precache_sound("ambience/water1.wav");
 	precache_sound("ambience/wind2.wav");
 
-// shareware
+// maps go here
 	precache_file("maps/start.bsp");
 
-	precache_file("maps/e1m1.bsp");
-	precache_file("maps/e1m2.bsp");
-	precache_file("maps/e1m3.bsp");
-	precache_file("maps/e1m4.bsp");
-	precache_file("maps/e1m5.bsp");
-	precache_file("maps/e1m6.bsp");
-	precache_file("maps/e1m7.bsp");
-	precache_file("maps/e1m8.bsp");
-
-// registered
-	precache_file2 ("gfx/pop.lmp");
-
-	precache_file2 ("maps/e2m1.bsp");
-	precache_file2 ("maps/e2m2.bsp");
-	precache_file2 ("maps/e2m3.bsp");
-	precache_file2 ("maps/e2m4.bsp");
-	precache_file2 ("maps/e2m5.bsp");
-	precache_file2 ("maps/e2m6.bsp");
-	precache_file2 ("maps/e2m7.bsp");
-
-	precache_file2 ("maps/e3m1.bsp");
-	precache_file2 ("maps/e3m2.bsp");
-	precache_file2 ("maps/e3m3.bsp");
-	precache_file2 ("maps/e3m4.bsp");
-	precache_file2 ("maps/e3m5.bsp");
-	precache_file2 ("maps/e3m6.bsp");
-	precache_file2 ("maps/e3m7.bsp");
-
-	precache_file2 ("maps/e4m1.bsp");
-	precache_file2 ("maps/e4m2.bsp");
-	precache_file2 ("maps/e4m3.bsp");
-	precache_file2 ("maps/e4m4.bsp");
-	precache_file2 ("maps/e4m5.bsp");
-	precache_file2 ("maps/e4m6.bsp");
-	precache_file2 ("maps/e4m7.bsp");
-	precache_file2 ("maps/e4m8.bsp");
-
-	precache_file2 ("maps/end.bsp");
-
-	precache_file2 ("maps/dm1.bsp");
-	precache_file2 ("maps/dm2.bsp");
-	precache_file2 ("maps/dm3.bsp");
-	precache_file2 ("maps/dm4.bsp");
-	precache_file2 ("maps/dm5.bsp");
-	precache_file2 ("maps/dm6.bsp");
 };
 
 
