@@ -79,7 +79,6 @@ unsigned short pop[] =
 
 /*
 
-
 All of Quake's data access is through a hierchal file system, but the contents
 of the file system can be transparently merged from several sources.
 

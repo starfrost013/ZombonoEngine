@@ -81,6 +81,9 @@ progs.dat
 *-light.log
 *-vis.log
 
+# TrenchBroom
+*autosave\*.*.map
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
