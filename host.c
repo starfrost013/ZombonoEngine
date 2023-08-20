@@ -64,7 +64,7 @@ cvar_t	serverprofile = {"serverprofile","0"};
 
 cvar_t	fraglimit = {"fraglimit","0",false,true};
 cvar_t	timelimit = {"timelimit","0",false,true};
-cvar_t	friendly_fire = {"friendly_fire","0",false,true}; // 0 - friendly fire, 1 - no friendly fire
+cvar_t	friendly_fire = {"friendly_fire","0",false,true}; // 0 - no friendly fire, 1 - friendly fire
 cvar_t	samelevel = {"samelevel","0"};
 cvar_t	noexit = {"noexit","0",false,true};
 cvar_t	skill = {"skill","1"};						// 0 - 3

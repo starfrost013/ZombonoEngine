@@ -370,22 +370,32 @@ entity() SelectSpawnPoint =
 	if (spot)
 		return spot;
 
-// choose a info_player_deathmatch point
-	if (coop)
+	if (zombie_mode == 0)
 	{
-		lastspawn = find(lastspawn, classname, "info_player_coop");
-		if (lastspawn == world)
-			lastspawn = find(lastspawn, classname, "info_player_start");
-		if (lastspawn != world)
-			return lastspawn;
-	}
-	else if (deathmatch)
-	{
-		lastspawn = find(lastspawn, classname, "info_player_deathmatch");
-		if (lastspawn == world)
-			lastspawn = find(lastspawn, classname, "info_player_deathmatch");
-		if (lastspawn != world)
-			return lastspawn;
+		if (self.team == 0)
+		{
+			lastspawn = find(lastspawn, classname, "info_player_start_director");
+			if (lastspawn == world)
+			{
+				lastspawn = find(lastspawn, classname, "info_player_start_director");
+			}
+			else
+			{
+				return lastspawn;
+			}
+		}
+		else if (self.team == 1)
+		{
+			lastspawn = find(lastspawn, classname, "info_player_start_player");
+			if (lastspawn == world)
+			{
+				lastspawn = find(lastspawn, classname, "info_player_start_player");
+			}
+			else
+			{
+				return lastspawn;
+			}
+		}
 	}
 
 	if (serverflags)
@@ -465,11 +475,8 @@ void() PutClientInServer =
 
 	player_stand1();
 
-	if (deathmatch || coop)
-	{
-		makevectors(self.angles);
-		spawn_tfog(self.origin + v_forward*20);
-	}
+	makevectors(self.angles);
+	spawn_tfog(self.origin + v_forward*20);
 
 	spawn_tdeath(self.origin, self);
 };

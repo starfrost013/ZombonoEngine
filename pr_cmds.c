@@ -1305,7 +1305,7 @@ void PF_aim (void)
 			continue;
 		if (check == ent)
 			continue;
-		if (friendly_fire.value && ent->v.team > 0 && ent->v.team == check->v.team)
+		if (!friendly_fire.value && ent->v.team > 0 && ent->v.team == check->v.team)
 			continue;	// don't aim at teammate
 		for (j=0 ; j<3 ; j++)
 			end[j] = check->v.origin[j]

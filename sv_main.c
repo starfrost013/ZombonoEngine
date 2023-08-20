@@ -258,7 +258,7 @@ void SV_SendServerinfo (client_t *client)
 	MSG_WriteLong (&client->message, sv.protocol); //johnfitz -- sv.protocol instead of PROTOCOL_VERSION
 	MSG_WriteByte (&client->message, svs.maxclients);
 
-	if (zombie.value == 0)
+if (zombie.value == 0.0f)
 		MSG_WriteByte(&client->message, GAME_ZOMBIES);
 	
 	/*
@@ -1253,8 +1253,6 @@ void SV_SpawnServer (char *server)
 //
 // make cvars consistant
 //
-	if (coop.value)
-		Cvar_SetValue ("deathmatch", 0);
 	current_skill = (int)(skill.value + 0.5);
 	if (current_skill < 0)
 		current_skill = 0;
