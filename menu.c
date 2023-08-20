@@ -324,6 +324,10 @@ void M_Main_Key (int key)
 			break;
 
 		case 3:
+			M_Menu_Help_f();
+			break;
+
+		case 4:
 			M_Menu_Quit_f ();
 			break;
 		}

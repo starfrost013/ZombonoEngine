@@ -1,0 +1,7 @@
+to remove:
+
+netmen*.lmp
+dim_modm.lmp
+dim_drct.lmp
+dim_ipx.lmp
+dim_tcp.lmp
