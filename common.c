@@ -56,7 +56,7 @@ char	**com_argv;
 #define CMDLINE_LENGTH	256 //johnfitz -- mirrored in cmd.c
 char	com_cmdline[CMDLINE_LENGTH];
 
-qboolean standard_quake = true, rogue, hipnotic;
+qboolean standard_quake = true;
 
 // this graphic needs to be in the pak file to use registered features
 unsigned short pop[] =
@@ -1123,18 +1123,6 @@ void COM_InitArgv (int argc, char **argv)
 
 	largv[com_argc] = argvdummy;
 	com_argv = largv;
-
-	if (COM_CheckParm ("-rogue"))
-	{
-		rogue = true;
-		standard_quake = false;
-	}
-
-	if (COM_CheckParm ("-hipnotic") || COM_CheckParm ("-quoth")) //johnfitz -- "-quoth" support
-	{
-		hipnotic = true;
-		standard_quake = false;
-	}
 }
 
 /*
@@ -1798,23 +1786,9 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away
+	
+	// keep this here for now: starfrost 
 	com_nummissionpacks = 0;
-	if (COM_CheckParm ("-rogue"))
-	{
-		COM_AddGameDirectory (va("%s/rogue", basedir) );
-		com_nummissionpacks++;
-	}
-	if (COM_CheckParm ("-hipnotic"))
-	{
-		COM_AddGameDirectory (va("%s/hipnotic", basedir) );
-		com_nummissionpacks++;
-	}
-	if (COM_CheckParm ("-quoth"))
-	{
-		COM_AddGameDirectory (va("%s/quoth", basedir) );
-		com_nummissionpacks++;
-	}
-	//johnfitz
 
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)

@@ -773,10 +773,7 @@ Host_Init
 */
 void Host_Init (quakeparms_t *parms)
 {
-	if (standard_quake)
-		minimum_memory = MINIMUM_MEMORY;
-	else
-		minimum_memory = MINIMUM_MEMORY_LEVELPAK;
+	minimum_memory = MINIMUM_MEMORY;
 
 	if (COM_CheckParm ("-minmemory"))
 		parms->memsize = minimum_memory;

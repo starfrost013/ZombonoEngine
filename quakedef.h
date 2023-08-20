@@ -72,8 +72,7 @@ void	VID_UnlockBuffer (void);
 
 #define UNUSED(x)	(x = x)	// for pesky compiler / lint warnings
 
-#define	MINIMUM_MEMORY			0x550000
-#define	MINIMUM_MEMORY_LEVELPAK	(MINIMUM_MEMORY + 0x100000)
+#define	MINIMUM_MEMORY			0x650000 // set minimum memory (for now) to levelpack set
 
 #define MAX_NUM_ARGVS	50
 
@@ -162,40 +161,6 @@ void	VID_UnlockBuffer (void);
 #define IT_SIGIL3               (1<<30)
 #define IT_SIGIL4               (1<<31)
 
-//===========================================
-//rogue changed and added defines
-
-#define RIT_SHELLS              128
-#define RIT_NAILS               256
-#define RIT_ROCKETS             512
-#define RIT_CELLS               1024
-#define RIT_AXE                 2048
-#define RIT_LAVA_NAILGUN        4096
-#define RIT_LAVA_SUPER_NAILGUN  8192
-#define RIT_MULTI_GRENADE       16384
-#define RIT_MULTI_ROCKET        32768
-#define RIT_PLASMA_GUN          65536
-#define RIT_ARMOR1              8388608
-#define RIT_ARMOR2              16777216
-#define RIT_ARMOR3              33554432
-#define RIT_LAVA_NAILS          67108864
-#define RIT_PLASMA_AMMO         134217728
-#define RIT_MULTI_ROCKETS       268435456
-#define RIT_SHIELD              536870912
-#define RIT_ANTIGRAV            1073741824
-#define RIT_SUPERHEALTH         2147483648
-
-//MED 01/04/97 added hipnotic defines
-//===========================================
-//hipnotic added defines
-#define HIT_PROXIMITY_GUN_BIT 16
-#define HIT_MJOLNIR_BIT       7
-#define HIT_LASER_CANNON_BIT  23
-#define HIT_PROXIMITY_GUN   (1<<HIT_PROXIMITY_GUN_BIT)
-#define HIT_MJOLNIR         (1<<HIT_MJOLNIR_BIT)
-#define HIT_LASER_CANNON    (1<<HIT_LASER_CANNON_BIT)
-#define HIT_WETSUIT         (1<<(23+2))
-#define HIT_EMPATHY_SHIELDS (1<<(23+3))
 
 //===========================================
 
