@@ -46,7 +46,7 @@ string mapname;
 
 float deathmatch;
 float coop;
-float teamplay;
+float friendly_fire; // 0 - friendly fire, 1 - no friendly fire
 
 float serverflags; // propagated from level to level, used to
 				// keep track of completed episodes
@@ -402,12 +402,15 @@ float EF_MUZZLEFLASH = 2;
 float EF_BRIGHTLIGHT = 4;
 float EF_DIMLIGHT = 8;
 
-
 // messages
 float MSG_BROADCAST = 0; // unreliable to all
 float MSG_ONE = 1; // reliable to one(msg_entity)
 float MSG_ALL = 2; // reliable to all
 float MSG_INIT = 3; // write to the init string
+
+// Team types
+float ZOMBONO_TEAM_DIRECTOR = 0 // director
+float ZOMBONO_TEAM_PLAYER = 1 // player
 
 //================================================
 

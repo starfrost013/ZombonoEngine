@@ -1652,15 +1652,14 @@ void M_GameOptions_Draw (void)
 		M_Print(160, 64, "Zombono Cooperative");
 	}
 
-	M_Print (0, 72, "        Teamplay");
+	M_Print (0, 72, "        Friendly Fire");
 
 	char* msg;
 
-	switch ((int)teamplay.value)
+	switch ((int)friendly_fire.value)
 	{
-	case 1: msg = "No Friendly Fire"; break;
-	case 2: msg = "Friendly Fire"; break;
-	default: msg = "Off"; break;
+	case 0: msg = "No Friendly Fire"; break;
+	case 1: msg = "Friendly Fire"; break;
 	}
 	M_Print(160, 72, msg);
 
@@ -1738,13 +1737,13 @@ void M_GameOptions_Change (int dir)
 		if (zombie.value > GAME_ZOMBIES_MAX_MODE) zombie.value = GAME_ZOMBIES_MAX_MODE;
 		break;
 	case 3:
-		count = 2;
+		count = 1;
 
-		Cvar_SetValue ("teamplay", teamplay.value + dir);
-		if (teamplay.value > count)
-			Cvar_SetValue ("teamplay", 0);
-		else if (teamplay.value < 0)
-			Cvar_SetValue ("teamplay", count);
+		Cvar_SetValue ("friendly_fire", friendly_fire.value + dir);
+		if (friendly_fire.value > count)
+			Cvar_SetValue ("friendly_fire", 0);
+		else if (friendly_fire.value < 0)
+			Cvar_SetValue ("friendly_fire", count);
 		break;
 
 	case 4:

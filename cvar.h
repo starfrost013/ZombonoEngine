@@ -44,7 +44,7 @@ if (Cvar_VariableValue ("r_draworder"))
 
 Interpreted prog code can access cvars with the cvar(name) or
 cvar_set (name, value) internal functions:
-teamplay = cvar("teamplay");
+friendly_fire = cvar("friendly_fire");
 cvar_set ("registered", "1");
 
 The user can access cvars from the console in two ways:

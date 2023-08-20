@@ -170,7 +170,7 @@ typedef struct client_s
 
 //============================================================================
 
-extern	cvar_t	teamplay;
+extern	cvar_t	friendly_fire;
 extern	cvar_t	skill;
 extern	cvar_t	deathmatch;
 extern	cvar_t	coop;

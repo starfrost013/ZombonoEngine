@@ -311,7 +311,7 @@ void() worldspawn =
 void() StartFrame =
 {
 	// setup cvars
-	teamplay = cvar("teamplay");
+	friendly_fire = cvar("friendly_fire");
 	skill = cvar("skill");
 	framecount = framecount + 1;
 };
