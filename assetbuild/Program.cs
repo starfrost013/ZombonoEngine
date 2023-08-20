@@ -6,7 +6,7 @@
 #region Constants & Variables
 using System.Diagnostics;
 
-const string ASSETBUILD_VERSION = "1.1.0";
+const string ASSETBUILD_VERSION = "1.2.0";
 const string TOOLDIR = @"..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
@@ -17,7 +17,6 @@ string gameDir = $@"..\..\..\..\game\{gameName}"; // Complete relative path to g
 string cfgDir = $@"{gameDir}\basecfg"; // Config dir.
 // temp - pak0 and pak1 likely be merged
 string pak0Dir = $@"{gameDir}\content0"; // Package 0 dir.
-string pak1Dir = $@"{gameDir}\content1"; // Package 1 dir.
 string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
 string gfxDir = $@"{gameDir}\gfx"; // GFX.WAD source dir.
 string finalDir = $@"..\..\..\..\build\{config}\bin\{gameName}"; // final directory
@@ -34,7 +33,6 @@ const string STRING_BUILDING_GFX = "Building gfx.wad";
 const string STRING_BUILDING_BASECFG = "Building configuration...";
 const string STRING_BUILDING_QC = "Building QuakeC...";
 const string STRING_BUILDING_PAK0 = "Building package 0...";
-const string STRING_BUILDING_PAK1 = "Building package 1...";
 const string STRING_BUILDING_DONE = "Done!";
 
 #endregion
@@ -181,35 +179,6 @@ try
         if (procPaktool.ExitCode != 0)
         {
             PrintErrorAndExit("Pak0.pak creation failed!", 7);
-        }
-    }
-
-    Console.WriteLine(STRING_BUILDING_PAK1);
-
-    string[] pak1Files = Directory.GetFiles(pak1Dir, "*.*", SearchOption.AllDirectories);
-    procPaktool.StartInfo.WorkingDirectory = Path.GetFullPath($"{pak1Dir}");
-
-    File.Delete($"{finalDir}\\pak1.pak");
-
-    foreach (string pak1File in pak1Files)
-    {
-        // stupid stupid tool breaks the entire fucking game if it's not precisely right (TODO: WRITE NON SHITTY REPLACEMENT!!!)
-
-        string pak1FileNonFucked = pak1File.Replace(@"..\", "");
-        pak1FileNonFucked = pak1FileNonFucked.Replace($@"game\{gameName}\content1\", "");
-        // engine fucking dies without this, wtf?
-        pak1FileNonFucked = pak1FileNonFucked.Replace("\\", "//");
-
-        procPaktool.StartInfo.ArgumentList.Clear();
-        procPaktool.StartInfo.ArgumentList.Add(Path.GetFullPath($@"{finalDir}\pak1.pak"));
-        procPaktool.StartInfo.ArgumentList.Add($@"{pak1FileNonFucked}");
-
-        procPaktool.Start();
-        procPaktool.WaitForExit();
-
-        if (procPaktool.ExitCode != 0)
-        {
-            PrintErrorAndExit("Pak1.pak creation failed!", 8);
         }
     }
 
