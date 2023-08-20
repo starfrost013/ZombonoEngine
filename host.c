@@ -69,7 +69,7 @@ cvar_t	samelevel = {"samelevel","0"};
 cvar_t	noexit = {"noexit","0",false,true};
 cvar_t	skill = {"skill","1"};						// 0 - 3
 cvar_t	deathmatch = {"deathmatch","0"};			// 0, 1, or 2
-cvar_t	zombie = { "zombie", "0" };		// Zombie mode (Zombono)
+cvar_t	zombie = { "zombie", "0" };		// Zombie mode (Zombono) - value indicates game mode
 cvar_t	coop = {"coop","0"};			// 0 or 1
 
 cvar_t	pausable = {"pausable","1"};

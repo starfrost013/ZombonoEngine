@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1641,10 +1642,15 @@ void M_GameOptions_Draw (void)
 	M_Print (160, 56, va("%i", maxplayers) );
 
 	M_Print (0, 64, "        Game Type");
-	if (coop.value)
-		M_Print (160, 64, "Cooperative");
-	else
-		M_Print (160, 64, "Deathmatch");
+
+	if (zombie.value == 0.0f)
+	{
+		M_Print(160, 64, "Zombono");
+	}
+	else if (zombie.value == 1.0f)
+	{
+		M_Print(160, 64, "Zombono Cooperative");
+	}
 
 	M_Print (0, 72, "        Teamplay");
 
@@ -1708,7 +1714,7 @@ void M_GameOptions_Draw (void)
 }
 
 
-void M_NetStart_Change (int dir)
+void M_GameOptions_Change (int dir)
 {
 	int count;
 
@@ -1727,9 +1733,10 @@ void M_NetStart_Change (int dir)
 		break;
 
 	case 2:
-		Cvar_SetValue ("coop", coop.value ? 0 : 1);
+		Cvar_SetValue ("zombie", zombie.value + dir);
+		if (zombie.value < GAME_ZOMBIES_MIN_MODE) zombie.value = GAME_ZOMBIES_MIN_MODE;
+		if (zombie.value > GAME_ZOMBIES_MAX_MODE) zombie.value = GAME_ZOMBIES_MAX_MODE;
 		break;
-
 	case 3:
 		count = 2;
 
@@ -1804,14 +1811,14 @@ void M_GameOptions_Key (int key)
 		if (gameoptions_cursor == 0)
 			break;
 		S_LocalSound ("misc/menu3.wav");
-		M_NetStart_Change (-1);
+		M_GameOptions_Change (-1);
 		break;
 
 	case K_RIGHTARROW:
 		if (gameoptions_cursor == 0)
 			break;
 		S_LocalSound ("misc/menu3.wav");
-		M_NetStart_Change (1);
+		M_GameOptions_Change (1);
 		break;
 
 	case K_ENTER:
@@ -1829,7 +1836,7 @@ void M_GameOptions_Key (int key)
 			return;
 		}
 
-		M_NetStart_Change (1);
+		M_GameOptions_Change (1);
 		break;
 	}
 }
