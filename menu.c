@@ -40,7 +40,6 @@ enum {
 	m_options,
 	m_video,
 	m_keys,
-	m_help,
 	m_quit,
 	m_lanconfig,
 	m_gameoptions,
@@ -61,7 +60,6 @@ void M_Menu_Main_f (void);
 	void M_Menu_Options_f (void);
 		void M_Menu_Keys_f (void);
 		void M_Menu_Video_f (void);
-	void M_Menu_Help_f (void);
 	void M_Menu_Quit_f (void);
 
 void M_Main_Draw (void);
@@ -77,7 +75,6 @@ void M_Main_Draw (void);
 	void M_Options_Draw (void);
 		void M_Keys_Draw (void);
 		void M_Video_Draw (void);
-	void M_Help_Draw (void);
 	void M_Quit_Draw (void);
 
 void M_Main_Key (int key);
@@ -93,7 +90,6 @@ void M_Main_Key (int key);
 	void M_Options_Key (int key);
 		void M_Keys_Key (int key);
 		void M_Video_Key (int key);
-	void M_Help_Key (int key);
 	void M_Quit_Key (int key);
 
 qboolean	m_entersound;		// play after drawing a frame, so caching
@@ -250,7 +246,7 @@ void M_ToggleMenu_f (void)
 /* MAIN MENU */
 
 int	m_main_cursor;
-#define	MAIN_ITEMS	5
+#define	MAIN_ITEMS	4
 
 
 void M_Menu_Main_f (void)
@@ -324,10 +320,6 @@ void M_Main_Key (int key)
 			break;
 
 		case 3:
-			M_Menu_Help_f();
-			break;
-
-		case 4:
 			M_Menu_Quit_f ();
 			break;
 		}
@@ -1318,54 +1310,6 @@ void M_Video_Key (int key)
 }
 
 //=============================================================================
-/* HELP MENU */
-
-int		help_page;
-#define	NUM_HELP_PAGES	6
-
-
-void M_Menu_Help_f (void)
-{
-	key_dest = key_menu;
-	m_state = m_help;
-	m_entersound = true;
-	help_page = 0;
-}
-
-
-
-void M_Help_Draw (void)
-{
-	M_DrawPic (0, 0, Draw_CachePic ( va("gfx/help%i.lmp", help_page)) );
-}
-
-
-void M_Help_Key (int key)
-{
-	switch (key)
-	{
-	case K_ESCAPE:
-		M_Menu_Main_f ();
-		break;
-
-	case K_UPARROW:
-	case K_RIGHTARROW:
-		m_entersound = true;
-		if (++help_page >= NUM_HELP_PAGES)
-			help_page = 0;
-		break;
-
-	case K_DOWNARROW:
-	case K_LEFTARROW:
-		m_entersound = true;
-		if (--help_page < 0)
-			help_page = NUM_HELP_PAGES-1;
-		break;
-	}
-
-}
-
-//=============================================================================
 /* QUIT MENU */
 
 int		msgNumber;
@@ -1431,7 +1375,7 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 		m_state = m_quit;
 	}
 
-	sprintf(msg1, "Zombono version %1.2f", (float)QUAKE_VERSION);
+	sprintf(msg1, "Zombono version %1.2f", (float)VERSION);
 	sprintf(msg2, "by starfrost");
 	sprintf(msg3, "Press y to quit");
 
@@ -1905,7 +1849,7 @@ void M_NetStart_Change (int dir)
 
 	case 8:
 		startlevel += dir;
-    //MED 01/06/97 added hipnotic episodes
+
 		count = episodes[startepisode].levels;
 
 		if (startlevel < 0)
@@ -2153,7 +2097,6 @@ void M_Init (void)
 	Cmd_AddCommand ("menu_options", M_Menu_Options_f);
 	Cmd_AddCommand ("menu_keys", M_Menu_Keys_f);
 	Cmd_AddCommand ("menu_video", M_Menu_Video_f);
-	Cmd_AddCommand ("help", M_Menu_Help_f);
 	Cmd_AddCommand ("menu_quit", M_Menu_Quit_f);
 }
 
@@ -2221,10 +2164,6 @@ void M_Draw (void)
 
 	case m_video:
 		M_Video_Draw ();
-		break;
-
-	case m_help:
-		M_Help_Draw ();
 		break;
 
 	case m_quit:
@@ -2301,10 +2240,6 @@ void M_Keydown (int key)
 
 	case m_video:
 		M_Video_Key (key);
-		return;
-
-	case m_help:
-		M_Help_Key (key);
 		return;
 
 	case m_quit:
