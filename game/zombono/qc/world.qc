@@ -64,6 +64,7 @@ void() main =
 
 	precache_file("gfx/menuplyr.lmp");
 	precache_file("gfx/bigbox.lmp");
+	precache_file("gfx/dim_tcp.lmp");
 	precache_file("gfx/dim_mult.lmp");
 	precache_file("gfx/mainmenu.lmp");
 
@@ -87,7 +88,20 @@ void() main =
 
 	precache_file("gfx/mp_menu.lmp");
 
+	precache_file("gfx/netmen1.lmp");
+	precache_file("gfx/netmen2.lmp");
+	precache_file("gfx/netmen3.lmp");
+	precache_file("gfx/netmen4.lmp");
+	precache_file("gfx/netmen5.lmp");
+
 	precache_file("gfx/sell.lmp");
+
+	precache_file("gfx/help0.lmp");
+	precache_file("gfx/help1.lmp");
+	precache_file("gfx/help2.lmp");
+	precache_file("gfx/help3.lmp");
+	precache_file("gfx/help4.lmp");
+	precache_file("gfx/help5.lmp");
 
 	precache_file("gfx/pause.lmp");
 	precache_file("gfx/loading.lmp");
@@ -245,6 +259,9 @@ void() worldspawn =
 	precache_model("progs/v_light.mdl");
 
 
+	// Get zombie mode
+	zombie_mode = cvar("zombie");
+;
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
 //
@@ -293,6 +310,7 @@ void() worldspawn =
 
 void() StartFrame =
 {
+	// setup cvars
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
 	framecount = framecount + 1;

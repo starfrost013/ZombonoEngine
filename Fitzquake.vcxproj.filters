@@ -284,9 +284,6 @@
     <ClInclude Include="draw.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="d_ifacea.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="mathlib.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
@@ -334,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="client.h">
       <Filter>Source Files\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="bspfile.h">
+      <Filter>Source Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
