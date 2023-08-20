@@ -146,9 +146,6 @@
     <ClCompile Include="net_wins.c">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
-    <ClCompile Include="net_wipx.c">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
     <ClCompile Include="pr_cmds.c">
       <Filter>Source Files\Server</Filter>
     </ClCompile>
@@ -268,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="server.h">
       <Filter>Source Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="net_wins.h">
+      <Filter>Source Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

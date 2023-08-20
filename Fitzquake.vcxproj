@@ -161,7 +161,6 @@
     <ClCompile Include="net_main.c" />
     <ClCompile Include="net_win.c" />
     <ClCompile Include="net_wins.c" />
-    <ClCompile Include="net_wipx.c" />
     <ClCompile Include="pr_cmds.c" />
     <ClCompile Include="pr_edict.c" />
     <ClCompile Include="pr_exec.c" />
@@ -231,6 +230,7 @@
     <ClInclude Include="gl_warp_sin.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="keys.h" />
+    <ClInclude Include="net_wins.h" />
     <ClInclude Include="server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -26,14 +26,11 @@ qsocket_t	*net_activeSockets = NULL;
 qsocket_t	*net_freeSockets = NULL;
 int			net_numsockets = 0;
 
-qboolean	serialAvailable = false;
-qboolean	ipxAvailable = false;
 qboolean	tcpipAvailable = false;
 
 int			net_hostport;
 int			DEFAULTnet_hostport = 26000;
 
-char		my_ipx_address[NET_NAMELEN];
 char		my_tcpip_address[NET_NAMELEN];
 
 void (*GetComPortConfig) (int portNumber, int *port, int *irq, int *baud, qboolean *useModem);
@@ -714,8 +711,6 @@ void NET_Init (void)
 	i = COM_CheckParm ("-port");
 	if (!i)
 		i = COM_CheckParm ("-udpport");
-	if (!i)
-		i = COM_CheckParm ("-ipxport");
 
 	if (i)
 	{
@@ -772,9 +767,6 @@ void NET_Init (void)
 		if (listening)
 			net_drivers[net_driverlevel].Listen (true);
 		}
-
-	if (*my_ipx_address)
-		Con_DPrintf("IPX address %s\n", my_ipx_address);
 	if (*my_tcpip_address)
 		Con_DPrintf("TCP/IP address %s\n", my_tcpip_address);
 }
@@ -814,20 +806,6 @@ void NET_Poll(void)
 {
 	PollProcedure *pp;
 	qboolean	useModem;
-
-	if (!configRestored)
-	{
-		if (serialAvailable)
-		{
-			if (config_com_modem.value == 1.0)
-				useModem = true;
-			else
-				useModem = false;
-			SetComPortConfig (0, (int)config_com_port.value, (int)config_com_irq.value, (int)config_com_baud.value, useModem);
-			SetModemConfig (0, config_modem_dialtype.string, config_modem_clear.string, config_modem_init.string, config_modem_hangup.string);
-		}
-		configRestored = true;
-	}
 
 	SetNetTime();
 
