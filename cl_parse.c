@@ -735,21 +735,10 @@ void CL_ParseClientdata (void)
 
 	i = MSG_ReadByte ();
 
-	if (standard_quake)
+	if (cl.stats[STAT_ACTIVEWEAPON] != i)
 	{
-		if (cl.stats[STAT_ACTIVEWEAPON] != i)
-		{
-			cl.stats[STAT_ACTIVEWEAPON] = i;
-			Sbar_Changed ();
-		}
-	}
-	else
-	{
-		if (cl.stats[STAT_ACTIVEWEAPON] != (1<<i))
-		{
-			cl.stats[STAT_ACTIVEWEAPON] = (1<<i);
-			Sbar_Changed ();
-		}
+		cl.stats[STAT_ACTIVEWEAPON] = i;
+		Sbar_Changed();
 	}
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
