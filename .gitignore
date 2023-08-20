@@ -76,6 +76,11 @@ StyleCopReport.xml
 [Nn][Qq]progs.dat
 progs.dat
 
+# ericw-tools
+*.texinfo.json
+*-light.log
+*-vis.log
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
