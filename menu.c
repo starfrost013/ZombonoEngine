@@ -633,10 +633,10 @@ void M_MultiPlayer_Key (int key)
 		switch (m_multiplayer_cursor)
 		{
 		case 0:
+		case 1:
 			M_Menu_LanConfig_f();	
 			break;
-
-		case 1:
+		case 2:
 			M_Menu_Setup_f ();
 			break;
 		}
@@ -1601,71 +1601,9 @@ typedef struct
 
 level_t		levels[] =
 {
-	{"start", "Entrance"},	// 0
-
-	{"e1m1", "Slipgate Complex"},				// 1
-	{"e1m2", "Castle of the Damned"},
-	{"e1m3", "The Necropolis"},
-	{"e1m4", "The Grisly Grotto"},
-	{"e1m5", "Gloom Keep"},
-	{"e1m6", "The Door To Chthon"},
-	{"e1m7", "The House of Chthon"},
-	{"e1m8", "Ziggurat Vertigo"},
-
-	{"e2m1", "The Installation"},				// 9
-	{"e2m2", "Ogre Citadel"},
-	{"e2m3", "Crypt of Decay"},
-	{"e2m4", "The Ebon Fortress"},
-	{"e2m5", "The Wizard's Manse"},
-	{"e2m6", "The Dismal Oubliette"},
-	{"e2m7", "Underearth"},
-
-	{"e3m1", "Termination Central"},			// 16
-	{"e3m2", "The Vaults of Zin"},
-	{"e3m3", "The Tomb of Terror"},
-	{"e3m4", "Satan's Dark Delight"},
-	{"e3m5", "Wind Tunnels"},
-	{"e3m6", "Chambers of Torment"},
-	{"e3m7", "The Haunted Halls"},
-
-	{"e4m1", "The Sewage System"},				// 23
-	{"e4m2", "The Tower of Despair"},
-	{"e4m3", "The Elder God Shrine"},
-	{"e4m4", "The Palace of Hate"},
-	{"e4m5", "Hell's Atrium"},
-	{"e4m6", "The Pain Maze"},
-	{"e4m7", "Azure Agony"},
-	{"e4m8", "The Nameless City"},
-
-	{"end", "Shub-Niggurath's Pit"},			// 31
-
-	{"dm1", "Place of Two Deaths"},				// 32
-	{"dm2", "Claustrophobopolis"},
-	{"dm3", "The Abandoned Base"},
-	{"dm4", "The Bad Place"},
-	{"dm5", "The Cistern"},
-	{"dm6", "The Dark Zone"}
+	{"start", "Zombono Test Level"},	// 0
 };
 
-typedef struct
-{
-	char	*description;
-	int		firstLevel;
-	int		levels;
-} episode_t;
-
-episode_t	episodes[] =
-{
-	{"Welcome to Quake", 0, 1},
-	{"Doomed Dimension", 1, 8},
-	{"Realm of Black Magic", 9, 7},
-	{"Netherworld", 16, 7},
-	{"The Elder World", 23, 8},
-	{"Final Level", 31, 1},
-	{"Deathmatch Arena", 32, 6}
-};
-
-int	startepisode;
 int	startlevel;
 int maxplayers;
 qboolean m_serverInfoMessage = false;
@@ -1684,7 +1622,7 @@ void M_Menu_GameOptions_f (void)
 
 
 int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
-#define	NUM_GAMEOPTIONS	9
+#define	NUM_GAMEOPTIONS	8
 int		gameoptions_cursor;
 
 void M_GameOptions_Draw (void)
@@ -1742,14 +1680,10 @@ void M_GameOptions_Draw (void)
 	else
 		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
 
-	M_Print (0, 112, "         Episode");
+	M_Print (0, 104, "           Level");
 
-      M_Print (160, 112, episodes[startepisode].description);
-
-	M_Print (0, 120, "           Level");
-
-	M_Print(160, 120, levels[episodes[startepisode].firstLevel + startlevel].description);
-	M_Print(160, 128, levels[episodes[startepisode].firstLevel + startlevel].name);
+	M_Print(160, 104, levels[startlevel].description);
+	M_Print(160, 112, levels[startlevel].name);
 
 // line cursor
 	M_DrawCharacter (144, gameoptions_cursor_table[gameoptions_cursor], 12+((int)(realtime*4)&1));
@@ -1831,25 +1765,9 @@ void M_NetStart_Change (int dir)
 		break;
 
 	case 7:
-		startepisode += dir;
-		if (registered.value)
-			count = 7;
-		else
-			count = 2;
-
-		if (startepisode < 0)
-			startepisode = count - 1;
-
-		if (startepisode >= count)
-			startepisode = 0;
-
-		startlevel = 0;
-		break;
-
-	case 8:
 		startlevel += dir;
 
-		count = episodes[startepisode].levels;
+		count = sizeof(levels)/sizeof(levels[0]);
 
 		if (startlevel < 0)
 			startlevel = count - 1;
@@ -1906,7 +1824,7 @@ void M_GameOptions_Key (int key)
 			Cbuf_AddText ( va ("maxplayers %u\n", maxplayers) );
 			SCR_BeginLoadingPlaque ();
 
-			Cbuf_AddText ( va ("map %s\n", levels[episodes[startepisode].firstLevel + startlevel].name) );
+			Cbuf_AddText ( va ("map %s\n", levels[startlevel].name) );
 
 			return;
 		}
