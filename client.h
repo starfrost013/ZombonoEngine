@@ -106,7 +106,7 @@ ca_connected		// valid netcon, talking to a server
 // the client_static_t structure is persistant through an arbitrary number
 // of server connections
 //
-typedef struct
+typedef struct client_static_s
 {
 	cactive_t	state;
 
@@ -143,7 +143,7 @@ extern client_static_t	cls;
 // the client_state_t structure is wiped completely at every
 // server signon
 //
-typedef struct
+typedef struct client_state_s
 {
 	int			movemessages;	// since connecting to this server
 								// throw out the first couple, so the player
@@ -292,10 +292,6 @@ void	CL_DecayLights (void);
 void CL_Init (void);
 
 void CL_EstablishConnection (char *host);
-void CL_Signon1 (void);
-void CL_Signon2 (void);
-void CL_Signon3 (void);
-void CL_Signon4 (void);
 
 void CL_Disconnect (void);
 void CL_Disconnect_f (void);
@@ -325,7 +321,6 @@ void CL_ClearState (void);
 
 
 int  CL_ReadFromServer (void);
-void CL_WriteToServer (usercmd_t *cmd);
 void CL_BaseMove (usercmd_t *cmd);
 
 
@@ -357,7 +352,6 @@ void V_StopPitchDrift (void);
 
 void V_RenderView (void);
 //void V_UpdatePalette (void); //johnfitz
-void V_Register (void);
 void V_ParseDamage (void);
 void V_SetContentsColor (int contents);
 
