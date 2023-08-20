@@ -577,7 +577,7 @@ void M_Save_Key (int k)
 /* MULTIPLAYER MENU */
 
 int	m_multiplayer_cursor;
-#define	MULTIPLAYER_ITEMS	2
+#define	MULTIPLAYER_ITEMS	3
 
 
 void M_Menu_MultiPlayer_f (void)
@@ -1621,7 +1621,7 @@ void M_Menu_GameOptions_f (void)
 }
 
 
-int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
+int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 104, 112};
 #define	NUM_GAMEOPTIONS	8
 int		gameoptions_cursor;
 
