@@ -83,7 +83,7 @@
       <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono</Command>
+      <Command>$(SolutionDir)\tools\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -248,6 +248,7 @@
     <ClInclude Include="pr_comp.h" />
     <ClInclude Include="quakedef.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="sbar.h" />
     <ClInclude Include="server.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="spritegn.h" />

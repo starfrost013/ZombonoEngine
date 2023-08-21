@@ -335,5 +335,8 @@
     <ClInclude Include="bspfile.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="sbar.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

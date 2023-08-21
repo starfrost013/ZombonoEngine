@@ -309,6 +309,7 @@ qpic_t	*Draw_CachePic (char *path)
 	return &pic->pic;
 }
 
+
 /*
 ================
 Draw_MakePic -- johnfitz -- generate pics from internal data
