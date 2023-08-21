@@ -39,9 +39,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	WADFILENAME "gfx.wad" //johnfitz -- filename is now hard-coded for honesty
 
+// Zombono: Changed for LMP32
 typedef struct
 {
-	int			width, height;
+	char		magic[5];			// 'LMP32'
+	int			width, height;		// 4 bytes each
 	byte		data[4];			// variably sized
 } qpic_t;
 

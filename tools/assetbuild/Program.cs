@@ -7,19 +7,19 @@
 using System.Diagnostics;
 
 const string ASSETBUILD_VERSION = "1.2.0";
-const string TOOLDIR = @"..\..\..\..\tools";
+const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
 string[] validConfigs = { "Debug", "Release" }; // Valid build configs.
 string config = validConfigs[0]; // Current config.
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
-string gameDir = $@"..\..\..\..\game\{gameName}"; // Complete relative path to game dir
+string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
 string cfgDir = $@"{gameDir}\basecfg"; // Config dir.
 // temp - pak0 and pak1 likely be merged
 string pak0Dir = $@"{gameDir}\content"; // Package 0 dir.
 string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
 string gfxDir = $@"{gameDir}\gfx"; // GFX.WAD source dir.
-string finalDir = $@"..\..\..\..\build\{config}\bin\{gameName}"; // final directory
+string finalDir = $@"..\..\..\..\..\build\{config}\bin\{gameName}"; // final directory
 #endregion
 
 #region Strings

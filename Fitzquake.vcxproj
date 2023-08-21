@@ -81,6 +81,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\build\Debug\bin\$(TargetName).exe</OutputFile>
       <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono</Command>

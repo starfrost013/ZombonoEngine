@@ -220,6 +220,8 @@ qpic_t *Draw_PicFromWad (char *name)
 	p = W_GetLumpName (name);
 	if (!p) return pic_nul; //johnfitz
 
+	Draw_VerifyLmpHeader(p, name);
+
 	gl = (glpic_t *)p->data;
 
 	// load little ones into the scrap
@@ -287,6 +289,9 @@ qpic_t	*Draw_CachePic (char *path)
 	dat = (qpic_t *)COM_LoadTempFile (path);
 	if (!dat)
 		Sys_Error ("Draw_CachePic: failed to load %s", path);
+
+	Draw_VerifyLmpHeader (dat, path);
+
 	SwapPic (dat);
 
 	// HACK HACK HACK --- we need to keep the bytes for
@@ -299,7 +304,7 @@ qpic_t	*Draw_CachePic (char *path)
 	pic->pic.height = dat->height;
 
 	gl = (glpic_t *)pic->pic.data;
-	gl->gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, SRC_INDEXED, dat->data, path,
+	gl->gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, SRC_RGBA, dat->data, path,
 									  sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
 	gl->sl = 0;
 	gl->sh = (float)dat->width/(float)TexMgr_PadConditional(dat->width); //johnfitz
@@ -308,7 +313,6 @@ qpic_t	*Draw_CachePic (char *path)
 
 	return &pic->pic;
 }
-
 
 /*
 ================
@@ -322,11 +326,14 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 	glpic_t		*gl;
 
 	pic = Hunk_Alloc (sizeof(qpic_t) - 4 + sizeof (glpic_t));
+
+	Draw_VerifyLmpHeader(pic, name);
+
 	pic->width = width;
 	pic->height = height;
 
 	gl = (glpic_t *)pic->data;
-	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_INDEXED, data, "", (unsigned)data, flags);
+	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data, "", (unsigned)data, flags);
 	gl->sl = 0;
 	gl->sh = (float)width/(float)TexMgr_PadConditional(width);
 	gl->tl = 0;
@@ -352,13 +359,30 @@ void Draw_LoadPics (void)
 	unsigned	offset;
 
 	data = W_GetLumpName ("conchars");
+
 	if (!data) Sys_Error ("Draw_LoadPics: couldn't load conchars");
 	offset = (unsigned)data - (unsigned)wad_base;
+
+	Draw_VerifyLmpHeader((qpic_t*)data, "conchars");
 	char_texture = TexMgr_LoadImage (NULL, WADFILENAME":conchars", 128, 128, SRC_INDEXED, data,
 		WADFILENAME, offset, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
 
 	draw_disc = Draw_PicFromWad ("disc");
 	draw_backtile = Draw_PicFromWad ("backtile");
+}
+
+void Draw_VerifyLmpHeader(qpic_t* dat, char* path)
+{
+	// Verifies the LMP32 header
+
+	if (dat->magic[0] != 'L'
+		|| dat->magic[1] != 'M'
+		|| dat->magic[2] != 'P'
+		|| dat->magic[3] != '3'
+		|| dat->magic[4] != '2')
+	{
+		Sys_Error("Draw_CachePic: %s is an old 8-bit lump, cannot load", path);
+	}
 }
 
 /*
