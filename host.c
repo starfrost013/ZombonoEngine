@@ -843,7 +843,7 @@ void Host_Init (quakeparms_t *parms)
 
 	host_initialized = true;
 
-	Con_Printf ("\n========= Quake Initialized =========\n\n"); //johnfitz - was Sys_Printf
+	Con_Printf ("\n========= Zombono Initialized =========\n\n"); //johnfitz - was Sys_Printf
 }
 
 
