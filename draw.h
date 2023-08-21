@@ -35,7 +35,5 @@ void Draw_TileClear (int x, int y, int w, int h);
 void Draw_Fill (int x, int y, int w, int h, int c, float alpha); //johnfitz -- added alpha
 void Draw_FadeScreen (void);
 void Draw_String (int x, int y, char *str);
-qpic_t *Draw_PicFromWad (char *name);
 qpic_t *Draw_CachePic (char *path);
-void Draw_VerifyLmpHeader(qpic_t* pic, char* path);
 void GL_SetCanvas (int canvastype); //johnfitz

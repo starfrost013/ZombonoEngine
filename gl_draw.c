@@ -35,7 +35,7 @@ qpic_t		*pic_nul; //johnfitz -- for missing gfx, don't crash
 // zombono, now LMP32
 byte pic_ovr_data[21][13] =
 {
-{ 0x4C, 0x4D, 0x50, 0x33, 0x32, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
+{ 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
 { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, },
 { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, },
 { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xEB, 0xEB, 0xEB, },
@@ -60,7 +60,7 @@ byte pic_ovr_data[21][13] =
 
 byte pic_ins_data[25][13] =
 {
-{ 0x4C, 0x4D, 0x50, 0x33, 0x32, 0x09, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
+{ 0x09, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
 { 0xEB, 0xEB, 0xEB, 0xFF, 0xEB, 0xEB, 0xEB, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, },
 { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, },
 { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xEB, 0xEB, 0xEB, 0xFF, 0xEB, 0xEB, 0xEB, },
@@ -89,7 +89,7 @@ byte pic_ins_data[25][13] =
 
 byte pic_nul_data[23][13] =
 {
-{ 0x4C, 0x4D, 0x50, 0x33, 0x32, 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
+{ 0x08, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, },
 { 0xFF, 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, 0xFF, 0xFF, },
 { 0xF3, 0x93, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, },
 { 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, },
@@ -135,7 +135,7 @@ typedef struct cachepic_s
 	byte		padding[32];	// for appended glpic
 } cachepic_t;
 
-#define	MAX_CACHED_PICS		384	// was 128 - but a lot more pics get cached
+#define	MAX_CACHED_PICS		384	// was 128 - but a lot more pics get cached since gfx.wad went out the window
 cachepic_t	menu_cachepics[MAX_CACHED_PICS];
 int			menu_numcachepics;
 
@@ -223,59 +223,6 @@ void Scrap_Upload (void)
 	scrap_dirty = false;
 }
 
-/*
-================
-Draw_PicFromWad
-================
-*/
-qpic_t *Draw_PicFromWad (char *name)
-{
-	qpic_t	*p;
-	glpic_t	*gl;
-	unsigned offset; //johnfitz
-
-	p = W_GetLumpName (name);
-	if (!p) return pic_nul; //johnfitz
-
-	gl = (glpic_t *)p->data;
-
-	// load little ones into the scrap
-	if (p->width < 64 && p->height < 64)
-	{
-		int		x, y;
-		int		i, j, k;
-		int		texnum;
-
-		texnum = Scrap_AllocBlock (p->width, p->height, &x, &y);
-		scrap_dirty = true;
-		k = 0;
-		for (i=0 ; i<p->height ; i++)
-			for (j=0 ; j<p->width ; j++, k++)
-				scrap_texels[texnum][(y+i)*BLOCK_WIDTH + x + j] = p->data[k];
-		gl->gltexture = scrap_textures[texnum]; //johnfitz -- changed to an array
-		//johnfitz -- no longer go from 0.01 to 0.99
-		gl->sl = x/(float)BLOCK_WIDTH;
-		gl->sh = (x+p->width)/(float)BLOCK_WIDTH;
-		gl->tl = y/(float)BLOCK_WIDTH;
-		gl->th = (y+p->height)/(float)BLOCK_WIDTH;
-	}
-	else
-	{
-		char texturename[64]; //johnfitz
-		sprintf (texturename, "%s:%s", WADFILENAME, name); //johnfitz
-
-		offset = (unsigned)p - (unsigned)wad_base + sizeof(int)*2; //johnfitz
-
-		gl->gltexture = TexMgr_LoadImage (NULL, texturename, p->width, p->height, SRC_RGBA, p->data, WADFILENAME,
-										  offset, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
-		gl->sl = 0;
-		gl->sh = (float)p->width/(float)TexMgr_PadConditional(p->width); //johnfitz
-		gl->tl = 0;
-		gl->th = (float)p->height/(float)TexMgr_PadConditional(p->height); //johnfitz
-	}
-
-	return p;
-}
 
 /*
 ================
@@ -344,7 +291,7 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 
 	gl = (glpic_t *)pic->data;
 	// skip LMP32 header by adding sizeof(glpic_t) - 7
-	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data + sizeof(glpic_t) - 7, "", (unsigned)data, flags);
+	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data + 8, "", (unsigned)data, flags);
 	gl->sl = 0;
 	gl->sh = (float)width/(float)TexMgr_PadConditional(width);
 	gl->tl = 0;
@@ -374,7 +321,7 @@ void Draw_LoadPics (void)
 	if (!data) Sys_Error("Draw_LoadPics: couldn't load conchars");
 
 	char_texture = TexMgr_LoadImage(NULL, "gfx/conchars.lmp", 128, 128, SRC_RGBA, data,
-		"gfx/conchars.lmp", 0, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
+		"gfx/conchars.lmp", 0, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP);
 
 	draw_disc = Draw_CachePic ("gfx/disc.lmp");
 	draw_backtile = Draw_CachePic ("gfx/backtile.lmp");
@@ -397,7 +344,6 @@ void Draw_NewGame (void)
 	Scrap_Upload (); //creates 2 empty gltextures
 
 	// reload wad pics
-	W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
 	Draw_LoadPics ();
 	SCR_LoadPics ();
 	Sbar_LoadPics ();

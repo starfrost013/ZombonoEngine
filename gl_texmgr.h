@@ -31,7 +31,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define TEXPREF_NOPICMIP		0x0080	// always load full-sized
 #define TEXPREF_FULLBRIGHT		0x0100	// use fullbright mask palette
 #define TEXPREF_NOBRIGHT		0x0200	// use nobright mask palette
-#define TEXPREF_CONCHARS		0x0400	// use conchars palette
 #define TEXPREF_WARPIMAGE		0x0800	// resize this texture when warpimagesize changes
 
 enum srcformat {SRC_INDEXED, SRC_LIGHTMAP, SRC_RGBA};
@@ -64,7 +63,6 @@ gltexture_t *nulltexture;
 unsigned int d_8to24table[256];
 unsigned int d_8to24table_fbright[256];
 unsigned int d_8to24table_nobright[256];
-unsigned int d_8to24table_conchars[256];
 unsigned int d_8to24table_shirt[256];
 unsigned int d_8to24table_pants[256];
 

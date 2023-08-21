@@ -470,10 +470,6 @@ void TexMgr_LoadPalette (void)
 	for (i=224; i<256; i++)
 		d_8to24table_nobright[i] = *(int *)black;
 
-	//conchars palette, 0 and 255 are transparent
-	memcpy(d_8to24table_conchars, d_8to24table, 256*4);
-	d_8to24table_conchars[0] &= *(int *)mask;
-
 	Hunk_FreeToLowMark (mark);
 }
 
@@ -1026,7 +1022,7 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	}
 
 	// detect false alpha cases
-	if (glt->flags & TEXPREF_ALPHA && !(glt->flags & TEXPREF_CONCHARS))
+	if (glt->flags & TEXPREF_ALPHA)
 	{
 		for (i = 0; i < glt->width*glt->height; i++)
 			if (data[i] == 255) //transparent index
@@ -1044,11 +1040,6 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	else if (glt->flags & TEXPREF_NOBRIGHT && gl_fullbrights.value)
 	{
 		usepal = d_8to24table_nobright;
-		padbyte = 0;
-	}
-	else if (glt->flags & TEXPREF_CONCHARS)
-	{
-		usepal = d_8to24table_conchars;
 		padbyte = 0;
 	}
 	else
