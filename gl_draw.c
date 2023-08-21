@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-//extern unsigned char d_15to8table[65536]; //johnfitz -- never used
-
 cvar_t		scr_conalpha = {"scr_conalpha", "1"}; //johnfitz
 
 qpic_t		*draw_disc;
@@ -116,31 +114,6 @@ byte pic_nul_data[23][13] =
 { 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, },
 };
 
-byte pic_stipple_data[8][8] =
-{
-	{255,  0,  0,  0,255,  0,  0,  0},
-	{  0,  0,255,  0,  0,  0,255,  0},
-	{255,  0,  0,  0,255,  0,  0,  0},
-	{  0,  0,255,  0,  0,  0,255,  0},
-	{255,  0,  0,  0,255,  0,  0,  0},
-	{  0,  0,255,  0,  0,  0,255,  0},
-	{255,  0,  0,  0,255,  0,  0,  0},
-	{  0,  0,255,  0,  0,  0,255,  0},
-};
-
-byte pic_crosshair_data[8][8] =
-{
-	{255,255,255,255,255,255,255,255},
-	{255,255,255,  8,  9,255,255,255},
-	{255,255,255,  6,  8,  2,255,255},
-	{255,  6,  8,  8,  6,  8,  8,255},
-	{255,255,  2,  8,  8,  2,  2,  2},
-	{255,255,255,  7,  8,  2,255,255},
-	{255,255,255,255,  2,  2,255,255},
-	{255,255,255,255,255,255,255,255},
-};
-//johnfitz
-
 typedef struct
 {
 	gltexture_t *gltexture;
@@ -162,7 +135,7 @@ typedef struct cachepic_s
 	byte		padding[32];	// for appended glpic
 } cachepic_t;
 
-#define	MAX_CACHED_PICS		128
+#define	MAX_CACHED_PICS		384	// was 128 - but a lot more pics get cached
 cachepic_t	menu_cachepics[MAX_CACHED_PICS];
 int			menu_numcachepics;
 
@@ -264,8 +237,6 @@ qpic_t *Draw_PicFromWad (char *name)
 	p = W_GetLumpName (name);
 	if (!p) return pic_nul; //johnfitz
 
-	Draw_VerifyLmpHeader(p, name);
-
 	gl = (glpic_t *)p->data;
 
 	// load little ones into the scrap
@@ -333,13 +304,10 @@ qpic_t	*Draw_CachePic (char *path)
 	dat = (qpic_t *)COM_LoadTempFile (path);
 	if (!dat)
 		Sys_Error ("Draw_CachePic: failed to load %s", path);
-
-	Draw_VerifyLmpHeader (dat, path);
-
 	SwapPic (dat);
 
 	// HACK HACK HACK --- we need to keep the bytes for
-	// the translatable player picture just for the menu
+	// the translatable player picture just for the menu 
 	// configuration dialog
 	if (!strcmp (path, "gfx/menuplyr.lmp"))
 		memcpy (menuplyr_pixels, dat->data, dat->width*dat->height);
@@ -371,8 +339,6 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 
 	pic = Hunk_Alloc (sizeof(qpic_t) - 4 + sizeof (glpic_t));
 
-	Draw_VerifyLmpHeader((qpic_t*)data, name);
-
 	pic->width = width;
 	pic->height = height;
 
@@ -403,31 +369,15 @@ void Draw_LoadPics (void)
 	byte		*data;
 	unsigned	offset;
 
-	data = W_GetLumpName ("conchars");
+	data = COM_LoadTempFile("gfx/conchars.lmp");
 
-	if (!data) Sys_Error ("Draw_LoadPics: couldn't load conchars");
-	offset = (unsigned)data - (unsigned)wad_base;
+	if (!data) Sys_Error("Draw_LoadPics: couldn't load conchars");
 
-	Draw_VerifyLmpHeader((qpic_t*)data, "conchars");
-	char_texture = TexMgr_LoadImage (NULL, WADFILENAME":conchars", 128, 128, SRC_RGBA, data,
-		WADFILENAME, offset, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
+	char_texture = TexMgr_LoadImage(NULL, "gfx/conchars.lmp", 128, 128, SRC_RGBA, data,
+		"gfx/conchars.lmp", 0, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
 
-	draw_disc = Draw_PicFromWad ("disc");
-	draw_backtile = Draw_PicFromWad ("backtile");
-}
-
-void Draw_VerifyLmpHeader(qpic_t* dat, char* path)
-{
-	// Verifies the LMP32 header
-
-	if (dat->magic[0] != 'L'
-		|| dat->magic[1] != 'M'
-		|| dat->magic[2] != 'P'
-		|| dat->magic[3] != '3'
-		|| dat->magic[4] != '2')
-	{
-		Sys_Error("Draw_CachePic: %s is an old 8-bit lump, cannot load", path);
-	}
+	draw_disc = Draw_CachePic ("gfx/disc.lmp");
+	draw_backtile = Draw_CachePic ("gfx/backtile.lmp");
 }
 
 /*

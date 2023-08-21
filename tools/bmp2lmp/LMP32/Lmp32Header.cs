@@ -8,7 +8,11 @@ namespace bmp2lmp
     /// </summary>
     internal class Lmp32Header
     {
-        internal static byte[] Magic = new byte[] { 0x4C, 0x4D, 0x50, 0x33, 0x32 }; // "MIP32"
+        /// <summary>
+        /// REMOVED because quake loves converting byte arrays to structures
+        /// and this ruins the alignment
+        /// </summary>
+        //internal static byte[] Magic = new byte[] { 0x4C, 0x4D, 0x50, 0x33, 0x32 }; // "MIP32"
 
         internal int Width { get; set; }
 
@@ -16,7 +20,7 @@ namespace bmp2lmp
 
         internal void Write(BinaryWriter writer)
         {
-            writer.Write(Magic);
+            //writer.Write(Magic);
             writer.Write(Width);
             writer.Write(Height);
         }

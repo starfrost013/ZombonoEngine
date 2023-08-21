@@ -796,7 +796,7 @@ void Host_Init (quakeparms_t *parms)
 	Chase_Init ();
 	COM_Init (parms->basedir);
 	Host_InitLocal ();
-	W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
+	//W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
 	Key_Init ();
 	Con_Init ();
 	M_Init ();
