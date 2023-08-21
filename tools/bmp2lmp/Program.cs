@@ -1,14 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using bmp2lmp;
-using IronSoftware.Drawing;  
+using IronSoftware.Drawing;
 
-Console.WriteLine("bmp2lmp");
-Console.WriteLine("Converts 32-bit BMP to LMP32");
+#region Constants
+string BMP2LMP_VERSION = "1.1.0";
+#endregion
 
 #region Variables
-string inputFile = string.Empty;
-string outputFile = string.Empty;
+string inputItem = string.Empty;
+string outputItem = string.Empty;
+// very bad, replace with something better later when we add actual arguments
+bool folderMode = false;
 #endregion
+
+Console.WriteLine($"bmp2lmp {BMP2LMP_VERSION}");
+Console.WriteLine("Converts 32-bit BMP to LMP32");
 
 #region Command line parsing
 switch (args.Length)
@@ -17,63 +23,129 @@ switch (args.Length)
         PrintHelpAndExit("No file provided!", 1);
         break;
     default:
-        if (!File.Exists(args[0]))
-        {
-            PrintHelpAndExit($"The input file {args[0]} does not exist!", 2);
-        }
 
-        inputFile = args[0];
+        inputItem = args[0];
 
-        if (args.Length >= 2)
+        // set folder mode
+        folderMode = !(inputItem.Contains('.', StringComparison.InvariantCultureIgnoreCase));
+
+        if (folderMode)
         {
-            outputFile = args[1];
+            if (!Directory.Exists(inputItem))
+            {
+                PrintHelpAndExit($"The input folder {inputItem} does not exist!", 3);
+            }
+
+            if (args.Length >= 2)
+            {
+                outputItem = args[1];
+
+                if (!Directory.Exists(outputItem))
+                {
+                    PrintHelpAndExit($"The output folder {outputItem} does not exist!", 3);
+                }
+            }
+            else
+            {
+                // default to current directory
+                outputItem = inputItem;
+            }
         }
         else
         {
-            outputFile = inputFile.Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase);
+            if (!File.Exists(inputItem))
+            {
+                PrintHelpAndExit($"The input file {inputItem} does not exist!", 2);
+            }
+
+            if (args.Length >= 2)
+            {
+                outputItem = args[1];
+            }
+            else
+            {
+                PrintHelpAndExit($"The output file {outputItem} does not exist!", 2);
+            }
         }
 
         break;
 }
 #endregion
 
-byte[] inputFileBytes = File.ReadAllBytes(inputFile);
+string[] inputFiles;
 
-AnyBitmap bitmap = new(inputFileBytes);
-
-BinaryWriter outputFileStream = new(new FileStream(outputFile, FileMode.OpenOrCreate));
-
-Lmp32Header header = new()
+if (folderMode)
 {
-    Height = bitmap.Height, 
-    Width = bitmap.Width,
-};
-
-header.Write(outputFileStream); 
-
-for (int y = 0; y < bitmap.Height; y++)
+    // add all the files
+    inputFiles = Directory.GetFiles(inputItem, "*", SearchOption.AllDirectories);    
+}
+else
 {
-    for (int x = 0; x < bitmap.Width; x++)
+    // just one file so add input file to it
+    inputFiles = new string[] { inputItem }; 
+}
+
+foreach (string inputFileName in inputFiles)
+{
+    byte[] inputFileBytes = File.ReadAllBytes(inputFileName);
+
+    string outputFileName = outputItem; 
+
+    if (inputFileName.Contains(".bmp", StringComparison.InvariantCultureIgnoreCase))
     {
-        IronSoftware.Drawing.Color color = bitmap.GetPixel(x, y);
+        AnyBitmap bitmap = new(inputFileBytes);
 
-        // RGBA format for quake
-        outputFileStream.Write(color.R);
-        outputFileStream.Write(color.G);
-        outputFileStream.Write(color.B);
-        outputFileStream.Write(color.A);
+        // bad
+
+        BinaryWriter outputFileStream;
+
+        if (folderMode)
+        {
+            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
+            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+        }
+        else
+        {
+            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+        }
+
+        Lmp32Header header = new()
+        {
+            Height = bitmap.Height,
+            Width = bitmap.Width,
+        };
+
+        header.Write(outputFileStream);
+
+        for (int y = 0; y < bitmap.Height; y++)
+        {
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                IronSoftware.Drawing.Color color = bitmap.GetPixel(x, y);
+
+                // RGBA format for quake
+                outputFileStream.Write(color.R);
+                outputFileStream.Write(color.G);
+                outputFileStream.Write(color.B);
+                outputFileStream.Write(color.A);
+            }
+        }
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Converted file {inputFileName} to {outputFileName}!");
+        Console.ResetColor();
     }
 }
 
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine("Done!");
+Console.WriteLine($"Done!");
 Console.ResetColor();
 
 void PrintHelpAndExit(string error, int exitCode)
 {
-    Console.WriteLine("bmp2lmp [input file] <output file>");
-    Console.WriteLine("input file: input bmp file");
-    Console.WriteLine("output file: output lmp file (optional). If not provided, will be saved to <input file name>.bmp\n");
+    Console.WriteLine("bmp2lmp [input file or folder] <output file>");
+    Console.WriteLine("input file: input bmp file or folder");
+    Console.WriteLine("output file: output lmp file or folder; optional if folder. if folder mode, files will be renamed to .bmp\n");
     PrintErrorAndExit(error, exitCode);
 }
 

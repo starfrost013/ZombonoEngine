@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bmp2lmp": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\mario\\fitzquake\\game\\zombono\\content\\gfxbase C:\\Users\\mario\\fitzquake\\game\\zombonoraw\\lumps"
+    }
+  }
+}

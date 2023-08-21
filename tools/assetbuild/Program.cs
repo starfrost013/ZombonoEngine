@@ -2,11 +2,12 @@
 
 // This is a mess primarily due to the fact it was rushed,
 // and due to the fact pak.exe sucks ass
-
-#region Constants & Variables
 using System.Diagnostics;
 
-const string ASSETBUILD_VERSION = "1.2.0";
+#region Constants & Variables
+
+
+const string ASSETBUILD_VERSION = "1.3.0";
 const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
@@ -18,7 +19,8 @@ string cfgDir = $@"{gameDir}\basecfg"; // Config dir.
 // temp - pak0 and pak1 likely be merged
 string pak0Dir = $@"{gameDir}\content"; // Package 0 dir.
 string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
-string gfxDir = $@"{gameDir}\gfx"; // GFX.WAD source dir.
+string gfxSourceDir = $@"{gameDir}raw\content\gfx"; // gfx source dir.
+string gfxDestinationDir = $@"{gameDir}\content\gfx"; // gfx destination dir
 string finalDir = $@"..\..\..\..\..\build\{config}\bin\{gameName}"; // final directory
 #endregion
 
@@ -27,9 +29,9 @@ const string STRING_SIGNON = $"Assetbuild {ASSETBUILD_VERSION}";
 const string STRING_DESCRIPTION = $"Builds assets for Zombono";
 const string STRING_USAGE = $"Assetbuild <game> [release cfg]\n\n" +
     $"<game>: Path to directory contaning game files\n" +
-    $"[directory]: Optional - base directory (default is ../../../../game/)\n" +
-    $"[release cfg]: Optional - release config (case insensitive), valid: Debug, Release";
-const string STRING_BUILDING_GFX = "Building gfx.wad";
+    $"[directory]: Optional - base directory (default is ../../../../../game) ('raw' after it for gfx files) \n" +
+    $"[release cfg]: Optional - release config (case insensitive), valid: Debug, Release - debug tools are used for debug, release for release";
+const string STRING_BUILDING_GFX = "Converting gfx to LMP32...";
 const string STRING_BUILDING_BASECFG = "Building configuration...";
 const string STRING_BUILDING_QC = "Building QuakeC...";
 const string STRING_BUILDING_PAK0 = "Building package 0...";
@@ -73,43 +75,26 @@ try
     }
 
     // could be first build of a new game so just create final dir if it exists
-    if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);   
+    if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);
     #endregion
 
     #region Main code
 
-    /*
-    does not generate valid gfx.wad files, and since we're removing it best to just work with what exists rn
     Console.WriteLine(STRING_BUILDING_GFX);
 
-    // get all files in gfx dir
-    string[] gfxFiles = Directory.GetFiles(gfxDir, "*.*", SearchOption.AllDirectories);
+    Process process = new();
 
-    // WHY DOES IT HAVE A PROPRIETARY FUCKING LIST FORMAT
-    Process procGfxConv = new();
-    procGfxConv.StartInfo.FileName = $"{TOOLDIR}\\pypaktools\\wad.exe";
+    process.StartInfo.FileName = $@"{TOOLDIR}\bmp2lmp\bin\{config}\net7.0\bmp2lmp.exe";
+    process.StartInfo.ArgumentList.Add(Path.GetFullPath(gfxSourceDir));
+    process.StartInfo.ArgumentList.Add(Path.GetFullPath(gfxDestinationDir));
 
-    if (File.Exists($@"{pak0Dir}\gfx.wad")) File.Delete($@"{pak0Dir}\gfx.wad");
+    process.Start();
+    process.WaitForExit();
 
-    foreach (string gfxFile in gfxFiles)
+    if (process.ExitCode != 0)
     {
-        Console.WriteLine($"Replacing files...");
-
-        procGfxConv.StartInfo.ArgumentList.Clear();
-        procGfxConv.StartInfo.ArgumentList.Add($"{pak0Dir}\\gfx.wad");
-        procGfxConv.StartInfo.ArgumentList.Add($"{gfxFile}");
-
-        if (gfxFile.Contains(".lmp", StringComparison.InvariantCultureIgnoreCase)) procGfxConv.StartInfo.ArgumentList.Add("-tQPIC");
-
-        procGfxConv.Start();
-        procGfxConv.WaitForExit();
-
-        if (procGfxConv.ExitCode != 0)
-        {
-            PrintErrorAndExit($"Error replacing gfx.wad!", 5);
-        }
+        PrintErrorAndExit($"An error occurred while running bmp2lmp", 9);
     }
-    */
 
     Console.WriteLine(STRING_BUILDING_BASECFG);
 
@@ -128,18 +113,18 @@ try
     Console.WriteLine(STRING_BUILDING_QC); // progs.dat/qwprogs.dat -> root of pak0
 
     // until we have our own fteqcc fork
-    Process procFteqcc = new();
-    procFteqcc.StartInfo.FileName = $@"{TOOLDIR}\fteqcc64.exe";
-    procFteqcc.StartInfo.WorkingDirectory = qcDir; // must be set (-src doesn't work with relative paths???)
-    procFteqcc.StartInfo.ArgumentList.Add("-O2"); // -O3 not recommended
-    procFteqcc.StartInfo.ArgumentList.Add("-Dzombono=1"); // Set zombono
-    procFteqcc.StartInfo.ArgumentList.Add("-Tstandard"); // Set 'standard' QC type
-    procFteqcc.StartInfo.ArgumentList.Add("-Wno-mundane"); // Remove mundane warnings
+    process = new(); 
+    process.StartInfo.FileName = $@"{TOOLDIR}\fteqcc64.exe";
+    process.StartInfo.WorkingDirectory = qcDir; // must be set (-src doesn't work with relative paths???)
+    process.StartInfo.ArgumentList.Add("-O2"); // -O3 not recommended
+    process.StartInfo.ArgumentList.Add("-Dzombono=1"); // Set zombono
+    process.StartInfo.ArgumentList.Add("-Tstandard"); // Set 'standard' QC type
+    process.StartInfo.ArgumentList.Add("-Wno-mundane"); // Remove mundane warnings
 
-    procFteqcc.Start();
-    procFteqcc.WaitForExit();
+    process.Start();
+    process.WaitForExit();
 
-    if (procFteqcc.ExitCode != 0)
+    if (process.ExitCode != 0)
     {
         PrintErrorAndExit("An error occurred while running FTEQCC", 6);
     }
@@ -153,10 +138,10 @@ try
 
     string[] pak0Files = Directory.GetFiles(pak0Dir, "*.*", SearchOption.AllDirectories);
 
-    // create process
-    Process procPaktool = new();
-    procPaktool.StartInfo.FileName = Path.GetFullPath($"{TOOLDIR}\\pypaktools\\pak.exe"); // for some reason it loves to append ..\..\..\ to everything unles you do this
-    procPaktool.StartInfo.WorkingDirectory = Path.GetFullPath($"{pak0Dir}");
+    // create process (use same variable for optimisation
+    process = new();
+    process.StartInfo.FileName = Path.GetFullPath($"{TOOLDIR}\\pypaktools\\pak.exe"); // for some reason it loves to append ..\..\..\ to everything unles you do this
+    process.StartInfo.WorkingDirectory = Path.GetFullPath($"{pak0Dir}");
 
     File.Delete($"{finalDir}\\pak0.pak");
 
@@ -167,16 +152,16 @@ try
         string pak0FileNonFucked = pak0File.Replace(@"..\", "");
         pak0FileNonFucked = pak0FileNonFucked.Replace($@"game\{gameName}\content\", "");
 
-        procPaktool.StartInfo.ArgumentList.Clear();
-        procPaktool.StartInfo.ArgumentList.Add(Path.GetFullPath($@"{finalDir}\pak0.pak"));
-        procPaktool.StartInfo.ArgumentList.Add($@"{pak0FileNonFucked}");
+        process.StartInfo.ArgumentList.Clear();
+        process.StartInfo.ArgumentList.Add(Path.GetFullPath($@"{finalDir}\pak0.pak"));
+        process.StartInfo.ArgumentList.Add($@"{pak0FileNonFucked}");
 
-        Trace.WriteLine(procPaktool.StartInfo.Arguments);
+        Trace.WriteLine(process.StartInfo.Arguments);
 
-        procPaktool.Start();
-        procPaktool.WaitForExit();
+        process.Start();
+        process.WaitForExit();
 
-        if (procPaktool.ExitCode != 0)
+        if (process.ExitCode != 0)
         {
             PrintErrorAndExit("Pak0.pak creation failed!", 7);
         }
