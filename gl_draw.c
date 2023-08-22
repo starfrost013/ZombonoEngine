@@ -114,7 +114,7 @@ byte pic_nul_data[23][13] =
 { 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, 0xFF, 0xFF, 0xF3, 0x93, },
 };
 
-typedef struct
+typedef struct glpic_s
 {
 	gltexture_t *gltexture;
 	float		sl, tl, sh, th;
@@ -264,11 +264,13 @@ qpic_t	*Draw_CachePic (char *path)
 
 	gl = (glpic_t *)pic->pic.data;
 	gl->gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, SRC_RGBA, dat->data, path,
-									  sizeof(int)*2, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+									  0, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+
+	// don't automatically scale to POT - all gpus since Geforce6000/
 	gl->sl = 0;
-	gl->sh = (float)dat->width/(float)TexMgr_PadConditional(dat->width); //johnfitz
+	gl->sh = 1; 
 	gl->tl = 0;
-	gl->th = (float)dat->height/(float)TexMgr_PadConditional(dat->height); //johnfitz
+	gl->th = 1;
 
 	return &pic->pic;
 }
@@ -290,12 +292,14 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 	pic->height = height;
 
 	gl = (glpic_t *)pic->data;
-	// skip LMP32 header by adding sizeof(glpic_t) - 7
 	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data, "", 0, flags);
+
+
+	// no longer internally scale to POT
 	gl->sl = 0;
-	gl->sh = (float)width/(float)TexMgr_PadConditional(width);
+	gl->sh = 1; 
 	gl->tl = 0;
-	gl->th = (float)height/(float)TexMgr_PadConditional(height);
+	gl->th = 1;
 
 	return pic;
 }
@@ -320,11 +324,10 @@ void Draw_LoadPics (void)
 
 	if (!data) Sys_Error("Draw_LoadPics: couldn't load conchars");
 
-	draw_disc = Draw_CachePic("gfx/disc.lmp");
-
 	char_texture = TexMgr_LoadImage(NULL, "gfx/conchars.lmp", 128, 128, SRC_RGBA, data,
 		"gfx/conchars.lmp", 0, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP);
 
+	draw_disc = Draw_CachePic ("gfx/disc.lmp");
 	draw_backtile = Draw_CachePic ("gfx/backtile.lmp");
 }
 
@@ -631,6 +634,51 @@ void Draw_FadeScreen (void)
 	glDisable (GL_BLEND);
 
 	Sbar_Changed();
+}
+
+/*
+================
+Draw_BeginDisc
+
+Draws the little blue disc in the corner of the screen.
+Call before beginning any disc IO.
+================
+*/
+void Draw_BeginDisc (void)
+{
+	int viewport[4]; //johnfitz
+	canvastype oldcanvas; //johnfitz
+
+	if (!draw_disc)
+		return;
+
+	//johnfitz -- intel video workarounds from Baker
+	if (isIntelVideo)
+		return;
+	//johnfitz
+
+	//johnfitz -- canvas and matrix stuff
+	glGetIntegerv (GL_VIEWPORT, viewport);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix ();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix ();
+	oldcanvas = currentcanvas;
+	GL_SetCanvas (CANVAS_TOPRIGHT);
+	currentcanvas = oldcanvas; // a bit of a hack, since GL_SetCanvas doesn't know we are going to pop the stack
+	//johnfitz
+
+	glDrawBuffer  (GL_FRONT);
+	Draw_Pic (320 - 24, 0, draw_disc);
+	glDrawBuffer  (GL_BACK);
+
+	//johnfitz -- restore everything so that 3d rendering isn't fucked up
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix ();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix ();
+	glViewport (viewport[0], viewport[1], viewport[2], viewport[3]);
+	//johnfitz
 }
 
 /*
