@@ -3,7 +3,7 @@
 // entity 0
 {
 "classname" "worldspawn"
-"wad" "C:/Users/mario/fitzquake/game/zombonoraw/content/wads/base.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/jr_med.wad"
+"wad" "C:/Users/mario/fitzquake/game/zombonoraw/content/wads/base.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/start.wad"
 // brush 0
 {
 ( -64 128 19 ) ( -64 -1536 19 ) ( -64 -1536 -22 ) __TB_empty -0.84615326 0.5290805 0 13 1.2751194
