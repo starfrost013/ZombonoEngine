@@ -1603,6 +1603,7 @@ typedef struct
 level_t		levels[] =
 {
 	{"start", "Zombono Test Level"},	// 0
+	{"z_warehouse", "Warehouse"},		// 1
 };
 
 int	startlevel;
@@ -1649,7 +1650,15 @@ void M_GameOptions_Draw (void)
 	}
 	else if (zombie.value == 1.0f)
 	{
-		M_Print(160, 64, "Zombono Cooperative");
+		M_Print(160, 64, "Zombono Wave");
+	}
+	else if (zombie.value == 2.0f)
+	{
+		M_Print(160, 64, "Zombono Hostage");
+	}
+	else if (zombie.value == 3.0f)
+	{
+		M_Print(160, 64, "Zombono Coop");
 	}
 
 	M_Print (0, 72, "        Friendly Fire");
