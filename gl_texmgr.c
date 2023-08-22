@@ -951,8 +951,10 @@ void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 
 	// mipmap down
 	picmip = (glt->flags & TEXPREF_NOPICMIP) ? 0 : max ((int)gl_picmip.value, 0);
+
 	mipwidth = TexMgr_SafeTextureSize (glt->width >> picmip);
 	mipheight = TexMgr_SafeTextureSize (glt->height >> picmip);
+	
 	while (glt->width > mipwidth)
 	{
 		TexMgr_MipMapW (data, glt->width, glt->height);
@@ -1115,6 +1117,12 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height
 
 	if (isDedicated)
 		return NULL;
+
+	// Ugly hack for lmp32 
+	// I could remove the header and width, or add header and width to all the bsp textures,
+	// but i want exter
+	// (at some point I'll make bsp textures have w/h)
+	if (strstr(source_file, ".lmp")) data += sizeof(int) * 2;
 
 	// cache check
 	switch (format)

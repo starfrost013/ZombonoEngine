@@ -291,7 +291,7 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 
 	gl = (glpic_t *)pic->data;
 	// skip LMP32 header by adding sizeof(glpic_t) - 7
-	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data + 8, "", (unsigned)data, flags);
+	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_RGBA, data, "", 0, flags);
 	gl->sl = 0;
 	gl->sh = (float)width/(float)TexMgr_PadConditional(width);
 	gl->tl = 0;
@@ -320,10 +320,11 @@ void Draw_LoadPics (void)
 
 	if (!data) Sys_Error("Draw_LoadPics: couldn't load conchars");
 
+	draw_disc = Draw_CachePic("gfx/disc.lmp");
+
 	char_texture = TexMgr_LoadImage(NULL, "gfx/conchars.lmp", 128, 128, SRC_RGBA, data,
 		"gfx/conchars.lmp", 0, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP);
 
-	draw_disc = Draw_CachePic ("gfx/disc.lmp");
 	draw_backtile = Draw_CachePic ("gfx/backtile.lmp");
 }
 
@@ -402,7 +403,7 @@ void Draw_CharacterQuad (int x, int y, char num)
 
 	glTexCoord2f (fcol, frow);
 	glVertex2f (x, y);
-	glTexCoord2f (fcol + size, frow);
+	glTexCoord2f (fcol + size, frow );
 	glVertex2f (x+8, y);
 	glTexCoord2f (fcol + size, frow + size);
 	glVertex2f (x+8, y+8);
@@ -630,51 +631,6 @@ void Draw_FadeScreen (void)
 	glDisable (GL_BLEND);
 
 	Sbar_Changed();
-}
-
-/*
-================
-Draw_BeginDisc
-
-Draws the little blue disc in the corner of the screen.
-Call before beginning any disc IO.
-================
-*/
-void Draw_BeginDisc (void)
-{
-	int viewport[4]; //johnfitz
-	canvastype oldcanvas; //johnfitz
-
-	if (!draw_disc)
-		return;
-
-	//johnfitz -- intel video workarounds from Baker
-	if (isIntelVideo)
-		return;
-	//johnfitz
-
-	//johnfitz -- canvas and matrix stuff
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix ();
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix ();
-	oldcanvas = currentcanvas;
-	GL_SetCanvas (CANVAS_TOPRIGHT);
-	currentcanvas = oldcanvas; // a bit of a hack, since GL_SetCanvas doesn't know we are going to pop the stack
-	//johnfitz
-
-	glDrawBuffer  (GL_FRONT);
-	Draw_Pic (320 - 24, 0, draw_disc);
-	glDrawBuffer  (GL_BACK);
-
-	//johnfitz -- restore everything so that 3d rendering isn't fucked up
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix ();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix ();
-	glViewport (viewport[0], viewport[1], viewport[2], viewport[3]);
-	//johnfitz
 }
 
 /*
