@@ -139,14 +139,14 @@ entity() FindIntermission =
 
 	if (zombie_mode == 0)
 	{
-		if (player.team == 0)
+		if (spot.team == 0) //temp
 		{
 			// then look for the start position
 			spot = find(world, classname, "info_player_start_director");
 			if (spot)
 				return spot;
 		}
-		else if (player.team == 1)
+		else if (spot.team == 1)
 		{
 			spot = find(world, classname, "info_player_start_player");
 			if (spot)
