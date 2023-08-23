@@ -38,8 +38,6 @@ void (*SetComPortConfig) (int portNumber, int port, int irq, int baud, qboolean 
 void (*GetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
 void (*SetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
 
-static qboolean	listening = false;
-
 qboolean	slistInProgress = false;
 qboolean	slistSilent = false;
 qboolean	slistLocal = true;
@@ -769,6 +767,16 @@ void NET_Init (void)
 		}
 	if (*my_tcpip_address)
 		Con_DPrintf("TCP/IP address %s\n", my_tcpip_address);
+}
+
+/*
+ZOMBONO: Returns if hosting
+*/
+qboolean NET_IsHosting(void)
+{
+	return (cls.state == ca_dedicated
+		|| listening
+		|| strstr(cls.netcon->address, "local")); //hack
 }
 
 /*

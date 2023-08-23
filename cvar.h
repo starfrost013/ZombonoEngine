@@ -54,17 +54,26 @@ Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
 */
 
+typedef enum
+{
+	CVAR_ADMINONLY = 1
+} cvarflags_t;
+
 typedef struct cvar_s
 {
 	char	*name;
 	char	*string;
 	qboolean archive;		// set to true to cause it to be saved to vars.rc
 	qboolean server;		// notifies players when changed
+	cvarflags_t flags;		// flags - zombono
 	float	value;
 	struct cvar_s *next;
 	char	*default_string; //johnfitz -- remember defaults for reset function
 	void (*callback) (void); //johnfitz
+
 } cvar_t;
+
+
 
 void 	Cvar_RegisterVariable (cvar_t *variable, void *function); //johnfitz -- cvar callback
 // registers a cvar that allready has the name, string, and optionally the

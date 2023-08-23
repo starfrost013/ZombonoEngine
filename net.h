@@ -303,8 +303,12 @@ void		NET_Close (struct qsocket_s *sock);
 // from a server.
 // A netcon_t number will not be reused until this function is called for it
 
-void NET_Poll(void);
+void		NET_Poll(void);
 
+qboolean	NET_IsHosting(void);
+
+// determines if you are a listen server or not
+static qboolean	listening;
 
 typedef struct _PollProcedure
 {

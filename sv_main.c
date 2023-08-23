@@ -29,10 +29,11 @@ char	localmodels[MAX_MODELS][5];			// inline model names for precache
 
 int sv_protocol = PROTOCOL_ZOMBONO; //johnfitz
 
+cvar_t sv_cheats = { "sv_cheats", "0", false, true, CVAR_ADMINONLY};
+
 extern qboolean		pr_alpha_supported; //johnfitz
 
 //============================================================================
-
 /*
 ===============
 SV_Protocol_f
@@ -94,6 +95,7 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_aim, NULL);
 	Cvar_RegisterVariable (&sv_nostep, NULL);
 	Cvar_RegisterVariable (&sv_altnoclip, NULL); //johnfitz
+	Cvar_RegisterVariable (&sv_cheats, NULL); // zombono
 
 	Cmd_AddCommand ("sv_protocol", &SV_Protocol_f); //johnfitz
 
@@ -261,12 +263,6 @@ void SV_SendServerinfo (client_t *client)
 if (zombie.value == 0.0f)
 		MSG_WriteByte(&client->message, GAME_ZOMBIES);
 	
-	/*
-	else if (!coop.value && deathmatch.value)
-		MSG_WriteByte(&client->message, GAME_DEATHMATCH);
-	else
-		MSG_WriteByte (&client->message, GAME_COOP);
-*/
 
 	sprintf (message, pr_strings+sv.edicts->v.message);
 

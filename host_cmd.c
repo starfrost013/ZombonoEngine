@@ -1744,7 +1744,8 @@ void Host_Give_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (!sv_cheats.value)
+		Con_Printf("sv_cheats must be 1 for give to work");
 		return;
 
 	t = Cmd_Argv(1);

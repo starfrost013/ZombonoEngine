@@ -457,6 +457,12 @@ qboolean	Cvar_Command (void)
 		return true;
 	}
 
+// Don't allow admin only cvars for non admins
+	if (v->flags & CVAR_ADMINONLY == 1)
+	{
+		if (!NET_IsHosting()) return false; 
+	}
+
 	Cvar_Set (v->name, Cmd_Argv(1));
 	return true;
 }
