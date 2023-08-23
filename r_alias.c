@@ -27,7 +27,7 @@ extern qboolean mtexenabled; //johnfitz
 extern cvar_t r_drawflat, gl_overbright_models, gl_fullbrights, r_lerpmodels, r_lerpmove; //johnfitz
 
 //up to 16 color translated skins
-gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz -- changed to an array of pointers
+gltexture_t *playertextures[MAX_CLIENTS]; //johnfitz -- changed to an array of pointers
 
 #define NUMVERTEXNORMALS	162
 

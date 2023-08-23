@@ -48,7 +48,7 @@ extern float load_subdivide_size; //johnfitz -- remember what subdivide_size val
 
 extern cvar_t gl_subdivide_size; //johnfitz -- moved here from gl_model.c
 
-extern gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz
+extern gltexture_t *playertextures[MAX_CLIENTS]; //johnfitz
 
 void R_NoLerpList_f (void); //johnfitz
 
@@ -329,7 +329,7 @@ void R_NewGame (void)
 	int i;
 
 	//clear playertexture pointers (the textures themselves were freed by texmgr_newgame)
-	for (i=0; i<MAX_SCOREBOARD; i++)
+	for (i=0; i<MAX_CLIENTS; i++)
 		playertextures[i] = NULL;
 }
 

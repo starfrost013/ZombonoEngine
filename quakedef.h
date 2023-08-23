@@ -164,7 +164,7 @@ void	VID_UnlockBuffer (void);
 
 //===========================================
 
-#define	MAX_SCOREBOARD		16
+#define	MAX_CLIENTS		64
 #define	MAX_SCOREBOARDNAME	32
 
 #define	SOUND_CHANNELS		8

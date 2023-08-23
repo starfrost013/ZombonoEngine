@@ -205,8 +205,8 @@ void	Host_FindMaxClients (void)
 	}
 	if (svs.maxclients < 1)
 		svs.maxclients = 8;
-	else if (svs.maxclients > MAX_SCOREBOARD)
-		svs.maxclients = MAX_SCOREBOARD;
+	else if (svs.maxclients > MAX_CLIENTS)
+		svs.maxclients = MAX_CLIENTS;
 
 	svs.maxclientslimit = svs.maxclients;
 	if (svs.maxclientslimit < 4)
@@ -215,6 +215,7 @@ void	Host_FindMaxClients (void)
 
 	if (svs.maxclients > 1)
 		Cvar_SetValue ("deathmatch", 1.0);
+		
 	else
 		Cvar_SetValue ("deathmatch", 0.0);
 }

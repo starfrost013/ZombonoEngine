@@ -274,7 +274,7 @@ void CL_ParseServerInfo (void)
 
 // parse maxclients
 	cl.maxclients = MSG_ReadByte ();
-	if (cl.maxclients < 1 || cl.maxclients > MAX_SCOREBOARD)
+	if (cl.maxclients < 1 || cl.maxclients > MAX_CLIENTS)
 	{
 		Con_Printf("Bad maxclients (%u) from server\n", cl.maxclients);
 		return;
