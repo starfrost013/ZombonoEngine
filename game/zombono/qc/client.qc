@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023 		 starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +18,14 @@
     See file, 'COPYING', for details.
 */
 
-// prototypes
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Client.qc : client code
+*/
+
 void() W_WeaponFrame;
 void() W_SetCurrentAmmo;
 void(entity attacker, float damage) player_pain;
@@ -129,10 +137,22 @@ entity() FindIntermission =
 		return spot;
 	}
 
-// then look for the start position
-	spot = find(world, classname, "info_player_start");
-	if (spot)
-		return spot;
+	if (zombie_mode == 0)
+	{
+		if (player.team == 0)
+		{
+			// then look for the start position
+			spot = find(world, classname, "info_player_start_director");
+			if (spot)
+				return spot;
+		}
+		else if (player.team == 1)
+		{
+			spot = find(world, classname, "info_player_start_player");
+			if (spot)
+				return spot;
+		}
+	}
 
 // testinfo_player_start is only found in regioned levels
 	spot = find(world, classname, "testplayerstart");
@@ -166,31 +186,8 @@ void() ExitIntermission =
 	intermission_exittime = time + 1;
 	intermission_running = intermission_running + 1;
 
-//
-// run some text if at the end of an episode
-//
-	if (intermission_running == 2)
-	{
-		// you can check world model for all of this
-		GotoNextMap();
-	}
+// no more episodes
 
-	if (intermission_running == 3)
-	{
-		if (!cvar("registered"))
-		{ // shareware episode has been completed, go to sell screen
-			WriteByte(MSG_ALL, SVC_SELLSCREEN);
-			return;
-		}
-
-		if ((serverflags&15) == 15)
-		{
-			WriteByte(MSG_ALL, SVC_FINALE);
-			WriteString(MSG_ALL, "Now, you have all four Runes. You sense\ntremendous invisible forces moving to\nunseal ancient barriers. Shub-Niggurath\nhad hoped to use the Runes Herself to\nclear off the Earth, but now instead,\nyou will use them to enter her home and\nconfront her as an avatar of avenging\nEarth-life. If you defeat her, you will\nbe remembered forever as the savior of\nthe planet. If she conquers, it will be\nas if you had never been born.");
-			return;
-		}
-
-	}
 
 	GotoNextMap();
 };
@@ -397,17 +394,20 @@ entity() SelectSpawnPoint =
 			}
 		}
 	}
-
-	if (serverflags)
-	{ // return with a rune to start
-		spot = find(world, classname, "info_player_start2");
-		if (spot)
-			return spot;
+	else
+	{
+		if (serverflags)
+		{ // return with a rune to start
+			spot = find(world, classname, "info_player_start2");
+			if (spot)
+				return spot;
+		}
+	
+		spot = find(world, classname, "info_player_start");
 	}
 
-	spot = find(world, classname, "info_player_start");
 	if (!spot)
-		error("PutClientInServer: no info_player_start on level");
+		error("PutClientInServer: no info_player_start, info_player_start_director of info_player_start_player in level");
 
 	return spot;
 };

@@ -1707,12 +1707,14 @@ void M_GameOptions_Draw (void)
 		if ((realtime - m_serverInfoMessageTime) < 5.0)
 		{
 			x = (320-26*8)/2;
-			M_DrawTextBox (x, 138, 24, 4);
+			M_DrawTextBox (x, 138, 24, 5);
 			x += 8;
-			M_Print (x, 146, "  More than 4 players   ");
-			M_Print (x, 154, " requires using command ");
-			M_Print (x, 162, "line parameters; please ");
-			M_Print (x, 170, "   see techinfo.txt.    ");
+			M_Print (x, 146, "   More than 4 players  ");
+			M_Print (x, 154, " requires using -listen ");
+			M_Print (x, 162, "  or -dedicated at the  ");
+			M_Print (x, 170, " command line, and then ");
+			M_Print (x, 178, "  the number of players ");
+;
 		}
 		else
 		{

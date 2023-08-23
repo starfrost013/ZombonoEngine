@@ -15,6 +15,7 @@
     <SccLocalPath />
     <ProjectGuid>{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Zombono</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
