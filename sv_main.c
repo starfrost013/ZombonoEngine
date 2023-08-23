@@ -1007,9 +1007,6 @@ void SV_SendClientMessages (void)
 			}
 		}
 
-		if (host_client->netconnection->net_wait)
-			continue;
-
 		// check for an overflowed message.  Should only happen
 		// on a very fucked up connection that backs up a lot, then
 		// changes level

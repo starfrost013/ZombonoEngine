@@ -146,8 +146,6 @@ typedef struct qsocket_s
 
 	struct qsockaddr	addr;
 	char				address[NET_NAMELEN];
-
-	qboolean		net_wait;	// NAT fix ported from proquake 3.4
 } qsocket_t;
 
 extern qsocket_t	*net_activeSockets;
