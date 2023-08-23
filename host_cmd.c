@@ -1524,7 +1524,9 @@ void Host_Spawn_f (void)
 
 		memset (&ent->v, 0, progs->entityfields * 4);
 		ent->v.colormap = NUM_FOR_EDICT(ent);
-		ent->v.team = (host_client->colors & 15) + 1;
+
+		// randomly assign player a team
+		ent->v.team = rand() % 2;
 		ent->v.netname = host_client->name - pr_strings;
 
 		// copy spawn parms out of the client_t
@@ -1532,7 +1534,7 @@ void Host_Spawn_f (void)
 		for (i=0 ; i< NUM_SPAWN_PARMS ; i++)
 			(&pr_global_struct->parm1)[i] = host_client->spawn_parms[i];
 
-		// call the spawn function
+		// call the spawn function 
 
 		pr_global_struct->time = sv.time;
 		pr_global_struct->self = EDICT_TO_PROG(sv_player);

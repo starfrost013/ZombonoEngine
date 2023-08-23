@@ -685,3 +685,14 @@
 "classname" "item_shells"
 "origin" "464 352 -8"
 }
+// entity 8
+{
+"classname" "info_player_start_director"
+"origin" "1888 -720 568"
+"angle" "180"
+}
+// entity 9
+{
+"classname" "info_player_start_player"
+"origin" "-160 -352 -8"
+}

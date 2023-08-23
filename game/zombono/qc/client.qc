@@ -372,26 +372,34 @@ entity() SelectSpawnPoint =
 		if (self.team == 0)
 		{
 			lastspawn = find(lastspawn, classname, "info_player_start_director");
+
 			if (lastspawn == world)
 			{
 				lastspawn = find(lastspawn, classname, "info_player_start_director");
+				return lastspawn;
 			}
 			else
 			{
 				return lastspawn;
 			}
+
+			return lastspawn;
 		}
 		else if (self.team == 1)
 		{
 			lastspawn = find(lastspawn, classname, "info_player_start_player");
+
 			if (lastspawn == world)
 			{
 				lastspawn = find(lastspawn, classname, "info_player_start_player");
+				return lastspawn;
 			}
 			else
 			{
 				return lastspawn;
 			}
+
+			return lastspawn;
 		}
 	}
 	else
@@ -498,6 +506,19 @@ void() info_player_start =
 {
 };
 
+/*QUAKED info_player_start_director (1 0 0) (-16 -16 -24) (16 16 24)
+Level starting point for Zombono director team.
+*/
+void() info_player_start_director =
+{
+};
+
+/*QUAKED info_player_start_player (1 0 0) (-16 -16 -24) (16 16 24)
+Level starting point for Zombono player team.
+*/
+void() info_player_start_player =
+{
+};
 
 /*QUAKED info_player_start2 (1 0 0) (-16 -16 -24) (16 16 24)
 Only used on start map for the return point from an episode.
