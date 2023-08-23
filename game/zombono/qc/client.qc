@@ -137,7 +137,7 @@ entity() FindIntermission =
 		return spot;
 	}
 
-	if (zombie_mode == 0)
+	if (game_mode == 0)
 	{
 		if (spot.team == 0) //temp
 		{
@@ -367,7 +367,7 @@ entity() SelectSpawnPoint =
 	if (spot)
 		return spot;
 
-	if (zombie_mode == 0)
+	if (game_mode == 0)
 	{
 		if (self.team == ZOMBONO_TEAM_DIRECTOR)
 		{

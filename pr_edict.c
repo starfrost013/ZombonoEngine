@@ -950,7 +950,7 @@ void ED_LoadFromFile (char *data)
 			ent = ED_Alloc ();
 		data = ED_ParseEdict (data, ent);
 
-		if (zombie.value == 0)
+		if (gamemode.value == 0)
 		{
 			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_CLASSIC))
 			{
@@ -959,7 +959,7 @@ void ED_LoadFromFile (char *data)
 				continue;
 			}
 		}
-		else if (zombie.value == 1)
+		else if (gamemode.value == 1)
 		{
 			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE1))
 			{
@@ -968,7 +968,7 @@ void ED_LoadFromFile (char *data)
 				continue;
 			}
 		}
-		else if (zombie.value == 2)
+		else if (gamemode.value == 2)
 		{
 			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE2))
 			{
@@ -978,7 +978,7 @@ void ED_LoadFromFile (char *data)
 
 			}
 		}
-		else if (zombie.value == 3)
+		else if (gamemode.value == 3)
 		{
 			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE3))
 			{

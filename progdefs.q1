@@ -58,7 +58,7 @@ typedef struct
 	func_t	ClientDisconnect;
 	func_t	SetNewParms;
 	func_t	SetChangeParms; 
-	float	zombie_mode;
+	float	gamemode;
 } globalvars_t;
 
 typedef struct

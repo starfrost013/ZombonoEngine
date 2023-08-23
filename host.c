@@ -68,7 +68,7 @@ cvar_t	friendly_fire = {"friendly_fire","0",false,true}; // 0 - no friendly fire
 cvar_t	samelevel = {"samelevel","0"};
 cvar_t	noexit = {"noexit","0",false,true};
 cvar_t	skill = {"skill","1"};						// 0 - 3
-cvar_t	zombie = { "zombie", "0" };		// Zombie mode (Zombono) - value indicates game mode
+cvar_t	gamemode = { "gamemode", "0" };		// Zombie mode (Zombono) - value indicates game mode
 
 cvar_t	pausable = {"pausable","1"};
 
@@ -240,7 +240,7 @@ void Host_InitLocal (void)
 	Cvar_RegisterVariable (&noexit, NULL);
 	Cvar_RegisterVariable (&skill, NULL);
 	Cvar_RegisterVariable (&developer, NULL);
-	Cvar_RegisterVariable (&zombie, NULL); // zombono
+	Cvar_RegisterVariable (&gamemode, NULL); // zombono
 
 	Cvar_RegisterVariable (&pausable, NULL);
 

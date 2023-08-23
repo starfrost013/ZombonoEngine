@@ -1643,19 +1643,19 @@ void M_GameOptions_Draw (void)
 
 	M_Print (0, 64, "        Game Type");
 
-	if (zombie.value == 0.0f)
+	if (gamemode.value == 0.0f)
 	{
 		M_Print(160, 64, "Zombono");
 	}
-	else if (zombie.value == 1.0f)
+	else if (gamemode.value == 1.0f)
 	{
 		M_Print(160, 64, "Zombono Wave");
 	}
-	else if (zombie.value == 2.0f)
+	else if (gamemode.value == 2.0f)
 	{
 		M_Print(160, 64, "Zombono Hostage");
 	}
-	else if (zombie.value == 3.0f)
+	else if (gamemode.value == 3.0f)
 	{
 		M_Print(160, 64, "Zombono Coop");
 	}
@@ -1742,9 +1742,9 @@ void M_GameOptions_Change (int dir)
 		break;
 
 	case 2:
-		Cvar_SetValue ("zombie", zombie.value + dir);
-		if (zombie.value < GAME_ZOMBIES_MIN_MODE) zombie.value = GAME_ZOMBIES_MIN_MODE;
-		if (zombie.value > GAME_ZOMBIES_MAX_MODE) zombie.value = GAME_ZOMBIES_MAX_MODE;
+		Cvar_SetValue ("zombie", gamemode.value + dir);
+		if (gamemode.value < GAME_ZOMBIES_MIN_MODE) gamemode.value = GAME_ZOMBIES_MIN_MODE;
+		if (gamemode.value > GAME_ZOMBIES_MAX_MODE) gamemode.value = GAME_ZOMBIES_MAX_MODE;
 		break;
 	case 3:
 		count = 1;

@@ -258,9 +258,8 @@ void() worldspawn =
 
 	precache_model("progs/v_light.mdl");
 
-
-	// Get zombie mode
-	zombie_mode = cvar("zombie");
+	// Get game mode
+	gamemode = cvar("gamemode");
 ;
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.

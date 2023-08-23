@@ -173,7 +173,7 @@ typedef struct client_s
 
 extern	cvar_t	friendly_fire;
 extern	cvar_t	skill;
-extern	cvar_t	zombie;
+extern	cvar_t	gamemode;
 extern	cvar_t	fraglimit;
 extern	cvar_t	timelimit;
 extern	cvar_t	sv_cheats;

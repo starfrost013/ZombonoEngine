@@ -108,7 +108,7 @@ void() SetChangeParms; // call to set parms for self so they can
 						// be saved for a level transition
 
 
-float zombie_mode;	// Zombono
+float game_mode;	// Zombono
 
 //================================================
 void end_sys_globals; // flag for structure dumping
