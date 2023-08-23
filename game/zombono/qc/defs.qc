@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023		 starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,6 +19,10 @@
 */
 
 /*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
 ==============================================================================
 
 			SOURCE FOR GLOBALVARS_T C STRUCTURE
@@ -330,6 +335,8 @@ float IT_INVULNERABILITY = 1048576;
 float IT_SUIT = 2097152;
 float IT_QUAD = 4194304;
 
+float IT_DIRECTOR_ZOMBINATOR = 8388608;
+
 // point content values
 
 float CONTENT_EMPTY = -1;
@@ -409,8 +416,15 @@ float MSG_ALL = 2; // reliable to all
 float MSG_INIT = 3; // write to the init string
 
 // Team types
-float ZOMBONO_TEAM_DIRECTOR = 0 // director
-float ZOMBONO_TEAM_PLAYER = 1 // player
+float ZOMBONO_TEAM_DIRECTOR = 0; // director
+float ZOMBONO_TEAM_PLAYER = 1; // player
+
+// Game modes (extremely provisional)
+float ZOMBONO_GAMEMODE_CLASSIC = 0;
+float ZOMBONO_GAMEMODE_WAVES = 1; 
+float ZOMBONO_GAMEMODE_HOSTAGE = 2;
+float ZOMBONO_GAEMMODE_COOP = 3; 
+// need better ideas for these...
 
 //================================================
 

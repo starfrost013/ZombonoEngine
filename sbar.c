@@ -258,8 +258,6 @@ void Sbar_DrawScrollString (int x, int y, int width, char* str)
 
 	scale = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0);
 	left = x * scale;
-	if (cl.gametype != GAME_DEATHMATCH)
-		left += (((float)glwidth - 320.0 * scale) / 2);
 
 	glEnable (GL_SCISSOR_TEST);
 	glScissor (left, 0, width * scale, glheight);
@@ -457,8 +455,7 @@ Sbar_DrawScoreboard
 void Sbar_DrawScoreboard (void)
 {
 	Sbar_SoloScoreboard ();
-	if (cl.gametype == GAME_DEATHMATCH)
-		Sbar_DeathmatchOverlay ();
+	Sbar_DeathmatchOverlay ();
 }
 
 //=============================================================================
@@ -680,13 +677,9 @@ void Sbar_Draw (void)
 	{
 		if (scr_sbaralpha.value < 1)
 			Draw_TileClear (0, glheight - sb_lines, glwidth, sb_lines);
-		if (cl.gametype == GAME_DEATHMATCH)
-			Draw_TileClear (w, glheight - sb_lines, glwidth - w, sb_lines);
-		else
-		{
-			Draw_TileClear (0, glheight - sb_lines, (glwidth - w) / 2.0f, sb_lines);
-			Draw_TileClear ((glwidth - w) / 2.0f + w, glheight - sb_lines, (glwidth - w) / 2.0f, sb_lines);
-		}
+
+		Draw_TileClear (w, glheight - sb_lines, glwidth - w, sb_lines);
+
 	}
 	//johnfitz
 
@@ -751,8 +744,7 @@ void Sbar_Draw (void)
 	}
 
 	//johnfitz -- removed the vid.width > 320 check here
-	if (cl.gametype == GAME_DEATHMATCH)
-			Sbar_MiniDeathmatchOverlay ();
+	Sbar_MiniDeathmatchOverlay ();
 }
 
 //=============================================================================
@@ -958,12 +950,10 @@ void Sbar_IntermissionOverlay (void)
 	int		dig;
 	int		num;
 
-	if (cl.gametype == GAME_DEATHMATCH)
-	{
-		Sbar_DeathmatchOverlay ();
-		return;
-	}
+	Sbar_DeathmatchOverlay();
+	return; 
 
+	/* might put back later
 	GL_SetCanvas (CANVAS_MENU); //johnfitz
 
 	pic = Draw_CachePic ("gfx/complete.lmp");
@@ -986,6 +976,7 @@ void Sbar_IntermissionOverlay (void)
 	Sbar_IntermissionNumber (152, 144, cl.stats[STAT_MONSTERS], 3, 0); //johnfitz -- was 160
 	Draw_Pic (224,144,sb_slash); //johnfitz -- was 232
 	Sbar_IntermissionNumber (240, 144, cl.stats[STAT_TOTALMONSTERS], 3, 0); //johnfitz -- was 248
+	*/
 }
 
 

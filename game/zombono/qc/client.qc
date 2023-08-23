@@ -369,7 +369,7 @@ entity() SelectSpawnPoint =
 
 	if (zombie_mode == 0)
 	{
-		if (self.team == 0)
+		if (self.team == ZOMBONO_TEAM_DIRECTOR)
 		{
 			lastspawn = find(lastspawn, classname, "info_player_start_director");
 
@@ -385,7 +385,7 @@ entity() SelectSpawnPoint =
 
 			return lastspawn;
 		}
-		else if (self.team == 1)
+		else if (self.team == ZOMBONO_TEAM_PLAYER)
 		{
 			lastspawn = find(lastspawn, classname, "info_player_start_player");
 

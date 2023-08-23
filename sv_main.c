@@ -1337,11 +1337,6 @@ void SV_SpawnServer (char *server)
 	ent->v.solid = SOLID_BSP;
 	ent->v.movetype = MOVETYPE_PUSH;
 
-	if (coop.value)
-		pr_global_struct->coop = coop.value;
-	else
-		pr_global_struct->deathmatch = deathmatch.value;
-
 	pr_global_struct->mapname = sv.name - pr_strings;
 
 // serverflags are for cross level information (sigils)

@@ -11,8 +11,8 @@ typedef struct
 	float	frametime;
 	float	force_retouch;
 	string_t	mapname;
-	float	deathmatch;
-	float	coop;
+	float	deathmatch;			/* OBSOLETE - kept for fteqcc compatibility - DON'T USE! */
+	float	coop;				/* OBSOLETE - kept for fteqcc compatibility - DON'T USE*/
 	float	friendly_fire;
 	float	serverflags;
 	float	total_secrets;

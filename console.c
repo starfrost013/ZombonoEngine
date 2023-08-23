@@ -686,7 +686,7 @@ void Con_LogCenterPrint (char *str)
 	if (!strcmp(str, con_lastcenterstring))
 		return; //ignore duplicates
 
-	if (cl.gametype == GAME_DEATHMATCH && con_logcenterprint.value != 2)
+	if (con_logcenterprint.value != 2)
 		return; //don't log in deathmatch
 
 	strcpy(con_lastcenterstring, str);

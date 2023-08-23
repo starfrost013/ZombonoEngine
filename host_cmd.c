@@ -524,7 +524,7 @@ void Host_God_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (!host_client->privileged)
 		return;
 
 	//johnfitz -- allow user to explicitly set god mode to on or off
@@ -569,7 +569,7 @@ void Host_Notarget_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (!host_client->privileged)
 		return;
 
 	//johnfitz -- allow user to explicitly set notarget to on or off
@@ -616,7 +616,7 @@ void Host_Noclip_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (!host_client->privileged)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -672,7 +672,7 @@ void Host_Fly_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (!host_client->privileged)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -1526,6 +1526,7 @@ void Host_Spawn_f (void)
 		ent->v.colormap = NUM_FOR_EDICT(ent);
 
 		// randomly assign player a team
+		srand(cl.time * 1000); // seed random for first time
 		ent->v.team = rand() % 2;
 		ent->v.netname = host_client->name - pr_strings;
 
@@ -1656,7 +1657,7 @@ void Host_Kick_f (void)
 			return;
 		}
 	}
-	else if (pr_global_struct->deathmatch && !host_client->privileged)
+	else if (!host_client->privileged)
 		return;
 
 	save = host_client;

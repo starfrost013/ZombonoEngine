@@ -163,17 +163,16 @@ typedef struct client_s
 #define	EF_BRIGHTLIGHT 			4
 #define	EF_DIMLIGHT 			8
 
-#define	SPAWNFLAG_NOT_EASY			256
-#define	SPAWNFLAG_NOT_MEDIUM		512
-#define	SPAWNFLAG_NOT_HARD			1024
-#define	SPAWNFLAG_NOT_DEATHMATCH	2048
+// spawnflags for different modes
+#define	SPAWNFLAG_NOT_ZOMBONO_CLASSIC	256
+#define	SPAWNFLAG_NOT_ZOMBONO_MODE1		512
+#define	SPAWNFLAG_NOT_ZOMBONO_MODE2		1024
+#define	SPAWNFLAG_NOT_ZOMBONO_MODE3		2048
 
 //============================================================================
 
 extern	cvar_t	friendly_fire;
 extern	cvar_t	skill;
-extern	cvar_t	deathmatch;
-extern	cvar_t	coop;
 extern	cvar_t	zombie;
 extern	cvar_t	fraglimit;
 extern	cvar_t	timelimit;

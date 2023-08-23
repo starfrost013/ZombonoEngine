@@ -950,23 +950,43 @@ void ED_LoadFromFile (char *data)
 			ent = ED_Alloc ();
 		data = ED_ParseEdict (data, ent);
 
-// remove things from different skill levels or deathmatch
-		if (deathmatch.value)
+		if (zombie.value == 0)
 		{
-			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_DEATHMATCH))
+			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_CLASSIC))
 			{
-				ED_Free (ent);
+				ED_Free(ent);
 				inhibit++;
 				continue;
 			}
 		}
-		else if ((current_skill == 0 && ((int)ent->v.spawnflags & SPAWNFLAG_NOT_EASY))
-				|| (current_skill == 1 && ((int)ent->v.spawnflags & SPAWNFLAG_NOT_MEDIUM))
-				|| (current_skill >= 2 && ((int)ent->v.spawnflags & SPAWNFLAG_NOT_HARD)) )
+		else if (zombie.value == 1)
 		{
-			ED_Free (ent);
-			inhibit++;
-			continue;
+			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE1))
+			{
+				ED_Free(ent);
+				inhibit++;
+				continue;
+			}
+		}
+		else if (zombie.value == 2)
+		{
+			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE2))
+			{
+				ED_Free(ent);
+				inhibit++;
+				continue;
+
+			}
+		}
+		else if (zombie.value == 3)
+		{
+			if (((int)ent->v.spawnflags & SPAWNFLAG_NOT_ZOMBONO_MODE3))
+			{
+				ED_Free(ent);
+				inhibit++;
+				continue;
+
+			}
 		}
 
 //

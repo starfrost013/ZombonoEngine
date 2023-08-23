@@ -1,5 +1,6 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
-
+	Copyright (C) 2023		 starfrost
+	
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -15,8 +16,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
-*/
-/*
+
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Weapons.qc : Define all the weapons
 */
 void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 void() player_run;
@@ -1016,6 +1021,12 @@ void() W_ChangeWeapon =
 		if (self.ammo_cells < 1)
 			am = 1;
 	}
+	else if (self.impulse == 9)
+	{
+		fl = IT_DIRECTOR_ZOMBINATOR;
+		if (self.ammo_cells < 1)
+			am = 1;
+	}
 
 	self.impulse = 0;
 
@@ -1059,7 +1070,8 @@ void() CheatCommand =
 		IT_SUPER_NAILGUN |
 		IT_GRENADE_LAUNCHER |
 		IT_ROCKET_LAUNCHER |
-		IT_KEY1 | IT_KEY2;
+		IT_KEY1 | IT_KEY2 |
+		IT_DIRECTOR_ZOMBINATOR;
 
 	self.ammo_cells = 200;
 	self.items = self.items | IT_LIGHTNING;
@@ -1123,10 +1135,17 @@ void() CycleWeaponCommand =
 		}
 		else if (self.weapon == IT_GRENADE_LAUNCHER)
 		{
+			self.weapon = IT_DIRECTOR_ZOMBINATOR;
+			if (self.ammo_rockets < 1)
+				am = 1;
+		}
+		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
+		{
 			self.weapon = IT_ROCKET_LAUNCHER;
 			if (self.ammo_rockets < 1)
 				am = 1;
 		}
+		
 		else if (self.weapon == IT_ROCKET_LAUNCHER)
 		{
 			self.weapon = IT_LIGHTNING;
@@ -1183,7 +1202,7 @@ void() CycleWeaponBack =
 		}
 		else if (self.weapon == IT_ROCKET_LAUNCHER)
 		{
-			self.weapon = IT_GRENADE_LAUNCHER;
+			self.weapon = IT_DIRECTOR_ZOMBINATOR;
 			if (self.ammo_rockets < 1)
 				am = 1;
 		}
@@ -1196,6 +1215,12 @@ void() CycleWeaponBack =
 		else if (self.weapon == IT_AXE)
 		{
 			self.weapon = IT_LIGHTNING;
+			if (self.ammo_cells < 1)
+				am = 1;
+		}
+		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
+		{
+			self.weapon = IT_GRENADE_LAUNCHER;
 			if (self.ammo_cells < 1)
 				am = 1;
 		}
@@ -1239,7 +1264,7 @@ ImpulseCommands
 */
 void() ImpulseCommands =
 {
-	if (self.impulse >= 1 && self.impulse <= 8)
+	if (self.impulse >= 1 && self.impulse <= 9)
 		W_ChangeWeapon();
 
 	if (self.impulse == 9)

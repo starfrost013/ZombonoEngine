@@ -208,12 +208,8 @@ void() health_touch =
 	}
 	else
 	{
-		if (deathmatch != 2) // deathmatch 2 is the silly old rules
-		{
-			if (deathmatch)
-				self.nextthink = time + 20;
-			self.think = SUB_regen;
-		}
+		self.nextthink = time + 20;
+		self.think = SUB_regen;
 	}
 
 	activator = other;
@@ -235,11 +231,8 @@ void() item_megahealth_rot =
 // just blindly subtract the flag off
 	other.items = other.items - (other.items & IT_SUPERHEALTH);
 
-	if (deathmatch == 1) // deathmatch 2 is silly old rules
-	{
-		self.nextthink = time + 20;
-		self.think = SUB_regen;
-	}
+	self.nextthink = time + 20;
+	self.think = SUB_regen;
 };
 
 /*
@@ -288,8 +281,8 @@ void() armor_touch =
 
 	self.solid = SOLID_NOT;
 	self.model = string_null;
-	if (deathmatch == 1)
-		self.nextthink = time + 20;
+
+	self.nextthink = time + 20;
 	self.think = SUB_regen;
 
 	sprint(other, "You got armor\n");
@@ -421,55 +414,38 @@ void() weapon_touch =
 	best = W_BestWeapon();
 	self = stemp;
 
-	if (deathmatch == 2 || coop)
-		leave = 1;
-	else
-		leave = 0;
-
 	if (self.classname == "weapon_nailgun")
 	{
-		if (leave && (other.items & IT_NAILGUN))
-			return;
 		hadammo = other.ammo_nails;
 		new = IT_NAILGUN;
 		other.ammo_nails = other.ammo_nails + 30;
 	}
 	else if (self.classname == "weapon_supernailgun")
 	{
-		if (leave && (other.items & IT_SUPER_NAILGUN))
-			return;
 		hadammo = other.ammo_rockets;
 		new = IT_SUPER_NAILGUN;
 		other.ammo_nails = other.ammo_nails + 30;
 	}
 	else if (self.classname == "weapon_supershotgun")
 	{
-		if (leave && (other.items & IT_SUPER_SHOTGUN))
-			return;
 		hadammo = other.ammo_rockets;
 		new = IT_SUPER_SHOTGUN;
 		other.ammo_shells = other.ammo_shells + 5;
 	}
 	else if (self.classname == "weapon_rocketlauncher")
 	{
-		if (leave && (other.items & IT_ROCKET_LAUNCHER))
-			return;
 		hadammo = other.ammo_rockets;
 		new = IT_ROCKET_LAUNCHER;
 		other.ammo_rockets = other.ammo_rockets + 5;
 	}
 	else if (self.classname == "weapon_grenadelauncher")
 	{
-		if (leave && (other.items & IT_GRENADE_LAUNCHER))
-			return;
 		hadammo = other.ammo_rockets;
 		new = IT_GRENADE_LAUNCHER;
 		other.ammo_rockets = other.ammo_rockets + 5;
 	}
 	else if (self.classname == "weapon_lightning")
 	{
-		if (leave && (other.items & IT_LIGHTNING))
-			return;
 		hadammo = other.ammo_rockets;
 		new = IT_LIGHTNING;
 		other.ammo_cells = other.ammo_cells + 15;
@@ -493,10 +469,7 @@ void() weapon_touch =
 	stemp = self;
 	self = other;
 
-	if (!deathmatch)
-		self.weapon = new;
-	else
-		Deathmatch_Weapon(old, new);
+	Deathmatch_Weapon(old, new);
 
 	W_SetCurrentAmmo();
 
@@ -508,8 +481,7 @@ void() weapon_touch =
 // remove it in single player, or setup for respawning in deathmatch
 	self.model = string_null;
 	self.solid = SOLID_NOT;
-	if (deathmatch == 1)
-		self.nextthink = time + 30;
+	self.nextthink = time + 30;
 	self.think = SUB_regen;
 
 	activator = other;
@@ -689,8 +661,7 @@ void() ammo_touch =
 // remove it in single player, or setup for respawning in deathmatch
 	self.model = string_null;
 	self.solid = SOLID_NOT;
-	if (deathmatch == 1)
-		self.nextthink = time + 30;
+	self.nextthink = time + 30;
 
 	self.think = SUB_regen;
 
@@ -1098,18 +1069,15 @@ void() powerup_touch =
 	sprint(other, self.netname);
 	sprint(other,"\n");
 
-	if (deathmatch)
-	{
-		self.mdl = self.model;
+	self.mdl = self.model;
 
-		if ((self.classname == "item_artifact_invulnerability") ||
-			(self.classname == "item_artifact_invisibility"))
-			self.nextthink = time + 60*5;
-		else
-			self.nextthink = time + 60;
+	if ((self.classname == "item_artifact_invulnerability") ||
+		(self.classname == "item_artifact_invisibility"))
+		self.nextthink = time + 60*5;
+	else
+		self.nextthink = time + 60;
 
-		self.think = SUB_regen;
-	}
+	self.think = SUB_regen;
 
 	sound(other, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 	stuffcmd(other, "bf\n");
