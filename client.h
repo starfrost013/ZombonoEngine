@@ -38,7 +38,7 @@ typedef struct
 	char	peak; //johnfitz
 } lightstyle_t;
 
-typedef struct
+typedef struct scoreboard_s
 {
 	char	name[MAX_SCOREBOARDNAME];
 	float	entertime;

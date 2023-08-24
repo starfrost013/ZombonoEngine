@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023		starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -122,6 +123,16 @@ typedef struct refdef_s
 	int			ambientlight;
 } refdef_t;
 
+//
+// ZOMBONO: Generic color struct.
+//
+typedef struct color4_s
+{
+	float		r;
+	float		g;
+	float		b;
+	float		alpha;
+} color4_t;
 
 //
 // refresh

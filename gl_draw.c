@@ -585,14 +585,14 @@ Draw_Fill
 Fills a box of pixels with a single color
 =============
 */
-void Draw_Fill (int x, int y, int w, int h, int c, float alpha) //johnfitz -- added alpha
+void Draw_Fill (int x, int y, int w, int h, float r, float g, float b, float alpha) //ZOMBONO: Don't use palette.lmp 
 {
 	byte *pal = (byte *)d_8to24table; //johnfitz -- use d_8to24table instead of host_basepal
 
 	glDisable (GL_TEXTURE_2D);
 	glEnable (GL_BLEND); //johnfitz -- for alpha
 	glDisable (GL_ALPHA_TEST); //johnfitz -- for alpha
-	glColor4f (pal[c*4]/255.0, pal[c*4+1]/255.0, pal[c*4+2]/255.0, alpha); //johnfitz -- added alpha
+	glColor4f (r/255, g/255, b/255, alpha/255); //johnfitz -- added alpha
 
 	glBegin (GL_QUADS);
 	glVertex2f (x,y);

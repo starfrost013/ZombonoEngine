@@ -221,6 +221,9 @@
     <ClCompile Include="zone.c">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="team.c">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winquake.rc">
@@ -336,6 +339,9 @@
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="sbar.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="team.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>

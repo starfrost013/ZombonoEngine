@@ -206,6 +206,7 @@ typedef struct entity_state_s
 #include "progs.h"
 #include "server.h"
 #include "gl_model.h"
+#include "team.h"
 
 #include "image.h" //johnfitz
 #include "gl_texmgr.h" //johnfitz

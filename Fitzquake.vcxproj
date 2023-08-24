@@ -156,6 +156,7 @@
     <ClCompile Include="r_part.c" />
     <ClCompile Include="r_sprite.c" />
     <ClCompile Include="r_world.c" />
+    <ClCompile Include="team.c" />
     <ClCompile Include="view.c" />
     <ClCompile Include="wad.c" />
     <ClCompile Include="net_dgrm.c" />
@@ -255,6 +256,7 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="spritegn.h" />
     <ClInclude Include="sys.h" />
+    <ClInclude Include="team.h" />
     <ClInclude Include="winquake.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

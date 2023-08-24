@@ -354,10 +354,12 @@ int		scoreboardlines;
 
 /*
 ===============
-Sbar_SortFrags
+Sbar_SortScoreboard
+
+Renamed for clarity
 ===============
 */
-void Sbar_SortFrags (void)
+void Sbar_SortScoreboard (void)
 {
 	int		i, j, k;
 
@@ -365,26 +367,13 @@ void Sbar_SortFrags (void)
 	scoreboardlines = 0;
 	for (i=0 ; i<cl.maxclients ; i++)
 	{
+
 		if (cl.scores[i].name[0])
 		{
 			fragsort[scoreboardlines] = i;
 			scoreboardlines++;
 		}
 	}
-
-	for (i=0 ; i<scoreboardlines ; i++)
-		for (j=0 ; j<scoreboardlines-1-i ; j++)
-			if (cl.scores[fragsort[j]].frags < cl.scores[fragsort[j+1]].frags)
-			{
-				k = fragsort[j];
-				fragsort[j] = fragsort[j+1];
-				fragsort[j+1] = k;
-			}
-}
-
-int	Sbar_ColorForMap (int m)
-{
-	return m < 128 ? m + 8 : m + 8;
 }
 
 /*
@@ -398,7 +387,7 @@ void Sbar_UpdateScoreboard (void)
 	int		top, bottom;
 	scoreboard_t	*s;
 
-	Sbar_SortFrags ();
+	Sbar_SortScoreboard ();
 
 // draw the text
 	memset (scoreboardtext, 0, sizeof(scoreboardtext));
@@ -408,11 +397,6 @@ void Sbar_UpdateScoreboard (void)
 		k = fragsort[i];
 		s = &cl.scores[k];
 		sprintf (&scoreboardtext[i][1], "%3i %s", s->frags, s->name);
-
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15) <<4;
-		scoreboardtop[i] = Sbar_ColorForMap (top);
-		scoreboardbottom[i] = Sbar_ColorForMap (bottom);
 	}
 }
 
@@ -559,7 +543,7 @@ void Sbar_DrawFrags (void)
 	char			num[12];
 	scoreboard_t	*s;
 
-	Sbar_SortFrags ();
+	Sbar_SortScoreboard ();
 
 // draw the text
 	numscores = min (scoreboardlines, 4);
@@ -571,14 +555,8 @@ void Sbar_DrawFrags (void)
 			continue;
 
 	// top color
-		color = s->colors & 0xf0;
-		color = Sbar_ColorForMap (color);
-		Draw_Fill (x + 10, 1, 28, 4, color, 1);
-
-	// bottom color
-		color = (s->colors & 15)<<4;
-		color = Sbar_ColorForMap (color);
-		Draw_Fill (x + 10, 5, 28, 3, color, 1);
+	// get team color
+		color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
 
 	// number
 		sprintf (num, "%3i", s->frags);
@@ -781,6 +759,7 @@ void Sbar_IntermissionNumber (int x, int y, int num, int digits, int color)
 	}
 }
 
+#define SCOREBOARD_LINE_SIZE 10
 /*
 ==================
 Sbar_DeathmatchOverlay
@@ -802,14 +781,20 @@ void Sbar_DeathmatchOverlay (void)
 	M_DrawPic ((320-pic->width)/2, 8, pic);
 
 // scores
-	Sbar_SortFrags ();
+	Sbar_SortScoreboard ();
 
 // draw the text
 	l = scoreboardlines;
 
 	x = 80; //johnfitz -- simplified becuase some positioning is handled elsewhere
 	y = 40;
-	for (i=0 ; i<l ; i++)
+
+	Draw_String(x, y, "D I R E C T O R");
+
+	//offset of the "player" string.
+	int player_pos = SCOREBOARD_LINE_SIZE;
+
+	for (i=0 ; i<l ; i++)// let's hope these are the same indiceslmao
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
@@ -817,13 +802,26 @@ void Sbar_DeathmatchOverlay (void)
 			continue;
 
 	// draw background
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
-		top = Sbar_ColorForMap (top);
-		bottom = Sbar_ColorForMap (bottom);
+		
+		int team = svs.clients[i].edict->v.team;
 
-		Draw_Fill ( x, y, 40, 4, top, 1); //johnfitz -- stretched overlays
-		Draw_Fill ( x, y+4, 40, 4, bottom, 1); //johnfitz -- stretched overlays
+		// push the players down
+		if (team == ZOMBONO_TEAM_DIRECTOR)
+		{
+			player_pos += SCOREBOARD_LINE_SIZE;
+			y = 40 + SCOREBOARD_LINE_SIZE * (i + 1);
+		}
+		else if (team == ZOMBONO_TEAM_PLAYER)
+		{
+			// move the string down to the player section
+			y = 40 + player_pos + (SCOREBOARD_LINE_SIZE * (i + 1));
+		}
+
+		color4_t team_color = TEAM_GetColor(team);
+
+	// based on team
+
+		Draw_Fill ( x, y, 40, 10, team_color.r, team_color.g, team_color.b, team_color.alpha); //johnfitz -- stretched overlays
 
 	// draw number
 		f = s->frags;
@@ -836,29 +834,11 @@ void Sbar_DeathmatchOverlay (void)
 		if (k == cl.viewentity - 1)
 			Draw_Character ( x - 8, y, 12); //johnfitz -- stretched overlays
 
-#if 0
-{
-	int				total;
-	int				n, minutes, tens, units;
-
-	// draw time
-		total = cl.completed_time - s->entertime;
-		minutes = (int)total/60;
-		n = total - minutes*60;
-		tens = n/10;
-		units = n%10;
-
-		sprintf (num, "%3i:%i%i", minutes, tens, units);
-
-		M_Print ( x+48 , y, num); //johnfitz -- was Draw_String, changed for stretched overlays
-}
-#endif
-
 	// draw name
 		M_Print (x+64, y, s->name); //johnfitz -- was Draw_String, changed for stretched overlays
-
-		y += 10;
 	}
+
+	Draw_String(x, y + player_pos, "P L A Y E R");
 
 	GL_SetCanvas (CANVAS_SBAR); //johnfitz
 }
@@ -883,7 +863,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 		return;
 
 // scores
-	Sbar_SortFrags ();
+	Sbar_SortScoreboard ();
 
 // draw the text
 	l = scoreboardlines;
@@ -912,13 +892,11 @@ void Sbar_MiniDeathmatchOverlay (void)
 			continue;
 
 	// colors
-		top = s->colors & 0xf0;
-		bottom = (s->colors & 15)<<4;
-		top = Sbar_ColorForMap (top);
-		bottom = Sbar_ColorForMap (bottom);
+	
+		color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
 
-		Draw_Fill ( x, y+1, 40, 4, top, 1);
-		Draw_Fill ( x, y+5, 40, 3, bottom, 1);
+		Draw_Fill ( x, y+1, 40, 7, color.r, color.g, color.b, color.alpha);
+		Draw_Fill ( x, y+5, 40, 3, color.r, color.g, color.b, color.alpha);
 
 	// number
 		f = s->frags;
