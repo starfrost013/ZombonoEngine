@@ -426,6 +426,30 @@ void() W_FireRocket =
 };
 
 /*
+================
+W_FireZombinator
+================
+*/
+
+void() W_FireZombinator()
+{
+	// INITIAL type
+	entity zombie;
+
+	makevectors(self.angles)
+
+	zombie = spawn();
+	zombie.classname = "monster_zombie";
+	zombie.owner = self;
+	zombie.movetype = MOVETYPE_WALK;
+	zombie.dir = makevectors(self.dir);
+	
+	sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
+
+
+}
+
+/*
 ===============================================================================
 
 LIGHTNING
@@ -959,6 +983,12 @@ void() W_Attack =
 		player_light1();
 		self.attack_finished = time + 0.1;
 		sound(self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
+	}
+	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
+	{
+		// needs to be team only
+		player_rocket1();
+		W_FireZombinator();
 	}
 };
 

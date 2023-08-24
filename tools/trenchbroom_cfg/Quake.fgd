@@ -203,6 +203,7 @@
 @PointClass base(Weapon) model({ "path": ":progs/g_rock.mdl" }) = weapon_grenadelauncher : "Grenade launcher" []
 @PointClass base(Weapon) model({ "path": ":progs/g_rock2.mdl" }) = weapon_rocketlauncher : "Rocket launcher" []
 @PointClass base(Weapon) model({ "path": ":progs/g_light.mdl" }) = weapon_lightning : "Thunderbolt" []
+@PointClass base(Weapon) model({ "path": ":progs/g_rock2.mdl" }) = weapon_director_zombinator : "(Zombono - Director team) Zombinator" []
 
 //
 // monsters

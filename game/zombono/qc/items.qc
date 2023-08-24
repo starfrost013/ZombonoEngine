@@ -450,6 +450,10 @@ void() weapon_touch =
 		new = IT_LIGHTNING;
 		other.ammo_cells = other.ammo_cells + 15;
 	}
+	else if (self.clasname == "weapon_director_zombinator")
+	{
+		new = IT_DIRECTOR_ZOMBINATOR; //has infinite ammo...
+	}
 	else
 		objerror("weapon_touch: unknown classname");
 
@@ -554,6 +558,21 @@ void() weapon_rocketlauncher =
 	setmodel(self, "progs/g_rock2.mdl");
 	self.weapon = 3;
 	self.netname = "Rocket Launcher";
+	self.touch = weapon_touch;
+	setsize(self, '-16 -16 0', '16 16 56');
+	StartItem();
+};
+
+/*QUAKED weapon_rocketlauncher (0 .5 .8) (-16 -16 0) (16 16 32)
+*/
+
+void() weapon_director_zombinator =
+{
+	//todo: team only
+	precache_model("progs/g_rock2.mdl");
+	setmodel(self, "progs/g_rock2.mdl");
+	self.weapon = IT_DIRECTOR_ZOMBINATOR;
+	self.netname = "Zombinator!";
 	self.touch = weapon_touch;
 	setsize(self, '-16 -16 0', '16 16 56');
 	StartItem();
