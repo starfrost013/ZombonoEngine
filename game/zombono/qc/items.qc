@@ -574,7 +574,7 @@ void() weapon_director_zombinator =
 	self.weapon = IT_DIRECTOR_ZOMBINATOR;
 	self.netname = "Zombinator!";
 	self.touch = weapon_touch;
-	setsize(self, '-16 -16 0', '16 16 56');
+	setsize(self, '-16 -16 0', '16 16 80');
 	StartItem();
 };
 
