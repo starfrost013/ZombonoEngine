@@ -123,7 +123,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GAME_ZOMBIES		2	//Zombono mode
 
 #define GAME_ZOMBIES_MIN_MODE	0	//Zombono minimum gamemode
-#define GAME_ZOMBIES_MAX_MODE	0	//Zombono maximum gamemode
+#define GAME_ZOMBIES_MAX_MODE	0	//Zombono maximum gamemode 
 
 //==================
 // note that there are some defs.qc that mirror to these numbers

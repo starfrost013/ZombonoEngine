@@ -431,23 +431,32 @@ W_FireZombinator
 ================
 */
 
-void() W_FireZombinator()
+void() W_FireZombinator =
 {
 	// INITIAL type
 	entity zombie;
 
-	makevectors(self.angles)
+	makevectors(self.angles);
 
 	zombie = spawn();
 	zombie.classname = "monster_zombie";
 	zombie.owner = self;
 	zombie.movetype = MOVETYPE_WALK;
-	zombie.dir = makevectors(self.dir);
-	
-	sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
+	makevectors(self.v_angle);
 
+	traceline(self.origin, self.origin + v_forward*2048, 0, self);
 
-}
+	if (trace_ent)
+	{
+		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
+		setorigin(zombie, trace_endpos);
+	}
+	else
+	{
+		// fail sound
+		sound(self, CHAN_WEAPON, "weapons/tink1.wad", 1, ATTN_NORM);
+	}
+};
 
 /*
 ===============================================================================

@@ -450,7 +450,7 @@ void() weapon_touch =
 		new = IT_LIGHTNING;
 		other.ammo_cells = other.ammo_cells + 15;
 	}
-	else if (self.clasname == "weapon_director_zombinator")
+	else if (self.classname == "weapon_director_zombinator")
 	{
 		new = IT_DIRECTOR_ZOMBINATOR; //has infinite ammo...
 	}
