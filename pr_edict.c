@@ -987,7 +987,7 @@ void ED_LoadFromFile (char *data)
 				continue;
 
 			}
-		}
+		} 
 
 //
 // immediately call spawn function

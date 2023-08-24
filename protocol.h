@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	DEFAULT_VIEWHEIGHT	22
 
 // game types sent by serverinfo
-// these determine which intermission screen plays
+// these determine which intermission screen plays =
 #define GAME_ZOMBIES		2	//Zombono mode
 
 #define GAME_ZOMBIES_MIN_MODE	0	//Zombono minimum gamemode

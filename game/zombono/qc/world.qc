@@ -27,7 +27,6 @@ void() main =
 // these are just commands the the prog compiler to copy these files
 
 	precache_file("progs.dat");
-	precache_file("gfx.wad");
 	precache_file("quake.rc");
 	precache_file("default.cfg");
 
@@ -43,8 +42,6 @@ void() main =
 //
 	precache_file("gfx/palette.lmp");
 	precache_file("gfx/colormap.lmp");
-
-	precache_file2 ("gfx/pop.lmp");
 
 	precache_file("gfx/complete.lmp");
 	precache_file("gfx/inter.lmp");
@@ -260,7 +257,7 @@ void() worldspawn =
 
 	// Get game mode
 	gamemode = cvar("gamemode");
-;
+
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
 //

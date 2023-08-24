@@ -160,9 +160,9 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 // figure momentum add
 	if ((inflictor != world) && (targ.movetype == MOVETYPE_WALK))
 	{
-		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
+		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.65;
 		dir = normalize(dir);
-		targ.velocity = targ.velocity + dir*damage*8;
+		targ.velocity = targ.velocity + dir*damage*30;
 	}
 
 // check for godmode or invincibility
@@ -179,7 +179,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	}
 
 // team play damage avoidance
-	if ((friendly_fire == 0) && (targ.team > 0)&&(targ.team == attacker.team))
+	if ((friendly_fire == 0) && (targ.team > 0) &&(targ.team == attacker.team))
 		return;
 
 // do the damage
