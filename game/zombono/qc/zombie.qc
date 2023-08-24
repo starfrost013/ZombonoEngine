@@ -520,6 +520,12 @@ void() monster_zombie =
 	precache_sound("zombie/z_hit.wav");
 	precache_sound("zombie/idle_w2.wav");
 
+	// for spawning outside of worldstart
+	monster_zombie_dospawn();
+};
+
+void() monster_zombie_dospawn =
+{
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 
@@ -542,4 +548,4 @@ void() monster_zombie =
 	}
 	else
 		walkmonster_start();
-};
+}

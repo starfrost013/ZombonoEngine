@@ -436,25 +436,30 @@ void() W_FireZombinator =
 	// INITIAL type
 	entity zombie;
 
-	makevectors(self.angles);
-
-	zombie = spawn();
-	zombie.classname = "monster_zombie";
-	zombie.owner = self;
-	zombie.movetype = MOVETYPE_WALK;
 	makevectors(self.v_angle);
 
 	traceline(self.origin, self.origin + v_forward*2048, 0, self);
 
-	if (trace_ent)
+	zombie = spawn();
+	zombie.classname = "monster_zombie";
+
+	// stupid hack
+	entity curSelf = self;
+	self = zombie;
+	monster_zombie_dospawn();
+	self = curSelf;
+
+	makevectors(self.v_angle);
+
+	if (trace_fraction < 1)
 	{
 		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
-		setorigin(zombie, trace_endpos);
+		setorigin(zombie, trace_endpos + '0 0 32');
 	}
 	else
 	{
 		// fail sound
-		sound(self, CHAN_WEAPON, "weapons/tink1.wad", 1, ATTN_NORM);
+		sound(self, CHAN_WEAPON, "weapons/tink1.wav", 1, ATTN_NORM);
 	}
 };
 
@@ -863,6 +868,13 @@ void() W_SetCurrentAmmo =
 		self.weaponframe = 0;
 		self.items = self.items | IT_CELLS;
 	}
+	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
+	{
+		self.currentammo = self.ammo_rockets; // TODO: ADD MORE AMMO
+		self.weaponmodel = "progs/v_rock2.mdl"; // temp
+		self.weaponframe = 0;
+		self.items = self.items | IT_ROCKETS;
+	}
 	else
 	{
 		self.currentammo = 0;
@@ -901,12 +913,18 @@ float() W_BestWeapon =
 
 float() W_CheckNoAmmo =
 {
-	if (self.currentammo > 0)
-		return TRUE;
 
+	/* INFINITE AMMO WEAPONS */
+	if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
+		return TRUE;
 	if (self.weapon == IT_AXE)
 		return TRUE;
 
+	/* if you have any actual ammo */
+	if (self.currentammo > 0)
+		return TRUE;
+
+	/* might remove */
 	self.weapon = W_BestWeapon();
 
 	W_SetCurrentAmmo();
@@ -998,6 +1016,7 @@ void() W_Attack =
 		// needs to be team only
 		player_rocket1();
 		W_FireZombinator();
+		self.attack_finished = time + 1.5;
 	}
 };
 
@@ -1063,8 +1082,7 @@ void() W_ChangeWeapon =
 	else if (self.impulse == 9)
 	{
 		fl = IT_DIRECTOR_ZOMBINATOR;
-		if (self.ammo_cells < 1)
-			am = 1;
+			am = 0; // INFINITE AMMO WEAPON
 	}
 
 	self.impulse = 0;
@@ -1095,6 +1113,8 @@ CheatCommand
 */
 void() CheatCommand =
 {
+	//change to sv_cheats
+
 	if (deathmatch || coop)
 		return;
 
@@ -1306,13 +1326,13 @@ void() ImpulseCommands =
 	if (self.impulse >= 1 && self.impulse <= 9)
 		W_ChangeWeapon();
 
-	if (self.impulse == 9)
-		CheatCommand();
 	if (self.impulse == 10)
-		CycleWeaponCommand();
+		CheatCommand();
 	if (self.impulse == 11)
-		ServerflagsCommand();
+		CycleWeaponCommand();
 	if (self.impulse == 12)
+		ServerflagsCommand();
+	if (self.impulse == 13)
 		CycleWeaponBack();
 
 	if (self.impulse == 255)

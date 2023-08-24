@@ -1,5 +1,6 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
-
+	Copyright (C) 2023		 starfrost
+	
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -15,12 +16,17 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Items.qc : Define all items
 */
 void() W_SetCurrentAmmo;
+
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
-
-
 void() SUB_regen =
 {
 	self.model = self.mdl; // restore original model
@@ -357,6 +363,9 @@ void() bound_other_ammo =
 
 float(float w) RankForWeapon =
 {
+	//temp
+	if (w == IT_DIRECTOR_ZOMBINATOR)
+		return 0;
 	if (w == IT_LIGHTNING)
 		return 1;
 	if (w == IT_ROCKET_LAUNCHER)
@@ -569,8 +578,8 @@ void() weapon_rocketlauncher =
 void() weapon_director_zombinator =
 {
 	//todo: team only
-	precache_model("progs/g_rock2.mdl");
-	setmodel(self, "progs/g_rock2.mdl");
+	precache_model("progs/g_rock.mdl");
+	setmodel(self, "progs/g_rock.mdl");
 	self.weapon = IT_DIRECTOR_ZOMBINATOR;
 	self.netname = "Zombinator!";
 	self.touch = weapon_touch;

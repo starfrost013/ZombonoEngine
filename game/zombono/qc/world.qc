@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023		 starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,6 +16,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Items.qc : World setup code
 */
 
 void() InitBodyQue;
@@ -29,13 +36,6 @@ void() main =
 	precache_file("progs.dat");
 	precache_file("quake.rc");
 	precache_file("default.cfg");
-
-	//precache_file("end1.bin");
-	//precache_file2 ("end2.bin");
-
-	//precache_file("demo1.dem");
-	//precache_file("demo2.dem");
-	//precache_file("demo3.dem");
 
 //
 // these are all of the lumps from the cached.ls files
@@ -60,9 +60,7 @@ void() main =
 	precache_file("gfx/menudot6.lmp");
 
 	precache_file("gfx/menuplyr.lmp");
-	precache_file("gfx/bigbox.lmp");
-	precache_file("gfx/dim_tcp.lmp");
-	precache_file("gfx/dim_mult.lmp");
+	precache_file("gfx/bigbox.lmp");;
 	precache_file("gfx/mainmenu.lmp");
 
 	precache_file("gfx/box_tl.lmp");
@@ -90,15 +88,6 @@ void() main =
 	precache_file("gfx/netmen3.lmp");
 	precache_file("gfx/netmen4.lmp");
 	precache_file("gfx/netmen5.lmp");
-
-	precache_file("gfx/sell.lmp");
-
-	precache_file("gfx/help0.lmp");
-	precache_file("gfx/help1.lmp");
-	precache_file("gfx/help2.lmp");
-	precache_file("gfx/help3.lmp");
-	precache_file("gfx/help4.lmp");
-	precache_file("gfx/help5.lmp");
 
 	precache_file("gfx/pause.lmp");
 	precache_file("gfx/loading.lmp");
@@ -142,10 +131,7 @@ void() worldspawn =
 	InitBodyQue();
 
 // custom map attributes
-	if (self.model == "maps/e1m8.bsp")
-		cvar_set("sv_gravity", "100");
-	else
-		cvar_set("sv_gravity", "800");
+	cvar_set("sv_gravity", "800");
 
 // the area based ambient sounds MUST be the first precache_sounds
 
@@ -174,6 +160,7 @@ void() worldspawn =
 	precache_sound("misc/r_tele3.wav");
 	precache_sound("misc/r_tele4.wav");
 	precache_sound("misc/r_tele5.wav");
+	precache_sound("weapons/tink1.wav"); // zombie fail
 	precache_sound("weapons/lock4.wav"); // ammo pick up
 	precache_sound("weapons/pkup.wav"); // weapon up
 	precache_sound("items/armor1.wav"); // armor up
@@ -251,12 +238,23 @@ void() worldspawn =
 
 	precache_model("progs/backpack.mdl");
 
+	// ***THESE ARE REQUIRED FOR ZOMBONO BECAUSE ZOMBIES CAN BE SPAWNED OUTSIDE OF WORLDSPAWN***
+	precache_model("progs/zombie.mdl");
+	precache_model("progs/h_zombie.mdl");
 	precache_model("progs/zom_gib.mdl");
 
-	precache_model("progs/v_light.mdl");
+	precache_sound("zombie/z_idle.wav");
+	precache_sound("zombie/z_idle1.wav");
+	precache_sound("zombie/z_shot1.wav");
+	precache_sound("zombie/z_gib.wav");
+	precache_sound("zombie/z_pain.wav");
+	precache_sound("zombie/z_pain1.wav");
+	precache_sound("zombie/z_fall.wav");
+	precache_sound("zombie/z_miss.wav");
+	precache_sound("zombie/z_hit.wav");
+	precache_sound("zombie/idle_w2.wav");
 
-	// Get game mode
-	gamemode = cvar("gamemode");
+	precache_model("progs/v_light.mdl");
 
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
@@ -309,6 +307,10 @@ void() StartFrame =
 	// setup cvars
 	friendly_fire = cvar("friendly_fire");
 	skill = cvar("skill");
+
+	// Get game mode
+	gamemode = cvar("gamemode");
+
 	framecount = framecount + 1;
 };
 
