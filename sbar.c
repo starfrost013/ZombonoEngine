@@ -892,7 +892,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
-		if (!s->name[0])
+		if (!s->name[0]) // check if not connected
 			continue;
 
 	// colors
