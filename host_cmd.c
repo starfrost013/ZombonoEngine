@@ -527,7 +527,7 @@ void Host_God_f (void)
 	}
 
 	if (!sv_cheats.value)
-		Con_Printf("sv_cheats must be 1 to use godmode!");
+		Con_Printf("sv_cheats must be 1 to use godmode!\n");
 		return;
 
 	//johnfitz -- allow user to explicitly set god mode to on or off
@@ -622,7 +622,7 @@ void Host_Noclip_f (void)
 	}
 
 	if (!sv_cheats.value)
-		Con_Printf("sv_cheats must be 1 to use noclip!");
+		Con_Printf("sv_cheats must be 1 to use noclip!\n");
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -679,6 +679,7 @@ void Host_Fly_f (void)
 	}
 
 	if (!sv_cheats.value)
+		Con_Printf("sv_cheats must be 1 to use fly!\n");
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -1758,7 +1759,7 @@ void Host_Give_f (void)
 	}
 
 	if (!sv_cheats.value)
-		Con_Printf("sv_cheats must be 1 for give to work");
+		Con_Printf("sv_cheats must be 1 to use give!\n");
 		return;
 
 	t = Cmd_Argv(1);

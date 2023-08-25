@@ -17,6 +17,15 @@
     See file, 'COPYING', for details.
 */
 
+
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Combat.qc : Combat code
+*/
+
 void() T_MissileTouch;
 void() info_player_start;
 void(entity targ, entity attacker) ClientObituary;
@@ -160,9 +169,9 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 // figure momentum add
 	if ((inflictor != world) && (targ.movetype == MOVETYPE_WALK))
 	{
-		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.65;
+		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.6;
 		dir = normalize(dir);
-		targ.velocity = targ.velocity + dir*damage*30;
+		targ.velocity = targ.velocity + dir*damage*40;
 	}
 
 // check for godmode or invincibility

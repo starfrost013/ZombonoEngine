@@ -139,14 +139,14 @@ entity() FindIntermission =
 
 	if (gamemode == 0)
 	{
-		if (spot.team == 0) //temp
+		if (spot.team == ZOMBONO_TEAM_DIRECTOR) //temp
 		{
 			// then look for the start position
 			spot = find(world, classname, "info_player_start_director");
 			if (spot)
 				return spot;
 		}
-		else if (spot.team == 1)
+		else if (spot.team == ZOMBONO_TEAM_PLAYER)
 		{
 			spot = find(world, classname, "info_player_start_player");
 			if (spot)
@@ -371,39 +371,41 @@ entity() SelectSpawnPoint =
 	{
 		if (self.team == ZOMBONO_TEAM_DIRECTOR)
 		{
-			lastspawn = find(lastspawn, classname, "info_player_start_director");
+			spot = find(world, classname, "info_player_start_director");
 
-			if (lastspawn == world)
+			if (spot == world)
 			{
-				lastspawn = find(lastspawn, classname, "info_player_start_director");
-				return lastspawn;
-			}
-			else
-			{
-				return lastspawn;
+				spot = find(world, classname, "info_player_start_director");
+
+				// stupid stupid
+				dprint("Director spawn coords: ");
+				dprint(vtos(spot.origin));
+				dprint("\n");
+				
+				return spot;
 			}
 
-			return lastspawn;
+			return spot;
 		}
 		else if (self.team == ZOMBONO_TEAM_PLAYER)
 		{
-			lastspawn = find(lastspawn, classname, "info_player_start_player");
+			spot = find(world, classname, "info_player_start_player");
 
-			if (lastspawn == world)
+			if (spot == world)
 			{
-				lastspawn = find(lastspawn, classname, "info_player_start_player");
-				return lastspawn;
-			}
-			else
-			{
-				return lastspawn;
+				spot = find(world, classname, "info_player_start_player");
+				return spot;
 			}
 
-			return lastspawn;
+			return spot;
 		}
 	}
-	else
+	else // no team
 	{
+		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar");
+		dprint(ftos(gamemode));
+		dprint("! \n");
+
 		if (serverflags)
 		{ // return with a rune to start
 			spot = find(world, classname, "info_player_start2");
@@ -415,7 +417,8 @@ entity() SelectSpawnPoint =
 	}
 
 	if (!spot)
-		error("PutClientInServer: no info_player_start, info_player_start_director of info_player_start_player in level");
+		error("PutClientInServer: no info_player_start, info_player_start_director or info_player_start_player in level");
+
 
 	return spot;
 };

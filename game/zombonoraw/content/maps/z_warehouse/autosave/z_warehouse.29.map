@@ -1348,7 +1348,7 @@
 // entity 7
 {
 "classname" "info_player_start_director"
-"origin" "1888 -720 584"
+"origin" "1888 -720 568"
 "angle" "180"
 }
 // entity 8
