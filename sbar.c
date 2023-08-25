@@ -797,8 +797,8 @@ void Sbar_DeathmatchOverlay (void)
 	int num_directors = 0;
 	int num_players = 0;
 
-	Draw_String(x, director_position, "D I R E C T O R :");
-	Draw_String(x, player_position, "P L A Y E R :");
+	Draw_String(x, director_position, "D I R E C T O R S");
+	Draw_String(x, player_position, "P L A Y E R S");
 
 
 	for (i=0 ; i<l ; i++)// let's hope these are the same indiceslmao
