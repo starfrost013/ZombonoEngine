@@ -461,7 +461,14 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_director_zombinator")
 	{
-		new = IT_DIRECTOR_ZOMBINATOR; //has infinite ammo...
+		if (other.team == ZOMBONO_TEAM_DIRECTOR)
+		{
+			new = IT_DIRECTOR_ZOMBINATOR; //has infinite ammo...
+		}
+		else
+		{
+			sprint(other, "You can't pick this up - you're not on the director team!");
+		}
 	}
 	else
 		objerror("weapon_touch: unknown classname");
@@ -696,9 +703,6 @@ void() ammo_touch =
 	activator = other;
 	SUB_UseTargets(); // fire all targets / killtargets
 };
-
-
-
 
 float WEAPON_BIG2 = 1;
 

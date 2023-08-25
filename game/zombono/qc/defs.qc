@@ -423,7 +423,7 @@ float ZOMBONO_TEAM_PLAYER = 1; // player
 float ZOMBONO_GAMEMODE_CLASSIC = 0;
 float ZOMBONO_GAMEMODE_WAVES = 1; 
 float ZOMBONO_GAMEMODE_HOSTAGE = 2;
-float ZOMBONO_GAEMMODE_COOP = 3; 
+float ZOMBONO_GAMEMODE_COOP = 3; 
 // need better ideas for these...
 
 //================================================
@@ -721,7 +721,6 @@ void() SUB_Remove;
 // combat.qc
 //
 void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
-
 
 float(entity e, float healamount, float ignore) T_Heal; // health function
 

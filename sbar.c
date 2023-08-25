@@ -789,10 +789,17 @@ void Sbar_DeathmatchOverlay (void)
 	x = 80; //johnfitz -- simplified becuase some positioning is handled elsewhere
 	y = 40;
 
-	Draw_String(x, y, "D I R E C T O R");
 
 	//offset of the "player" string.
-	int player_pos = SCOREBOARD_LINE_SIZE;
+	int director_position = y;
+	int player_position = y + SCOREBOARD_LINE_SIZE * svs.maxclients / 2; // draw player at minimum of player count
+
+	int num_directors = 0;
+	int num_players = 0;
+
+	Draw_String(x, director_position, "D I R E C T O R :");
+	Draw_String(x, player_position, "P L A Y E R :");
+
 
 	for (i=0 ; i<l ; i++)// let's hope these are the same indiceslmao
 	{
@@ -805,16 +812,15 @@ void Sbar_DeathmatchOverlay (void)
 		
 		int team = svs.clients[i].edict->v.team;
 
-		// push the players down
 		if (team == ZOMBONO_TEAM_DIRECTOR)
 		{
-			player_pos += SCOREBOARD_LINE_SIZE;
-			y = 40 + SCOREBOARD_LINE_SIZE * (i + 1);
+			num_directors++;
+			y = 40 + SCOREBOARD_LINE_SIZE * (num_directors);
 		}
 		else if (team == ZOMBONO_TEAM_PLAYER)
 		{
-			// move the string down to the player section
-			y = 40 + player_pos + (SCOREBOARD_LINE_SIZE * (i + 1));
+			num_players++;
+			y = player_position + (SCOREBOARD_LINE_SIZE * num_players);
 		}
 
 		color4_t team_color = TEAM_GetColor(team);
@@ -837,8 +843,6 @@ void Sbar_DeathmatchOverlay (void)
 	// draw name
 		M_Print (x+64, y, s->name); //johnfitz -- was Draw_String, changed for stretched overlays
 	}
-
-	Draw_String(x, y + player_pos, "P L A Y E R");
 
 	GL_SetCanvas (CANVAS_SBAR); //johnfitz
 }

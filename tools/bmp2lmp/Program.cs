@@ -77,7 +77,7 @@ string[] inputFiles;
 if (folderMode)
 {
     // add all the files
-    inputFiles = Directory.GetFiles(inputItem, "*", SearchOption.AllDirectories);    
+    inputFiles = Directory.GetFiles(inputItem, "*.bmp", SearchOption.AllDirectories);    
 }
 else
 {

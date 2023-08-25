@@ -1393,7 +1393,7 @@ void Host_Color_f(void)
 	}
 
 	host_client->colors = playercolor;
-	host_client->edict->v.team = bottom + 1;
+	//host_client->edict->v.team = bottom + 1;
 
 // send notification to all clients
 	MSG_WriteByte (&sv.reliable_datagram, svc_updatecolors);
@@ -1525,9 +1525,13 @@ void Host_Spawn_f (void)
 		memset (&ent->v, 0, progs->entityfields * 4);
 		ent->v.colormap = NUM_FOR_EDICT(ent);
 
-		// randomly assign player a team
-		srand(cl.time * 1000); // seed random for first time
-		ent->v.team = rand() % 2;
+		time_t t;
+
+		// randomly assign player a team. we use time for this
+		// might move this to qc...
+		srand((int)time(&t));
+		int team = rand();
+		ent->v.team = team % 2;
 		ent->v.netname = host_client->name - pr_strings;
 
 		// copy spawn parms out of the client_t

@@ -38,6 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 #include <setjmp.h>
 #include <assert.h> //johnfitz
+#include <time.h>	//time
 
 #if defined(_WIN32) && !defined(WINDED)
 
@@ -186,8 +187,6 @@ typedef struct entity_state_s
 	unsigned char 	skin; //johnfitz -- was int
 	unsigned char	alpha; //johnfitz -- added
 	int				effects;
-	float			team; //zombono - all entities have teams
-	
 } entity_state_t;
 
 

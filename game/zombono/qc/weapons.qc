@@ -29,6 +29,16 @@ void(entity bomb, entity attacker, float rad, entity ignore) T_RadiusDamage;
 void(vector org, vector vel, float damage) SpawnBlood;
 void() SuperDamageSound;
 
+// extra defs so the code is more readable (move to defs.qc if required)
+float WEAPON_RELOAD_TIME_AXE = 0.5;
+float WEAPON_RELOAD_TIME_SHOTGUN = 0.5;
+float WEAPON_RELOAD_TIME_SHOTGUN_SUPER = 0.7;
+float WEAPON_RELOAD_TIME_NAILGUN = 0.0;			// doesn't have reload, but may wish to add later
+float WEAPON_RELOAD_TIME_NAILGUN_SUPER = 0.0;	// doesn't have reload, but may wish to add later
+float WEAPON_RELOAD_TIME_GRENADE_LAUNCHER = 0.6;
+float WEAPON_RELOAD_TIME_ROCKET_LAUNCHER = 0.8;
+float WEAPON_RELOAD_TIME_LIGHTNING = 0.1;
+float WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR = 2.0;
 
 // called by worldspawn
 void() W_Precache =
@@ -871,7 +881,7 @@ void() W_SetCurrentAmmo =
 	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 	{
 		self.currentammo = self.ammo_rockets; // TODO: ADD MORE AMMO
-		self.weaponmodel = "progs/v_rock2.mdl"; // temp
+		self.weaponmodel = "progs/v_rock.mdl"; // temp
 		self.weaponframe = 0;
 		self.items = self.items | IT_ROCKETS;
 	}
@@ -971,19 +981,19 @@ void() W_Attack =
 			player_axec1();
 		else
 			player_axed1();
-		self.attack_finished = time + 0.5;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_AXE;
 	}
 	else if (self.weapon == IT_SHOTGUN)
 	{
 		player_shot1();
 		W_FireShotgun();
-		self.attack_finished = time + 0.5;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_SHOTGUN;
 	}
 	else if (self.weapon == IT_SUPER_SHOTGUN)
 	{
 		player_shot1();
 		W_FireSuperShotgun();
-		self.attack_finished = time + 0.7;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_SHOTGUN_SUPER;
 	}
 	else if (self.weapon == IT_NAILGUN)
 	{
@@ -997,26 +1007,30 @@ void() W_Attack =
 	{
 		player_rocket1();
 		W_FireGrenade();
-		self.attack_finished = time + 0.6;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_GRENADE_LAUNCHER;
 	}
 	else if (self.weapon == IT_ROCKET_LAUNCHER)
 	{
 		player_rocket1();
 		W_FireRocket();
-		self.attack_finished = time + 0.8;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_ROCKET_LAUNCHER;
 	}
 	else if (self.weapon == IT_LIGHTNING)
 	{
 		player_light1();
-		self.attack_finished = time + 0.1;
+		self.attack_finished = time + WEAPON_RELOAD_TIME_LIGHTNING;
 		sound(self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
 	}
 	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 	{
-		// needs to be team only
-		player_rocket1();
-		W_FireZombinator();
-		self.attack_finished = time + 1.5;
+		if (self.team == ZOMBONO_TEAM_DIRECTOR) 
+		{
+			// needs to be team only
+			player_rocket1();
+			W_FireZombinator();
+			self.attack_finished = time + WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR;
+		}
+
 	}
 };
 
@@ -1194,9 +1208,17 @@ void() CycleWeaponCommand =
 		}
 		else if (self.weapon == IT_GRENADE_LAUNCHER)
 		{
-			self.weapon = IT_DIRECTOR_ZOMBINATOR;
-			if (self.ammo_rockets < 1)
-				am = 1;
+			if (self.team == ZOMBONO_TEAM_DIRECTOR)
+			{
+				self.weapon = IT_DIRECTOR_ZOMBINATOR;
+			}
+			else
+			{
+				self.weapon = IT_ROCKET_LAUNCHER;
+				if (self.ammo_rockets < 1)
+					am = 1;
+			}
+
 		}
 		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 		{
@@ -1261,9 +1283,16 @@ void() CycleWeaponBack =
 		}
 		else if (self.weapon == IT_ROCKET_LAUNCHER)
 		{
-			self.weapon = IT_DIRECTOR_ZOMBINATOR;
-			if (self.ammo_rockets < 1)
-				am = 1;
+			if (self.team == ZOMBONO_TEAM_DIRECTOR)
+			{
+				self.weapon = IT_DIRECTOR_ZOMBINATOR;
+			}
+			else
+			{
+				self.weapon = IT_GRENADE_LAUNCHER;
+				if (self.ammo_cells < 1)
+					am = 1;
+			}
 		}
 		else if (self.weapon == IT_LIGHTNING)
 		{
