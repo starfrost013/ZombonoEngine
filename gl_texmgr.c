@@ -56,7 +56,7 @@ glmode_t modes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
 #define NUM_GLMODES 6
-int gl_texturemode = 5; // bilinear
+int gl_texturemode = 2; // bilinear 
 
 /*
 ===============

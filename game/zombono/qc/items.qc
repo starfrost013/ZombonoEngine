@@ -467,7 +467,8 @@ void() weapon_touch =
 		}
 		else
 		{
-			sprint(other, "You can't pick this up - you're not on the director team!");
+			sprint(other, "You can't pick this up - you're not on the director team!\n");
+			return;
 		}
 	}
 	else

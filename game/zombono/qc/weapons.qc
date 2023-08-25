@@ -38,7 +38,7 @@ float WEAPON_RELOAD_TIME_NAILGUN_SUPER = 0.0;	// doesn't have reload, but may wi
 float WEAPON_RELOAD_TIME_GRENADE_LAUNCHER = 0.6;
 float WEAPON_RELOAD_TIME_ROCKET_LAUNCHER = 0.8;
 float WEAPON_RELOAD_TIME_LIGHTNING = 0.1;
-float WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR = 2.0;
+float WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR = 1.75;
 
 // called by worldspawn
 void() W_Precache =
@@ -1030,7 +1030,6 @@ void() W_Attack =
 			W_FireZombinator();
 			self.attack_finished = time + WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR;
 		}
-
 	}
 };
 
