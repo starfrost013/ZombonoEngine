@@ -34,5 +34,3 @@ void Sbar_Draw (void);
 
 void Sbar_IntermissionOverlay (void);
 // called each frame after the level has been completed
-
-void Sbar_FinaleOverlay (void);

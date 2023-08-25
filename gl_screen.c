@@ -1074,11 +1074,6 @@ void SCR_UpdateScreen (void)
 	{
 		Sbar_IntermissionOverlay ();
 	}
-	else if (cl.intermission == 2 && key_dest == key_game) //end of episode
-	{
-		Sbar_FinaleOverlay ();
-		SCR_CheckDrawCenterString ();
-	}
 	else
 	{
 		SCR_DrawCrosshair (); //johnfitz
