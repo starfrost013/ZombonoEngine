@@ -527,7 +527,7 @@ void Host_God_f (void)
 	}
 
 	if (!sv_cheats.value)
-		Con_Printf("sv_cheats must be 1 to use godmode");
+		Con_Printf("sv_cheats must be 1 to use godmode!");
 		return;
 
 	//johnfitz -- allow user to explicitly set god mode to on or off
@@ -573,6 +573,8 @@ void Host_Notarget_f (void)
 	}
 
 	if (!sv_cheats.value)
+
+		Con_Printf("sv_cheats must be 1 to use notarget!");
 		return;
 
 	//johnfitz -- allow user to explicitly set notarget to on or off
@@ -620,6 +622,7 @@ void Host_Noclip_f (void)
 	}
 
 	if (!sv_cheats.value)
+		Con_Printf("sv_cheats must be 1 to use noclip!");
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
