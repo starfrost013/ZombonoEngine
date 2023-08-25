@@ -420,6 +420,8 @@ void Host_Mods_f (void)
 	int i;
 	mod_t	*mod;
 
+	Con_SafePrintf("Mods:\n");
+
 	for (mod = modlist, i=0; mod; mod = mod->next, i++)
 		Con_SafePrintf ("   %s\n", mod->name);
 
@@ -524,7 +526,8 @@ void Host_God_f (void)
 		return;
 	}
 
-	if (!host_client->privileged)
+	if (!sv_cheats.value)
+		Con_Printf("sv_cheats must be 1 to use godmode");
 		return;
 
 	//johnfitz -- allow user to explicitly set god mode to on or off
@@ -569,7 +572,7 @@ void Host_Notarget_f (void)
 		return;
 	}
 
-	if (!host_client->privileged)
+	if (!sv_cheats.value)
 		return;
 
 	//johnfitz -- allow user to explicitly set notarget to on or off
@@ -616,7 +619,7 @@ void Host_Noclip_f (void)
 		return;
 	}
 
-	if (!host_client->privileged)
+	if (!sv_cheats.value)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -672,7 +675,7 @@ void Host_Fly_f (void)
 		return;
 	}
 
-	if (!host_client->privileged)
+	if (!sv_cheats.value)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -1415,7 +1418,7 @@ void Host_Kill_f (void)
 
 	if (sv_player->v.health <= 0)
 	{
-		SV_ClientPrintf ("Can't suicide -- allready dead!\n");
+		SV_ClientPrintf ("Can't suicide -- already dead!\n");
 		return;
 	}
 
@@ -1477,7 +1480,7 @@ void Host_PreSpawn_f (void)
 
 	if (host_client->spawned)
 	{
-		Con_Printf ("prespawn not valid -- allready spawned\n");
+		Con_Printf ("prespawn not valid -- already spawned\n");
 		return;
 	}
 
@@ -1506,13 +1509,13 @@ void Host_Spawn_f (void)
 
 	if (host_client->spawned)
 	{
-		Con_Printf ("Spawn not valid -- allready spawned\n");
+		Con_Printf ("Spawn not valid -- already spawned\n");
 		return;
 	}
 
 // run the entrance script
 	if (sv.loadgame)
-	{	// loaded games are fully inited allready
+	{	// loaded games are fully inited already
 		// if this is the last client to be connected, unpause
 		sv.paused = false;
 	}

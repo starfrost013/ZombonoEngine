@@ -800,7 +800,6 @@ void Sbar_DeathmatchOverlay (void)
 	Draw_String(x, director_position, "D I R E C T O R S");
 	Draw_String(x, player_position, "P L A Y E R S");
 
-
 	for (i=0 ; i<l ; i++)// let's hope these are the same indiceslmao
 	{
 		k = fragsort[i];
