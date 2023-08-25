@@ -448,7 +448,7 @@ void() W_FireZombinator =
 
 	makevectors(self.v_angle);
 
-	traceline(self.origin, self.origin + v_forward*2048, 0, self);
+	traceline(self.origin + v_forward*48, self.origin + v_forward*2048, 0, self);
 
 	zombie = spawn();
 	zombie.classname = "monster_zombie";
