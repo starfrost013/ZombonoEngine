@@ -372,7 +372,7 @@ entity() SelectSpawnPoint =
 	}
 	else // no team
 	{
-		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar");
+		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar!!");
 		dprint(ftos(gamemode));
 		dprint("! \n");
 	
@@ -420,7 +420,6 @@ void() PutClientInServer =
 
 	DecodeLevelParms();
 
-	W_SetCurrentAmmo();
 
 	self.attack_finished = time;
 	self.th_pain = player_pain;
@@ -431,6 +430,24 @@ void() PutClientInServer =
 	self.pausetime = 0;
 
 	spot = SelectSpawnPoint();
+
+	// give weapons based on what info_player_start_* specified
+	self.items = spot.startweapons;
+
+	// temp code for playtest1 build only
+	// give starter ammo
+	if (self.items & IT_GRENADE_LAUNCHER == IT_GRENADE_LAUNCHER
+		|| self.items & IT_ROCKET_LAUNCHER == IT_ROCKET_LAUNCHER) self.ammo_rockets = 5; //starter amount
+
+	if (self.items & IT_SHOTGUN == IT_SHOTGUN
+		|| self.items & IT_SUPER_SHOTGUN == IT_SUPER_SHOTGUN) self.ammo_shells = 24;
+
+	if (self.items & IT_NAILGUN == IT_NAILGUN
+		|| self.items & IT_SUPER_NAILGUN == IT_SUPER_NAILGUN) self.ammo_nails = 16;
+
+	if (self.items & IT_LIGHTNING == IT_LIGHTNING) self.ammo_cells = 12;
+
+	W_SetCurrentAmmo(); // moved here for new method of giving plaayer weapons
 
 	self.origin = spot.origin + '0 0 1';
 	self.angles = spot.angles;
@@ -447,16 +464,12 @@ void() PutClientInServer =
 
 	self.view_ofs = '0 0 22';
 
-	// give weapon
-	self.items = spot.startweapons;
-
 	player_stand1();
 
 	makevectors(self.angles);
 	spawn_tfog(self.origin + v_forward*20);
 
 	spawn_tdeath(self.origin, self);
-
 };
 
 

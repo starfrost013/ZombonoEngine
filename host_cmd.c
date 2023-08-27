@@ -1534,14 +1534,18 @@ void Host_Spawn_f (void)
 		// set netname
 		ent->v.netname = host_client->name - pr_strings;
 
-		// set team
-		time_t t;
+		if (ent->v.nextthink == 0) // HORRIBLE hack!!!
+		{
+			// set team
+			time_t t;
 
-		// randomly assign player a team. we use time for this
-		// might move this to qc...
-		srand((int)time(&t));
+			// randomly assign player a team. we use time for this
+			// might move this to qc...
+			srand((int)time(&t));
 
-		ent->v.team = TEAM_Rebalance(rand() % 2);
+			ent->v.team = TEAM_Rebalance(rand() % 2);
+		}
+
 
 		// copy spawn parms out of the client_t
 
@@ -1780,22 +1784,28 @@ void Host_Give_f (void)
 	   if (t[0] >= '2')
 		   sv_player->v.items = (int)sv_player->v.items | (IT_SHOTGUN << (t[0] - '2'));
 		break;
+    case 'S':
     case 's':
         sv_player->v.ammo_shells = v;
         break;
+	case 'N':
     case 'n':
 		sv_player->v.ammo_nails = v;
         break;
+	case 'R':
     case 'r':
 		sv_player->v.ammo_rockets = v;
         break;
+	case 'H':
     case 'h':
         sv_player->v.health = v;
         break;
+	case 'C':
     case 'c':
 		sv_player->v.ammo_cells = v;
         break;
 	//johnfitz -- give armour
+	case 'A':
     case 'a':
 		if (v > 150)
 		{

@@ -461,6 +461,8 @@ void() W_FireZombinator =
 
 	makevectors(self.v_angle);
 
+	dprint(ftos(trace_fraction));
+
 	if (trace_fraction < 1)
 	{
 		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
@@ -881,9 +883,8 @@ void() W_SetCurrentAmmo =
 	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 	{
 		self.currentammo = self.ammo_rockets; // TODO: ADD MORE AMMO
-		self.weaponmodel = "progs/v_rock.mdl"; // temp
+		self.weaponmodel = "progs/h_zombie.mdl"; // temp
 		self.weaponframe = 0;
-		self.items = self.items | IT_ROCKETS;
 	}
 	else
 	{
