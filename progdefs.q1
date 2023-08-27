@@ -12,7 +12,7 @@ typedef struct
 	float	force_retouch;
 	string_t	mapname;
 	float	deathmatch;			/* OBSOLETE - kept for fteqcc compatibility - DON'T USE! */
-	float	coop;				/* OBSOLETE - kept for fteqcc compatibility - DON'T USE */
+	float	coop;				/* OBSOLETE - kept for fteqcc compatibility - DON'T USE! */
 	float	friendly_fire;
 	float	serverflags;
 	float	total_secrets;
@@ -140,6 +140,7 @@ typedef struct
 	string_t	noise1;
 	string_t	noise2;
 	string_t	noise3;
+	float	startweapons;
 } entvars_t;
 
 /* presently meaningless */

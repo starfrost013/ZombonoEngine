@@ -64,7 +64,7 @@ void() SetChangeParms =
 		self.health = 100;
 	if (self.health < 50)
 		self.health = 50;
-	parm1 = self.items;
+	//parm1 = self.items; 
 	parm2 = self.health;
 	parm3 = self.armorvalue;
 	if (self.ammo_shells < 25)
@@ -74,20 +74,20 @@ void() SetChangeParms =
 	parm5 = self.ammo_nails;
 	parm6 = self.ammo_rockets;
 	parm7 = self.ammo_cells;
-	parm8 = self.weapon;
+	//parm8 = self.weapon;
 	parm9 = self.armortype * 100;
 };
 
 void() SetNewParms =
 {
-	parm1 = IT_SHOTGUN | IT_AXE;
+	//parm1 = IT_SHOTGUN | IT_AXE;
 	parm2 = 100;
 	parm3 = 0;
 	parm4 = 25;
 	parm5 = 0;
 	parm6 = 0;
 	parm7 = 0;
-	parm8 = 1;
+	//parm8 = 1;
 	parm9 = 0;
 };
 
@@ -99,14 +99,15 @@ void() DecodeLevelParms =
 			SetNewParms(); // take away all stuff on starting new episode
 	}
 
-	self.items = parm1;
+	// ZOMBONO: These parms are now a part of info_player_start_* for teamplay
+	//self.items = parm1;
 	self.health = parm2;
 	self.armorvalue = parm3;
 	self.ammo_shells = parm4;
 	self.ammo_nails = parm5;
 	self.ammo_rockets = parm6;
 	self.ammo_cells = parm7;
-	self.weapon = parm8;
+	//self.weapon = parm8;
 	self.armortype = parm9 * 0.01;
 };
 
@@ -446,12 +447,16 @@ void() PutClientInServer =
 
 	self.view_ofs = '0 0 22';
 
+	// give weapon
+	self.items = spot.startweapons;
+
 	player_stand1();
 
 	makevectors(self.angles);
 	spawn_tfog(self.origin + v_forward*20);
 
 	spawn_tdeath(self.origin, self);
+
 };
 
 
@@ -528,10 +533,12 @@ Exit deathmatch games upon conditions
 void() CheckRules =
 {
 	// Zombono Mode0 (Classic)
+	/*
 	if (gamemode == 0)
 	{
 
 	}
+	*/
 
 	// shared across all modes
 	float timelimit;

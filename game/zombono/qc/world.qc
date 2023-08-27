@@ -82,7 +82,7 @@ void() main =
 	precache_file("gfx/ttl_cstm.lmp");
 
 	precache_file("gfx/mp_menu.lmp");
-	
+
 	precache_file("gfx/pause.lmp");
 	precache_file("gfx/loading.lmp");
 
@@ -232,7 +232,7 @@ void() worldspawn =
 
 	precache_model("progs/backpack.mdl");
 
-	// ***THESE ARE REQUIRED FOR ZOMBONO BECAUSE ZOMBIES CAN BE SPAWNED OUTSIDE OF WORLDSPAWN***
+	// ***THESE ARE REQUIRED FOR ZOMBONO BECAUSE ZOMBIES CAN BE SPAWNED OUTSIDE OF ENTITIES**
 	precache_model("progs/zombie.mdl");
 	precache_model("progs/h_zombie.mdl");
 	precache_model("progs/zom_gib.mdl");

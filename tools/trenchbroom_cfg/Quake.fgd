@@ -1,16 +1,17 @@
 //
 // Zombono game definition file (.fgd)
-// for Worldcraft 1.6 and above
-//
+// for TrenchBroom (may also work with legacy Worldcraft, but not tested)
+
+// Based off Quake Worldcraft FGD
 // written by autolycus / autolycus@planetquake.com
 // email me with improvements and suggestions
 //
-
 // Modified by CZG : grawert@online.no : http://www.planetquake.com/greyvoid/
 // further modified by various authors
 
 //
-// worldspawn
+// worldspawn 
+// possible: add underscore before new entities to not break worldcraft? if we did that anyway, don't bother lol
 //
 
 @SolidClass = worldspawn : "World entity"
@@ -44,6 +45,32 @@
 	]
 ]
 
+@baseclass base(Appearflags) = Weaponflags [
+	startweapons(Flags) = 
+	[
+		1 : "Shotgun" : 0
+		2 : "Super Shotgun" : 0
+		4 : "Nailgun" : 0
+		8 : "Super Nailgun" : 0
+		16 : "Grenade Launcher" : 0
+		32 : "Rocket Launcher" : 0
+		64 : "Lightning" : 0
+		4096 : "Axe" : 0
+		8192 : "Armor 1" : 0
+		16384 : "Armor 2" : 0
+		32768 : "Armor 3" : 0
+		65536 : "Super Health" : 0
+		131072 : "Key 1 (MEANING WILL CHANGE)" : 0
+		262144 : "Key 2 (MEANING WILL CHANGE)" : 0
+		524288 : "Invisibility" : 0
+		1048576 : "Invulnerability" : 0
+		2097152 : "Suit" : 0
+		4194304 : "Quad" : 0
+		8388608 : "Zombinator (Director Team Only!)" : 0
+	]
+]
+
+
 @baseclass = Targetname [ targetname(target_source) : "Name" ]
 @baseclass = Target [
 	target(target_destination) : "Target"
@@ -56,13 +83,10 @@
 // player starts, deathmatch, coop, teleport
 //
 
-@baseclass base(Appearflags) size(-16 -16 -24, 16 16 32)
-	color(0 255 0) model({ "path": ":progs/player.mdl" }) = PlayerClass []
+@baseclass base(Weaponflags) size(-16 -16 -24, 16 16 32)
+	color(0 255 0) model({ "path": ":progs/player.mdl" }) = PlayerClass : "Base player class"[]
 
-@PointClass base(PlayerClass) = info_player_start : "Player 1 start" []
-@PointClass base(PlayerClass) = info_player_coop : "Player cooperative start" []
-@PointClass base(PlayerClass) = info_player_start2 : "Player episode return point" []
-@PointClass base(PlayerClass) = info_player_deathmatch : "Deathmatch start" []
+@PointClass base(PlayerClass) = info_player_start : "Player 1 start (DEPRECATED -- FALLBACK ONLY)" []
 @PointClass base(PlayerClass) = info_player_start_player : "Zombono player start" []
 @PointClass base(PlayerClass) = info_player_start_director : "Zombono director start" []
 @PointClass base(PlayerClass) = testplayerstart : "Testing player start" []

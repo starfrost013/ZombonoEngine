@@ -232,6 +232,8 @@ void end_sys_globals; // flag for structure dumping
 
 .string noise, noise1, noise2, noise3; // contains names of wavs to play
 
+.float startweapons; // Weapons at startup
+
 //================================================
 void end_sys_fields; // flag for structure dumping
 //================================================
