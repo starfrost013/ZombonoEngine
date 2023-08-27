@@ -7,11 +7,11 @@ using System.Diagnostics;
 #region Constants & Variables
 
 
-const string ASSETBUILD_VERSION = "1.3.0";
+const string ASSETBUILD_VERSION = "1.3.1";
 const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
-string[] validConfigs = { "Debug", "Release" }; // Valid build configs.
+string[] validConfigs = { "Debug", "Release", "Playtest" }; // Valid build configs.
 string config = validConfigs[0]; // Current config.
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
@@ -21,7 +21,8 @@ string pak0Dir = $@"{gameDir}\content"; // Package 0 dir.
 string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
 string gfxSourceDir = $@"{gameDir}raw\content\gfx"; // gfx source dir.
 string gfxDestinationDir = $@"{gameDir}\content\gfx"; // gfx destination dir
-string finalDir = $@"..\..\..\..\..\build\{config}\bin\{gameName}"; // final directory
+string finalDir = string.Empty; //set later
+
 #endregion
 
 #region Strings
@@ -72,7 +73,12 @@ try
             Console.WriteLine($"Invalid build config provided (valid options: Debug, Release)");
             PrintHelpAndExit(4);
         }
+
+        config = args[1];
     }
+
+    // set the final directory
+    finalDir = $@"..\..\..\..\..\build\{config}\bin\{gameName}"; // final directory
 
     // could be first build of a new game so just create final dir if it exists
     if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);
@@ -106,7 +112,7 @@ try
         int start = baseCfgFile.LastIndexOf(Path.DirectorySeparatorChar);
         int end = baseCfgFile.Length;
 
-        string justFileName = baseCfgFile.Substring(start, end - start);
+        string justFileName = baseCfgFile[start..end];
         File.Copy(baseCfgFile, $@"{finalDir}\{justFileName}", true);
     }
 

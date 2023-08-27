@@ -45,10 +45,14 @@ enum {
 	m_lanconfig,
 	m_gameoptions,
 	m_search,
-	m_slist
+	m_slist,
+	m_not_available_demo,
 } m_state;
 
 void M_Menu_Main_f (void);
+	#ifdef PLAYTEST
+	void M_Menu_NotAvailableInDemo_f(void);
+	#endif
 	void M_Menu_SinglePlayer_f (void);
 		void M_Menu_Load_f (void);
 		void M_Menu_Save_f (void);
@@ -64,6 +68,9 @@ void M_Menu_Main_f (void);
 	void M_Menu_Quit_f (void);
 
 void M_Main_Draw (void);
+	#ifdef PLAYTEST
+	void M_NotAvailableInDemo_Draw(void);
+	#endif
 	void M_SinglePlayer_Draw (void);
 		void M_Load_Draw (void);
 		void M_Save_Draw (void);
@@ -79,6 +86,9 @@ void M_Main_Draw (void);
 	void M_Quit_Draw (void);
 
 void M_Main_Key (int key);
+#if PLAYTEST
+	void M_NotAvailableInDemo_Key (void);
+#endif
 	void M_SinglePlayer_Key (int key);
 		void M_Load_Key (int key);
 		void M_Save_Key (int key);
@@ -309,11 +319,21 @@ void M_Main_Key (int key)
 		switch (m_main_cursor)
 		{
 		case 0:
-			M_Menu_SinglePlayer_f ();
+#ifdef PLAYTEST
+			M_Menu_NotAvailableInDemo_f();
+#else
+			M_Menu_SinglePlayer_f();
+#endif
+
 			break;
 
 		case 1:
-			M_Menu_MultiPlayer_f ();
+#ifdef PLAYTEST
+			M_Menu_NotAvailableInDemo_f();
+#else
+			M_Menu_MultiPlayer_f();
+#endif
+
 			break;
 
 		case 2:
@@ -326,6 +346,35 @@ void M_Main_Key (int key)
 		}
 	}
 }
+
+#ifdef PLAYTEST
+
+void M_Menu_NotAvailableInDemo_f(void)
+{
+	key_dest = key_menu;
+	m_state = m_not_available_demo;
+	m_entersound = true;
+}
+
+void M_NotAvailableInDemo_Draw(void)
+{
+	// start positions of menu
+	int x = 48;
+	int y = 56;
+
+	M_DrawTextBox(x, y, 32, 3);
+	M_Print(x, y+8, "This function is not available in");
+	M_Print(x, y+16, "playtest builds - press F4 in");
+	M_Print(x, y+24, "game to access options quickly");
+}
+
+void M_NotAvailableInDemo_Key(void)
+{
+	// immediately return to main menu
+	M_Menu_Main_f();
+}
+
+#endif
 
 //=============================================================================
 /* SINGLE PLAYER MENU */
@@ -2117,6 +2166,10 @@ void M_Draw (void)
 	case m_slist:
 		M_ServerList_Draw ();
 		break;
+
+	case m_not_available_demo:
+		M_NotAvailableInDemo_Draw();
+		break;
 	}
 
 	if (m_entersound)
@@ -2192,6 +2245,10 @@ void M_Keydown (int key)
 
 	case m_slist:
 		M_ServerList_Key (key);
+		return;
+
+	case m_not_available_demo:
+		M_NotAvailableInDemo_Key (key);
 		return;
 	}
 }

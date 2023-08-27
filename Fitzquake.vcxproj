@@ -64,8 +64,8 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|Win32'">
-    <OutDir>.\build\Release\bin\</OutDir>
-    <IntDir>.\build\Release\</IntDir>
+    <OutDir>.\build\Playtest\bin\</OutDir>
+    <IntDir>.\build\Playtest\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -141,6 +141,9 @@
       <OutputFile>.\build\Release\bin\$(TargetName).exe</OutputFile>
       <AdditionalDependencies>.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\tools\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono Release</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|Win32'">
     <ClCompile>
@@ -152,10 +155,10 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>.\dxsdk\sdk\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;PLAYTEST_WINDOWS;GLQUAKE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;PLAYTEST;_WINDOWS;GLQUAKE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\build\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\build\Release\Fitzquake.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\build\Playtest\Fitzquake.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\build\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\build\Release\</ProgramDataBaseFileName>
     </ClCompile>
@@ -174,9 +177,12 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <OutputFile>.\build\Release\bin\$(TargetName).exe</OutputFile>
+      <OutputFile>.\build\Playtest\bin\$(TargetName).exe</OutputFile>
       <AdditionalDependencies>.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\tools\assetbuild\bin\Debug\net7.0\assetbuild.exe zombono Playtest</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cd_win.c" />
