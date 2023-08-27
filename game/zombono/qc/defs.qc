@@ -445,6 +445,8 @@ float framecount;
 
 float skill;
 
+float sv_cheats; // Cheats
+
 //================================================
 
 //

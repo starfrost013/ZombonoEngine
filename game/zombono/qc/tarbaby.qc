@@ -207,11 +207,7 @@ void() tbaby_die2 = [ $exp, tbaby_run1 ]
 */
 void() monster_tarbaby =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
+
 	precache_model2 ("progs/tarbaby.mdl");
 
 	precache_sound2 ("blob/death1.wav");

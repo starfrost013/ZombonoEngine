@@ -394,13 +394,7 @@ testing air bubbles
 */
 
 void() air_bubbles =
-
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model("progs/s_bubble.spr");
 	self.nextthink = time + 1;
 	self.think = make_bubbles;

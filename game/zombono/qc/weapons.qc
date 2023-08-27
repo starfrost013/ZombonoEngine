@@ -1128,7 +1128,7 @@ void() CheatCommand =
 {
 	//change to sv_cheats
 
-	if (deathmatch || coop)
+	if (!sv_cheats)
 		return;
 
 	self.ammo_rockets = 100;
@@ -1335,8 +1335,9 @@ void() ServerflagsCommand =
 
 void() QuadCheat =
 {
-	if (deathmatch || coop)
+	if (!sv_cheats)
 		return;
+
 	self.super_time = 1;
 	self.super_damage_finished = time + 30;
 	self.items = self.items | IT_QUAD;

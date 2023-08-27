@@ -340,11 +340,6 @@ void() enf_die =
 */
 void() monster_enforcer =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model2 ("progs/enforcer.mdl");
 	precache_model2 ("progs/h_mega.mdl");
 	precache_model2 ("progs/laser.mdl");

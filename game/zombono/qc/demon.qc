@@ -199,11 +199,6 @@ void() Demon_MeleeAttack =
 */
 void() monster_demon1 =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model("progs/demon.mdl");
 	precache_model("progs/h_demon.mdl");
 

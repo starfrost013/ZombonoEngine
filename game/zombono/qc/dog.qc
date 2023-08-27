@@ -351,11 +351,6 @@ float() DogCheckAttack =
 */
 void() monster_dog =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model("progs/h_dog.mdl");
 	precache_model("progs/dog.mdl");
 

@@ -400,11 +400,7 @@ void() Wiz_Missile =
 */
 void() monster_wizard =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
+
 	precache_model("progs/wizard.mdl");
 	precache_model("progs/h_wizard.mdl");
 	precache_model("progs/w_spike.mdl");

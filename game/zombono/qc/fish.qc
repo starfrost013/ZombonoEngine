@@ -176,11 +176,6 @@ void(entity attacker, float damage) fish_pain =
 */
 void() monster_fish =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model2 ("progs/fish.mdl");
 
 	precache_sound2 ("fish/death.wav");

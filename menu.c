@@ -46,7 +46,9 @@ enum {
 	m_gameoptions,
 	m_search,
 	m_slist,
+#ifdef PLAYTEST
 	m_not_available_demo,
+#endif
 } m_state;
 
 void M_Main_f (void);
@@ -2167,9 +2169,11 @@ void M_Draw (void)
 		M_ServerList_Draw ();
 		break;
 
+#ifdef PLAYTEST
 	case m_not_available_demo:
 		M_NotAvailableInDemo_Draw();
 		break;
+#endif
 	}
 
 	if (m_entersound)
@@ -2247,9 +2251,11 @@ void M_Keydown (int key)
 		M_ServerList_Key (key);
 		return;
 
+#ifdef PLAYTEST
 	case m_not_available_demo:
 		M_NotAvailableInDemo_Key (key);
 		return;
+#endif
 	}
 }
 

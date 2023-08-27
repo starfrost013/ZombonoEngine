@@ -197,12 +197,6 @@ void() flymonster_start =
 
 void() swimmonster_start_go =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
-
 	self.takedamage = DAMAGE_AIM;
 	// total_monsters = total_monsters + 1;
 

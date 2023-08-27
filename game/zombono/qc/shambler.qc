@@ -364,11 +364,7 @@ void() sham_die =
 */
 void() monster_shambler =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
+
 	precache_model("progs/shambler.mdl");
 	precache_model("progs/s_light.mdl");
 	precache_model("progs/h_shams.mdl");

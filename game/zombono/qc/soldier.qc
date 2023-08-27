@@ -279,11 +279,6 @@ void() army_die =
 */
 void() monster_army =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model("progs/soldier.mdl");
 	precache_model("progs/h_guard.mdl");
 	precache_model("progs/gib1.mdl");

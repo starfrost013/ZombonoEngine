@@ -499,12 +499,6 @@ If crucified, stick the bounding box 12 pixels back into a wall to look right.
 */
 void() monster_zombie =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
-
 	precache_model("progs/zombie.mdl");
 	precache_model("progs/h_zombie.mdl");
 	precache_model("progs/zom_gib.mdl");

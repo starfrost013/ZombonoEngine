@@ -226,11 +226,7 @@ void() ShalMissileTouch =
 */
 void() monster_shalrath =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
+
 	precache_model2 ("progs/shalrath.mdl");
 	precache_model2 ("progs/h_shal.mdl");
 	precache_model2 ("progs/v_spike.mdl");

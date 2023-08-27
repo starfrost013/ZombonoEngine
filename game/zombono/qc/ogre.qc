@@ -483,11 +483,6 @@ void() ogre_melee =
 */
 void() monster_ogre =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
 	precache_model("progs/ogre.mdl");
 	precache_model("progs/h_ogre.mdl");
 	precache_model("progs/grenade.mdl");

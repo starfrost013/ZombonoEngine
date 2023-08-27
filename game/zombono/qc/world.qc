@@ -307,7 +307,8 @@ void() StartFrame =
 	// setup cvars
 	friendly_fire = cvar("friendly_fire");
 	skill = cvar("skill");
-
+	sv_cheats = cvar("sv_cheats");
+	
 	// Get game mode
 	gamemode = cvar("gamemode");
 

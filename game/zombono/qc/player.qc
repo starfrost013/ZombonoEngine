@@ -568,8 +568,8 @@ void() PlayerDie =
 	self.radsuit_finished = 0;
 	self.modelindex = modelindex_player; // don't use eyes
 
-	if (deathmatch || coop)
-		DropBackpack();
+	/* May rremove */
+	DropBackpack();
 
 	self.weaponmodel = "";
 	self.view_ofs = '0 0 -8';
