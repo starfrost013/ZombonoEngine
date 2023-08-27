@@ -177,6 +177,7 @@ extern	cvar_t	gamemode;
 extern	cvar_t	fraglimit;
 extern	cvar_t	timelimit;
 extern	cvar_t	sv_cheats;
+extern  cvar_t	sv_zombie_no_rebalance;
 
 extern	server_static_t	svs;				// persistant server info
 extern	server_t		sv;					// local server

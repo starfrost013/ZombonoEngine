@@ -376,11 +376,6 @@ entity() SelectSpawnPoint =
 			if (spot == world)
 			{
 				spot = find(world, classname, "info_player_start_director");
-
-				// stupid stupid
-				dprint("Director spawn coords: ");
-				dprint(vtos(spot.origin));
-				dprint("\n");
 				
 				return spot;
 			}

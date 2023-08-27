@@ -29,7 +29,9 @@ char	localmodels[MAX_MODELS][5];			// inline model names for precache
 
 int sv_protocol = PROTOCOL_ZOMBONO; //johnfitz
 
-cvar_t sv_cheats = { "sv_cheats", "0", false, true, CVAR_ADMINONLY};
+// "Generic" cvars
+cvar_t sv_cheats = { "sv_cheats", "0", false, true, CVAR_ADMINONLY };
+cvar_t sv_zombie_no_rebalance = { "sv_zombie_no_rebalance", "1", false, true, CVAR_ADMINONLY };
 
 extern qboolean		pr_alpha_supported; //johnfitz
 
@@ -82,6 +84,7 @@ void SV_Init (void)
 	extern	cvar_t	sv_accelerate;
 	extern	cvar_t	sv_idealpitchscale;
 	extern	cvar_t	sv_aim;
+	extern	cvar_t	sv_team_autobalance;
 	extern	cvar_t	sv_altnoclip; //johnfitz
 
 	Cvar_RegisterVariable (&sv_maxvelocity, NULL);
@@ -95,7 +98,10 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_aim, NULL);
 	Cvar_RegisterVariable (&sv_nostep, NULL);
 	Cvar_RegisterVariable (&sv_altnoclip, NULL); //johnfitz
-	Cvar_RegisterVariable (&sv_cheats, NULL); // zombono
+
+	// Zombono
+	Cvar_RegisterVariable (&sv_cheats, NULL); 
+	Cvar_RegisterVariable (&sv_zombie_no_rebalance, NULL);
 
 	Cmd_AddCommand ("sv_protocol", &SV_Protocol_f); //johnfitz
 

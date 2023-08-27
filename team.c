@@ -29,7 +29,10 @@ color4_t TEAM_GetColor(int team)
 // If it is, returns a suggested team for that player.
 int TEAM_Rebalance(int team)
 {
-	if (!sv.active) return false;
+	if (!sv.active) return team; // harmless
+
+	// if rebalance is off
+	if (!sv_zombie_no_rebalance.value) return team;
 
 	qboolean needRebalance = false;
 

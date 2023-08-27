@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fitzquake", "Fitzquake.vcxproj", "{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "Fitzquake.vcxproj", "{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assetbuild", "tools\assetbuild\assetbuild.csproj", "{346ED370-10DF-4753-8A75-C5F3EA4953B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bmp2lmp", "tools\bmp2lmp\bmp2lmp.csproj", "{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bmp2lmp", "tools\bmp2lmp\bmp2lmp.csproj", "{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Win32 = Debug|Win32
+		Playtest|Any CPU = Playtest|Any CPU
+		Playtest|Win32 = Playtest|Win32
 		Release|Any CPU = Release|Any CPU
 		Release|Win32 = Release|Win32
 	EndGlobalSection
@@ -21,6 +23,10 @@ Global
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Debug|Any CPU.Build.0 = Debug|Win32
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Debug|Win32.ActiveCfg = Debug|Win32
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Debug|Win32.Build.0 = Debug|Win32
+		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Playtest|Any CPU.ActiveCfg = Playtest|Win32
+		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Playtest|Any CPU.Build.0 = Playtest|Win32
+		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Playtest|Win32.ActiveCfg = Playtest|Win32
+		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Playtest|Win32.Build.0 = Playtest|Win32
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Release|Any CPU.ActiveCfg = Release|Win32
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Release|Any CPU.Build.0 = Release|Win32
 		{36BAA554-3CA9-D02C-B35D-FDACC7AD1843}.Release|Win32.ActiveCfg = Release|Win32
@@ -29,6 +35,10 @@ Global
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Debug|Win32.Build.0 = Debug|Any CPU
+		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Playtest|Any CPU.ActiveCfg = Release|Any CPU
+		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Playtest|Any CPU.Build.0 = Release|Any CPU
+		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Playtest|Win32.ActiveCfg = Release|Any CPU
+		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Playtest|Win32.Build.0 = Release|Any CPU
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{346ED370-10DF-4753-8A75-C5F3EA4953B8}.Release|Win32.ActiveCfg = Release|Any CPU
@@ -37,6 +47,10 @@ Global
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Debug|Win32.Build.0 = Debug|Any CPU
+		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Playtest|Any CPU.ActiveCfg = Release|Any CPU
+		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Playtest|Any CPU.Build.0 = Release|Any CPU
+		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Playtest|Win32.ActiveCfg = Release|Any CPU
+		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Playtest|Win32.Build.0 = Release|Any CPU
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07A3141A-FD8D-405B-8A9D-B7E33E27C4A8}.Release|Win32.ActiveCfg = Release|Any CPU
