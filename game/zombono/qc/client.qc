@@ -154,11 +154,6 @@ entity() FindIntermission =
 		}
 	}
 
-// testinfo_player_start is only found in regioned levels
-	spot = find(world, classname, "testplayerstart");
-	if (spot)
-		return spot;
-
 	objerror("FindIntermission: no spot");
 	return world;
 };
@@ -346,11 +341,6 @@ entity() SelectSpawnPoint =
 {
 	entity spot;
 
-// testinfo_player_start is only found in regioned levels
-	spot = find(world, classname, "testplayerstart");
-	if (spot)
-		return spot;
-
 	if (gamemode == 0)
 	{
 		if (self.team == ZOMBONO_TEAM_DIRECTOR)
@@ -384,13 +374,6 @@ entity() SelectSpawnPoint =
 		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar");
 		dprint(ftos(gamemode));
 		dprint("! \n");
-
-		if (serverflags)
-		{ // return with a rune to start
-			spot = find(world, classname, "info_player_start2");
-			if (spot)
-				return spot;
-		}
 	
 		spot = find(world, classname, "info_player_start");
 	}
@@ -502,34 +485,6 @@ void() info_player_start_player =
 {
 };
 
-/*QUAKED info_player_start2 (1 0 0) (-16 -16 -24) (16 16 24)
-Only used on start map for the return point from an episode.
-*/
-void() info_player_start2 =
-{
-};
-
-
-/*
-saved out by quaked in region mode
-*/
-void() testplayerstart =
-{
-};
-
-/*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 24)
-potential spawning position for deathmatch games
-*/
-void() info_player_deathmatch =
-{
-};
-
-/*QUAKED info_player_coop (1 0 1) (-16 -16 -24) (16 16 24)
-potential spawning position for coop games
-*/
-void() info_player_coop =
-{
-};
 
 /*
 ===============================================================================
@@ -572,6 +527,13 @@ Exit deathmatch games upon conditions
 */
 void() CheckRules =
 {
+	// Zombono Mode0 (Classic)
+	if (gamemode == 0)
+	{
+
+	}
+
+	// shared across all modes
 	float timelimit;
 	float fraglimit;
 

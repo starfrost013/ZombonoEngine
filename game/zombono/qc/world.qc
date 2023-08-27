@@ -21,7 +21,7 @@
 		© 2023 starfrost!!!
 	| | | | | | | | | | | | | |
 
-	Items.qc : World setup code
+	World.qc : World setup code
 */
 
 void() InitBodyQue;
@@ -82,13 +82,7 @@ void() main =
 	precache_file("gfx/ttl_cstm.lmp");
 
 	precache_file("gfx/mp_menu.lmp");
-
-	precache_file("gfx/netmen1.lmp");
-	precache_file("gfx/netmen2.lmp");
-	precache_file("gfx/netmen3.lmp");
-	precache_file("gfx/netmen4.lmp");
-	precache_file("gfx/netmen5.lmp");
-
+	
 	precache_file("gfx/pause.lmp");
 	precache_file("gfx/loading.lmp");
 
@@ -308,7 +302,7 @@ void() StartFrame =
 	friendly_fire = cvar("friendly_fire");
 	skill = cvar("skill");
 	sv_cheats = cvar("sv_cheats");
-	
+
 	// Get game mode
 	gamemode = cvar("gamemode");
 

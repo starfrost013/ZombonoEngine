@@ -445,7 +445,7 @@ float framecount;
 
 float skill;
 
-float sv_cheats; // Cheats
+float sv_cheats; // Cheats enabled
 
 //================================================
 
@@ -465,7 +465,8 @@ float sv_cheats; // Cheats
 //
 .float light_lev; // not used by game, but parsed by light util
 .float style;
-
+.float start_weapons_director; 
+.float start_weapons_player;
 
 //
 // monster ai
