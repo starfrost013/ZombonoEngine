@@ -65,7 +65,7 @@ extern	int		key_linepos;
 
 qboolean	con_initialized;
 
-extern void M_Menu_Main_f (void);
+extern void M_Main_f (void);
 
 /*
 ================
@@ -119,7 +119,7 @@ void Con_ToggleConsole_f (void)
 		}
 		else
 		{
-			M_Menu_Main_f ();
+			M_Main_f ();
 		}
 	}
 	else

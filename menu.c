@@ -49,23 +49,23 @@ enum {
 	m_not_available_demo,
 } m_state;
 
-void M_Menu_Main_f (void);
+void M_Main_f (void);
 	#ifdef PLAYTEST
-	void M_Menu_NotAvailableInDemo_f(void);
+	void M_NotAvailableInDemo_f(void);
 	#endif
-	void M_Menu_SinglePlayer_f (void);
-		void M_Menu_Load_f (void);
-		void M_Menu_Save_f (void);
-	void M_Menu_MultiPlayer_f (void);
-		void M_Menu_Setup_f (void);
-		void M_Menu_LanConfig_f (void);
-		void M_Menu_GameOptions_f (void);
-		void M_Menu_Search_f (void);
-		void M_Menu_ServerList_f (void);
-	void M_Menu_Options_f (void);
-		void M_Menu_Keys_f (void);
-		void M_Menu_Video_f (void);
-	void M_Menu_Quit_f (void);
+	void M_SinglePlayer_f (void);
+		void M_Load_f (void);
+		void M_Save_f (void);
+	void M_MultiPlayer_f (void);
+		void M_Setup_f (void);
+		void M_LanConfig_f (void);
+		void M_GameOptions_f (void);
+		void M_Search_f (void);
+		void M_ServerList_f (void);
+	void M_Options_f (void);
+		void M_Keys_f (void);
+		void M_Video_f (void);
+	void M_Quit_f (void);
 
 void M_Main_Draw (void);
 	#ifdef PLAYTEST
@@ -235,7 +235,7 @@ void M_ToggleMenu_f (void)
 	{
 		if (m_state != m_main)
 		{
-			M_Menu_Main_f ();
+			M_Main_f ();
 			return;
 		}
 		key_dest = key_game;
@@ -248,7 +248,7 @@ void M_ToggleMenu_f (void)
 	}
 	else
 	{
-		M_Menu_Main_f ();
+		M_Main_f ();
 	}
 }
 
@@ -260,7 +260,7 @@ int	m_main_cursor;
 #define	MAIN_ITEMS	4
 
 
-void M_Menu_Main_f (void)
+void M_Main_f (void)
 {
 	if (key_dest != key_menu)
 	{
@@ -320,28 +320,28 @@ void M_Main_Key (int key)
 		{
 		case 0:
 #ifdef PLAYTEST
-			M_Menu_NotAvailableInDemo_f();
+			M_NotAvailableInDemo_f();
 #else
-			M_Menu_SinglePlayer_f();
+			M_SinglePlayer_f();
 #endif
 
 			break;
 
 		case 1:
 #ifdef PLAYTEST
-			M_Menu_NotAvailableInDemo_f();
+			M_NotAvailableInDemo_f();
 #else
-			M_Menu_MultiPlayer_f();
+			M_MultiPlayer_f();
 #endif
 
 			break;
 
 		case 2:
-			M_Menu_Options_f ();
+			M_Options_f ();
 			break;
 
 		case 3:
-			M_Menu_Quit_f ();
+			M_Quit_f ();
 			break;
 		}
 	}
@@ -349,7 +349,7 @@ void M_Main_Key (int key)
 
 #ifdef PLAYTEST
 
-void M_Menu_NotAvailableInDemo_f(void)
+void M_NotAvailableInDemo_f(void)
 {
 	key_dest = key_menu;
 	m_state = m_not_available_demo;
@@ -383,7 +383,7 @@ int	m_singleplayer_cursor;
 #define	SINGLEPLAYER_ITEMS	3
 
 
-void M_Menu_SinglePlayer_f (void)
+void M_SinglePlayer_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_singleplayer;
@@ -412,7 +412,7 @@ void M_SinglePlayer_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-		M_Menu_Main_f ();
+		M_Main_f ();
 		break;
 
 	case K_DOWNARROW:
@@ -445,11 +445,11 @@ void M_SinglePlayer_Key (int key)
 			break;
 
 		case 1:
-			M_Menu_Load_f ();
+			M_Load_f ();
 			break;
 
 		case 2:
-			M_Menu_Save_f ();
+			M_Save_f ();
 			break;
 		}
 	}
@@ -492,7 +492,7 @@ void M_ScanSaves (void)
 	}
 }
 
-void M_Menu_Load_f (void)
+void M_Load_f (void)
 {
 	m_entersound = true;
 	m_state = m_load;
@@ -501,7 +501,7 @@ void M_Menu_Load_f (void)
 }
 
 
-void M_Menu_Save_f (void)
+void M_Save_f (void)
 {
 	if (!sv.active)
 		return;
@@ -553,7 +553,7 @@ void M_Load_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_SinglePlayer_f ();
+		M_SinglePlayer_f ();
 		break;
 
 	case K_ENTER:
@@ -595,7 +595,7 @@ void M_Save_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_SinglePlayer_f ();
+		M_SinglePlayer_f ();
 		break;
 
 	case K_ENTER:
@@ -629,7 +629,7 @@ int	m_multiplayer_cursor;
 #define	MULTIPLAYER_ITEMS	3
 
 
-void M_Menu_MultiPlayer_f (void)
+void M_MultiPlayer_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_multiplayer;
@@ -662,7 +662,7 @@ void M_MultiPlayer_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-		M_Menu_Main_f ();
+		M_Main_f ();
 		break;
 
 	case K_DOWNARROW:
@@ -683,10 +683,10 @@ void M_MultiPlayer_Key (int key)
 		{
 		case 0:
 		case 1:
-			M_Menu_LanConfig_f();	
+			M_LanConfig_f();	
 			break;
 		case 2:
-			M_Menu_Setup_f ();
+			M_Setup_f ();
 			break;
 		}
 	}
@@ -707,7 +707,7 @@ int		setup_bottom;
 
 #define	NUM_SETUP_CMDS	5
 
-void M_Menu_Setup_f (void)
+void M_Setup_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_setup;
@@ -763,7 +763,7 @@ void M_Setup_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_MultiPlayer_f ();
+		M_MultiPlayer_f ();
 		break;
 
 	case K_UPARROW:
@@ -815,7 +815,7 @@ forward:
 		if (setup_top != setup_oldtop || setup_bottom != setup_oldbottom)
 			Cbuf_AddText( va ("color %i %i\n", setup_top, setup_bottom) );
 		m_entersound = true;
-		M_Menu_MultiPlayer_f ();
+		M_MultiPlayer_f ();
 		break;
 
 	case K_BACKSPACE:
@@ -879,7 +879,7 @@ forward:
 
 int		options_cursor;
 
-void M_Menu_Options_f (void)
+void M_Options_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_options;
@@ -1074,7 +1074,7 @@ void M_Options_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_Main_f ();
+		M_Main_f ();
 		break;
 
 	case K_ENTER:
@@ -1082,7 +1082,7 @@ void M_Options_Key (int k)
 		switch (options_cursor)
 		{
 		case 0:
-			M_Menu_Keys_f ();
+			M_Keys_f ();
 			break;
 		case 1:
 			m_state = m_none;
@@ -1093,7 +1093,7 @@ void M_Options_Key (int k)
 			Cbuf_AddText ("exec default.cfg\n");
 			break;
 		case 12:
-			M_Menu_Video_f ();
+			M_Video_f ();
 			break;
 		default:
 			M_AdjustSliders (1);
@@ -1173,7 +1173,7 @@ char *bindnames[][2] =
 int		keys_cursor;
 int		bind_grab;
 
-void M_Menu_Keys_f (void)
+void M_Keys_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_keys;
@@ -1302,7 +1302,7 @@ void M_Keys_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_Options_f ();
+		M_Options_f ();
 		break;
 
 	case K_LEFTARROW:
@@ -1340,7 +1340,7 @@ void M_Keys_Key (int k)
 //=============================================================================
 /* VIDEO MENU */
 
-void M_Menu_Video_f (void)
+void M_Video_f (void)
 {
 	(*vid_menucmdfn) (); //johnfitz
 }
@@ -1364,7 +1364,7 @@ int		msgNumber;
 int		m_quit_prevstate;
 qboolean	wasInMenus;
 
-void M_Menu_Quit_f (void)
+void M_Quit_f (void)
 {
 	if (m_state == m_quit)
 		return;
@@ -1454,7 +1454,7 @@ int 	lanConfig_port;
 char	lanConfig_portname[6];
 char	lanConfig_joinname[22];
 
-void M_Menu_LanConfig_f (void)
+void M_LanConfig_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_lanconfig;
@@ -1536,7 +1536,7 @@ void M_LanConfig_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-		M_Menu_MultiPlayer_f ();
+		M_MultiPlayer_f ();
 		break;
 
 	case K_UPARROW:
@@ -1565,10 +1565,10 @@ void M_LanConfig_Key (int key)
 		{
 			if (StartingGame)
 			{
-				M_Menu_GameOptions_f ();
+				M_GameOptions_f ();
 				break;
 			}
-			M_Menu_Search_f();
+			M_Search_f();
 			break;
 		}
 
@@ -1659,7 +1659,7 @@ int maxplayers;
 qboolean m_serverInfoMessage = false;
 double m_serverInfoMessageTime;
 
-void M_Menu_GameOptions_f (void)
+void M_GameOptions_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_gameoptions;
@@ -1848,7 +1848,7 @@ void M_GameOptions_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-		M_Menu_MultiPlayer_f ();
+		M_MultiPlayer_f ();
 		break;
 
 	case K_UPARROW:
@@ -1905,7 +1905,7 @@ void M_GameOptions_Key (int key)
 qboolean	searchComplete = false;
 double		searchCompleteTime;
 
-void M_Menu_Search_f (void)
+void M_Search_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_search;
@@ -1942,7 +1942,7 @@ void M_Search_Draw (void)
 
 	if (hostCacheCount)
 	{
-		M_Menu_ServerList_f ();
+		M_ServerList_f ();
 		return;
 	}
 
@@ -1950,7 +1950,7 @@ void M_Search_Draw (void)
 	if ((realtime - searchCompleteTime) < 3.0)
 		return;
 
-	M_Menu_LanConfig_f ();
+	M_LanConfig_f ();
 }
 
 
@@ -1964,7 +1964,7 @@ void M_Search_Key (int key)
 int		slist_cursor;
 qboolean slist_sorted;
 
-void M_Menu_ServerList_f (void)
+void M_ServerList_f (void)
 {
 	key_dest = key_menu;
 	m_state = m_slist;
@@ -2022,11 +2022,11 @@ void M_ServerList_Key (int k)
 	switch (k)
 	{
 	case K_ESCAPE:
-		M_Menu_LanConfig_f ();
+		M_LanConfig_f ();
 		break;
 
 	case K_SPACE:
-		M_Menu_Search_f ();
+		M_Search_f ();
 		break;
 
 	case K_UPARROW:
@@ -2069,16 +2069,16 @@ void M_Init (void)
 {
 	Cmd_AddCommand ("togglemenu", M_ToggleMenu_f);
 
-	Cmd_AddCommand ("menu_main", M_Menu_Main_f);
-	Cmd_AddCommand ("menu_singleplayer", M_Menu_SinglePlayer_f);
-	Cmd_AddCommand ("menu_load", M_Menu_Load_f);
-	Cmd_AddCommand ("menu_save", M_Menu_Save_f);
-	Cmd_AddCommand ("menu_multiplayer", M_Menu_MultiPlayer_f);
-	Cmd_AddCommand ("menu_setup", M_Menu_Setup_f);
-	Cmd_AddCommand ("menu_options", M_Menu_Options_f);
-	Cmd_AddCommand ("menu_keys", M_Menu_Keys_f);
-	Cmd_AddCommand ("menu_video", M_Menu_Video_f);
-	Cmd_AddCommand ("menu_quit", M_Menu_Quit_f);
+	Cmd_AddCommand ("menu_main", M_Main_f);
+	Cmd_AddCommand ("menu_singleplayer", M_SinglePlayer_f);
+	Cmd_AddCommand ("menu_load", M_Load_f);
+	Cmd_AddCommand ("menu_save", M_Save_f);
+	Cmd_AddCommand ("menu_multiplayer", M_MultiPlayer_f);
+	Cmd_AddCommand ("menu_setup", M_Setup_f);
+	Cmd_AddCommand ("menu_options", M_Options_f);
+	Cmd_AddCommand ("menu_keys", M_Keys_f);
+	Cmd_AddCommand ("menu_video", M_Video_f);
+	Cmd_AddCommand ("menu_quit", M_Quit_f);
 }
 
 

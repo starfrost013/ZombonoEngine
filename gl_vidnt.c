@@ -2355,7 +2355,7 @@ void VID_SyncCvars (void)
 //
 //==========================================================================
 
-extern void M_Menu_Options_f (void);
+extern void M_Options_f (void);
 extern void M_Print (int cx, int cy, char *str);
 extern void M_PrintWhite (int cx, int cy, char *str);
 extern void M_DrawCharacter (int cx, int line, int num);
@@ -2686,7 +2686,7 @@ void VID_MenuKey (int key)
 	case K_ESCAPE:
 		VID_SyncCvars (); //sync cvars before leaving menu. FIXME: there are other ways to leave menu
 		S_LocalSound ("misc/menu1.wav");
-		M_Menu_Options_f ();
+		M_Options_f ();
 		break;
 
 	case K_UPARROW:
