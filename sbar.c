@@ -554,15 +554,19 @@ void Sbar_DrawFrags (void)
 		if (!s->name[0])
 			continue;
 
-	// top color
-	// get team color
-		color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
+		if (svs.clients[i].edict != NULL)
+		{
+			// top color
+			// get team color
+			color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
 
-	// number
-		sprintf (num, "%3i", s->frags);
-		Sbar_DrawCharacter (x + 12, -24, num[0]);
-		Sbar_DrawCharacter (x + 20, -24, num[1]);
-		Sbar_DrawCharacter (x + 28, -24, num[2]);
+			// number
+			sprintf(num, "%3i", s->frags);
+			Sbar_DrawCharacter(x + 12, -24, num[0]);
+			Sbar_DrawCharacter(x + 20, -24, num[1]);
+			Sbar_DrawCharacter(x + 28, -24, num[2]);
+		}
+
 
 	// brackets
 		if (fragsort[i] == cl.viewentity - 1)
