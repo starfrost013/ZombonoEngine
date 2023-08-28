@@ -1151,11 +1151,6 @@ void CL_ParseServerMessage (void)
 			Con_LogCenterPrint (str);
 			//johnfitz
 			break;
-
-		case svc_sellscreen:
-			Cmd_ExecuteString ("help", src_command);
-			break;
-
 		//johnfitz -- new svc types
 		case svc_skybox:
 			Sky_LoadSkyBox (MSG_ReadString());

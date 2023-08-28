@@ -170,7 +170,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_intermission		30	// [string] music
 #define	svc_finale				31	// [string] music [string] text
 #define	svc_cdtrack				32	// [byte] track [byte] looptrack
-#define svc_sellscreen			33
 #define svc_cutscene			34
 
 //johnfitz -- PROTOCOL_FITZQUAKE -- new server messages
