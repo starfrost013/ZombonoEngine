@@ -34,7 +34,7 @@ void() main =
 // these are just commands the the prog compiler to copy these files
 
 	precache_file("progs.dat");
-	precache_file("quake.rc");
+	precache_file("zombono.rc");
 	precache_file("default.cfg");
 
 //

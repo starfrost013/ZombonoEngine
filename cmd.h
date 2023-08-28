@@ -31,7 +31,7 @@ servers can also send across commands and entire text files can be execed.
 
 The + command line options are also added to the command buffer.
 
-The game starts with a Cbuf_AddText ("exec quake.rc\n"); Cbuf_Execute ();
+The game starts with a Cbuf_AddText ("exec zombono.rc\n"); Cbuf_Execute ();
 
 */
 

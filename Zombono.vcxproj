@@ -79,7 +79,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;DEBUG;_WINDOWS;GLQUAKE;DEBUGGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\build\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\build\Debug\Fitzquake.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\build\Debug\Zombono.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\build\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\build\Debug\</ProgramDataBaseFileName>
     </ClCompile>
@@ -279,7 +279,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="winquake.rc" />
+    <ResourceCompile Include="zombono.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="anorms.h" />

@@ -825,7 +825,7 @@ void Host_Init (quakeparms_t *parms)
 #endif
 	}
 
-	Cbuf_InsertText ("exec quake.rc\n");
+	Cbuf_InsertText ("exec zombono.rc\n");
 
 	Cbuf_AddText ("\n\nvid_unlock\n"); //johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
 	//note: added two newlines to the front becuase the command buffer swallows one of them.

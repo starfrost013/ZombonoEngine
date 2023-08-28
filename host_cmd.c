@@ -196,7 +196,7 @@ void Host_Game_f (void)
 			R_NewGame ();
 		}
 		ExtraMaps_NewGame ();
-		//Cbuf_InsertText ("exec quake.rc\n");
+		//Cbuf_InsertText ("exec zombono.rc\n");
 
 		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
 	}

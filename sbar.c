@@ -548,7 +548,7 @@ void Sbar_DrawFrags (void)
 // draw the text
 	numscores = min (scoreboardlines, 4);
 
-	for (i=0, x=184; i<numscores; i++, x+=32)
+	for (i=0, x=184; i<svs.maxclients; i++, x+=32)
 	{
 		s = &cl.scores[fragsort[i]];
 		if (!s->name[0] || !svs.clients[i].active)
