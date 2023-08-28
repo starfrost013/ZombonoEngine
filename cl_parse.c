@@ -1015,15 +1015,24 @@ void CL_ParseServerMessage (void)
 			Sbar_Changed ();
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
-				Host_Error("CL_ParseServerMessage: svc_updatename > MAX_SCOREBOARD");
+				Host_Error("CL_ParseServerMessage: svc_updatename > cl.maxclients");
 			strcpy (cl.scores[i].name, MSG_ReadString ());
+			break;
+		
+		case svc_updateteam:
+			Sbar_Changed();
+			i = MSG_ReadByte();
+			if (i >= cl.maxclients)
+				Host_Error("CL_ParseServerMessage: svc_updateteam > cl.maxclients");
+
+			cl.scores[i].team = MSG_ReadFloat();
 			break;
 
 		case svc_updatefrags:
 			Sbar_Changed ();
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
-				Host_Error ("CL_ParseServerMessage: svc_updatefrags > MAX_SCOREBOARD");
+				Host_Error ("CL_ParseServerMessage: svc_updatefrags > cl.maxclients");
 			cl.scores[i].frags = MSG_ReadShort ();
 			break;
 
@@ -1031,7 +1040,7 @@ void CL_ParseServerMessage (void)
 			Sbar_Changed ();
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
-				Host_Error ("CL_ParseServerMessage: svc_updatecolors > MAX_SCOREBOARD");
+				Host_Error ("CL_ParseServerMessage: svc_updatecolors > cl.maxclients");
 			cl.scores[i].colors = MSG_ReadByte ();
 			CL_NewTranslation (i);
 			break;

@@ -409,6 +409,9 @@ void SV_DropClient (qboolean crash)
 		MSG_WriteByte (&client->message, svc_updatename);
 		MSG_WriteByte (&client->message, host_client - svs.clients);
 		MSG_WriteString (&client->message, "");
+		MSG_WriteByte (&client->message, svc_updateteam);
+		MSG_WriteByte (&client->message, host_client - svs.clients);
+		MSG_WriteFloat (&client->message, ZOMBONO_TEAM_DISCONNECTED);
 		MSG_WriteByte (&client->message, svc_updatefrags);
 		MSG_WriteByte (&client->message, host_client - svs.clients);
 		MSG_WriteShort (&client->message, 0);
