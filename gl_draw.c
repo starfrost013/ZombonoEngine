@@ -264,7 +264,7 @@ qpic_t	*Draw_CachePic (char *path)
 
 	gl = (glpic_t *)pic->pic.data;
 	gl->gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, SRC_RGBA, dat->data, path,
-									  0, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+									  0, TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
 
 	// don't automatically scale to POT - all gpus since Geforce6000/
 	gl->sl = 0;

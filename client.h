@@ -41,8 +41,8 @@ typedef struct
 typedef struct scoreboard_s
 {
 	char	name[MAX_SCOREBOARDNAME];
-	float	entertime;
 	int		frags;
+	float	team;			// Team
 	int		colors;			// two 4 bit fields
 	byte	translations[VID_GRADES*256];
 } scoreboard_t;

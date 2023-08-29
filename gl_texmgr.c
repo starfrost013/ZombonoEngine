@@ -1121,11 +1121,11 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height
 	if (isDedicated)
 		return NULL;
 
-	// Ugly hack for lmp32 
-	// I could remove the header and width, or add header and width to all the bsp textures,
-	// but i want external tools to be able to read these
+	// Ugly hack for LMP32, only needed for conchars (!) - there will be a proper font system later so it's fine I guess
+	// Long term solution is to add header and width to all the bsp textures,
+	// but that requires external tools to be forked
 	// (at some point I'll make bsp textures have w/h)
-	if (strstr(source_file, ".lmp")) data += sizeof(int) * 2;
+	if (strstr(source_file, "conchars.lmp")) data += sizeof(int) * 2;
 
 	// cache check
 	switch (format)

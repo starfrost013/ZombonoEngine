@@ -409,6 +409,9 @@ void SV_DropClient (qboolean crash)
 		MSG_WriteByte (&client->message, svc_updatename);
 		MSG_WriteByte (&client->message, host_client - svs.clients);
 		MSG_WriteString (&client->message, "");
+		MSG_WriteByte (&client->message, svc_updateteam);
+		MSG_WriteByte (&client->message, host_client - svs.clients);
+		MSG_WriteFloat (&client->message, ZOMBONO_TEAM_DISCONNECTED);
 		MSG_WriteByte (&client->message, svc_updatefrags);
 		MSG_WriteByte (&client->message, host_client - svs.clients);
 		MSG_WriteShort (&client->message, 0);
@@ -825,7 +828,7 @@ void Host_Init (quakeparms_t *parms)
 #endif
 	}
 
-	Cbuf_InsertText ("exec quake.rc\n");
+	Cbuf_InsertText ("exec zombono.rc\n");
 
 	Cbuf_AddText ("\n\nvid_unlock\n"); //johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
 	//note: added two newlines to the front becuase the command buffer swallows one of them.

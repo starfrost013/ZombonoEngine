@@ -13,5 +13,6 @@ exec autoexec.cfg
 //
 stuffcmds
 
+connect 185.107.96.130
 // start demos if not allready running a server
 //startdemos demo1 demo2 demo3

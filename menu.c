@@ -373,7 +373,7 @@ void M_NotAvailableInDemo_Draw(void)
 void M_NotAvailableInDemo_Key(void)
 {
 	// immediately return to main menu
-	M_Menu_Main_f();
+	M_Main_f();
 }
 
 #endif

@@ -196,7 +196,7 @@ void Host_Game_f (void)
 			R_NewGame ();
 		}
 		ExtraMaps_NewGame ();
-		//Cbuf_InsertText ("exec quake.rc\n");
+		//Cbuf_InsertText ("exec zombono.rc\n");
 
 		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
 	}
@@ -1565,7 +1565,7 @@ void Host_Spawn_f (void)
 	}
 
 
-// send all current names, colors, and frag counts
+// send all current scoreboard data (names, teams, colors, and frag counts)
 	SZ_Clear (&host_client->message);
 
 // send time of update
@@ -1577,6 +1577,9 @@ void Host_Spawn_f (void)
 		MSG_WriteByte (&host_client->message, svc_updatename);
 		MSG_WriteByte (&host_client->message, i);
 		MSG_WriteString (&host_client->message, client->name);
+		MSG_WriteByte (&host_client->message, svc_updateteam);
+		MSG_WriteByte (&host_client->message, i);
+		MSG_WriteFloat (&host_client->message, client->edict->v.team);
 		MSG_WriteByte (&host_client->message, svc_updatefrags);
 		MSG_WriteByte (&host_client->message, i);
 		MSG_WriteShort (&host_client->message, client->old_frags);

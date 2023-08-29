@@ -170,7 +170,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_intermission		30	// [string] music
 #define	svc_finale				31	// [string] music [string] text
 #define	svc_cdtrack				32	// [byte] track [byte] looptrack
-#define svc_sellscreen			33
 #define svc_cutscene			34
 
 //johnfitz -- PROTOCOL_FITZQUAKE -- new server messages
@@ -180,6 +179,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_spawnbaseline2		42  // support for large modelindex, large framenum, alpha, using flags
 #define svc_spawnstatic2		43	// support for large modelindex, large framenum, alpha, using flags
 #define	svc_spawnstaticsound2	44	// [coord3] [short] samp [byte] vol [byte] aten
+
+// Zombono
+#define svc_updateteam			45	// [byte] client ID [float] team
+
 //johnfitz
 
 //
@@ -213,7 +216,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // PGM 01/21/97
 
 // Zombono teams
-#define ZOMBONO_TEAM_DIRECTOR	0
-#define ZOMBONO_TEAM_PLAYER		1
+#define ZOMBONO_TEAM_DISCONNECTED	-1 // Not a team, used to indicate a player exited.
+#define ZOMBONO_TEAM_DIRECTOR		0
+#define ZOMBONO_TEAM_PLAYER			1
 
-#define ZOMBONO_TEAM_COUNT		2
+#define ZOMBONO_TEAM_COUNT			2

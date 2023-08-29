@@ -223,7 +223,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="winquake.rc">
+    <ResourceCompile Include="zombono.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

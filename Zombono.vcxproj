@@ -79,12 +79,12 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;DEBUG;_WINDOWS;GLQUAKE;DEBUGGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\build\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\build\Debug\Fitzquake.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\build\Debug\Zombono.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\build\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\build\Debug\</ProgramDataBaseFileName>
     </ClCompile>
     <Midl>
-      <TypeLibraryName>.\build\Debug\Fitzquake.tlb</TypeLibraryName>
+      <TypeLibraryName>.\build\Debug\Zombono.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -92,7 +92,7 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\build\Debug\Fitzquake.bsc</OutputFile>
+      <OutputFile>.\build\Debug\Zombono.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -119,12 +119,12 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;GLQUAKE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\build\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\build\Release\Fitzquake.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\build\Release\Zombono.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\build\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\build\Release\</ProgramDataBaseFileName>
     </ClCompile>
     <Midl>
-      <TypeLibraryName>.\build\Release\Fitzquake.tlb</TypeLibraryName>
+      <TypeLibraryName>.\build\Release\Zombono.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -132,7 +132,7 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\build\Release\Fitzquake.bsc</OutputFile>
+      <OutputFile>.\build\Release\Zombono.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -158,12 +158,12 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;PLAYTEST;_WINDOWS;GLQUAKE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\build\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\build\Playtest\Fitzquake.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\build\Playtest\Zombono.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\build\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\build\Release\</ProgramDataBaseFileName>
     </ClCompile>
     <Midl>
-      <TypeLibraryName>.\build\Release\Fitzquake.tlb</TypeLibraryName>
+      <TypeLibraryName>.\build\Release\Zombono.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -171,7 +171,7 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\build\Release\Fitzquake.bsc</OutputFile>
+      <OutputFile>.\build\Release\Zombono.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -273,13 +273,13 @@
 	 -->
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="fitzquake.ico" />
+    <CustomBuild Include="Zombono.ico" />
     <CustomBuild Include="progdefs.q1">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="winquake.rc" />
+    <ResourceCompile Include="zombono.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="anorms.h" />

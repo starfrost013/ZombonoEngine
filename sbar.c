@@ -548,21 +548,21 @@ void Sbar_DrawFrags (void)
 // draw the text
 	numscores = min (scoreboardlines, 4);
 
-	for (i=0, x=184; i<numscores; i++, x+=32)
+	for (i=0, x=184; i<cl.maxclients; i++, x+=32)
 	{
 		s = &cl.scores[fragsort[i]];
 		if (!s->name[0])
 			continue;
 
-	// top color
-	// get team color
-		color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
+		// top color
+		// get team color
+		color4_t color = TEAM_GetColor(s->team);
 
-	// number
-		sprintf (num, "%3i", s->frags);
-		Sbar_DrawCharacter (x + 12, -24, num[0]);
-		Sbar_DrawCharacter (x + 20, -24, num[1]);
-		Sbar_DrawCharacter (x + 28, -24, num[2]);
+		// number
+		sprintf(num, "%3i", s->frags);
+		Sbar_DrawCharacter(x + 12, -24, num[0]);
+		Sbar_DrawCharacter(x + 20, -24, num[1]);
+		Sbar_DrawCharacter(x + 28, -24, num[2]);
 
 	// brackets
 		if (fragsort[i] == cl.viewentity - 1)
@@ -784,11 +784,9 @@ void Sbar_DeathmatchOverlay (void)
 	Sbar_SortScoreboard ();
 
 // draw the text
-	l = scoreboardlines;
 
 	x = 80; //johnfitz -- simplified becuase some positioning is handled elsewhere
 	y = 40;
-
 
 	//offset of the "player" string.
 	int director_position = y;
@@ -800,7 +798,7 @@ void Sbar_DeathmatchOverlay (void)
 	Draw_String(x, director_position, "D I R E C T O R S");
 	Draw_String(x, player_position, "P L A Y E R S");
 
-	for (i=0 ; i<l ; i++)// let's hope these are the same indiceslmao
+	for (i=0 ; i<cl.maxclients ; i++)// let's hope these are the same indiceslmao
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
@@ -809,7 +807,9 @@ void Sbar_DeathmatchOverlay (void)
 
 	// draw background
 		
-		int team = svs.clients[i].edict->v.team;
+		if (!svs.clients[i].active) continue;
+
+		int team = cl.scores[i].team;
 
 		if (team == ZOMBONO_TEAM_DIRECTOR)
 		{
@@ -887,19 +887,20 @@ void Sbar_MiniDeathmatchOverlay (void)
 
 	x = 324;
 	y = (scr_viewsize.value >= 110) ? 24 : 0; //johnfitz -- start at the right place
-	for ( ; i < scoreboardlines && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
+	for ( ; i < cl.maxclients && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
-		if (!s->name[0]) // check if not connected
+		if (!s->name[0] || !svs.clients[i].active) // check if not connected
 			continue;
 
 	// colors
 	
-		color4_t color = TEAM_GetColor(svs.clients[i].edict->v.team);
+		color4_t color = TEAM_GetColor(s->team);
 
-		Draw_Fill ( x, y+1, 40, 7, color.r, color.g, color.b, color.alpha);
-		Draw_Fill ( x, y+5, 40, 3, color.r, color.g, color.b, color.alpha);
+		Draw_Fill(x, y + 1, 40, 7, color.r, color.g, color.b, color.alpha);
+		Draw_Fill(x, y + 5, 40, 3, color.r, color.g, color.b, color.alpha);
+
 
 	// number
 		f = s->frags;

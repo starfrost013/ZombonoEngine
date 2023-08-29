@@ -39,6 +39,7 @@ int TEAM_Rebalance(int team)
 	int num_directors = 0;
 	int num_players = 0;
 
+
 	for (int client_num = 0; client_num < svs.maxclients; client_num++)
 	{
 		client_t client = svs.clients[client_num];
