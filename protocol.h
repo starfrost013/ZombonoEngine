@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // protocol.h -- communications protocols
 
-#define PROTOCOL_ZOMBONO	667 //johnfitz -- added new protocol for fitzquake 0.85
+// 666 (Fitzquake) + (test build number)
+#define PROTOCOL_ZOMBONO	668
 
 // if the high bit of the servercmd is set, the low bits are fast update flags:
 #define	U_MOREBITS		(1<<0)
