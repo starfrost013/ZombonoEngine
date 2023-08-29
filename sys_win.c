@@ -370,12 +370,12 @@ void Sys_Error (char *error, ...)
 		{
 			in_sys_error0 = 1;
 			VID_SetDefaultMode ();
-			MessageBox(NULL, text, "Quake Error",
+			MessageBox(NULL, text, "Zombono Error",
 					   MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
 		}
 		else
 		{
-			MessageBox(NULL, text, "Double Quake Error",
+			MessageBox(NULL, text, "Double Zombono Error (!)",
 					   MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
 		}
 	}
