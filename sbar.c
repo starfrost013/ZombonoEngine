@@ -365,7 +365,7 @@ void Sbar_SortScoreboard (void)
 
 // sort by frags
 	scoreboardlines = 0;
-	for (i=0 ; i<cl.maxclients ; i++)
+	for (i=0 ; i < cl.maxclients; i++)
 	{
 
 		if (cl.scores[i].name[0])
@@ -548,7 +548,7 @@ void Sbar_DrawFrags (void)
 // draw the text
 	numscores = min (scoreboardlines, 4);
 
-	for (i=0, x=184; i<cl.maxclients; i++, x+=32)
+	for (i=0, x=184; i<scoreboardlines; i++, x+=32)
 	{
 		s = &cl.scores[fragsort[i]];
 		if (!s->name[0])
@@ -769,7 +769,7 @@ Sbar_DeathmatchOverlay
 void Sbar_DeathmatchOverlay (void)
 {
 	qpic_t			*pic;
-	int				i, k, l;
+	int				i, k;
 	int				top, bottom;
 	int				x, y, f;
 	char			num[12];
@@ -798,7 +798,7 @@ void Sbar_DeathmatchOverlay (void)
 	Draw_String(x, director_position, "D I R E C T O R S");
 	Draw_String(x, player_position, "P L A Y E R S");
 
-	for (i=0 ; i<cl.maxclients ; i++)// let's hope these are the same indiceslmao
+	for (i=0 ; i<scoreboardlines ; i++)// let's hope these are the same indiceslmao
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
@@ -807,7 +807,7 @@ void Sbar_DeathmatchOverlay (void)
 
 	// draw background
 		
-		if (!svs.clients[i].active) continue;
+		//if (!svs.clients[i].active) continue;
 
 		int team = cl.scores[i].team;
 
@@ -887,7 +887,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 
 	x = 324;
 	y = (scr_viewsize.value >= 110) ? 24 : 0; //johnfitz -- start at the right place
-	for ( ; i < cl.maxclients && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
+	for ( ; i < scoreboardlines && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];

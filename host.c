@@ -76,7 +76,7 @@ cvar_t	developer = {"developer","0"};
 
 cvar_t	temp1 = {"temp1","0"};
 
-cvar_t devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
+cvar_t	devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
 
 /*
 ================

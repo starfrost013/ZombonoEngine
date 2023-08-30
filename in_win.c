@@ -37,6 +37,10 @@ cvar_t	m_filter = {"m_filter","0"};
 //johnfitz -- compatibility with old Quake -- setting to 0 disables KP_* codes
 cvar_t	cl_keypad = {"cl_keypad","1"};
 
+// zombono
+cvar_t	mouse_acceleration = { "mouse_acceleration","0",true };
+cvar_t	mouse_force_speed = { "mouse_force_speed","0",true };
+
 int			mouse_buttons;
 int			mouse_oldbuttonstate;
 POINT		current_pos;
@@ -257,6 +261,42 @@ void IN_ActivateMouse (void)
 	}
 }
 
+void IN_MouseAcceleration_f (void)
+{
+	if (!mouse_acceleration.value)
+	{
+		newmouseparms[0] = 0; // original values
+		newmouseparms[1] = 0;
+	}
+	else
+	{
+		newmouseparms[0] = originalmouseparms[0];
+		newmouseparms[1] = originalmouseparms[1];
+
+	}
+
+	if (mouseparmsvalid)
+	{
+		restore_spi = SystemParametersInfo(SPI_SETMOUSE, 0, newmouseparms, 0);
+	}
+}
+
+void IN_MouseForceSpeed_f (void)
+{
+	if (!mouse_force_speed.value)
+	{
+		newmouseparms[2] = originalmouseparms[2];
+	}
+	else
+	{
+		newmouseparms[2] = 1; // original value
+	}
+
+	if (mouseparmsvalid)
+	{
+		restore_spi = SystemParametersInfo(SPI_SETMOUSE, 0, newmouseparms, 0);
+	}
+}
 
 /*
 ===========
@@ -452,21 +492,8 @@ void IN_StartupMouse (void)
 
 		if (mouseparmsvalid)
 		{
-			if ( COM_CheckParm ("-noforcemspd") )
-				newmouseparms[2] = originalmouseparms[2];
-
-			if ( COM_CheckParm ("-noforcemaccel") )
-			{
-				newmouseparms[0] = originalmouseparms[0];
-				newmouseparms[1] = originalmouseparms[1];
-			}
-
-			if ( COM_CheckParm ("-noforcemparms") )
-			{
-				newmouseparms[0] = originalmouseparms[0];
-				newmouseparms[1] = originalmouseparms[1];
-				newmouseparms[2] = originalmouseparms[2];
-			}
+			IN_MouseForceSpeed_f();
+			IN_MouseAcceleration_f();
 		}
 	}
 
@@ -517,6 +544,9 @@ void IN_Init (void)
 	Cvar_RegisterVariable (&joy_yawsensitivity, NULL);
 	Cvar_RegisterVariable (&joy_wwhack1, NULL);
 	Cvar_RegisterVariable (&joy_wwhack2, NULL);
+
+	Cvar_RegisterVariable (&mouse_acceleration, IN_MouseAcceleration_f);
+	Cvar_RegisterVariable (&mouse_force_speed, IN_MouseForceSpeed_f);
 
 	Cmd_AddCommand ("force_centerview", Force_CenterView_f);
 	Cmd_AddCommand ("joyadvancedupdate", Joy_AdvancedUpdate_f);

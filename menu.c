@@ -29,7 +29,7 @@ void (*vid_menucmdfn)(void); //johnfitz
 void (*vid_menudrawfn)(void);
 void (*vid_menukeyfn)(int key);
 
-enum {
+enum m_state_e {
 	m_none,
 	m_main,
 	m_singleplayer,
@@ -871,11 +871,10 @@ forward:
 //=============================================================================
 /* OPTIONS MENU */
 
-#ifdef _WIN32
-#define	OPTIONS_ITEMS	14
-#else
-#define	OPTIONS_ITEMS	13
-#endif
+
+
+// The options (to make code editing easier)
+
 
 #define	SLIDER_RANGE	10
 
@@ -888,7 +887,7 @@ void M_Options_f (void)
 	m_entersound = true;
 
 #ifdef _WIN32
-	if ((options_cursor == 13) && (modestate != MS_WINDOWED))
+	if ((options_cursor == OPTIONS_ITEMS) && (modestate != MS_WINDOWED))
 	{
 		options_cursor = 0;
 	}
@@ -902,7 +901,7 @@ void M_AdjustSliders (int dir)
 
 	switch (options_cursor)
 	{
-	case 3:	// screen size
+	case MENU_OPTIONS_SCREEN_SIZE:	// screen size
 		scr_viewsize.value += dir * 10;
 		if (scr_viewsize.value < 30)
 			scr_viewsize.value = 30;
@@ -910,7 +909,7 @@ void M_AdjustSliders (int dir)
 			scr_viewsize.value = 120;
 		Cvar_SetValue ("viewsize", scr_viewsize.value);
 		break;
-	case 4:	// gamma
+	case MENU_OPTIONS_BRIGHTNESS:	// gamma
 		vid_gamma.value -= dir * 0.05;
 		if (vid_gamma.value < 0.5)
 			vid_gamma.value = 0.5;
@@ -918,7 +917,7 @@ void M_AdjustSliders (int dir)
 			vid_gamma.value = 1;
 		Cvar_SetValue ("gamma", vid_gamma.value);
 		break;
-	case 5:	// mouse speed
+	case MENU_OPTIONS_MOUSE_SPEED:	// mouse speed
 		sensitivity.value += dir * 0.5;
 		if (sensitivity.value < 1)
 			sensitivity.value = 1;
@@ -926,7 +925,7 @@ void M_AdjustSliders (int dir)
 			sensitivity.value = 11;
 		Cvar_SetValue ("sensitivity", sensitivity.value);
 		break;
-	case 6:	// music volume
+	case MENU_OPTIONS_CD_VOLUME:	// music volume
 #ifdef _WIN32
 		bgmvolume.value += dir * 1.0;
 #else
@@ -938,7 +937,7 @@ void M_AdjustSliders (int dir)
 			bgmvolume.value = 1;
 		Cvar_SetValue ("bgmvolume", bgmvolume.value);
 		break;
-	case 7:	// sfx volume
+	case MENU_OPTIONS_SOUND_VOLUME:	// sfx volume
 		volume.value += dir * 0.1;
 		if (volume.value < 0)
 			volume.value = 0;
@@ -947,7 +946,7 @@ void M_AdjustSliders (int dir)
 		Cvar_SetValue ("volume", volume.value);
 		break;
 
-	case 8:	// allways run
+	case MENU_OPTIONS_ALWAYS_RUN:	// allways run
 		if (cl_forwardspeed.value > 200)
 		{
 			Cvar_SetValue ("cl_forwardspeed", 200);
@@ -960,22 +959,35 @@ void M_AdjustSliders (int dir)
 		}
 		break;
 
-	case 9:	// invert mouse
+	case MENU_OPTIONS_INVERT_MOUSE:	// invert mouse
 		Cvar_SetValue ("m_pitch", -m_pitch.value);
 		break;
 
-	case 10:	// lookspring
+	case MENU_OPTIONS_LOOKSPRING:	// lookspring
 		Cvar_SetValue ("lookspring", !lookspring.value);
 		break;
 
-	case 11:	// lookstrafe
+	case MENU_OPTIONS_LOOKSTRAFE:	// lookstrafe
 		Cvar_SetValue ("lookstrafe", !lookstrafe.value);
 		break;
 
+	case MENU_OPTIONS_MOUSE_ACCELERATION:
+		Cvar_SetValue("mouse_acceleration", !mouse_acceleration.value);
+		break;
+
+	case MENU_OPTIONS_MOUSE_FORCE_SPEED:
+		Cvar_SetValue("mouse_force_speed", !mouse_force_speed.value);
+		break;
+
+	case MENU_OPTIONS_MULTIPLAYER_SETUP:
+		M_Setup_f();
+		break;
+
 #ifdef _WIN32
-	case 13:	// _windowed_mouse
+	case MENU_OPTIONS_WINDOWED_MOUSE:	// _windowed_mouse
 		Cvar_SetValue ("_windowed_mouse", !_windowed_mouse.value);
 		break;
+
 #endif
 	}
 }
@@ -1049,20 +1061,28 @@ void M_Options_Draw (void)
 	M_Print (16, 104, "          Invert Mouse");
 	M_DrawCheckbox (220, 104, m_pitch.value < 0);
 
-	M_Print (16, 112, "            Lookspring");
-	M_DrawCheckbox (220, 112, lookspring.value);
+	M_Print(16, 112,  "	   Mouse Acceleration");
+	M_DrawCheckbox(220, 112, mouse_acceleration.value);
 
-	M_Print (16, 120, "            Lookstrafe");
-	M_DrawCheckbox (220, 120, lookstrafe.value);
+	M_Print(16, 120, "	    Force Mouse Speed");
+	M_DrawCheckbox(220, 120, mouse_force_speed.value);
+
+	M_Print (16, 128, "            Lookspring");
+	M_DrawCheckbox (220, 128, lookspring.value);
+
+	M_Print (16, 136, "            Lookstrafe");
+	M_DrawCheckbox (220, 136, lookstrafe.value);
+
+	M_Print (16, 144, "          Player Setup");
 
 	if (vid_menudrawfn)
-		M_Print (16, 128, "         Video Options");
+		M_Print (16, 152, "         Video Options");
 
 #ifdef _WIN32
 	if (modestate == MS_WINDOWED)
 	{
-		M_Print (16, 136, "             Use Mouse");
-		M_DrawCheckbox (220, 136, _windowed_mouse.value);
+		M_Print (16, 160, "             Use Mouse");
+		M_DrawCheckbox (220, 160, _windowed_mouse.value);
 	}
 #endif
 
@@ -1083,18 +1103,18 @@ void M_Options_Key (int k)
 		m_entersound = true;
 		switch (options_cursor)
 		{
-		case 0:
+		case MENU_OPTIONS_CUSTOMIZE_CONTROLS:
 			M_Keys_f ();
 			break;
-		case 1:
+		case MENU_OPTIONS_GO_TO_CONSOLE:
 			m_state = m_none;
 			Con_ToggleConsole_f ();
 			break;
-		case 2:
+		case MENU_OPTIONS_RESET_TO_DEFAULTS:
 			Cbuf_AddText ("resetall\n"); //johnfitz
 			Cbuf_AddText ("exec default.cfg\n");
 			break;
-		case 12:
+		case MENU_OPTIONS_VIDEO_OPTIONS:
 			M_Video_f ();
 			break;
 		default:
@@ -1126,19 +1146,19 @@ void M_Options_Key (int k)
 		break;
 	}
 
-	if (options_cursor == 12 && vid_menudrawfn == NULL)
+	if (options_cursor == 15 && vid_menudrawfn == NULL)
 	{
 		if (k == K_UPARROW)
-			options_cursor = 11;
+			options_cursor = 14;
 		else
 			options_cursor = 0;
 	}
 
 #ifdef _WIN32
-	if ((options_cursor == 13) && (modestate != MS_WINDOWED))
+	if ((options_cursor == OPTIONS_ITEMS) && (modestate != MS_WINDOWED))
 	{
 		if (k == K_UPARROW)
-			options_cursor = 12;
+			options_cursor -= 1;
 		else
 			options_cursor = 0;
 	}
@@ -1651,7 +1671,7 @@ void M_LanConfig_Key (int key)
 //=============================================================================
 /* GAME OPTIONS MENU */
 
-typedef struct
+typedef struct level_s
 {
 	char	*name;
 	char	*description;
