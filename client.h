@@ -261,6 +261,7 @@ extern	cvar_t	m_yaw;
 extern	cvar_t	m_forward;
 extern	cvar_t	m_side;
 
+//declared in in_win.c
 extern	cvar_t	mouse_acceleration;
 extern	cvar_t	mouse_force_speed;
 

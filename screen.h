@@ -51,6 +51,7 @@ extern	cvar_t		scr_sbaralpha; //johnfitz
 extern qboolean		block_drawing;
 
 void SCR_UpdateWholeScreen (void);
+void SCR_AutoScale_f(void);
 
 //johnfitz -- stuff for 2d drawing control
 typedef enum {
@@ -69,7 +70,7 @@ extern	cvar_t		scr_menuscale;
 extern	cvar_t		scr_sbarscale;
 extern	cvar_t		scr_conwidth;
 extern	cvar_t		scr_conscale;
-extern	cvar_t		scr_crosshaircale;
+extern	cvar_t		scr_crosshairscale;
 //johnfitz
 
 extern int scr_tileclear_updates; //johnfitz

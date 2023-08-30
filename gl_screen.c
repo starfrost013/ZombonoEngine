@@ -76,7 +76,9 @@ int			glx, gly, glwidth, glheight;
 float		scr_con_current;
 float		scr_conlines;		// lines of console to display
 
-float		oldscreensize, oldfov, oldsbarscale, oldsbaralpha; //johnfitz -- added oldsbarscale and oldsbaralpha
+float		oldscreensize, oldfov;														// Old screen size/fov
+float		oldsbarscale, oldsbaralpha, oldconscale, oldmenuscale, oldcrosshairscale;	// Old scales for autoscale
+float		oldsbarscale_refdef;														// Required for autoscale - Zombono
 
 //johnfitz -- new cvars
 cvar_t		scr_menuscale = {"scr_menuscale", "1", true};
@@ -84,7 +86,8 @@ cvar_t		scr_sbarscale = {"scr_sbarscale", "1", true};
 cvar_t		scr_sbaralpha = {"scr_sbaralpha", "1", true};
 cvar_t		scr_conwidth = {"scr_conwidth", "0", true};
 cvar_t		scr_conscale = {"scr_conscale", "1", true};
-cvar_t		scr_crosshaircale = {"scr_crosshaircale", "1", true};
+cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", true};
+cvar_t		scr_autoscale = {"scr_autoscale","1", true};
 cvar_t		scr_showfps = {"scr_showfps", "0"};
 cvar_t		scr_clock = {"scr_clock", "0"};
 //johnfitz
@@ -378,7 +381,8 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_sbaralpha, NULL);
 	Cvar_RegisterVariable (&scr_conwidth, &SCR_Conwidth_f);
 	Cvar_RegisterVariable (&scr_conscale, &SCR_Conwidth_f);
-	Cvar_RegisterVariable (&scr_crosshaircale, NULL);
+	Cvar_RegisterVariable (&scr_autoscale, &SCR_AutoScale_f);
+	Cvar_RegisterVariable (&scr_crosshairscale, NULL);
 	Cvar_RegisterVariable (&scr_showfps, NULL);
 	Cvar_RegisterVariable (&scr_clock, NULL);
 	//johnfitz
@@ -1018,6 +1022,13 @@ void SCR_UpdateScreen (void)
 	// determine size of refresh window
 	//
 
+	//johnfitz -- added oldsbarscale and oldsbaralpha
+	if (oldsbarscale_refdef != scr_sbarscale.value)
+	{
+		oldsbarscale_refdef = scr_sbarscale.value;
+		vid.recalc_refdef = true; 
+	}
+
 	if (oldfov != scr_fov.value)
 	{
 		oldfov = scr_fov.value;
@@ -1030,19 +1041,11 @@ void SCR_UpdateScreen (void)
 		vid.recalc_refdef = true;
 	}
 
-	//johnfitz -- added oldsbarscale and oldsbaralpha
-	if (oldsbarscale != scr_sbarscale.value)
-	{
-		oldsbarscale = scr_sbarscale.value;
-		vid.recalc_refdef = true;
-	}
-
 	if (oldsbaralpha != scr_sbaralpha.value)
 	{
 		oldsbaralpha = scr_sbaralpha.value;
 		vid.recalc_refdef = true;
 	}
-	//johnfitz
 
 	if (vid.recalc_refdef)
 		SCR_CalcRefdef ();
@@ -1095,3 +1098,28 @@ void SCR_UpdateScreen (void)
 	GL_EndRendering ();
 }
 
+#define BASE_WIDTH_SCALE	640 //VGA rez
+
+void SCR_AutoScale_f (void)
+{
+	if (scr_autoscale.value)
+	{
+		oldsbarscale = scr_sbarscale.value;
+		oldconscale = scr_conscale.value;
+		oldmenuscale = scr_menuscale.value;
+		oldcrosshairscale = scr_menuscale.value;
+
+		Cvar_SetValue("scr_sbarscale", (float)vid.width / (float)BASE_WIDTH_SCALE);
+		Cvar_SetValue("scr_conscale", (float)vid.width / (float)BASE_WIDTH_SCALE);
+		Cvar_SetValue("scr_menuscale", (float)vid.width / (float)BASE_WIDTH_SCALE);
+		Cvar_SetValue("scr_crosshairscale", (float)vid.width / (float)BASE_WIDTH_SCALE);
+	}
+	else
+	{
+		Cvar_SetValue("scr_sbarscale", oldsbarscale);
+		Cvar_SetValue("scr_conscale", oldconscale);
+		Cvar_SetValue("scr_menuscale", oldmenuscale);
+		Cvar_SetValue("scr_crosshairscale", oldcrosshairscale);
+
+	}
+}
