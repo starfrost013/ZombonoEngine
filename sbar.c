@@ -790,7 +790,7 @@ void Sbar_DeathmatchOverlay (void)
 
 	//offset of the "player" string.
 	int director_position = y;
-	int player_position = y + SCOREBOARD_LINE_SIZE * svs.maxclients / 2; // draw player at minimum of player count
+	int player_position = (y + SCOREBOARD_LINE_SIZE * svs.maxclients / 2); // draw player at minimum of player count, + 
 
 	int num_directors = 0;
 	int num_players = 0;
@@ -806,8 +806,6 @@ void Sbar_DeathmatchOverlay (void)
 			continue;
 
 	// draw background
-		
-		//if (!svs.clients[i].active) continue;
 
 		int team = cl.scores[i].team;
 
