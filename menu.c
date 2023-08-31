@@ -1080,10 +1080,10 @@ void M_Options_Draw (void)
 	M_Print (16, 136, "            Lookstrafe");
 	M_DrawCheckbox (220, 136, lookstrafe.value);
 
-	M_Print (16, 144, "          Player Setup");
-
 	if (vid_menudrawfn)
-		M_Print (16, 152, "         Video Options");
+		M_Print(16, 144, "         Video Options");
+
+	M_Print (16, 152, "          Player Setup");
 
 #ifdef _WIN32
 	if (modestate == MS_WINDOWED)
