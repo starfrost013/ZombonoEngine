@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,17 +16,19 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	==============================================================================
+
+	PLAYER
+
+	==============================================================================
 */
 
 void() bubble_bob;
-
-/*
-==============================================================================
-
-PLAYER
-
-==============================================================================
-*/
 
 $cd /raid/quake/id1/models/player_4
 $origin 0 -6 24

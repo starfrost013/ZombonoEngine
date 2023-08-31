@@ -470,12 +470,19 @@ void() PutClientInServer =
 	spawn_tfog(self.origin + v_forward*20);
 
 	spawn_tdeath(self.origin, self);
+};
 
+// HACK HACK HACK
+// This is called main because FTEQCC hardcodes global functions, and main wasn't being used.
+// Either GameDLL system or fteqcc fork will happen
+// this is actually ClientPostSpawn
+void() main =
+{
 	if (gamemode <= ZOMBONO_MODE_COUNT)
 	{
 		PrintTeamWelcomeMessage();
 	}
-};
+}
 
 // todo: MAKE THIS RUN POST-SPAWN!!!
 void() PrintTeamWelcomeMessage =
@@ -483,8 +490,8 @@ void() PrintTeamWelcomeMessage =
 	// terrible hack 
 	// otherwise it doesn't work on join, only on respawn
 
-	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 9 to get the Zombinator.\nClick to spawn zombies and fuck those players!";
-	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nRocket those Adam Smithees!";
+	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 9 to get the Zombinator.\nClick to spawn zombies and fuck those players!\n";
+	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nSend those Alan Smithees back to acting school!\n";
 
 	if (self.team == ZOMBONO_TEAM_DIRECTOR)
 	{

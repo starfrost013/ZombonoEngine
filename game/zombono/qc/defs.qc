@@ -107,7 +107,6 @@ void() SetNewParms; // called when a client first connects to
 void() SetChangeParms; // call to set parms for self so they can
 						// be saved for a level transition
 
-
 float gamemode;	// Zombono
 
 //================================================

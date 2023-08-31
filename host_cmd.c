@@ -1634,6 +1634,20 @@ void Host_Spawn_f (void)
 	host_client->sendsignon = true;
 }
 
+// This command is run after the client has already spawned into the game.
+void Host_PostSpawn_f(void)
+{
+	if (cmd_source == src_command)
+	{
+		Con_Printf("postspawn is not valid from the console!");
+		return;
+	}
+
+	pr_global_struct->time = sv.time;
+	pr_global_struct->self = EDICT_TO_PROG(sv_player);
+	PR_ExecuteProgram(pr_global_struct->ClientPostSpawn);
+}
+
 /*
 ==================
 Host_Begin_f
@@ -2089,6 +2103,7 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("spawn", Host_Spawn_f);
 	Cmd_AddCommand ("begin", Host_Begin_f);
 	Cmd_AddCommand ("prespawn", Host_PreSpawn_f);
+	Cmd_AddCommand ("postspawn", Host_PostSpawn_f);
 	Cmd_AddCommand ("kick", Host_Kick_f);
 	Cmd_AddCommand ("ping", Host_Ping_f);
 	Cmd_AddCommand ("load", Host_Loadgame_f);

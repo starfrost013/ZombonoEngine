@@ -558,6 +558,8 @@ nextmsg:
 					ret = 1;
 				else if (Q_strncasecmp(s, "prespawn", 8) == 0)
 					ret = 1;
+				else if (Q_strncasecmp(s, "postspawn", 9) == 0)
+					ret = 1;
 				else if (Q_strncasecmp(s, "kick", 4) == 0)
 					ret = 1;
 				else if (Q_strncasecmp(s, "ping", 4) == 0)
