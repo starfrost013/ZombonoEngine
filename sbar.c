@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -798,7 +799,7 @@ void Sbar_DeathmatchOverlay (void)
 	Draw_String(x, director_position, "D I R E C T O R S");
 	Draw_String(x, player_position, "P L A Y E R S");
 
-	for (i=0 ; i<scoreboardlines ; i++)// let's hope these are the same indiceslmao
+	for (i=0 ; i<scoreboardlines ; i++)
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
@@ -889,7 +890,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
-		if (!s->name[0] || !svs.clients[i].active) // check if not connected
+		if (!s->name[0]) // check if not connected
 			continue;
 
 	// colors

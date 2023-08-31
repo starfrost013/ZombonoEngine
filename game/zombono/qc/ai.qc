@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,6 +16,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	ai.qc : ChatGPT 1996 ;^)
 */
 void() movetarget_f;
 void() t_movetarget;
@@ -415,10 +422,18 @@ float() FindTarget =
 // got one
 //
 	self.enemy = client;
-	if (self.enemy.classname != "player")
+
+// Don't target directors for zombies only. (FIGURE OUT HOW TO PUT THIS IN ZOMBIE.QC, MAYBE ADD A SPAWNFLAG THAT IMPLEMENTS ONLY FOR TEAMS)
+	if (self.enemy.classname != "player"
+	|| (self.enemy.classname == "player"
+	&& self.classname == "monster_zombie"
+	&& self.enemy.team == ZOMBONO_TEAM_DIRECTOR))
 	{
 		self.enemy = self.enemy.enemy;
-		if (self.enemy.classname != "player")
+		if (self.enemy.classname != "player" 
+		|| (self.enemy.classname == "player"
+		&& self.classname == "monster_zombie"
+	&& self.enemy.team == ZOMBONO_TEAM_DIRECTOR))
 		{
 			self.enemy = world;
 			return FALSE;

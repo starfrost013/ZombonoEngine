@@ -384,7 +384,7 @@ void() T_MissileTouch =
 	T_RadiusDamage(self, self.owner, 100, other); // was 120...
 
 //	sound(self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
-	self.origin = self.origin - 8*normalize(self.velocity);
+	self.origin = self.origin - 25*normalize(self.velocity);
 
 	WriteByte(MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte(MSG_BROADCAST, TE_EXPLOSION);

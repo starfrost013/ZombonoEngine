@@ -633,9 +633,16 @@ int	m_multiplayer_cursor;
 
 void M_MultiPlayer_f (void)
 {
+#ifdef PLAYTEST
+	key_dest = key_menu;
+	m_state = m_main;
+	m_entersound = true;
+#else
+
 	key_dest = key_menu;
 	m_state = m_multiplayer;
 	m_entersound = true;
+#endif
 }
 
 
