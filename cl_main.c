@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -212,6 +213,7 @@ Con_DPrintf ("CL_SignonReply: %i\n", cls.signon);
 
 	case 4:
 		SCR_EndLoadingPlaque ();		// allow normal screen updates
+		//MSG_WriteString(&cls.message, "postspawn"); // Zombono team select
 		break;
 	}
 }

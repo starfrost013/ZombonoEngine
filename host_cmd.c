@@ -1546,7 +1546,6 @@ void Host_Spawn_f (void)
 			ent->v.team = TEAM_Rebalance(rand() % 2);
 		}
 
-
 		// copy spawn parms out of the client_t
 
 		for (i=0 ; i< NUM_SPAWN_PARMS ; i++)

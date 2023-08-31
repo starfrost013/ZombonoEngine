@@ -89,7 +89,6 @@
 @PointClass base(PlayerClass) = info_player_start : "Player 1 start (DEPRECATED -- FALLBACK ONLY)" []
 @PointClass base(PlayerClass) = info_player_start_player : "Zombono player start" []
 @PointClass base(PlayerClass) = info_player_start_director : "Zombono director start" []
-@PointClass base(PlayerClass) = testplayerstart : "Testing player start" []
 @PointClass size(-32 -32 0, 32 32 64) base(PlayerClass, Targetname) = info_teleport_destination : "Teleporter destination" []
 @PointClass color(200 150 150) = info_null : "info_null (spotlight target)"
 [

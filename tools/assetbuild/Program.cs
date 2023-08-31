@@ -6,8 +6,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-
-const string ASSETBUILD_VERSION = "1.3.1";
+const string ASSETBUILD_VERSION = "1.3.2";
 const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
@@ -86,9 +85,30 @@ try
 
     #region Main code
 
+    Console.WriteLine(STRING_BUILDING_QC); // progs.dat/qwprogs.dat -> root of pak0
+
+    // until we have our own fteqcc fork
+    Process process = new();
+    process.StartInfo.FileName = $@"{TOOLDIR}\fteqcc64.exe";
+    process.StartInfo.WorkingDirectory = qcDir; // must be set (-src doesn't work with relative paths???)
+    process.StartInfo.ArgumentList.Add("-O2"); // -O3 not recommended
+    process.StartInfo.ArgumentList.Add("-Dzombono=1"); // Set zombono
+    process.StartInfo.ArgumentList.Add("-Tstandard"); // Set 'standard' QC type
+    process.StartInfo.ArgumentList.Add("-Wno-mundane"); // Remove mundane warnings
+
+    process.Start();
+    process.WaitForExit();
+
+    if (process.ExitCode != 0)
+    {
+        PrintErrorAndExit("An error occurred while running FTEQCC", 6);
+    }
+
+    File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // copy to pak0 where it belongs
+
     Console.WriteLine(STRING_BUILDING_GFX);
 
-    Process process = new();
+    process = new();
 
     process.StartInfo.FileName = $@"{TOOLDIR}\bmp2lmp\bin\{config}\net7.0\bmp2lmp.exe";
     process.StartInfo.ArgumentList.Add(Path.GetFullPath(gfxSourceDir));
@@ -115,27 +135,6 @@ try
         string justFileName = baseCfgFile[start..end];
         File.Copy(baseCfgFile, $@"{finalDir}\{justFileName}", true);
     }
-
-    Console.WriteLine(STRING_BUILDING_QC); // progs.dat/qwprogs.dat -> root of pak0
-
-    // until we have our own fteqcc fork
-    process = new(); 
-    process.StartInfo.FileName = $@"{TOOLDIR}\fteqcc64.exe";
-    process.StartInfo.WorkingDirectory = qcDir; // must be set (-src doesn't work with relative paths???)
-    process.StartInfo.ArgumentList.Add("-O2"); // -O3 not recommended
-    process.StartInfo.ArgumentList.Add("-Dzombono=1"); // Set zombono
-    process.StartInfo.ArgumentList.Add("-Tstandard"); // Set 'standard' QC type
-    process.StartInfo.ArgumentList.Add("-Wno-mundane"); // Remove mundane warnings
-
-    process.Start();
-    process.WaitForExit();
-
-    if (process.ExitCode != 0)
-    {
-        PrintErrorAndExit("An error occurred while running FTEQCC", 6);
-    }
-
-    File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // copy to pak0 where it belongs
 
     // Lists don't work because the dirs are all wrong???
 

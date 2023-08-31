@@ -482,19 +482,17 @@ void() PrintTeamWelcomeMessage =
 {
 	// terrible hack 
 	// otherwise it doesn't work on join, only on respawn
-	entity player;
-	player = find(world, classname, "player");
 
-	string DIRECTOR_WELCOME_STRING = "You are on the Director team - press 9 to get the Zombinator and spawn zombies!";
-	string PLAYER_WELCOME_STRING = "You are on the Player team - it's your job to smoke those Alan Smithees! You start with a rocket launcher - press 7!";
+	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 9 to get the Zombinator.\nClick to spawn zombies and fuck those players!";
+	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nRocket those Adam Smithees!";
 
-	if (player.team == ZOMBONO_TEAM_DIRECTOR)
+	if (self.team == ZOMBONO_TEAM_DIRECTOR)
 	{
-		sprint(player, DIRECTOR_WELCOME_STRING);
+		sprint(self, DIRECTOR_WELCOME_STRING);
 	}
-	else if (player.team == ZOMBONO_TEAM_PLAYER)
+	else if (self.team == ZOMBONO_TEAM_PLAYER)
 	{
-		sprint(player, PLAYER_WELCOME_STRING);
+		sprint(self, PLAYER_WELCOME_STRING);
 	}
 }
 
