@@ -18,7 +18,6 @@ color4_t team_color_invalid = { 127, 127, 127, 255 };	// invalid
 // Gets the color for the team team.
 color4_t TEAM_GetColor(int team)
 {
-	if (!sv.active) return team_color_invalid; 
 	if (team < 0 
 		|| team >= TEAM_COUNT) return team_color_invalid;
 

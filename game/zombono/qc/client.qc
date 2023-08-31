@@ -99,7 +99,8 @@ void() DecodeLevelParms =
 			SetNewParms(); // take away all stuff on starting new episode
 	}
 
-	// ZOMBONO: These parms are now a part of info_player_start_* for teamplay
+	// ZOMBONO: These parms are now a part of info_player_start_* for teamplay.
+	// may need to gate these behind a cvar check
 	//self.items = parm1;
 	self.health = parm2;
 	self.armorvalue = parm3;
@@ -395,7 +396,7 @@ called each time a player is spawned
 */
 void() DecodeLevelParms;
 void() PlayerDie;
-
+void() PrintTeamWelcomeMessage;
 
 void() PutClientInServer =
 {
@@ -419,7 +420,6 @@ void() PutClientInServer =
 	self.invincible_time = 0;
 
 	DecodeLevelParms();
-
 
 	self.attack_finished = time;
 	self.th_pain = player_pain;
@@ -470,8 +470,33 @@ void() PutClientInServer =
 	spawn_tfog(self.origin + v_forward*20);
 
 	spawn_tdeath(self.origin, self);
+
+	if (gamemode <= ZOMBONO_MODE_COUNT)
+	{
+		PrintTeamWelcomeMessage();
+	}
 };
 
+// todo: MAKE THIS RUN POST-SPAWN!!!
+void() PrintTeamWelcomeMessage =
+{
+	// terrible hack 
+	// otherwise it doesn't work on join, only on respawn
+	entity player;
+	player = find(world, classname, "player");
+
+	string DIRECTOR_WELCOME_STRING = "You are on the Director team - press 9 to get the Zombinator and spawn zombies!";
+	string PLAYER_WELCOME_STRING = "You are on the Player team - it's your job to smoke those Alan Smithees! You start with a rocket launcher - press 7!";
+
+	if (player.team == ZOMBONO_TEAM_DIRECTOR)
+	{
+		sprint(player, DIRECTOR_WELCOME_STRING);
+	}
+	else if (player.team == ZOMBONO_TEAM_PLAYER)
+	{
+		sprint(player, PLAYER_WELCOME_STRING);
+	}
+}
 
 /*
 =============================================================================

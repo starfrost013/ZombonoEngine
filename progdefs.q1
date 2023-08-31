@@ -2,7 +2,7 @@
 /* presently being manually modified */
 /* ALL NEW GLOBAL VARS MUST BE AT BOTTOM!!!!! (quakec is index based!!) */
 
-typedef struct
+typedef struct globalvars_s
 {	int	pad[28];
 	int	self;
 	int	other;
@@ -61,7 +61,7 @@ typedef struct
 	float	gamemode;
 } globalvars_t;
 
-typedef struct
+typedef struct entvars_s
 {
 	float	modelindex;
 	vec3_t	absmin;

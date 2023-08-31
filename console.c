@@ -45,7 +45,7 @@ int			con_current;		// where next message will be printed
 int			con_x;				// offset in current line for next print
 char		*con_text=0;
 
-cvar_t		con_notifytime = {"con_notifytime","3"};		//seconds
+cvar_t		con_notifytime = {"con_notifytime","6"};		//seconds
 cvar_t		con_logcenterprint = {"con_logcenterprint", "1"}; //johnfitz
 
 char		con_lastcenterstring[1024]; //johnfitz

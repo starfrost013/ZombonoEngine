@@ -76,7 +76,7 @@ cvar_t	developer = {"developer","0"};
 
 cvar_t	temp1 = {"temp1","0"};
 
-cvar_t devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
+cvar_t	devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
 
 /*
 ================
@@ -826,7 +826,11 @@ void Host_Init (quakeparms_t *parms)
 #ifdef _WIN32 // on non win32, mouse comes before video for security reasons
 		IN_Init ();
 #endif
+		// ugly fucking hack
+		SCR_AutoScale_f();
 	}
+
+
 
 	Cbuf_InsertText ("exec zombono.rc\n");
 

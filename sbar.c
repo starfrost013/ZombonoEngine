@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -365,7 +366,7 @@ void Sbar_SortScoreboard (void)
 
 // sort by frags
 	scoreboardlines = 0;
-	for (i=0 ; i<cl.maxclients ; i++)
+	for (i=0 ; i < cl.maxclients; i++)
 	{
 
 		if (cl.scores[i].name[0])
@@ -548,7 +549,7 @@ void Sbar_DrawFrags (void)
 // draw the text
 	numscores = min (scoreboardlines, 4);
 
-	for (i=0, x=184; i<cl.maxclients; i++, x+=32)
+	for (i=0, x=184; i<scoreboardlines; i++, x+=32)
 	{
 		s = &cl.scores[fragsort[i]];
 		if (!s->name[0])
@@ -769,7 +770,7 @@ Sbar_DeathmatchOverlay
 void Sbar_DeathmatchOverlay (void)
 {
 	qpic_t			*pic;
-	int				i, k, l;
+	int				i, k;
 	int				top, bottom;
 	int				x, y, f;
 	char			num[12];
@@ -790,7 +791,7 @@ void Sbar_DeathmatchOverlay (void)
 
 	//offset of the "player" string.
 	int director_position = y;
-	int player_position = y + SCOREBOARD_LINE_SIZE * svs.maxclients / 2; // draw player at minimum of player count
+	int player_position = (y + SCOREBOARD_LINE_SIZE * svs.maxclients / 2); // draw player at minimum of player count, + 
 
 	int num_directors = 0;
 	int num_players = 0;
@@ -798,7 +799,7 @@ void Sbar_DeathmatchOverlay (void)
 	Draw_String(x, director_position, "D I R E C T O R S");
 	Draw_String(x, player_position, "P L A Y E R S");
 
-	for (i=0 ; i<cl.maxclients ; i++)// let's hope these are the same indiceslmao
+	for (i=0 ; i<scoreboardlines ; i++)
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
@@ -806,8 +807,6 @@ void Sbar_DeathmatchOverlay (void)
 			continue;
 
 	// draw background
-		
-		if (!svs.clients[i].active) continue;
 
 		int team = cl.scores[i].team;
 
@@ -887,11 +886,11 @@ void Sbar_MiniDeathmatchOverlay (void)
 
 	x = 324;
 	y = (scr_viewsize.value >= 110) ? 24 : 0; //johnfitz -- start at the right place
-	for ( ; i < cl.maxclients && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
+	for ( ; i < scoreboardlines && y <= 48; i++, y+=8) //johnfitz -- change y init, test, inc
 	{
 		k = fragsort[i];
 		s = &cl.scores[k];
-		if (!s->name[0] || !svs.clients[i].active) // check if not connected
+		if (!s->name[0]) // check if not connected
 			continue;
 
 	// colors

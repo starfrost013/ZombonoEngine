@@ -428,6 +428,8 @@ float ZOMBONO_GAMEMODE_HOSTAGE = 2;
 float ZOMBONO_GAMEMODE_COOP = 3; 
 // need better ideas for these...
 
+float ZOMBONO_MODE_COUNT = 3;
+
 //================================================
 
 //

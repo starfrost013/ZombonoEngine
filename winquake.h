@@ -61,6 +61,7 @@ extern qboolean		ActiveApp, Minimized;
 
 extern qboolean	WinNT;
 
+// Input
 int VID_ForceUnlockedAndReturnState (void);
 void VID_ForceLockState (int lk);
 
@@ -71,6 +72,9 @@ void IN_ActivateMouse (void);
 void IN_RestoreOriginalMouseState (void);
 void IN_SetQuakeMouseState (void);
 void IN_MouseEvent (int mstate);
+void IN_MouseAcceleration_f (void);
+void IN_MouseForceSpeed_f (void);
+
 
 extern qboolean	winsock_lib_initialized;
 
