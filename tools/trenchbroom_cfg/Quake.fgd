@@ -202,17 +202,6 @@
 	item_key1 : "Silver key" []
 @PointClass size(-16 -16 -24, 16 16 32) base(Item, Appearflags) model({ "path": ":progs/w_g_key.mdl" }) =
 	item_key2 : "Gold key" []
-@PointClass size(-16 -16 -24, 16 16 32) base(Item, Appearflags) model({ "path": ":progs/end1.mdl" }) =
-	item_sigil : "Sigil"
-[
-	spawnflags(Flags) =
-	[
-		1 : "Episode 1" : 1
-		2 : "Episode 2" : 0
-		4 : "Episode 3" : 0
-		8 : "Episode 4" : 0
-	]
-]
 
 //
 // weapons

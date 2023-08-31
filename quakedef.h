@@ -158,10 +158,6 @@ void	VID_UnlockBuffer (void);
 #define	IT_SUIT					2097152
 #define	IT_QUAD					4194304
 #define IT_DIRECTOR_ZOMBINATOR	8388608
-#define IT_SIGIL1               (1<<28)
-#define IT_SIGIL2               (1<<29)
-#define IT_SIGIL3               (1<<30)
-#define IT_SIGIL4               (1<<31)
 
 
 //===========================================

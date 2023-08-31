@@ -34,7 +34,6 @@ qpic_t		*sb_scorebar;
 
 qpic_t      *sb_weapons[7][8];   // 0 is active, 1 is owned, 2-5 are flashes
 qpic_t      *sb_ammo[4];
-qpic_t		*sb_sigil[4];
 qpic_t		*sb_armor[3];
 qpic_t		*sb_items[32];
 
@@ -154,11 +153,6 @@ void Sbar_LoadPics (void)
 	sb_items[3] = Draw_CachePic ("gfx/sb_invuln.lmp");
 	sb_items[4] = Draw_CachePic ("gfx/sb_suit.lmp");
 	sb_items[5] = Draw_CachePic ("gfx/sb_quad.lmp");
-
-	sb_sigil[0] = Draw_CachePic ("gfx/sb_sigil1.lmp");
-	sb_sigil[1] = Draw_CachePic ("gfx/sb_sigil2.lmp");
-	sb_sigil[2] = Draw_CachePic ("gfx/sb_sigil3.lmp");
-	sb_sigil[3] = Draw_CachePic ("gfx/sb_sigil4.lmp");
 
 	sb_faces[4][0] = Draw_CachePic ("gfx/face1.lmp");
 	sb_faces[4][1] = Draw_CachePic ("gfx/face_p1.lmp");
@@ -523,8 +517,6 @@ void Sbar_DrawInventory (void)
 		   {	// flash frame
 			   sb_updates = 0;
 		   }
-		   else
-			   Sbar_DrawPic(320 - 32 + i * 8, -16, sb_sigil[i]);
 		   if (time && time > cl.time - 2)
 			   sb_updates = 0;
 	   }
