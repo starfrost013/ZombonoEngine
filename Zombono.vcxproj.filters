@@ -228,11 +228,11 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="fitzquake.ico">
+    <CustomBuild Include="Zombono.ico">
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="progdefs.q1">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files\Defines</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

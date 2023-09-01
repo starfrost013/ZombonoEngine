@@ -233,6 +233,8 @@ void end_sys_globals; // flag for structure dumping
 
 .float startweapons; // Weapons at startup
 
+.float jump_count; // The number of times you have jumped. Used for double jump item.
+
 //================================================
 void end_sys_fields; // flag for structure dumping
 //================================================
@@ -337,6 +339,7 @@ float IT_SUIT = 2097152;
 float IT_QUAD = 4194304;
 
 float IT_DIRECTOR_ZOMBINATOR = 8388608;
+float IT_DOUBLE_JUMP = 16777216;
 
 // point content values
 
@@ -508,11 +511,13 @@ float AS_MISSILE = 4;
 .float invisible_finished;
 .float super_damage_finished;
 .float radsuit_finished;
+.float double_jump_finished;
 
 .float invincible_time, invincible_sound;
 .float invisible_time, invisible_sound;
 .float super_time, super_sound;
 .float rad_time;
+.float double_jump_time;
 .float fly_sound;
 
 .float axhitme;
@@ -525,6 +530,8 @@ float AS_MISSILE = 4;
 .float air_finished; // when time > air_finished, start drowning
 .float bubble_count; // keeps track of the number of bubbles
 .string deathtype; // keeps track of how the player died
+
+float jump_velocity = 300; // jump velocity
 
 //
 // object stuff

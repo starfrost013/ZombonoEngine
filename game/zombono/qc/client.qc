@@ -416,6 +416,7 @@ void() PutClientInServer =
 	self.radsuit_finished = 0;
 	self.invisible_finished = 0;
 	self.invincible_finished = 0;
+	self.double_jump_finished = 0;
 	self.effects = 0;
 	self.invincible_time = 0;
 
@@ -668,12 +669,20 @@ void() PlayerJump =
 
 		return;
 	}
+	
+	float can_jump = 1;
 
-	if (!(self.flags & FL_ONGROUND))
+	// in the air? can't jump
+	if (!(self.flags & FL_ONGROUND)) can_jump = 0;
+
+	// but, if we have the double jump item we can!
+	if (self.items & IT_DOUBLE_JUMP && self.jump_count < 2) can_jump = 1;
+
+	// don't pogo stick
+	if (!(self.flags & FL_JUMPRELEASED)) can_jump = 0;
+
+	if (can_jump == 0)
 		return;
-
-	if (!(self.flags & FL_JUMPRELEASED))
-		return; // don't pogo stick
 
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 
@@ -682,7 +691,23 @@ void() PlayerJump =
 	self.button2 = 0;
 // player jumping sound
 	sound(self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
-	self.velocity_z = self.velocity_z + 300; // increased for zombono
+	self.jump_count = self.jump_count + 1; 
+
+	if (self.jump_count == 1)
+	{
+		self.velocity_z = self.velocity_z + jump_velocity; // increased for zombono
+	}
+	else
+	{
+		if (self.velocity_z > 0)
+		{
+			self.velocity_z = self.velocity_z + (jump_velocity - self.velocity_z);
+		}
+		else
+		{
+			self.velocity_z = self.velocity_z = jump_velocity;
+		}
+	}
 };
 
 
@@ -696,7 +721,6 @@ WaterMove
 
 void() WaterMove =
 {
-//dprint(ftos(self.waterlevel));
 	if (self.movetype == MOVETYPE_NOCLIP)
 		return;
 	if (self.health < 0)
@@ -814,6 +838,7 @@ Called every frame before physics are run
 */
 void() PlayerPreThink =
 {
+
 	if (intermission_running)
 	{
 		IntermissionThink(); // otherwise a button could be missed between
@@ -823,7 +848,6 @@ void() PlayerPreThink =
 	if (self.view_ofs == '0 0 0')
 		return; // intermission or finale
 
-	makevectors(self.v_angle); // is this still used
 
 	CheckRules();
 	WaterMove();
@@ -1005,6 +1029,14 @@ void() CheckPowerups =
 		}
 	}
 
+	if (self.double_jump_finished < time)
+	{
+		sprint(self, "Double Jump expired");
+		self.items = self.items - IT_DOUBLE_JUMP;
+		self.double_jump_time = 0;
+		self.double_jump_finished = 0;
+	}
+
 };
 
 
@@ -1022,6 +1054,9 @@ void() PlayerPostThink =
 	if (self.deadflag)
 		return;
 
+	// if ever on ground, set jump count to 0
+	if ((self.flags & FL_ONGROUND))
+		self.jump_count = 0; //doublejump
 // do weapon stuff
 
 	W_WeaponFrame();
@@ -1041,12 +1076,15 @@ void() PlayerPostThink =
 			sound(self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
 
 		self.jump_flag = 0;
+		self.jump_count = 0;
 	}
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-
-	CheckPowerups();
+	
+	//dprint("Velocity end: ");
+	//dprint(vtos(self.velocity));
+	//dprint("\n");
 };
 
 

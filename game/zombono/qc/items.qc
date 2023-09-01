@@ -343,6 +343,46 @@ void() item_armorInv =
 /*
 ===============================================================================
 
+DOUBLE JUMP
+
+===============================================================================
+*/
+
+void double_jump_touch() =
+{
+	if (other.health <= 0) return;
+	if (other.classname != "player") return;
+
+	// give the item
+	other.items = other.items - (other.items & IT_DOUBLE_JUMP) + IT_DOUBLE_JUMP;
+
+	// set up regen
+	self.model = string_null;
+	self.solid = SOLID_NOT;
+	self.nextthink = time + 15;
+	self.think = SUB_regen;
+
+	// print to the other player
+	sprint(other, "You got the Double Jump!");
+	activator = other;
+
+	// play sound
+	sound(other, CHAN_ITEM, "items/double1.wav", 1, ATTN_NORM);
+}
+
+void item_artifact_double_jump() =
+{
+	self.touch = double_jump_touch;
+	precache_model("progs/quaddama.mdl");
+	setmodel(self, "progs/quaddama.mdl");
+	self.skin = 0;
+	setsize(self, '-16 -16 0', '16 16 56');
+	StartItem();
+}
+
+/*
+===============================================================================
+
 WEAPONS
 
 ===============================================================================
@@ -1072,6 +1112,12 @@ void() powerup_touch =
 	{
 		other.super_time = 1;
 		other.super_damage_finished = time + 30;
+	}
+
+	if (self.classname == "item_artifact_double_jump")
+	{
+		other.double_jump_time = 1;
+		other.double_jump_finished = time + 30;
 	}
 
 	activator = other;
