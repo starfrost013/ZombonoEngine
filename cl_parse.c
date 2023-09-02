@@ -62,9 +62,9 @@ char *svc_strings[] =
 	"svc_foundsecret",
 	"svc_spawnstaticsound",
 	"svc_intermission",
-	"svc_finale",			// [string] music [string] text
-	"svc_cdtrack",			// [byte] track [byte] looptrack
-	"svc_sellscreen",
+	"",			
+	"svc_cdtrack",
+	"",
 	"svc_cutscene",
 //johnfitz -- new server messages
 	"",	// 35
@@ -77,13 +77,16 @@ char *svc_strings[] =
 	"svc_spawnbaseline2", //42			// support for large modelindex, large framenum, alpha, using flags
 	"svc_spawnstatic2", // 43			// support for large modelindex, large framenum, alpha, using flags
 	"svc_spawnstaticsound2", //	44		// [coord3] [short] samp [byte] vol [byte] aten
-	"", // 44
+	"svc_updatefrags", // 44
 	"", // 45
 	"", // 46
 	"", // 47
 	"", // 48
-	"", // 49
-//johnfitz
+	"", // 49,
+	"svc_ui_start", // 50
+	"svc_ui_end", // 51
+	"svc_ui_add_button", // 52
+//johnfitz,
 };
 
 qboolean warn_about_nehahra_protocol; //johnfitz
@@ -1128,17 +1131,6 @@ void CL_ParseServerMessage (void)
 			cl.intermission = 1;
 			cl.completed_time = cl.time;
 			vid.recalc_refdef = true;	// go to full screen
-			break;
-
-		case svc_finale:
-			cl.intermission = 2;
-			cl.completed_time = cl.time;
-			vid.recalc_refdef = true;	// go to full screen
-			//johnfitz -- log centerprints to console
-			str = MSG_ReadString ();
-			SCR_CenterPrint (str);
-			Con_LogCenterPrint (str);
-			//johnfitz
 			break;
 
 		case svc_cutscene:

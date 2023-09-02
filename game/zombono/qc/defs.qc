@@ -23,11 +23,12 @@
 		© 2023 starfrost!!!
 	| | | | | | | | | | | | | |
 
-==============================================================================
-
-			SOURCE FOR GLOBALVARS_T C STRUCTURE
-
-==============================================================================
+	Defs.qc: 
+	
+	Global defines.
+		- Source for entvars_t C structure
+		- Source for globalvars_t C structure
+		- Other global defines used by the QC game
 */
 
 //
@@ -369,6 +370,10 @@ float SVC_FOUNDSECRET = 28;
 float SVC_INTERMISSION = 30;
 float SVC_FINALE = 31;
 float SVC_CDTRACK = 32;
+
+float SVC_UI_START = 50;
+float SVC_UI_END = 51;
+float SVC_UI_ADD_BUTTON = 52;
 
 float TE_SPIKE = 0;
 float TE_SUPERSPIKE = 1;

@@ -58,7 +58,7 @@ void() info_intermission =
 void() SetChangeParms =
 {
 // remove items
-	self.items -= self.items & (IT_KEY1 | IT_KEY2 | IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD);
+	self.items -= self.items & (IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD);
 
 // cap super health
 	if (self.health > 100)
@@ -494,7 +494,7 @@ void() PrintTeamWelcomeMessage =
 	// otherwise it doesn't work on join, only on respawn
 
 	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 9 to get the Zombinator.\nClick to spawn zombies and fuck those players!\n";
-	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nSend those Alan Smithees back to acting school!\n";
+	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nSend those Alan Smithees back to film school!\n";
 
 	if (self.team == ZOMBONO_TEAM_DIRECTOR)
 	{

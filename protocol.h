@@ -169,7 +169,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_foundsecret			28
 #define	svc_spawnstaticsound	29	// [coord3] [byte] samp [byte] vol [byte] aten
 #define	svc_intermission		30	// [string] music
-#define	svc_finale				31	// [string] music [string] text
 #define	svc_cdtrack				32	// [byte] track [byte] looptrack
 #define svc_cutscene			34
 
@@ -181,8 +180,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_spawnstatic2		43	// support for large modelindex, large framenum, alpha, using flags
 #define	svc_spawnstaticsound2	44	// [coord3] [short] samp [byte] vol [byte] aten
 
-// Zombono
+// Zombono Team
 #define svc_updateteam			45	// [byte] client ID [float] team
+
+// Zombono UI
+#define svc_ui_start			50
+#define svc_ui_end				51
+#define svc_ui_add_button		52  // [string] QC function name [string] texture name [float] size [float] position
+
 
 //johnfitz
 
