@@ -363,7 +363,7 @@ void double_jump_touch() =
 	self.think = SUB_regen;
 
 	// print to the other player
-	sprint(other, "You got the Double Jump!");
+	sprint(other, "You got the Double Jump!\n");
 	activator = other;
 
 	// play sound

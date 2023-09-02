@@ -1,3 +1,4 @@
+
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
@@ -25,6 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef BAN_TEST
 #if defined(_WIN32)
+#define _WINSOCKAPI_ // silly winsock2 hack
+#include <WinSock2.h>
+#include <ws2tcpip.h>
 #include <windows.h>
 #elif defined (NeXT)
 #include <sys/socket.h>

@@ -1029,13 +1029,35 @@ void() CheckPowerups =
 		}
 	}
 
-	if (self.double_jump_finished < time)
+	if (self.double_jump_time)
 	{
-		sprint(self, "Double Jump expired");
-		self.items = self.items - IT_DOUBLE_JUMP;
-		self.double_jump_time = 0;
-		self.double_jump_finished = 0;
+		// flash the screen if less than 3s left.
+		if (self.double_jump_finished < time + 3)
+		{
+			if (self.double_jump_time == 1)
+			{
+				sprint(self, "Double Jump about to end!");
+				stuffcmd(self, "bf\n");
+				self.double_jump_time = time + 1;
+			}
+
+
+			if (self.double_jump_time < time)
+			{
+				self.rad_time = time + 1;
+				stuffcmd(self, "bf\n");
+			}
+
+		}
+		if (self.double_jump_finished < time)
+		{
+			sprint(self, "Your double jump has ended.");
+			self.items = self.items - IT_DOUBLE_JUMP;
+			self.double_jump_time = 0;
+			self.double_jump_finished = 0;
+		}
 	}
+
 
 };
 

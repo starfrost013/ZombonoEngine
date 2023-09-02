@@ -1,6 +1,10 @@
+#pragma once
+
+#ifdef _WIN32 // for linux port
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,7 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma warning( disable : 4229 )  // mgraph gets this
 
+#define _WINSOCKAPI_ // silly winsock2 hack
+#include <WinSock2.h>
+#include <ws2tcpip.h>
 #include <windows.h>
+
 #define WM_MOUSEWHEEL                   0x020A
 
 #ifndef SERVERONLY
@@ -75,9 +83,6 @@ void IN_MouseEvent (int mstate);
 void IN_MouseAcceleration_f (void);
 void IN_MouseForceSpeed_f (void);
 
-
-extern qboolean	winsock_lib_initialized;
-
 extern cvar_t		_windowed_mouse;
 
 extern int		window_center_x, window_center_y;
@@ -95,22 +100,4 @@ void S_BlockSound (void);
 void S_UnblockSound (void);
 
 void VID_SetDefaultMode (void);
-
-int (PASCAL FAR *pWSAStartup)(WORD wVersionRequired, LPWSADATA lpWSAData);
-int (PASCAL FAR *pWSACleanup)(void);
-int (PASCAL FAR *pWSAGetLastError)(void);
-SOCKET (PASCAL FAR *psocket)(int af, int type, int protocol);
-int (PASCAL FAR *pioctlsocket)(SOCKET s, long cmd, u_long FAR *argp);
-int (PASCAL FAR *psetsockopt)(SOCKET s, int level, int optname,
-							  const char FAR * optval, int optlen);
-int (PASCAL FAR *precvfrom)(SOCKET s, char FAR * buf, int len, int flags,
-							struct sockaddr FAR *from, int FAR * fromlen);
-int (PASCAL FAR *psendto)(SOCKET s, const char FAR * buf, int len, int flags,
-						  const struct sockaddr FAR *to, int tolen);
-int (PASCAL FAR *pclosesocket)(SOCKET s);
-int (PASCAL FAR *pgethostname)(char FAR * name, int namelen);
-struct hostent FAR * (PASCAL FAR *pgethostbyname)(const char FAR * name);
-struct hostent FAR * (PASCAL FAR *pgethostbyaddr)(const char FAR * addr,
-												  int len, int type);
-int (PASCAL FAR *pgetsockname)(SOCKET s, struct sockaddr FAR *name,
-							   int FAR * namelen);
+#endif

@@ -1,3 +1,4 @@
+
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
@@ -25,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma warning(disable : 4051)     // ALPHA
 
 #ifdef _WIN32
+#define _WINSOCKAPI_ // silly winsock2 hack
 #include <windows.h>
 #endif
 
