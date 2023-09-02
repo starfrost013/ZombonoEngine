@@ -511,7 +511,7 @@ void(string gibname, float dm) ThrowGib =
 	new.avelocity_z = random()*600;
 	new.think = SUB_Remove;
 	new.ltime = time;
-	new.nextthink = time + 10 + random()*10;
+	new.nextthink = time + 8 + random()*8;
 	new.frame = 0;
 	new.flags = 0;
 };
@@ -530,6 +530,9 @@ void(string gibname, float dm) ThrowHead =
 	self.origin_z = self.origin_z - 24;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.avelocity = crandom() * '0 600 0';
+	self.think = SUB_Remove;
+	self.ltime = time;
+	self.nextthink = time + 8 + random()*8;
 };
 
 
