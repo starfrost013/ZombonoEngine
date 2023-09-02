@@ -32,6 +32,7 @@ void(entity attacker, float damage) player_pain;
 void() player_stand1;
 void(vector org) spawn_tfog;
 void(vector org, entity death_owner) spawn_tdeath;
+void() CheckPowerups;
 
 float modelindex_eyes, modelindex_player;
 
@@ -420,7 +421,7 @@ void() PutClientInServer =
 	self.effects = 0;
 	self.invincible_time = 0;
 	self.double_jump_time = 0;
-	
+
 	DecodeLevelParms();
 
 	self.attack_finished = time;
@@ -851,6 +852,7 @@ void() PlayerPreThink =
 
 
 	CheckRules();
+	CheckPowerups();
 	WaterMove();
 
 	if (self.waterlevel == 2)
@@ -1030,13 +1032,9 @@ void() CheckPowerups =
 		}
 	}
 
-	// DJump
+	// Double Jump time remaining
 	if (self.double_jump_finished)
 	{
-		dprint("Double Jump time remaining: ");
-		dprint(ftos(time));
-		dprint("\n");
-
 		// flash the screen if less than 3s left.
 		if (self.double_jump_finished < time + 3)
 		{
