@@ -419,7 +419,8 @@ void() PutClientInServer =
 	self.double_jump_finished = 0;
 	self.effects = 0;
 	self.invincible_time = 0;
-
+	self.double_jump_time = 0;
+	
 	DecodeLevelParms();
 
 	self.attack_finished = time;
@@ -1029,8 +1030,13 @@ void() CheckPowerups =
 		}
 	}
 
-	if (self.double_jump_time)
+	// DJump
+	if (self.double_jump_finished)
 	{
+		dprint("Double Jump time remaining: ");
+		dprint(ftos(time));
+		dprint("\n");
+
 		// flash the screen if less than 3s left.
 		if (self.double_jump_finished < time + 3)
 		{

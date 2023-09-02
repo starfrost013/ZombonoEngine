@@ -1961,7 +1961,7 @@ void VID_InitFullDIB (HINSTANCE hInstance)
 				modelist[nummodes].dib = 1;
 				modelist[nummodes].fullscreen = 1;
 				modelist[nummodes].bpp = devmode.dmBitsPerPel;
-				modelist[nummodes].refreshrate = devmode.dmDisplayFrequency; //johnfitz -- refreshrate
+				modelist[nummodes].refreshrate = devmode.dmDisplayFrequency; //johnfitz -- refreshrate 
 				sprintf (modelist[nummodes].modedesc, "%dx%dx%d %dHz", //johnfitz -- refreshrate
 						 devmode.dmPelsWidth,
 						 devmode.dmPelsHeight,

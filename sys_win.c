@@ -36,7 +36,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 int			starttime;
 qboolean	ActiveApp, Minimized;
-qboolean	WinNT;
 
 static double		pfreq;
 static double		curtime = 0.0;
@@ -308,11 +307,6 @@ void Sys_Init (void)
 	{
 		Sys_Error ("WinQuake requires at least Win95 or NT 4.0");
 	}
-
-	if (vinfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
-		WinNT = true;
-	else
-		WinNT = false;
 }
 
 
