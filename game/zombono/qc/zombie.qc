@@ -76,6 +76,7 @@ $frame paine29 paine30
 
 $frame cruc_1 cruc_2 cruc_3 cruc_4 cruc_5 cruc_6
 
+float ZOMBIE_MAX_HEALTH = 90;
 float SPAWN_CRUCIFIED = 1;
 
 //=============================================================================
@@ -154,7 +155,7 @@ void() zombie_run16 = [ $run16, zombie_run17 ] { ai_run(28); };
 void() zombie_run17 = [ $run17, zombie_run18 ] { ai_run(16); };
 void() zombie_run18 = [ $run18, zombie_run1 ]
 {
-	ai_run(8);
+	ai_run(15);
 	if (random() < 0.2)
 		sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
 	if (random() > 0.8)
@@ -294,11 +295,11 @@ PAIN
 */
 
 void() zombie_paina1 = [ $paina1, zombie_paina2 ] { sound(self, CHAN_VOICE, "zombie/z_pain.wav", 1, ATTN_NORM); };
-void() zombie_paina2 = [ $paina2, zombie_paina3 ] { ai_painforward(3); };
-void() zombie_paina3 = [ $paina3, zombie_paina4 ] { ai_painforward(1); };
-void() zombie_paina4 = [ $paina4, zombie_paina5 ] { ai_pain(1); };
-void() zombie_paina5 = [ $paina5, zombie_paina6 ] { ai_pain(3); };
-void() zombie_paina6 = [ $paina6, zombie_paina7 ] { ai_pain(1); };
+void() zombie_paina2 = [ $paina2, zombie_paina3 ] { ai_painforward(6); };
+void() zombie_paina3 = [ $paina3, zombie_paina4 ] { ai_painforward(2); };
+void() zombie_paina4 = [ $paina4, zombie_paina5 ] { ai_pain(2); };
+void() zombie_paina5 = [ $paina5, zombie_paina6 ] { ai_pain(6); };
+void() zombie_paina6 = [ $paina6, zombie_paina7 ] { ai_pain(2); };
 void() zombie_paina7 = [ $paina7, zombie_paina8 ] {};
 void() zombie_paina8 = [ $paina8, zombie_paina9 ] {};
 void() zombie_paina9 = [ $paina9, zombie_paina10 ] {};
@@ -330,23 +331,23 @@ void() zombie_painb21 = [ $painb21, zombie_painb22 ] {};
 void() zombie_painb22 = [ $painb22, zombie_painb23 ] {};
 void() zombie_painb23 = [ $painb23, zombie_painb24 ] {};
 void() zombie_painb24 = [ $painb24, zombie_painb25 ] {};
-void() zombie_painb25 = [ $painb25, zombie_painb26 ] { ai_painforward(1); };
+void() zombie_painb25 = [ $painb25, zombie_painb26 ] { ai_painforward(3); };
 void() zombie_painb26 = [ $painb26, zombie_painb27 ] {};
 void() zombie_painb27 = [ $painb27, zombie_painb28 ] {};
 void() zombie_painb28 = [ $painb28, zombie_run1 ] {};
 
 void() zombie_painc1 = [ $painc1, zombie_painc2 ] { sound(self, CHAN_VOICE, "zombie/z_pain1.wav", 1, ATTN_NORM); };
 void() zombie_painc2 = [ $painc2, zombie_painc3 ] {};
-void() zombie_painc3 = [ $painc3, zombie_painc4 ] { ai_pain(3); };
-void() zombie_painc4 = [ $painc4, zombie_painc5 ] { ai_pain(1); };
+void() zombie_painc3 = [ $painc3, zombie_painc4 ] { ai_pain(6); };
+void() zombie_painc4 = [ $painc4, zombie_painc5 ] { ai_pain(2); };
 void() zombie_painc5 = [ $painc5, zombie_painc6 ] {};
 void() zombie_painc6 = [ $painc6, zombie_painc7 ] {};
 void() zombie_painc7 = [ $painc7, zombie_painc8 ] {};
 void() zombie_painc8 = [ $painc8, zombie_painc9 ] {};
 void() zombie_painc9 = [ $painc9, zombie_painc10 ] {};
 void() zombie_painc10 = [ $painc10, zombie_painc11 ] {};
-void() zombie_painc11 = [ $painc11, zombie_painc12 ] { ai_painforward(1); };
-void() zombie_painc12 = [ $painc12, zombie_painc13 ] { ai_painforward(1); };
+void() zombie_painc11 = [ $painc11, zombie_painc12 ] { ai_painforward(3); };
+void() zombie_painc12 = [ $painc12, zombie_painc13 ] { ai_painforward(3); };
 void() zombie_painc13 = [ $painc13, zombie_painc14 ] {};
 void() zombie_painc14 = [ $painc14, zombie_painc15 ] {};
 void() zombie_painc15 = [ $painc15, zombie_painc16 ] {};
@@ -362,7 +363,7 @@ void() zombie_paind5 = [ $paind5, zombie_paind6 ] {};
 void() zombie_paind6 = [ $paind6, zombie_paind7 ] {};
 void() zombie_paind7 = [ $paind7, zombie_paind8 ] {};
 void() zombie_paind8 = [ $paind8, zombie_paind9 ] {};
-void() zombie_paind9 = [ $paind9, zombie_paind10 ] { ai_pain(1); };
+void() zombie_paind9 = [ $paind9, zombie_paind10 ] { ai_pain(3); };
 void() zombie_paind10 = [ $paind10, zombie_paind11 ] {};
 void() zombie_paind11 = [ $paind11, zombie_paind12 ] {};
 void() zombie_paind12 = [ $paind12, zombie_paind13 ] {};
@@ -371,16 +372,16 @@ void() zombie_paind13 = [ $paind13, zombie_run1 ] {};
 void() zombie_paine1 = [ $paine1, zombie_paine2 ]
 {
 	sound(self, CHAN_VOICE, "zombie/z_pain.wav", 1, ATTN_NORM);
-	self.health = 60;
+	if (self.health - ZOMBIE_MAX_HEALTH > 20) self.health = 60;
 };
-void() zombie_paine2 = [ $paine2, zombie_paine3 ] { ai_pain(8); };
-void() zombie_paine3 = [ $paine3, zombie_paine4 ] { ai_pain(5); };
-void() zombie_paine4 = [ $paine4, zombie_paine5 ] { ai_pain(3); };
-void() zombie_paine5 = [ $paine5, zombie_paine6 ] { ai_pain(1); };
-void() zombie_paine6 = [ $paine6, zombie_paine7 ] { ai_pain(2); };
-void() zombie_paine7 = [ $paine7, zombie_paine8 ] { ai_pain(1); };
-void() zombie_paine8 = [ $paine8, zombie_paine9 ] { ai_pain(1); };
-void() zombie_paine9 = [ $paine9, zombie_paine10 ] { ai_pain(2); };
+void() zombie_paine2 = [ $paine2, zombie_paine3 ] { ai_pain(16); };
+void() zombie_paine3 = [ $paine3, zombie_paine4 ] { ai_pain(10); };
+void() zombie_paine4 = [ $paine4, zombie_paine5 ] { ai_pain(6); };
+void() zombie_paine5 = [ $paine5, zombie_paine6 ] { ai_pain(2); };
+void() zombie_paine6 = [ $paine6, zombie_paine7 ] { ai_pain(4); };
+void() zombie_paine7 = [ $paine7, zombie_paine8 ] { ai_pain(2); };
+void() zombie_paine8 = [ $paine8, zombie_paine9 ] { ai_pain(2); };
+void() zombie_paine9 = [ $paine9, zombie_paine10 ] { ai_pain(4); };
 void() zombie_paine10 = [ $paine10, zombie_paine11 ]
 {
 	sound(self, CHAN_BODY, "zombie/z_fall.wav", 1, ATTN_NORM);
@@ -389,12 +390,12 @@ void() zombie_paine10 = [ $paine10, zombie_paine11 ]
 void() zombie_paine11 = [ $paine11, zombie_paine12 ]
 {
 	self.nextthink = self.nextthink + 5;
-	self.health = 60;
+	if (self.health - ZOMBIE_MAX_HEALTH > 20) self.health = ZOMBIE_MAX_HEALTH;
 };
 void() zombie_paine12 = [ $paine12, zombie_paine13 ]
 {
 	// see if ok to stand up
-	self.health = 60;
+	self.health = ZOMBIE_MAX_HEALTH;
 	sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
 	self.solid = SOLID_SLIDEBOX;
 	if (!walkmove(0, 0))
@@ -416,10 +417,10 @@ void() zombie_paine21 = [ $paine21, zombie_paine22 ] {};
 void() zombie_paine22 = [ $paine22, zombie_paine23 ] {};
 void() zombie_paine23 = [ $paine23, zombie_paine24 ] {};
 void() zombie_paine24 = [ $paine24, zombie_paine25 ] {};
-void() zombie_paine25 = [ $paine25, zombie_paine26 ] { ai_painforward(5); };
-void() zombie_paine26 = [ $paine26, zombie_paine27 ] { ai_painforward(3); };
-void() zombie_paine27 = [ $paine27, zombie_paine28 ] { ai_painforward(1); };
-void() zombie_paine28 = [ $paine28, zombie_paine29 ] { ai_pain(1); };
+void() zombie_paine25 = [ $paine25, zombie_paine26 ] { ai_painforward(10); };
+void() zombie_paine26 = [ $paine26, zombie_paine27 ] { ai_painforward(5); };
+void() zombie_paine27 = [ $paine27, zombie_paine28 ] { ai_painforward(2); };
+void() zombie_paine28 = [ $paine28, zombie_paine29 ] { ai_pain(2); };
 void() zombie_paine29 = [ $paine29, zombie_paine30 ] {};
 void() zombie_paine30 = [ $paine30, zombie_run1 ] {};
 
@@ -436,13 +437,12 @@ void() zombie_die =
 =================
 zombie_pain
 
-Zombies can only be killed(gibbed) by doing 60 hit points of damage
+Zombies can only be killed(gibbed) by doing 70/90 hit points of damage
 in a single frame(rockets, grenades, quad shotgun, quad nailgun).
 
-A hit of 25 points or more(super shotgun, quad nailgun) will allways put it
-down to the ground.
+A hit of 35 points or more(super shotgun, quad nailgun) will always put it into the ground.
 
-A hit of from 10 to 40 points in one frame will cause it to go down if it
+A hit of from 10 to 35 points in one frame will cause it to go down if it
 has been twice in two seconds, otherwise it goes into one of the four
 fast pain frames.
 
@@ -455,7 +455,7 @@ void(entity attacker, float take) zombie_pain =
 {
 	float r;
 
-	self.health = 60; // allways reset health
+	if (take - ZOMBIE_MAX_HEALTH > 20) self.health = ZOMBIE_MAX_HEALTH; // allways reset health
 
 	if (take < 9)
 		return; // totally ignore
@@ -464,7 +464,7 @@ void(entity attacker, float take) zombie_pain =
 		return; // down on ground, so don't reset any counters
 
 // go down immediately if a big enough hit
-	if (take >= 25)
+	if (take >= 35)
 	{
 		self.inpain = 2;
 		zombie_paine1();
@@ -535,7 +535,7 @@ void() monster_zombie_dospawn =
 	setmodel(self, "progs/zombie.mdl");
 
 	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 60;
+	self.health = ZOMBIE_MAX_HEALTH;
 
 	self.th_stand = zombie_stand1;
 	self.th_walk = zombie_walk1;

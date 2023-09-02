@@ -56,7 +56,10 @@ void() monster_use =
 		return;
 	if (activator.classname != "player")
 		return;
-
+	if (activator.classname == "player" 
+	&& activator.team == ZOMBONO_TEAM_DIRECTOR)
+		return; // notarget directors
+		
 // delay reaction so if the monster is teleported, its sound is still
 // heard
 	self.enemy = activator;
