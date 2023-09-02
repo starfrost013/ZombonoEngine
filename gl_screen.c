@@ -764,14 +764,14 @@ void SCR_ScreenShot_f (void)
 // find a file name to save it to
 	for (i=0; i<10000; i++)
 	{
-		sprintf (tganame, "fitz%04i.tga", i);
+		sprintf (tganame, "zombono%04i.tga", i);
 		sprintf (checkname, "%s/%s", com_gamedir, tganame);
 		if (Sys_FileTime(checkname) == -1)
 			break;	// file doesn't exist
 	}
 	if (i == 10000)
 	{
-		Con_Printf ("SCR_ScreenShot_f: Couldn't find an unused filename\n");
+		Con_Printf ("SCR_ScreenShot_f: Couldn't find an unused filename (You made 10,000 screenshots?!)\n");
 		return;
  	}
 
