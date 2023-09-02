@@ -94,7 +94,6 @@ cvar_t		scr_clock = {"scr_clock", "0"};
 
 cvar_t		scr_viewsize = {"viewsize","100", true};
 cvar_t		scr_fov = {"fov","110"};	// 10 - 170
-cvar_t		scr_conspeed = {"scr_conspeed","300"};
 cvar_t		scr_centertime = {"scr_centertime","2"};
 cvar_t		scr_showram = {"showram","1"};
 cvar_t		scr_showturtle = {"showturtle","0"};
@@ -389,7 +388,6 @@ void SCR_Init (void)
 
 	Cvar_RegisterVariable (&scr_fov, NULL);
 	Cvar_RegisterVariable (&scr_viewsize, NULL);
-	Cvar_RegisterVariable (&scr_conspeed, NULL);
 	Cvar_RegisterVariable (&scr_showram, NULL);
 	Cvar_RegisterVariable (&scr_showturtle, NULL);
 	Cvar_RegisterVariable (&scr_showpause, NULL);
@@ -714,20 +712,8 @@ void SCR_SetUpToDrawConsole (void)
 
 	timescale = (host_timescale.value > 0) ? host_timescale.value : 1; //johnfitz -- timescale
 
-	if (scr_conlines < scr_con_current)
-	{
-		scr_con_current -= scr_conspeed.value*host_frametime/timescale; //johnfitz -- timescale
-		if (scr_conlines > scr_con_current)
-			scr_con_current = scr_conlines;
-
-	}
-	else if (scr_conlines > scr_con_current)
-	{
-		scr_con_current += scr_conspeed.value*host_frametime/timescale; //johnfitz -- timescale
-		if (scr_conlines < scr_con_current)
-			scr_con_current = scr_conlines;
-	}
-
+	// just display the console immediately, anim was annoying 
+	scr_con_current = scr_conlines;
 	if (clearconsole++ < vid.numpages)
 		Sbar_Changed ();
 
