@@ -19,8 +19,9 @@
 
 float DOOR_START_OPEN = 1;
 float DOOR_DONT_LINK = 4;
-float DOOR_GOLD_KEY = 8;
-float DOOR_SILVER_KEY = 16;
+//removed - zombono
+//float DOOR_GOLD_KEY = 8;
+//float DOOR_SILVER_KEY = 16;
 float DOOR_TOGGLE = 32;
 
 /*
@@ -226,48 +227,13 @@ void() door_touch =
 	}
 
 // key door stuff
+// going to keep this mechanism for now, but keys are removed
 	if (!self.items)
 		return;
 
 // FIXME: blink key on player's status bar
 	if ((self.items & other.items) != self.items)
 	{
-		if (self.owner.items == IT_KEY1)
-		{
-			if (world.worldtype == 2)
-			{
-				centerprint(other, "You need the silver keycard");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-			else if (world.worldtype == 1)
-			{
-				centerprint(other, "You need the silver runekey");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-			else if (world.worldtype == 0)
-			{
-				centerprint(other, "You need the silver key");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-		}
-		else
-		{
-			if (world.worldtype == 2)
-			{
-				centerprint(other, "You need the gold keycard");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-			else if (world.worldtype == 1)
-			{
-				centerprint(other, "You need the gold runekey");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-			else if (world.worldtype == 0)
-			{
-				centerprint(other, "You need the gold key");
-				sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-			}
-		}
 		return;
 	}
 
@@ -415,7 +381,7 @@ TOGGLE causes the door to wait in both the start and end states for a trigger ev
 
 START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered(not usefull for touch or takedamage doors).
 
-Key doors are allways wait -1.
+Key doors are always wait -1.
 
 "message" is printed when the door is touched if it is a trigger door and it hasn't been fired yet
 "angle" determines the opening direction
@@ -437,31 +403,6 @@ void() func_door =
 
 {
 
-	if (world.worldtype == 0)
-	{
-		precache_sound("doors/medtry.wav");
-		precache_sound("doors/meduse.wav");
-		self.noise3 = "doors/medtry.wav";
-		self.noise4 = "doors/meduse.wav";
-	}
-	else if (world.worldtype == 1)
-	{
-		precache_sound("doors/runetry.wav");
-		precache_sound("doors/runeuse.wav");
-		self.noise3 = "doors/runetry.wav";
-		self.noise4 = "doors/runeuse.wav";
-	}
-	else if (world.worldtype == 2)
-	{
-		precache_sound("doors/basetry.wav");
-		precache_sound("doors/baseuse.wav");
-		self.noise3 = "doors/basetry.wav";
-		self.noise4 = "doors/baseuse.wav";
-	}
-	else
-	{
-		dprint("no worldtype set!\n");
-	}
 	if (self.sounds == 0)
 	{
 		precache_sound("misc/null.wav");
@@ -510,11 +451,6 @@ void() func_door =
 
 	self.blocked = door_blocked;
 	self.use = door_use;
-
-	if (self.spawnflags & DOOR_SILVER_KEY)
-		self.items = IT_KEY1;
-	if (self.spawnflags & DOOR_GOLD_KEY)
-		self.items = IT_KEY2;
 
 	if (!self.speed)
 		self.speed = 100;

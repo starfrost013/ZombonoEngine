@@ -60,8 +60,8 @@
 		16384 : "Armor 2" : 0
 		32768 : "Armor 3" : 0
 		65536 : "Super Health" : 0
-		131072 : "Key 1 (MEANING WILL CHANGE)" : 0
-		262144 : "Key 2 (MEANING WILL CHANGE)" : 0
+		131072 : "Unused 1 (MEANING WILL CHANGE)" : 0
+		262144 : "Unused 2 (MEANING WILL CHANGE)" : 0
 		524288 : "Invisibility" : 0
 		1048576 : "Invulnerability" : 0
 		2097152 : "Suit" : 0
@@ -198,10 +198,6 @@
 	item_armor2 : "Yellow armor (150%)" []
 @PointClass size(-16 -16 0, 16 16 56) base(Item, Appearflags) model({ "path": ":progs/armor.mdl" }) =
 	item_armor1 : "Green armor (100%)" []
-@PointClass size(-16 -16 -24, 16 16 32) base(Item, Appearflags) model({ "path": ":progs/w_s_key.mdl" }) =
-	item_key1 : "Silver key" []
-@PointClass size(-16 -16 -24, 16 16 32) base(Item, Appearflags) model({ "path": ":progs/w_g_key.mdl" }) =
-	item_key2 : "Gold key" []
 @PointClass size(-16 -16 0, 16 16 56) base(Item, Appearflags) model({ "path": ":progs/quaddama.mdl" }) =
 	item_artifact_double_jump : "Double jump" []
 //

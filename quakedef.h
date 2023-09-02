@@ -151,14 +151,14 @@ void	VID_UnlockBuffer (void);
 #define IT_ARMOR2               16384
 #define IT_ARMOR3               32768
 #define IT_SUPERHEALTH          65536
-#define IT_KEY1                 131072
-#define IT_KEY2                 262144
+#define IT_UNUSED1              131072		// Was Gold key, removed
+#define IT_UNUSED2              262144		// Was Silver key, removed
 #define	IT_INVISIBILITY			524288
 #define	IT_INVULNERABILITY		1048576
 #define	IT_SUIT					2097152
 #define	IT_QUAD					4194304
 #define IT_DIRECTOR_ZOMBINATOR	8388608
-
+#define IT_DOUBLE_JUMP			16777216
 
 //===========================================
 

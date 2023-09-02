@@ -1143,7 +1143,6 @@ void() CheatCommand =
 		IT_SUPER_NAILGUN |
 		IT_GRENADE_LAUNCHER |
 		IT_ROCKET_LAUNCHER |
-		IT_KEY1 | IT_KEY2 |
 		IT_DIRECTOR_ZOMBINATOR;
 
 	self.ammo_cells = 200;
