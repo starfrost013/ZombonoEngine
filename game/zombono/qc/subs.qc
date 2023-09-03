@@ -342,3 +342,18 @@ void(void() thinkst) SUB_CheckRefire =
 	self.cnt = 1;
 	self.think = thinkst;
 };
+
+void(string name) SUB_UIStart =
+{
+	dprint("UIStart called");
+};
+
+void(string name) SUB_UIEnd =
+{
+	dprint("UIEnd called");
+};
+
+void(string on_click, string texture, float size, float position) SUB_UIAddButton =
+{
+	dprint("UIAddButton called");
+};
