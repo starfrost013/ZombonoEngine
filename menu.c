@@ -1038,57 +1038,57 @@ void M_Options_Draw (void)
 	p = Draw_CachePic ("gfx/p_option.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	M_Print (16, 32, "    Customize controls");
-	M_Print (16, 40, "         Go to console");
+	M_Print (16, 32, "     Customize controls");
+	M_Print (16, 40, "     Go to console");
 	M_Print (16, 48, "     Reset to defaults");
 
-	M_Print (16, 56, "           Screen size");
+	M_Print (16, 56, "     Screen size");
 	r = (scr_viewsize.value - 30) / (120 - 30);
 	M_DrawSlider (220, 56, r);
 
-	M_Print (16, 64, "            Brightness");
+	M_Print (16, 64, "     Brightness");
 	r = (1.0 - vid_gamma.value) / 0.5;
 	M_DrawSlider (220, 64, r);
 
-	M_Print (16, 72, "           Mouse Speed");
+	M_Print (16, 72, "     Mouse Speed");
 	r = (sensitivity.value - 1)/10;
 	M_DrawSlider (220, 72, r);
 
-	M_Print (16, 80, "       CD Music Volume");
+	M_Print (16, 80, "     CD Music Volume");
 	r = bgmvolume.value;
 	M_DrawSlider (220, 80, r);
 
-	M_Print (16, 88, "          Sound Volume");
+	M_Print (16, 88, "     Sound Volume");
 	r = volume.value;
 	M_DrawSlider (220, 88, r);
 
-	M_Print (16, 96,  "            Always Run");
+	M_Print (16, 96, "     Always Run");
 	M_DrawCheckbox (220, 96, cl_forwardspeed.value > 200);
 
-	M_Print (16, 104, "          Invert Mouse");
+	M_Print (16, 104,"     Invert Mouse");
 	M_DrawCheckbox (220, 104, m_pitch.value < 0);
 
-	M_Print(16, 112,  "	   Mouse Acceleration");
+	M_Print(16, 112, "     Mouse Acceleration");
 	M_DrawCheckbox(220, 112, mouse_acceleration.value);
 
-	M_Print(16, 120, "	    Force Mouse Speed");
+	M_Print(16, 120, "     Force Mouse Speed");
 	M_DrawCheckbox(220, 120, mouse_force_speed.value);
 
-	M_Print (16, 128, "            Lookspring");
+	M_Print (16, 128,"     Lookspring");
 	M_DrawCheckbox (220, 128, lookspring.value);
 
-	M_Print (16, 136, "            Lookstrafe");
+	M_Print (16, 136,"     Lookstrafe");
 	M_DrawCheckbox (220, 136, lookstrafe.value);
 
 	if (vid_menudrawfn)
-		M_Print(16, 144, "         Video Options");
+		M_Print(16, 144, "     Video Options");
 
-	M_Print (16, 152, "          Player Setup");
+	M_Print (16, 152, "     Player Setup");
 
 #ifdef _WIN32
 	if (modestate == MS_WINDOWED)
 	{
-		M_Print (16, 160, "             Use Mouse");
+		M_Print (16, 160, "Use Mouse");
 		M_DrawCheckbox (220, 160, _windowed_mouse.value);
 	}
 #endif
@@ -1686,8 +1686,8 @@ typedef struct level_s
 
 level_t		levels[] =
 {
-	{"start", "Zombono Test Level"},	// 0
-	{"z_warehouse", "Warehouse"},		// 1
+	{"z_warehouse", "Warehouse"},		// 0
+	{"start", "Zombono Test Level"},	// 1
 };
 
 int	startlevel;
@@ -1723,10 +1723,10 @@ void M_GameOptions_Draw (void)
 	M_DrawTextBox (152, 32, 10, 1);
 	M_Print (160, 40, "begin game");
 
-	M_Print (0, 56, "      Max players");
+	M_Print (0, 56, "     Max players");
 	M_Print (160, 56, va("%i", maxplayers) );
 
-	M_Print (0, 64, "        Game Type");
+	M_Print (0, 64, "     Game Type");
 
 	if (gamemode.value == 0.0f)
 	{
@@ -1745,7 +1745,7 @@ void M_GameOptions_Draw (void)
 		M_Print(160, 64, "Zombono Coop");
 	}
 
-	M_Print (0, 72, "        Friendly Fire");
+	M_Print (0, 72, "     Friendly Fire");
 
 	char* msg;
 
@@ -1756,7 +1756,7 @@ void M_GameOptions_Draw (void)
 	}
 	M_Print(160, 72, msg);
 
-	M_Print (0, 80, "            Skill");
+	M_Print (0, 80, "     Skill");
 	if (skill.value == 0)
 		M_Print (160, 80, "Easy difficulty");
 	else if (skill.value == 1)
@@ -1766,19 +1766,19 @@ void M_GameOptions_Draw (void)
 	else
 		M_Print (160, 80, "Nightmare difficulty");
 
-	M_Print (0, 88, "       Frag Limit");
+	M_Print (0, 88, "     Frag Limit");
 	if (fraglimit.value == 0)
 		M_Print (160, 88, "none");
 	else
 		M_Print (160, 88, va("%i frags", (int)fraglimit.value));
 
-	M_Print (0, 96, "       Time Limit");
+	M_Print (0, 96, "     Time Limit");
 	if (timelimit.value == 0)
 		M_Print (160, 96, "none");
 	else
 		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
 
-	M_Print (0, 104, "           Level");
+	M_Print (0, 104, "     Level");
 
 	M_Print(160, 104, levels[startlevel].description);
 	M_Print(160, 112, levels[startlevel].name);
