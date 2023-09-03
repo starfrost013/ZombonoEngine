@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // draw.h -- these are the only functions outside the refresh allowed
 // to touch the vid buffer
 
+typedef struct qpic_s
+{
+	int			width, height;		// 4 bytes each
+	byte		data[4];			// variably sized
+} qpic_t;
+
 extern	qpic_t		*draw_disc;	// also used on sbar
 
 void Draw_Init (void);
@@ -36,3 +43,4 @@ void Draw_FadeScreen (void);
 void Draw_String (int x, int y, char *str);
 qpic_t *Draw_CachePic (char *path);
 void GL_SetCanvas (int canvastype); //johnfitz
+void SwapPic(qpic_t* pic);

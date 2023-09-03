@@ -682,6 +682,21 @@ void Draw_BeginDisc (void)
 }
 
 /*
+=============================================================================
+
+automatic byte swapping
+
+=============================================================================
+*/
+
+void SwapPic(qpic_t* pic)
+{
+	pic->width = LittleLong(pic->width);
+	pic->height = LittleLong(pic->height);
+}
+
+
+/*
 ================
 GL_SetCanvas -- johnfitz -- support various canvas types
 ================

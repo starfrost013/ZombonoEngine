@@ -217,8 +217,8 @@
     <ClCompile Include="r_sprite.c" />
     <ClCompile Include="r_world.c" />
     <ClCompile Include="team.c" />
+    <ClCompile Include="ui.c" />
     <ClCompile Include="view.c" />
-    <ClCompile Include="wad.c" />
     <ClCompile Include="net_dgrm.c" />
     <ClCompile Include="net_loop.c" />
     <ClCompile Include="net_main.c" />
@@ -320,6 +320,7 @@
     <ClInclude Include="spritegn.h" />
     <ClInclude Include="sys.h" />
     <ClInclude Include="team.h" />
+    <ClInclude Include="ui.h" />
     <ClInclude Include="vid.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="winquake.h" />

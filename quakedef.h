@@ -187,7 +187,6 @@ typedef struct entity_state_s
 } entity_state_t;
 
 
-#include "wad.h"
 #include "draw.h"
 #include "cvar.h"
 #include "screen.h"
@@ -206,6 +205,8 @@ typedef struct entity_state_s
 
 #include "image.h" //johnfitz
 #include "gl_texmgr.h" //johnfitz
+
+#include "ui.h"
 
 #include "input.h"
 #include "world.h"
