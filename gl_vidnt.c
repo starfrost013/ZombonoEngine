@@ -2365,7 +2365,7 @@ extern void M_DrawCheckbox (int x, int y, int on);
 
 extern qboolean	m_entersound;
 
-enum {
+enum m_state_e {
 	m_none,
 	m_main,
 	m_singleplayer,

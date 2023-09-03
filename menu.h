@@ -35,6 +35,16 @@ void M_Keydown (int key);
 void M_Draw (void);
 void M_ToggleMenu_f (void);
 
+// Main menu
+
+#define	MAIN_ITEMS	5
+
+#define MENU_MAIN_SINGLEPLAYER			0
+#define MENU_MAIN_MULTIPLAYER			1
+#define MENU_MAIN_OPTIONS				2
+#define MENU_MAIN_DISCONNECT			3
+#define MENU_MAIN_QUIT					4
+
 // Options menu (TODO: move everything else here)
 
 #ifdef _WIN32
@@ -43,7 +53,7 @@ void M_ToggleMenu_f (void);
 #define	OPTIONS_ITEMS	15
 #endif
 
-#define MENU_OPTIONS_CUSTOMIZE_CONTROLS 0
+#define MENU_OPTIONS_CUSTOMIZE_CONTROLS	0
 #define MENU_OPTIONS_GO_TO_CONSOLE		1
 #define MENU_OPTIONS_RESET_TO_DEFAULTS	2	
 #define MENU_OPTIONS_SCREEN_SIZE		3

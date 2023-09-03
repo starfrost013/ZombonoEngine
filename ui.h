@@ -18,12 +18,12 @@ typedef enum ui_element_type_e
 {
 	ui_element_button,
 
-} ui_element_type_t;
+} ui_element_type;
 
 // UI element defines; more will be added to this class as more controls get added.
 typedef struct ui_element_s
 {
-	ui_element_type_t	type;
+	ui_element_type		type;
 	char				image[64];
 	int					size;
 	int					position;

@@ -37,7 +37,6 @@ enum m_state_e {
 	m_save,
 	m_multiplayer,
 	m_setup,
-	m_net,
 	m_options,
 	m_video,
 	m_keys,
@@ -49,6 +48,7 @@ enum m_state_e {
 #ifdef PLAYTEST
 	m_not_available_demo,
 #endif
+	m_disconnect,
 } m_state;
 
 void M_Main_f (void);
@@ -67,6 +67,7 @@ void M_Main_f (void);
 	void M_Options_f (void);
 		void M_Keys_f (void);
 		void M_Video_f (void);
+	void M_Disconnect_f (void);
 	void M_Quit_f (void);
 
 void M_Main_Draw (void);
@@ -85,6 +86,7 @@ void M_Main_Draw (void);
 	void M_Options_Draw (void);
 		void M_Keys_Draw (void);
 		void M_Video_Draw (void);
+	void M_Disconnect_Draw (void);
 	void M_Quit_Draw (void);
 
 void M_Main_Key (int key);
@@ -259,7 +261,6 @@ void M_ToggleMenu_f (void)
 /* MAIN MENU */
 
 int	m_main_cursor;
-#define	MAIN_ITEMS	4
 
 
 void M_Main_f (void)
@@ -281,13 +282,11 @@ void M_Main_Draw (void)
 	qpic_t	*p;
 
 	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
-	p = Draw_CachePic ("gfx/ttl_main.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
-	M_DrawTransPic (72, 32, Draw_CachePic ("gfx/mainmenu.lmp") );
+	M_DrawTransPic (72, 16, Draw_CachePic ("gfx/mainmenu.lmp") );
 
 	f = (int)(realtime * 10)%6; //johnfitz -- was host_time
 
-	M_DrawTransPic (54, 32 + m_main_cursor * 20,Draw_CachePic( va("gfx/menudot%i.lmp", f+1 ) ) );
+	M_DrawTransPic (54, 16 + m_main_cursor * 21, Draw_CachePic( va("gfx/menudot%i.lmp", f+1 ) ) );
 }
 
 
@@ -320,7 +319,7 @@ void M_Main_Key (int key)
 
 		switch (m_main_cursor)
 		{
-		case 0:
+		case MENU_MAIN_SINGLEPLAYER:
 #ifdef PLAYTEST
 			M_NotAvailableInDemo_f();
 #else
@@ -329,7 +328,7 @@ void M_Main_Key (int key)
 
 			break;
 
-		case 1:
+		case MENU_MAIN_MULTIPLAYER:
 #ifdef PLAYTEST
 			M_NotAvailableInDemo_f();
 #else
@@ -337,12 +336,18 @@ void M_Main_Key (int key)
 #endif
 
 			break;
-
-		case 2:
+		case MENU_MAIN_OPTIONS:
 			M_Options_f ();
 			break;
 
-		case 3:
+		case MENU_MAIN_DISCONNECT:
+#ifdef PLAYTEST
+			M_NotAvailableInDemo_f();
+#else
+			M_Disconnect_f();
+#endif
+			break;
+		case MENU_MAIN_QUIT:
 			M_Quit_f ();
 			break;
 		}
@@ -1387,6 +1392,41 @@ void M_Video_Key (int key)
 }
 
 //=============================================================================
+/* DISCONNECT MENU */
+void M_Disconnect_f(void)
+{
+	key_dest = key_menu;
+	m_entersound = true;
+
+	if (cls.state == ca_connected)
+	{
+		CL_Disconnect();
+		m_state = m_main;
+	}
+	else
+	{
+		//not connected so don't bother (tell the user they're not connected though)
+		m_state = m_disconnect;
+	}
+}
+
+void M_Disconnect_Draw(void)
+{
+	// start positions of menu
+	int x = 48;
+	int y = 56;
+
+	M_DrawTextBox(x, y, 32, 1);
+	M_Print(x, y + 8, "You aren't connected to a server!");
+}
+
+void M_Disconnect_Key(int key)
+{
+	m_state = m_main;
+}
+
+
+//=============================================================================
 /* QUIT MENU */
 
 int		msgNumber;
@@ -2208,6 +2248,10 @@ void M_Draw (void)
 		M_NotAvailableInDemo_Draw();
 		break;
 #endif
+
+	case m_disconnect:
+		M_Disconnect_Draw();
+		break;
 	}
 
 	if (m_entersound)
@@ -2290,6 +2334,10 @@ void M_Keydown (int key)
 		M_NotAvailableInDemo_Key (key);
 		return;
 #endif
+
+	case m_disconnect:
+		M_Disconnect_Key (key);
+		return;
 	}
 }
 
