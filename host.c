@@ -791,7 +791,6 @@ void Host_Init (quakeparms_t *parms)
 	Chase_Init ();
 	COM_Init (parms->basedir);
 	Host_InitLocal ();
-	//W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
 	Key_Init ();
 	Con_Init ();
 	M_Init ();
@@ -826,6 +825,8 @@ void Host_Init (quakeparms_t *parms)
 #ifdef _WIN32 // on non win32, mouse comes before video for security reasons
 		IN_Init ();
 #endif
+		UI_Init (); 
+
 		// ugly fucking hack
 		SCR_AutoScale_f();
 	}

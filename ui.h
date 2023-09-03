@@ -32,16 +32,16 @@ typedef struct ui_element_s
 // UI define itself. Has a name for caching purposes.
 typedef struct ui_s
 {
-	char				name[32];
+	char				name[16];
 	ui_element_t		elements[MAX_UI_ELEMENTS];
 
 } ui_t;
 
 // Global UI list.
-extern ui_t				ui[];
+extern ui_t*				ui[];
 
 void UI_Init(void);			// Initialise UI subsystem
-void UI_Start(void);		// Start a new UI
+void UI_Start(char* name);	// Start a new UI
 void UI_Draw(void);			// Draw all UIs
-void UI_End(void);			// End a UI
+void UI_End(char* names);	// End a UI
 void UI_AddButton(void);	// Add a new  button
