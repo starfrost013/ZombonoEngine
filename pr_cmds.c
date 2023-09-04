@@ -1470,6 +1470,10 @@ void PF_WriteEntity (void)
 	MSG_WriteShort (WriteDest(), G_EDICTNUM(OFS_PARM1));
 }
 
+void PF_WriteFloat(void)
+{
+	MSG_WriteFloat (WriteDest(), G_EDICTNUM(OFS_PARM1));
+}
 //=============================================================================
 
 int SV_ModelIndex (char *name);
@@ -1646,7 +1650,7 @@ PF_WriteAngle,
 PF_WriteString,
 PF_WriteEntity,
 
-PF_Fixme,
+PF_WriteFloat,
 PF_Fixme,
 PF_Fixme,
 PF_Fixme,

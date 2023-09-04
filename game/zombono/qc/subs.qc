@@ -346,14 +346,23 @@ void(void() thinkst) SUB_CheckRefire =
 void(string name) SUB_UIStart =
 {
 	dprint("UIStart called");
+	WriteByte(MSG_ALL, SVC_UI_START);
+	WriteString(MSG_ALL, name);
 };
 
 void(string name) SUB_UIEnd =
 {
 	dprint("UIEnd called");
+	WriteByte(MSG_ALL, SVC_UI_END);
+	WriteString(MSG_ALL, name);
 };
 
 void(string on_click, string texture, float size, float position) SUB_UIAddButton =
 {
 	dprint("UIAddButton called");
+	WriteByte(MSG_ALL, SVC_UI_ADD_BUTTON);
+	WriteString(MSG_ALL, on_click);
+	WriteString(MSG_ALL, texture);
+	WriteFloat(MSG_ALL, size);
+	WriteFloat(MSG_ALL, position);
 };

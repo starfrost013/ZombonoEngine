@@ -23,18 +23,19 @@ typedef enum ui_element_type_e
 // UI element defines; more will be added to this class as more controls get added.
 typedef struct ui_element_s
 {
-	ui_element_type		type;
-	char				image[64];
-	int					size;
-	int					position;
+	ui_element_type		type;						// Type of UI element to draw.
+	char				texture[64];					// Image to draw for the element.
+	int					size;						// Size of the element on screen.
+	int					position;					// Position of the element on the screen.
+	char				on_click[32];				// QuakeC function to call on click.
 } ui_element_t;
 
 // UI define itself. Has a name for caching purposes.
 typedef struct ui_s
 {
-	char				name[16];
-	ui_element_t		elements[MAX_UI_ELEMENTS];
-
+	char				name[16];					// Name.
+	ui_element_t		elements[MAX_UI_ELEMENTS];	// List of elements.
+	int					element_count;				// Number of elements.
 } ui_t;
 
 // Global UI list.
@@ -44,4 +45,4 @@ void UI_Init(void);			// Initialise UI subsystem
 void UI_Start(char* name);	// Start a new UI
 void UI_Draw(void);			// Draw all UIs
 void UI_End(char* names);	// End a UI
-void UI_AddButton(void);	// Add a new  button
+void UI_AddButton(const char* on_click, const char* texture, float size, float position);	// Add a new button

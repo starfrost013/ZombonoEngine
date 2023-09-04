@@ -24,7 +24,7 @@ ui_t* UI_GetUI(char* name)
 {
 	for (int ui_number = 0; ui_number < MAX_UI_COUNT; ui_number++)
 	{
-		if (!strcmp(ui[ui_number]->name, name)) return ui[ui_number];
+		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
 	}
 
 	return NULL;
@@ -44,9 +44,45 @@ void UI_Start(char* name)
 		memset(&new_ui, 0x00, sizeof(ui_t));
 		*new_ui->name = name;
 
-		*ui[ui_count] = *new_ui;
+		if (ui_count >= MAX_UI_ELEMENTS)
+		{
+			Con_Warning("Attempted to add a new UI when there are >= MAX_UI_COUNT UIs!");
+			return;
+		}
+
+		// put it in its proper place
+		memcpy(ui[ui_count], new_ui, sizeof(ui_t));
 		ui_count++;
 	}
+}
+
+void UI_AddButton(const char* on_click, const char* texture, float size, float position)
+{
+	ui_element_t new_button;
+
+	memset(&new_button, 0x00, sizeof(ui_element_t));
+
+	// note: "none" can be used to not call a function on click
+	// it should never be null, so that's a Sys_Error
+
+	if (on_click == NULL) Sys_Error("UI_AddButton: on_click was NULL!");
+	if (texture == NULL) Sys_Error("UI_AddButton: texture was NULL!");
+	
+	// suppress warning
+	if (on_click != NULL) strcpy(new_button.on_click, on_click);
+	if (texture != NULL) strcpy(new_button.texture, texture);
+
+	new_button.size = size;
+	new_button.position = position;
+
+	if (current_ui->element_count >= MAX_UI_ELEMENTS)
+	{
+		Con_Warning("Attempted to add UI element to UI with >= MAX_UI_ELEMENTS elements!");
+		return;
+	}
+
+	current_ui->elements[current_ui->element_count] = new_button;
+	current_ui->element_count++;
 }
 
 void UI_End(char* name)
