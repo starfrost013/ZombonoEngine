@@ -878,6 +878,7 @@ void CL_ParseServerMessage (void)
 	int			cmd;
 	int			i;
 	char		*str; //johnfitz
+	char		*str2; // zombono - dbg only 
 	int			total, j, lastcmd; //johnfitz
 
 //
@@ -1179,7 +1180,15 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_ui_add_button:
-			UI_AddButton(MSG_ReadString(), MSG_ReadString(), MSG_ReadFloat(), MSG_ReadFloat());
+			str = MSG_ReadString();
+			str2 = MSG_ReadString();
+			
+			float size_x = MSG_ReadFloat();
+			float size_y = MSG_ReadFloat();
+			float position_x = MSG_ReadFloat();
+			float position_y = MSG_ReadFloat();
+
+			UI_AddButton(str, str2, size_x, size_y, position_x, position_y);
 			break;
 		}
 

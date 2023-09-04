@@ -24,9 +24,11 @@ typedef enum ui_element_type_e
 typedef struct ui_element_s
 {
 	ui_element_type		type;						// Type of UI element to draw.
-	char				texture[64];					// Image to draw for the element.
-	int					size;						// Size of the element on screen.
-	int					position;					// Position of the element on the screen.
+	char				texture[64];				// Image to draw for the element.
+	float				size_x;						// Size of the element on screen (X).
+	float				size_y;						// Size of the element on screen (Y).
+	float				position_x;					// Position of the element on the screen (X).
+	float				position_y;					// Position of the element on the screen (X).
 	char				on_click[32];				// QuakeC function to call on click.
 } ui_element_t;
 
@@ -45,4 +47,4 @@ void UI_Init(void);			// Initialise UI subsystem
 void UI_Start(char* name);	// Start a new UI
 void UI_Draw(void);			// Draw all UIs
 void UI_End(char* names);	// End a UI
-void UI_AddButton(const char* on_click, const char* texture, float size, float position);	// Add a new button
+void UI_AddButton(const char* on_click, const char* texture, float size_x, float size_y, float position_x, float position_y);	// Add a new button

@@ -723,7 +723,7 @@ void() SUB_Remove;
 
 void(string name) SUB_UIStart;
 void(string name) SUB_UIEnd;
-void(string on_click, string texture, float size, float position) SUB_UIAddButton;
+void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
 
 //
 // combat.qc

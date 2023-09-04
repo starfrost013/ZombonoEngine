@@ -488,8 +488,8 @@ void() main =
 
 	// Draw the team selection UI
 	SUB_UIStart("psui");
-	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP");
-	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP");
+	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 100, 100, 100, 100);
+	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 100, 100, 100, 100);
 	SUB_UIEnd("psui");
 }
 

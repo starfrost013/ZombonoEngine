@@ -1135,8 +1135,6 @@ void PR_Init (void)
 	Cvar_RegisterVariable (&saved4, NULL);
 }
 
-
-
 edict_t *EDICT_NUM(int n)
 {
 	if (n < 0 || n >= sv.max_edicts)
