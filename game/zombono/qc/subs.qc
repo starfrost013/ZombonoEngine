@@ -368,3 +368,11 @@ void(string on_click, string texture, float size_x, float size_y, float position
 	WriteFloat(MSG_ALL, position_x);
 	WriteFloat(MSG_ALL, position_y);
 };
+
+void(string name, float visible) SUB_UISetVisibility =
+{
+	dprint("UISetVisibility called\n");
+	WriteByte(MSG_ALL, SVC_UI_SET_VISIBILITY);
+	WriteString(MSG_ALL, name);
+	WriteFloat(MSG_ALL, visible);
+}

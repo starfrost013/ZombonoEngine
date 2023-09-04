@@ -1206,7 +1206,7 @@ int     com_filesize;
 // in memory
 //
 
-typedef struct
+typedef struct packfile_s
 {
 	char    name[MAX_QPATH];
 	int             filepos, filelen;
@@ -1223,13 +1223,13 @@ typedef struct pack_s
 //
 // on disk
 //
-typedef struct
+typedef struct dpackfile_s
 {
 	char    name[56];
 	int             filepos, filelen;
 } dpackfile_t;
 
-typedef struct
+typedef struct dpackheader_s
 {
 	char    id[4];
 	int             dirofs;

@@ -878,9 +878,10 @@ void CL_ParseServerMessage (void)
 	int			cmd;
 	int			i;
 	char		*str; //johnfitz
-	char		*str2; // zombono - dbg only 
 	int			total, j, lastcmd; //johnfitz
 
+	// slightly ugly, for zombono
+	char		tempbuf[64], tempbuf2[64];
 //
 // if recording demos, copy the message out
 //
@@ -1179,16 +1180,24 @@ void CL_ParseServerMessage (void)
 			UI_End(MSG_ReadString());
 			break;
 
-		case svc_ui_add_button:
-			str = MSG_ReadString();
-			str2 = MSG_ReadString();
-			
+		case svc_ui_add_button: //todo: make a common reader for all button classes (when we have them)
+
+			//64 is max size
+			strcpy_s(&tempbuf, 64, MSG_ReadString());
+			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+
 			float size_x = MSG_ReadFloat();
 			float size_y = MSG_ReadFloat();
 			float position_x = MSG_ReadFloat();
 			float position_y = MSG_ReadFloat();
 
-			UI_AddButton(str, str2, size_x, size_y, position_x, position_y);
+			UI_AddButton(tempbuf, tempbuf2, size_x, size_y, position_x, position_y);
+
+			break;
+		
+		case svc_ui_set_visibility:
+
+			UI_SetVisibility(MSG_ReadString(), (qboolean)MSG_ReadFloat());
 			break;
 		}
 

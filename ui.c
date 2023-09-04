@@ -8,6 +8,8 @@ int		ui_count = 0;		// UI count
 
 ui_t* UI_GetUI(char* name);
 
+void UI_DrawButton(ui_element_t button);
+
 void UI_Init(void)
 {
 	// Allocate all the memory at once (speed :D)
@@ -28,9 +30,10 @@ ui_t* UI_GetUI(char* name)
 		if (ui[ui_number] == NULL)
 			break;
 
-		if (!Q_strcmp(ui[ui_number]->name, name)) return ui[ui_number];
+		if (!strncmp(ui[ui_number]->name, name, 16)) return ui[ui_number];
 	}
 
+	//no error here because in some cases we want prog errors, othercases Sys_Error
 	return NULL;
 }
 
@@ -58,15 +61,13 @@ void UI_Start(char* name)
 		
 		strcpy(new_ui->name, name);
 
-		// put it in its proper place
-		memcpy(&ui[ui_count], &new_ui, sizeof(ui_t));
 		ui_count++;
 
-		current_ui = &ui[ui_count];
+		current_ui = new_ui;
 	}
 }
 
-void UI_AddButton(const char* on_click, const char* texture, float size_x, float size_y, float position_x, float position_y)
+void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y)
 {
 	ui_element_t new_button;
 
@@ -75,8 +76,8 @@ void UI_AddButton(const char* on_click, const char* texture, float size_x, float
 	// note: "none" can be used to not call a function on click
 	// it should never be null, so that's a Sys_Error
 
-	if (on_click == NULL) Sys_Error("UI_AddButton: on_click was NULL!");
-	if (texture == NULL) Sys_Error("UI_AddButton: texture was NULL!");
+	if (on_click == NULL) Host_Error("UI_AddButton: on_click was NULL!");
+	if (texture == NULL) Host_Error("UI_AddButton: texture was NULL!");
 	
 	// suppress warning
 	if (on_click != NULL) strcpy(new_button.on_click, on_click);
@@ -97,11 +98,55 @@ void UI_AddButton(const char* on_click, const char* texture, float size_x, float
 	current_ui->element_count++;
 }
 
+void UI_SetVisibility(char* name, qboolean visible)
+{
+	ui_t* current_ui = UI_GetUI(name);
+
+	if (!current_ui)
+	{
+		Host_Error("Attempted to set visibility of invalid UI %s!", name);
+		return;
+	}
+
+	current_ui->visible = visible;
+}
+
+void UI_Draw(void)
+{
+	GL_SetCanvas(CANVAS_DEFAULT);
+
+	for (int ui_num = 0; ui_num < MAX_UI_COUNT; ui_num++)
+	{
+		ui_t* current_ui = ui[ui_num];
+
+		if (current_ui != NULL
+			&& current_ui->visible)
+		{
+			for (int ui_element_num = 0; ui_element_num < MAX_UI_COUNT; ui_element_num++)
+			{
+				ui_element_t current_ui_element = current_ui->elements[ui_element_num];
+
+				switch (current_ui_element.type)
+				{
+					case ui_element_button:
+						UI_DrawButton(current_ui_element);
+						break;
+				}
+			}
+		}
+	}
+}
+
+void UI_DrawButton(ui_element_t button)
+{
+	// the button will be drawn here
+}
+
 void UI_End(char* name)
 {
 	if (!UI_GetUI(name))
 	{
-		Host_Error("Tried to end a UI that does not exist!");
+		Host_Error("Tried to end a UI %s that does not exist!", name);
 		return;
 	}
 

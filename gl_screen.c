@@ -1077,6 +1077,7 @@ void SCR_UpdateScreen (void)
 		SCR_DrawClock (); //johnfitz
 		SCR_DrawConsole ();
 		M_Draw ();
+		UI_Draw ();
 	}
 
 	V_UpdateBlend (); //johnfitz -- V_UpdatePalette cleaned up and renamed

@@ -187,7 +187,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_ui_start			50  // [string] name - used for caching
 #define svc_ui_end				51  // [string] name?
 #define svc_ui_add_button		52  // [string] QC function name [string] texture name [float] size [float] position
-
+#define svc_ui_set_visibility	53	// [string] UI name [float] visibility
 
 //johnfitz
 

@@ -33,6 +33,8 @@ void() player_stand1;
 void(vector org) spawn_tfog;
 void(vector org, entity death_owner) spawn_tdeath;
 void() CheckPowerups;
+void() PsuiSetTeamDirector;
+void() PsuiSetTeamPlayer;
 
 float modelindex_eyes, modelindex_player;
 
@@ -484,13 +486,33 @@ void() main =
 	if (gamemode <= ZOMBONO_MODE_COUNT)
 	{
 		PrintTeamWelcomeMessage();
+		// Draw the team selection UI
+		SUB_UIStart("psui");
+		SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 100, 100, 100, 100);
+		SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 100, 100, 100, 100);
+		SUB_UIEnd("psui");
 	}
 
-	// Draw the team selection UI
-	SUB_UIStart("psui");
-	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 100, 100, 100, 100);
-	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 100, 100, 100, 100);
-	SUB_UIEnd("psui");
+}
+
+void() PsuiSetTeamDirector = 
+{
+	if (gamemode <= ZOMBONO_MODE_COUNT)
+	{
+		// should be current player/
+		self.team = ZOMBONO_TEAM_DIRECTOR;
+		SUB_UISetVisibility("psui", FALSE);
+	}
+}
+
+void() PsuiSetTeamPlayer =
+{
+	if (gamemode <= ZOMBONO_MODE_COUNT)
+	{
+		// should be current player/
+		self.team = ZOMBONO_TEAM_PLAYER;
+		SUB_UISetVisibility("psui", FALSE);
+	}
 }
 
 // todo: MAKE THIS RUN POST-SPAWN!!!
