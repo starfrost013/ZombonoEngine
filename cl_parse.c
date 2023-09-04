@@ -1197,7 +1197,9 @@ void CL_ParseServerMessage (void)
 		
 		case svc_ui_set_visibility:
 
-			UI_SetVisibility(MSG_ReadString(), (qboolean)MSG_ReadFloat());
+			str = MSG_ReadString();
+
+			UI_SetVisibility(str, (qboolean)MSG_ReadFloat());
 			break;
 		}
 

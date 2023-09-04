@@ -376,9 +376,9 @@ entity() SelectSpawnPoint =
 	}
 	else // no team
 	{
-		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar!!");
+		dprint("Legacy spawn behaviour activated -- invalid gamemode cvar!");
 		dprint(ftos(gamemode));
-		dprint("! \n");
+		dprint("!\n");
 	
 		spot = find(world, classname, "info_player_start");
 	}
@@ -488,9 +488,11 @@ void() main =
 		PrintTeamWelcomeMessage();
 		// Draw the team selection UI
 		SUB_UIStart("psui");
-		SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 100, 100, 100, 100);
-		SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 100, 100, 100, 100);
+		SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 128, vid_height/2 - 128);
+		SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 128, vid_height/2 - 128);
 		SUB_UIEnd("psui");
+
+		SUB_UISetVisibility("psui", TRUE);
 	}
 
 }

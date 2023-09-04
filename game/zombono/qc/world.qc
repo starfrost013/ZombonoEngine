@@ -227,6 +227,9 @@ void() StartFrame =
 	// Get game mode
 	gamemode = cvar("gamemode");
 
+	vid_width = cvar("vid_width");
+	vid_height = cvar("vid_height");
+
 	framecount = framecount + 1;
 };
 

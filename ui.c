@@ -94,6 +94,9 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 		return;
 	}
 
+	// load and cache the pic
+	Draw_CachePic(new_button.texture);
+
 	current_ui->elements[current_ui->element_count] = new_button;
 	current_ui->element_count++;
 }
@@ -122,7 +125,7 @@ void UI_Draw(void)
 		if (current_ui != NULL
 			&& current_ui->visible)
 		{
-			for (int ui_element_num = 0; ui_element_num < MAX_UI_COUNT; ui_element_num++)
+			for (int ui_element_num = 0; ui_element_num < current_ui->element_count; ui_element_num++)
 			{
 				ui_element_t current_ui_element = current_ui->elements[ui_element_num];
 
@@ -140,6 +143,9 @@ void UI_Draw(void)
 void UI_DrawButton(ui_element_t button)
 {
 	// the button will be drawn here
+	// while we already cached it, it will just return the precached pic upon calling it again so this is okay
+
+	Draw_Pic(button.position_x, button.position_y, Draw_CachePic(button.texture));
 }
 
 void UI_End(char* name)

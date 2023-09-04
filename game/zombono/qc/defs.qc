@@ -458,6 +458,10 @@ float skill;
 
 float sv_cheats; // Cheats enabled
 
+// Screen size
+float vid_width;
+float vid_height;
+
 //================================================
 
 //
