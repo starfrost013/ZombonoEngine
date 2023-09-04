@@ -25,6 +25,11 @@ ui_t* UI_GetUI(char* name)
 {
 	for (int ui_number = 0; ui_number < MAX_UI_COUNT; ui_number++)
 	{
+		// You can only ever add uis, not delete them (although you can make them not be visible)
+		// so this is a safe assumption to make
+		if (ui[ui_number] == NULL)
+			break;
+
 		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
 	}
 
@@ -33,18 +38,23 @@ ui_t* UI_GetUI(char* name)
 
 void UI_Start(char* name)
 {
-	ui_t* new_ui = UI_GetUI(name);
+	// check if the UI already exists
+	ui_t* cached_ui = UI_GetUI(name);
 
-	if (new_ui) // we already created this ui so don't bother
+	if (cached_ui) // we already created this ui so don't bother
 	{
-		current_ui = new_ui;
+		current_ui = cached_ui;
 		return; 
 	}
 	else
 	{
-		memset(new_ui, 0x00, sizeof(ui_t));
+		// create a new UI
+
+		ui_t new_ui;
+
+		memset(&new_ui, 0x00, sizeof(ui_t));
 		
-		strcpy(new_ui->name, name);
+		strcpy(new_ui.name, name);
 
 		if (ui_count >= MAX_UI_ELEMENTS)
 		{
@@ -53,8 +63,10 @@ void UI_Start(char* name)
 		}
 
 		// put it in its proper place
-		memcpy(&ui[ui_count], new_ui, sizeof(ui_t));
+		memcpy(&ui[ui_count], &new_ui, sizeof(ui_t));
 		ui_count++;
+
+		current_ui = ui[ui_count];
 	}
 }
 
