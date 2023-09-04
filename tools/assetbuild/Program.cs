@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "1.3.2";
+const string ASSETBUILD_VERSION = "1.3.3";
 const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
@@ -21,6 +21,8 @@ string qcDir = $@"{gameDir}\qc"; // QuakeC sources dir.
 string gfxSourceDir = $@"{gameDir}raw\content\gfx"; // gfx source dir.
 string gfxDestinationDir = $@"{gameDir}\content\gfx"; // gfx destination dir
 string finalDir = string.Empty; //set later
+
+bool quietMode = false;
 
 #endregion
 
@@ -113,6 +115,7 @@ try
     process.StartInfo.FileName = $@"{TOOLDIR}\bmp2lmp\bin\{config}\net7.0\bmp2lmp.exe";
     process.StartInfo.ArgumentList.Add(Path.GetFullPath(gfxSourceDir));
     process.StartInfo.ArgumentList.Add(Path.GetFullPath(gfxDestinationDir));
+    process.StartInfo.ArgumentList.Add("-q");
 
     process.Start();
     process.WaitForExit();
@@ -191,6 +194,18 @@ catch (Exception ex)
     PrintErrorAndExit($"Exception occurred: \n\n{ex}", 8);
 }
 
+void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
+{
+    if (!quietMode) Print(text, foreground);
+}
+
+void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
+{
+    Console.ForegroundColor = foreground;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
+
 void PrintErrorAndExit(string errorString, int errorId)
 {
     Console.ForegroundColor = ConsoleColor.Red;
@@ -198,3 +213,4 @@ void PrintErrorAndExit(string errorString, int errorId)
     Console.ResetColor();
     Environment.Exit(errorId);
 }
+

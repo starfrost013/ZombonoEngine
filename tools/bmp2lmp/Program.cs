@@ -1,9 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using bmp2lmp;
 using IronSoftware.Drawing;
+using System.Security.Cryptography.X509Certificates;
 
 #region Constants
-string BMP2LMP_VERSION = "1.1.0";
+string BMP2LMP_VERSION = "1.2.0";
 #endregion
 
 #region Variables
@@ -11,10 +12,9 @@ string inputItem = string.Empty;
 string outputItem = string.Empty;
 // very bad, replace with something better later when we add actual arguments
 bool folderMode = false;
+bool quietMode = false;
+string[] inputFiles;
 #endregion
-
-Console.WriteLine($"bmp2lmp {BMP2LMP_VERSION}");
-Console.WriteLine("Converts 32-bit BMP to LMP32");
 
 #region Command line parsing
 switch (args.Length)
@@ -68,11 +68,18 @@ switch (args.Length)
             }
         }
 
+        // stuff you can put anywhere
+        foreach (string arg in args)
+        {
+            if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
+        }
         break;
 }
 #endregion
 
-string[] inputFiles;
+
+Print($"bmp2lmp {BMP2LMP_VERSION}");
+Print("Converts 32-bit BMP to LMP32");
 
 if (folderMode)
 {
@@ -89,68 +96,77 @@ foreach (string inputFileName in inputFiles)
 {
     byte[] inputFileBytes = File.ReadAllBytes(inputFileName);
 
-    string outputFileName = outputItem; 
+    string outputFileName = outputItem;
 
-    if (inputFileName.Contains(".bmp", StringComparison.InvariantCultureIgnoreCase))
+    AnyBitmap bitmap = new(inputFileBytes);
+
+    // bad
+
+    BinaryWriter outputFileStream;
+
+    if (folderMode)
     {
-        AnyBitmap bitmap = new(inputFileBytes);
-
-        // bad
-
-        BinaryWriter outputFileStream;
-
-        if (folderMode)
-        {
-            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
-            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
-        }
-        else
-        {
-            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
-        }
-
-        Lmp32Header header = new()
-        {
-            Height = bitmap.Height,
-            Width = bitmap.Width,
-        };
-
-        header.Write(outputFileStream);
-
-        for (int y = 0; y < bitmap.Height; y++)
-        {
-            for (int x = 0; x < bitmap.Width; x++)
-            {
-                IronSoftware.Drawing.Color color = bitmap.GetPixel(x, y);
-
-                // RGBA format for quake
-                outputFileStream.Write(color.R);
-                outputFileStream.Write(color.G);
-                outputFileStream.Write(color.B);
-                outputFileStream.Write(color.A);
-            }
-        }
-
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"Converted file {inputFileName} to {outputFileName}!");
-        Console.ResetColor();
+        outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
+        outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
     }
+    else
+    {
+        outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+    }
+
+    Lmp32Header header = new()
+    {
+        Height = bitmap.Height,
+        Width = bitmap.Width,
+    };
+
+    header.Write(outputFileStream);
+
+    for (int y = 0; y < bitmap.Height; y++)
+    {
+        for (int x = 0; x < bitmap.Width; x++)
+        {
+            IronSoftware.Drawing.Color color = bitmap.GetPixel(x, y);
+
+            // RGBA format for quake
+            outputFileStream.Write(color.R);
+            outputFileStream.Write(color.G);
+            outputFileStream.Write(color.B);
+            outputFileStream.Write(color.A);
+        }
+    }
+
+    Console.ForegroundColor = ConsoleColor.Green;
+    Print($"Converted file {inputFileName} to {outputFileName}!");
+    Console.ResetColor();
 }
 
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"Done!");
+Print($"Done!");
 Console.ResetColor();
+
+void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
+{
+    if (!quietMode) Print(text, foreground);
+}
+
+void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
+{
+    Console.ForegroundColor = foreground;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
 
 void PrintHelpAndExit(string error, int exitCode)
 {
-    Console.WriteLine("bmp2lmp [input file or folder] <output file>");
-    Console.WriteLine("input file: input bmp file or folder");
-    Console.WriteLine("output file: output lmp file or folder; optional if folder. if folder mode, files will be renamed to .bmp\n");
+    PrintLoud("bmp2lmp [input file or folder] <output file>");
+    PrintLoud("input file: input bmp file or folder");
+    PrintLoud("output file: output lmp file or folder; optional if folder. if folder mode, files will be renamed to .bmp\n");
     PrintErrorAndExit(error, exitCode);
 }
 
 void PrintErrorAndExit(string error, int exitCode)
 {
-    Console.WriteLine(error);
+    PrintLoud(error);
     Environment.Exit(exitCode);
 }
