@@ -18,6 +18,7 @@ void UI_Init(void)
 		Sys_Error("Failed to allocate hunk space for UI!");
 	}
 
+	
 }
 
 ui_t* UI_GetUI(char* name)
@@ -41,8 +42,9 @@ void UI_Start(char* name)
 	}
 	else
 	{
-		memset(&new_ui, 0x00, sizeof(ui_t));
-		*new_ui->name = name;
+		memset(new_ui, 0x00, sizeof(ui_t));
+		
+		strcpy(new_ui->name, name);
 
 		if (ui_count >= MAX_UI_ELEMENTS)
 		{
@@ -51,7 +53,7 @@ void UI_Start(char* name)
 		}
 
 		// put it in its proper place
-		memcpy(ui[ui_count], new_ui, sizeof(ui_t));
+		memcpy(&ui[ui_count], new_ui, sizeof(ui_t));
 		ui_count++;
 	}
 }
