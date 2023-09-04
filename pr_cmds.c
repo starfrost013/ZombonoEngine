@@ -1472,7 +1472,7 @@ void PF_WriteEntity (void)
 
 void PF_WriteFloat(void)
 {
-	MSG_WriteFloat (WriteDest(), G_EDICTNUM(OFS_PARM1));
+	MSG_WriteFloat (WriteDest(), G_FLOAT(OFS_PARM1));
 }
 //=============================================================================
 

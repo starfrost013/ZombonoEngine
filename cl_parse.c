@@ -1169,7 +1169,18 @@ void CL_ParseServerMessage (void)
 		case svc_spawnstaticsound2: //PROTOCOL_FITZQUAKE
 			CL_ParseStaticSound (2);
 			break;
-		//johnfitz
+		
+		case svc_ui_start:
+			UI_Start(MSG_ReadString());
+			break;
+	
+		case svc_ui_end:
+			UI_End(MSG_ReadString());
+			break;
+
+		case svc_ui_add_button:
+			UI_AddButton(MSG_ReadString(), MSG_ReadString(), MSG_ReadFloat(), MSG_ReadFloat());
+			break;
 		}
 
 		lastcmd = cmd; //johnfitz

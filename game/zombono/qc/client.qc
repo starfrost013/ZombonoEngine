@@ -485,6 +485,12 @@ void() main =
 	{
 		PrintTeamWelcomeMessage();
 	}
+
+	// Draw the team selection UI
+	SUB_UIStart("psui");
+	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP");
+	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP");
+	SUB_UIEnd("psui");
 }
 
 // todo: MAKE THIS RUN POST-SPAWN!!!

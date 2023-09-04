@@ -267,7 +267,7 @@ qpic_t	*Draw_CachePic (char *path)
 	gl->gltexture = TexMgr_LoadImage (NULL, path, dat->width, dat->height, SRC_RGBA, dat->data, path,
 									  0, TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
 
-	// don't automatically scale to POT - all gpus since Geforce6000/
+	// don't automatically scale to POT - all gpus since Geforce6000 support NPOT, but we still use POT for higher perf
 	gl->sl = 0;
 	gl->sh = 1; 
 	gl->tl = 0;
