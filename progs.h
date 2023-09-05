@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -84,6 +85,8 @@ void ED_WriteGlobals (FILE *f);
 void ED_ParseGlobals (char *data);
 
 void ED_LoadFromFile (char *data);
+
+dfunction_t* ED_FindFunction(char* name);
 
 //define EDICT_NUM(n) ((edict_t *)(sv.edicts+ (n)*pr_edict_size))
 //define NUM_FOR_EDICT(e) (((byte *)(e) - sv.edicts)/pr_edict_size)

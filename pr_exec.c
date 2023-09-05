@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-typedef struct
+typedef struct prstack_s
 {
 	int				s;
 	dfunction_t		*f;
@@ -375,7 +375,7 @@ void PR_ExecuteProgram (func_t fnum)
 	{
 		if (pr_global_struct->self)
 			ED_Print (PROG_TO_EDICT(pr_global_struct->self));
-		Host_Error ("PR_ExecuteProgram: NULL function");
+		Host_Error ("PR_ExecuteProgram: Invalid function number %d", fnum);
 	}
 
 	f = &pr_functions[fnum];

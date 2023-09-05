@@ -55,6 +55,7 @@ kbutton_t	in_left, in_right, in_forward, in_back;
 kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
 kbutton_t	in_strafe, in_speed, in_use, in_jump, in_attack;
 kbutton_t	in_up, in_down;
+kbutton_t	in_crouch;
 
 int			in_impulse;
 
@@ -160,6 +161,8 @@ void IN_UseUp (void) {KeyUp(&in_use);}
 void IN_JumpDown (void) {KeyDown(&in_jump);}
 void IN_JumpUp (void) {KeyUp(&in_jump);}
 
+void IN_CrouchUp(void) {KeyUp(&in_crouch);}
+void IN_CrouchDown(void) {KeyDown(&in_crouch);}
 void IN_Impulse (void) {in_impulse=Q_atoi(Cmd_Argv(1));}
 
 /*
@@ -439,6 +442,7 @@ void CL_InitInput (void)
 	Cmd_AddCommand ("-klook", IN_KLookUp);
 	Cmd_AddCommand ("+mlook", IN_MLookDown);
 	Cmd_AddCommand ("-mlook", IN_MLookUp);
-
+	Cmd_AddCommand ("+crouch", IN_CrouchDown);
+	Cmd_AddCommand ("-crouch", IN_CrouchUp);
 }
 

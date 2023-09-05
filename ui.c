@@ -182,6 +182,42 @@ void UI_SetFocus(char* name, qboolean focus)
 	acquired_ui->focused = focus;
 }
 
+void UI_OnClick(float x, float y)
+{
+	for (int uiNum = 0; uiNum < MAX_UI_COUNT; uiNum++)
+	{
+		ui_t* acquired_ui = ui[uiNum];
+
+		if (acquired_ui != NULL
+			&& acquired_ui->focused
+			&& acquired_ui->visible)
+		{
+			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
+			{
+				ui_element_t acquired_ui_element = acquired_ui->elements[uiElementNum];
+
+				// autoscale manages this
+				float scale_factor = scr_menuscale.value;
+				
+				// could still be zero? make it not zero
+				if (scale_factor == 0) scale_factor = 1;
+
+				if (x >= acquired_ui_element.position_x
+					&& x <= acquired_ui_element.position_x + (acquired_ui_element.size_x * scale_factor)
+					&& y >= acquired_ui_element.position_y
+					&& y <= acquired_ui_element.position_y + (acquired_ui_element.size_y * scale_factor))
+				{
+					// find QC OnClick
+					dfunction_t* func = ED_FindFunction(acquired_ui_element.on_click);
+
+					// execute it
+					PR_ExecuteProgram(func - pr_functions);
+				}
+			}
+		}
+	}
+}
+
 void UI_End(void)
 {
 	// current_ui is NULLPTR when no ui is set

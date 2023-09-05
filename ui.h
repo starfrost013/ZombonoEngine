@@ -50,6 +50,7 @@ void UI_Start(char* name);								// Start a new UI
 void UI_Draw(void);										// Draw all UIs
 void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
+void UI_OnClick(float x, float y);						// UI click event. Not for QC
 void UI_End();								// End a UI
 // these end up being copied to a nonconst buf to get around the limitation of MSG_WriteString() using a globally shared buffer. (TODO: fix these warnings with MSG_WriteStrings)
 void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y);	// Add a new button

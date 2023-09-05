@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,10 +25,6 @@ void SCR_Init (void);
 
 void SCR_UpdateScreen (void);
 
-
-void SCR_SizeUp (void);
-void SCR_SizeDown (void);
-void SCR_BringDownConsole (void);
 void SCR_CenterPrint (char *str);
 
 void SCR_BeginLoadingPlaque (void);
@@ -48,9 +45,10 @@ extern	cvar_t		scr_viewsize;
 
 extern	cvar_t		scr_sbaralpha; //johnfitz
 
-extern qboolean		block_drawing;
+extern	cvar_t		scr_autoscale;
 
-void SCR_UpdateWholeScreen (void);
+extern	qboolean		block_drawing;
+
 void SCR_AutoScale_f(void);
 
 //johnfitz -- stuff for 2d drawing control
