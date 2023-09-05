@@ -1171,17 +1171,17 @@ void CL_ParseServerMessage (void)
 		case svc_spawnstaticsound2: //PROTOCOL_FITZQUAKE
 			CL_ParseStaticSound (2);
 			break;
-		
-		case svc_ui_start:
+		/* Stuff from here on is Protocol 668 (Zombono 0.02) and later only */
+
+		case svc_ui_start: 
 			UI_Start(MSG_ReadString());
 			break;
 	
 		case svc_ui_end:
-			UI_End(MSG_ReadString());
+			UI_End();
 			break;
 
 		case svc_ui_add_button: //todo: make a common reader for all button classes (when we have them)
-
 			//64 is max size
 			strcpy_s(&tempbuf, 64, MSG_ReadString());
 			strcpy_s(&tempbuf2, 64, MSG_ReadString());
@@ -1196,10 +1196,15 @@ void CL_ParseServerMessage (void)
 			break;
 		
 		case svc_ui_set_visibility:
-
 			str = MSG_ReadString();
 
 			UI_SetVisibility(str, (qboolean)MSG_ReadFloat());
+			break;
+
+		case svc_ui_set_focus:
+			str = MSG_ReadString();
+
+			UI_SetFocus(str, (qboolean)MSG_ReadFloat());
 			break;
 		}
 

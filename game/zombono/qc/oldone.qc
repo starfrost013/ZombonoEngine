@@ -143,9 +143,6 @@ void() finale_1 =
 		error("no teleporttrain");
 	remove(pl);
 
-	WriteByte(MSG_ALL, SVC_FINALE);
-	WriteString(MSG_ALL, "");
-
 	pl = find(world, classname, "player");
 	while (pl != world)
 	{
@@ -236,9 +233,6 @@ void() finale_4 =
 		}
 		z = z + 96;
 	}
-	// start the end text
-	WriteByte(MSG_ALL, SVC_FINALE);
-	WriteString(MSG_ALL, "Congratulations and well done! You have\nbeaten the hideous Shub-Niggurath, and\nher hundreds of ugly changelings and\nmonsters. You have proven that your\nskill and your cunning are greater than\nall the powers of Quake. You are the\nmaster now. Id Software salutes you.");
 
 // put a player model down
 	n = spawn();

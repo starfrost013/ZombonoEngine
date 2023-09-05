@@ -30,7 +30,7 @@ ui_t* UI_GetUI(char* name)
 		if (ui[ui_number] == NULL)
 			break;
 
-		if (!strncmp(ui[ui_number]->name, name, 16)) return ui[ui_number];
+		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
 	}
 
 	//no error here because in some cases we want prog errors, othercases Sys_Error
@@ -103,20 +103,22 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 
 void UI_SetVisibility(char* name, qboolean visible)
 {
-	ui_t* current_ui = UI_GetUI(name);
+	ui_t* acquired_ui = UI_GetUI(name);
 
-	if (!current_ui)
+	if (!acquired_ui)
 	{
 		Host_Error("Attempted to set visibility of invalid UI %s!", name);
 		return;
 	}
 
-	current_ui->visible = visible;
+	acquired_ui->visible = visible;
 }
 
 void UI_Draw(void)
 {
 	GL_SetCanvas(CANVAS_DEFAULT);
+
+	int		focused_uis = 0;
 
 	for (int ui_num = 0; ui_num < MAX_UI_COUNT; ui_num++)
 	{
@@ -136,8 +138,27 @@ void UI_Draw(void)
 						break;
 				}
 			}
+
+			// update focus
+			if (current_ui->focused)
+			{
+				// turn on the mouse so the user can click around and stuff
+				focused_uis++;
+				IN_DeactivateMouse();
+				IN_ShowMouse();
+			}
 		}
 	}
+
+	if (focused_uis == 0)
+	{
+		// turn the mouse back on again
+		IN_ActivateMouse();
+		IN_HideMouse();
+	}
+
+	if (focused_uis > 1)
+		Host_Error("Multiple UIs focused!");
 }
 
 void UI_DrawButton(ui_element_t button)
@@ -148,14 +169,21 @@ void UI_DrawButton(ui_element_t button)
 	Draw_Pic(button.position_x, button.position_y, Draw_CachePic(button.texture));
 }
 
-void UI_End(char* name)
+void UI_SetFocus(char* name, qboolean focus)
 {
-	if (!UI_GetUI(name))
+	ui_t* acquired_ui = UI_GetUI(name);
+
+	if (!acquired_ui)
 	{
-		Host_Error("Tried to end a UI %s that does not exist!", name);
+		Host_Error("Tried to set the focus of a UI %s that does not exist!", name);
 		return;
 	}
 
+	acquired_ui->focused = focus;
+}
+
+void UI_End(void)
+{
 	// current_ui is NULLPTR when no ui is set
 	current_ui = NULL;
 }

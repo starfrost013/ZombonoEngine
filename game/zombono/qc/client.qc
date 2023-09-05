@@ -490,9 +490,10 @@ void() main =
 		SUB_UIStart("psui");
 		SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 128, vid_height/2 - 128);
 		SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 128, vid_height/2 - 128);
-		SUB_UIEnd("psui");
+		SUB_UIEnd();
 
 		SUB_UISetVisibility("psui", TRUE);
+		SUB_UISetFocus("psui", TRUE);
 	}
 
 }
@@ -503,6 +504,7 @@ void() PsuiSetTeamDirector =
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_DIRECTOR;
+		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
 	}
 }
@@ -513,6 +515,7 @@ void() PsuiSetTeamPlayer =
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_PLAYER;
+		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
 	}
 }

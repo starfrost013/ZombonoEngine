@@ -350,11 +350,10 @@ void(string name) SUB_UIStart =
 	WriteString(MSG_ALL, name);
 };
 
-void(string name) SUB_UIEnd =
+void() SUB_UIEnd =
 {
 	dprint("UIEnd called\n");
 	WriteByte(MSG_ALL, SVC_UI_END);
-	WriteString(MSG_ALL, name);
 };
 
 void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =
@@ -375,4 +374,12 @@ void(string name, float visible) SUB_UISetVisibility =
 	WriteByte(MSG_ALL, SVC_UI_SET_VISIBILITY);
 	WriteString(MSG_ALL, name);
 	WriteFloat(MSG_ALL, visible);
+}
+
+void(string name, float focused) SUB_UISetFocus =
+{
+	dprint("UISetFocus called\n");
+	WriteByte(MSG_ALL, SVC_UI_SET_FOCUS);
+	WriteString(MSG_ALL, name);
+	WriteFloat(MSG_ALL, focused);
 }

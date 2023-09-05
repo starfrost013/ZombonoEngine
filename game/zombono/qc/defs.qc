@@ -368,7 +368,6 @@ float SVC_TEMPENTITY = 23;
 float SVC_KILLEDMONSTER = 27;
 float SVC_FOUNDSECRET = 28;
 float SVC_INTERMISSION = 30;
-float SVC_FINALE = 31;
 float SVC_CDTRACK = 32;
 
 // UI messages
@@ -376,6 +375,7 @@ float SVC_UI_START = 50;
 float SVC_UI_END = 51;
 float SVC_UI_ADD_BUTTON = 52;
 float SVC_UI_SET_VISIBILITY = 53;
+float SVC_UI_SET_FOCUS = 54;
 
 float TE_SPIKE = 0;
 float TE_SUPERSPIKE = 1;
@@ -728,9 +728,10 @@ void() SUB_UseTargets;
 void() SUB_Remove;
 
 void(string name) SUB_UIStart;
-void(string name) SUB_UIEnd;
+void() SUB_UIEnd;
 void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
 void(string name, float visible) SUB_UISetVisibility;
+void(string name, float focused) SUB_UISetFocus;
 
 //
 // combat.qc
