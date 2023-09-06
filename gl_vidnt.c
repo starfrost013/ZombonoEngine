@@ -1629,7 +1629,13 @@ LONG WINAPI MainWndProc (
 			if (wParam & MK_MBUTTON)
 				temp |= 4;
 
+			// get_x_lparam / get_y_lparam used for multimonitor systems
 			IN_MouseEvent (temp);
+
+			// Send the event to the UI system
+		// which runs when the game is not checking input
+
+			if (!mouseactive && uMsg != WM_MOUSEMOVE) UI_OnClick(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 
 			break;
 

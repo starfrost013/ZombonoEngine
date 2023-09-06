@@ -586,6 +586,7 @@ void IN_Shutdown (void)
 /*
 ===========
 IN_MouseEvent
+(x/y only used for UI)
 ===========
 */
 void IN_MouseEvent (int mstate)

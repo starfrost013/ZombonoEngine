@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include <windows.h>
+#include <windowsx.h>
 
 #define WM_MOUSEWHEEL                   0x020A
 

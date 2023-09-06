@@ -68,12 +68,13 @@ switch (args.Length)
             }
         }
 
-        // stuff you can put anywhere
-        foreach (string arg in args)
-        {
-            if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
-        }
         break;
+}
+
+// stuff you can put anywhere
+foreach (string arg in args)
+{
+    if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
 }
 #endregion
 
