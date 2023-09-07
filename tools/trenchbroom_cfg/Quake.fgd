@@ -27,6 +27,7 @@
 	light(integer) : "Ambient light"
 	_sunlight(integer) : "Sunlight"
 	_sun_mangle(string) : "Sun mangle (Yaw pitch roll)"
+	level_has_prespawn(boolean) : "Has a level prespawn room (Zombono TDM, Hostage, Wave?)"
 ]
 
 //

@@ -52,7 +52,7 @@ extern	qboolean		block_drawing;
 void SCR_AutoScale_f(void);
 
 //johnfitz -- stuff for 2d drawing control
-typedef enum {
+typedef enum canvastype_e {
 	CANVAS_NONE,
 	CANVAS_DEFAULT,
 	CANVAS_CONSOLE,

@@ -26,7 +26,7 @@ qsocket_t	*net_activeSockets = NULL;
 qsocket_t	*net_freeSockets = NULL;
 int			net_numsockets = 0;
 
-qboolean	tcpipAvailable = false;
+qboolean	tcpipAvailable = true;
 
 int			net_hostport;
 int			DEFAULTnet_hostport = 26000;

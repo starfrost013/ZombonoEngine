@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _WINSOCKAPI_ // silly winsock2 hack
 #include <WinSock2.h>
 #include <ws2tcpip.h>
+#include <iphlpapi.h>
 #include <windows.h>
 #include <windowsx.h>
 
@@ -99,4 +100,8 @@ void S_BlockSound (void);
 void S_UnblockSound (void);
 
 void VID_SetDefaultMode (void);
+
+// wtf winsock
+#define malloc_win32(x) HeapAlloc(GetProcessHeap(), 0, (x));
+#define free_win32(x) HeapFree(GetProcessHeap(), 0, (x))
 #endif

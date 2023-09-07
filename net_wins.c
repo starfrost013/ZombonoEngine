@@ -37,6 +37,9 @@ static unsigned long myAddr;
 #include "net_wins.h"
 
 int winsock_initialized = 0;
+
+ULONG buffer_size = 16384; // should be big enough
+
 WSADATA		winsockdata;
 
 //=============================================================================
@@ -66,33 +69,6 @@ BOOL PASCAL FAR BlockingHook(void)
     /* TRUE if we got a message */
     return ret;
 }
-
-
-void WINS_GetLocalAddress()
-{
-	struct hostent	*local = NULL;
-	char			buff[MAXHOSTNAMELEN];
-	unsigned long	addr;
-
-	if (myAddr != INADDR_ANY)
-		return;
-
-	if (gethostname(buff, MAXHOSTNAMELEN) == SOCKET_ERROR)
-		return;
-
-	blocktime = Sys_FloatTime();
-	WSASetBlockingHook(BlockingHook);
-	local = gethostbyname(buff);
-	WSAUnhookBlockingHook();
-	if (local == NULL)
-		return;
-
-	myAddr = *(int *)local->h_addr_list[0];
-
-	addr = ntohl(myAddr);
-	sprintf(my_tcpip_address, "%d.%d.%d.%d", (addr >> 24) & 0xff, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff);
-}
-
 
 int WINS_Init (void)
 {
@@ -206,7 +182,6 @@ void WINS_Listen (qboolean state)
 	{
 		if (net_acceptsocket != -1)
 			return;
-		WINS_GetLocalAddress();
 		if ((net_acceptsocket = WINS_OpenSocket (net_hostport)) == -1)
 			Sys_Error ("WINS_Listen: Unable to open accept socket\n");
 		return;
@@ -378,7 +353,6 @@ int WINS_Broadcast (int socket, byte *buf, int len)
 	{
 		if (net_broadcastsocket != 0)
 			Sys_Error("Attempted to use multiple broadcasts sockets\n");
-		WINS_GetLocalAddress();
 		ret = WINS_MakeSocketBroadcastCapable (socket);
 		if (ret == -1)
 		{
