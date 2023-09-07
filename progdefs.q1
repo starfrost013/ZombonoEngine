@@ -142,6 +142,7 @@ typedef struct entvars_s
 	string_t	noise3;
 	float	startweapons;
 	int		jump_count;
+	float	level_has_prespawn;
 } entvars_t;
 
 /* presently meaningless */

@@ -225,5 +225,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define ZOMBONO_TEAM_DISCONNECTED	-1 // Not a team, used to indicate a player exited.
 #define ZOMBONO_TEAM_DIRECTOR		0
 #define ZOMBONO_TEAM_PLAYER			1
+#define ZOMBONO_TEAM_UNASSIGNED		2 // Special team for Post-Spawn
 
 #define ZOMBONO_TEAM_COUNT			2

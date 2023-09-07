@@ -100,8 +100,4 @@ void S_BlockSound (void);
 void S_UnblockSound (void);
 
 void VID_SetDefaultMode (void);
-
-// wtf winsock
-#define malloc_win32(x) HeapAlloc(GetProcessHeap(), 0, (x));
-#define free_win32(x) HeapFree(GetProcessHeap(), 0, (x))
 #endif

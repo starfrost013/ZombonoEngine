@@ -39,6 +39,7 @@ float WEAPON_RELOAD_TIME_GRENADE_LAUNCHER = 0.6;
 float WEAPON_RELOAD_TIME_ROCKET_LAUNCHER = 0.8;
 float WEAPON_RELOAD_TIME_LIGHTNING = 0.1;
 float WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR = 1.75;
+float WEAPON_RELOAD_TIME_DIRECTOR_ZOMBINATOR_SUPER = 5.0;
 
 // called by worldspawn
 void() W_Precache =
@@ -443,7 +444,6 @@ W_FireZombinator
 
 void() W_FireZombinator =
 {
-	// INITIAL type
 	entity zombie;
 
 	makevectors(self.v_angle);
@@ -466,7 +466,7 @@ void() W_FireZombinator =
 	if (trace_fraction < 1)
 	{
 		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
-		setorigin(zombie, trace_endpos + '0 0 32');
+		setorigin(zombie, trace_endpos + '0 0 48');
 	}
 	else
 	{
@@ -474,7 +474,6 @@ void() W_FireZombinator =
 		sound(self, CHAN_WEAPON, "weapons/tink1.wav", 1, ATTN_NORM);
 	}
 };
-
 /*
 ===============================================================================
 
@@ -883,7 +882,7 @@ void() W_SetCurrentAmmo =
 	else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 	{
 		self.currentammo = self.ammo_rockets; // TODO: ADD MORE AMMO
-		self.weaponmodel = "progs/h_zombie.mdl"; // temp
+		self.weaponmodel = "progs/v_shot2.mdl"; // temp
 		self.weaponframe = 0;
 	}
 	else
@@ -1222,10 +1221,7 @@ void() CycleWeaponCommand =
 		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 		{
 			self.weapon = IT_ROCKET_LAUNCHER;
-			if (self.ammo_rockets < 1)
-				am = 1;
 		}
-		
 		else if (self.weapon == IT_ROCKET_LAUNCHER)
 		{
 			self.weapon = IT_LIGHTNING;
@@ -1308,8 +1304,11 @@ void() CycleWeaponBack =
 		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR)
 		{
 			self.weapon = IT_GRENADE_LAUNCHER;
-			if (self.ammo_cells < 1)
-				am = 1;
+		}
+		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR_SUPER)
+		{
+			self.weapon = IT_DIRECTOR_ZOMBINATOR;
+
 		}
 
 		if ((self.items & self.weapon) && am == 0)

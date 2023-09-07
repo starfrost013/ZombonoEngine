@@ -33,6 +33,7 @@ void() player_stand1;
 void(vector org) spawn_tfog;
 void(vector org, entity death_owner) spawn_tdeath;
 void() CheckPowerups;
+void() PsuiStart;
 void() PsuiSetTeamDirector;
 void() PsuiSetTeamPlayer;
 
@@ -310,6 +311,7 @@ void() respawn =
 	SetNewParms();
 	// respawn
 	PutClientInServer();
+	PsuiStart();
 };
 
 
@@ -373,6 +375,21 @@ entity() SelectSpawnPoint =
 
 			return spot;
 		}
+
+		/* Disabled for Ztest2 
+		if (world.level_has_prespawn)
+		{
+			spot = find(world, classname, "info_player_start_prespawn");
+
+			if (spot == world)
+			{
+				spot = find(world, classname, "info_player_start_prespawn");
+				return spot;
+			}
+
+			return spot;
+		}
+		Disabled for Ztest2 */
 	}
 	else // no team
 	{
@@ -384,7 +401,7 @@ entity() SelectSpawnPoint =
 	}
 
 	if (!spot)
-		error("PutClientInServer: no info_player_start, info_player_start_director or info_player_start_player in level");
+		error("PutClientInServer: no info_player_start, info_player_start_prespawn, info_player_start_director or info_player_start_player in level");
 
 
 	return spot;
@@ -477,6 +494,9 @@ void() PutClientInServer =
 	spawn_tdeath(self.origin, self);
 };
 
+void() PsuiTeleportToTeamSpawn;
+void() PsuiStart;
+
 // HACK HACK HACK
 // This is called main because FTEQCC hardcodes global functions, and main wasn't being used.
 // Either GameDLL system or fteqcc fork will happen
@@ -486,37 +506,111 @@ void() main =
 	if (gamemode <= ZOMBONO_MODE_COUNT)
 	{
 		PrintTeamWelcomeMessage();
-		// Draw the team selection UI
-		SUB_UIStart("psui");
-		SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 128, vid_height/2 - 128);
-		SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 128, vid_height/2 - 128);
-		SUB_UIEnd();
-
-		SUB_UISetVisibility("psui", TRUE);
-		SUB_UISetFocus("psui", TRUE);
+		PsuiStart();
 	}
 
 }
 
+void() PsuiStart =
+{
+	// Draw the team selection UI
+	SUB_UIStart("psui");
+	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 128, vid_height/2 - 128);
+	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 128, vid_height/2 - 128);
+	SUB_UIEnd();
+	
+	// Disabled for ZTest2
+	SUB_UISetVisibility("psui", FALSE);
+	SUB_UISetFocus("psui", FALSE);
+}
+
 void() PsuiSetTeamDirector = 
 {
+	dprint("PsuiSetTeamDirector called\n");
 	if (gamemode <= ZOMBONO_MODE_COUNT)
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_DIRECTOR;
 		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
+		PsuiTeleportToTeamSpawn();
 	}
 }
 
 void() PsuiSetTeamPlayer =
 {
+	dprint("PsuiSetTeamPlayer called\n");
 	if (gamemode <= ZOMBONO_MODE_COUNT)
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_PLAYER;
 		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
+		PsuiTeleportToTeamSpawn();
+	}
+}
+
+void() PsuiTeleportToTeamSpawn =
+{
+	entity spot;
+
+	if (self.team == ZOMBONO_TEAM_DIRECTOR)
+	{
+		spot = find(world, classname, "info_player_start_director");
+
+		if (spot == world)
+		{
+			spot = find(world, classname, "info_player_start_director");
+			
+			if (spot != world)
+			{
+				self.angles = spot.mangle;
+				self.fixangle = 1;
+				setorigin(self, spot.origin);
+			}
+			else
+			{
+				dprint("Teleport failed\n");
+				setorigin(self, '0 0 0');
+			}
+				
+			return;
+		}
+		
+		self.angles = spot.mangle;
+		self.fixangle = 1;
+		setorigin(self, spot.origin);
+		return;
+
+	}
+	else if (self.team == ZOMBONO_TEAM_PLAYER)
+	{
+		spot = find(world, classname, "info_player_start_player");
+
+		if (spot == world)
+		{
+			spot = find(world, classname, "info_player_start_player");
+
+			if (spot != world)
+			{
+				self.angles = spot.mangle;
+				self.fixangle = 1;
+				setorigin(self, spot.origin);
+
+				return;
+			}
+			else
+			{
+				dprint("Teleport failed\n");
+				setorigin(self, '0 0 0');
+			}
+		}
+		
+		self.angles = spot.mangle;
+		self.fixangle = 1;
+		setorigin(self, spot.origin);
+
+		return;
 	}
 }
 
@@ -555,14 +649,19 @@ void() info_player_start =
 {
 };
 
-/*QUAKED info_player_start_director (1 0 0) (-16 -16 -24) (16 16 24)
+/* The starting point for levels with prespawn rooms. The players cannot fire weapons in these. */
+void() info_player_start_prespawn =
+{
+};
+
+/*
 Level starting point for Zombono director team.
 */
 void() info_player_start_director =
 {
 };
 
-/*QUAKED info_player_start_player (1 0 0) (-16 -16 -24) (16 16 24)
+/*
 Level starting point for Zombono player team.
 */
 void() info_player_start_player =
@@ -1073,7 +1172,7 @@ void() CheckPowerups =
 		{
 			if (self.double_jump_time == 1)
 			{
-				sprint(self, "Double Jump about to end!");
+				sprint(self, "Double Jump about to end!\n");
 				stuffcmd(self, "bf\n");
 				self.double_jump_time = time + 1;
 			}

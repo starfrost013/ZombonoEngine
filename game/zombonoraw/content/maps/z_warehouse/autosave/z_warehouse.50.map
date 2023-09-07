@@ -5,6 +5,7 @@
 "classname" "worldspawn"
 "wad" "C:/Users/mario/fitzquake/game/zombonoraw/content/wads/base.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/start.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/metal.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/jr_med.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/wizard.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/tim.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/medieval.wad"
 "worldtype" "2"
+"_sunlight" ""
 "light" "255"
 "level_has_prespawn" "1"
 // brush 0
@@ -2238,12 +2239,12 @@
 }
 // brush 245
 {
-( 156 -2968 32 ) ( 156 -2967.181818181818 32 ) ( 156 -2968 40 ) crate0_side -28.444458 16 0 2.25 2
-( 156 -2968 32 ) ( 156 -2968 40 ) ( 157.28571428571445 -2968 32 ) crate0_side -1.7777863 16 0 2.25 2
-( 156 -2968 32 ) ( 157.28571428571445 -2968 32 ) ( 156 -2967.181818181818 32 ) crate0_top -1.7777863 28.444458 0 2.25 2.25
-( 300 -2824 160 ) ( 300 -2823.181818181818 160 ) ( 301.2857142857142 -2824 160 ) crate0_top -1.7777863 28.444458 0 2.25 2.25
-( 300 -2824 160 ) ( 301.2857142857142 -2824 160 ) ( 300 -2824 168 ) crate0_side -1.7777863 16 0 2.25 2
-( 300 -2824 160 ) ( 300 -2824 168 ) ( 300 -2823.181818181818 160 ) crate0_side -28.444458 16 0 2.25 2
+( 156 -2424 32 ) ( 156 -2423.181818181818 32 ) ( 156 -2424 40 ) crate0_side 53.333374 16 0 2.25 2
+( 156 -2424 32 ) ( 156 -2424 40 ) ( 157.28571428571445 -2424 32 ) crate0_side -5.333336 16 0 2.25 2
+( 156 -2424 32 ) ( 157.28571428571445 -2424 32 ) ( 156 -2423.181818181818 32 ) crate0_top -5.333336 -53.333374 0 2.25 2.25
+( 300 -2280 160 ) ( 300 -2279.181818181818 160 ) ( 301.2857142857142 -2280 160 ) crate0_top -5.333336 -53.333374 0 2.25 2.25
+( 300 -2280 160 ) ( 301.2857142857142 -2280 160 ) ( 300 -2280 168 ) crate0_side -5.333336 16 0 2.25 2
+( 300 -2280 160 ) ( 300 -2280 168 ) ( 300 -2279.181818181818 160 ) crate0_side 53.333374 16 0 2.25 2
 }
 }
 // entity 1
@@ -2294,6 +2295,7 @@
 {
 "classname" "func_door"
 "speed" "190"
+"target" ""
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -2311,6 +2313,7 @@
 {
 "classname" "func_door"
 "speed" "190"
+"target" ""
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -2415,6 +2418,7 @@
 {
 "classname" "func_door"
 "speed" "190"
+"target" ""
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -2432,6 +2436,7 @@
 {
 "classname" "func_door"
 "speed" "190"
+"target" ""
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"

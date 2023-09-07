@@ -68,6 +68,8 @@
 		2097152 : "Suit" : 0
 		4194304 : "Quad" : 0
 		8388608 : "Zombinator (Director Team Only!)" : 0
+		16777216 : "Double Jump" : 0
+		33554432 : "Super Zombinator" : 0
 	]
 ]
 
@@ -88,6 +90,7 @@
 	color(0 255 0) model({ "path": ":progs/player.mdl" }) = PlayerClass : "Base player class"[]
 
 @PointClass base(PlayerClass) = info_player_start : "Player 1 start (DEPRECATED -- FALLBACK ONLY)" []
+@PointClass base(PlayerClass) = info_player_start_prespawn : "Zombono prespawn" []
 @PointClass base(PlayerClass) = info_player_start_player : "Zombono player start" []
 @PointClass base(PlayerClass) = info_player_start_director : "Zombono director start" []
 @PointClass size(-32 -32 0, 32 32 64) base(PlayerClass, Targetname) = info_teleport_destination : "Teleporter destination" []
@@ -213,7 +216,9 @@
 @PointClass base(Weapon) model({ "path": ":progs/g_rock.mdl" }) = weapon_grenadelauncher : "Grenade launcher" []
 @PointClass base(Weapon) model({ "path": ":progs/g_rock2.mdl" }) = weapon_rocketlauncher : "Rocket launcher" []
 @PointClass base(Weapon) model({ "path": ":progs/g_light.mdl" }) = weapon_lightning : "Thunderbolt" []
-@PointClass base(Weapon) model({ "path": ":progs/g_rock.mdl" }) = weapon_director_zombinator : "(Zombono - Director team) Zombinator" []
+@PointClass base(Weapon) model({ "path": ":progs/g_shot2.mdl" }) = weapon_director_zombinator : "(Director team) Zombinator" []
+@PointClass base(Weapon) model({ "path": ":progs/g_nail2.mdl" }) = weapon_director_zombinator_super : "(Director team) Super Zombinator" []
+
 
 //
 // monsters

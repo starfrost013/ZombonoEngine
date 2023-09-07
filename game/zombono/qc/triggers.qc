@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,6 +16,14 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+*/
+
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Triggers.qc: Triggers.
 */
 
 entity s;
@@ -375,7 +384,7 @@ void(vector org, entity death_owner) spawn_tdeath =
 	force_retouch = 2; // make sure even still objects get hit
 };
 
-void() teleport_touch =
+void() teleport_perform =
 {
 	entity t;
 	vector org;
@@ -466,7 +475,7 @@ void() trigger_teleport =
 	vector o;
 
 	InitTrigger();
-	self.touch = teleport_touch;
+	self.touch = teleport_perform;
 	// find the destination
 	if (!self.target)
 		objerror("no target");

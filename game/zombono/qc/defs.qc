@@ -236,6 +236,7 @@ void end_sys_globals; // flag for structure dumping
 
 .float jump_count; // The number of times you have jumped. Used for double jump item.
 
+.float level_has_prespawn; // Does thelevel have prespawn?
 //================================================
 void end_sys_fields; // flag for structure dumping
 //================================================
@@ -741,6 +742,11 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 float(entity e, float healamount, float ignore) T_Heal; // health function
 
 float(entity targ, entity inflictor) CanDamage;
+
+//
+// triggers.qc
+//
+void() teleport_perform;
 
 //
 // zombie.qc

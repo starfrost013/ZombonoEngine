@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -115,8 +116,8 @@ PF_setorigin
 
 This is the only valid way to move an object without using the physics of the world (setting velocity and waiting).  Directly changing origin will not set internal links correctly, so clipping would be messed up.  This should be called when an object is spawned, and then only if it is teleported.
 
-setorigin (entity, origin)
-=================
+setorigin (entity, origin) 
+================= 
 */
 void PF_setorigin (void)
 {
@@ -1584,8 +1585,6 @@ void PF_Fixme (void)
 	PR_RunError ("unimplemented bulitin");
 }
 
-
-
 builtin_t pr_builtin[] =
 {
 PF_Fixme,
@@ -1649,8 +1648,8 @@ PF_WriteCoord,
 PF_WriteAngle,
 PF_WriteString,
 PF_WriteEntity,
-
 PF_WriteFloat,
+
 PF_Fixme,
 PF_Fixme,
 PF_Fixme,

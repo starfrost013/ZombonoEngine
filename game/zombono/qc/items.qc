@@ -35,21 +35,6 @@ void() SUB_regen =
 	setorigin(self, self.origin);
 };
 
-
-
-/*QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
-prints a warning message when spawned
-*/
-void() noclass =
-{
-	dprint("noclass spawned at");
-	dprint(vtos(self.origin));
-	dprint("\n");
-	remove(self);
-};
-
-
-
 /*
 ============
 PlaceItem

@@ -28,7 +28,7 @@ color4_t TEAM_GetColor(int team)
 // If it is, returns a suggested team for that player.
 int TEAM_Rebalance(int team)
 {
-	if (!sv.active) return team; // harmless
+	//if (!sv.active) return team; // harmless
 
 	// if rebalance is off
 	if (!sv_zombie_no_rebalance.value) return team;
@@ -39,13 +39,13 @@ int TEAM_Rebalance(int team)
 	int num_players = 0;
 
 
-	for (int client_num = 0; client_num < svs.maxclients; client_num++)
+	for (int client_num = 0; client_num < cl.maxclients; client_num++)
 	{
-		client_t client = svs.clients[client_num];
+		scoreboard_t client = cl.scores[client_num];
 
-		if (!client.active) continue; // not connected. ignore.
+		if (!client.name[0]) continue; // not connected. ignore.
 
-		int team = client.edict->v.team;
+		int team = client.team;
 	
 		if (team == ZOMBONO_TEAM_DIRECTOR) num_directors++;
 		if (team == ZOMBONO_TEAM_PLAYER) num_players++;
