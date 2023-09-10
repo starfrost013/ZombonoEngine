@@ -1321,12 +1321,7 @@ void() CycleWeaponBack =
 		{
 			self.weapon = IT_GRENADE_LAUNCHER;
 		}
-		else if (self.weapon == IT_DIRECTOR_ZOMBINATOR_SUPER)
-		{
-			self.weapon = IT_DIRECTOR_ZOMBINATOR;
-
-		}
-
+		
 		if ((self.items & self.weapon) && am == 0)
 		{
 			W_SetCurrentAmmo();

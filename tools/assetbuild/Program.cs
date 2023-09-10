@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "1.3.3";
+const string ASSETBUILD_VERSION = "1.3.4";
 const string TOOLDIR = @"..\..\..\..\..\tools";
 const string DEFAULT_GAME_NAME = "zombono";
 
@@ -46,8 +46,8 @@ try
     // stupid hack for running under MSBuild
     Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
-    Console.WriteLine(STRING_SIGNON);
-    Console.WriteLine(STRING_DESCRIPTION);
+    Print(STRING_SIGNON);
+    Print(STRING_DESCRIPTION);
 
     #region Command-line parsing
 
@@ -60,7 +60,7 @@ try
     {
         if (!Directory.Exists(gameDir))
         {
-            Console.WriteLine($"The base directory {gameDir} does not exist!");
+            PrintLoud($"The base directory {gameDir} does not exist!");
             PrintHelpAndExit(2);
         }
 
@@ -71,7 +71,7 @@ try
     {
         if (!validConfigs.Contains(args[1], StringComparer.InvariantCultureIgnoreCase))
         {
-            Console.WriteLine($"Invalid build config provided (valid options: Debug, Release)");
+            PrintLoud($"Invalid build config provided (valid options: Debug, Release)");
             PrintHelpAndExit(4);
         }
 
@@ -79,7 +79,7 @@ try
     }
 
     // set the final directory
-    finalDir = $@"..\..\..\..\..\build\{config}\bin\{gameName}"; // final directory
+    finalDir = $@"..\..\..\..\..\engine\build\{config}\bin\{gameName}"; // final directory
 
     // could be first build of a new game so just create final dir if it exists
     if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);
@@ -108,7 +108,7 @@ try
 
     File.Move($@"{qcDir}\progs.dat", $@"{pak0Dir}\progs.dat", true); // copy to pak0 where it belongs
 
-    Console.WriteLine(STRING_BUILDING_GFX);
+    Print(STRING_BUILDING_GFX);
 
     process = new();
 
@@ -141,7 +141,7 @@ try
 
     // Lists don't work because the dirs are all wrong???
 
-    Console.WriteLine(STRING_BUILDING_PAK0);
+    Print(STRING_BUILDING_PAK0);
     // get temp file name for list (easier to just replace files for wad2)
 
     string[] pak0Files = Directory.GetFiles(pak0Dir, "*.*", SearchOption.AllDirectories);
@@ -176,7 +176,7 @@ try
     }
 
     Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine(STRING_BUILDING_DONE);
+    Print(STRING_BUILDING_DONE);
     Console.ResetColor();
     #endregion
 
@@ -196,14 +196,14 @@ catch (Exception ex)
 
 void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
-    if (!quietMode) Print(text, foreground);
+    Console.ForegroundColor = foreground;
+    Console.WriteLine(text);
+    Console.ResetColor();
 }
 
 void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
-    Console.ForegroundColor = foreground;
-    Console.WriteLine(text);
-    Console.ResetColor();
+    if (!quietMode) Print(text, foreground);
 }
 
 void PrintErrorAndExit(string errorString, int errorId)

@@ -148,14 +148,14 @@ Console.ResetColor();
 
 void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
-    if (!quietMode) Print(text, foreground);
+    Console.ForegroundColor = foreground;
+    Console.WriteLine(text);
+    Console.ResetColor();
 }
 
 void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
-    Console.ForegroundColor = foreground;
-    Console.WriteLine(text);
-    Console.ResetColor();
+    if (!quietMode) Print(text, foreground);
 }
 
 void PrintHelpAndExit(string error, int exitCode)
