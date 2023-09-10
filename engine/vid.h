@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -66,9 +67,6 @@ void	VID_Init (void); //johnfitz -- removed palette from argument list
 
 void	VID_Shutdown (void);
 // Called at shutdown
-
-void	VID_Update (vrect_t *rects);
-// flushes the given rectangles from the view buffer to the screen
 
 int VID_SetMode (int modenum); //johnfitz -- removed palette from argument list
 // sets the mode; only used by the Quake engine for resetting to mode 0 (the

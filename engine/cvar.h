@@ -52,6 +52,8 @@ r_draworder			prints the current value
 r_draworder 0		sets the current value to 0
 Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
+
+CVars can also have flags - this is for things such as "admin-only" cvars, where only admins can use them.
 */
 
 typedef enum

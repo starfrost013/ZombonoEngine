@@ -203,7 +203,7 @@ void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
 
 void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
-    if (!quietMode) Print(text, foreground);
+    if (!quietMode) PrintLoud(text, foreground);
 }
 
 void PrintErrorAndExit(string errorString, int errorId)

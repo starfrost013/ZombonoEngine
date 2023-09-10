@@ -45,7 +45,6 @@ void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length);
 //
 // system IO
 //
-void Sys_DebugLog(char *file, char *fmt, ...);
 
 void Sys_Error (char *error, ...);
 // an error will cause the entire program to exit

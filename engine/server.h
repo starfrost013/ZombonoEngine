@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -207,10 +208,7 @@ int SV_ModelIndex (char *name);
 
 void SV_SetIdealPitch (void);
 
-void SV_AddUpdates (void);
-
 void SV_ClientThink (void);
-void SV_AddClientToServer (struct qsocket_s	*ret);
 
 void SV_ClientPrintf (char *fmt, ...);
 void SV_BroadcastPrintf (char *fmt, ...);

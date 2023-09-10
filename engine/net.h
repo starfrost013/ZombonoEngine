@@ -238,21 +238,6 @@ typedef struct
 extern int hostCacheCount;
 extern hostcache_t hostcache[HOSTCACHESIZE];
 
-#if !defined(_WIN32 ) && !defined (__linux__) && !defined (__sun__)
-#ifndef htonl
-extern unsigned long htonl (unsigned long hostlong);
-#endif
-#ifndef htons
-extern unsigned short htons (unsigned short hostshort);
-#endif
-#ifndef ntohl
-extern unsigned long ntohl (unsigned long netlong);
-#endif
-#ifndef ntohs
-extern unsigned short ntohs (unsigned short netshort);
-#endif
-#endif
-
 //============================================================================
 //
 // public network functions
@@ -276,15 +261,15 @@ qboolean NET_CanSendMessage (qsocket_t *sock);
 // Returns true or false if the given qsocket can currently accept a
 // message to be transmitted.
 
-int			NET_GetMessage (struct qsocket_s *sock);
+int			NET_GetMessage (qsocket_t *sock);
 // returns data in net_message sizebuf
 // returns 0 if no data is waiting
 // returns 1 if a message was received
 // returns 2 if an unreliable message was received
 // returns -1 if the connection died
 
-int			NET_SendMessage (struct qsocket_s *sock, sizebuf_t *data);
-int			NET_SendUnreliableMessage (struct qsocket_s *sock, sizebuf_t *data);
+int			NET_SendMessage (qsocket_t *sock, sizebuf_t *data);
+int			NET_SendUnreliableMessage (qsocket_t *sock, sizebuf_t *data);
 // returns 0 if the message connot be delivered reliably, but the connection
 //		is still considered valid
 // returns 1 if the message was sent properly
@@ -294,7 +279,7 @@ int			NET_SendToAll(sizebuf_t *data, int blocktime);
 // This is a reliable *blocking* send to all attached clients.
 
 
-void		NET_Close (struct qsocket_s *sock);
+void		NET_Close (qsocket_t *sock);
 // if a dead connection is returned by a get or send function, this function
 // should be called when it is convenient
 
