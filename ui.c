@@ -87,7 +87,6 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	// note: "none" can be used to not call a function on click
 	// it should never be null, so that's a Sys_Error
 
-	if (on_click == NULL) Host_Error("UI_AddButton: on_click was NULL!");
 	if (texture == NULL) Host_Error("UI_AddButton: texture was NULL!");
 	
 	// suppress warning
@@ -210,6 +209,9 @@ void UI_OnClick(float x, float y)
 			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
 			{
 				ui_element_t acquired_ui_element = acquired_ui->elements[uiElementNum];
+
+				// on_click optional
+				if (acquired_ui_element.on_click == NULL) continue;
 
 				// autoscale manages this
 				float scale_factor = scr_menuscale.value;
