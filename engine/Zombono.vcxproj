@@ -99,7 +99,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\build\Debug\bin\$(TargetName).exe</OutputFile>
-      <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;Ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;odbc32.lib;odbccp32.lib;.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;Ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
@@ -139,7 +139,7 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <OutputFile>.\build\Release\bin\$(TargetName).exe</OutputFile>
-      <AdditionalDependencies>opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;ws2_32.libiphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;wsock32.lib;ws2_32.libiphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\$(Configuration)\net7.0\assetbuild.exe zombono Release</Command>
@@ -178,7 +178,7 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <OutputFile>.\build\Playtest\bin\$(TargetName).exe</OutputFile>
-      <AdditionalDependencies>opengl32.lib;comctl32.lib;winmm.lib;ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>.\dxsdk\sdk\lib\dxguid.lib;opengl32.lib;comctl32.lib;winmm.lib;ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\Debug\net7.0\assetbuild.exe zombono Playtest</Command>
