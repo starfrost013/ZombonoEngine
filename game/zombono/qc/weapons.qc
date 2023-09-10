@@ -1052,9 +1052,16 @@ void() W_ChangeWeapon =
 	}
 	else if (self.impulse == 2)
 	{
-		fl = IT_SHOTGUN;
-		if (self.ammo_shells < 1)
-			am = 1;
+		if (self.team == ZOMBONO_TEAM_DIRECTOR)
+		{
+			fl = IT_DIRECTOR_ZOMBINATOR;
+		}
+		else
+		{
+			fl = IT_SHOTGUN;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
 	}
 	else if (self.impulse == 3)
 	{
@@ -1094,8 +1101,17 @@ void() W_ChangeWeapon =
 	}
 	else if (self.impulse == 9)
 	{
-		fl = IT_DIRECTOR_ZOMBINATOR;
-			am = 0; // INFINITE AMMO WEAPON
+		if (self.team == ZOMBONO_TEAM_DIRECTOR)
+		{
+			fl = IT_SHOTGUN;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else
+		{
+			fl = IT_DIRECTOR_ZOMBINATOR;
+		}
+
 	}
 
 	self.impulse = 0;

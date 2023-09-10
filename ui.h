@@ -17,7 +17,9 @@
 typedef enum ui_element_type_e
 {
 	ui_element_button,
-
+	ui_element_checkbox,
+	ui_element_text,
+	ui_element_slider,
 } ui_element_type;
 
 // UI element defines; more will be added to this class as more controls get added.
@@ -30,6 +32,9 @@ typedef struct ui_element_s
 	float				position_x;					// Position of the element on the screen (X).
 	float				position_y;					// Position of the element on the screen (X).
 	char				on_click[32];				// QuakeC function to call on click.
+	char				text[64];					// The text of this UI element.
+	qboolean			checked;					// Determines if the UI element is checked
+	float				value;						// Holds the value of the UI element.
 } ui_element_t;
 
 // UI define itself. Has a name for caching purposes.
@@ -52,5 +57,12 @@ void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
 void UI_OnClick(float x, float y);						// UI click event. Not for QC
 void UI_End();								// End a UI
+
+//
+// Controls
+//
 // these end up being copied to a nonconst buf to get around the limitation of MSG_WriteString() using a globally shared buffer. (TODO: fix these warnings with MSG_WriteStrings)
-void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y);	// Add a new button
+void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y);					// Add a new button
+void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float size_x, float size_y, float position_x, float position_y);	// Add a new checkbox
+void UI_AddText(char* on_click, char* text, float size_x, float size_y, float position_x, float position_y);						// Add a new text block
+void UI_AddSlider(char* on_click, char* text, float value, float size_x, float size_y, float position_x, float position_y);			// Add a new slider

@@ -7,8 +7,12 @@ ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
 ui_t* UI_GetUI(char* name);
+void UI_AddUI(ui_element_t element);
 
 void UI_DrawButton(ui_element_t button);
+void UI_DrawCheckbox(ui_element_t button);
+void UI_DrawText(ui_element_t button);
+void UI_DrawSlider(ui_element_t button);
 
 void UI_Init(void)
 {
@@ -21,21 +25,6 @@ void UI_Init(void)
 	}
 }
 
-ui_t* UI_GetUI(char* name)
-{
-	for (int ui_number = 0; ui_number < MAX_UI_COUNT; ui_number++)
-	{
-		// You can only ever add uis, not delete them (although you can make them not be visible)
-		// so this is a safe assumption to make
-		if (ui[ui_number] == NULL)
-			break;
-
-		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
-	}
-
-	//no error here because in some cases we want prog errors, othercases Sys_Error
-	return NULL;
-}
 
 void UI_Start(char* name)
 {
@@ -65,6 +54,28 @@ void UI_Start(char* name)
 
 		current_ui = new_ui;
 	}
+}
+
+ui_t* UI_GetUI(char* name)
+{
+	for (int ui_number = 0; ui_number < MAX_UI_COUNT; ui_number++)
+	{
+		// You can only ever add uis, not delete them (although you can make them not be visible)
+		// so this is a safe assumption to make
+		if (ui[ui_number] == NULL)
+			break;
+
+		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
+	}
+
+	//no error here because in some cases we want prog errors, othercases Sys_Error
+	return NULL;
+}
+
+void UI_AddElement(ui_element_t element)
+{
+	current_ui->elements[current_ui->element_count] = element;
+	current_ui->element_count++;
 }
 
 void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y)
@@ -97,8 +108,12 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	// load and cache the pic
 	Draw_CachePic(new_button.texture);
 
-	current_ui->elements[current_ui->element_count] = new_button;
-	current_ui->element_count++;
+	UI_AddElement(new_button);
+}
+
+void UI_AddText(char* on_click, char* text, float size_x, float size_y, float position_x, float position_y)
+{
+
 }
 
 void UI_SetVisibility(char* name, qboolean visible)
