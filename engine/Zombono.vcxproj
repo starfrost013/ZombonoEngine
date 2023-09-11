@@ -206,7 +206,6 @@
     <ClCompile Include="gl_rmisc.c" />
     <ClCompile Include="gl_screen.c" />
     <ClCompile Include="gl_sky.c" />
-    <ClCompile Include="gl_test.c" />
     <ClCompile Include="gl_texmgr.c" />
     <ClCompile Include="gl_vidnt.c" />
     <ClCompile Include="gl_warp.c" />

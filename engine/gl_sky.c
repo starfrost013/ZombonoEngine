@@ -256,13 +256,11 @@ void Sky_NewMap (void)
 
 		if (!strcmp("sky", key))
 			Sky_LoadSkyBox(value);
-
-#if 1 //also accept non-standard keys
 		else if (!strcmp("skyname", key)) //half-life
 			Sky_LoadSkyBox(value);
 		else if (!strcmp("qlsky", key)) //quake lives
 			Sky_LoadSkyBox(value);
-#endif
+
 	}
 }
 

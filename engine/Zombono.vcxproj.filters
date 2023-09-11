@@ -98,9 +98,6 @@
     <ClCompile Include="gl_sky.c">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="gl_test.c">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="gl_texmgr.c">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>

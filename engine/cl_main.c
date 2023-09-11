@@ -741,25 +741,14 @@ display client's position and angles
 */
 void CL_Viewpos_f (void)
 {
-#if 0
-	//camera position
-	Con_Printf ("Viewpos: (%i %i %i) %i %i %i\n",
-		(int)r_refdef.vieworg[0],
-		(int)r_refdef.vieworg[1],
-		(int)r_refdef.vieworg[2],
-		(int)r_refdef.viewangles[PITCH],
-		(int)r_refdef.viewangles[YAW],
-		(int)r_refdef.viewangles[ROLL]);
-#else
 	//player position
-	Con_Printf ("Viewpos: (%i %i %i) %i %i %i\n",
+	Con_Printf("Viewpos: (%i %i %i) %i %i %i\n",
 		(int)cl_entities[cl.viewentity].origin[0],
 		(int)cl_entities[cl.viewentity].origin[1],
 		(int)cl_entities[cl.viewentity].origin[2],
 		(int)cl.viewangles[PITCH],
 		(int)cl.viewangles[YAW],
 		(int)cl.viewangles[ROLL]);
-#endif
 }
 
 /*

@@ -40,39 +40,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <assert.h> //johnfitz
 #include <time.h>	//time
 
-#if defined(_WIN32) && !defined(WINDED)
-
-#if defined(_M_IX86)
-#define __i386__	1
-#endif
-
-void	VID_LockBuffer (void);
-void	VID_UnlockBuffer (void);
-
-#else
-
-#define	VID_LockBuffer()
-#define	VID_UnlockBuffer()
-
-#endif
-
-#if defined __i386__ // && !defined __sun__
-#define id386	1
-#else
-#define id386	0
-#endif
-
-#if id386
-#define UNALIGNED_OK	1	// set to 0 if unaligned accesses are not supported
-#else
-#define UNALIGNED_OK	0
-#endif
-
-// !!! if this is changed, it must be changed in d_ifacea.h too !!!
-#define CACHE_SIZE	32		// used to align key data structures
-
-#define UNUSED(x)	(x = x)	// for pesky compiler / lint warnings
-
 #define	MINIMUM_MEMORY			0x650000 // set minimum memory (for now) to levelpack set
 
 #define MAX_NUM_ARGVS	50
@@ -85,7 +52,6 @@ void	VID_UnlockBuffer (void);
 
 // fall over
 #define	ROLL	2
-
 
 #define	MAX_QPATH		64			// max length of a quake game pathname
 #define	MAX_OSPATH		128			// max length of a filesystem pathname

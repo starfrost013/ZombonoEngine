@@ -314,66 +314,9 @@ void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
 
 //johnfitz -- generate meshes
 
-#if 1 //always regenerate meshes
-
 	Con_DPrintf ("meshing %s...\n",m->name);
 	BuildTris ();
 
-#else //conditional regeneration
-
-	if (gl_alwaysmesh.value) // build it from scratch, and don't bother saving it to disk
-	{
-		Con_DPrintf ("meshing %s...\n",m->name);
-		BuildTris ();
-	}
-	else // check disk cache, and rebuild it and save to disk if necessary
-	{
-
-		//create directories
-		sprintf (gldir, "%s/glquake", com_gamedir);
-		Sys_mkdir (com_gamedir);
-		Sys_mkdir (gldir);
-
-		//
-		// look for a cached version
-		//
-		strcpy (cache, "glquake/");
-		COM_StripExtension (m->name+strlen("progs/"), cache+strlen("glquake/"));
-		strcat (cache, ".ms2");
-
-		COM_FOpenFile (cache, &f);
-		if (f)
-		{
-			fread (&numcommands, 4, 1, f);
-			fread (&numorder, 4, 1, f);
-			fread (&commands, numcommands * sizeof(commands[0]), 1, f);
-			fread (&vertexorder, numorder * sizeof(vertexorder[0]), 1, f);
-			fclose (f);
-		}
-		else
-		{
-			//
-			// build it from scratch
-			//
-			Con_Printf ("meshing %s...\n",m->name);
-			BuildTris ();
-
-			//
-			// save out the cached version
-			//
-			sprintf (fullpath, "%s/%s", com_gamedir, cache);
-			f = fopen (fullpath, "wb");
-			if (f)
-			{
-				fwrite (&numcommands, 4, 1, f);
-				fwrite (&numorder, 4, 1, f);
-				fwrite (&commands, numcommands * sizeof(commands[0]), 1, f);
-				fwrite (&vertexorder, numorder * sizeof(vertexorder[0]), 1, f);
-				fclose (f);
-			}
-		}
-	}
-#endif
 //johnfitz
 
 

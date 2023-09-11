@@ -149,9 +149,8 @@ void S_Startup (void)
 
 		if (!rc)
 		{
-#ifndef	_WIN32
 			Con_Printf("S_Startup: SNDDMA_Init failed.\n");
-#endif
+
 			sound_started = 0;
 			return;
 		}

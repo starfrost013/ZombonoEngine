@@ -36,7 +36,6 @@ short	*snd_out;
 
 void Snd_WriteLinearBlastStereo16 (void);
 
-//#if	!id386 //johnfitz -- removing ASM code from fitzquake
 void Snd_WriteLinearBlastStereo16 (void)
 {
 	int		i;
@@ -340,9 +339,6 @@ void SND_InitScaletable (void)
 		for (j=0 ; j<256 ; j++)
 			snd_scaletable[i][j] = ((signed char)j) * i * 8;
 }
-
-
-//#if	!id386//johnfitz -- removing ASM code from fitzquake
 
 void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int count)
 {

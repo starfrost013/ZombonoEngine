@@ -1102,17 +1102,6 @@ void COM_InitArgv (int argc, char **argv)
 
 /*
 ================
-Test_f -- johnfitz
-================
-*/
-#ifdef _DEBUG
-void Test_f (void)
-{
-}
-#endif
-
-/*
-================
 COM_Init
 ================
 */
@@ -1151,10 +1140,6 @@ void COM_Init (char *basedir)
 	Cvar_Set("registered", "1");
 	static_registered = 1;
 	Con_Printf("Playing registered version.\n");
-
-#ifdef _DEBUG
-	Cmd_AddCommand ("test", Test_f); //johnfitz
-#endif
 }
 
 
