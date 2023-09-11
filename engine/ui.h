@@ -18,8 +18,8 @@ typedef enum ui_element_type_e
 {
 	ui_element_button,
 	ui_element_checkbox,
-	ui_element_text,
 	ui_element_slider,
+	ui_element_text,
 } ui_element_type;
 
 // UI element defines; more will be added to this class as more controls get added.
@@ -56,13 +56,14 @@ void UI_Draw(void);										// Draw all UIs
 void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
 void UI_OnClick(float x, float y);						// UI click event. Not for QC
-void UI_End();								// End a UI
+void UI_End();											// End the current UI
 
 //
 // Controls
 //
 // these end up being copied to a nonconst buf to get around the limitation of MSG_WriteString() using a globally shared buffer. (TODO: fix these warnings with MSG_WriteStrings)
+// also the reason there are parameters is for QC
 void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y);					// Add a new button
 void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float size_x, float size_y, float position_x, float position_y);	// Add a new checkbox
-void UI_AddText(char* on_click, char* text, float size_x, float size_y, float position_x, float position_y);						// Add a new text block
 void UI_AddSlider(char* on_click, char* text, float value, float size_x, float size_y, float position_x, float position_y);			// Add a new slider
+void UI_AddText(char* on_click, char* text, float position_x, float position_y);													// Add a new text block

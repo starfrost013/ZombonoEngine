@@ -74,6 +74,12 @@ ui_t* UI_GetUI(char* name)
 
 void UI_AddElement(ui_element_t element)
 {
+	if (current_ui->element_count >= MAX_UI_ELEMENTS)
+	{
+		Con_Warning("Attempted to add UI element to UI with >= MAX_UI_ELEMENTS elements!");
+		return;
+	}
+
 	current_ui->elements[current_ui->element_count] = element;
 	current_ui->element_count++;
 }
@@ -87,32 +93,57 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	// note: "none" can be used to not call a function on click
 	// it should never be null, so that's a Sys_Error
 
-	if (texture == NULL) Host_Error("UI_AddButton: texture was NULL!");
+	if (texture == NULL
+		&& strlen(on_click) > 0)
+	{
+		Host_Error("UI_AddButton: texture was NULL!");
+		return;
+	}
 	
 	// suppress warning
-	if (on_click != NULL) strcpy(new_button.on_click, on_click);
-	if (texture != NULL) strcpy(new_button.texture, texture);
+	if (on_click != NULL
+		&& strlen(on_click) > 0) strcpy(new_button.on_click, on_click);
+
+	strcpy(new_button.texture, texture);
 
 	new_button.size_x = size_x;
 	new_button.size_y = size_y;
 	new_button.position_x = position_x;
 	new_button.position_y = position_y;
+	new_button.type = ui_element_button;
 
-	if (current_ui->element_count >= MAX_UI_ELEMENTS)
-	{
-		Con_Warning("Attempted to add UI element to UI with >= MAX_UI_ELEMENTS elements!");
-		return;
-	}
-
-	// load and cache the pic
-	Draw_CachePic(new_button.texture);
+	// load and cache the UI element's texture, if it exists
+	if (new_button.texture != NULL
+		&& strlen(new_button.texture) > 0) Draw_CachePic(new_button.texture);
 
 	UI_AddElement(new_button);
 }
 
-void UI_AddText(char* on_click, char* text, float size_x, float size_y, float position_x, float position_y)
+void UI_AddText(char* on_click, char* text, float position_x, float position_y)
 {
+	ui_element_t new_text;
 
+	memset(&new_text, 0x00, sizeof(ui_element_t));
+
+	if (text == NULL)
+	{
+		Host_Error("UI_AddText: text was NULL!");
+		return;
+	}
+
+	strcpy(new_text.text, text);
+
+	if (on_click != NULL
+		&& strlen(on_click) > 0) strcpy(new_text.on_click, on_click);
+
+	//size_x ignored for text until the new font system is in
+	new_text.size_x = 0;
+	new_text.size_y = 0;
+	new_text.position_x = position_x;
+	new_text.position_y = position_y;
+	new_text.type = ui_element_text;
+
+	UI_AddElement(new_text);
 }
 
 void UI_SetVisibility(char* name, qboolean visible)
@@ -150,6 +181,10 @@ void UI_Draw(void)
 					case ui_element_button:
 						UI_DrawButton(current_ui_element);
 						break;
+
+					case ui_element_text:
+						UI_DrawText(current_ui_element);
+						break;
 				}
 			}
 
@@ -180,7 +215,27 @@ void UI_DrawButton(ui_element_t button)
 	// the button will be drawn here
 	// while we already cached it, it will just return the precached pic upon calling it again so this is okay
 
+	if (button.texture == NULL
+		&& strlen(button.texture) == 0) Host_Error("Tried to draw a button with no texture!");
+
 	Draw_Pic(button.position_x, button.position_y, Draw_CachePic(button.texture));
+}
+
+void UI_DrawText(ui_element_t text)
+{
+	unsigned int length = strlen(text.text);
+
+	int font_size = 8;		// Temporary until the new font engine is in (that supports font sizes)
+	int line_count = 0;		// Number of lines (/n chars...) 
+
+	for (int char_num = 0; char_num < length; char_num++)
+	{
+		char current_char = text.text[char_num];
+
+		if (current_char == '\n') line_count++; // account for new lines
+
+		Draw_Character(text.position_x + (font_size * char_num), text.position_y + (font_size * line_count), current_char); 		// draw the character in the right place
+	}
 }
 
 void UI_SetFocus(char* name, qboolean focus)

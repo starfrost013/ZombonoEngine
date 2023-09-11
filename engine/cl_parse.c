@@ -1191,7 +1191,6 @@ void CL_ParseServerMessage (void)
 			float position_y = MSG_ReadFloat();
 
 			UI_AddButton(tempbuf, tempbuf2, size_x, size_y, position_x, position_y);
-
 			break;
 		
 		case svc_ui_set_visibility:
@@ -1205,6 +1204,16 @@ void CL_ParseServerMessage (void)
 
 			UI_SetFocus(str, (qboolean)MSG_ReadFloat());
 			break;
+
+		case svc_ui_add_text:
+			strcpy_s(&tempbuf, 64, MSG_ReadString());
+			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+
+			position_x = MSG_ReadFloat();
+			position_y = MSG_ReadFloat();
+
+			UI_AddText(tempbuf, tempbuf2, position_x, position_y);
+
 		}
 
 		lastcmd = cmd; //johnfitz

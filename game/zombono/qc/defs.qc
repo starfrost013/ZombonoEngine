@@ -377,6 +377,9 @@ float SVC_UI_END = 51;
 float SVC_UI_ADD_BUTTON = 52;
 float SVC_UI_SET_VISIBILITY = 53;
 float SVC_UI_SET_FOCUS = 54;
+float SVC_UI_ADD_TEXT = 55;
+float SVC_UI_ADD_CHECKBOX = 56;
+float SVC_UI_ADD_SLIDER = 57;
 
 float TE_SPIKE = 0;
 float TE_SUPERSPIKE = 1;
@@ -428,15 +431,18 @@ float MSG_INIT = 3; // write to the init string
 // Team types
 float ZOMBONO_TEAM_DIRECTOR = 0; // director
 float ZOMBONO_TEAM_PLAYER = 1; // player
+float ZOMBONO_TEAM_UNASSIGNED = 2; // temporary postspawn team
+
+float ZOMBONO_TEAM_COUNT = 3;
 
 // Game modes (extremely provisional)
-float ZOMBONO_GAMEMODE_CLASSIC = 0;
-float ZOMBONO_GAMEMODE_WAVES = 1; 
-float ZOMBONO_GAMEMODE_HOSTAGE = 2;
+float ZOMBONO_GAMEMODE_TDM = 0;
+float ZOMBONO_GAMEMODE_HOSTAGE = 1; 
+float ZOMBONO_GAMEMODE_WAVES = 2;
 float ZOMBONO_GAMEMODE_COOP = 3; 
 // need better ideas for these...
 
-float ZOMBONO_MODE_COUNT = 3;
+float ZOMBONO_GAMEMODE_COUNT = 4;
 
 //================================================
 
@@ -728,11 +734,19 @@ void() SUB_Null;
 void() SUB_UseTargets;
 void() SUB_Remove;
 
+// UI: Core
 void(string name) SUB_UIStart;
 void() SUB_UIEnd;
-void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
+
+// UI: Attributes
 void(string name, float visible) SUB_UISetVisibility;
 void(string name, float focused) SUB_UISetFocus;
+
+// UI: Elements
+void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
+void(string on_click, string text, float checked, float size_x, float size_y, float position_x, float position_y) SUB_UIAddCheckbox;
+void(string on_click, string text, float value, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider;
+void(string on_click, string text, float position_x, float position_y) SUB_UIAddText;
 
 //
 // combat.qc

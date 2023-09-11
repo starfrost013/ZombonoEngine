@@ -310,10 +310,7 @@ void() SUB_UseTargets =
 			activator = act;
 		} while (1);
 	}
-
-
 };
-
 
 /*
 
@@ -368,13 +365,50 @@ void(string on_click, string texture, float size_x, float size_y, float position
 	WriteFloat(MSG_ALL, position_y);
 };
 
+
+void(string on_click, string text, float checked, float size_x, float size_y, float position_x, float position_y) SUB_UIAddCheckbox =
+{
+	dprint("UIAddCheckbox called\n");
+	WriteByte(MSG_ALL, SVC_UI_ADD_CHECKBOX);
+	WriteString(MSG_ALL, on_click);
+	WriteString(MSG_ALL, text);
+	WriteFloat(MSG_ALL, checked);
+	WriteFloat(MSG_ALL, size_x);
+	WriteFloat(MSG_ALL, size_y);
+	WriteFloat(MSG_ALL, position_x);
+	WriteFloat(MSG_ALL, position_y);
+}
+
+void(string on_click, string text, float value, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
+{
+	dprint("UIAddSlider called\n");
+	WriteByte(MSG_ALL, SVC_UI_ADD_SLIDER);
+	WriteString(MSG_ALL, on_click);
+	WriteString(MSG_ALL, text);
+	WriteFloat(MSG_ALL, value);
+	WriteFloat(MSG_ALL, size_x);
+	WriteFloat(MSG_ALL, size_y);
+	WriteFloat(MSG_ALL, position_x);
+	WriteFloat(MSG_ALL, position_y);
+}
+
+void(string on_click, string text, float position_x, float position_y) SUB_UIAddText =
+{
+	dprint("UIAddText called\n");
+	WriteByte(MSG_ALL, SVC_UI_ADD_TEXT);
+	WriteString(MSG_ALL, on_click);
+	WriteString(MSG_ALL, text);
+	WriteFloat(MSG_ALL, position_x);
+	WriteFloat(MSG_ALL, position_y);
+};
+
 void(string name, float visible) SUB_UISetVisibility =
 {
 	dprint("UISetVisibility called\n");
 	WriteByte(MSG_ALL, SVC_UI_SET_VISIBILITY);
 	WriteString(MSG_ALL, name);
 	WriteFloat(MSG_ALL, visible);
-}
+};
 
 void(string name, float focused) SUB_UISetFocus =
 {
@@ -382,4 +416,4 @@ void(string name, float focused) SUB_UISetFocus =
 	WriteByte(MSG_ALL, SVC_UI_SET_FOCUS);
 	WriteString(MSG_ALL, name);
 	WriteFloat(MSG_ALL, focused);
-}
+};

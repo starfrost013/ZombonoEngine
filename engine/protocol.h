@@ -127,6 +127,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GAME_ZOMBIES_MIN_MODE	0	//Zombono minimum gamemode
 #define GAME_ZOMBIES_MAX_MODE	0	//Zombono maximum gamemode 
 
+// These are bad ideas :v
+#define GAME_ZOMBIES_TDM		0	// Team Deathmatch
+#define GAME_ZOMBIES_HOSTAGE	1	// Hostage Survival/Standoff/Kill-80
+#define GAME_ZOMBIES_WAVES		2	// Director-controlled Waves
+#define GAME_ZOMBIES_COOP		3	// Co-op against ???? ZOMBIES ???
+
 //==================
 // note that there are some defs.qc that mirror to these numbers
 // also related to svc_strings[] in cl_parse
@@ -187,9 +193,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Zombono UI
 #define svc_ui_start			50  // [string] name - used for caching
 #define svc_ui_end				51	// ends current UI
-#define svc_ui_add_button		52  // [string] QC function name [string] texture name [float] size [float] position
+#define svc_ui_add_button		52  // [string] QC on_click event handler [string] texture name [float] size x [float] size y [float] position x [float] position y
 #define svc_ui_set_visibility	53	// [string] UI name [float] visibility
 #define svc_ui_set_focus		54	// [string] UI name [float] focus
+#define svc_ui_add_text			55	// [string] QC on_click event handler [string] text [float] size x [float] size y[float] position x [float] position y
+#define svc_ui_add_checkbox		56	// [string] QC on_click event handler [float/qboolean] checked [float] size x [float] size y[float] position x [float] position y
+#define svc_ui_add_slider		57	// [string] QC on_click event handler [float] value [float] size x [float] size y [float] position x [float] position y
+
 //johnfitz
 
 //
