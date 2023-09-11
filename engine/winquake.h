@@ -57,9 +57,6 @@ extern LPDIRECTSOUNDBUFFER pDSBuf;
 extern DWORD gSndBufSize;
 //#define SNDBUFSIZE 65536
 
-void	VID_LockBuffer (void);
-void	VID_UnlockBuffer (void);
-
 #endif
 
 typedef enum {MS_WINDOWED, MS_FULLSCREEN, MS_FULLDIB, MS_UNINIT} modestate_t;
@@ -70,8 +67,6 @@ extern HWND			mainwindow;
 extern qboolean		ActiveApp, Minimized;
 
 // Input
-int VID_ForceUnlockedAndReturnState (void);
-void VID_ForceLockState (int lk);
 
 void IN_ShowMouse (void);
 void IN_DeactivateMouse (void);

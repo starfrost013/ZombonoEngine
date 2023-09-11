@@ -284,15 +284,6 @@ void VID_Gamma_Init (void)
 	Cvar_RegisterVariable (&vid_gamma, VID_Gamma_f);
 }
 
-//==========================================================================
-
-// direct draw software compatability stuff
-
-int VID_ForceUnlockedAndReturnState (void)
-{
-	return 0;
-}
-
 /*
 ================
 CenterWindow
