@@ -1,7 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
-Copyright (C) 2023 starfrost
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -2169,9 +2169,7 @@ void M_Draw (void)
 		if (scr_con_current)
 		{
 			Draw_ConsoleBackground ();
-			VID_UnlockBuffer ();
 			S_ExtraUpdate ();
-			VID_LockBuffer ();
 		}
 
 		Draw_FadeScreen (); //johnfitz -- fade even if console fills screen
@@ -2261,9 +2259,7 @@ void M_Draw (void)
 		m_entersound = false;
 	}
 
-	VID_UnlockBuffer ();
 	S_ExtraUpdate ();
-	VID_LockBuffer ();
 }
 
 
