@@ -7,7 +7,7 @@ ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
 ui_t* UI_GetUI(char* name);
-void UI_AddUI(ui_element_t element);
+void UI_AddElement(ui_element_t element);
 
 void UI_DrawButton(ui_element_t button);
 void UI_DrawCheckbox(ui_element_t button);
@@ -93,8 +93,7 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	// note: "none" can be used to not call a function on click
 	// it should never be null, so that's a Sys_Error
 
-	if (texture == NULL
-		&& strlen(on_click) > 0)
+	if (texture == NULL)
 	{
 		Host_Error("UI_AddButton: texture was NULL!");
 		return;
@@ -117,6 +116,30 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 		&& strlen(new_button.texture) > 0) Draw_CachePic(new_button.texture);
 
 	UI_AddElement(new_button);
+}
+
+void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float size_x, float size_y, float position_x, float position_y)
+{
+	ui_element_t new_checkbox;
+	
+	memset(&new_checkbox, 0x00, sizeof(ui_element_t));
+
+	if (text == NULL)
+	{
+		Host_Error("UI_AddCheckbox: text was NULL!");
+		return;
+	}
+
+	strcpy(new_checkbox.text, text);
+
+	new_checkbox.checked = checked;
+	new_checkbox.size_x = size_x;
+	new_checkbox.size_y = size_y;
+	new_checkbox.position_x = position_x;
+	new_checkbox.position_y = position_y;
+	new_checkbox.type = ui_element_checkbox;
+
+	UI_AddElement(new_checkbox);
 }
 
 void UI_AddText(char* on_click, char* text, float position_x, float position_y)
@@ -182,6 +205,10 @@ void UI_Draw(void)
 						UI_DrawButton(current_ui_element);
 						break;
 
+					case ui_element_checkbox:
+						UI_DrawCheckbox(current_ui_element);
+						break;
+
 					case ui_element_text:
 						UI_DrawText(current_ui_element);
 						break;
@@ -221,20 +248,65 @@ void UI_DrawButton(ui_element_t button)
 	Draw_Pic(button.position_x, button.position_y, Draw_CachePic(button.texture));
 }
 
+void UI_DrawCheckbox(ui_element_t checkbox)
+{
+	// draw the text set with the checkbox
+	UI_DrawText(checkbox);
+
+	// count the size so that we can put the checkbox to the right of and in the middle of the text
+	int num_lines = 0, num_chars = 0, highest_num_chars = 0;
+	int font_size = 8;
+
+	for (int char_num = 0; char_num < strlen(checkbox.text); char_num++)
+	{
+		num_chars++;
+
+		// reset
+		if (checkbox.text[char_num] == '\n')
+		{
+			num_lines++;
+			if (num_chars > highest_num_chars) highest_num_chars = num_chars;
+			num_chars = 0; 
+		}
+	}
+
+	// final position
+	 // draw 1 char after the text horizontally, in the middle of the text vertically
+	int final_x = checkbox.position_x + (highest_num_chars * (font_size + 1));
+	int final_y = checkbox.position_y + ((font_size * num_lines) / 2) - (font_size / 2);
+
+	// draw the checkbox
+	if (checkbox.checked)
+	{
+		Draw_Character(final_x, final_y, 131);
+	}
+	else
+	{
+		Draw_Character(final_x, final_y, 129);
+	}
+
+}
+
 void UI_DrawText(ui_element_t text)
 {
 	unsigned int length = strlen(text.text);
 
 	int font_size = 8;		// Temporary until the new font engine is in (that supports font sizes)
 	int line_count = 0;		// Number of lines (/n chars...) 
+	int char_count = 0;		// Number of characters on the current line (for multiline)
 
 	for (int char_num = 0; char_num < length; char_num++)
 	{
 		char current_char = text.text[char_num];
+		char_count++;
 
-		if (current_char == '\n') line_count++; // account for new lines
+		if (current_char == '\n')
+		{
+			line_count++; // account for new lines
+			char_count = 0;// reset
+		}
 
-		Draw_Character(text.position_x + (font_size * char_num), text.position_y + (font_size * line_count), current_char); 		// draw the character in the right place
+		Draw_Character(text.position_x + (font_size * char_count), text.position_y + (font_size * line_count), current_char); 		// draw the character in the right place
 	}
 }
 
@@ -253,7 +325,7 @@ void UI_SetFocus(char* name, qboolean focus)
 
 void UI_OnClick(float x, float y)
 {
-	for (int uiNum = 0; uiNum < MAX_UI_COUNT; uiNum++)
+	for (int uiNum = 0; uiNum < ui_count; uiNum++)
 	{
 		ui_t* acquired_ui = ui[uiNum];
 
@@ -266,7 +338,8 @@ void UI_OnClick(float x, float y)
 				ui_element_t acquired_ui_element = acquired_ui->elements[uiElementNum];
 
 				// on_click optional
-				if (acquired_ui_element.on_click == NULL) continue;
+				if (acquired_ui_element.on_click == NULL
+					|| strlen(acquired_ui_element.on_click) == 0) continue;
 
 				// autoscale manages this
 				float scale_factor = scr_menuscale.value;
@@ -279,6 +352,9 @@ void UI_OnClick(float x, float y)
 					&& y >= acquired_ui_element.position_y
 					&& y <= acquired_ui_element.position_y + (acquired_ui_element.size_y * scale_factor))
 				{
+					// trigger checked (if it's a checkbox)
+					if (acquired_ui_element.type == ui_element_checkbox) acquired_ui_element.checked = !acquired_ui_element.checked;
+
 					// find QC OnClick
 					dfunction_t* func = ED_FindFunction(acquired_ui_element.on_click);
 

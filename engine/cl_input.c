@@ -352,7 +352,7 @@ void CL_SendMove (usercmd_t *cmd)
 //
     MSG_WriteByte (&buf, clc_move);
 
-	MSG_WriteFloat (&buf, cl.mtime[0]);	// so server can get ping times
+	MSG_WriteFloat (&buf, cl.mtime[0]);	// so server can get ping times 
 
 	for (i=0 ; i<3 ; i++)
 		//johnfitz -- 16-bit angles for PROTOCOL_FITZQUAKE

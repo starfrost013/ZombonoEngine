@@ -1078,9 +1078,9 @@ void Con_DrawConsole (int lines, qboolean drawinput)
 
 //draw version number in bottom right
 	y+=8;
-	sprintf (ver, "Zombono %1.2f (Test Build 2)", (float)VERSION);
+	sprintf (ver, "Zombono %1.2f (Test Build 3)", (float)VERSION);
 	for (x=0; x<strlen(ver); x++)
-		Draw_Character ((con_linewidth-strlen(ver)+x+2)<<3, y, ver[x] /*+ 128*/);
+		Draw_Character ((con_linewidth-strlen(ver)+x+2)<<3, y, ver[x]); 
 }
 
 

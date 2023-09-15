@@ -1,10 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿//
+// BMP2LMP Utility (version 2)
+// Copyright © 2023 starfrost
+// Converts bitmap files to Zombono LMP32 files
+//
 using bmp2lmp;
-using IronSoftware.Drawing;
-using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 
 #region Constants
-string BMP2LMP_VERSION = "1.2.0";
+string BMP2LMP_VERSION = "2.0.0";
 #endregion
 
 #region Variables
@@ -14,137 +17,191 @@ string outputItem = string.Empty;
 bool folderMode = false;
 bool quietMode = false;
 string[] inputFiles;
+
+#if DEBUG
+Stopwatch timer = new Stopwatch();
+timer.Start();
+#endif
 #endregion
 
-#region Command line parsing
-switch (args.Length)
+#region Main code
+try
 {
-    case 0:
-        PrintHelpAndExit("No file provided!", 1);
-        break;
-    default:
+    #region Command line parsing
+    switch (args.Length)
+    {
+        case 0:
+            PrintHelpAndExit("No file provided!", 1);
+            break;
+        default:
 
-        inputItem = args[0];
+            inputItem = args[0];
 
-        // set folder mode
-        folderMode = !(inputItem.Contains('.', StringComparison.InvariantCultureIgnoreCase));
+            // set folder mode
+            folderMode = !(inputItem.Contains('.', StringComparison.InvariantCultureIgnoreCase));
 
-        if (folderMode)
-        {
-            if (!Directory.Exists(inputItem))
+            if (folderMode)
             {
-                PrintHelpAndExit($"The input folder {inputItem} does not exist!", 3);
-            }
-
-            if (args.Length >= 2)
-            {
-                outputItem = args[1];
-
-                if (!Directory.Exists(outputItem))
+                if (!Directory.Exists(inputItem))
                 {
-                    PrintHelpAndExit($"The output folder {outputItem} does not exist!", 3);
+                    PrintHelpAndExit($"The input folder {inputItem} does not exist!", 3);
+                }
+
+                if (args.Length >= 2)
+                {
+                    outputItem = args[1];
+
+                    if (!Directory.Exists(outputItem))
+                    {
+                        PrintHelpAndExit($"The output folder {outputItem} does not exist!", 3);
+                    }
+                }
+                else
+                {
+                    // default to current directory
+                    outputItem = inputItem;
                 }
             }
             else
             {
-                // default to current directory
-                outputItem = inputItem;
+                if (!File.Exists(inputItem))
+                {
+                    PrintHelpAndExit($"The input file {inputItem} does not exist!", 2);
+                }
+
+                if (args.Length >= 2)
+                {
+                    outputItem = args[1];
+                }
+                else
+                {
+                    PrintHelpAndExit($"The output file {outputItem} does not exist!", 2);
+                }
             }
-        }
-        else
-        {
-            if (!File.Exists(inputItem))
-            {
-                PrintHelpAndExit($"The input file {inputItem} does not exist!", 2);
-            }
 
-            if (args.Length >= 2)
-            {
-                outputItem = args[1];
-            }
-            else
-            {
-                PrintHelpAndExit($"The output file {outputItem} does not exist!", 2);
-            }
-        }
+            break;
+    }
 
-        break;
-}
-
-// stuff you can put anywhere
-foreach (string arg in args)
-{
-    if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
-}
-#endregion
+    // stuff you can put anywhere
+    foreach (string arg in args)
+    {
+        if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
+    }
+    #endregion
 
 
-Print($"bmp2lmp {BMP2LMP_VERSION}");
-Print("Converts 32-bit BMP to LMP32");
-
-if (folderMode)
-{
-    // add all the files
-    inputFiles = Directory.GetFiles(inputItem, "*.bmp", SearchOption.AllDirectories);    
-}
-else
-{
-    // just one file so add input file to it
-    inputFiles = new string[] { inputItem }; 
-}
-
-foreach (string inputFileName in inputFiles)
-{
-    byte[] inputFileBytes = File.ReadAllBytes(inputFileName);
-
-    string outputFileName = outputItem;
-
-    AnyBitmap bitmap = new(inputFileBytes);
-
-    // bad
-
-    BinaryWriter outputFileStream;
+    Print($"bmp2lmp {BMP2LMP_VERSION}");
+    Print("Converts 32-bit BMP to LMP32");
 
     if (folderMode)
     {
-        outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
-        outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+        // add all the files
+        inputFiles = Directory.GetFiles(inputItem, "*.bmp", SearchOption.AllDirectories);
     }
     else
     {
-        outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+        // just one file so add input file to it
+        inputFiles = new string[] { inputItem };
     }
 
-    Lmp32Header header = new()
+    foreach (string inputFileName in inputFiles)
     {
-        Height = bitmap.Height,
-        Width = bitmap.Width,
-    };
+        byte[] inputImageData = File.ReadAllBytes(inputFileName);
 
-    header.Write(outputFileStream);
+        int dataLocation = BitConverter.ToInt32(inputImageData.AsSpan()[10..14]);
 
-    for (int y = 0; y < bitmap.Height; y++)
-    {
-        for (int x = 0; x < bitmap.Width; x++)
+        // all of the trillions of bitmap header versions share this information
+        // ranges are not inclusive
+        int widthStart = 0x12, widthEnd = widthStart + 4;
+        int heightStart = 0x16, heightEnd = dataLocation + 4;
+
+        // integer for compatibility with engine (won't be an issue unless we have a 2 gigabyte bmp file...)
+        int bitmapWidth = BitConverter.ToInt32(inputImageData.AsSpan()[widthStart..widthEnd]);
+        int bitmapHeight = BitConverter.ToInt32(inputImageData.AsSpan()[heightStart..heightEnd]);
+
+        string outputFileName = outputItem;
+        // bad
+
+        BinaryWriter outputFileStream;
+
+        if (folderMode)
         {
-            IronSoftware.Drawing.Color color = bitmap.GetPixel(x, y);
-
-            // RGBA format for quake
-            outputFileStream.Write(color.R);
-            outputFileStream.Write(color.G);
-            outputFileStream.Write(color.B);
-            outputFileStream.Write(color.A);
+            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
+            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
         }
+        else
+        {
+            outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
+        }
+
+        Lmp32Header header = new()
+        {
+            Width = bitmapWidth,
+            Height = bitmapHeight,
+        };
+
+        header.Write(outputFileStream);
+
+        // no color indexes because 32-bit only!
+        int imageDataStart = dataLocation;
+        int imageDataEnd = inputImageData.Length - 1;
+
+        // flip from BGRA to RGBA
+        // TODO: Check format (this is NOT a resilient tool!)
+        for (int imageByte = imageDataStart; imageByte < imageDataEnd; imageByte += 4)
+        {
+            byte current_b = inputImageData[imageByte];
+            byte current_g = inputImageData[imageByte + 1];
+            byte current_r = inputImageData[imageByte + 2];
+            byte current_a = inputImageData[imageByte + 3];
+
+            inputImageData[imageByte] = current_r;
+            inputImageData[imageByte + 1] = current_g;
+            inputImageData[imageByte + 2] = current_b;
+            inputImageData[imageByte + 3] = current_a;
+        }
+
+        // write out in left-right, top-down order
+        for (int y = 0; y < header.Height; y++)
+        {
+            for (int x = 0; x < header.Width; x++)
+            {
+                int pixelLocation = GetPixelLocation(imageDataStart, header, x, y);
+
+                outputFileStream.Write(inputImageData[pixelLocation]);
+                outputFileStream.Write(inputImageData[pixelLocation + 1]);
+                outputFileStream.Write(inputImageData[pixelLocation + 2]);
+                outputFileStream.Write(inputImageData[pixelLocation + 3]);
+
+            }
+        }
+
+        Print($"Converted file {inputFileName} to {outputFileName}!", ConsoleColor.Green);
+        Console.ResetColor();
     }
 
-    Console.ForegroundColor = ConsoleColor.Green;
-    Print($"Converted file {inputFileName} to {outputFileName}!");
-    Console.ResetColor();
-}
+#if DEBUG
+    timer.Stop();
+    PrintLoud($"Time taken to run: {(double)timer.ElapsedTicks / 10000d}ms");
+#endif
+    Print($"Done!", ConsoleColor.Green);
+    Environment.Exit(0);
 
-Console.ForegroundColor = ConsoleColor.Green;
-Print($"Done!");
-Console.ResetColor();
+    int GetPixelLocation(int imageDataStart, Lmp32Header header, int x, int y)
+    {
+        // we need to flip the Y order only
+        return imageDataStart + (header.Width * ((header.Height - 1) - y) * 4) + (x * 4);
+    }
+
+}
+catch (Exception ex)
+{
+    PrintLoud($"An exception occurred!\n\n{ex}");
+    Environment.Exit(4);
+}
+#endregion
+
+#region Utility functions
 
 void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
@@ -171,3 +228,7 @@ void PrintErrorAndExit(string error, int exitCode)
     PrintLoud(error);
     Environment.Exit(exitCode);
 }
+
+
+
+#endregion

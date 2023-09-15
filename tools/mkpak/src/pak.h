@@ -1,5 +1,7 @@
 /* pak.h - Quake PAK archive format structs
  * by unsubtract, MIT license */
+
+/* Modified by starfrost to compile under Visual Studio without _CRT_SECURE_NO_WARNINGS */
 #ifndef PAK_H_
 #define PAK_H_
 #include <stdint.h>

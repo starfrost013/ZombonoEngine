@@ -517,8 +517,9 @@ void() PsuiStart =
 	SUB_UIStart("psui");
 	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 128, vid_height/2 - 128);
 	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 128, vid_height/2 - 128);
-	SUB_UIAddText(string_null, "Test Players", vid_width/2 - 96, vid_height/2 + 136);
-	SUB_UIAddText(string_null, "Test Players", vid_width/2 + 96, vid_height/2 + 136);
+	SUB_UIAddText(string_null, "Nobody knows who gave them this power!", vid_width/2 - 128, vid_height/2 + 136);
+	SUB_UIAddText(string_null, "They don't know why they're here and they want to live!", vid_width/2 + 128, vid_height/2 + 136);
+	SUB_UIAddCheckbox(string_null, "This is a checkbox (test...)!", TRUE, 10, 10, vid_width/2 + 64, vid_width/2 + 64);
 	SUB_UIEnd();
 	
 	// Disabled for ZTest2

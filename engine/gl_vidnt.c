@@ -103,8 +103,6 @@ HDC		maindc;
 
 glvert_t glv;
 
-HWND WINAPI InitializeWindow (HINSTANCE hInstance, int nCmdShow);
-
 viddef_t	vid;				// global video state
 
 //unsigned short	d_8to16table[256]; //johnfitz -- never used
@@ -342,8 +340,8 @@ qboolean VID_SetWindowedMode (int modenum)
 	// Create the DIB window
 	dibwindow = CreateWindowEx (
 		 ExWindowStyle,
-		 "FitzQuake", //johnfitz -- was "WinQuake"
-		 "FitzQuake", //johnfitz -- was "GLQuake"
+		 "Zombono", //johnfitz -- was "WinQuake"
+		 "Zombono", //johnfitz -- was "GLQuake"
 		 WindowStyle,
 		 rect.left, rect.top,
 		 width,
@@ -440,8 +438,8 @@ qboolean VID_SetFullDIBMode (int modenum)
 	// Create the DIB window
 	dibwindow = CreateWindowEx (
 		 ExWindowStyle,
-		 "FitzQuake", //johnfitz -- was "WinQuake"
-		 "FitzQuake", //johnfitz -- was "GLQuake"
+		 "Zombono", //johnfitz -- was "WinQuake"
+		 "Zombono", //johnfitz -- was "GLQuake"
 		 WindowStyle,
 		 rect.left, rect.top,
 		 width,
@@ -1845,7 +1843,7 @@ void VID_InitDIB (HINSTANCE hInstance)
     wc.hCursor       = LoadCursor (NULL,IDC_ARROW);
 	wc.hbrBackground = NULL;
     wc.lpszMenuName  = 0;
-    wc.lpszClassName = "FitzQuake"; //johnfitz -- was WinQuake
+    wc.lpszClassName = "Zombono"; //johnfitz -- was WinQuake
 
     if (!RegisterClass (&wc) )
 		Sys_Error ("Couldn't register window class");

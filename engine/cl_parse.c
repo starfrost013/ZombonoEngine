@@ -87,6 +87,11 @@ char *svc_strings[] =
 	"svc_ui_start", // 50
 	"svc_ui_end", // 51
 	"svc_ui_add_button", // 52
+	"svc_ui_set_visibility", // 53
+	"svc_ui_set_focus", // 54
+	"svc_ui_add_text", // 55
+	"svc_ui_add_checkbox", // 56
+	"svc_ui_add_slider", // 57
 //johnfitz,
 };
 
@@ -1213,6 +1218,20 @@ void CL_ParseServerMessage (void)
 			position_y = MSG_ReadFloat();
 
 			UI_AddText(tempbuf, tempbuf2, position_x, position_y);
+			break;
+
+		case svc_ui_add_checkbox:
+			strcpy_s(&tempbuf, 64, MSG_ReadString());
+			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+
+			qboolean checked = (qboolean)MSG_ReadFloat();
+			size_x = MSG_ReadFloat();
+			size_y = MSG_ReadFloat();
+			position_x = MSG_ReadFloat();
+			position_y = MSG_ReadFloat();
+
+			UI_AddCheckbox(tempbuf, tempbuf2, checked, size_x, size_y, position_x, position_y);
+			break;
 
 		}
 

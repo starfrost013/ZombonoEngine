@@ -21,7 +21,14 @@ static void fail(const char* str) {
 
 int main(/*int argc, char *argv[]*/) {
     pak_header h = {.magic = {'P', 'A', 'C', 'K'}};
-    FILE *pakfile = fopen("../out.pak", "rb");
+
+    #ifdef _CRT_SECURE_NO_WARNINGS
+    FILE* pakfile = fopen("../out.pak", "rb");
+    #else
+    FILE* pakfile;
+    fopen_s(&pakfile, "../out.pak", "rb");
+    #endif
+
     if (pakfile == NULL) {
         perror("could not open file");
         exit(EXIT_FAILURE);
@@ -45,7 +52,13 @@ int main(/*int argc, char *argv[]*/) {
         file_header* fh = (file_header*)&buffer[0];
         //printf("filename: %s\n  filesize: %i\n", fh->name, fh->size);
         //if (mkdir((char*)fh->name, 0755) < 0) perror("mkdir");
+
+        #ifdef _CRT_SECURE_NO_WARNINGS
         FILE *outfile = fopen((char*)&fh->name, "w");
+        #else
+        FILE* outfile;
+        fopen_s(&outfile, (char*)&fh->name, "w");
+        #endif
         if (outfile == NULL) perror((char*)fh->name);
         else {
             fseek(pakfile, fh->offset, SEEK_SET);

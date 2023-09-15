@@ -180,8 +180,6 @@ if (sides == 0)
 	return sides;
 }
 
-//#endif	// !id386//johnfitz -- removing ASM code from fitzquake
-
 //johnfitz -- the opposite of AngleVectors.  this takes forward and generates pitch yaw roll
 //TODO: take right and up vectors to properly set yaw and roll
 void VectorAngles (const vec3_t forward, vec3_t angles)
