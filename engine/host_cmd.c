@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 extern cvar_t	pausable;
-
-extern int com_nummissionpacks; //johnfitz
 
 int	current_skill;
 
@@ -159,10 +158,6 @@ void Host_Game_f (void)
 
 		//Write config file
 		Host_WriteConfiguration ();
-
-		//Kill the extra game if it is loaded
-		if (NumGames(com_searchpaths) > 1 + com_nummissionpacks)
-			KillGameDir(com_searchpaths);
 
 		strcpy (com_gamedir, pakfile);
 
@@ -1225,8 +1220,16 @@ void Host_Name_f (void)
 
 void Host_Version_f (void)
 {
-	Con_Printf ("Zombono Version %1.2f\n", VERSION); //johnfitz
-	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
+	Con_Printf ("Zombono version %1.2f\n", VERSION); //johnfitz
+	Con_Printf ("Protocol version %1.2d", PROTOCOL_ZOMBONO);
+	Con_Printf ("Build date: "__TIME__" "__DATE__"\n");
+#ifdef DEBUG
+	Con_Printf ("Debug build");
+#elif PLAYTEST
+	// nothing on playtest
+#else
+	Con_Printf ("Release build");
+#endif
 }
 
 void Host_Say(qboolean teamonly)

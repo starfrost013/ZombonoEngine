@@ -35,8 +35,6 @@ cvar_t  cmdline = {"cmdline","", false, true};
 
 qboolean        com_modified;   // set true if using non-id files
 
-int com_nummissionpacks; //johnfitz
-
 int             static_registered = 1;  // only for startup check, then set
 
 qboolean		msg_suppress_1 = 0;
@@ -1741,8 +1739,6 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away
 	
-	// keep this here for now: starfrost 
-	com_nummissionpacks = 0;
 
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)

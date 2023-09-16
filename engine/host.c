@@ -801,7 +801,9 @@ void Host_Init (quakeparms_t *parms)
 	ExtraMaps_Init (); //johnfitz
 	Modlist_Init (); //johnfitz
 
+	Host_Version_f();
 	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
+
 	Con_Printf ("%4.1f megabyte heap\n",parms->memsize/ (1024*1024.0));
 
 	if (cls.state != ca_dedicated)
