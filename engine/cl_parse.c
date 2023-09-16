@@ -1225,14 +1225,25 @@ void CL_ParseServerMessage (void)
 			strcpy_s(&tempbuf2, 64, MSG_ReadString());
 
 			qboolean checked = (qboolean)MSG_ReadFloat();
+			position_x = MSG_ReadFloat();
+			position_y = MSG_ReadFloat();
+
+			UI_AddCheckbox(tempbuf, tempbuf2, checked, position_x, position_y);
+			break;
+
+		case svc_ui_add_slider:
+			strcpy_s(&tempbuf, 64, MSG_ReadString());
+			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+
+			float value_min = MSG_ReadFloat();
+			float value_max = MSG_ReadFloat();
 			size_x = MSG_ReadFloat();
 			size_y = MSG_ReadFloat();
 			position_x = MSG_ReadFloat();
 			position_y = MSG_ReadFloat();
 
-			UI_AddCheckbox(tempbuf, tempbuf2, checked, size_x, size_y, position_x, position_y);
+			UI_AddSlider(tempbuf, tempbuf2, value_min, value_max, size_x, size_y, position_x, position_y);
 			break;
-
 		}
 
 		lastcmd = cmd; //johnfitz

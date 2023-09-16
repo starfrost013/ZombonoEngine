@@ -2,7 +2,7 @@
 
 #include "quakedef.h"
 
-ui_t*	ui[MAX_UI_COUNT];	// Global Ui defines
+ui_t*	ui[MAX_UI_COUNT];	// Contains all UIs
 ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
@@ -24,7 +24,6 @@ void UI_Init(void)
 		Sys_Error("Failed to allocate hunk space for UI!");
 	}
 }
-
 
 void UI_Start(char* name)
 {
@@ -118,7 +117,7 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	UI_AddElement(new_button);
 }
 
-void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float size_x, float size_y, float position_x, float position_y)
+void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position_x, float position_y)
 {
 	ui_element_t new_checkbox;
 	
@@ -133,8 +132,6 @@ void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float size_x, 
 	strcpy(new_checkbox.text, text);
 
 	new_checkbox.checked = checked;
-	new_checkbox.size_x = size_x;
-	new_checkbox.size_y = size_y;
 	new_checkbox.position_x = position_x;
 	new_checkbox.position_y = position_y;
 	new_checkbox.type = ui_element_checkbox;
@@ -160,13 +157,49 @@ void UI_AddText(char* on_click, char* text, float position_x, float position_y)
 		&& strlen(on_click) > 0) strcpy(new_text.on_click, on_click);
 
 	//size_x ignored for text until the new font system is in
-	new_text.size_x = 0;
-	new_text.size_y = 0;
 	new_text.position_x = position_x;
 	new_text.position_y = position_y;
 	new_text.type = ui_element_text;
 
 	UI_AddElement(new_text);
+}
+
+void UI_AddSlider(char* on_click, char* text, float min_value, float max_value, float size_x, float size_y, float position_x, float position_y)
+{
+	ui_element_t new_slider;
+	
+	memset(&new_slider, 0x00, sizeof(ui_element_t));
+
+	if (text == NULL)
+	{
+		Host_Error("UI_AddSlider: text was NULL!");
+		return;
+	}
+
+	if (on_click != NULL
+		&& strlen(on_click) > 0) strcpy(new_slider.on_click, on_click);
+
+	if (text != NULL
+		&& strlen(text) > 0) strcpy(new_slider.text, text);
+
+	new_slider.size_x = size_x;
+	new_slider.size_y = size_y;
+	new_slider.min_value = min_value;
+	new_slider.max_value = max_value;
+
+	if (new_slider.min_value < 0
+		|| new_slider.min_value > new_slider.max_value
+		|| new_slider.max_value < 0)
+	{
+		Host_Error("UI_AddSlider: min_value > max_value or min_value or max_value < 0");
+		return;
+	}
+
+	new_slider.position_x = position_x;
+	new_slider.position_y = position_y;
+	new_slider.type = ui_element_slider;
+
+	UI_AddElement(new_slider);
 }
 
 void UI_SetVisibility(char* name, qboolean visible)
@@ -211,6 +244,10 @@ void UI_Draw(void)
 
 					case ui_element_text:
 						UI_DrawText(current_ui_element);
+						break;
+
+					case ui_element_slider:
+						UI_DrawSlider(current_ui_element);
 						break;
 				}
 			}
@@ -308,6 +345,26 @@ void UI_DrawText(ui_element_t text)
 
 		Draw_Character(text.position_x + (font_size * char_count), text.position_y + (font_size * line_count), current_char); 		// draw the character in the right place
 	}
+}
+
+void UI_DrawSlider(ui_element_t slider)
+{
+	// draw left edge
+	Draw_Character(slider.position_x, slider.position_y, 128);
+
+	int font_size = 8;
+
+	// draw main part
+	for (int slider_position = slider.position_x; slider_position < slider.position_x + slider.size_x; slider_position += font_size)
+	{
+		Draw_Character(slider_position, slider.position_y, 129);
+	}
+
+	// draw right edge
+	Draw_Character(slider.position_x + slider.size_x, slider.position_y, 130);
+
+	// draw current position character
+	Draw_Character(slider.position_x + ((float)slider.size_x * slider.value), slider.position_y, 131);
 }
 
 void UI_SetFocus(char* name, qboolean focus)

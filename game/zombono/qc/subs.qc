@@ -366,26 +366,25 @@ void(string on_click, string texture, float size_x, float size_y, float position
 };
 
 
-void(string on_click, string text, float checked, float size_x, float size_y, float position_x, float position_y) SUB_UIAddCheckbox =
+void(string on_click, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox =
 {
 	dprint("UIAddCheckbox called\n");
 	WriteByte(MSG_ALL, SVC_UI_ADD_CHECKBOX);
 	WriteString(MSG_ALL, on_click);
 	WriteString(MSG_ALL, text);
 	WriteFloat(MSG_ALL, checked);
-	WriteFloat(MSG_ALL, size_x);
-	WriteFloat(MSG_ALL, size_y);
 	WriteFloat(MSG_ALL, position_x);
 	WriteFloat(MSG_ALL, position_y);
 }
 
-void(string on_click, string text, float value, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
+void(string on_click, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
 {
 	dprint("UIAddSlider called\n");
 	WriteByte(MSG_ALL, SVC_UI_ADD_SLIDER);
 	WriteString(MSG_ALL, on_click);
 	WriteString(MSG_ALL, text);
-	WriteFloat(MSG_ALL, value);
+	WriteFloat(MSG_ALL, value_min);
+	WriteFloat(MSG_ALL, value_max);
 	WriteFloat(MSG_ALL, size_x);
 	WriteFloat(MSG_ALL, size_y);
 	WriteFloat(MSG_ALL, position_x);
