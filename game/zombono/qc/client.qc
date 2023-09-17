@@ -350,33 +350,6 @@ entity() SelectSpawnPoint =
 
 	if (gamemode == 0)
 	{
-		if (self.team == ZOMBONO_TEAM_DIRECTOR)
-		{
-			spot = find(world, classname, "info_player_start_director");
-
-			if (spot == world)
-			{
-				spot = find(world, classname, "info_player_start_director");
-				
-				return spot;
-			}
-
-			return spot;
-		}
-		else if (self.team == ZOMBONO_TEAM_PLAYER)
-		{
-			spot = find(world, classname, "info_player_start_player");
-
-			if (spot == world)
-			{
-				spot = find(world, classname, "info_player_start_player");
-				return spot;
-			}
-
-			return spot;
-		}
-
-		/* Disabled for Ztest2 
 		if (world.level_has_prespawn)
 		{
 			spot = find(world, classname, "info_player_start_prespawn");
@@ -389,7 +362,35 @@ entity() SelectSpawnPoint =
 
 			return spot;
 		}
-		Disabled for Ztest2 */
+		else
+		{
+			if (self.team == ZOMBONO_TEAM_DIRECTOR)
+			{
+				spot = find(world, classname, "info_player_start_director");
+	
+				if (spot == world)
+				{
+					spot = find(world, classname, "info_player_start_director");
+					
+					return spot;
+				}
+	
+				return spot;
+			}
+			else if (self.team == ZOMBONO_TEAM_PLAYER)
+			{
+				spot = find(world, classname, "info_player_start_player");
+	
+				if (spot == world)
+				{
+					spot = find(world, classname, "info_player_start_player");
+					return spot;
+				}
+	
+				return spot;
+			}
+		}
+
 	}
 	else // no team
 	{
@@ -517,8 +518,8 @@ void() PsuiStart =
 	SUB_UIStart("psui");
 	SUB_UIAddButton("PsuiSetTeamDirector", "GFX/PSUI_SPAWN_DIRECTOR.LMP", 256, 256, vid_width/2 - 192, vid_height/2 - 128);
 	SUB_UIAddButton("PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 64, vid_height/2 - 128);
-	SUB_UIAddText(string_null, "Nobody knows who gave\nthem this power!", vid_width/2 - 64, vid_height/2 + 136);
-	SUB_UIAddText(string_null, "They don't know why they're here\nand they want to live!", vid_width/2 + 64, vid_height/2 + 136);
+	SUB_UIAddText(string_null, "Nobody knows who gave\nthem this power!", vid_width/2 - 128, vid_height/2 + 136);
+	SUB_UIAddText(string_null, "They don't know why they're here\nand they want to live!", vid_width/2 + 128, vid_height/2 + 136);
 	SUB_UIAddCheckbox(string_null, "This is a checkbox (test...)!", TRUE, vid_width/2, vid_width/2 + 64);
 	SUB_UIAddSlider(string_null, "I'm a slider!", 0, 10, 100, 100, vid_width/2, vid_width/2 - 272);
 	SUB_UIEnd();
