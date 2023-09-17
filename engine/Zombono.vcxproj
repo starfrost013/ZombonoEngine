@@ -285,6 +285,7 @@
     <ClInclude Include="anorm_dots.h" />
     <ClInclude Include="bspfile.h" />
     <ClInclude Include="cdaudio.h" />
+    <ClInclude Include="chase.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="cmd.h" />
     <ClInclude Include="common.h" />
@@ -297,6 +298,7 @@
     <ClInclude Include="gl_model.h" />
     <ClInclude Include="gl_texmgr.h" />
     <ClInclude Include="gl_warp_sin.h" />
+    <ClInclude Include="host.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="keys.h" />

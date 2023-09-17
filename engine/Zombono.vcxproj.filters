@@ -362,5 +362,11 @@
     <ClInclude Include="ui.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="host.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="chase.h">
+      <Filter>Source Files\Client</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

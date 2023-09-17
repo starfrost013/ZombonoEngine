@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /*
 
-A server can allways be started, even if the system started out as a client
+A server can always be started, even if the system started out as a client
 to a remote system.
 
 A client can NOT be started if the system started as a dedicated server.
@@ -802,7 +803,6 @@ void Host_Init (quakeparms_t *parms)
 	Modlist_Init (); //johnfitz
 
 	Host_Version_f();
-	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
 
 	Con_Printf ("%4.1f megabyte heap\n",parms->memsize/ (1024*1024.0));
 

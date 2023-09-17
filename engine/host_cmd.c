@@ -1221,14 +1221,14 @@ void Host_Name_f (void)
 void Host_Version_f (void)
 {
 	Con_Printf ("Zombono version %1.2f\n", VERSION); //johnfitz
-	Con_Printf ("Protocol version %1.2d", PROTOCOL_ZOMBONO);
+	Con_Printf ("Protocol version %1.2d\n", PROTOCOL_ZOMBONO);
 	Con_Printf ("Build date: "__TIME__" "__DATE__"\n");
 #ifdef DEBUG
-	Con_Printf ("Debug build");
+	Con_Printf ("Debug build\n");
 #elif PLAYTEST
 	// nothing on playtest
 #else
-	Con_Printf ("Release build");
+	Con_Printf ("Release build\n");
 #endif
 }
 
