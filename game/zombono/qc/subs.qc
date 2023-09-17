@@ -359,17 +359,8 @@ void(string name) SUB_UIStart =
 
 void() SUB_UIEnd =
 {
-	msg_entity = self; 
-	// SELF must ALWAYS be current player before calling.
-	if (msg_entity.classname != "player")
-	{
-		error("Tried to end a UI for a non-player!");
-	}
-	
 	dprint("UIEnd called\n");
 	WriteByte(MSG_ONE, SVC_UI_END);
-
-	ui_last_entity = self;
 };
 
 void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =

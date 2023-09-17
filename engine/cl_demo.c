@@ -104,7 +104,7 @@ int CL_GetMessage (void)
 					return 0;		// allready read this frame's message
 				cls.td_lastframe = host_framecount;
 			// if this is the second frame, grab the real td_starttime
-			// so the bogus time on the first frame doesn't count
+			// so the bogus time on the first frame doesn't count 
 				if (host_framecount == cls.td_startframe + 1)
 					cls.td_starttime = realtime;
 			}
