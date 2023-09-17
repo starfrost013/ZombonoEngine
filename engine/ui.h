@@ -56,7 +56,7 @@ void UI_Start(char* name);								// Start a new UI
 void UI_Draw(void);										// Draw all UIs
 void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
-void UI_SetValue(char* name, float value);				// Set UI value. No difference.
+void UI_SetValue(char* name, float value);				// Set UI value. No difference unless it's a slider
 void UI_OnClick(float x, float y);						// UI click event. Not for QC
 void UI_End();											// End the current UI
 
