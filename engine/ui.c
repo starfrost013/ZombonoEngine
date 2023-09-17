@@ -323,11 +323,11 @@ void UI_DrawCheckbox(ui_element_t* checkbox)
 	// draw the checkbox
 	if (checkbox->checked)
 	{
-		Draw_Character(final_x, final_y, 131);
+		Draw_Character(final_x, final_y, 139);
 	}
 	else
 	{
-		Draw_Character(final_x, final_y, 129);
+		Draw_Character(final_x, final_y, 11);
 	}
 
 }
