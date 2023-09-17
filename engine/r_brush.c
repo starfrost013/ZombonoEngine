@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -148,7 +149,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 	entalpha = ENTALPHA_DECODE(currententity->alpha);
 
 // drawflat
-	if (r_drawflat_cheatsafe)
+	if (r_drawflat.value)
 	{
 		if ((s->flags & SURF_DRAWTURB) && r_oldwater.value)
 		{
@@ -170,7 +171,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 	}
 
 // fullbright
-	if ((r_fullbright_cheatsafe) && !(s->flags & SURF_DRAWTILED))
+	if ((r_fullbright.value) && !(s->flags & SURF_DRAWTILED))
 	{
 		if (entalpha < 1)
 		{
@@ -193,7 +194,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 	}
 
 // r_lightmap
-	if (r_lightmap_cheatsafe)
+	if (r_lightmap.value)
 	{
 		if (s->flags & SURF_DRAWTILED)
 		{
@@ -551,7 +552,7 @@ void R_DrawBrushModel (entity_t *e)
 	// draw it
 	//
 
-	if (r_drawflat_cheatsafe) //johnfitz
+	if (r_drawflat.value) 
 		glDisable(GL_TEXTURE_2D);
 
 	for (i=0 ; i<clmodel->nummodelsurfaces ; i++, psurf++)
@@ -566,7 +567,7 @@ void R_DrawBrushModel (entity_t *e)
 		}
 	}
 
-	if (r_drawflat_cheatsafe) //johnfitz
+	if (r_drawflat.value) 
 		glEnable(GL_TEXTURE_2D);
 
 	GL_DisableMultitexture(); // selects TEXTURE0

@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -132,7 +133,7 @@ void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 
 			if (shading)
 			{
-				if (r_drawflat_cheatsafe)
+				if (r_drawflat.value)
 				{
 					srand(count * (unsigned int) commands);
 					glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
@@ -412,7 +413,7 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// random stuff
 	//
-	if (gl_smoothmodels.value && !r_drawflat_cheatsafe)
+	if (gl_smoothmodels.value && !r_drawflat.value)
 		glShadeModel (GL_SMOOTH);
 	if (gl_affinemodels.value)
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -422,7 +423,7 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// set up for alpha blending
 	//
-	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe) //no alpha in drawflat or lightmap mode
+	if (r_drawflat.value || r_lightmap.value) //no alpha in drawflat or lightmap mode
 		entalpha = 1;
 	else
 		entalpha = ENTALPHA_DECODE(e->alpha);
@@ -460,14 +461,14 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// draw it
 	//
-	if (r_drawflat_cheatsafe)
+	if (r_drawflat.value)
 	{
 		glDisable (GL_TEXTURE_2D);
 		GL_DrawAliasFrame (paliashdr, lerpdata);
 		glEnable (GL_TEXTURE_2D);
 		srand((int) (cl.time * 1000)); //restore randomness
 	}
-	else if (r_fullbright_cheatsafe)
+	else if (r_fullbright.value)
 	{
 		GL_Bind (tx);
 		shading = false;
@@ -489,7 +490,7 @@ void R_DrawAliasModel (entity_t *e)
 			glDisable(GL_BLEND);
 		}
 	}
-	else if (r_lightmap_cheatsafe)
+	else if (r_lightmap.value)
 	{
 		glDisable (GL_TEXTURE_2D);
 		shading = false;

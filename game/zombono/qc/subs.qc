@@ -348,8 +348,9 @@ void(string name) SUB_UIStart =
 	// SELF must ALWAYS be current player before calling.
 	if (msg_entity.classname != "player")
 	{
-		error("Tried to start a UI for a non-player!");
+		error("Tried to start a UI for a non-player entity!");
 	}
+
 	dprint("UIStart called\n");
 	WriteByte(MSG_ONE, SVC_UI_START);
 	WriteString(MSG_ONE, name);

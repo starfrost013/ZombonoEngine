@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,6 +40,8 @@ gltexture_t	*skybox_textures[6];
 gltexture_t	*solidskytexture, *alphaskytexture;
 
 extern cvar_t gl_farclip;
+extern cvar_t r_drawflat;
+
 cvar_t r_fastsky = {"r_fastsky", "0"};
 cvar_t r_sky_quality = {"r_sky_quality", "12"};
 cvar_t r_skyalpha = {"r_skyalpha", "1"};
@@ -518,7 +521,7 @@ void Sky_ProcessTextureChains (void)
 	msurface_t	*s;
 	texture_t	*t;
 
-	if (!r_drawworld_cheatsafe)
+	if (r_drawworld.value)
 		return;
 
 	for (i=0 ; i<cl.worldmodel->numtextures ; i++)
@@ -964,7 +967,7 @@ void Sky_DrawSky (void)
 	int				i;
 
 	//in these special render modes, the sky faces are handled in the normal world/brush renderer
-	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe )
+	if (r_drawflat.value || r_lightmap.value )
 		return;
 
 	//

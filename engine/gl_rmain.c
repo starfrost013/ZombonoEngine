@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// r_main.c
+// gl_rmain.c: Core OpenGL renderer loop
 
 #include "quakedef.h"
 
@@ -429,17 +430,6 @@ void R_SetupView (void)
 
 	R_Clear ();
 
-	//johnfitz -- cheat-protect some draw modes
-	r_drawflat_cheatsafe = r_fullbright_cheatsafe = r_lightmap_cheatsafe = false;
-	r_drawworld_cheatsafe = true;
-	if (sv_cheats.value == 1)
-	{
-		if (!r_drawworld.value) r_drawworld_cheatsafe = false;
-
-		if (r_drawflat.value) r_drawflat_cheatsafe = true;
-		else if (r_fullbright.value || !cl.worldmodel->lightdata) r_fullbright_cheatsafe = true;
-		else if (r_lightmap.value) r_lightmap_cheatsafe = true;
-	}
 	//johnfitz
 }
 
@@ -712,8 +702,7 @@ void R_DrawShadows (void)
 {
 	int i;
 
-	if (!r_shadows.value || !r_drawentities.value || r_drawflat_cheatsafe || r_lightmap_cheatsafe)
-		return;
+	if (!r_shadows.value || !r_drawentities.value);
 
 	for (i=0 ; i<cl_numvisedicts ; i++)
 	{

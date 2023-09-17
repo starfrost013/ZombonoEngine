@@ -297,8 +297,6 @@ void Sys_Error (char *error, ...)
 	static int	in_sys_error2 = 0;
 	static int	in_sys_error3 = 0;
 
-
-
  	if (!in_sys_error3)
 	{
 		in_sys_error3 = 1;

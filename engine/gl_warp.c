@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -221,7 +222,7 @@ void R_UpdateWarpTextures (void)
 	int i;
 	float x, y, x2, warptess;
 
-	if (r_oldwater.value || cl.paused || r_drawflat_cheatsafe || r_lightmap_cheatsafe)
+	if (r_oldwater.value || cl.paused || r_drawflat.value || r_lightmap.value)
 		return;
 
 	warptess = 128.0/CLAMP (3.0, floor(r_waterquality.value), 64.0);

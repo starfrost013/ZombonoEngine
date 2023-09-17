@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -172,7 +173,7 @@ void R_CullSurfaces (void)
 	msurface_t *s;
 	int i;
 
-	if (!r_drawworld_cheatsafe)
+	if (!r_drawworld.value)
 		return;
 
 	s = &cl.worldmodel->surfaces[cl.worldmodel->firstmodelsurface];
@@ -474,7 +475,7 @@ void R_DrawTextureChains_Water (void)
 	float		*v;
 	qboolean	bound;
 
-	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe || !r_drawworld_cheatsafe)
+	if (r_drawflat.value || r_lightmap.value || !r_drawworld.value)
 		return;
 
 	if (r_wateralpha.value < 1.0)
@@ -609,10 +610,10 @@ R_DrawWorld -- johnfitz -- rewritten
 */
 void R_DrawWorld (void)
 {
-	if (!r_drawworld_cheatsafe)
+	if (!r_drawworld.value)
 		return;
 
-	if (r_drawflat_cheatsafe)
+	if (r_drawflat.value)
 	{
 		glDisable (GL_TEXTURE_2D);
 		R_DrawTextureChains_Drawflat ();
@@ -620,13 +621,13 @@ void R_DrawWorld (void)
 		return;
 	}
 
-	if (r_fullbright_cheatsafe)
+	if (r_fullbright.value)
 	{
 		R_DrawTextureChains_TextureOnly ();
 		goto fullbrights;
 	}
 
-	if (r_lightmap_cheatsafe)
+	if (r_lightmap.value)
 	{
 		R_BuildLightmapChains ();
 		if (!gl_overbright.value)
