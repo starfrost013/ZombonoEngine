@@ -9,10 +9,12 @@ int		ui_count = 0;		// UI count
 ui_t* UI_GetUI(char* name);
 void UI_AddElement(ui_element_t element);
 
-void UI_DrawButton(ui_element_t button);
-void UI_DrawCheckbox(ui_element_t button);
-void UI_DrawText(ui_element_t button);
-void UI_DrawSlider(ui_element_t button);
+void UI_DrawButton(ui_element_t* button);
+void UI_DrawCheckbox(ui_element_t* button);
+void UI_DrawText(ui_element_t* button);
+void UI_DrawSlider(ui_element_t* button);
+
+void UI_DefaultOnClickHandler(ui_element_t* button); // must point to global ui heap
 
 void UI_Init(void)
 {
@@ -131,7 +133,13 @@ void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position
 
 	strcpy(new_checkbox.text, text);
 
+	// temporary before font system
+	int font_size = 8;
+
 	new_checkbox.checked = checked;
+	new_checkbox.size_x = font_size;
+	new_checkbox.size_y = font_size;
+	
 	new_checkbox.position_x = position_x;
 	new_checkbox.position_y = position_y;
 	new_checkbox.type = ui_element_checkbox;
@@ -230,9 +238,9 @@ void UI_Draw(void)
 		{
 			for (int ui_element_num = 0; ui_element_num < current_ui->element_count; ui_element_num++)
 			{
-				ui_element_t current_ui_element = current_ui->elements[ui_element_num];
+				ui_element_t* current_ui_element = &current_ui->elements[ui_element_num];
 
-				switch (current_ui_element.type)
+				switch (current_ui_element->type)
 				{
 					case ui_element_button:
 						UI_DrawButton(current_ui_element);
@@ -274,18 +282,18 @@ void UI_Draw(void)
 		Host_Error("Multiple UIs focused!");
 }
 
-void UI_DrawButton(ui_element_t button)
+void UI_DrawButton(ui_element_t* button)
 {
 	// the button will be drawn here
 	// while we already cached it, it will just return the precached pic upon calling it again so this is okay
 
-	if (button.texture == NULL
-		&& strlen(button.texture) == 0) Host_Error("Tried to draw a button with no texture!");
+	if (button->texture == NULL
+		&& strlen(button->texture) == 0) Host_Error("Tried to draw a button with no texture!");
 
-	Draw_Pic(button.position_x, button.position_y, Draw_CachePic(button.texture));
+	Draw_Pic(button->position_x, button->position_y, Draw_CachePic(button->texture));
 }
 
-void UI_DrawCheckbox(ui_element_t checkbox)
+void UI_DrawCheckbox(ui_element_t* checkbox)
 {
 	// draw the text set with the checkbox
 	UI_DrawText(checkbox);
@@ -294,12 +302,12 @@ void UI_DrawCheckbox(ui_element_t checkbox)
 	int num_lines = 0, num_chars = 0, highest_num_chars = 0;
 	int font_size = 8;
 
-	for (int char_num = 0; char_num < strlen(checkbox.text); char_num++)
+	for (int char_num = 0; char_num < strlen(checkbox->text); char_num++)
 	{
 		num_chars++;
 
 		// reset
-		if (checkbox.text[char_num] == '\n')
+		if (checkbox->text[char_num] == '\n')
 		{
 			num_lines++;
 			if (num_chars > highest_num_chars) highest_num_chars = num_chars;
@@ -309,11 +317,11 @@ void UI_DrawCheckbox(ui_element_t checkbox)
 
 	// final position
 	 // draw 1 char after the text horizontally, in the middle of the text vertically
-	int final_x = checkbox.position_x + (highest_num_chars * (font_size + 1));
-	int final_y = checkbox.position_y + ((font_size * num_lines) / 2) - (font_size / 2);
+	int final_x = checkbox->position_x + (highest_num_chars * (font_size + 1));
+	int final_y = checkbox->position_y + ((font_size * num_lines) / 2) - (font_size / 2);
 
 	// draw the checkbox
-	if (checkbox.checked)
+	if (checkbox->checked)
 	{
 		Draw_Character(final_x, final_y, 131);
 	}
@@ -324,9 +332,9 @@ void UI_DrawCheckbox(ui_element_t checkbox)
 
 }
 
-void UI_DrawText(ui_element_t text)
+void UI_DrawText(ui_element_t* text)
 {
-	unsigned int length = strlen(text.text);
+	unsigned int length = strlen(text->text);
 
 	int font_size = 8;		// Temporary until the new font engine is in (that supports font sizes)
 	int line_count = 0;		// Number of lines (/n chars...) 
@@ -334,7 +342,7 @@ void UI_DrawText(ui_element_t text)
 
 	for (int char_num = 0; char_num < length; char_num++)
 	{
-		char current_char = text.text[char_num];
+		char current_char = text->text[char_num];
 		char_count++;
 
 		if (current_char == '\n')
@@ -343,28 +351,28 @@ void UI_DrawText(ui_element_t text)
 			char_count = 0;// reset
 		}
 
-		Draw_Character(text.position_x + (font_size * char_count), text.position_y + (font_size * line_count), current_char); 		// draw the character in the right place
+		Draw_Character(text->position_x + (font_size * char_count), text->position_y + (font_size * line_count), current_char); 		// draw the character in the right place
 	}
 }
 
-void UI_DrawSlider(ui_element_t slider)
+void UI_DrawSlider(ui_element_t* slider)
 {
 	// draw left edge
-	Draw_Character(slider.position_x, slider.position_y, 128);
+	Draw_Character(slider->position_x, slider->position_y, 128);
 
 	int font_size = 8;
 
 	// draw main part
-	for (int slider_position = slider.position_x; slider_position < slider.position_x + slider.size_x; slider_position += font_size)
+	for (int slider_position = slider->position_x; slider_position < slider->position_x + slider->size_x; slider_position += font_size)
 	{
-		Draw_Character(slider_position, slider.position_y, 129);
+		Draw_Character(slider_position, slider->position_y, 129);
 	}
 
 	// draw right edge
-	Draw_Character(slider.position_x + slider.size_x, slider.position_y, 130);
+	Draw_Character(slider->position_x + slider->size_x, slider->position_y, 130);
 
 	// draw current position character
-	Draw_Character(slider.position_x + ((float)slider.size_x * slider.value), slider.position_y, 131);
+	Draw_Character(slider->position_x + ((float)slider->size_x * slider->value), slider->position_y, 131);
 }
 
 void UI_SetFocus(char* name, qboolean focus)
@@ -392,34 +400,62 @@ void UI_OnClick(float x, float y)
 		{
 			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
 			{
-				ui_element_t acquired_ui_element = acquired_ui->elements[uiElementNum];
+				// Because it changes values we need to operate on the actual UI element in the hunk
+				ui_element_t* acquired_ui_element = &acquired_ui->elements[uiElementNum];
 
-				// on_click optional
-				if (acquired_ui_element.on_click == NULL
-					|| strlen(acquired_ui_element.on_click) == 0) continue;
-
+				/*
 				// autoscale manages this
 				float scale_factor = scr_menuscale.value;
 				
 				// could still be zero? make it not zero
+				
 				if (scale_factor == 0) scale_factor = 1;
+				*/
 
-				if (x >= acquired_ui_element.position_x
-					&& x <= acquired_ui_element.position_x + (acquired_ui_element.size_x * scale_factor)
-					&& y >= acquired_ui_element.position_y
-					&& y <= acquired_ui_element.position_y + (acquired_ui_element.size_y * scale_factor))
+				if (x >= acquired_ui_element->position_x
+					&& x <= acquired_ui_element->position_x + acquired_ui_element->size_x
+					&& y >= acquired_ui_element->position_y
+					&& y <= acquired_ui_element->position_y + acquired_ui_element->size_y)
 				{
-					// trigger checked (if it's a checkbox)
-					if (acquired_ui_element.type == ui_element_checkbox) acquired_ui_element.checked = !acquired_ui_element.checked;
+					// on_click optional
+					if (acquired_ui_element->on_click == NULL
+						|| strlen(acquired_ui_element->on_click) == 0)
+					{
+						// if it's NULL or an empty string, call the default onclick handler code
+						UI_DefaultOnClickHandler(acquired_ui_element);
+						return;
+					}
 
 					// find QC OnClick
-					dfunction_t* func = ED_FindFunction(acquired_ui_element.on_click);
+					dfunction_t* func = ED_FindFunction(acquired_ui_element->on_click);
+
+					if (func == NULL)
+					{
+						Host_Error("UI_OnClick: Tried to call invalid QC event handler %s", acquired_ui_element->on_click);
+						return;
+					}
 
 					// execute it
 					PR_ExecuteProgram(func - pr_functions);
 				}
 			}
 		}
+	}
+}
+
+// Implements default onclick handlers for element types.
+// Called in the case element.on_click is NULL or zero-length.
+void UI_DefaultOnClickHandler(ui_element_t* element)
+{
+	switch (element->type)
+	{
+		case ui_element_button:
+		case ui_element_text:
+		case ui_element_slider:
+			return;
+		case ui_element_checkbox:
+			element->checked = !element->checked;
+			break;
 	}
 }
 
