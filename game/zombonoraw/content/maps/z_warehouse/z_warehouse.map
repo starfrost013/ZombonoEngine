@@ -2279,7 +2279,7 @@
 // entity 7
 {
 "classname" "info_player_start_director"
-"origin" "1904 272 600"
+"origin" "1920 144 600"
 "angle" "180"
 "startweapons" "8392704"
 }

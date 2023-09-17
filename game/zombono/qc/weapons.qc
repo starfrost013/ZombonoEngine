@@ -450,23 +450,21 @@ void() W_FireZombinator =
 
 	traceline(self.origin + v_forward*48, self.origin + v_forward*2048, 0, self);
 
-	zombie = spawn();
-	zombie.classname = "monster_zombie";
-
-	// stupid hack
-	entity curSelf = self;
-	self = zombie;
-	monster_zombie_dospawn();
-	self = curSelf;
-
-	makevectors(self.v_angle);
-
-	dprint(ftos(trace_fraction));
-
-	
 	if (trace_fraction < 1
 		&& trace_ent.classname != "player")
 	{
+		zombie = spawn();
+		zombie.classname = "monster_zombie";
+	
+		// stupid hack
+		entity curSelf = self;
+		self = zombie;
+		monster_zombie_dospawn();
+		self = curSelf;
+	
+		makevectors(self.v_angle);
+		
+		// play success sound
 		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
 		setorigin(zombie, trace_endpos + - v_forward*48 + '0 0 48');
 	}

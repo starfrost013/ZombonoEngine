@@ -59,7 +59,7 @@ refdef_t	r_refdef;
 
 mleaf_t		*r_viewleaf, *r_oldviewleaf;
 
-int		d_lightstylevalue[256];	// 8.8 fraction of base light value
+int		d_lightstylevalue[256];	// 8.8 fraction of base light value 
 
 
 cvar_t	r_norefresh = {"r_norefresh","0"};
@@ -432,7 +432,7 @@ void R_SetupView (void)
 	//johnfitz -- cheat-protect some draw modes
 	r_drawflat_cheatsafe = r_fullbright_cheatsafe = r_lightmap_cheatsafe = false;
 	r_drawworld_cheatsafe = true;
-	if (cl.maxclients == 1)
+	if (sv_cheats.value == 1)
 	{
 		if (!r_drawworld.value) r_drawworld_cheatsafe = false;
 
