@@ -152,9 +152,10 @@ typedef struct entity_state_s
 	int				effects;
 } entity_state_t;
 
-#include "host.h"
+
 #include "draw.h"
 #include "cvar.h"
+#include "host.h"
 #include "screen.h"
 #include "net.h"
 #include "protocol.h"
