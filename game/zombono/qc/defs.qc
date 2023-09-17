@@ -469,6 +469,10 @@ float sv_cheats; // Cheats enabled
 float vid_width;
 float vid_height;
 
+// Last entity that triggered a user interface element.
+// Hack to ensure we only ever use players for UI
+entity ui_last_entity;
+
 //================================================
 
 //

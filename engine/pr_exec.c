@@ -383,7 +383,7 @@ void PR_ExecuteProgram (func_t fnum)
 	runaway = 100000;
 	pr_trace = false;
 
-// make a stack frame
+// make a stack frame 
 	exitdepth = pr_depth;
 
 	s = PR_EnterFunction (f);
@@ -551,6 +551,7 @@ while (1)
 	case OP_STOREP_FNC:		// pointers
 		ptr = (eval_t *)((byte *)sv.edicts + b->_int);
 		ptr->_int = a->_int;
+
 		break;
 	case OP_STOREP_V:
 		ptr = (eval_t *)((byte *)sv.edicts + b->_int);

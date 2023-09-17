@@ -342,77 +342,108 @@ void(void() thinkst) SUB_CheckRefire =
 
 void(string name) SUB_UIStart =
 {
+	// SELF must ALWAYS be current player.
+	msg_entity = self; 
+
+	// SELF must ALWAYS be current player before calling.
+	if (msg_entity.classname != "player")
+	{
+		error("Tried to start a UI for a non-player!");
+	}
 	dprint("UIStart called\n");
-	WriteByte(MSG_ALL, SVC_UI_START);
-	WriteString(MSG_ALL, name);
+	WriteByte(MSG_ONE, SVC_UI_START);
+	WriteString(MSG_ONE, name);
+
+	ui_last_entity = self;
 };
 
 void() SUB_UIEnd =
 {
+	msg_entity = self; 
+	// SELF must ALWAYS be current player before calling.
+	if (msg_entity.classname != "player")
+	{
+		error("Tried to end a UI for a non-player!");
+	}
+	
 	dprint("UIEnd called\n");
-	WriteByte(MSG_ALL, SVC_UI_END);
+	WriteByte(MSG_ONE, SVC_UI_END);
+
+	ui_last_entity = self;
 };
 
 void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =
 {
+	// SELF must ALWAYS be current playerv
+	msg_entity = ui_last_entity; 
 	dprint("UIAddButton called\n");
-	WriteByte(MSG_ALL, SVC_UI_ADD_BUTTON);
-	WriteString(MSG_ALL, on_click);
-	WriteString(MSG_ALL, texture);
-	WriteFloat(MSG_ALL, size_x);
-	WriteFloat(MSG_ALL, size_y);
-	WriteFloat(MSG_ALL, position_x);
-	WriteFloat(MSG_ALL, position_y);
+	WriteByte(MSG_ONE, SVC_UI_ADD_BUTTON);
+	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, texture);
+	WriteFloat(MSG_ONE, size_x);
+	WriteFloat(MSG_ONE, size_y);
+	WriteFloat(MSG_ONE, position_x);
+	WriteFloat(MSG_ONE, position_y);
 };
 
 
 void(string on_click, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox =
 {
+	// SELF must ALWAYS be current player before calling.
+	msg_entity = ui_last_entity; 
 	dprint("UIAddCheckbox called\n");
-	WriteByte(MSG_ALL, SVC_UI_ADD_CHECKBOX);
-	WriteString(MSG_ALL, on_click);
-	WriteString(MSG_ALL, text);
-	WriteFloat(MSG_ALL, checked);
-	WriteFloat(MSG_ALL, position_x);
-	WriteFloat(MSG_ALL, position_y);
+	WriteByte(MSG_ONE, SVC_UI_ADD_CHECKBOX);
+	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, text);
+	WriteFloat(MSG_ONE, checked);
+	WriteFloat(MSG_ONE, position_x);
+	WriteFloat(MSG_ONE, position_y);
 }
 
 void(string on_click, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
 {
+	// SELF must ALWAYS be current player before calling.
+	msg_entity = ui_last_entity; 
 	dprint("UIAddSlider called\n");
-	WriteByte(MSG_ALL, SVC_UI_ADD_SLIDER);
-	WriteString(MSG_ALL, on_click);
-	WriteString(MSG_ALL, text);
-	WriteFloat(MSG_ALL, value_min);
-	WriteFloat(MSG_ALL, value_max);
-	WriteFloat(MSG_ALL, size_x);
-	WriteFloat(MSG_ALL, size_y);
-	WriteFloat(MSG_ALL, position_x);
-	WriteFloat(MSG_ALL, position_y);
+	WriteByte(MSG_ONE, SVC_UI_ADD_SLIDER);
+	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, text);
+	WriteFloat(MSG_ONE, value_min);
+	WriteFloat(MSG_ONE, value_max);
+	WriteFloat(MSG_ONE, size_x);
+	WriteFloat(MSG_ONE, size_y);
+	WriteFloat(MSG_ONE, position_x);
+	WriteFloat(MSG_ONE, position_y);
 }
 
 void(string on_click, string text, float position_x, float position_y) SUB_UIAddText =
 {
+	// SELF must ALWAYS be current player before calling.
+	msg_entity = ui_last_entity; 
 	dprint("UIAddText called\n");
-	WriteByte(MSG_ALL, SVC_UI_ADD_TEXT);
-	WriteString(MSG_ALL, on_click);
-	WriteString(MSG_ALL, text);
-	WriteFloat(MSG_ALL, position_x);
-	WriteFloat(MSG_ALL, position_y);
+	WriteByte(MSG_ONE, SVC_UI_ADD_TEXT);
+	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, text);
+	WriteFloat(MSG_ONE, position_x);
+	WriteFloat(MSG_ONE, position_y);
 };
 
 void(string name, float visible) SUB_UISetVisibility =
-{
+{	
+	// SELF must ALWAYS be current player before calling.
+	msg_entity = ui_last_entity; 
 	dprint("UISetVisibility called\n");
-	WriteByte(MSG_ALL, SVC_UI_SET_VISIBILITY);
-	WriteString(MSG_ALL, name);
-	WriteFloat(MSG_ALL, visible);
+	WriteByte(MSG_ONE, SVC_UI_SET_VISIBILITY);
+	WriteString(MSG_ONE, name);
+	WriteFloat(MSG_ONE, visible);
 };
 
 void(string name, float focused) SUB_UISetFocus =
 {
+	// SELF must ALWAYS be current player before calling.
+	msg_entity = ui_last_entity; 
 	dprint("UISetFocus called\n");
-	WriteByte(MSG_ALL, SVC_UI_SET_FOCUS);
-	WriteString(MSG_ALL, name);
-	WriteFloat(MSG_ALL, focused);
+	WriteByte(MSG_ONE, SVC_UI_SET_FOCUS);
+	WriteString(MSG_ONE, name);
+	WriteFloat(MSG_ONE, focused);
 };

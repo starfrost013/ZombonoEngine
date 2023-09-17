@@ -531,7 +531,8 @@ void() PsuiStart =
 void() PsuiSetTeamDirector = 
 {
 	dprint("PsuiSetTeamDirector called\n");
-	if (gamemode <= ZOMBONO_GAMEMODE_COUNT)
+	if (gamemode <= ZOMBONO_GAMEMODE_COUNT
+		&& self.classname == "player")
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_DIRECTOR;
@@ -544,7 +545,8 @@ void() PsuiSetTeamDirector =
 void() PsuiSetTeamPlayer =
 {
 	dprint("PsuiSetTeamPlayer called\n");
-	if (gamemode <= ZOMBONO_GAMEMODE_COUNT)
+	if (gamemode <= ZOMBONO_GAMEMODE_COUNT
+		&& self.classname == "player")
 	{
 		// should be current player/
 		self.team = ZOMBONO_TEAM_PLAYER;

@@ -1,7 +1,8 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
-
+Copyright (C) 2023      starfrost 
+ 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -43,21 +44,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // <endrepeat>
 //-------------------------------------------------------
 
-#ifdef INCLUDELIBS
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-
-#include "cmdlib.h"
-#include "scriplib.h"
-#include "dictlib.h"
-#include "trilib.h"
-#include "lbmlib.h"
-#include "mathlib.h"
-
-#endif
 
 #define SPRITE_VERSION	1
 
