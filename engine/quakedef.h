@@ -155,7 +155,7 @@ typedef struct entity_state_s
 
 #include "draw.h"
 #include "cvar.h"
-#include "host.h"
+#include "host.h" 
 #include "screen.h"
 #include "net.h"
 #include "protocol.h"

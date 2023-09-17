@@ -463,10 +463,12 @@ void() W_FireZombinator =
 
 	dprint(ftos(trace_fraction));
 
-	if (trace_fraction < 1)
+	
+	if (trace_fraction < 1
+		&& trace_ent.classname != "player")
 	{
 		sound(self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
-		setorigin(zombie, trace_endpos + '0 0 48');
+		setorigin(zombie, trace_endpos + - v_forward*48 + '0 0 48');
 	}
 	else
 	{
