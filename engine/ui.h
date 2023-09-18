@@ -32,6 +32,7 @@ typedef struct ui_element_s
 	float				position_x;						// Position of the element on the screen (X).
 	float				position_y;						// Position of the element on the screen (X).
 	char				on_click[32];					// QuakeC function to call on click.
+	void				(*on_click_c)(void);			// C function to call on click.
 	char				text[64];						// The text of this UI element.
 	qboolean			checked;						// Determines if the UI element is checked
 	float				value;							// Holds the value of the UI element.
@@ -56,7 +57,7 @@ void UI_Start(char* name);								// Start a new UI
 void UI_Draw(void);										// Draw all UIs
 void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
-void UI_SetValue(char* name, float value);				// Set UI value. No difference unless it's a slider
+void UI_SetValue(char* name, char* element_name, float value);	// Set UI value. No difference unless it's a slider
 void UI_OnClick(float x, float y);						// UI click event. Not for QC
 void UI_End();											// End the current UI
 

@@ -7,6 +7,7 @@ ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
 ui_t* UI_GetUI(char* name);
+
 void UI_AddElement(ui_element_t element);
 
 void UI_DrawButton(ui_element_t* button);
@@ -417,6 +418,13 @@ void UI_OnClick(float x, float y)
 					&& y >= acquired_ui_element->position_y
 					&& y <= acquired_ui_element->position_y + acquired_ui_element->size_y)
 				{
+					// C callbacks
+					if (acquired_ui_element->on_click_c != NULL)
+					{
+						acquired_ui_element->on_click_c();
+						return;
+					}
+
 					// on_click optional
 					if (acquired_ui_element->on_click == NULL
 						|| strlen(acquired_ui_element->on_click) == 0)
