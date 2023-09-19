@@ -27,6 +27,7 @@ typedef enum ui_event_type_e
 {
 	ui_event_click_down,
 	ui_event_click_up,
+	ui_event_mouse_move,
 } ui_event_type;
 
 // Defines a UI event.
@@ -50,11 +51,14 @@ typedef struct ui_element_s
 	float				position_y;						// Position of the element on the screen (X).
 	ui_event_t			on_click_down;					// Event for on click down
 	ui_event_t			on_click_up;					// Event for on click up
+	ui_event_t			on_mouse_move;					// Event for mouse move.
 	char				text[64];						// The text of this UI element.
 	qboolean			checked;						// Determines if the UI element is checked
 	float				value;							// Holds the value of the UI element. Goes from 0 to 1 - convert by using (min_value) + (max_value - min_value) * value
 	float				min_value;						// The minimum value of this UI element.
 	float				max_value;						// The maximum value of this UI element.
+	qboolean			mouse_down;						// Determines if the mouse is currently held down on this element. Set to true when the element receives a ClickDown event,
+														// false when it receives a ClickUp event.
 } ui_element_t;
 
 // UI define itself. Has a name for caching purposes.
@@ -76,6 +80,7 @@ void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
 void UI_OnClickDown(float x, float y);					// UI click down event. Not for QC
 void UI_OnClickUp(float x, float y);					// UI click up event.
+void UI_OnMouseMove(float x, float y);					// UI mouse move event.
 void UI_End();											// End the current UI
 
 //

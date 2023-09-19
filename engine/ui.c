@@ -17,8 +17,9 @@ void UI_DrawCheckbox(ui_element_t* button);
 void UI_DrawText(ui_element_t* button);
 void UI_DrawSlider(ui_element_t* button);
 
-void UI_DefaultOnClickDownHandler(ui_element_t* button, int x, int y); // must point to global ui heap
-void UI_DefaultOnClickUpHandler(ui_element_t* button, int x, int y); // must point to global ui heap
+void UI_DefaultOnClickDownHandler(ui_element_t* element, int x, int y); // element must point to global ui hunk region
+void UI_DefaultOnClickUpHandler(ui_element_t* element, int x, int y); //element must point to global ui hunk region
+void UI_DefaultOnMouseMoveHandler(ui_element_t* element, int x, int y); //element must point to global ui hunk region
 
 // Shared execute event code
 void UI_ExecuteEvent(ui_element_t* element, ui_event_t event);
@@ -91,6 +92,7 @@ void UI_AddElement(ui_element_t element)
 	// Init events
 	element.on_click_down.type = ui_event_click_down;
 	element.on_click_up.type = ui_event_click_up;
+	element.on_mouse_move.type = ui_event_mouse_move;
 
 	current_ui->elements[current_ui->element_count] = element;
 	current_ui->element_count++;
@@ -418,6 +420,12 @@ void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 				// if it's NULL or an empty string, call the default onclick handler code
 				UI_DefaultOnClickDownHandler(element, event.x, event.y);
 				return;
+			case ui_event_click_up:
+				UI_DefaultOnClickUpHandler(element, event.x, event.y);
+				return;
+			case ui_event_mouse_move:
+				UI_DefaultOnMouseMoveHandler(element, event.x, event.y);
+				return;
 			default:
 				return;
 		}
@@ -437,6 +445,7 @@ void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 	PR_ExecuteProgram(qc_function - pr_functions);
 }
 
+// Sends click down events to UI elements that are focused and visible.
 void UI_OnClickDown(float x, float y)
 {
 	for (int uiNum = 0; uiNum < ui_count; uiNum++)
@@ -468,6 +477,7 @@ void UI_OnClickDown(float x, float y)
 				{
 					acquired_ui_element->on_click_down.x = x;
 					acquired_ui_element->on_click_down.y = y;
+					acquired_ui_element->mouse_down = true;
 
 					// execute the event
 					UI_ExecuteEvent(acquired_ui_element, acquired_ui_element->on_click_down);
@@ -477,7 +487,7 @@ void UI_OnClickDown(float x, float y)
 	}
 }
 
-
+// Sends click up events to UI elements that are focused and visible.
 void UI_OnClickUp(float x, float y)
 {
 	for (int uiNum = 0; uiNum < ui_count; uiNum++)
@@ -503,9 +513,38 @@ void UI_OnClickUp(float x, float y)
 					// execute the event
 					acquired_ui_element->on_click_up.x = x;
 					acquired_ui_element->on_click_up.y = y;
+					acquired_ui_element->mouse_down = false;
 
 					UI_ExecuteEvent(acquired_ui_element, acquired_ui_element->on_click_up);
 				}
+			}
+		}
+	}
+}
+
+// Sends mouse move events to UI elements that are focused and visible.
+void UI_OnMouseMove(float x, float y)
+{
+	for (int uiNum = 0; uiNum < ui_count; uiNum++)
+	{
+		ui_t* acquired_ui = ui[uiNum];
+
+		if (acquired_ui != NULL
+			&& acquired_ui->focused
+			&& acquired_ui->visible)
+		{
+			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
+			{
+				// Because it changes values we need to operate on the actual UI element in the hunk
+				ui_element_t* acquired_ui_element = &acquired_ui->elements[uiElementNum];
+
+				//todo: auto scale
+
+				// execute the event
+				acquired_ui_element->on_mouse_move.x = x;
+				acquired_ui_element->on_mouse_move.y = y;
+
+				UI_ExecuteEvent(acquired_ui_element, acquired_ui_element->on_mouse_move);
 			}
 		}
 	}
@@ -546,6 +585,30 @@ void UI_DefaultOnClickUpHandler(ui_element_t* element, int x, int y)
 	}
 }
 
+// Implements default onclickup handlers for element types.
+// Called in the case element.on_mouse_move.qc_function AND element.on_mouse_move.c_function are BOTH NULL or empty strings.
+void UI_DefaultOnMouseMoveHandler(ui_element_t* element, int x, int y)
+{
+	float min_value = 0.0f, max_value = 1.0f;
+	float value = 0.0f;
+
+	switch (element->type)
+	{
+		default:
+			return;
+		case ui_element_slider:
+			if (element->mouse_down)
+			{
+				// calculate slider value 
+				value = (x - element->position_x) / element->size_x;
+				if (value < min_value) value = min_value;
+				if (value > max_value) value = max_value;
+				element->value = value;
+			}
+
+			break;
+	}
+}
 
 void UI_End(void)
 {
