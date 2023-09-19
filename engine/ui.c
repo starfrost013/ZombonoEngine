@@ -375,8 +375,8 @@ void UI_DrawSlider(ui_element_t* slider)
 
 	int font_size = 8;
 
-	// draw main part
-	for (int slider_position = slider->position_x; slider_position < slider->position_x + slider->size_x; slider_position += font_size)
+	// draw main part (start one font_size away to not draw over the left edge)
+	for (int slider_position = slider->position_x + font_size; slider_position < slider->position_x + slider->size_x; slider_position += font_size)
 	{
 		Draw_Character(slider_position, slider->position_y, 129);
 	}
