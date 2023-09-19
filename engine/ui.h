@@ -22,20 +22,37 @@ typedef enum ui_element_type_e
 	ui_element_text,
 } ui_element_type;
 
+// Enumerates UI event types.
+typedef enum ui_event_type_e
+{
+	ui_event_click_down,
+	ui_event_click_up,
+} ui_event_type;
+
+// Defines a UI event.
+typedef struct ui_event_s
+{
+	ui_event_type		type;
+	void				(*c_handler)(void);				// C function to call on click. Overrides QC function if present.
+	char				qc_handler[32];					// QC function to call on click.
+	float				x;								// X coordinate of event.
+	float				y;								// Y coordinate of event.
+} ui_event_t;
+
 // UI element defines; more will be added to this class as more controls get added.
 typedef struct ui_element_s
 {
 	ui_element_type		type;							// Type of UI element to draw.
-	char				texture[64];					// Image to draw for the element.
+	char				texture[MAX_QPATH];				// Image to draw for the element.
 	float				size_x;							// Size of the element on screen (X).
 	float				size_y;							// Size of the element on screen (Y).
 	float				position_x;						// Position of the element on the screen (X).
 	float				position_y;						// Position of the element on the screen (X).
-	char				on_click[32];					// QuakeC function to call on click.
-	void				(*on_click_c)(void);			// C function to call on click.
+	ui_event_t			on_click_down;					// Event for on click down
+	ui_event_t			on_click_up;					// Event for on click up
 	char				text[64];						// The text of this UI element.
 	qboolean			checked;						// Determines if the UI element is checked
-	float				value;							// Holds the value of the UI element.
+	float				value;							// Holds the value of the UI element. Goes from 0 to 1 - convert by using (min_value) + (max_value - min_value) * value
 	float				min_value;						// The minimum value of this UI element.
 	float				max_value;						// The maximum value of this UI element.
 } ui_element_t;
@@ -57,8 +74,8 @@ void UI_Start(char* name);								// Start a new UI
 void UI_Draw(void);										// Draw all UIs
 void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
 void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
-void UI_SetValue(char* name, char* element_name, float value);	// Set UI value. No difference unless it's a slider
-void UI_OnClick(float x, float y);						// UI click event. Not for QC
+void UI_OnClickDown(float x, float y);					// UI click down event. Not for QC
+void UI_OnClickUp(float x, float y);					// UI click up event.
 void UI_End();											// End the current UI
 
 //

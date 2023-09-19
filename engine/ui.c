@@ -8,6 +8,8 @@ int		ui_count = 0;		// UI count
 
 ui_t* UI_GetUI(char* name);
 
+// ***FUNCTIONS NOT TO BE EXPOSED***
+
 void UI_AddElement(ui_element_t element);
 
 void UI_DrawButton(ui_element_t* button);
@@ -15,7 +17,11 @@ void UI_DrawCheckbox(ui_element_t* button);
 void UI_DrawText(ui_element_t* button);
 void UI_DrawSlider(ui_element_t* button);
 
-void UI_DefaultOnClickHandler(ui_element_t* button); // must point to global ui heap
+void UI_DefaultOnClickDownHandler(ui_element_t* button, int x, int y); // must point to global ui heap
+void UI_DefaultOnClickUpHandler(ui_element_t* button, int x, int y); // must point to global ui heap
+
+// Shared execute event code
+void UI_ExecuteEvent(ui_element_t* element, ui_event_t event);
 
 void UI_Init(void)
 {
@@ -82,6 +88,10 @@ void UI_AddElement(ui_element_t element)
 		return;
 	}
 
+	// Init events
+	element.on_click_down.type = ui_event_click_down;
+	element.on_click_up.type = ui_event_click_up;
+
 	current_ui->elements[current_ui->element_count] = element;
 	current_ui->element_count++;
 }
@@ -103,7 +113,7 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	
 	// suppress warning
 	if (on_click != NULL
-		&& strlen(on_click) > 0) strcpy(new_button.on_click, on_click);
+		&& strlen(on_click) > 0) strcpy(new_button.on_click_down.qc_handler, on_click);
 
 	strcpy(new_button.texture, texture);
 
@@ -163,7 +173,7 @@ void UI_AddText(char* on_click, char* text, float position_x, float position_y)
 	strcpy(new_text.text, text);
 
 	if (on_click != NULL
-		&& strlen(on_click) > 0) strcpy(new_text.on_click, on_click);
+		&& strlen(on_click) > 0) strcpy(new_text.on_click_down.qc_handler, on_click);
 
 	//size_x ignored for text until the new font system is in
 	new_text.position_x = position_x;
@@ -186,7 +196,7 @@ void UI_AddSlider(char* on_click, char* text, float min_value, float max_value, 
 	}
 
 	if (on_click != NULL
-		&& strlen(on_click) > 0) strcpy(new_slider.on_click, on_click);
+		&& strlen(on_click) > 0) strcpy(new_slider.on_click_down.qc_handler, on_click);
 
 	if (text != NULL
 		&& strlen(text) > 0) strcpy(new_slider.text, text);
@@ -389,7 +399,45 @@ void UI_SetFocus(char* name, qboolean focus)
 	acquired_ui->focused = focus;
 }
 
-void UI_OnClick(float x, float y)
+void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
+{
+	// Call C functionc allbacks if they exist.
+	if (event.c_handler != NULL)
+	{
+		event.c_handler();
+		return;
+	}
+
+	// Call the QuakeC handler if it exists. Otherwise, call the default event handler.
+	if (event.qc_handler == NULL
+		|| strlen(event.qc_handler) == 0)
+	{
+		switch (event.type)
+		{
+			case ui_event_click_down:
+				// if it's NULL or an empty string, call the default onclick handler code
+				UI_DefaultOnClickDownHandler(element, event.x, event.y);
+				return;
+			default:
+				return;
+		}
+
+	}
+
+	// find QC OnClick
+	dfunction_t* qc_function = ED_FindFunction(event.qc_handler);
+
+	if (qc_function == NULL)
+	{
+		Host_Error("UI_ExecuteEvent: Tried to call invalid QC event handler %s", event.qc_handler);
+		return;
+	}
+
+	// execute it (executes a function number,)
+	PR_ExecuteProgram(qc_function - pr_functions);
+}
+
+void UI_OnClickDown(float x, float y)
 {
 	for (int uiNum = 0; uiNum < ui_count; uiNum++)
 	{
@@ -418,54 +466,86 @@ void UI_OnClick(float x, float y)
 					&& y >= acquired_ui_element->position_y
 					&& y <= acquired_ui_element->position_y + acquired_ui_element->size_y)
 				{
-					// C callbacks
-					if (acquired_ui_element->on_click_c != NULL)
-					{
-						acquired_ui_element->on_click_c();
-						return;
-					}
+					acquired_ui_element->on_click_down.x = x;
+					acquired_ui_element->on_click_down.y = y;
 
-					// on_click optional
-					if (acquired_ui_element->on_click == NULL
-						|| strlen(acquired_ui_element->on_click) == 0)
-					{
-						// if it's NULL or an empty string, call the default onclick handler code
-						UI_DefaultOnClickHandler(acquired_ui_element);
-						return;
-					}
-
-					// find QC OnClick
-					dfunction_t* func = ED_FindFunction(acquired_ui_element->on_click);
-
-					if (func == NULL)
-					{
-						Host_Error("UI_OnClick: Tried to call invalid QC event handler %s", acquired_ui_element->on_click);
-						return;
-					}
-
-					// execute it
-					PR_ExecuteProgram(func - pr_functions);
+					// execute the event
+					UI_ExecuteEvent(acquired_ui_element, acquired_ui_element->on_click_down);
 				}
 			}
 		}
 	}
 }
 
-// Implements default onclick handlers for element types.
-// Called in the case element.on_click is NULL or zero-length.
-void UI_DefaultOnClickHandler(ui_element_t* element)
+
+void UI_OnClickUp(float x, float y)
+{
+	for (int uiNum = 0; uiNum < ui_count; uiNum++)
+	{
+		ui_t* acquired_ui = ui[uiNum];
+
+		if (acquired_ui != NULL
+			&& acquired_ui->focused
+			&& acquired_ui->visible)
+		{
+			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
+			{
+				// Because it changes values we need to operate on the actual UI element in the hunk
+				ui_element_t* acquired_ui_element = &acquired_ui->elements[uiElementNum];
+
+				//todo: auto scale
+
+				if (x >= acquired_ui_element->position_x
+					&& x <= acquired_ui_element->position_x + acquired_ui_element->size_x
+					&& y >= acquired_ui_element->position_y
+					&& y <= acquired_ui_element->position_y + acquired_ui_element->size_y)
+				{
+					// execute the event
+					acquired_ui_element->on_click_up.x = x;
+					acquired_ui_element->on_click_up.y = y;
+
+					UI_ExecuteEvent(acquired_ui_element, acquired_ui_element->on_click_up);
+				}
+			}
+		}
+	}
+}
+
+// Implements default onclickdown handlers for element types.
+// Called in the case element.on_click_down.qc_function AND element.on_click_up.c_function are BOTH NULL or empty strings.
+void UI_DefaultOnClickDownHandler(ui_element_t* element, int x, int y)
 {
 	switch (element->type)
 	{
-		case ui_element_button:
-		case ui_element_text:
-		case ui_element_slider:
+		default:
 			return;
 		case ui_element_checkbox:
 			element->checked = !element->checked;
 			break;
 	}
 }
+
+// Implements default onclickup handlers for element types.
+// Called in the case element.on_click_up.qc_function AND element.on_click_up.c_function are BOTH NULL or empty strings.
+void UI_DefaultOnClickUpHandler(ui_element_t* element, int x, int y)
+{
+	float min_value = 0.0f, max_value = 1.0f;
+	float value = 0.0f;
+
+	switch (element->type)
+	{
+		default:
+			return;
+		case ui_element_slider:
+			// calculate slider value 
+			value = (x - element->position_x) / element->size_x;
+			if (value < min_value) value = min_value;
+			if (value > max_value) value = max_value;
+			element->value = value;
+			break;
+	}
+}
+
 
 void UI_End(void)
 {

@@ -1583,15 +1583,23 @@ LONG WINAPI MainWndProc (
 		case WM_MBUTTONDOWN:
 		case WM_MBUTTONUP:
 		case WM_MOUSEMOVE:
-			if (!mouseactive 
-				&& uMsg != WM_MOUSEMOVE
-				&& uMsg != WM_LBUTTONUP
-				&& uMsg != WM_RBUTTONUP
-				&& uMsg != WM_MBUTTONUP)
+			// Send the event to the UI system
+			// which runs when the game is not checking input
+			if (!mouseactive) 
 			{
-				// Send the event to the UI system
-				// which runs when the game is not checking input
-				UI_OnClick(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				//todo: MOUSEMOVE
+				if (uMsg == WM_LBUTTONUP
+					|| uMsg == WM_RBUTTONUP
+					|| uMsg == WM_MBUTTONUP)
+				{
+					UI_OnClickUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				}
+				else if (uMsg == WM_LBUTTONDOWN
+					|| uMsg == WM_RBUTTONDOWN
+					|| uMsg == WM_MBUTTONDOWN)
+				{
+					UI_OnClickDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				}
 			}
 			else
 			{
