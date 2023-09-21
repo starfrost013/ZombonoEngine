@@ -55,7 +55,7 @@ kbutton_t	in_left, in_right, in_forward, in_back;
 kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
 kbutton_t	in_strafe, in_speed, in_use, in_jump, in_attack;
 kbutton_t	in_up, in_down;
-kbutton_t	in_crouch;
+kbutton_t	in_crouch, in_sprint;
 
 int			in_impulse;
 
@@ -220,7 +220,6 @@ cvar_t	cl_upspeed = {"cl_upspeed","200"};
 cvar_t	cl_forwardspeed = {"cl_forwardspeed","200", true};
 cvar_t	cl_backspeed = {"cl_backspeed","200", true};
 cvar_t	cl_sidespeed = {"cl_sidespeed","350"};
-
 cvar_t	cl_movespeedkey = {"cl_movespeedkey","2.0"};
 
 cvar_t	cl_yawspeed = {"cl_yawspeed","140"};
@@ -307,6 +306,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	cmd->sidemove += cl_sidespeed.value * CL_KeyState (&in_moveright);
 	cmd->sidemove -= cl_sidespeed.value * CL_KeyState (&in_moveleft);
 
+
 	cmd->upmove += cl_upspeed.value * CL_KeyState (&in_up);
 	cmd->upmove -= cl_upspeed.value * CL_KeyState (&in_down);
 
@@ -314,6 +314,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	{
 		cmd->forwardmove += cl_forwardspeed.value * CL_KeyState (&in_forward);
 		cmd->forwardmove -= cl_backspeed.value * CL_KeyState (&in_back);
+
 	}
 
 //
@@ -326,8 +327,6 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->upmove *= cl_movespeedkey.value;
 	}
 }
-
-
 
 /*
 ==============
@@ -374,6 +373,10 @@ void CL_SendMove (usercmd_t *cmd)
 	if (in_jump.state & 3)
 		bits |= 2;
 	in_jump.state &= ~2;
+	
+	if (in_sprint.state & 3)
+		bits |= 4;
+	in_sprint.state &= ~2;
 
     MSG_WriteByte (&buf, bits);
 
@@ -442,6 +445,7 @@ void CL_InitInput (void)
 	Cmd_AddCommand ("-klook", IN_KLookUp);
 	Cmd_AddCommand ("+mlook", IN_MLookDown);
 	Cmd_AddCommand ("-mlook", IN_MLookUp);
+	// Crouch waiting on BSP improvements, or a hack
 	Cmd_AddCommand ("+crouch", IN_CrouchDown);
 	Cmd_AddCommand ("-crouch", IN_CrouchUp);
 }

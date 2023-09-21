@@ -773,7 +773,8 @@ qboolean NET_IsHosting(void)
 {
 	return (cls.state == ca_dedicated
 		|| listening
-		|| strstr(cls.netcon->address, "local")); //hack
+		|| (cls.netcon != NULL
+		&& strstr(cls.netcon->address, "local"))); //hack 
 }
 
 /*

@@ -149,15 +149,15 @@ entity() FindIntermission =
 		{
 			// then look for the start position
 			spot = find(world, classname, "info_player_start_director");
-			if (spot)
-				return spot;
+
 		}
 		else if (spot.team == ZOMBONO_TEAM_PLAYER)
 		{
 			spot = find(world, classname, "info_player_start_player");
-			if (spot)
-				return spot;
 		}
+
+		if (spot)
+			return spot;
 	}
 
 	objerror("FindIntermission: no spot");
@@ -717,7 +717,7 @@ Exit deathmatch games upon conditions
 */
 void() CheckRules =
 {
-	// Zombono Mode0 (Classic)
+	// Zombono Mode0 (TDM)
 	/*
 	if (gamemode == 0)
 	{
@@ -1013,6 +1013,13 @@ void() PlayerPreThink =
 	else
 		self.flags = self.flags | FL_JUMPRELEASED;
 
+	if (self.button3)
+	{
+
+	}
+	else
+		self.flags = self.flags - FL_SPRINTING;
+		
 // teleporters can force a non-moving pause time
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';

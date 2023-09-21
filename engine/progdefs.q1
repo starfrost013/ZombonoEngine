@@ -107,6 +107,7 @@ typedef struct entvars_s
 	float	button0;
 	float	button1;
 	float	button2;
+	float	button3;
 	float	impulse;
 	float	fixangle;
 	vec3_t	v_angle;

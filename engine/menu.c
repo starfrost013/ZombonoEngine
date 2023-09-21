@@ -383,7 +383,7 @@ void M_NotAvailableInDemo_Key(void)
 
 #endif
 
-//=============================================================================
+//============================================================================= 
 /* SINGLE PLAYER MENU */
 
 int	m_singleplayer_cursor;
@@ -1200,7 +1200,8 @@ char *bindnames[][2] =
 {"+klook", 			"keyboard look"},
 {"+moveup",			"swim up"},
 {"+movedown",		"swim down"},
-{"+crouch",			"crouch"},
+//{"+crouch",			"crouch"},
+{"+sprint",		"sprint"},
 };
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
