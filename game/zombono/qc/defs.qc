@@ -722,14 +722,11 @@ void(entity client, string s) centerprint = #73; // sprint, but in middle
 
 void(vector pos, string samp, float vol, float atten) ambientsound = #74;
 
-string(string s) precache_model2 = #75; // registered version only
-string(string s) precache_sound2 = #76; // registered version only
-string(string s) precache_file2 = #77; // registered version only
-
 void(entity e) setspawnparms = #78; // set parm1... to the
 									// values at level start
 									// for coop respawn
 
+void() UpdateStats = #79; // Send update stat message to all clients
 //============================================================================
 
 //

@@ -561,7 +561,7 @@ void() PsuiSendTeamUpdate =
 
 	self.movetype = MOVETYPE_TOSS; // Crashes otherwise even though it's a player and it gets overwritten anyway, WTF?
 	self.model = string_null; // Prevent duplicate player models
-	//self.modelindex = modelindex_player;
+	UpdateStats();
 	respawn();
 }
 

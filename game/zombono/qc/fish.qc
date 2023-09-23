@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +17,15 @@
 
     See file, 'COPYING', for details.
 */
+
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Fish.qc : Rotfish
+*/
+
 $cd /raid/quake/id1/models/fish
 $origin 0 0 24
 $base base
@@ -176,11 +186,11 @@ void(entity attacker, float damage) fish_pain =
 */
 void() monster_fish =
 {
-	precache_model2 ("progs/fish.mdl");
+	precache_model ("progs/fish.mdl");
 
-	precache_sound2 ("fish/death.wav");
-	precache_sound2 ("fish/bite.wav");
-	precache_sound2 ("fish/idle.wav");
+	precache_sound ("fish/death.wav");
+	precache_sound ("fish/bite.wav");
+	precache_sound ("fish/idle.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

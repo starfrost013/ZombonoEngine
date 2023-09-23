@@ -1471,10 +1471,16 @@ void PF_WriteEntity (void)
 	MSG_WriteShort (WriteDest(), G_EDICTNUM(OFS_PARM1));
 }
 
-void PF_WriteFloat(void)
+void PF_WriteFloat( void)
 {
 	MSG_WriteFloat (WriteDest(), G_FLOAT(OFS_PARM1));
 }
+
+void PF_UpdateStats(void)
+{
+	Host_UpdateStats();
+}
+
 //=============================================================================
 
 int SV_ModelIndex (char *name);
@@ -1669,11 +1675,13 @@ PF_centerprint,
 
 PF_ambientsound,
 
-PF_precache_model,
-PF_precache_sound,		// precache_sound2 is different only for qcc
-PF_precache_file,
+PF_Fixme,
+PF_Fixme,
+PF_Fixme,
 
-PF_setspawnparms
+PF_setspawnparms,
+
+PF_UpdateStats,
 };
 
 builtin_t *pr_builtins = pr_builtin;

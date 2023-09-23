@@ -1505,7 +1505,6 @@ Host_Spawn_f
 void Host_Spawn_f (void)
 {
 	int		i;
-	client_t	*client;
 	edict_t	*ent;
 
 	if (cmd_source == src_command)
@@ -1537,21 +1536,8 @@ void Host_Spawn_f (void)
 		// set netname
 		ent->v.netname = host_client->name - pr_strings; 
 
-		/*
-		if (ent->v.nextthink == 0) // HORRIBLE hack!!!
-		{
-			// set team
-			time_t t;
-
-			// randomly assign player a team. we use time for this
-			// might move this to qc...
-			srand((int)time(&t));
-
-			ent->v.team = TEAM_Rebalance(rand() % 2);
-		}
-		*/
-
-		ent->v.team = 2;
+		// set the player to team unassigned
+		ent->v.team = ZOMBONO_TEAM_UNASSIGNED;
 		// copy spawn parms out of the client_t
 
 		for (i=0 ; i< NUM_SPAWN_PARMS ; i++)
@@ -1577,21 +1563,8 @@ void Host_Spawn_f (void)
 	MSG_WriteByte (&host_client->message, svc_time);
 	MSG_WriteFloat (&host_client->message, sv.time);
 
-	for (i=0, client = svs.clients ; i<svs.maxclients ; i++, client++)
-	{
-		MSG_WriteByte (&host_client->message, svc_updatename);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteString (&host_client->message, client->name);
-		MSG_WriteByte (&host_client->message, svc_updateteam);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteFloat (&host_client->message, client->edict->v.team);
-		MSG_WriteByte (&host_client->message, svc_updatefrags);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteShort (&host_client->message, client->old_frags);
-		MSG_WriteByte (&host_client->message, svc_updatecolors);
-		MSG_WriteByte (&host_client->message, i);
-		MSG_WriteByte (&host_client->message, client->colors);
-	}
+// update stats
+	Host_UpdateStats();
 
 // send all current light styles
 	for (i=0 ; i<MAX_LIGHTSTYLES ; i++)
@@ -1601,27 +1574,6 @@ void Host_Spawn_f (void)
 		MSG_WriteString (&host_client->message, sv.lightstyles[i]);
 	}
 
-//
-// send some stats
-//
-	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_TOTALSECRETS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->total_secrets);
-
-	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_TOTALMONSTERS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->total_monsters);
-
-	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_SECRETS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->found_secrets);
-
-	MSG_WriteByte (&host_client->message, svc_updatestat);
-	MSG_WriteByte (&host_client->message, STAT_MONSTERS);
-	MSG_WriteLong (&host_client->message, pr_global_struct->killed_monsters);
-
-
-//
 // send a fixangle
 // Never send a roll angle, because savegames can catch the server
 // in a state where it is expecting the client to correct the angle
@@ -1652,6 +1604,49 @@ void Host_PostSpawn_f(void)
 	pr_global_struct->time = sv.time;
 	pr_global_struct->self = EDICT_TO_PROG(sv_player);
 	PR_ExecuteProgram(pr_global_struct->ClientPostSpawn);
+}
+
+// This function (which is also a builtin) sends stat update messages to all clients.
+// Useful for when someone changes team.
+
+void Host_UpdateStats()
+{
+	client_t*	client;
+	int			i;
+	for (i = 0, client = svs.clients; i < svs.maxclients; i++, client++)
+	{
+		MSG_WriteByte(&host_client->message, svc_updatename);
+		MSG_WriteByte(&host_client->message, i);
+		MSG_WriteString(&host_client->message, client->name);
+		MSG_WriteByte(&host_client->message, svc_updateteam);
+		MSG_WriteByte(&host_client->message, i);
+		MSG_WriteFloat(&host_client->message, client->edict->v.team);
+		MSG_WriteByte(&host_client->message, svc_updatefrags);
+		MSG_WriteByte(&host_client->message, i);
+		MSG_WriteShort(&host_client->message, client->old_frags);
+		MSG_WriteByte(&host_client->message, svc_updatecolors);
+		MSG_WriteByte(&host_client->message, i);
+		MSG_WriteByte(&host_client->message, client->colors);
+	}
+
+	//
+	// send some stats
+	//
+	MSG_WriteByte(&host_client->message, svc_updatestat);
+	MSG_WriteByte(&host_client->message, STAT_TOTALSECRETS);
+	MSG_WriteLong(&host_client->message, pr_global_struct->total_secrets);
+
+	MSG_WriteByte(&host_client->message, svc_updatestat);
+	MSG_WriteByte(&host_client->message, STAT_TOTALMONSTERS);
+	MSG_WriteLong(&host_client->message, pr_global_struct->total_monsters);
+
+	MSG_WriteByte(&host_client->message, svc_updatestat);
+	MSG_WriteByte(&host_client->message, STAT_SECRETS);
+	MSG_WriteLong(&host_client->message, pr_global_struct->found_secrets);
+
+	MSG_WriteByte(&host_client->message, svc_updatestat);
+	MSG_WriteByte(&host_client->message, STAT_MONSTERS);
+	MSG_WriteLong(&host_client->message, pr_global_struct->killed_monsters);
 }
 
 /*

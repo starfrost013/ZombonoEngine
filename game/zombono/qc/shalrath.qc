@@ -1,5 +1,6 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
-
+	Copyright (C) 2023       starfrost
+	
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -17,12 +18,13 @@
     See file, 'COPYING', for details.
 */
 /*
-==============================================================================
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
 
-SHAL-RATH
-
-==============================================================================
+	Shalrath.qc : Vore (may be removed)
 */
+
 $cd /raid/quake/id1/models/shalrath
 $origin 0 0 24
 $base base
@@ -227,16 +229,16 @@ void() ShalMissileTouch =
 void() monster_shalrath =
 {
 
-	precache_model2 ("progs/shalrath.mdl");
-	precache_model2 ("progs/h_shal.mdl");
-	precache_model2 ("progs/v_spike.mdl");
+	precache_model ("progs/shalrath.mdl");
+	precache_model ("progs/h_shal.mdl");
+	precache_model ("progs/v_spike.mdl");
 
-	precache_sound2 ("shalrath/attack.wav");
-	precache_sound2 ("shalrath/attack2.wav");
-	precache_sound2 ("shalrath/death.wav");
-	precache_sound2 ("shalrath/idle.wav");
-	precache_sound2 ("shalrath/pain.wav");
-	precache_sound2 ("shalrath/sight.wav");
+	precache_sound ("shalrath/attack.wav");
+	precache_sound ("shalrath/attack2.wav");
+	precache_sound ("shalrath/death.wav");
+	precache_sound ("shalrath/idle.wav");
+	precache_sound ("shalrath/pain.wav");
+	precache_sound ("shalrath/sight.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

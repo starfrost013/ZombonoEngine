@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +18,13 @@
     See file, 'COPYING', for details.
 */
 /*
-==============================================================================
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
 
-OLD ONE
-
-==============================================================================
+	Oldone.qc : Old one
 */
+
 $cd /raid/quake/id1/models/old_one
 $origin 0 0 24
 $base base
@@ -264,12 +266,12 @@ void() monster_oldone =
 		return;
 	}
 
-	precache_model2 ("progs/oldone.mdl");
+	precache_model ("progs/oldone.mdl");
 
-	precache_sound2 ("boss2/death.wav");
-	precache_sound2 ("boss2/idle.wav");
-	precache_sound2 ("boss2/sight.wav");
-	precache_sound2 ("boss2/pop2.wav");
+	precache_sound ("boss2/death.wav");
+	precache_sound ("boss2/idle.wav");
+	precache_sound ("boss2/sight.wav");
+	precache_sound ("boss2/pop2.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

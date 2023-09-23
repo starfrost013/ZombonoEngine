@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,11 +18,11 @@
     See file, 'COPYING', for details.
 */
 /*
-==============================================================================
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
 
-KNIGHT
-
-==============================================================================
+	Knight.qc: Knight
 */
 
 $cd /raid/quake/id1/models/knight2
@@ -427,19 +428,19 @@ void() hknight_melee =
 */
 void() monster_hell_knight =
 {
-	precache_model2 ("progs/hknight.mdl");
-	precache_model2 ("progs/k_spike.mdl");
-	precache_model2 ("progs/h_hellkn.mdl");
+	precache_model ("progs/hknight.mdl");
+	precache_model ("progs/k_spike.mdl");
+	precache_model ("progs/h_hellkn.mdl");
 
 
-	precache_sound2 ("hknight/attack1.wav");
-	precache_sound2 ("hknight/death1.wav");
-	precache_sound2 ("hknight/pain1.wav");
-	precache_sound2 ("hknight/sight1.wav");
-	precache_sound("hknight/hit.wav"); // used by C code, so don't sound2
-	precache_sound2 ("hknight/slash1.wav");
-	precache_sound2 ("hknight/idle.wav");
-	precache_sound2 ("hknight/grunt.wav");
+	precache_sound ("hknight/attack1.wav");
+	precache_sound ("hknight/death1.wav");
+	precache_sound ("hknight/pain1.wav");
+	precache_sound ("hknight/sight1.wav");
+	precache_sound ("hknight/hit.wav"); // used by C code, so don't sound2
+	precache_sound ("hknight/slash1.wav");
+	precache_sound ("hknight/idle.wav");
+	precache_sound ("hknight/grunt.wav");
 
 	precache_sound("knight/sword1.wav");
 	precache_sound("knight/sword2.wav");

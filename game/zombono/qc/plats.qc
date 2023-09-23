@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +18,13 @@
     See file, 'COPYING', for details.
 */
 
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Plats.qc : Platform entities
+*/
 
 void() plat_center_touch;
 void() plat_outside_touch;
@@ -366,7 +374,7 @@ void() misc_teleporttrain =
 	self.noise1 = ("misc/null.wav");
 	precache_sound("misc/null.wav");
 
-	precache_model2 ("progs/teleport.mdl");
+	precache_model ("progs/teleport.mdl");
 	setmodel(self, "progs/teleport.mdl");
 	setsize(self, self.mins , self.maxs);
 	setorigin(self, self.origin);

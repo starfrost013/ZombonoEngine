@@ -1,4 +1,5 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
+	Copyright (C) 2023       starfrost
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,11 +18,11 @@
     See file, 'COPYING', for details.
 */
 /*
-==============================================================================
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
 
-BLOB
-
-==============================================================================
+	Tarbaby.qc : Tar baby / Spawn
 */
 
 $cd /raid/quake/id1/models/tarbaby
@@ -208,12 +209,12 @@ void() tbaby_die2 = [ $exp, tbaby_run1 ]
 void() monster_tarbaby =
 {
 
-	precache_model2 ("progs/tarbaby.mdl");
+	precache_model ("progs/tarbaby.mdl");
 
-	precache_sound2 ("blob/death1.wav");
-	precache_sound2 ("blob/hit1.wav");
-	precache_sound2 ("blob/land1.wav");
-	precache_sound2 ("blob/sight1.wav");
+	precache_sound ("blob/death1.wav");
+	precache_sound ("blob/hit1.wav");
+	precache_sound ("blob/land1.wav");
+	precache_sound ("blob/sight1.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

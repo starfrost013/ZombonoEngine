@@ -62,6 +62,7 @@ void Host_Frame(float time);
 void Host_Version_f(void);
 void Host_Quit_f(void);
 void Host_ClientCommands(char* fmt, ...);
+void Host_UpdateStats(void);
 void Host_ShutdownServer(qboolean crash);
 
 extern qboolean		msg_suppress_1;		// suppresses resolution and cache size console output

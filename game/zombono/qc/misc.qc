@@ -1,5 +1,6 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
-
+	Copyright (C) 2023       starfrost
+	
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -15,6 +16,14 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
     See file, 'COPYING', for details.
+*/
+
+/*
+	| | | | | ZOMBONO | | | | | 
+		© 2023 starfrost!!!
+	| | | | | | | | | | | | | |
+
+	Oldone.qc : Old one
 */
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
@@ -287,7 +296,7 @@ void() misc_explobox2 =
 
 	self.solid = SOLID_BBOX;
 	self.movetype = MOVETYPE_NONE;
-	precache_model2 ("maps/b_exbox2.bsp");
+	precache_model ("maps/b_exbox2.bsp");
 	setmodel(self, "maps/b_exbox2.bsp");
 	precache_sound("weapons/r_exp3.wav");
 	self.health = 20;
@@ -349,10 +358,10 @@ void() trap_spikeshooter =
 	self.use = spikeshooter_use;
 	if (self.spawnflags & SPAWNFLAG_LASER)
 	{
-		precache_model2 ("progs/laser.mdl");
+		precache_model ("progs/laser.mdl");
 
-		precache_sound2 ("enforcer/enfire.wav");
-		precache_sound2 ("enforcer/enfstop.wav");
+		precache_sound ("enforcer/enfire.wav");
+		precache_sound ("enforcer/enfstop.wav");
 	}
 	else
 		precache_sound("weapons/spike2.wav");
@@ -668,16 +677,16 @@ For optimzation testing, starts a lot of sounds.
 void() misc_noisemaker =
 
 {
-	precache_sound2 ("enforcer/enfire.wav");
-	precache_sound2 ("enforcer/enfstop.wav");
-	precache_sound2 ("enforcer/sight1.wav");
-	precache_sound2 ("enforcer/sight2.wav");
-	precache_sound2 ("enforcer/sight3.wav");
-	precache_sound2 ("enforcer/sight4.wav");
-	precache_sound2 ("enforcer/pain1.wav");
-	precache_sound2 ("enforcer/pain2.wav");
-	precache_sound2 ("enforcer/death1.wav");
-	precache_sound2 ("enforcer/idle1.wav");
+	precache_sound ("enforcer/enfire.wav");
+	precache_sound ("enforcer/enfstop.wav");
+	precache_sound ("enforcer/sight1.wav");
+	precache_sound ("enforcer/sight2.wav");
+	precache_sound ("enforcer/sight3.wav");
+	precache_sound ("enforcer/sight4.wav");
+	precache_sound ("enforcer/pain1.wav");
+	precache_sound ("enforcer/pain2.wav");
+	precache_sound ("enforcer/death1.wav");
+	precache_sound ("enforcer/idle1.wav");
 
 	self.nextthink = time + 0.1 + random();
 	self.think = noise_think;
