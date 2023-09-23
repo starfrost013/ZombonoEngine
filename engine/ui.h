@@ -44,7 +44,7 @@ typedef struct ui_event_s
 typedef struct ui_element_s
 {
 	ui_element_type		type;							// Type of UI element to draw.
-	char				name[16];						// The name of this UI element.
+	char				name[32];						// The name of this UI element.
 	char				texture[MAX_QPATH];				// Image to draw for the element.
 	float				size_x;							// Size of the element on screen (X).
 	float				size_y;							// Size of the element on screen (Y).
@@ -89,7 +89,7 @@ void UI_End();											// End the current UI
 //
 // these end up being copied to a nonconst buf to get around the limitation of MSG_WriteString() using a globally shared buffer. (TODO: fix these warnings with MSG_WriteStrings)
 // also the reason there are parameters is for QC
-void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y);					// Add a new button
-void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position_x, float position_y);	// Add a new checkbox
-void UI_AddSlider(char* on_click, char* text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y);				// Add a new slider
-void UI_AddText(char* on_click, char* text, float position_x, float position_y);													// Add a new text block
+void UI_AddButton(char* on_click, char* element_name, char* texture, float size_x, float size_y, float position_x, float position_y);								// Add a new button
+void UI_AddCheckbox(char* on_click, char* element_name, char* text, qboolean checked, float position_x, float position_y);											// Add a new checkbox
+void UI_AddSlider(char* on_click, char* element_name, char* text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y);// Add a new slider
+void UI_AddText(char* on_click, char* element_name, char* text, float position_x, float position_y);																// Add a new text block

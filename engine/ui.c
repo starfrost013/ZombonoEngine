@@ -56,7 +56,7 @@ void UI_Start(char* name)
 		// create a new UI
 
 		ui_t* new_ui = ui[ui_count];
-		
+
 		strcpy(new_ui->name, name);
 
 		ui_count++;
@@ -98,7 +98,7 @@ void UI_AddElement(ui_element_t element)
 	current_ui->element_count++;
 }
 
-void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, float position_x, float position_y)
+void UI_AddButton(char* on_click, char* element_name, char* texture, float size_x, float size_y, float position_x, float position_y)
 {
 	ui_element_t new_button;
 
@@ -113,10 +113,18 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 		return;
 	}
 	
+	if (element_name == NULL
+		|| strlen(element_name) == 0)
+	{
+		Host_Error("UI_AddButton: element_name was NULL");
+		return;
+	}
+
 	// suppress warning
 	if (on_click != NULL
 		&& strlen(on_click) > 0) strcpy(new_button.on_click_down.qc_handler, on_click);
 
+	strcpy(new_button.name, element_name);
 	strcpy(new_button.texture, texture);
 
 	new_button.size_x = size_x;
@@ -132,7 +140,7 @@ void UI_AddButton(char* on_click, char* texture, float size_x, float size_y, flo
 	UI_AddElement(new_button);
 }
 
-void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position_x, float position_y)
+void UI_AddCheckbox(char* on_click, char* element_name, char* text, qboolean checked, float position_x, float position_y)
 {
 	ui_element_t new_checkbox;
 	
@@ -144,6 +152,14 @@ void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position
 		return;
 	}
 
+	if (element_name == NULL
+		|| strlen(element_name) == 0)
+	{
+		Host_Error("UI_AddCheckbox: element_name was NULL");
+		return;
+	}
+
+	strcpy(new_checkbox.name, element_name);
 	strcpy(new_checkbox.text, text);
 
 	// temporary before font system
@@ -160,7 +176,7 @@ void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position
 	UI_AddElement(new_checkbox);
 }
 
-void UI_AddText(char* on_click, char* text, float position_x, float position_y) 
+void UI_AddText(char* on_click, char* element_name, char* text, float position_x, float position_y)
 {
 	ui_element_t new_text;
 
@@ -172,6 +188,14 @@ void UI_AddText(char* on_click, char* text, float position_x, float position_y)
 		return;
 	}
 
+	if (element_name == NULL
+		|| strlen(element_name) == 0)
+	{
+		Host_Error("UI_AddText: element_name was NULL");
+		return;
+	}
+
+	strcpy(new_text.name, element_name);
 	strcpy(new_text.text, text);
 
 	if (on_click != NULL
@@ -185,7 +209,7 @@ void UI_AddText(char* on_click, char* text, float position_x, float position_y)
 	UI_AddElement(new_text);
 }
 
-void UI_AddSlider(char* on_click, char* text, float min_value, float max_value, float size_x, float size_y, float position_x, float position_y)
+void UI_AddSlider(char* on_click, char* element_name, char* text, float min_value, float max_value, float size_x, float size_y, float position_x, float position_y)
 {
 	ui_element_t new_slider;
 	
@@ -197,8 +221,17 @@ void UI_AddSlider(char* on_click, char* text, float min_value, float max_value, 
 		return;
 	}
 
+	if (element_name == NULL
+		|| strlen(element_name) == 0)
+	{
+		Host_Error("UI_AddSlider: element_name was NULL");
+		return;
+	}
+
 	if (on_click != NULL
 		&& strlen(on_click) > 0) strcpy(new_slider.on_click_down.qc_handler, on_click);
+
+	strcpy(new_slider.name, element_name);
 
 	if (text != NULL
 		&& strlen(text) > 0) strcpy(new_slider.text, text);

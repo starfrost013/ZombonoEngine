@@ -95,8 +95,6 @@ char *svc_strings[] =
 //johnfitz,
 };
 
-qboolean warn_about_nehahra_protocol; //johnfitz
-
 extern vec3_t	v_punchangles[2]; //johnfitz
 
 //=============================================================================
@@ -387,8 +385,6 @@ void CL_ParseServerInfo (void)
 	Hunk_Check ();		// make sure nothing is hurt
 
 	noclip_anglehack = false;		// noclip is turned off at start
-
-	warn_about_nehahra_protocol = true; //johnfitz -- warn about nehahra protocol hack once per server connection
 
 //johnfitz -- reset developer stats
 	memset(&dev_stats, 0, sizeof(dev_stats));
@@ -886,8 +882,8 @@ void CL_ParseServerMessage (void)
 	char		*str; //johnfitz
 	int			total, j, lastcmd; //johnfitz
 
-	// slightly ugly, for zombono
-	char		tempbuf[64], tempbuf2[64];
+// workaround for the fact MSG_ReadString returns a global buffer
+	char		tempbuf[64], tempbuf2[64], tempbuf3[64];
 //
 // if recording demos, copy the message out
 //
@@ -1185,17 +1181,18 @@ void CL_ParseServerMessage (void)
 			UI_End();
 			break;
 
-		case svc_ui_add_button: //todo: make a common reader for all button classes (when we have them)
+		case svc_ui_add_button: //todo: make a common reader for all UI element classes
 			//64 is max size
-			strcpy_s(&tempbuf, 64, MSG_ReadString());
-			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf, 64, MSG_ReadString());
+			strcpy_s(tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf3, 64, MSG_ReadString());
 
 			float size_x = MSG_ReadFloat();
 			float size_y = MSG_ReadFloat();
 			float position_x = MSG_ReadFloat();
 			float position_y = MSG_ReadFloat();
 
-			UI_AddButton(tempbuf, tempbuf2, size_x, size_y, position_x, position_y);
+			UI_AddButton(tempbuf, tempbuf2, tempbuf3, size_x, size_y, position_x, position_y);
 			break;
 		
 		case svc_ui_set_visibility:
@@ -1211,29 +1208,32 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_ui_add_text:
-			strcpy_s(&tempbuf, 64, MSG_ReadString());
-			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf, 64, MSG_ReadString());
+			strcpy_s(tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf3, 64, MSG_ReadString());
 
 			position_x = MSG_ReadFloat();
 			position_y = MSG_ReadFloat();
 
-			UI_AddText(tempbuf, tempbuf2, position_x, position_y);
+			UI_AddText(tempbuf, tempbuf2, tempbuf3, position_x, position_y);
 			break;
 
 		case svc_ui_add_checkbox:
-			strcpy_s(&tempbuf, 64, MSG_ReadString());
-			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf, 64, MSG_ReadString());
+			strcpy_s(tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf3, 64, MSG_ReadString());
 
 			qboolean checked = (qboolean)MSG_ReadFloat();
 			position_x = MSG_ReadFloat();
 			position_y = MSG_ReadFloat();
 
-			UI_AddCheckbox(tempbuf, tempbuf2, checked, position_x, position_y);
+			UI_AddCheckbox(tempbuf, tempbuf2, tempbuf3, checked, position_x, position_y);
 			break;
 
 		case svc_ui_add_slider:
-			strcpy_s(&tempbuf, 64, MSG_ReadString());
-			strcpy_s(&tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf, 64, MSG_ReadString());
+			strcpy_s(tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf3, 64, MSG_ReadString());
 
 			float value_min = MSG_ReadFloat();
 			float value_max = MSG_ReadFloat();
@@ -1242,7 +1242,7 @@ void CL_ParseServerMessage (void)
 			position_x = MSG_ReadFloat();
 			position_y = MSG_ReadFloat();
 
-			UI_AddSlider(tempbuf, tempbuf2, value_min, value_max, size_x, size_y, position_x, position_y);
+			UI_AddSlider(tempbuf, tempbuf2, tempbuf3, value_min, value_max, size_x, size_y, position_x, position_y);
 			break;
 		}
 

@@ -750,10 +750,10 @@ void(string name, float focused) SUB_UISetFocus;
 void(string name, string element_name, string text) SUB_UISetText;
 
 // modernui.qc: Elements
-void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
-void(string on_click, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox;
-void(string on_click, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider;
-void(string on_click, string text, float position_x, float position_y) SUB_UIAddText;
+void(string on_click, string element_name, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
+void(string on_click, string element_name, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox;
+void(string on_click, string element_name, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider;
+void(string on_click, string element_name, string text, float position_x, float position_y) SUB_UIAddText;
 
 //
 // combat.qc

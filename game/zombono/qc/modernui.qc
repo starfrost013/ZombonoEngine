@@ -30,13 +30,14 @@ void() SUB_UIEnd =
 	WriteByte(MSG_ONE, SVC_UI_END);
 };
 
-void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =
+void(string on_click, string element_name, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =
 {
 	// SELF must ALWAYS be current playerv
 	msg_entity = ui_last_entity; 
 	dprint("UIAddButton called\n");
 	WriteByte(MSG_ONE, SVC_UI_ADD_BUTTON);
 	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, element_name);
 	WriteString(MSG_ONE, texture);
 	WriteFloat(MSG_ONE, size_x);
 	WriteFloat(MSG_ONE, size_y);
@@ -45,26 +46,28 @@ void(string on_click, string texture, float size_x, float size_y, float position
 };
 
 
-void(string on_click, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox =
+void(string on_click, string element_name, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox =
 {
 	// SELF must ALWAYS be current player before calling.
 	msg_entity = ui_last_entity; 
 	dprint("UIAddCheckbox called\n");
 	WriteByte(MSG_ONE, SVC_UI_ADD_CHECKBOX);
 	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, element_name);
 	WriteString(MSG_ONE, text);
 	WriteFloat(MSG_ONE, checked);
 	WriteFloat(MSG_ONE, position_x);
 	WriteFloat(MSG_ONE, position_y);
 }
 
-void(string on_click, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
+void(string on_click, string element_name, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider =
 {
 	// SELF must ALWAYS be current player before calling.
 	msg_entity = ui_last_entity; 
 	dprint("UIAddSlider called\n");
 	WriteByte(MSG_ONE, SVC_UI_ADD_SLIDER);
 	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, element_name);
 	WriteString(MSG_ONE, text);
 	WriteFloat(MSG_ONE, value_min);
 	WriteFloat(MSG_ONE, value_max);
@@ -74,13 +77,14 @@ void(string on_click, string text, float value_min, float value_max, float size_
 	WriteFloat(MSG_ONE, position_y);
 }
 
-void(string on_click, string text, float position_x, float position_y) SUB_UIAddText =
+void(string on_click, string element_name, string text, float position_x, float position_y) SUB_UIAddText =
 {
 	// SELF must ALWAYS be current player before calling.
 	msg_entity = ui_last_entity; 
 	dprint("UIAddText called\n");
 	WriteByte(MSG_ONE, SVC_UI_ADD_TEXT);
 	WriteString(MSG_ONE, on_click);
+	WriteString(MSG_ONE, element_name);
 	WriteString(MSG_ONE, text);
 	WriteFloat(MSG_ONE, position_x);
 	WriteFloat(MSG_ONE, position_y);
