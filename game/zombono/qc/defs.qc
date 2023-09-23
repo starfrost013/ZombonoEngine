@@ -381,6 +381,7 @@ float SVC_UI_SET_FOCUS = 54;
 float SVC_UI_ADD_TEXT = 55;
 float SVC_UI_ADD_CHECKBOX = 56;
 float SVC_UI_ADD_SLIDER = 57;
+float SVC_UI_SET_TEXT = 58;
 
 float TE_SPIKE = 0;
 float TE_SUPERSPIKE = 1;
@@ -739,15 +740,16 @@ void() SUB_Null;
 void() SUB_UseTargets;
 void() SUB_Remove;
 
-// UI: Core
+// modernui.qc: Core
 void(string name) SUB_UIStart;
 void() SUB_UIEnd;
 
-// UI: Attributes
+// modernui.qc: Attributes
 void(string name, float visible) SUB_UISetVisibility;
 void(string name, float focused) SUB_UISetFocus;
+void(string name, string element_name, string text) SUB_UISetText;
 
-// UI: Elements
+// modernui.qc: Elements
 void(string on_click, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton;
 void(string on_click, string text, float checked, float position_x, float position_y) SUB_UIAddCheckbox;
 void(string on_click, string text, float value_min, float value_max, float size_x, float size_y, float position_x, float position_y) SUB_UIAddSlider;

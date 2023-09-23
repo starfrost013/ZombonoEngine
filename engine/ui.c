@@ -160,7 +160,7 @@ void UI_AddCheckbox(char* on_click, char* text, qboolean checked, float position
 	UI_AddElement(new_checkbox);
 }
 
-void UI_AddText(char* on_click, char* text, float position_x, float position_y)
+void UI_AddText(char* on_click, char* text, float position_x, float position_y) 
 {
 	ui_element_t new_text;
 

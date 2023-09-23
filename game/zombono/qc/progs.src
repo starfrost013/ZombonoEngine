@@ -2,6 +2,7 @@ progs.dat
 
 defs.qc
 subs.qc
+modernui.qc
 fight.qc
 ai.qc
 combat.qc
@@ -27,12 +28,12 @@ dog.qc
 zombie.qc
 boss.qc
 
-tarbaby.qc		// registered
-hknight.qc		// registered
-fish.qc			// registered
-shalrath.qc		// registered
-enforcer.qc		// registered
-oldone.qc		// registered
+tarbaby.qc
+hknight.qc
+fish.qc
+shalrath.qc
+enforcer.qc
+oldone.qc
 
 /*  Copyright (C) 1996-1997  Id Software, Inc.
 	Copyright (C) 2023		 starfrost

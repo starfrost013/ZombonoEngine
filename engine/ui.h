@@ -44,6 +44,7 @@ typedef struct ui_event_s
 typedef struct ui_element_s
 {
 	ui_element_type		type;							// Type of UI element to draw.
+	char				name[16];						// The name of this UI element.
 	char				texture[MAX_QPATH];				// Image to draw for the element.
 	float				size_x;							// Size of the element on screen (X).
 	float				size_y;							// Size of the element on screen (Y).

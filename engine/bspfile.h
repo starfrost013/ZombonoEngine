@@ -53,6 +53,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //=============================================================================
 
+// BSP file format versions:
+// Quake 1:									29
+// VALVe (Half-Life 1)						30
+// Zombono BSP32 (BSP2 + 32-bit Textures)	32 (pending)
+// Quake 2									38
+// Quake 3									46
+// Quake Live								47
 
 #define BSPVERSION	29
 
