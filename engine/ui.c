@@ -568,7 +568,7 @@ void UI_OnMouseMove(float x, float y)
 		{
 			for (int uiElementNum = 0; uiElementNum < acquired_ui->element_count; uiElementNum++)
 			{
-				// Because it changes values we need to operate on the actual UI element in the hunk
+				// Because it changes values we need to operate on the actual UI element in the hunk 
 				ui_element_t* acquired_ui_element = &acquired_ui->elements[uiElementNum];
 
 				//todo: auto scale

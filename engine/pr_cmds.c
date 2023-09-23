@@ -145,7 +145,7 @@ void SetMinMaxSize (edict_t *e, float *min, float *max, qboolean rotate)
 		if (min[i] > max[i])
 			PR_RunError ("backwards mins/maxs");
 
-	rotate = false;		// FIXME: implement rotation properly again
+	rotate = false;		// FIXME: implement rotation properly again   
 
 	if (!rotate)
 	{

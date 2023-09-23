@@ -29,7 +29,7 @@ vec3_t		modelorg, r_entorigin;
 entity_t	*currententity;
 
 int			r_visframecount;	// bumped when going to a new PVS
-int			r_framecount;		// used for dlight push checking
+int			r_framecount;		// used for dlight push checking 
 
 mplane_t	frustum[4];
 
