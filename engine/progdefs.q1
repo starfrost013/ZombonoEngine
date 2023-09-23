@@ -144,6 +144,7 @@ typedef struct entvars_s
 	float	startweapons;
 	int		jump_count;
 	float	level_has_prespawn;
+	float	postspawn_done;
 } entvars_t;
 
 /* presently meaningless */

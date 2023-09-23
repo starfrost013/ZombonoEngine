@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others 
+Copyright (C) 2023      starfrost  
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -60,8 +61,6 @@ typedef struct
 #define	NUM_CSHIFTS		4
 
 #define	NAME_LENGTH	64
-
-
 //
 // client_state_t should hold all pieces of the client state
 //

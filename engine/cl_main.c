@@ -212,11 +212,12 @@ Con_DPrintf ("CL_SignonReply: %i\n", cls.signon);
 		break;
 
 	case 4:
-		SCR_EndLoadingPlaque ();		// allow normal screen updates
+		SCR_EndLoadingPlaque ();		// allow normal screen updates  
 
 		// Send postspawn message
 		MSG_WriteByte(&cls.message, clc_stringcmd);
 		MSG_WriteString(&cls.message, "postspawn");
+
 		break;
 	}
 }

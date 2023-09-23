@@ -58,6 +58,19 @@ void() info_intermission =
 {
 };
 
+void() SetNewParms =
+{
+	//parm1 = IT_SHOTGUN | IT_AXE;
+	parm2 = 100;
+	parm3 = 0;
+	parm4 = 25;
+	parm5 = 0;
+	parm6 = 0;
+	parm7 = 0;
+	//parm8 = 1;
+	parm9 = 0;
+}
+
 void() SetChangeParms =
 {
 // remove items
@@ -82,27 +95,8 @@ void() SetChangeParms =
 	parm9 = self.armortype * 100;
 };
 
-void() SetNewParms =
-{
-	//parm1 = IT_SHOTGUN | IT_AXE;
-	parm2 = 100;
-	parm3 = 0;
-	parm4 = 25;
-	parm5 = 0;
-	parm6 = 0;
-	parm7 = 0;
-	//parm8 = 1;
-	parm9 = 0;
-};
-
 void() DecodeLevelParms =
 {
-	if (serverflags)
-	{
-		if (world.model == "maps/start.bsp")
-			SetNewParms(); // take away all stuff on starting new episode
-	}
-
 	// ZOMBONO: These parms are now a part of info_player_start_* for teamplay.
 	// may need to gate these behind a cvar check
 	//self.items = parm1;
@@ -311,7 +305,6 @@ void() respawn =
 	SetNewParms();
 	// respawn
 	PutClientInServer();
-	PsuiStart();
 };
 
 
@@ -350,7 +343,8 @@ entity() SelectSpawnPoint =
 
 	if (gamemode == 0)
 	{
-		if (world.level_has_prespawn)
+		if (world.level_has_prespawn
+			&& !self.postspawn_done)
 		{
 			spot = find(world, classname, "info_player_start_prespawn");
 
@@ -507,9 +501,9 @@ void() main =
 	if (gamemode <= ZOMBONO_GAMEMODE_COUNT)
 	{
 		PrintTeamWelcomeMessage();
+		self.postspawn_done = TRUE;
 		PsuiStart();
 	}
-
 }
 
 void() PsuiStart =
@@ -520,8 +514,8 @@ void() PsuiStart =
 	SUB_UIAddButton("PsuiSetTeamPlayer", "PsuiSetTeamPlayer", "GFX/PSUI_SPAWN_PLAYER.LMP", 256, 256, vid_width/2 + 64, vid_height/2 - 128);
 	SUB_UIAddText(string_null, "PsuiDirectorText", "Nobody knows who gave\nthem this power!", vid_width/2 - 128, vid_height/2 + 136);
 	SUB_UIAddText(string_null, "PsuiPlayerText", "They don't know why they're here\nand they want to live!", vid_width/2 + 128, vid_height/2 + 136);
-	SUB_UIAddCheckbox(string_null, "PsuiTestCheckbox", "This is a checkbox (test...)!", TRUE, vid_width/2, vid_height/2 - 208);
-	SUB_UIAddSlider(string_null, "PsuiTestSlider", "I'm a slider!", 0, 10, 100, 100, vid_width/2, vid_height / 2 - 272);
+	//SUB_UIAddCheckbox(string_null, "PsuiTestCheckbox", "This is a checkbox (test...)!", TRUE, vid_width/2, vid_height/2 - 208);
+	//SUB_UIAddSlider(string_null, "PsuiTestSlider", "I'm a slider!", 0, 10, 100, 100, vid_width/2, vid_height / 2 - 272);
 	SUB_UIEnd();
 	
 	// Disabled for ZTest2

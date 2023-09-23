@@ -237,6 +237,7 @@ void end_sys_globals; // flag for structure dumping
 .float jump_count; // The number of times you have jumped. Used for double jump item.
 
 .float level_has_prespawn; // Does thelevel have prespawn?
+.float postspawn_done; // Is postspawn done?
 //================================================
 void end_sys_fields; // flag for structure dumping
 //================================================
