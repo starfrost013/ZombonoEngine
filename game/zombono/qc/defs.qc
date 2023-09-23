@@ -373,6 +373,9 @@ float SVC_FOUNDSECRET = 28;
 float SVC_INTERMISSION = 30;
 float SVC_CDTRACK = 32;
 
+// Scoreboard messages
+float SVC_UPDATE_TEAM = 45;
+
 // UI messages
 float SVC_UI_START = 50;
 float SVC_UI_END = 51;

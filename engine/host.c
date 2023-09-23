@@ -382,7 +382,7 @@ void SV_DropClient (qboolean crash)
 		if (host_client->edict && host_client->spawned)
 		{
 		// call the prog function for removing a client
-		// this will set the body to a dead frame, among other things
+		// this will set the body to a dead frame, among other things 
 			saveSelf = pr_global_struct->self;
 			pr_global_struct->self = EDICT_TO_PROG(host_client->edict);
 			PR_ExecuteProgram (pr_global_struct->ClientDisconnect);

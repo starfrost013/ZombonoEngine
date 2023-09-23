@@ -36,6 +36,7 @@ void() CheckPowerups;
 void() PsuiStart;
 void() PsuiSetTeamDirector;
 void() PsuiSetTeamPlayer;
+void() PsuiSendTeamUpdate;
 
 float modelindex_eyes, modelindex_player;
 
@@ -340,6 +341,9 @@ Returns the entity to spawn at
 entity() SelectSpawnPoint =
 {
 	entity spot;
+	float spawn_cycle;
+
+	spawn_cycle = random() * 4;
 
 	if (gamemode == 0)
 	{
@@ -348,41 +352,42 @@ entity() SelectSpawnPoint =
 		{
 			spot = find(world, classname, "info_player_start_prespawn");
 
-			if (spot == world)
-			{
-				spot = find(world, classname, "info_player_start_prespawn");
-				return spot;
-			}
+			if (spot == world) spot = find(world, classname, "info_player_start_prespawn");
 
+			// failsafe
+			if (spot == world) spot = find(world, classname, "info_player_start_prespawn");
 			return spot;
 		}
 		else
 		{
-			if (self.team == ZOMBONO_TEAM_DIRECTOR)
+			while (spawn_cycle > 1)
 			{
-				spot = find(world, classname, "info_player_start_director");
-	
-				if (spot == world)
+				if (self.team == ZOMBONO_TEAM_DIRECTOR)
 				{
 					spot = find(world, classname, "info_player_start_director");
-					
-					return spot;
+		
+					if (spot == world)
+					{
+						spot = find(world, classname, "info_player_start_director");
+					}
+	
 				}
-	
-				return spot;
-			}
-			else if (self.team == ZOMBONO_TEAM_PLAYER)
-			{
-				spot = find(world, classname, "info_player_start_player");
-	
-				if (spot == world)
+				else if (self.team == ZOMBONO_TEAM_PLAYER)
 				{
 					spot = find(world, classname, "info_player_start_player");
-					return spot;
+		
+					if (spot == world)
+					{
+						spot = find(world, classname, "info_player_start_player");
+					}
 				}
-	
-				return spot;
+
+				spawn_cycle = spawn_cycle - 1;
 			}
+
+			// failsafe
+			if (spot == world) spot = find(world, classname, "info_player_start_prespawn");
+			return spot;
 		}
 
 	}
@@ -489,7 +494,6 @@ void() PutClientInServer =
 	spawn_tdeath(self.origin, self);
 };
 
-void() PsuiTeleportToTeamSpawn;
 void() PsuiStart;
 
 // HACK HACK HACK
@@ -500,9 +504,9 @@ void() main =
 {
 	if (gamemode <= ZOMBONO_GAMEMODE_COUNT)
 	{
+		PsuiStart();
 		PrintTeamWelcomeMessage();
 		self.postspawn_done = TRUE;
-		PsuiStart();
 	}
 }
 
@@ -533,7 +537,7 @@ void() PsuiSetTeamDirector =
 		self.team = ZOMBONO_TEAM_DIRECTOR;
 		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
-		PsuiTeleportToTeamSpawn();
+		PsuiSendTeamUpdate();
 	}
 }
 
@@ -547,72 +551,18 @@ void() PsuiSetTeamPlayer =
 		self.team = ZOMBONO_TEAM_PLAYER;
 		SUB_UISetFocus("psui", FALSE);
 		SUB_UISetVisibility("psui", FALSE);
-		PsuiTeleportToTeamSpawn();
+		PsuiSendTeamUpdate();
 	}
 }
 
-void() PsuiTeleportToTeamSpawn =
+void() PsuiSendTeamUpdate =
 {
-	entity spot;
+	dprint("PsuiSendTeamUpdate called\n");
 
-	if (self.team == ZOMBONO_TEAM_DIRECTOR)
-	{
-		spot = find(world, classname, "info_player_start_director");
-
-		if (spot == world)
-		{
-			spot = find(world, classname, "info_player_start_director");
-			
-			if (spot != world)
-			{
-				self.angles = spot.mangle;
-				self.fixangle = 1;
-				setorigin(self, spot.origin);
-			}
-			else
-			{
-				dprint("Teleport failed\n");
-				setorigin(self, '0 0 0');
-			}
-				
-			return;
-		}
-		
-		self.angles = spot.mangle;
-		self.fixangle = 1;
-		setorigin(self, spot.origin);
-		return;
-
-	}
-	else if (self.team == ZOMBONO_TEAM_PLAYER)
-	{
-		spot = find(world, classname, "info_player_start_player");
-
-		if (spot == world)
-		{
-			spot = find(world, classname, "info_player_start_player");
-
-			if (spot != world)
-			{
-				self.angles = spot.mangle;
-				self.fixangle = 1;
-				setorigin(self, spot.origin);
-
-				return;
-			}
-			else
-			{
-				dprint("Teleport failed\n");
-				setorigin(self, '0 0 0');
-			}
-		}
-		
-		self.angles = spot.mangle;
-		self.fixangle = 1;
-		setorigin(self, spot.origin);
-
-		return;
-	}
+	self.movetype = MOVETYPE_TOSS; // Crashes otherwise even though it's a player and it gets overwritten anyway, WTF?
+	self.model = string_null; // Prevent duplicate player models
+	//self.modelindex = modelindex_player;
+	respawn();
 }
 
 // todo: MAKE THIS RUN POST-SPAWN!!!

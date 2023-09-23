@@ -1,7 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others 
-Copyright (C) 2023      starfrost  
+Copyright (C) 2023      starfrost 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -145,7 +145,7 @@ extern client_static_t	cls;
 typedef struct client_state_s
 {
 	int			movemessages;	// since connecting to this server
-								// throw out the first couple, so the player
+								// throw out the first couple, so the player 
 								// doesn't accidentally do something the
 								// first frame
 	usercmd_t	cmd;			// last command sent to the server
@@ -153,7 +153,7 @@ typedef struct client_state_s
 // information for local display
 	int			stats[MAX_CL_STATS];	// health, etc
 	int			items;			// inventory bit flags
-	float	item_gettime[32];	// cl.time of aquiring item, for blinking
+	float		item_gettime[32];	// cl.time of aquiring item, for blinking
 	float		faceanimtime;	// use anim frame if cl.time < this
 
 	cshift_t	cshifts[NUM_CSHIFTS];	// color shifts for damage, powerups

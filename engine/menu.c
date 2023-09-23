@@ -1729,7 +1729,7 @@ typedef struct level_s
 level_t		levels[] =
 {
 	{"z_warehouse", "Warehouse"},		// 0
-	{"start", "Zombono Test Level"},	// 1
+	{"z_tdm_labrats", "Lab Rats"},		// 1 
 };
 
 int	startlevel;

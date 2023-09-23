@@ -1535,8 +1535,9 @@ void Host_Spawn_f (void)
 		ent->v.colormap = NUM_FOR_EDICT(ent);
 
 		// set netname
-		ent->v.netname = host_client->name - pr_strings;
+		ent->v.netname = host_client->name - pr_strings; 
 
+		/*
 		if (ent->v.nextthink == 0) // HORRIBLE hack!!!
 		{
 			// set team
@@ -1548,7 +1549,9 @@ void Host_Spawn_f (void)
 
 			ent->v.team = TEAM_Rebalance(rand() % 2);
 		}
+		*/
 
+		ent->v.team = 2;
 		// copy spawn parms out of the client_t
 
 		for (i=0 ; i< NUM_SPAWN_PARMS ; i++)
