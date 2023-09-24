@@ -2,7 +2,7 @@
 
 #include "quakedef.h"
 
-ui_t*	ui[MAX_UI_COUNT];	// Contains all UIs
+ui_t*	ui;
 ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
@@ -27,7 +27,7 @@ void UI_ExecuteEvent(ui_element_t* element, ui_event_t event);
 void UI_Init(void)
 {
 	// Allocate all the memory at once (speed :D)
-	*ui = Hunk_AllocName(sizeof(ui_t) * MAX_UI_COUNT + (sizeof(ui_element_t) * MAX_UI_COUNT * MAX_UI_ELEMENTS), "UI");
+	ui = Hunk_AllocName(sizeof(ui_t) * MAX_UI_COUNT + (sizeof(ui_element_t) * MAX_UI_COUNT * MAX_UI_ELEMENTS), "UI");
 
 	if (!ui)
 	{
@@ -47,7 +47,7 @@ void UI_Start(char* name)
 	}
 	else
 	{
-		if (ui_count >= MAX_UI_ELEMENTS)
+		if (ui_count >= MAX_UI_COUNT)
 		{
 			Con_Warning("Attempted to add a new UI when there are >= MAX_UI_COUNT UIs!");
 			return;
@@ -55,7 +55,7 @@ void UI_Start(char* name)
 
 		// create a new UI
 
-		ui_t* new_ui = ui[ui_count];
+		ui_t* new_ui = &ui[ui_count];
 
 		strcpy(new_ui->name, name);
 
@@ -67,14 +67,16 @@ void UI_Start(char* name)
 
 ui_t* UI_GetUI(char* name)
 {
-	for (int ui_number = 0; ui_number < MAX_UI_COUNT; ui_number++)
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
 	{
+		ui_t* acquired_ui = &ui[ui_num];
+
 		// You can only ever add uis, not delete them (although you can make them not be visible)
 		// so this is a safe assumption to make
-		if (ui[ui_number] == NULL)
+		if (acquired_ui == NULL)
 			break;
 
-		if (!stricmp(ui[ui_number]->name, name)) return ui[ui_number];
+		if (!stricmp(acquired_ui->name, name)) return acquired_ui;
 	}
 
 	//no error here because in some cases we want prog errors, othercases Sys_Error
@@ -86,21 +88,21 @@ ui_element_t* UI_GetElement(ui_t* ui, char* name)
 	if (ui == NULL)
 	{
 		Host_Error("UI_GetElement: UI is NULL");
-		return; 
+		return NULL; 
 	}
 
 	if (name == NULL
 		|| strlen(name) == 0)
 	{
 		Host_Error("UI_GetElement: invalid name");
-		return;
+		return NULL;
 	}
 
-	for (int element_num = 0; element_num < MAX_UI_ELEMENTS; element_num++)
+	for (int element_num = 0; element_num < ui->element_count; element_num++)
 	{
 		ui_element_t* ui_element = &ui->elements[element_num];
 
-		if (ui_element->name == name) return ui_element;
+		if (!strcmp(ui_element->name, name)) return ui_element;  
 	}
 
 	return NULL;
@@ -300,9 +302,9 @@ void UI_Draw(void)
 
 	int		focused_uis = 0;
 
-	for (int ui_num = 0; ui_num < MAX_UI_COUNT; ui_num++)
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
 	{
-		ui_t* current_ui = ui[ui_num];
+		ui_t* current_ui = &ui[ui_num];
 
 		if (current_ui != NULL
 			&& current_ui->visible)
@@ -479,7 +481,7 @@ void UI_SetText(char* ui_name, char* element_name, char* text)
 
 	if (ui_element == NULL)
 	{
-		Host_Error("UI_SetText: Invalid UI provided.");
+		Host_Error("UI_SetText: Invalid UI element provided.");
 		return;
 	}
 
@@ -533,9 +535,9 @@ void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 // Sends click down events to UI elements that are focused and visible.
 void UI_OnClickDown(float x, float y)
 {
-	for (int uiNum = 0; uiNum < ui_count; uiNum++)
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
 	{
-		ui_t* acquired_ui = ui[uiNum];
+		ui_t* acquired_ui = &ui[ui_num];
 
 		if (acquired_ui != NULL
 			&& acquired_ui->focused
@@ -568,9 +570,9 @@ void UI_OnClickDown(float x, float y)
 // Sends click up events to UI elements that are focused and visible.
 void UI_OnClickUp(float x, float y)
 {
-	for (int uiNum = 0; uiNum < ui_count; uiNum++)
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
 	{
-		ui_t* acquired_ui = ui[uiNum];
+		ui_t* acquired_ui = &ui[ui_num];
 
 		if (acquired_ui != NULL
 			&& acquired_ui->focused
@@ -603,9 +605,9 @@ void UI_OnClickUp(float x, float y)
 // Sends mouse move events to UI elements that are focused and visible.
 void UI_OnMouseMove(float x, float y)
 {
-	for (int uiNum = 0; uiNum < ui_count; uiNum++)
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
 	{
-		ui_t* acquired_ui = ui[uiNum];
+		ui_t* acquired_ui = &ui[ui_num];
 
 		if (acquired_ui != NULL
 			&& acquired_ui->focused
@@ -692,4 +694,15 @@ void UI_End(void)
 {
 	// current_ui is NULLPTR when no ui is set
 	current_ui = NULL;
+}
+
+// Clear UI on disconnect
+void UI_Clear(void)
+{
+	for (int ui_num = 0; ui_num < ui_count; ui_num++)
+	{
+		memset(&ui[ui_num], 0x00, sizeof(ui_t));
+	}
+
+	ui_count = 0;
 }

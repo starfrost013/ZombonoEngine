@@ -469,7 +469,7 @@ void() PutClientInServer =
 
 	if (self.items & IT_LIGHTNING == IT_LIGHTNING) self.ammo_cells = 12;
 
-	W_SetCurrentAmmo(); // moved here for new method of giving plaayer weapons
+	W_SetCurrentAmmo(); // moved here for new method of giving player weapons
 
 	self.origin = spot.origin + '0 0 1';
 	self.angles = spot.angles;
@@ -506,6 +506,13 @@ void() main =
 	{
 		PsuiStart();
 		PrintTeamWelcomeMessage();
+		SUB_UIStart("gameui");
+		SUB_UIAddText("gameui", "gameui_timer", "Start", vid_width/2 - 32, vid_height/10);
+		SUB_UIEnd();
+		// not focused but visible
+		SUB_UISetVisibility("gameui", TRUE);
+		SUB_UISetFocus("gameui", FALSE);
+
 		self.postspawn_done = TRUE;
 	}
 }
@@ -571,7 +578,7 @@ void() PrintTeamWelcomeMessage =
 	// terrible hack 
 	// otherwise it doesn't work on join, only on respawn
 
-	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 9 to get the Zombinator.\nClick to spawn zombies and fuck those players!\n";
+	string DIRECTOR_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Director team - press 2 to get the Zombinator.\nClick to spawn zombies and fuck those players!\n";
 	string PLAYER_WELCOME_STRING = "Welcome to Zombono.\nYou are on the Player team\nSend those Alan Smithees back to film school!\n";
 
 	if (self.team == ZOMBONO_TEAM_DIRECTOR)
@@ -967,6 +974,25 @@ void() PlayerPreThink =
 // teleporters can force a non-moving pause time
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
+
+	// convert to seconds (todo: actual minute:second display)
+	float timelimit = cvar("timelimit") * 60;
+
+	if (self.postspawn_done
+		&& timelimit > 0)
+	{
+		ui_last_entity = self; // set ui_last_entity to player
+
+		float time_remaining = timelimit - time;
+		if (time_remaining > 0)
+		{
+			SUB_UISetText("gameui", "gameui_timer", ftos(floor(time_remaining)));
+		}
+		else
+		{
+			SUB_UISetText("gameui", "gameui_timer", "It's Over");
+		}
+	}
 };
 
 /*

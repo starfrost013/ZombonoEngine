@@ -113,6 +113,9 @@ void CL_Disconnect (void)
 // stop sounds (especially looping!)
 	S_StopAllSounds (true);
 
+// Clear UI 
+	UI_Clear ();
+
 // if running a local server, shut it down
 	if (cls.demoplayback)
 		CL_StopPlayback ();

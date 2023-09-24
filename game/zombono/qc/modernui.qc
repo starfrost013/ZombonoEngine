@@ -26,8 +26,17 @@ void(string name) SUB_UIStart =
 
 void() SUB_UIEnd =
 {
+	msg_entity = self;
+
+	if (msg_entity.classname != "player")
+	{
+		error("Tried to end a UI for a non-player entity!");
+	}
+
 	dprint("UIEnd called\n");
 	WriteByte(MSG_ONE, SVC_UI_END);
+
+	ui_last_entity = self;
 };
 
 void(string on_click, string element_name, string texture, float size_x, float size_y, float position_x, float position_y) SUB_UIAddButton =
@@ -113,6 +122,7 @@ void(string name, float focused) SUB_UISetFocus =
 void(string name, string element_name, string text) SUB_UISetText =
 {
     msg_entity = ui_last_entity;
+	dprint(msg_entity.classname);
     dprint("UISetText called\n");
     WriteByte(MSG_ONE, SVC_UI_SET_TEXT);
     WriteString(MSG_ONE, name);
