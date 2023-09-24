@@ -6,9 +6,9 @@ ui_t*	ui[MAX_UI_COUNT];	// Contains all UIs
 ui_t*	current_ui;			// Pointer to current_UI inside ui
 int		ui_count = 0;		// UI count
 
-ui_t* UI_GetUI(char* name);
-
 // ***FUNCTIONS NOT TO BE EXPOSED***
+ui_t* UI_GetUI(char* name);
+ui_element_t* UI_GetElement(ui_t* ui, char* name);
 
 void UI_AddElement(ui_element_t element);
 
@@ -78,6 +78,31 @@ ui_t* UI_GetUI(char* name)
 	}
 
 	//no error here because in some cases we want prog errors, othercases Sys_Error
+	return NULL;
+}
+
+ui_element_t* UI_GetElement(ui_t* ui, char* name)
+{
+	if (ui == NULL)
+	{
+		Host_Error("UI_GetElement: UI is NULL");
+		return; 
+	}
+
+	if (name == NULL
+		|| strlen(name) == 0)
+	{
+		Host_Error("UI_GetElement: invalid name");
+		return;
+	}
+
+	for (int element_num = 0; element_num < MAX_UI_ELEMENTS; element_num++)
+	{
+		ui_element_t* ui_element = &ui->elements[element_num];
+
+		if (ui_element->name == name) return ui_element;
+	}
+
 	return NULL;
 }
 
@@ -434,6 +459,33 @@ void UI_SetFocus(char* name, qboolean focus)
 	acquired_ui->focused = focus;
 }
 
+void UI_SetText(char* ui_name, char* element_name, char* text)
+{
+	if (text == NULL)
+	{
+		Host_Error("UI_SetText: Text is NULL!");
+		return;
+	}
+
+	ui_t* ui = UI_GetUI(ui_name);
+	
+	if (ui == NULL)
+	{
+		Host_Error("UI_SetText: Invalid UI provided.");
+		return;
+	}
+
+	ui_element_t* ui_element = UI_GetElement(ui, element_name);
+
+	if (ui_element == NULL)
+	{
+		Host_Error("UI_SetText: Invalid UI provided.");
+		return;
+	}
+
+	strcpy(ui_element->text, text);
+}
+
 void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 {
 	// Call C functionc allbacks if they exist.
@@ -494,14 +546,7 @@ void UI_OnClickDown(float x, float y)
 				// Because it changes values we need to operate on the actual UI element in the hunk
 				ui_element_t* acquired_ui_element = &acquired_ui->elements[uiElementNum];
 
-				/*
-				// autoscale manages this
-				float scale_factor = scr_menuscale.value;
-				
-				// could still be zero? make it not zero
-				
-				if (scale_factor == 0) scale_factor = 1;
-				*/
+				//todo: auto scale
 
 				if (x >= acquired_ui_element->position_x
 					&& x <= acquired_ui_element->position_x + acquired_ui_element->size_x

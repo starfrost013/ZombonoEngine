@@ -74,15 +74,16 @@ typedef struct ui_s
 
 extern ui_t*				ui[];						// Global UI list.
 
-void UI_Init(void);										// Initialise UI subsystem
-void UI_Start(char* name);								// Start a new UI
-void UI_Draw(void);										// Draw all UIs
-void UI_SetVisibility(char* name, qboolean visibility);	// Set UI visibility
-void UI_SetFocus(char* name, qboolean focus);			// Set UI focus
-void UI_OnClickDown(float x, float y);					// UI click down event. Not for QC
-void UI_OnClickUp(float x, float y);					// UI click up event.
-void UI_OnMouseMove(float x, float y);					// UI mouse move event.
-void UI_End();											// End the current UI
+void UI_Init(void);												// Initialise UI subsystem
+void UI_Start(char* name);										// Start a new UI
+void UI_Draw(void);												// Draw all UIs
+void UI_SetVisibility(char* name, qboolean visibility);			// Set UI visibility
+void UI_SetFocus(char* name, qboolean focus);					// Set UI focus
+void UI_SetText(char* ui_name, char* element_name, char* text);	// Set UI text
+void UI_OnClickDown(float x, float y);							// UI click down event. Not for QC
+void UI_OnClickUp(float x, float y);							// UI click up event.
+void UI_OnMouseMove(float x, float y);							// UI mouse move event.
+void UI_End();													// End the current UI
 
 //
 // Controls

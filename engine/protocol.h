@@ -193,13 +193,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Zombono UI
 #define svc_ui_start			50  // [string] name - used for caching
 #define svc_ui_end				51	// ends current UI
-#define svc_ui_add_button		52  // [string] QC on_click event handler [string] texture name [float] size x [float] size y [float] position x [float] position y
+#define svc_ui_add_button		52  // [string] QC on_click event handler [string] Element name [string] texture name [float] size x [float] size y [float] position x [float] position y
 #define svc_ui_set_visibility	53	// [string] UI name [float] visibility
 #define svc_ui_set_focus		54	// [string] UI name [float] focus
-#define svc_ui_add_text			55	// [string] QC on_click event handler [string] text [float] size x [float] size y[float] position x [float] position y
-#define svc_ui_add_checkbox		56	// [string] QC on_click event handler [float/qboolean] checked [float] size x [float] size y[float] position x [float] position y
-#define svc_ui_add_slider		57	// [string] QC on_click event handler [float] value [float] size x [float] size y [float] position x [float] position y
-
+#define svc_ui_add_text			55	// [string] QC on_click event handler [string] Element name [string] text [float] size x [float] size y[float] position x [float] position y
+#define svc_ui_add_checkbox		56	// [string] QC on_click event handler [string] Element name [float/qboolean] checked [float] size x [float] size y[float] position x [float] position y
+#define svc_ui_add_slider		57	// [string] QC on_click event handler [string] Element name float] value [float] size x [float] size y [float] position x [float] position y
+#define svc_ui_set_text			58	// [string] UI name [string] Element name [string] text
 //johnfitz
 
 //

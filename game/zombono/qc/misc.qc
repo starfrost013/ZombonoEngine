@@ -1,6 +1,6 @@
 /*  Copyright (C) 1996-1997  Id Software, Inc.
 	Copyright (C) 2023       starfrost
-	
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -23,7 +23,7 @@
 		© 2023 starfrost!!!
 	| | | | | | | | | | | | | |
 
-	Oldone.qc : Old one
+	Misc.qc : Miscellaneous entities
 */
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)

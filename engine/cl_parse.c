@@ -1244,6 +1244,15 @@ void CL_ParseServerMessage (void)
 
 			UI_AddSlider(tempbuf, tempbuf2, tempbuf3, value_min, value_max, size_x, size_y, position_x, position_y);
 			break;
+
+		case svc_ui_set_text:
+			strcpy_s(tempbuf, 64, MSG_ReadString());
+			strcpy_s(tempbuf2, 64, MSG_ReadString());
+			strcpy_s(tempbuf3, 64, MSG_ReadString());
+
+			UI_SetText(tempbuf, tempbuf2, tempbuf3);
+
+			break;
 		}
 
 		lastcmd = cmd; //johnfitz

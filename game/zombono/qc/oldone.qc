@@ -22,7 +22,7 @@
 		© 2023 starfrost!!!
 	| | | | | | | | | | | | | |
 
-	Oldone.qc : Old one
+	Oldone.qc : Shub-Niggurath
 */
 
 $cd /raid/quake/id1/models/old_one

@@ -1602,7 +1602,7 @@ LONG WINAPI MainWndProc (
 				}
 				else if (uMsg == WM_MOUSEMOVE)
 				{
-					UI_OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)); 
+					UI_OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 				}
 			}
 			else
