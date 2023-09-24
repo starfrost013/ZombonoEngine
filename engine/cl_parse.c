@@ -1027,12 +1027,12 @@ void CL_ParseServerMessage (void)
 			break;
 		
 		case svc_updateteam:
-			Sbar_Changed();
-			i = MSG_ReadByte();
+			Sbar_Changed ();
+			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
 				Host_Error("CL_ParseServerMessage: svc_updateteam > cl.maxclients");
 
-			cl.scores[i].team = MSG_ReadFloat();
+			cl.scores[i].team = MSG_ReadFloat ();
 			break;
 
 		case svc_updatefrags:

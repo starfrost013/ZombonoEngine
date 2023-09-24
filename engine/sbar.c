@@ -924,6 +924,35 @@ void Sbar_IntermissionOverlay (void)
 	int		num;
 
 	Sbar_DeathmatchOverlay();
+	
+	GL_SetCanvas(CANVAS_MENU); //johnfitz
+
+	if (gamemode.value == GAME_ZOMBIES_TDM)
+	{
+		int director_frags = 0, player_frags = 0;
+
+		for (int scoreboard_line = 0; scoreboard_line < scoreboardlines; scoreboard_line++)
+		{
+			scoreboard_t scoreboard = cl.scores[scoreboard_line];
+
+			if (scoreboard.team == ZOMBONO_TEAM_DIRECTOR) director_frags += scoreboard.frags;
+			if (scoreboard.team == ZOMBONO_TEAM_PLAYER) player_frags += scoreboard.frags;
+		}
+
+		if (director_frags > player_frags)
+		{
+			Draw_String(64, 24, "Directors Win!");
+		}
+		else if (player_frags > director_frags)
+		{
+			Draw_String(64, 24, "Players Win!");
+		}
+		else
+		{
+			Draw_String(64, 24, "D R A W");
+		}
+	}
+
 	return; 
 
 	/* might put back later
