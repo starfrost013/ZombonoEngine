@@ -504,13 +504,15 @@ void() main =
 {
 	if (gamemode <= ZOMBONO_GAMEMODE_COUNT)
 	{
+		float timelimit = cvar("timelimit");
+		
 		PsuiStart();
 		PrintTeamWelcomeMessage();
 		SUB_UIStart("gameui");
 		SUB_UIAddText("gameui", "gameui_timer", "Start", vid_width/2 - 32, vid_height/10);
 		SUB_UIEnd();
-		// not focused but visible
-		SUB_UISetVisibility("gameui", TRUE);
+		// set visibility later
+		SUB_UISetVisibility("gameui", (timelimit > 0));
 		SUB_UISetFocus("gameui", FALSE);
 
 		self.postspawn_done = TRUE;
