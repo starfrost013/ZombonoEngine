@@ -397,6 +397,7 @@ void Draw_CharacterQuad (int x, int y, char num)
 {
 	int				row, col;
 	float			frow, fcol, size;
+	int				auto_scale;
 
 	row = num>>4;
 	col = num&15;

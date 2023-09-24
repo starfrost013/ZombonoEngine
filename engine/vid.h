@@ -39,10 +39,10 @@ typedef struct
 	pixel_t			*colormap;		// 256 * VID_GRADES size
 	unsigned short	*colormap16;	// 256 * VID_GRADES size
 	int				fullbright;		// index of first fullbright color
-	unsigned		rowbytes;	// may be > width if displayed in a window
+	unsigned		rowbytes;		// may be > width if displayed in a window
 	unsigned		width;
 	unsigned		height;
-	float			aspect;		// width / height -- < 0 is taller than wide
+	float			aspect;			// width / height -- < 0 is taller than wide
 	int				numpages;
 	int				recalc_refdef;	// if true, recalc vid-based stuff
 	pixel_t			*conbuffer;
@@ -52,7 +52,7 @@ typedef struct
 	int				maxwarpwidth;
 	int				maxwarpheight;
 	pixel_t			*direct;		// direct drawing to framebuffer, if not
-									//  NULL
+									// NULL
 } viddef_t;
 
 extern	viddef_t	vid;				// global video state
@@ -71,6 +71,3 @@ void	VID_Shutdown (void);
 int VID_SetMode (int modenum); //johnfitz -- removed palette from argument list
 // sets the mode; only used by the Quake engine for resetting to mode 0 (the
 // base mode) on memory allocation failures
-
-void VID_HandlePause (qboolean pause);
-// called only on Win32, when pause happens, so the mouse can be released
