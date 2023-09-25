@@ -1200,8 +1200,6 @@ char *bindnames[][2] =
 {"+klook", 			"keyboard look"},
 {"+moveup",			"swim up"},
 {"+movedown",		"swim down"},
-//{"+crouch",			"crouch"},
-{"+sprint",		"sprint"},
 };
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
