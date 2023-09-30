@@ -280,8 +280,6 @@ void CL_PrintEntities_f (void)
 	}
 }
 
-//johnfitz -- deleted SetPal()
-
 /*
 ===============
 CL_AllocDlight

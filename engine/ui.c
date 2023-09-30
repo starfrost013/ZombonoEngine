@@ -23,6 +23,7 @@ void UI_DefaultOnMouseMoveHandler(ui_element_t* element, int x, int y); //elemen
 
 // Shared execute event code
 void UI_ExecuteEvent(ui_element_t* element, ui_event_t event);
+void UI_RunEventOnServer();
 
 void UI_Init(void)
 {
@@ -33,6 +34,8 @@ void UI_Init(void)
 	{
 		Sys_Error("Failed to allocate hunk space for UI!");
 	}
+
+	Cmd_AddCommand("qcrun", UI_RunEventOnServer);
 }
 
 void UI_Start(char* name)
@@ -490,6 +493,7 @@ void UI_SetText(char* ui_name, char* element_name, char* text)
 
 void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 {
+
 	// Call C functionc allbacks if they exist.
 	if (event.c_handler != NULL)
 	{
@@ -519,16 +523,39 @@ void UI_ExecuteEvent(ui_element_t* element, ui_event_t event)
 
 	}
 
-	// find QC OnClick
-	dfunction_t* qc_function = ED_FindFunction(event.qc_handler);
+	// send to server
+	// This code is for game version 0.03.1 only, remove it after
+	MSG_WriteByte(&cls.message, clc_stringcmd);
+	MSG_WriteString(&cls.message, "qcrun"); // trailing space required
+	MSG_WriteString(&cls.message, event.qc_handler);
+}
 
-	if (qc_function == NULL)
+void UI_RunEventOnServer()
+{
+	if (cmd_source == src_command)
 	{
-		Host_Error("UI_ExecuteEvent: Tried to call invalid QC event handler %s", event.qc_handler);
+		Con_Warning("qcrun cannot be called from the console");
 		return;
 	}
 
-	// execute it (executes a function number,)
+	if (Cmd_Argc() < 2)
+	{
+		Con_Warning("No function provided");
+		return;
+	}
+
+	char* function = Cmd_Argv(1);
+
+	// find QC OnClick
+	dfunction_t* qc_function = ED_FindFunction(function);
+
+	if (qc_function == NULL)
+	{
+		Host_Error("UI_RunEventOnServer: Tried to call invalid QC event handler %s", function);
+		return;
+	}
+
+	// execute it (executes a function number, so we subtract from the function ptr)
 	PR_ExecuteProgram(qc_function - pr_functions);
 }
 
