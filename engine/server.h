@@ -116,14 +116,21 @@ typedef struct client_s
 #define	MOVETYPE_NONE			0		// never moves
 #define	MOVETYPE_ANGLENOCLIP	1
 #define	MOVETYPE_ANGLECLIP		2
-#define	MOVETYPE_WALK			3		// gravity
-#define	MOVETYPE_STEP			4		// gravity, special edge handling
-#define	MOVETYPE_FLY			5
+#define	MOVETYPE_WALK			3		// players only
+#define	MOVETYPE_STEP			4		// gravity, special edge handling (discrete, not real time unless fall)
+#define	MOVETYPE_FLY			5		// gravity
 #define	MOVETYPE_TOSS			6		// gravity
 #define	MOVETYPE_PUSH			7		// no clip to world, push and crush
 #define	MOVETYPE_NOCLIP			8
-#define	MOVETYPE_FLYMISSILE		9		// extra size to monsters
-#define	MOVETYPE_BOUNCE			10
+#define	MOVETYPE_FLYMISSILE		9		// fly with extra size against monsters
+#define	MOVETYPE_BOUNCE			10		
+#define MOVETYPE_BOUNCEMISSILE	11		// bounce with extra size
+
+// Ranges
+#define RANGE_MELEE				0
+#define RANGE_NEAR				1
+#define RANGE_MID				2
+#define RANGE_FAR				3
 
 // edict->solid values
 #define	SOLID_NOT				0		// no interaction with other objects
@@ -136,26 +143,28 @@ typedef struct client_s
 #define	DEAD_NO					0
 #define	DEAD_DYING				1
 #define	DEAD_DEAD				2
+#define DEAD_RESPAWNABLE		3
 
+// takedamage values
 #define	DAMAGE_NO				0
 #define	DAMAGE_YES				1
 #define	DAMAGE_AIM				2
 
 // edict->flags
 #define	FL_FLY					1
-#define	FL_SWIM					2
-//#define	FL_GLIMPSE				4
+#define	FL_SWIM					
 #define	FL_CONVEYOR				4
-#define	FL_CLIENT				8
+#define	FL_CLIENT				8		// set for all client edicts
 #define	FL_INWATER				16
-#define	FL_MONSTER				32
-#define	FL_GODMODE				64
-#define	FL_NOTARGET				128
-#define	FL_ITEM					256
-#define	FL_ONGROUND				512
+#define	FL_MONSTER				32		// for enter / leave water splash
+#define	FL_GODMODE				64		// player cheat
+#define	FL_NOTARGET				128		// player cheat
+#define	FL_ITEM					256		// extra wide size for bonus items
+#define	FL_ONGROUND				512		// standing on something
 #define	FL_PARTIALGROUND		1024	// not all corners are valid
 #define	FL_WATERJUMP			2048	// player jumping out of water
-#define	FL_JUMPRELEASED			4096	// for jump debouncing
+#define	FL_JUMPRELEASE			4096	// for jump debouncing
+#define FL_SPRINTING			8192	// sprinting
 
 // entity effects
 

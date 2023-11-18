@@ -1870,8 +1870,8 @@ void M_GameOptions_Change (int dir)
 
 	case 2:
 		Cvar_SetValue ("zombie", gamemode.value + dir);
-		if (gamemode.value < GAME_ZOMBIES_MIN_MODE) gamemode.value = GAME_ZOMBIES_MIN_MODE;
-		if (gamemode.value > GAME_ZOMBIES_MAX_MODE) gamemode.value = GAME_ZOMBIES_MAX_MODE;
+		if (gamemode.value < GAME_ZOMBONO_MIN_MODE) gamemode.value = GAME_ZOMBONO_MIN_MODE;
+		if (gamemode.value > GAME_ZOMBONO_MAX_MODE) gamemode.value = GAME_ZOMBONO_MAX_MODE;
 		break;
 	case 3:
 		count = 1;

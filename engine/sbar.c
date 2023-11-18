@@ -927,7 +927,7 @@ void Sbar_IntermissionOverlay (void)
 	
 	GL_SetCanvas(CANVAS_MENU); //johnfitz
 
-	if (gamemode.value == GAME_ZOMBIES_TDM)
+	if (gamemode.value == ZOMBONO_MODE_TDM)
 	{
 		int director_frags = 0, player_frags = 0;
 

@@ -267,7 +267,7 @@ void SV_SendServerinfo (client_t *client)
 	MSG_WriteByte (&client->message, svs.maxclients);
 
 if (gamemode.value == 0.0f)
-		MSG_WriteByte(&client->message, GAME_ZOMBIES);
+		MSG_WriteByte(&client->message, GAME_ZOMBONO);
 	
 
 	sprintf (message, pr_strings+sv.edicts->v.message);

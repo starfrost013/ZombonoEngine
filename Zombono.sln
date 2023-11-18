@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bmp2lmp", "tools\bmp2lmp\bm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mkpak", "tools\mkpak\mkpak.vcxproj", "{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zserver", "game\zombono\zserver\zserver.vcxproj", "{21AA5E2D-7440-4935-AD6B-D27D5258B860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,8 +88,8 @@ Global
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Debug|x64.Build.0 = Debug|x64
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Any CPU.ActiveCfg = Debug|x64
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Any CPU.Build.0 = Debug|x64
-		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Win32.ActiveCfg = Debug|Win32
-		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Win32.Build.0 = Debug|Win32
+		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Win32.ActiveCfg = Playtest|Win32
+		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|Win32.Build.0 = Playtest|Win32
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|x64.ActiveCfg = Debug|x64
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Playtest|x64.Build.0 = Debug|x64
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Release|Any CPU.ActiveCfg = Release|x64
@@ -96,6 +98,24 @@ Global
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Release|Win32.Build.0 = Release|Win32
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Release|x64.ActiveCfg = Release|x64
 		{9DBD8C79-FCBA-453B-9E6B-B914BC5A1377}.Release|x64.Build.0 = Release|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|Any CPU.Build.0 = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|Win32.ActiveCfg = Debug|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|Win32.Build.0 = Debug|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|x64.ActiveCfg = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Debug|x64.Build.0 = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|Any CPU.ActiveCfg = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|Any CPU.Build.0 = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|Win32.ActiveCfg = Debug|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|Win32.Build.0 = Debug|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|x64.ActiveCfg = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Playtest|x64.Build.0 = Debug|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|Any CPU.ActiveCfg = Release|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|Any CPU.Build.0 = Release|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|Win32.ActiveCfg = Release|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|Win32.Build.0 = Release|Win32
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|x64.ActiveCfg = Release|x64
+		{21AA5E2D-7440-4935-AD6B-D27D5258B860}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

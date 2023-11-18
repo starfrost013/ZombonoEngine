@@ -368,5 +368,8 @@
     <ClInclude Include="chase.h">
       <Filter>Source Files\Client</Filter>
     </ClInclude>
+    <ClInclude Include="progdefs.h">
+      <Filter>Source Files\Server</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

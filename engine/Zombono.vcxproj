@@ -309,6 +309,7 @@
     <ClInclude Include="net_dgrm.h" />
     <ClInclude Include="net_loop.h" />
     <ClInclude Include="net_wins.h" />
+    <ClInclude Include="progdefs.h" />
     <ClInclude Include="progs.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="pr_comp.h" />

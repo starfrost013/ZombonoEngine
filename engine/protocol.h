@@ -122,21 +122,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // game types sent by serverinfo
 // always use the same gametype...for now...
-#define GAME_ZOMBIES		2	//Zombono mode
+#define GAME_ZOMBONO		2	//Zombono mode
 
-#define GAME_ZOMBIES_MIN_MODE	0	//Zombono minimum gamemode
-#define GAME_ZOMBIES_MAX_MODE	0	//Zombono maximum gamemode 
+#define GAME_ZOMBONO_MIN_MODE	0	//Zombono minimum gamemode
+#define GAME_ZOMBONO_MAX_MODE	0	//Zombono maximum gamemode 
 
 // These are bad ideas :v
-#define GAME_ZOMBIES_TDM		0	// Team Deathmatch
-#define GAME_ZOMBIES_HOSTAGE	1	// Hostage Survival/Standoff/Kill-80
-#define GAME_ZOMBIES_WAVES		2	// Director-controlled Waves
-#define GAME_ZOMBIES_COOP		3	// Co-op against ???? ZOMBIES ???
+#define ZOMBONO_MODE_TDM		0	// Team Deathmatch
+#define ZOMBONO_MODE_HOSTAGE	1	// Hostage Survival/Standoff/Kill
+#define ZOMBONO_MODE_WAVES		2	// Director-controlled Waves
+#define ZOMBONO_MODE_COOP		3	// Co-op against ???? ZOMBIES ???
+
+#define ZOMBONO_MODE_COUNT		4
+
+// 
+// Moved here from defs.qc
+//
+
+#define CHAN_AUTO				0
+#define CHAN_WEAPON				1
+#define CHAN_VOICE				2
+#define CHAN_ITEM				3
+#define CHAN_BODY				4
+
+#define ATTN_NONE				0
+#define ATTN_NORM				1
+#define ATTN_IDLE				2
+#define ATTN_STATIC				3
+
+// update types
+
+#define UPDATE_GENERAL			0
+#define UPDATE_STATIC			1
+#define UPDATE_BINARY			2
+#define UPDATE_TEMP				3
+
+// messages
+#define MSG_BROADCAST = 0; // unreliable to all
+#define MSG_ONE = 1; // reliable to one(msg_entity)
+#define MSG_ALL = 2; // reliable to all
+#define MSG_INIT = 3; // write to the init char*
 
 //==================
 // note that there are some defs.qc that mirror to these numbers
 // also related to svc_strings[] in cl_parse
 //==================
+
+// MESSAGES 
 
 //
 // server to client
