@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -34,10 +35,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#if defined(__linux__)
 #include <sys/vt.h>
+#endif
 #include <stdarg.h>
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 
 #include "../ref_gl/gl_local.h"
 
@@ -48,10 +52,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <GL/glx.h>
 
+#include <X11/Xatom.h>
 #include <X11/keysym.h>
 #include <X11/cursorfont.h>
 
-#include <X11/extensions/xf86dga.h>
+#include <X11/extensions/Xxf86dga.h>
 #include <X11/extensions/xf86vmode.h>
 
 glwstate_t glw_state;
@@ -59,6 +64,7 @@ glwstate_t glw_state;
 static Display *dpy = NULL;
 static int scrnum;
 static Window win;
+static Atom winDeleteAtom;
 static GLXContext ctx = NULL;
 
 #define KEY_MASK (KeyPressMask | KeyReleaseMask)
@@ -84,7 +90,7 @@ static cvar_t	*in_dgamouse;
 
 static cvar_t	*r_fakeFullscreen;
 
-static XF86VidModeModeInfo **vidmodes;
+static XF86VidModeModeInfo **vidmodes = NULL;
 static int default_dotclock_vidmode;
 static int num_vidmodes;
 static qboolean vidmode_active = false;
@@ -449,11 +455,9 @@ static int XLateKey(XKeyEvent *ev)
 #endif
 
 		default:
-			key = *(unsigned char*)buf;
-			if (key >= 'A' && key <= 'Z')
-				key = key - 'A' + 'a';
-			break;
-	} 
+			if(keysym >= 'A' && keysym <= 'Z') return keysym + 32;
+				return keysym;
+	}
 
 	return key;
 }
@@ -503,24 +507,32 @@ static void HandleEvents(void)
 
 		case ButtonPress:
 			b=-1;
-			if (event.xbutton.button == 1)
+			if (event.xbutton.button == Button1)
 				b = 0;
-			else if (event.xbutton.button == 2)
+			else if (event.xbutton.button == Button2)
 				b = 2;
-			else if (event.xbutton.button == 3)
+			else if (event.xbutton.button == Button3)
 				b = 1;
+			else if (event.xbutton.button == Button4)
+				b = 40;
+			else if (event.xbutton.button == Button5)
+				b = 39;
 			if (b>=0 && in_state && in_state->Key_Event_fp)
 				in_state->Key_Event_fp (K_MOUSE1 + b, true);
 			break;
 
 		case ButtonRelease:
 			b=-1;
-			if (event.xbutton.button == 1)
+			if (event.xbutton.button == Button1)
 				b = 0;
-			else if (event.xbutton.button == 2)
+			else if (event.xbutton.button == Button2)
 				b = 2;
-			else if (event.xbutton.button == 3)
+			else if (event.xbutton.button == Button3)
 				b = 1;
+			else if (event.xbutton.button == Button4)
+				b = 40;
+			else if (event.xbutton.button == Button5)
+				b = 39;
 			if (b>=0 && in_state && in_state->Key_Event_fp)
 				in_state->Key_Event_fp (K_MOUSE1 + b, false);
 			break;
@@ -533,6 +545,10 @@ static void HandleEvents(void)
 		case ConfigureNotify :
 			win_x = event.xconfigure.x;
 			win_y = event.xconfigure.y;
+			break;
+		case ClientMessage:
+			if ((Atom)event.xclient.data.l[0] == winDeleteAtom && in_state && in_state->Quit_fp)
+				in_state->Quit_fp();
 			break;
 		}
 	}
@@ -660,8 +676,10 @@ int GLimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen )
 
 	if (vidmode_ext) {
 		int best_fit, best_dist, dist, x, y;
-		
-		XF86VidModeGetAllModeLines(dpy, scrnum, &num_vidmodes, &vidmodes);
+		vidmode_active = false;
+
+		if(!vidmodes)
+			XF86VidModeGetAllModeLines(dpy, scrnum, &num_vidmodes, &vidmodes);
 
 		// Are we going fullscreen?  If so, let's change video mode
 		if (fullscreen && !r_fakeFullscreen->value) {
@@ -693,19 +711,24 @@ int GLimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen )
 				// Move the viewport to top left
 				XF86VidModeSetViewPort(dpy, scrnum, 0, 0);
 			} else
+			{
 				fullscreen = 0;
+				ri.Cvar_Set("vid_fullscreen", "0");
+				cvar_t *vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
+				vid_fullscreen->modified = false;
+			}
 		}
 	}
 
 	/* window attributes */
+	memset(&attr, 0, sizeof(attr));
 	attr.background_pixel = 0;
 	attr.border_pixel = 0;
 	attr.colormap = XCreateColormap(dpy, root, visinfo->visual, AllocNone);
 	attr.event_mask = X_MASK;
 	if (vidmode_active) {
-		mask = CWBackPixel | CWColormap | CWSaveUnder | CWBackingStore | 
-			CWEventMask | CWOverrideRedirect;
-		attr.override_redirect = True;
+		mask = CWBackPixel | CWColormap | CWSaveUnder | CWBackingStore | CWEventMask;// | CWOverrideRedirect;
+		//attr.override_redirect = True;
 		attr.backing_store = NotUseful;
 		attr.save_under = False;
 	} else
@@ -715,6 +738,39 @@ int GLimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen )
 						0, visinfo->depth, InputOutput,
 						visinfo->visual, mask, &attr);
 	XMapWindow(dpy, win);
+	XStoreName(dpy, win, "Quake 2 (OpenGL) "CPUSTRING);
+
+	XSizeHints *hints = XAllocSizeHints();
+	hints->flags=PMinSize;
+	hints->min_width=width;
+	hints->min_height=height;
+	if(!fullscreen)
+	{
+		hints->flags |= PMaxSize;
+		hints->max_width=width;
+		hints->max_height=height;
+	}
+	XSetWMNormalHints(dpy, win, hints);
+	XFree(hints);
+
+	Atom state_atom = XInternAtom(dpy, "_NET_WM_STATE", true);
+	Atom fs_atom = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", true);
+	winDeleteAtom = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(dpy, win, &winDeleteAtom, 1);
+	// Set the fullscreen property
+	XChangeProperty(dpy, win, state_atom, XA_ATOM, 32, PropModeReplace, (unsigned char *)&fs_atom, 1);
+
+	XEvent ev;
+	memset(&ev, 0, sizeof(ev));
+	ev.xany.type = ClientMessage;
+	ev.xclient.window = win;
+	ev.xclient.message_type = state_atom;
+	ev.xclient.format = 32;
+	ev.xclient.data.l[0] = fullscreen ? 1 : 0;
+	ev.xclient.data.l[1] = fs_atom;
+
+	// send fullscreen event
+	XSendEvent(dpy, root, False, SubstructureNotifyMask | SubstructureRedirectMask, &ev);
 
 	if (vidmode_active) {
 		XMoveWindow(dpy, win, 0, 0);
@@ -801,8 +857,11 @@ void GLimp_BeginFrame( float camera_seperation )
 */
 void GLimp_EndFrame (void)
 {
+  if(qglFlush)
+    {
 	qglFlush();
 	qglXSwapBuffers(dpy, win);
+    }
 }
 
 /*

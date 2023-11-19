@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <dirent.h>
@@ -68,9 +69,16 @@ int Hunk_End (void)
 {
 	byte *n;
 
+#if defined(__linux__)
 	n = mremap(membase, maxhunksize, curhunksize + sizeof(int), 0);
 	if (n != membase)
 		Sys_Error("Hunk_End:  Could not remap virtual block (%d)", errno);
+#else
+	size_t nchunk = curhunksize + sizeof(int);
+	size_t diff = maxhunksize - nchunk;
+	if (munmap(membase + nchunk, diff) != 0)
+		Sys_Error("Hunk_End:  Could not shrink virtual block (%d)", errno);
+#endif
 	*((int *)membase) = curhunksize + sizeof(int);
 	
 	return curhunksize;
@@ -186,7 +194,7 @@ char *Sys_FindFirst (char *path, unsigned musthave, unsigned canhave)
 //			if (*findpattern)
 //				printf("%s matched %s\n", findpattern, d->d_name);
 			if (CompareAttributes(findbase, d->d_name, musthave, canhave)) {
-				sprintf (findpath, "%s/%s", findbase, d->d_name);
+				snprintf (findpath, MAX_OSPATH, "%s/%s", findbase, d->d_name);
 				return findpath;
 			}
 		}
@@ -205,7 +213,7 @@ char *Sys_FindNext (unsigned musthave, unsigned canhave)
 //			if (*findpattern)
 //				printf("%s matched %s\n", findpattern, d->d_name);
 			if (CompareAttributes(findbase, d->d_name, musthave, canhave)) {
-				sprintf (findpath, "%s/%s", findbase, d->d_name);
+				snprintf (findpath, MAX_OSPATH, "%s/%s", findbase, d->d_name);
 				return findpath;
 			}
 		}

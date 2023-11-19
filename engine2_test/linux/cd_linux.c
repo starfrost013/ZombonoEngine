@@ -31,7 +31,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <time.h>
 #include <errno.h>
 
+#if defined(__linux__)
 #include <linux/cdrom.h>
+#else
+#include <sys/cdio.h>
+#include <sys/disklabel.h>
+#define CDROMREADTOCHDR CDIOREADTOCHEADER
+#define CDROMREADTOCENTRY CDIOREADTOCENTRYS
+#define CDROMPLAYTRKIND CDIOCPLAYTRACKS
+#define CDROMCLOSETRAY CDIOCCLOSE
+#define CDROMEJECT CDIOCEJECT
+#define CDROMRESUME CDIOCRESUME
+#define CDROMSTOP CDIOCSTOP
+#define CDROMPAUSE CDIOCPAUSE
+#define CDROMSUBCHNL CDIOCREADSUBCHANNEL
+#endif
 
 #include "../client/client.h"
 
@@ -51,7 +65,6 @@ static int cdfile = -1;
 //static char cd_dev[64] = "/dev/cdrom";
 
 cvar_t	*cd_volume;
-cvar_t *cd_nocd;
 cvar_t *cd_dev;
 
 void CDAudio_Pause(void);
@@ -77,7 +90,11 @@ static void CDAudio_CloseDoor(void)
 
 static int CDAudio_GetAudioDiskInfo(void)
 {
+#if defined(__linux__)
 	struct cdrom_tochdr tochdr;
+#else
+	struct ioc_toc_header tochdr;
+#endif
 
 	cdValid = false;
 
@@ -87,6 +104,7 @@ static int CDAudio_GetAudioDiskInfo(void)
 	  return -1;
     }
 
+#if defined(__linux__)
 	if (tochdr.cdth_trk0 < 1)
 	{
 		Com_DPrintf("CDAudio: no music tracks\n");
@@ -95,24 +113,39 @@ static int CDAudio_GetAudioDiskInfo(void)
 
 	cdValid = true;
 	maxTrack = tochdr.cdth_trk1;
+#else
+	if (tochdr.starting_track < 1)
+	{
+		Com_DPrintf("CDAudio: no music tracks\n");
+		return -1;
+	}
+
+	cdValid = true;
+	maxTrack = tochdr.ending_track;
+#endif
 
 	return 0;
 }
 
 
-void CDAudio_Play(int track, qboolean looping)
+qboolean CDAudio_Play(int track, qboolean looping)
 {
+#if defined(__linux__)
 	struct cdrom_tocentry entry;
 	struct cdrom_ti ti;
+#else
+	struct ioc_read_toc_entry entry;
+	struct ioc_play_track ti;
+#endif
 
 	if (cdfile == -1 || !enabled)
-		return;
+		return false;
 	
 	if (!cdValid)
 	{
 		CDAudio_GetAudioDiskInfo();
 		if (!cdValid)
-			return;
+			return false;
 	}
 
 	track = remap[track];
@@ -120,40 +153,54 @@ void CDAudio_Play(int track, qboolean looping)
 	if (track < 1 || track > maxTrack)
 	{
 		Com_DPrintf("CDAudio: Bad track number %u.\n", track);
-		return;
+		return false;
 	}
 
 	// don't try to play a non-audio track
+#if defined(__linux__)
 	entry.cdte_track = track;
 	entry.cdte_format = CDROM_MSF;
-    if ( ioctl(cdfile, CDROMREADTOCENTRY, &entry) == -1 )
+#else
+	entry.starting_track = track;
+	entry.address_format = CD_MSF_FORMAT;
+#endif
+	if ( ioctl(cdfile, CDROMREADTOCENTRY, &entry) == -1 )
 	{
 		Com_DPrintf("ioctl cdromreadtocentry failed\n");
-		return;
+		return false;
 	}
+#if defined(__linux__)
 	if (entry.cdte_ctrl == CDROM_DATA_TRACK)
 	{
 		Com_Printf("CDAudio: track %i is not audio\n", track);
-		return;
+		return false;
 	}
+#endif
 
 	if (playing)
 	{
 		if (playTrack == track)
-			return;
+			return true;
 		CDAudio_Stop();
 	}
 
+#if defined(__linux__)
 	ti.cdti_trk0 = track;
 	ti.cdti_trk1 = track;
 	ti.cdti_ind0 = 1;
 	ti.cdti_ind1 = 99;
+#else
+	ti.start_track = track;
+	ti.end_track = track;
+	ti.start_index = 1;
+	ti.end_index = 99;
+#endif
 
 	if ( ioctl(cdfile, CDROMPLAYTRKIND, &ti) == -1 ) 
-    {
+	{
 		Com_DPrintf("ioctl cdromplaytrkind failed\n");
-		return;
-    }
+		return false;
+	}
 
 	if ( ioctl(cdfile, CDROMRESUME) == -1 ) 
 		Com_DPrintf("ioctl cdromresume failed\n");
@@ -164,6 +211,8 @@ void CDAudio_Play(int track, qboolean looping)
 
 	if (cd_volume->value == 0.0)
 		CDAudio_Pause ();
+
+	return true;
 }
 
 
@@ -334,7 +383,11 @@ static void CD_f (void)
 
 void CDAudio_Update(void)
 {
+#if defined(__linux__)
 	struct cdrom_subchnl subchnl;
+#else
+	struct ioc_read_subchannel subchnl;
+#endif
 	static time_t lastchk;
 
 	if (cdfile == -1 || !enabled)
@@ -358,14 +411,22 @@ void CDAudio_Update(void)
 
 	if (playing && lastchk < time(NULL)) {
 		lastchk = time(NULL) + 2; //two seconds between chks
+#if defined(__linux__)
 		subchnl.cdsc_format = CDROM_MSF;
+#else
+		subchnl.data_format = CD_MSF_FORMAT;
+#endif
 		if (ioctl(cdfile, CDROMSUBCHNL, &subchnl) == -1 ) {
 			Com_DPrintf("ioctl cdromsubchnl failed\n");
 			playing = false;
 			return;
 		}
+#if defined(__linux__)
 		if (subchnl.cdsc_audiostatus != CDROM_AUDIO_PLAY &&
 			subchnl.cdsc_audiostatus != CDROM_AUDIO_PAUSED) {
+#else
+		if (subchnl.track != playTrack) {
+#endif
 			playing = false;
 			if (playLooping)
 				CDAudio_Play(playTrack, true);
@@ -383,11 +444,9 @@ int CDAudio_Init(void)
 	if (cv->value)
 		return -1;
 
-	cd_nocd = Cvar_Get ("cd_nocd", "0", CVAR_ARCHIVE );
-	if ( cd_nocd->value)
-		return -1;
-
 	cd_volume = Cvar_Get ("cd_volume", "1", CVAR_ARCHIVE);
+	if ( cd_volume->value == 0 )
+		return -1;
 
 	cd_dev = Cvar_Get("cd_dev", "/dev/cdrom", CVAR_ARCHIVE);
 

@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1081,62 +1082,6 @@ void SP_misc_eastertank (edict_t *ent)
 	gi.linkentity (ent);
 }
 
-/*QUAKED misc_easterchick (1 .5 0) (-32 -32 0) (32 32 32)
-*/
-
-
-void misc_easterchick_think (edict_t *self)
-{
-	if (++self->s.frame < 247)
-		self->nextthink = level.time + FRAMETIME;
-	else
-	{		
-		self->s.frame = 208;
-		self->nextthink = level.time + FRAMETIME;
-	}
-}
-
-void SP_misc_easterchick (edict_t *ent)
-{
-	ent->movetype = MOVETYPE_NONE;
-	ent->solid = SOLID_BBOX;
-	VectorSet (ent->mins, -32, -32, 0);
-	VectorSet (ent->maxs, 32, 32, 32);
-	ent->s.modelindex = gi.modelindex ("models/monsters/bitch/tris.md2");
-	ent->s.frame = 208;
-	ent->think = misc_easterchick_think;
-	ent->nextthink = level.time + 2 * FRAMETIME;
-	gi.linkentity (ent);
-}
-
-/*QUAKED misc_easterchick2 (1 .5 0) (-32 -32 0) (32 32 32)
-*/
-
-
-void misc_easterchick2_think (edict_t *self)
-{
-	if (++self->s.frame < 287)
-		self->nextthink = level.time + FRAMETIME;
-	else
-	{		
-		self->s.frame = 248;
-		self->nextthink = level.time + FRAMETIME;
-	}
-}
-
-void SP_misc_easterchick2 (edict_t *ent)
-{
-	ent->movetype = MOVETYPE_NONE;
-	ent->solid = SOLID_BBOX;
-	VectorSet (ent->mins, -32, -32, 0);
-	VectorSet (ent->maxs, 32, 32, 32);
-	ent->s.modelindex = gi.modelindex ("models/monsters/bitch/tris.md2");
-	ent->s.frame = 248;
-	ent->think = misc_easterchick2_think;
-	ent->nextthink = level.time + 2 * FRAMETIME;
-	gi.linkentity (ent);
-}
-
 
 /*QUAKED monster_commander_body (1 .5 0) (-32 -32 0) (32 32 48)
 Not really a monster, this is the Tank Commander's decapitated body.
@@ -1263,182 +1208,6 @@ void SP_misc_deadsoldier (edict_t *ent)
 
 	gi.linkentity (ent);
 }
-
-/*QUAKED misc_viper (1 .5 0) (-16 -16 0) (16 16 32)
-This is the Viper for the flyby bombing.
-It is trigger_spawned, so you must have something use it for it to show up.
-There must be a path for it to follow once it is activated.
-
-"speed"		How fast the Viper should fly
-*/
-
-extern void train_use (edict_t *self, edict_t *other, edict_t *activator);
-extern void func_train_find (edict_t *self);
-
-void misc_viper_use  (edict_t *self, edict_t *other, edict_t *activator)
-{
-	self->svflags &= ~SVF_NOCLIENT;
-	self->use = train_use;
-	train_use (self, other, activator);
-}
-
-void SP_misc_viper (edict_t *ent)
-{
-	if (!ent->target)
-	{
-		gi.dprintf ("misc_viper without a target at %s\n", vtos(ent->absmin));
-		G_FreeEdict (ent);
-		return;
-	}
-
-	if (!ent->speed)
-		ent->speed = 300;
-
-	ent->movetype = MOVETYPE_PUSH;
-	ent->solid = SOLID_NOT;
-	ent->s.modelindex = gi.modelindex ("models/ships/viper/tris.md2");
-	VectorSet (ent->mins, -16, -16, 0);
-	VectorSet (ent->maxs, 16, 16, 32);
-
-	ent->think = func_train_find;
-	ent->nextthink = level.time + FRAMETIME;
-	ent->use = misc_viper_use;
-	ent->svflags |= SVF_NOCLIENT;
-	ent->moveinfo.accel = ent->moveinfo.decel = ent->moveinfo.speed = ent->speed;
-
-	gi.linkentity (ent);
-}
-
-
-/*QUAKED misc_bigviper (1 .5 0) (-176 -120 -24) (176 120 72) 
-This is a large stationary viper as seen in Paul's intro
-*/
-void SP_misc_bigviper (edict_t *ent)
-{
-	ent->movetype = MOVETYPE_NONE;
-	ent->solid = SOLID_BBOX;
-	VectorSet (ent->mins, -176, -120, -24);
-	VectorSet (ent->maxs, 176, 120, 72);
-	ent->s.modelindex = gi.modelindex ("models/ships/bigviper/tris.md2");
-	gi.linkentity (ent);
-}
-
-
-/*QUAKED misc_viper_bomb (1 0 0) (-8 -8 -8) (8 8 8)
-"dmg"	how much boom should the bomb make?
-*/
-void misc_viper_bomb_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
-{
-	G_UseTargets (self, self->activator);
-
-	self->s.origin[2] = self->absmin[2] + 1;
-	T_RadiusDamage (self, self, self->dmg, NULL, self->dmg+40, MOD_BOMB);
-	BecomeExplosion2 (self);
-}
-
-void misc_viper_bomb_prethink (edict_t *self)
-{
-	vec3_t	v;
-	float	diff;
-
-	self->groundentity = NULL;
-
-	diff = self->timestamp - level.time;
-	if (diff < -1.0)
-		diff = -1.0;
-
-	VectorScale (self->moveinfo.dir, 1.0 + diff, v);
-	v[2] = diff;
-
-	diff = self->s.angles[2];
-	vectoangles (v, self->s.angles);
-	self->s.angles[2] = diff + 10;
-}
-
-void misc_viper_bomb_use (edict_t *self, edict_t *other, edict_t *activator)
-{
-	edict_t	*viper;
-
-	self->solid = SOLID_BBOX;
-	self->svflags &= ~SVF_NOCLIENT;
-	self->s.effects |= EF_ROCKET;
-	self->use = NULL;
-	self->movetype = MOVETYPE_TOSS;
-	self->prethink = misc_viper_bomb_prethink;
-	self->touch = misc_viper_bomb_touch;
-	self->activator = activator;
-
-	viper = G_Find (NULL, FOFS(classname), "misc_viper");
-	VectorScale (viper->moveinfo.dir, viper->moveinfo.speed, self->velocity);
-
-	self->timestamp = level.time;
-	VectorCopy (viper->moveinfo.dir, self->moveinfo.dir);
-}
-
-void SP_misc_viper_bomb (edict_t *self)
-{
-	self->movetype = MOVETYPE_NONE;
-	self->solid = SOLID_NOT;
-	VectorSet (self->mins, -8, -8, -8);
-	VectorSet (self->maxs, 8, 8, 8);
-
-	self->s.modelindex = gi.modelindex ("models/objects/bomb/tris.md2");
-
-	if (!self->dmg)
-		self->dmg = 1000;
-
-	self->use = misc_viper_bomb_use;
-	self->svflags |= SVF_NOCLIENT;
-
-	gi.linkentity (self);
-}
-
-
-/*QUAKED misc_strogg_ship (1 .5 0) (-16 -16 0) (16 16 32)
-This is a Storgg ship for the flybys.
-It is trigger_spawned, so you must have something use it for it to show up.
-There must be a path for it to follow once it is activated.
-
-"speed"		How fast it should fly
-*/
-
-extern void train_use (edict_t *self, edict_t *other, edict_t *activator);
-extern void func_train_find (edict_t *self);
-
-void misc_strogg_ship_use  (edict_t *self, edict_t *other, edict_t *activator)
-{
-	self->svflags &= ~SVF_NOCLIENT;
-	self->use = train_use;
-	train_use (self, other, activator);
-}
-
-void SP_misc_strogg_ship (edict_t *ent)
-{
-	if (!ent->target)
-	{
-		gi.dprintf ("%s without a target at %s\n", ent->classname, vtos(ent->absmin));
-		G_FreeEdict (ent);
-		return;
-	}
-
-	if (!ent->speed)
-		ent->speed = 300;
-
-	ent->movetype = MOVETYPE_PUSH;
-	ent->solid = SOLID_NOT;
-	ent->s.modelindex = gi.modelindex ("models/ships/strogg1/tris.md2");
-	VectorSet (ent->mins, -16, -16, 0);
-	VectorSet (ent->maxs, 16, 16, 32);
-
-	ent->think = func_train_find;
-	ent->nextthink = level.time + FRAMETIME;
-	ent->use = misc_strogg_ship_use;
-	ent->svflags |= SVF_NOCLIENT;
-	ent->moveinfo.accel = ent->moveinfo.decel = ent->moveinfo.speed = ent->speed;
-
-	gi.linkentity (ent);
-}
-
 
 /*QUAKED misc_satellite_dish (1 .5 0) (-64 -64 0) (64 64 128)
 */
@@ -1580,7 +1349,7 @@ void target_string_use (edict_t *self, edict_t *other, edict_t *activator)
 	int		n, l;
 	char	c;
 
-	l = strlen(self->message);
+	l = (int)strlen(self->message);
 	for (e = self->teammaster; e; e = e->teamchain)
 	{
 		if (!e->count)

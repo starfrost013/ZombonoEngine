@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,14 +20,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // r_main.c
 #include "gl_local.h"
+#include <ctype.h>
 
 void R_Clear (void);
+
+#ifdef __linux__
+extern char *strlwr (char *s);
+#endif
 
 viddef_t	vid;
 
 refimport_t	ri;
 
-int GL_TEXTURE0, GL_TEXTURE1;
+int gl_texture0, gl_texture1;
 
 model_t		*r_worldmodel;
 
@@ -406,7 +412,7 @@ void R_DrawEntitiesOnList (void)
 ** GL_DrawParticles
 **
 */
-void GL_DrawParticles( int num_particles, const particle_t particles[], const unsigned colortable[768] )
+void GL_DrawParticles( int num_particles, const particle_t particles[], const unsigned *colortable )
 {
 	const particle_t *p;
 	int				i;
@@ -1013,7 +1019,12 @@ void R_Register( void )
 	gl_flashblend = ri.Cvar_Get ("gl_flashblend", "0", 0);
 	gl_playermip = ri.Cvar_Get ("gl_playermip", "0", 0);
 	gl_monolightmap = ri.Cvar_Get( "gl_monolightmap", "0", 0 );
+#ifdef _WIN32
 	gl_driver = ri.Cvar_Get( "gl_driver", "opengl32", CVAR_ARCHIVE );
+#endif
+#ifdef __linux__
+	gl_driver = ri.Cvar_Get( "gl_driver", "libGL.so", CVAR_ARCHIVE );
+#endif
 	gl_texturemode = ri.Cvar_Get( "gl_texturemode", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
 	gl_texturealphamode = ri.Cvar_Get( "gl_texturealphamode", "default", CVAR_ARCHIVE );
 	gl_texturesolidmode = ri.Cvar_Get( "gl_texturesolidmode", "default", CVAR_ARCHIVE );
@@ -1102,7 +1113,7 @@ qboolean R_SetMode (void)
 R_Init
 ===============
 */
-int R_Init( void *hinstance, void *hWnd )
+qboolean R_Init( void *hinstance, void *hWnd )
 {	
 	char renderer_buffer[1000];
 	char vendor_buffer[1000];
@@ -1126,14 +1137,14 @@ int R_Init( void *hinstance, void *hWnd )
 	{
 		QGL_Shutdown();
         ri.Con_Printf (PRINT_ALL, "ref_gl::R_Init() - could not load \"%s\"\n", gl_driver->string );
-		return -1;
+		return false;
 	}
 
 	// initialize OS-specific parts of OpenGL
 	if ( !GLimp_Init( hinstance, hWnd ) )
 	{
 		QGL_Shutdown();
-		return -1;
+		return false;
 	}
 
 	// set our "safe" modes
@@ -1144,7 +1155,7 @@ int R_Init( void *hinstance, void *hWnd )
 	{
 		QGL_Shutdown();
         ri.Con_Printf (PRINT_ALL, "ref_gl::R_Init() - could not R_SetMode()\n" );
-		return -1;
+		return false;
 	}
 
 	ri.Vid_MenuInit();
@@ -1318,7 +1329,7 @@ int R_Init( void *hinstance, void *hWnd )
 		if ( gl_ext_palettedtexture->value )
 		{
 			ri.Con_Printf( PRINT_ALL, "...using GL_EXT_shared_texture_palette\n" );
-			qglColorTableEXT = ( void ( APIENTRY * ) ( int, int, int, int, int, const void * ) ) qwglGetProcAddress( "glColorTableEXT" );
+			qglColorTableEXT = ( void ( APIENTRY * ) ( GLenum, GLenum, GLsizei, GLenum, GLenum, const GLvoid * ) ) qwglGetProcAddress( "glColorTableEXT" );
 		}
 		else
 		{
@@ -1338,8 +1349,8 @@ int R_Init( void *hinstance, void *hWnd )
 			qglMTexCoord2fSGIS = ( void * ) qwglGetProcAddress( "glMultiTexCoord2fARB" );
 			qglActiveTextureARB = ( void * ) qwglGetProcAddress( "glActiveTextureARB" );
 			qglClientActiveTextureARB = ( void * ) qwglGetProcAddress( "glClientActiveTextureARB" );
-			GL_TEXTURE0 = GL_TEXTURE0_ARB;
-			GL_TEXTURE1 = GL_TEXTURE1_ARB;
+			gl_texture0 = GL_TEXTURE0_ARB;
+			gl_texture1 = GL_TEXTURE1_ARB;
 		}
 		else
 		{
@@ -1362,8 +1373,8 @@ int R_Init( void *hinstance, void *hWnd )
 			ri.Con_Printf( PRINT_ALL, "...using GL_SGIS_multitexture\n" );
 			qglMTexCoord2fSGIS = ( void * ) qwglGetProcAddress( "glMTexCoord2fSGIS" );
 			qglSelectTextureSGIS = ( void * ) qwglGetProcAddress( "glSelectTextureSGIS" );
-			GL_TEXTURE0 = GL_TEXTURE0_SGIS;
-			GL_TEXTURE1 = GL_TEXTURE1_SGIS;
+			gl_texture0 = GL_TEXTURE0_SGIS;
+			gl_texture1 = GL_TEXTURE1_SGIS;
 		}
 		else
 		{
@@ -1392,6 +1403,8 @@ int R_Init( void *hinstance, void *hWnd )
 	err = qglGetError();
 	if ( err != GL_NO_ERROR )
 		ri.Con_Printf (PRINT_ALL, "glGetError() = 0x%x\n", err);
+
+    return true;
 }
 
 /*
@@ -1539,6 +1552,16 @@ void R_BeginFrame( float camera_separation )
 	// clear screen if desired
 	//
 	R_Clear ();
+}
+
+/*
+=============
+R_EndWorldRenderpass
+=============
+*/
+void R_EndWorldRenderpass ( void )
+{
+	// old OpenGL renderer has only one pass
 }
 
 /*
@@ -1708,6 +1731,7 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.CinematicSetPalette = R_SetPalette;
 	re.BeginFrame = R_BeginFrame;
 	re.EndFrame = GLimp_EndFrame;
+	re.EndWorldRenderpass = R_EndWorldRenderpass;
 
 	re.AppActivate = GLimp_AppActivate;
 
@@ -1725,7 +1749,7 @@ void Sys_Error (char *error, ...)
 	char		text[1024];
 
 	va_start (argptr, error);
-	vsprintf (text, error, argptr);
+	vsnprintf (text, 1024, error, argptr);
 	va_end (argptr);
 
 	ri.Sys_Error (ERR_FATAL, "%s", text);
@@ -1737,7 +1761,7 @@ void Com_Printf (char *fmt, ...)
 	char		text[1024];
 
 	va_start (argptr, fmt);
-	vsprintf (text, fmt, argptr);
+	vsnprintf (text, 1024, fmt, argptr);
 	va_end (argptr);
 
 	ri.Con_Printf (PRINT_ALL, "%s", text);

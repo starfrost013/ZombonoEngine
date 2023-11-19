@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "client.h"
+#include <ctype.h>
 
 /*
 
@@ -25,9 +27,8 @@ key up events are sent even if in console mode
 
 */
 
-
 #define		MAXCMDLINE	256
-char	key_lines[32][MAXCMDLINE];
+char	key_lines[128][MAXCMDLINE];
 int		key_linepos;
 int		shift_down=false;
 int	anykeydown;
@@ -84,10 +85,13 @@ keyname_t keynames[] =
 	{"PGUP", K_PGUP},
 	{"HOME", K_HOME},
 	{"END", K_END},
+	{"CMD", K_CMD},
 
 	{"MOUSE1", K_MOUSE1},
 	{"MOUSE2", K_MOUSE2},
 	{"MOUSE3", K_MOUSE3},
+	{"MOUSE4", K_MOUSE4},
+	{"MOUSE5", K_MOUSE5},
 
 	{"JOY1", K_JOY1},
 	{"JOY2", K_JOY2},
@@ -176,7 +180,7 @@ void CompleteCommand (void)
 	{
 		key_lines[edit_line][1] = '/';
 		strcpy (key_lines[edit_line]+2, cmd);
-		key_linepos = strlen(cmd)+2;
+		key_linepos = (int)strlen(cmd)+2;
 		key_lines[edit_line][key_linepos] = ' ';
 		key_linepos++;
 		key_lines[edit_line][key_linepos] = 0;
@@ -251,7 +255,7 @@ void Key_Console (int key)
 
 			strtok( cbd, "\n\r\b" );
 
-			i = strlen( cbd );
+			i = (int)strlen( cbd );
 			if ( i + key_linepos >= MAXCMDLINE)
 				i= MAXCMDLINE - key_linepos;
 
@@ -319,7 +323,7 @@ void Key_Console (int key)
 		if (history_line == edit_line)
 			history_line = (edit_line+1)&31;
 		strcpy(key_lines[edit_line], key_lines[history_line]);
-		key_linepos = strlen(key_lines[edit_line]);
+		key_linepos = (int)strlen(key_lines[edit_line]);
 		return;
 	}
 
@@ -341,18 +345,18 @@ void Key_Console (int key)
 		else
 		{
 			strcpy(key_lines[edit_line], key_lines[history_line]);
-			key_linepos = strlen(key_lines[edit_line]);
+			key_linepos = (int)strlen(key_lines[edit_line]);
 		}
 		return;
 	}
 
-	if (key == K_PGUP || key == K_KP_PGUP )
+	if (key == K_PGUP || key == K_MWHEELUP || key == K_KP_PGUP )
 	{
 		con.display -= 2;
 		return;
 	}
 
-	if (key == K_PGDN || key == K_KP_PGDN ) 
+	if (key == K_PGDN || key == K_MWHEELDOWN || key == K_KP_PGDN )
 	{
 		con.display += 2;
 		if (con.display > con.current)
@@ -517,7 +521,7 @@ void Key_SetBinding (int keynum, char *binding)
 	}
 			
 // allocate memory for new binding
-	l = strlen (binding);	
+	l = (int)strlen (binding);
 	new = Z_Malloc (l+1);
 	strcpy (new, binding);
 	new[l] = 0;
@@ -646,7 +650,7 @@ void Key_Init (void)
 {
 	int		i;
 
-	for (i=0 ; i<32 ; i++)
+	for (i=0 ; i<128 ; i++)
 	{
 		key_lines[i][0] = ']';
 		key_lines[i][1] = 0;
@@ -678,6 +682,8 @@ void Key_Init (void)
 	consolekeys[K_KP_PGUP] = true;
 	consolekeys[K_PGDN] = true;
 	consolekeys[K_KP_PGDN] = true;
+	consolekeys[K_MWHEELUP] = true;
+	consolekeys[K_MWHEELDOWN] = true;
 	consolekeys[K_SHIFT] = true;
 	consolekeys[K_INS] = true;
 	consolekeys[K_KP_INS] = true;
@@ -750,6 +756,25 @@ void Key_Event (int key, qboolean down, unsigned time)
 		return;
 	}
 
+	keydown[key] = down;
+	// ALT+ENTER fullscreen toggle
+	if (down && keydown[K_ALT] && key == K_ENTER)
+	{
+		extern cvar_t *vid_fullscreen;
+		Cvar_Set("vid_fullscreen", vid_fullscreen->value ? "0" : "1");
+		vid_fullscreen->modified = true;
+		return;
+	}
+
+#ifdef __APPLE__
+	// ALT+F4 game shutdown
+    if (down && keydown[K_ALT] && key == K_F4)
+    {
+		CL_Quit_f();
+		return;
+    }
+#endif
+
 	// update auto-repeat status
 	if (down)
 	{
@@ -763,7 +788,7 @@ void Key_Event (int key, qboolean down, unsigned time)
 			&& key_repeats[key] > 1)
 			return;	// ignore most autorepeats
 			
-		if (key >= 200 && !keybindings[key])
+		if (key >= 200 && key != K_MWHEELUP && key != K_MWHEELDOWN && !keybindings[key])
 			Com_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString (key) );
 	}
 	else
@@ -817,8 +842,6 @@ void Key_Event (int key, qboolean down, unsigned time)
 		return;
 	}
 
-	// track if any key is down for BUTTON_ANY
-	keydown[key] = down;
 	if (down)
 	{
 		if (key_repeats[key] == 1)

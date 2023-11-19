@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -270,8 +271,8 @@ extern	int		registration_sequence;
 
 void V_AddBlend (float r, float g, float b, float a, float *v_blend);
 
-int 	R_Init( void *hinstance, void *hWnd );
-void	R_Shutdown( void );
+qboolean R_Init( void *hinstance, void *hWnd );
+void	 R_Shutdown( void );
 
 void R_RenderView (refdef_t *fd);
 void GL_ScreenShot_f (void);
@@ -347,7 +348,7 @@ void GL_TextureSolidMode( char *string );
 /*
 ** GL extension emulation functions
 */
-void GL_DrawParticles( int n, const particle_t particles[], const unsigned colortable[768] );
+void GL_DrawParticles( int n, const particle_t particles[], const unsigned *colortable );
 
 /*
 ** GL config stuff

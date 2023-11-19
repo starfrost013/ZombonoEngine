@@ -342,9 +342,9 @@ void CL_DeltaEntity (frame_t *frame, int newnum, entity_state_t *old, int bits)
 		|| state->modelindex2 != ent->current.modelindex2
 		|| state->modelindex3 != ent->current.modelindex3
 		|| state->modelindex4 != ent->current.modelindex4
-		|| abs(state->origin[0] - ent->current.origin[0]) > 512
-		|| abs(state->origin[1] - ent->current.origin[1]) > 512
-		|| abs(state->origin[2] - ent->current.origin[2]) > 512
+		|| fabs(state->origin[0] - ent->current.origin[0]) > 512
+		|| fabs(state->origin[1] - ent->current.origin[1]) > 512
+		|| fabs(state->origin[2] - ent->current.origin[2]) > 512
 		|| state->event == EV_PLAYER_TELEPORT
 		|| state->event == EV_OTHER_TELEPORT
 		)
@@ -389,7 +389,7 @@ void CL_ParsePacketEntities (frame_t *oldframe, frame_t *newframe)
 {
 	int			newnum;
 	int			bits;
-	entity_state_t	*oldstate;
+	entity_state_t	*oldstate = NULL;
 	int			oldindex, oldnum;
 
 	newframe->parse_entities = cl.parse_entities;
@@ -825,8 +825,6 @@ struct model_s *S_RegisterSexedModel (entity_state_t *ent, char *base)
 	return mdl;
 }
 
-// PMM - used in shell code 
-extern int Developer_searchpath (int who);
 // pmm
 /*
 ===============
@@ -1075,43 +1073,6 @@ void CL_AddPacketEntities (frame_t *frame)
 		// color shells generate a seperate entity for the main model
 		if (effects & EF_COLOR_SHELL)
 		{
-			// PMM - at this point, all of the shells have been handled
-			// if we're in the rogue pack, set up the custom mixing, otherwise just
-			// keep going
-//			if(Developer_searchpath(2) == 2)
-//			{
-				// all of the solo colors are fine.  we need to catch any of the combinations that look bad
-				// (double & half) and turn them into the appropriate color, and make double/quad something special
-				if (renderfx & RF_SHELL_HALF_DAM)
-				{
-					if(Developer_searchpath(2) == 2)
-					{
-						// ditch the half damage shell if any of red, blue, or double are on
-						if (renderfx & (RF_SHELL_RED|RF_SHELL_BLUE|RF_SHELL_DOUBLE))
-							renderfx &= ~RF_SHELL_HALF_DAM;
-					}
-				}
-
-				if (renderfx & RF_SHELL_DOUBLE)
-				{
-					if(Developer_searchpath(2) == 2)
-					{
-						// lose the yellow shell if we have a red, blue, or green shell
-						if (renderfx & (RF_SHELL_RED|RF_SHELL_BLUE|RF_SHELL_GREEN))
-							renderfx &= ~RF_SHELL_DOUBLE;
-						// if we have a red shell, turn it to purple by adding blue
-						if (renderfx & RF_SHELL_RED)
-							renderfx |= RF_SHELL_BLUE;
-						// if we have a blue shell (and not a red shell), turn it to cyan by adding green
-						else if (renderfx & RF_SHELL_BLUE)
-							// go to green if it's on already, otherwise do cyan (flash green)
-							if (renderfx & RF_SHELL_GREEN)
-								renderfx &= ~RF_SHELL_BLUE;
-							else
-								renderfx |= RF_SHELL_GREEN;
-					}
-				}
-//			}
 			// pmm
 			ent.flags = renderfx | RF_TRANSLUCENT;
 			ent.alpha = 0.30;
@@ -1342,10 +1303,6 @@ void CL_AddViewWeapon (player_state_t *ps, player_state_t *ops)
 	if (!cl_gun->value)
 		return;
 
-	// don't draw gun if in wide angle view
-	if (ps->fov > 90)
-		return;
-
 	memset (&gun, 0, sizeof(gun));
 
 	if (gun_model)
@@ -1409,7 +1366,7 @@ void CL_CalcViewValues (void)
 	ops = &oldframe->playerstate;
 
 	// see if the player entity was teleported this frame
-	if ( fabs(ops->pmove.origin[0] - ps->pmove.origin[0]) > 256*8
+	if ( abs(ops->pmove.origin[0] - ps->pmove.origin[0]) > 256*8
 		|| abs(ops->pmove.origin[1] - ps->pmove.origin[1]) > 256*8
 		|| abs(ops->pmove.origin[2] - ps->pmove.origin[2]) > 256*8)
 		ops = ps;		// don't interpolate

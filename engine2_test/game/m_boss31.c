@@ -28,7 +28,7 @@ jorg
 #include "g_local.h"
 #include "m_boss31.h"
 
-extern SP_monster_makron (edict_t *self);
+extern void SP_monster_makron (edict_t *self);
 qboolean visible (edict_t *self, edict_t *other);
 
 static int	sound_pain1;
@@ -720,8 +720,8 @@ void SP_monster_jorg (edict_t *self)
 
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
-	self->s.modelindex = gi.modelindex ("models/monsters/boss3/rider/tris.md2");
-	self->s.modelindex2 = gi.modelindex ("models/monsters/boss3/jorg/tris.md2");
+	self->s.modelindex = gi.modelindex ("models/monsters/boss3/jorg/tris.md2");
+	self->s.modelindex2 = gi.modelindex ("models/monsters/boss3/rider/tris.md2");
 	VectorSet (self->mins, -80, -80, 0);
 	VectorSet (self->maxs, 80, 80, 140);
 

@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,51 +23,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "../game/q_shared.h"
 
+#define ZOMBONO_VERSION "0.0.4"
 
-#define	VERSION		3.21
-
-#define	BASEDIRNAME	"baseq2"
+#define	BASEDIRNAME	"zombono"
 
 #ifdef WIN32
 
 #ifdef NDEBUG
-#define BUILDSTRING "Win32 RELEASE"
+#define BUILDSTRING "Windows"
 #else
-#define BUILDSTRING "Win32 DEBUG"
+#define BUILDSTRING "Windows DEBUG"
 #endif
 
 #ifdef _M_IX86
 #define	CPUSTRING	"x86"
-#elif defined _M_ALPHA
-#define	CPUSTRING	"AXP"
+#elif defined _M_X64
+#define CPUSTRING	"x64"
 #endif
 
 #elif defined __linux__
 
+#ifdef NDEBUG
 #define BUILDSTRING "Linux"
+#else
+#define BUILDSTRING "Linux DEBUG"
+#endif
 
 #ifdef __i386__
 #define CPUSTRING "i386"
-#elif defined __alpha__
-#define CPUSTRING "axp"
+#elif defined __LP64__
+#define CPUSTRING	"x64"
 #else
 #define CPUSTRING "Unknown"
 #endif
 
-#elif defined __sun__
+#elif defined __APPLE__
 
-#define BUILDSTRING "Solaris"
-
-#ifdef __i386__
-#define CPUSTRING "i386"
+#ifdef NDEBUG
+#define BUILDSTRING "MacOS"
 #else
-#define CPUSTRING "sparc"
+#define BUILDSTRING "MacOS DEBUG"
 #endif
+#define CPUSTRING "x64"
 
 #else	// !WIN32
 
-#define BUILDSTRING "NON-WIN32"
-#define	CPUSTRING	"NON-WIN32"
+#define BUILDSTRING "Define the Platform Name!"
+#define	CPUSTRING	"Define the Platform Name!"
 
 #endif
 
@@ -754,6 +757,7 @@ extern	cvar_t	*developer;
 extern	cvar_t	*dedicated;
 extern	cvar_t	*host_speeds;
 extern	cvar_t	*log_stats;
+extern	cvar_t	*debug_console;
 
 extern	FILE *log_stats_file;
 

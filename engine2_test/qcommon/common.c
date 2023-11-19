@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "qcommon.h"
 #include <setjmp.h>
 
-#define	MAXPRINTMSG	4096
+#define	MAXPRINTMSG	8192
 
 #define MAX_NUM_ARGVS	50
 
@@ -32,7 +33,7 @@ char	*com_argv[MAX_NUM_ARGVS+1];
 int		realtime;
 
 jmp_buf abortframe;		// an ERR_DROP occured, exit the entire frame
-
+static qboolean shutdown_game = false;
 
 FILE	*log_stats_file;
 
@@ -44,6 +45,7 @@ cvar_t	*fixedtime;
 cvar_t	*logfile_active;	// 1 = buffer log, 2 = flush after each print
 cvar_t	*showtrace;
 cvar_t	*dedicated;
+cvar_t	*debug_console;		// debug console toggle for Windows
 
 FILE	*logfile;
 
@@ -67,6 +69,8 @@ static int	rd_target;
 static char	*rd_buffer;
 static int	rd_buffersize;
 static void	(*rd_flush)(int target, char *buffer);
+
+extern void SV_ShutdownGameProgs(void);
 
 void Com_BeginRedirect (int target, char *buffer, int buffersize, void (*flush))
 {
@@ -104,7 +108,7 @@ void Com_Printf (char *fmt, ...)
 	char		msg[MAXPRINTMSG];
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	vsnprintf (msg,MAXPRINTMSG,fmt,argptr);
 	va_end (argptr);
 
 	if (rd_target)
@@ -160,7 +164,7 @@ void Com_DPrintf (char *fmt, ...)
 		return;			// don't confuse non-developers with techie stuff...
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	vsnprintf (msg,MAXPRINTMSG,fmt,argptr);
 	va_end (argptr);
 	
 	Com_Printf ("%s", msg);
@@ -186,7 +190,7 @@ void Com_Error (int code, char *fmt, ...)
 	recursive = true;
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	vsnprintf (msg,MAXPRINTMSG,fmt,argptr);
 	va_end (argptr);
 	
 	if (code == ERR_DISCONNECT)
@@ -201,11 +205,13 @@ void Com_Error (int code, char *fmt, ...)
 		SV_Shutdown (va("Server crashed: %s\n", msg), false);
 		CL_Drop ();
 		recursive = false;
+		shutdown_game = true;
 		longjmp (abortframe, -1);
 	}
 	else
 	{
 		SV_Shutdown (va("Server fatal crashed: %s\n", msg), false);
+		SV_ShutdownGameProgs();
 		CL_Shutdown ();
 	}
 
@@ -230,6 +236,7 @@ do the apropriate things.
 void Com_Quit (void)
 {
 	SV_Shutdown ("Server quit\n", false);
+	SV_ShutdownGameProgs();
 	CL_Shutdown ();
 
 	if (logfile)
@@ -352,7 +359,7 @@ void MSG_WriteString (sizebuf_t *sb, char *s)
 	if (!s)
 		SZ_Write (sb, "", 1);
 	else
-		SZ_Write (sb, s, strlen(s)+1);
+		SZ_Write (sb, s, (int)strlen(s)+1);
 }
 
 void MSG_WriteCoord (sizebuf_t *sb, float f)
@@ -921,7 +928,7 @@ void SZ_Print (sizebuf_t *buf, char *data)
 {
 	int		len;
 	
-	len = strlen(data)+1;
+	len = (int)strlen(data)+1;
 
 	if (buf->cursize)
 	{
@@ -1033,7 +1040,7 @@ char *CopyString (char *in)
 {
 	char	*out;
 	
-	out = Z_Malloc (strlen(in)+1);
+	out = Z_Malloc ((int)strlen(in)+1);
 	strcpy (out, in);
 	return out;
 }
@@ -1442,7 +1449,15 @@ void Qcommon_Init (int argc, char **argv)
 
 	host_speeds = Cvar_Get ("host_speeds", "0", 0);
 	log_stats = Cvar_Get ("log_stats", "0", 0);
-	developer = Cvar_Get ("developer", "0", 0);
+
+
+	developer = Cvar_Get("developer", "0", 0);
+
+	// force developer mode on on debug builds
+#ifdef _DEBUG
+	Cvar_Set("developer", "1");
+#endif
+
 	timescale = Cvar_Get ("timescale", "1", 0);
 	fixedtime = Cvar_Get ("fixedtime", "0", 0);
 	logfile_active = Cvar_Get ("logfile", "0", 0);
@@ -1452,8 +1467,13 @@ void Qcommon_Init (int argc, char **argv)
 #else
 	dedicated = Cvar_Get ("dedicated", "0", CVAR_NOSET);
 #endif
+#ifdef WIN_DEBUG_CONSOLE
+	debug_console = Cvar_Get ("debug_console", "1", CVAR_NOSET);
+#else
+	debug_console = Cvar_Get ("debug_console", "0", CVAR_NOSET);
+#endif
 
-	s = va("%4.2f %s %s %s", VERSION, CPUSTRING, __DATE__, BUILDSTRING);
+	s = va("%4.2f %s %s %s", ZOMBONO_VERSION, CPUSTRING, __DATE__, BUILDSTRING);
 	Cvar_Get ("version", s, CVAR_SERVERINFO|CVAR_NOSET);
 
 
@@ -1483,7 +1503,7 @@ void Qcommon_Init (int argc, char **argv)
 		SCR_EndLoadingPlaque ();
 	}
 
-	Com_Printf ("====== Quake2 Initialized ======\n\n");	
+	Com_Printf ("====== Zombono Initialized ======\n\n");	
 }
 
 /*
@@ -1497,7 +1517,12 @@ void Qcommon_Frame (int msec)
 	int		time_before, time_between, time_after;
 
 	if (setjmp (abortframe) )
+	{
+		if (shutdown_game)
+			SV_ShutdownGameProgs();
+		shutdown_game = false;
 		return;			// an ERR_DROP was thrown
+	}
 
 	if ( log_stats->modified )
 	{

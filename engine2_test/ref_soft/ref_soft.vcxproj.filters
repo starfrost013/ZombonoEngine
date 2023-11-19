@@ -2,15 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{02175319-5045-4ca4-9164-b1f3edb37cbc}</UniqueIdentifier>
+      <UniqueIdentifier>{b23e127f-1d3a-46f9-87a4-24e55cdbfa76}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{77be8ea2-613c-4b7f-9e58-3581076586e9}</UniqueIdentifier>
+      <UniqueIdentifier>{f11191e6-f3b2-436e-ae38-c6321c681b7f}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{db72a376-bc5c-4dfb-808e-19668669196d}</UniqueIdentifier>
+      <UniqueIdentifier>{45ab64ec-8a2e-43ea-88bf-c2eed683915c}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
   </ItemGroup>
@@ -83,11 +83,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ref_soft.def">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="adivtab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,34 +116,13 @@
     <ClInclude Include="..\win32\winquake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="r_dither.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="r_aclipa.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_draw16.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_drawa.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_edgea.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_polysa.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_scana.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_spr8.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_surf8.asm">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="r_varsa.asm">
-      <Filter>Source Files</Filter>
+    <CustomBuild Include="ref_soft.def">
+      <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

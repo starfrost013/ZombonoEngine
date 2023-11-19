@@ -103,12 +103,7 @@ void SP_misc_actor (edict_t *self);
 void SP_misc_gib_arm (edict_t *self);
 void SP_misc_gib_leg (edict_t *self);
 void SP_misc_gib_head (edict_t *self);
-void SP_misc_insane (edict_t *self);
 void SP_misc_deadsoldier (edict_t *self);
-void SP_misc_viper (edict_t *self);
-void SP_misc_viper_bomb (edict_t *self);
-void SP_misc_bigviper (edict_t *self);
-void SP_misc_strogg_ship (edict_t *self);
 void SP_misc_teleporter (edict_t *self);
 void SP_misc_teleporter_dest (edict_t *self);
 void SP_misc_blackhole (edict_t *self);
@@ -116,8 +111,6 @@ void SP_misc_eastertank (edict_t *self);
 void SP_misc_easterchick (edict_t *self);
 void SP_misc_easterchick2 (edict_t *self);
 
-void SP_monster_berserk (edict_t *self);
-void SP_monster_gladiator (edict_t *self);
 void SP_monster_gunner (edict_t *self);
 void SP_monster_infantry (edict_t *self);
 void SP_monster_soldier_light (edict_t *self);
@@ -125,18 +118,10 @@ void SP_monster_soldier (edict_t *self);
 void SP_monster_soldier_ss (edict_t *self);
 void SP_monster_tank (edict_t *self);
 void SP_monster_medic (edict_t *self);
-void SP_monster_flipper (edict_t *self);
-void SP_monster_chick (edict_t *self);
 void SP_monster_parasite (edict_t *self);
 void SP_monster_flyer (edict_t *self);
-void SP_monster_brain (edict_t *self);
-void SP_monster_floater (edict_t *self);
-void SP_monster_hover (edict_t *self);
-void SP_monster_mutant (edict_t *self);
 void SP_monster_supertank (edict_t *self);
-void SP_monster_boss2 (edict_t *self);
 void SP_monster_jorg (edict_t *self);
-void SP_monster_boss3_stand (edict_t *self);
 
 void SP_monster_commander_body (edict_t *self);
 
@@ -223,21 +208,12 @@ spawn_t	spawns[] = {
 	{"misc_gib_arm", SP_misc_gib_arm},
 	{"misc_gib_leg", SP_misc_gib_leg},
 	{"misc_gib_head", SP_misc_gib_head},
-	{"misc_insane", SP_misc_insane},
 	{"misc_deadsoldier", SP_misc_deadsoldier},
-	{"misc_viper", SP_misc_viper},
-	{"misc_viper_bomb", SP_misc_viper_bomb},
-	{"misc_bigviper", SP_misc_bigviper},
-	{"misc_strogg_ship", SP_misc_strogg_ship},
 	{"misc_teleporter", SP_misc_teleporter},
 	{"misc_teleporter_dest", SP_misc_teleporter_dest},
 	{"misc_blackhole", SP_misc_blackhole},
 	{"misc_eastertank", SP_misc_eastertank},
-	{"misc_easterchick", SP_misc_easterchick},
-	{"misc_easterchick2", SP_misc_easterchick2},
 
-	{"monster_berserk", SP_monster_berserk},
-	{"monster_gladiator", SP_monster_gladiator},
 	{"monster_gunner", SP_monster_gunner},
 	{"monster_infantry", SP_monster_infantry},
 	{"monster_soldier_light", SP_monster_soldier_light},
@@ -246,18 +222,7 @@ spawn_t	spawns[] = {
 	{"monster_tank", SP_monster_tank},
 	{"monster_tank_commander", SP_monster_tank},
 	{"monster_medic", SP_monster_medic},
-	{"monster_flipper", SP_monster_flipper},
-	{"monster_chick", SP_monster_chick},
-	{"monster_parasite", SP_monster_parasite},
-	{"monster_flyer", SP_monster_flyer},
-	{"monster_brain", SP_monster_brain},
-	{"monster_floater", SP_monster_floater},
-	{"monster_hover", SP_monster_hover},
-	{"monster_mutant", SP_monster_mutant},
 	{"monster_supertank", SP_monster_supertank},
-	{"monster_boss2", SP_monster_boss2},
-	{"monster_boss3_stand", SP_monster_boss3_stand},
-	{"monster_jorg", SP_monster_jorg},
 
 	{"monster_commander_body", SP_monster_commander_body},
 
@@ -321,7 +286,7 @@ char *ED_NewString (char *string)
 	char	*newb, *new_p;
 	int		i,l;
 	
-	l = strlen(string) + 1;
+	l = (int)strlen(string) + 1;
 
 	newb = gi.TagMalloc (l, TAG_LEVEL);
 
@@ -395,6 +360,8 @@ void ED_ParseField (char *key, char *value, edict_t *ent)
 				((float *)(b+f->ofs))[2] = 0;
 				break;
 			case F_IGNORE:
+				break;
+			default:
 				break;
 			}
 			return;
@@ -603,16 +570,6 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 	}	
 
 	gi.dprintf ("%i entities inhibited\n", inhibit);
-
-#ifdef DEBUG
-	i = 1;
-	ent = EDICT_NUM(i);
-	while (i < globals.num_edicts) {
-		if (ent->inuse != 0 || ent->inuse != 1)
-			Com_DPrintf("Invalid entity %d\n", i);
-		i++, ent++;
-	}
-#endif
 
 	G_FindTeams ();
 

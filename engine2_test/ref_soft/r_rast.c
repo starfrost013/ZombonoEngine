@@ -44,9 +44,9 @@ qboolean		r_leftclipped, r_rightclipped;
 static qboolean	makeleftedge, makerightedge;
 qboolean		r_nearzionly;
 
-int		sintable[1280];
-int		intsintable[1280];
-int		blanktable[1280];		// PGM
+int		sintable[4200];
+int		intsintable[4200];
+int		blanktable[4200];		// PGM
 
 mvertex_t	r_leftenter, r_leftexit;
 mvertex_t	r_rightenter, r_rightexit;
@@ -207,9 +207,6 @@ void R_EmitSkyBox (void)
 	}
 	r_currentkey = oldkey;		// bsp sorting order
 }
-
-
-#if	!id386
 
 /*
 ================
@@ -491,9 +488,6 @@ void R_ClipEdge (mvertex_t *pv0, mvertex_t *pv1, clipplane_t *clip)
 	R_EmitEdge (pv0, pv1);
 }
 
-#endif	// !id386
-
-
 /*
 ================
 R_EmitCachedEdge
@@ -503,7 +497,7 @@ void R_EmitCachedEdge (void)
 {
 	edge_t		*pedge_t;
 
-	pedge_t = (edge_t *)((unsigned long)r_edges + r_pedge->cachededgeoffset);
+	pedge_t = (edge_t *)((intptr_t)r_edges + r_pedge->cachededgeoffset);
 
 	if (!pedge_t->surfs[0])
 		pedge_t->surfs[0] = surface_p - surfaces;
@@ -606,9 +600,9 @@ void R_RenderFace (msurface_t *fa, int clipflags)
 				}
 				else
 				{
-					if ((((unsigned long)edge_p - (unsigned long)r_edges) >
+					if ((((intptr_t)edge_p - (intptr_t)r_edges) >
 						 r_pedge->cachededgeoffset) &&
-						(((edge_t *)((unsigned long)r_edges +
+						(((edge_t *)((intptr_t)r_edges +
 						 r_pedge->cachededgeoffset))->owner == r_pedge))
 					{
 						R_EmitCachedEdge ();
@@ -652,9 +646,9 @@ void R_RenderFace (msurface_t *fa, int clipflags)
 				{
 				// it's cached if the cached edge is valid and is owned
 				// by this medge_t
-					if ((((unsigned long)edge_p - (unsigned long)r_edges) >
+					if ((((intptr_t)edge_p - (intptr_t)r_edges) >
 						 r_pedge->cachededgeoffset) &&
-						(((edge_t *)((unsigned long)r_edges +
+						(((edge_t *)((intptr_t)r_edges +
 						 r_pedge->cachededgeoffset))->owner == r_pedge))
 					{
 						R_EmitCachedEdge ();

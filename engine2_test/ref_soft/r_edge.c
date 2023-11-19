@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,21 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // r_edge.c
 
 #include "r_local.h"
-
-#ifndef id386
-void R_SurfacePatch (void)
-{
-}
-
-void R_EdgeCodeStart (void)
-{
-}
-
-void R_EdgeCodeEnd (void)
-{
-}
-#endif
-
 
 #if 0
 the complex cases add new polys on most lines, so dont optimize for keeping them the same
@@ -140,8 +126,6 @@ void R_BeginEdgeFrame (void)
 }
 
 
-#if	!id386
-
 /*
 ==============
 R_InsertNewEdges
@@ -183,10 +167,6 @@ addedge:
 	} while ((edgestoadd = next_edge) != NULL);
 }
 
-#endif	// !id386
-	
-
-#if	!id386
 
 /*
 ==============
@@ -202,11 +182,6 @@ void R_RemoveEdges (edge_t *pedge)
 		pedge->prev->next = pedge->next;
 	} while ((pedge = pedge->nextremove) != NULL);
 }
-
-#endif	// !id386
-
-
-#if	!id386
 
 /*
 ==============
@@ -272,8 +247,6 @@ pushback:
 			return;
 	}
 }
-
-#endif	// !id386
 
 
 /*
@@ -427,9 +400,6 @@ void R_TrailingEdge (surf_t *surf, edge_t *edge)
 		surf->next->prev = surf->prev;
 	}
 }
-
-
-#if	!id386
 
 /*
 ==============
@@ -590,8 +560,6 @@ void R_GenerateSpans (void)
 	R_CleanupSpan ();
 }
 
-#endif	// !id386
-
 
 /*
 ==============
@@ -640,7 +608,7 @@ void R_ScanEdges (void)
 	surf_t	*s;
 
 	basespan_p = (espan_t *)
-			((long)(basespans + CACHE_SIZE - 1) & ~(CACHE_SIZE - 1));
+			((intptr_t)(basespans + CACHE_SIZE - 1) & ~(CACHE_SIZE - 1));
 	max_span_p = &basespan_p[MAXSPANS - r_refdef.vrect.width];
 
 	span_p = basespan_p;
@@ -669,7 +637,8 @@ void R_ScanEdges (void)
 	edge_aftertail.prev = &edge_tail;
 
 // FIXME: do we need this now that we clamp x in r_draw.c?
-	edge_sentinel.u = 2000 << 24;		// make sure nothing sorts past this
+// 	edge_sentinel.u = 2000 << 24;		// make sure nothing sorts past this
+	edge_sentinel.u = 32767 << 16;		// qb: FS: Sezero - integer shift overflow fix
 	edge_sentinel.prev = &edge_aftertail;
 
 //	
@@ -800,13 +769,10 @@ D_CalcGradients
 */
 void D_CalcGradients (msurface_t *pface)
 {
-	mplane_t	*pplane;
 	float		mipscale;
 	vec3_t		p_temp1;
 	vec3_t		p_saxis, p_taxis;
 	float		t;
-
-	pplane = pface->plane;
 
 	mipscale = 1.0 / (float)(1 << miplevel);
 
@@ -1074,7 +1040,7 @@ void D_DrawflatSurfaces (void)
 
 		// make a stable color for each surface by taking the low
 		// bits of the msurface pointer
-		D_FlatFillSurface (s, (int)s->msurf & 0xFF);
+		D_FlatFillSurface (s, (intptr_t)s->msurf & 0xFF);
 		D_DrawZSpans (s->spans);
 	}
 }

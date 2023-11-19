@@ -1,0 +1,73 @@
+Zombono
+Release Notes
+Version 0.04
+* Rewrote everything using vkquake2 as a base
+
+Version 0.03.1
+September 28, 2023
+* Fixed the fact it doesn't fucking work
+
+Version 0.03
+September 24, 2023
+* Added new map: Labrats!
+* Removed MFC dependency
+* New app icon
+* Large code cleanup, removed a lot of defines
+* Made code that should be #ifdef _WIN32 #ifdef _WIN32
+* Removed a bunch of empty functions
+* Changed window title to Zombono from FitzQuake
+* Changed window classname to Zombono from FitzQuake
+* Zombies cannot spawn in walls anymore
+* Refactoring: Moved function definitions from quakedef.h into host.h/chase.h
+* Fixed leaks in warehouse, reducing size of final BSP by ~60%
+* Slight tweaks to warehouse
+* Wrote a new UI system:
+	* Supports checkboxes, sliders, text, and buttons
+	* Events: On click, key
+	* Client-side, but server can tell client to draw UI
+	* C (engine only) or QC callbacks
+	* Elements and UIs have names for tracking
+* More detailed version information in version command
+* Moved spawn points around
+* Removed z_test1/start map
+* Added team selection UI
+	* Select a team when you join
+* Removed "Starting Zombono..." screen
+* Added ability for client to tell if it's spawned at least once (previously only server could)
+* Added new QC builtin: UpdateStats (it updates the stats sent to the client from the server)
+* Changed status bar background texture
+* Cut even more dead ballast code
+* UI now cleared on exit (to prevent crashes)
+* Remaining time now showed on screen when playing
+* Added text that shows which team wins
+
+Version 0.02
+September 7, 2023
+
+* Added "postspawn" command - it runs after you spawn and cannot be triggered from the console.
+* Fixed welcome messages always being sent to the first player who joined.
+* Fixed welcome messages not being shown on join, only on respawn.
+* Rewrote welcome messages.
+* Added double jump item. It lets you double jump for 30 seconds, and the item regenerates every 60 seconds.
+* Added sfx for double jump.
+* Increased the maximum number of chat lines that can be displayed from 4 to 8.
+* Removed console pulldown animation.
+* Cut some dead ballast code from Quake 1 testing for long dead platforms
+* Added new areas to the Warehouse map. Made it harder to camp in the centre part by adding a lot of 
+* Reduced gib removal time from 10-20 to 8-16 seconds.
+* Monster heads are now properly cleaned up, which fixes server performance degrading
+* Zombies now move ~5x faster.
+* Zombies now have 90 health instead of 60. However, they can now lose health if you do over 70 damage to them; before you had to kill them in one hit.
+* Fixed notarget for zombie directors only working sometimes
+* Added disconnect button on main menu; disabled in playtest builds.
+* Changed main menu texture and removed "Main" header.
+* Fixed bug with multiple network adapters; the game was always binding to the first network adapter.
+* Moved Zombinator from 9 to 2 for Directors.
+* Gave Zombinators the Quake Nailgun model as a test.
+* Fixed areas in the map where you could get stuck.
+* Changed method of distribution 
+
+Version 0.01 (ZTest1) - Initial Release
+August 31, 2023
+
+* Initial release.

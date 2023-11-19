@@ -1,5 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,16 +41,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 #include <time.h>
 
-#if (defined _M_IX86 || defined __i386__) && !defined C_ONLY && !defined __sun__
-#define id386	1
-#else
-#define id386	0
+#ifdef true
+#undef true
 #endif
-
-#if defined _M_ALPHA && !defined C_ONLY
-#define idaxp	1
-#else
-#define idaxp	0
+#ifdef false
+#undef false
 #endif
 
 typedef unsigned char 		byte;
@@ -70,7 +67,7 @@ typedef enum {false, true}	qboolean;
 #define	MAX_TOKEN_CHARS		128		// max length of an individual token
 
 #define	MAX_QPATH			64		// max length of a quake game pathname
-#define	MAX_OSPATH			128		// max length of a filesystem pathname
+#define	MAX_OSPATH			256		// max length of a filesystem pathname
 
 //
 // per-level limits
@@ -145,7 +142,7 @@ extern vec3_t vec3_origin;
 // microsoft's fabs seems to be ungodly slow...
 //float Q_fabs (float f);
 //#define	fabs(f) Q_fabs(f)
-#if !defined C_ONLY && !defined __linux__ && !defined __sgi
+#if !defined C_ONLY && !defined __linux__ && !defined __sgi && !defined _M_X64 && !defined __APPLE__
 extern long Q_ftol( float f );
 #else
 #define Q_ftol( f ) ( long ) (f)
@@ -578,14 +575,12 @@ typedef struct
 #define EF_PLASMA			0x01000000
 #define EF_TRAP				0x02000000
 
-//ROGUE
 #define EF_TRACKER			0x04000000
 #define	EF_DOUBLE			0x08000000
 #define	EF_SPHERETRANS		0x10000000
 #define EF_TAGTRAIL			0x20000000
 #define EF_HALF_DAMAGE		0x40000000
 #define EF_TRACKERTRAIL		0x80000000
-//ROGUE
 
 // entity_state_t->renderfx flags
 #define	RF_MINLIGHT			1		// allways have some light (viewmodel)
@@ -642,19 +637,6 @@ typedef struct
 #define MZ_BLUEHYPERBLASTER 17
 #define MZ_PHALANX			18
 #define MZ_SILENCED			128		// bit flag ORed with one of the above numbers
-
-//ROGUE
-#define MZ_ETF_RIFLE		30
-#define MZ_UNUSED			31
-#define MZ_SHOTGUN2			32
-#define MZ_HEATBEAM			33
-#define MZ_BLASTER2			34
-#define	MZ_TRACKER			35
-#define	MZ_NUKE1			36
-#define	MZ_NUKE2			37
-#define	MZ_NUKE4			38
-#define	MZ_NUKE8			39
-//ROGUE
 
 //
 // monster muzzle flashes
@@ -812,83 +794,6 @@ typedef struct
 #define MZ2_BOSS2_MACHINEGUN_R4			136
 #define MZ2_BOSS2_MACHINEGUN_R5			137
 
-//ROGUE
-#define	MZ2_CARRIER_MACHINEGUN_L1		138
-#define	MZ2_CARRIER_MACHINEGUN_R1		139
-#define	MZ2_CARRIER_GRENADE				140
-#define MZ2_TURRET_MACHINEGUN			141
-#define MZ2_TURRET_ROCKET				142
-#define MZ2_TURRET_BLASTER				143
-#define MZ2_STALKER_BLASTER				144
-#define MZ2_DAEDALUS_BLASTER			145
-#define MZ2_MEDIC_BLASTER_2				146
-#define	MZ2_CARRIER_RAILGUN				147
-#define	MZ2_WIDOW_DISRUPTOR				148
-#define	MZ2_WIDOW_BLASTER				149
-#define	MZ2_WIDOW_RAIL					150
-#define	MZ2_WIDOW_PLASMABEAM			151		// PMM - not used
-#define	MZ2_CARRIER_MACHINEGUN_L2		152
-#define	MZ2_CARRIER_MACHINEGUN_R2		153
-#define	MZ2_WIDOW_RAIL_LEFT				154
-#define	MZ2_WIDOW_RAIL_RIGHT			155
-#define	MZ2_WIDOW_BLASTER_SWEEP1		156
-#define	MZ2_WIDOW_BLASTER_SWEEP2		157
-#define	MZ2_WIDOW_BLASTER_SWEEP3		158
-#define	MZ2_WIDOW_BLASTER_SWEEP4		159
-#define	MZ2_WIDOW_BLASTER_SWEEP5		160
-#define	MZ2_WIDOW_BLASTER_SWEEP6		161
-#define	MZ2_WIDOW_BLASTER_SWEEP7		162
-#define	MZ2_WIDOW_BLASTER_SWEEP8		163
-#define	MZ2_WIDOW_BLASTER_SWEEP9		164
-#define	MZ2_WIDOW_BLASTER_100			165
-#define	MZ2_WIDOW_BLASTER_90			166
-#define	MZ2_WIDOW_BLASTER_80			167
-#define	MZ2_WIDOW_BLASTER_70			168
-#define	MZ2_WIDOW_BLASTER_60			169
-#define	MZ2_WIDOW_BLASTER_50			170
-#define	MZ2_WIDOW_BLASTER_40			171
-#define	MZ2_WIDOW_BLASTER_30			172
-#define	MZ2_WIDOW_BLASTER_20			173
-#define	MZ2_WIDOW_BLASTER_10			174
-#define	MZ2_WIDOW_BLASTER_0				175
-#define	MZ2_WIDOW_BLASTER_10L			176
-#define	MZ2_WIDOW_BLASTER_20L			177
-#define	MZ2_WIDOW_BLASTER_30L			178
-#define	MZ2_WIDOW_BLASTER_40L			179
-#define	MZ2_WIDOW_BLASTER_50L			180
-#define	MZ2_WIDOW_BLASTER_60L			181
-#define	MZ2_WIDOW_BLASTER_70L			182
-#define	MZ2_WIDOW_RUN_1					183
-#define	MZ2_WIDOW_RUN_2					184
-#define	MZ2_WIDOW_RUN_3					185
-#define	MZ2_WIDOW_RUN_4					186
-#define	MZ2_WIDOW_RUN_5					187
-#define	MZ2_WIDOW_RUN_6					188
-#define	MZ2_WIDOW_RUN_7					189
-#define	MZ2_WIDOW_RUN_8					190
-#define	MZ2_CARRIER_ROCKET_1			191
-#define	MZ2_CARRIER_ROCKET_2			192
-#define	MZ2_CARRIER_ROCKET_3			193
-#define	MZ2_CARRIER_ROCKET_4			194
-#define	MZ2_WIDOW2_BEAMER_1				195
-#define	MZ2_WIDOW2_BEAMER_2				196
-#define	MZ2_WIDOW2_BEAMER_3				197
-#define	MZ2_WIDOW2_BEAMER_4				198
-#define	MZ2_WIDOW2_BEAMER_5				199
-#define	MZ2_WIDOW2_BEAM_SWEEP_1			200
-#define	MZ2_WIDOW2_BEAM_SWEEP_2			201
-#define	MZ2_WIDOW2_BEAM_SWEEP_3			202
-#define	MZ2_WIDOW2_BEAM_SWEEP_4			203
-#define	MZ2_WIDOW2_BEAM_SWEEP_5			204
-#define	MZ2_WIDOW2_BEAM_SWEEP_6			205
-#define	MZ2_WIDOW2_BEAM_SWEEP_7			206
-#define	MZ2_WIDOW2_BEAM_SWEEP_8			207
-#define	MZ2_WIDOW2_BEAM_SWEEP_9			208
-#define	MZ2_WIDOW2_BEAM_SWEEP_10		209
-#define	MZ2_WIDOW2_BEAM_SWEEP_11		210
-
-// ROGUE
-
 extern	vec3_t monster_flash_offset [];
 
 
@@ -930,34 +835,6 @@ typedef enum
 	TE_BLUEHYPERBLASTER,
 	TE_PLASMA_EXPLOSION,
 	TE_TUNNEL_SPARKS,
-//ROGUE
-	TE_BLASTER2,
-	TE_RAILTRAIL2,
-	TE_FLAME,
-	TE_LIGHTNING,
-	TE_DEBUGTRAIL,
-	TE_PLAIN_EXPLOSION,
-	TE_FLASHLIGHT,
-	TE_FORCEWALL,
-	TE_HEATBEAM,
-	TE_MONSTER_HEATBEAM,
-	TE_STEAM,
-	TE_BUBBLETRAIL2,
-	TE_MOREBLOOD,
-	TE_HEATBEAM_SPARKS,
-	TE_HEATBEAM_STEAM,
-	TE_CHAINFIST_SMOKE,
-	TE_ELECTRIC_SPARKS,
-	TE_TRACKER_EXPLOSION,
-	TE_TELEPORT_EFFECT,
-	TE_DBALL_GOAL,
-	TE_WIDOWBEAMOUT,
-	TE_NUKEBLAST,
-	TE_WIDOWSPLASH,
-	TE_EXPLOSION1_BIG,
-	TE_EXPLOSION1_NP,
-	TE_FLECHETTE
-//ROGUE
 } temp_event_t;
 
 #define SPLASH_UNKNOWN		0
@@ -1030,49 +907,13 @@ typedef enum
 #define DF_QUAD_DROP		0x00004000	// 16384
 #define DF_FIXED_FOV		0x00008000	// 32768
 
-// RAFAEL
-#define	DF_QUADFIRE_DROP	0x00010000	// 65536
+// Gamemodes
+#define	GAMEMODE_TDM			0		// Team Deathmach
+#define GAMEMODE_HOSTAGE		1		// Hostage rescue???
+#define GAMEMODE_WAVES			2		// Zombono waves
+#define GAMEMODE_COOP			3		// Coop???
+#define GAMEMODE_CONTROL_POINT	4		// Control Point??? Need more innovative game modes...maybe a build-off
 
-//ROGUE
-#define DF_NO_MINES			0x00020000
-#define DF_NO_STACK_DOUBLE	0x00040000
-#define DF_NO_NUKES			0x00080000
-#define DF_NO_SPHERES		0x00100000
-//ROGUE
-
-/*
-ROGUE - VERSIONS
-1234	08/13/1998		Activision
-1235	08/14/1998		Id Software
-1236	08/15/1998		Steve Tietze
-1237	08/15/1998		Phil Dobranski
-1238	08/15/1998		John Sheley
-1239	08/17/1998		Barrett Alexander
-1230	08/17/1998		Brandon Fish
-1245	08/17/1998		Don MacAskill
-1246	08/17/1998		David "Zoid" Kirsch
-1247	08/17/1998		Manu Smith
-1248	08/17/1998		Geoff Scully
-1249	08/17/1998		Andy Van Fossen
-1240	08/20/1998		Activision Build 2
-1256	08/20/1998		Ranger Clan
-1257	08/20/1998		Ensemble Studios
-1258	08/21/1998		Robert Duffy
-1259	08/21/1998		Stephen Seachord
-1250	08/21/1998		Stephen Heaslip
-1267	08/21/1998		Samir Sandesara
-1268	08/21/1998		Oliver Wyman
-1269	08/21/1998		Steven Marchegiano
-1260	08/21/1998		Build #2 for Nihilistic
-1278	08/21/1998		Build #2 for Ensemble
-
-9999	08/20/1998		Internal Use
-*/
-#define ROGUE_VERSION_ID		1278
-
-#define ROGUE_VERSION_STRING	"08/21/1998 Beta 2 for Ensemble"
-
-// ROGUE
 /*
 ==========================================================
 
@@ -1191,9 +1032,10 @@ typedef struct
 
 // ==================
 // PGM 
-#define VIDREF_GL		1
-#define VIDREF_SOFT		2
-#define VIDREF_OTHER	3
+#define VIDREF_VK		1
+#define VIDREF_GL		2
+#define VIDREF_SOFT		3
+#define VIDREF_OTHER	4
 
 extern int vidref_val;
 // PGM

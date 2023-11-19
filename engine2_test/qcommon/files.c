@@ -151,46 +151,6 @@ void FS_FCloseFile (FILE *f)
 	fclose (f);
 }
 
-
-// RAFAEL
-/*
-	Developer_searchpath
-*/
-int	Developer_searchpath (int who)
-{
-	
-	int		ch;
-	// PMM - warning removal
-//	char	*start;
-	searchpath_t	*search;
-	
-	if (who == 1) // xatrix
-		ch = 'x';
-	else if (who == 2)
-		ch = 'r';
-
-	for (search = fs_searchpaths ; search ; search = search->next)
-	{
-		if (strstr (search->filename, "xatrix"))
-			return 1;
-
-		if (strstr (search->filename, "rogue"))
-			return 2;
-/*
-		start = strchr (search->filename, ch);
-
-		if (start == NULL)
-			continue;
-
-		if (strcmp (start ,"xatrix") == 0)
-			return (1);
-*/
-	}
-	return (0);
-
-}
-
-
 /*
 ===========
 FS_FOpenFile
@@ -257,7 +217,11 @@ int FS_FOpenFile (char *filename, FILE **file)
 	// check a file in the directory tree
 			
 			Com_sprintf (netpath, sizeof(netpath), "%s/%s",search->filename, filename);
-			
+#ifndef _WIN32
+			// some expansion packs use backslashes in file paths which works only on Windows
+			char *np = netpath;
+			while ( *np++ ) *np = *np == '\\' ? '/' : *np;
+#endif
 			*file = fopen (netpath, "rb");
 			if (!*file)
 				continue;
@@ -360,7 +324,7 @@ void FS_Read (void *buffer, int len, FILE *f)
 		block = remaining;
 		if (block > MAX_READ)
 			block = MAX_READ;
-		read = fread (buf, 1, block, f);
+		read = (int)fread (buf, 1, block, f);
 		if (read == 0)
 		{
 			// we might have been trying to read from a CD
@@ -680,7 +644,7 @@ void FS_Link_f (void)
 	l->next = fs_links;
 	fs_links = l;
 	l->from = CopyString(Cmd_Argv(1));
-	l->fromlength = strlen(l->from);
+	l->fromlength = (int)strlen(l->from);
 	l->to = CopyString(Cmd_Argv(2));
 }
 

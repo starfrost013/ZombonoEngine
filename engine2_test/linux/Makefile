@@ -1,7 +1,9 @@
 #
 # Quake2 Makefile for Linux 2.0
+# 64-bit version
 #
 # Nov '97 by Zoid <zoid@idsoftware.com>
+# Jan '19 by Krzysztof Kondrak <krzysztof.kondrak@gmail.com>
 #
 # ELF only
 #
@@ -16,13 +18,33 @@ else
 GLIBC=
 endif
 
-ifneq (,$(findstring alpha,$(shell uname -m)))
-ARCH=axp
-RPMARCH=alpha
+KERNEL_ARCH=$(shell uname -m)
+
+ifeq ($(KERNEL_ARCH),x86_64)
+  ARCH=x64
+  RPMARCH=i386
+else ifeq ($(KERNEL_ARCH),amd64)
+  ARCH=x64
+  RPMARCH=i386
+else ifeq ($(KERNEL_ARCH),ppc64le)
+  ARCH=ppc64le
+  RPMARCH=ppc64le
+else ifeq ($(KERNEL_ARCH),armv7l)
+  ARCH=armv7l
+  RPMARCH=armv7l
+else ifeq ($(KERNEL_ARCH),aarch64)
+  ARCH=aarch64
+  RPMARCH=aarch64
+else ifeq ($(KERNEL_ARCH),e2k)
+  ARCH=e2k
+  RPMARCH=e2k
+else ifneq (,$(findstring alpha,$(KERNEL_ARCH)))
+  ARCH=axp
+  RPMARCH=alpha
 else
-ARCH=i386
-RPMARCH=i386
+  $(error "Unsupported ARCH: ${KERNEL_ARCH}")
 endif
+
 NOARCH=noarch
 
 MOUNT_DIR=..
@@ -35,6 +57,7 @@ CLIENT_DIR=$(MOUNT_DIR)/client
 SERVER_DIR=$(MOUNT_DIR)/server
 REF_SOFT_DIR=$(MOUNT_DIR)/ref_soft
 REF_GL_DIR=$(MOUNT_DIR)/ref_gl
+REF_VK_DIR=$(MOUNT_DIR)/ref_vk
 COMMON_DIR=$(MOUNT_DIR)/qcommon
 LINUX_DIR=$(MOUNT_DIR)/linux
 GAME_DIR=$(MOUNT_DIR)/game
@@ -42,47 +65,60 @@ NULL_DIR=$(MOUNT_DIR)/null
 CTF_DIR=$(MOUNT_DIR)/ctf
 XATRIX_DIR=$(MOUNT_DIR)/xatrix
 ROGUE_DIR=$(MOUNT_DIR)/rogue
+SMD_DIR=$(MOUNT_DIR)/smd
+ZAERO_DIR=$(MOUNT_DIR)/zaero
 
 MESA_DIR=/usr/local/src/Mesa-2.6
 
 EGCS=/usr/local/egcs-1.1.2/bin/gcc
 
 CC=gcc
-BASE_CFLAGS=-Dstricmp=strcasecmp
+BASE_CFLAGS=-I/usr/local/include -Dstricmp=strcasecmp -D_GNU_SOURCE -Wno-format-truncation -Wno-unused-result -Wno-format-overflow
 
 ifeq ($(ARCH),axp)
-RELEASE_CFLAGS=$(BASE_CFLAGS) -O6 -ffast-math -funroll-loops \
+RELEASE_CFLAGS=$(BASE_CFLAGS) -DNDEBUG -O3 -funroll-loops \
 	-fomit-frame-pointer -fexpensive-optimizations
+else ifeq ($(ARCH),e2k)
+RELEASE_CFLAGS=$(BASE_CFLAGS) -DNDEBUG -O3 -ffast
 else
-RELEASE_CFLAGS=$(BASE_CFLAGS) -g -mpentiumpro -O6 -ffast-math -funroll-loops \
+RELEASE_CFLAGS=$(BASE_CFLAGS) -DNDEBUG -O3 -funroll-loops \
 	-fomit-frame-pointer -fexpensive-optimizations
 endif
 
-DEBUG_CFLAGS=$(BASE_CFLAGS) -g
-LDFLAGS=-ldl -lm
+DEBUG_CFLAGS=$(BASE_CFLAGS) -g -D_DEBUG
+LDFLAGS=-L/usr/local/lib -ldl -lm -lasound -lpthread
 SVGALDFLAGS=-lvga -lm
-XLDFLAGS=-L/usr/X11R6/lib -lX11 -lXext -lXxf86dga
+XLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -lX11 -lXext -lXxf86dga
 XCFLAGS=
 
 GLLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lvga -lm
 GLXLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm
+
+ifeq ($(ARCH),ppc64le)
+VKLDFLAGS=-L/usr/X11R6/lib -L$(VULKAN_SDK)/lib64 -L/usr/local/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm -lvulkan -lstdc++
+else
+VKLDFLAGS=-L/usr/X11R6/lib -L$(VULKAN_SDK)/lib -L/usr/local/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm -lvulkan -lstdc++
+endif
+
 GLCFLAGS=-I$(MESA_DIR)/include -I/usr/include/glide
+VKCFLAGS=-I$(VULKAN_SDK)/include
 
 SHLIBEXT=so
 
-SHLIBCFLAGS=-fPIC
+SHLIBCFLAGS=-fPIC -std=c99
+SHLIBCPPFLAGS=-fPIC -std=c++11
 SHLIBLDFLAGS=-shared
 
 DO_CC=$(CC) $(CFLAGS) -o $@ -c $<
-DO_DEBUG_CC=$(CC) $(DEBUG_CFLAGS) -o $@ -c $<
 DO_DED_CC=$(CC) $(CFLAGS) -DDEDICATED_ONLY -o $@ -c $<
-DO_DED_DEBUG_CC=$(CC) $(DEBUG_CFLAGS) -DDEDICATED_ONLY -o $@ -c $<
 DO_O_CC=$(CC) $(CFLAGS) -O -o $@ -c $<
 DO_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
 DO_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) -o $@ -c $<
-DO_SHLIB_DEBUG_CC=$(CC) $(DEBUG_CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
 DO_GL_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) $(GLCFLAGS) -o $@ -c $<
 DO_GL_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) $(GLCFLAGS) -o $@ -c $<
+DO_VK_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) $(VKCFLAGS) -o $@ -c $<
+DO_VK_SHLIB_CPP=$(CC) $(CFLAGS) $(SHLIBCPPFLAGS) $(VKCFLAGS) -o $@ -c $<
+DO_VK_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) $(VKCFLAGS) -o $@ -c $<
 DO_AS=$(CC) $(CFLAGS) -DELF -x assembler-with-cpp -o $@ -c $<
 DO_SHLIB_AS=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -DELF -x assembler-with-cpp -o $@ -c $<
 
@@ -92,47 +128,63 @@ DO_SHLIB_AS=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -DELF -x assembler-with-cpp -o $@ -c 
 
 ifeq ($(ARCH),axp)
 TARGETS=$(BUILDDIR)/q2ded \
-	$(BUILDDIR)/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) \
 	$(BUILDDIR)/ctf/game$(ARCH).$(SHLIBEXT) \
-#	$(BUILDDIR)/xatrix/game$(ARCH).$(SHLIBEXT) \
-#	$(BUILDDIR)/rogue/game$(ARCH).$(SHLIBEXT)
+	$(BUILDDIR)/xatrix/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/rogue/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/smd/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/zaero/game$(ARCH).$(SHLIBEXT)
 else
 TARGETS=$(BUILDDIR)/quake2 \
-	$(BUILDDIR)/game$(ARCH).$(SHLIBEXT) \
-	$(BUILDDIR)/ref_soft.$(SHLIBEXT) \
-	$(BUILDDIR)/ref_softx.$(SHLIBEXT) \
-	$(BUILDDIR)/ref_gl.$(SHLIBEXT) \
-	$(BUILDDIR)/ref_glx.$(SHLIBEXT) \
+	$(BUILDDIR)/q2ded \
+	$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) \
 	$(BUILDDIR)/ctf/game$(ARCH).$(SHLIBEXT) \
-#	$(BUILDDIR)/xatrix/game$(ARCH).$(SHLIBEXT) \
-#	$(BUILDDIR)/rogue/game$(ARCH).$(SHLIBEXT)
+	$(BUILDDIR)/ref_vk.$(SHLIBEXT) \
+	$(BUILDDIR)/ref_glx.$(SHLIBEXT) \
+	$(BUILDDIR)/xatrix/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/rogue/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/smd/game$(ARCH).$(SHLIBEXT) \
+	$(BUILDDIR)/zaero/game$(ARCH).$(SHLIBEXT) \
+#	$(BUILDDIR)/ref_soft.$(SHLIBEXT) \
+#	$(BUILDDIR)/ref_softx.$(SHLIBEXT) \
+#	$(BUILDDIR)/ref_gl.$(SHLIBEXT)
 endif
 
 build_debug:
-	@-mkdir $(BUILD_DEBUG_DIR) \
+	@-mkdir -p $(BUILD_DEBUG_DIR) \
+		$(BUILD_DEBUG_DIR)/baseq2 \
 		$(BUILD_DEBUG_DIR)/client \
 		$(BUILD_DEBUG_DIR)/ded \
 		$(BUILD_DEBUG_DIR)/ref_soft \
 		$(BUILD_DEBUG_DIR)/ref_gl \
+		$(BUILD_DEBUG_DIR)/ref_vk \
 		$(BUILD_DEBUG_DIR)/game \
 		$(BUILD_DEBUG_DIR)/ctf \
-#		$(BUILD_DEBUG_DIR)/xatrix \
-#		$(BUILD_DEBUG_DIR)/rogue
+		$(BUILD_DEBUG_DIR)/xatrix \
+		$(BUILD_DEBUG_DIR)/rogue \
+		$(BUILD_DEBUG_DIR)/smd \
+		$(BUILD_DEBUG_DIR)/zaero
 	$(MAKE) targets BUILDDIR=$(BUILD_DEBUG_DIR) CFLAGS="$(DEBUG_CFLAGS)"
 
 build_release:
-	@-mkdir $(BUILD_RELEASE_DIR) \
+	@-mkdir -p $(BUILD_RELEASE_DIR) \
+		$(BUILD_RELEASE_DIR)/baseq2 \
 		$(BUILD_RELEASE_DIR)/client \
 		$(BUILD_RELEASE_DIR)/ded \
 		$(BUILD_RELEASE_DIR)/ref_soft \
 		$(BUILD_RELEASE_DIR)/ref_gl \
+		$(BUILD_RELEASE_DIR)/ref_vk \
 		$(BUILD_RELEASE_DIR)/game \
 		$(BUILD_RELEASE_DIR)/ctf \
-#		$(BUILD_RELEASE_DIR)/xatrix \
-#		$(BUILD_RELEASE_DIR)/rogue
+		$(BUILD_RELEASE_DIR)/xatrix \
+		$(BUILD_RELEASE_DIR)/rogue \
+		$(BUILD_RELEASE_DIR)/smd \
+		$(BUILD_RELEASE_DIR)/zaero
 	$(MAKE) targets BUILDDIR=$(BUILD_RELEASE_DIR) CFLAGS="$(RELEASE_CFLAGS)"
 
 all: build_debug build_release
+debug: build_debug
+release: build_release
 
 targets: $(TARGETS)
 
@@ -158,6 +210,7 @@ QUAKE2_OBJS = \
 	$(BUILDDIR)/client/menu.o \
 	$(BUILDDIR)/client/snd_dma.o \
 	$(BUILDDIR)/client/snd_mem.o \
+	$(BUILDDIR)/client/snd_miniaudio.o \
 	$(BUILDDIR)/client/snd_mix.o \
 	$(BUILDDIR)/client/qmenu.o \
 	$(BUILDDIR)/client/m_flash.o \
@@ -184,7 +237,7 @@ QUAKE2_OBJS = \
 	$(BUILDDIR)/client/q_shlinux.o \
 	$(BUILDDIR)/client/vid_menu.o \
 	$(BUILDDIR)/client/vid_so.o \
-	$(BUILDDIR)/client/snd_linux.o \
+	$(BUILDDIR)/client/snd_alsa.o \
 	$(BUILDDIR)/client/sys_linux.o \
 	$(BUILDDIR)/client/glob.o \
 	$(BUILDDIR)/client/net_udp.o \
@@ -253,6 +306,9 @@ $(BUILDDIR)/client/snd_dma.o :    $(CLIENT_DIR)/snd_dma.c
 $(BUILDDIR)/client/snd_mem.o :    $(CLIENT_DIR)/snd_mem.c
 	$(DO_CC)
 
+$(BUILDDIR)/client/snd_miniaudio.o : $(CLIENT_DIR)/snd_miniaudio.c
+	$(DO_CC)
+
 $(BUILDDIR)/client/snd_mix.o :    $(CLIENT_DIR)/snd_mix.c
 	$(DO_CC)
 
@@ -287,7 +343,7 @@ $(BUILDDIR)/client/net_chan.o :   $(COMMON_DIR)/net_chan.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/q_shared.o :   $(GAME_DIR)/q_shared.c
-	$(DO_DEBUG_CC)
+	$(DO_CC)
 
 $(BUILDDIR)/client/pmove.o :      $(COMMON_DIR)/pmove.c
 	$(DO_CC)
@@ -328,7 +384,7 @@ $(BUILDDIR)/client/vid_menu.o :   $(LINUX_DIR)/vid_menu.c
 $(BUILDDIR)/client/vid_so.o :     $(LINUX_DIR)/vid_so.c
 	$(DO_CC)
 
-$(BUILDDIR)/client/snd_linux.o :  $(LINUX_DIR)/snd_linux.c
+$(BUILDDIR)/client/snd_alsa.o :  $(LINUX_DIR)/snd_alsa.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/snd_mixa.o :   $(LINUX_DIR)/snd_mixa.s
@@ -406,7 +462,7 @@ $(BUILDDIR)/ded/net_chan.o :   $(COMMON_DIR)/net_chan.c
 	$(DO_DED_CC)
 
 $(BUILDDIR)/ded/q_shared.o :   $(GAME_DIR)/q_shared.c
-	$(DO_DED_DEBUG_CC)
+	$(DO_DED_CC)
 
 $(BUILDDIR)/ded/pmove.o :      $(COMMON_DIR)/pmove.c
 	$(DO_DED_CC)
@@ -507,7 +563,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/p_weapon.o \
 	$(BUILDDIR)/game/m_flash.o
 
-$(BUILDDIR)/game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS)
+$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS)
 	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(GAME_OBJS)
 
 $(BUILDDIR)/game/g_ai.o :        $(GAME_DIR)/g_ai.c
@@ -649,7 +705,7 @@ $(BUILDDIR)/game/p_weapon.o :    $(GAME_DIR)/p_weapon.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/q_shared.o :    $(GAME_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/m_flash.o :     $(GAME_DIR)/m_flash.c
 	$(DO_SHLIB_CC)
@@ -765,7 +821,7 @@ $(BUILDDIR)/ctf/p_weapon.o :   $(CTF_DIR)/p_weapon.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/ctf/q_shared.o :   $(CTF_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
 #############################################################################
 # XATRIX
@@ -982,7 +1038,7 @@ $(BUILDDIR)/xatrix/p_weapon.o :    $(XATRIX_DIR)/p_weapon.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/xatrix/q_shared.o :    $(XATRIX_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
 #############################################################################
 # ROGUE
@@ -1239,8 +1295,557 @@ $(BUILDDIR)/rogue/p_weapon.o :     $(ROGUE_DIR)/p_weapon.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/rogue/q_shared.o :     $(ROGUE_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
+#############################################################################
+# SLIGHT MECHANICAL DESTRUCTION
+#############################################################################
+
+SMD_OBJS = \
+	$(BUILDDIR)/smd/g_ai.o \
+	$(BUILDDIR)/smd/g_camera.o \
+	$(BUILDDIR)/smd/g_chase.o \
+	$(BUILDDIR)/smd/g_cmds.o \
+	$(BUILDDIR)/smd/g_combat.o \
+	$(BUILDDIR)/smd/g_crane.o \
+	$(BUILDDIR)/smd/g_fog.o \
+	$(BUILDDIR)/smd/g_func.o \
+	$(BUILDDIR)/smd/g_items.o \
+	$(BUILDDIR)/smd/g_jetpack.o \
+	$(BUILDDIR)/smd/g_lights.o \
+	$(BUILDDIR)/smd/g_lock.o \
+	$(BUILDDIR)/smd/g_main.o \
+	$(BUILDDIR)/smd/g_misc.o \
+	$(BUILDDIR)/smd/g_model.o \
+	$(BUILDDIR)/smd/g_monster.o \
+	$(BUILDDIR)/smd/g_mtrain.o \
+	$(BUILDDIR)/smd/g_newai.o \
+	$(BUILDDIR)/smd/g_patchplayermodels.o \
+	$(BUILDDIR)/smd/g_pendulum.o \
+	$(BUILDDIR)/smd/g_phys.o \
+	$(BUILDDIR)/smd/g_reflect.o \
+	$(BUILDDIR)/smd/g_save.o \
+	$(BUILDDIR)/smd/g_sound.o \
+	$(BUILDDIR)/smd/g_spawn.o \
+	$(BUILDDIR)/smd/g_svcmds.o \
+	$(BUILDDIR)/smd/g_target.o \
+	$(BUILDDIR)/smd/g_thing.o \
+	$(BUILDDIR)/smd/g_tracktrain.o \
+	$(BUILDDIR)/smd/g_trigger.o \
+	$(BUILDDIR)/smd/g_turret.o \
+	$(BUILDDIR)/smd/g_utils.o \
+	$(BUILDDIR)/smd/g_vehicle.o \
+	$(BUILDDIR)/smd/g_weapon.o \
+	$(BUILDDIR)/smd/km_cvar.o \
+	$(BUILDDIR)/smd/m_actor_weap.o \
+	$(BUILDDIR)/smd/m_actor.o \
+	$(BUILDDIR)/smd/m_berserk.o \
+	$(BUILDDIR)/smd/m_boss2.o \
+	$(BUILDDIR)/smd/m_boss3.o \
+	$(BUILDDIR)/smd/m_boss31.o \
+	$(BUILDDIR)/smd/m_boss32.o \
+	$(BUILDDIR)/smd/m_brain.o \
+	$(BUILDDIR)/smd/m_chick.o \
+	$(BUILDDIR)/smd/m_flash.o \
+	$(BUILDDIR)/smd/m_flipper.o \
+	$(BUILDDIR)/smd/m_float.o \
+	$(BUILDDIR)/smd/m_flyer.o \
+	$(BUILDDIR)/smd/m_gladiator.o \
+	$(BUILDDIR)/smd/m_gunner.o \
+	$(BUILDDIR)/smd/m_hover.o \
+	$(BUILDDIR)/smd/m_infantry.o \
+	$(BUILDDIR)/smd/m_insane.o \
+	$(BUILDDIR)/smd/m_medic.o \
+	$(BUILDDIR)/smd/m_move.o \
+	$(BUILDDIR)/smd/m_mutant.o \
+	$(BUILDDIR)/smd/m_parasite.o \
+	$(BUILDDIR)/smd/m_sentrybot.o \
+	$(BUILDDIR)/smd/m_soldier.o \
+	$(BUILDDIR)/smd/m_supertank.o \
+	$(BUILDDIR)/smd/m_tank.o \
+	$(BUILDDIR)/smd/p_chase.o \
+	$(BUILDDIR)/smd/p_client.o \
+	$(BUILDDIR)/smd/p_hud.o \
+	$(BUILDDIR)/smd/p_menu.o \
+	$(BUILDDIR)/smd/p_text.o \
+	$(BUILDDIR)/smd/p_trail.o \
+	$(BUILDDIR)/smd/p_view.o \
+	$(BUILDDIR)/smd/p_weapon.o \
+	$(BUILDDIR)/smd/q_shared.o
+
+$(BUILDDIR)/smd/game$(ARCH).$(SHLIBEXT) : $(SMD_OBJS)
+	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(SMD_OBJS)
+
+$(BUILDDIR)/smd/g_ai.o :         ../smd/g_ai.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_camera.o :     ../smd/g_camera.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_chase.o :      ../smd/g_chase.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_cmds.o :       ../smd/g_cmds.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_combat.o :     ../smd/g_combat.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_crane.o :      ../smd/g_crane.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_fog.o :        ../smd/g_fog.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_func.o :       ../smd/g_func.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_items.o :      ../smd/g_items.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_jetpack.o :    ../smd/g_jetpack.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_lights.o :     ../smd/g_lights.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_lock.o :       ../smd/g_lock.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_main.o :       ../smd/g_main.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_misc.o :       ../smd/g_misc.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_model.o :      ../smd/g_model.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_monster.o :    ../smd/g_monster.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_mtrain.o :     ../smd/g_mtrain.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_newai.o :      ../smd/g_newai.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_patchplayermodels.o :  ../smd/g_patchplayermodels.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_pendulum.o :   ../smd/g_pendulum.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_phys.o :       ../smd/g_phys.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_reflect.o :    ../smd/g_reflect.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_save.o :       ../smd/g_save.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_sound.o :      ../smd/g_sound.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_spawn.o :      ../smd/g_spawn.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_svcmds.o :     ../smd/g_svcmds.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_target.o :     ../smd/g_target.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_thing.o :      ../smd/g_thing.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_tracktrain.o : ../smd/g_tracktrain.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_trigger.o :    ../smd/g_trigger.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_turret.o :     ../smd/g_turret.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_utils.o :      ../smd/g_utils.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_vehicle.o :    ../smd/g_vehicle.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/g_weapon.o :     ../smd/g_weapon.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/km_cvar.o :      ../smd/km_cvar.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_actor_weap.o : ../smd/m_actor_weap.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_actor.o :      ../smd/m_actor.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_berserk.o :    ../smd/m_berserk.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_boss2.o :      ../smd/m_boss2.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_boss3.o :      ../smd/m_boss3.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_boss31.o :     ../smd/m_boss31.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_boss32.o :     ../smd/m_boss32.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_brain.o :      ../smd/m_brain.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_chick.o :      ../smd/m_chick.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_flash.o :      ../smd/m_flash.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_flipper.o :    ../smd/m_flipper.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_float.o :      ../smd/m_float.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_flyer.o :      ../smd/m_flyer.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_gladiator.o :  ../smd/m_gladiator.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_gunner.o :     ../smd/m_gunner.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_hover.o :      ../smd/m_hover.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_infantry.o :   ../smd/m_infantry.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_insane.o :     ../smd/m_insane.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_medic.o :      ../smd/m_medic.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_move.o :       ../smd/m_move.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_mutant.o :     ../smd/m_mutant.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_parasite.o :   ../smd/m_parasite.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_sentrybot.o :  ../smd/m_sentrybot.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_soldier.o :    ../smd/m_soldier.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_supertank.o :  ../smd/m_supertank.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/m_tank.o :       ../smd/m_tank.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_chase.o :      ../smd/p_chase.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_client.o :     ../smd/p_client.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_hud.o :        ../smd/p_hud.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_menu.o :       ../smd/p_menu.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_text.o :       ../smd/p_text.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_trail.o :      ../smd/p_trail.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_view.o :       ../smd/p_view.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/p_weapon.o :     ../smd/p_weapon.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/smd/q_shared.o :     ../smd/q_shared.c
+	$(DO_SHLIB_CC)
+
+#############################################################################
+# ZAERO
+#############################################################################
+
+ZAERO_OBJS = \
+	$(BUILDDIR)/zaero/g_ai.o \
+	$(BUILDDIR)/zaero/g_cmds.o \
+	$(BUILDDIR)/zaero/g_combat.o \
+	$(BUILDDIR)/zaero/g_func.o \
+	$(BUILDDIR)/zaero/g_items.o \
+	$(BUILDDIR)/zaero/g_main.o \
+	$(BUILDDIR)/zaero/g_misc.o \
+	$(BUILDDIR)/zaero/g_monster.o \
+	$(BUILDDIR)/zaero/g_phys.o \
+	$(BUILDDIR)/zaero/g_save.o \
+	$(BUILDDIR)/zaero/g_spawn.o \
+	$(BUILDDIR)/zaero/g_svcmds.o \
+	$(BUILDDIR)/zaero/g_target.o \
+	$(BUILDDIR)/zaero/g_trigger.o \
+	$(BUILDDIR)/zaero/g_turret.o \
+	$(BUILDDIR)/zaero/g_utils.o \
+	$(BUILDDIR)/zaero/g_weapon.o \
+	$(BUILDDIR)/zaero/m_actor.o \
+	$(BUILDDIR)/zaero/m_berserk.o \
+	$(BUILDDIR)/zaero/m_boss2.o \
+	$(BUILDDIR)/zaero/m_boss3.o \
+	$(BUILDDIR)/zaero/m_boss31.o \
+	$(BUILDDIR)/zaero/m_boss32.o \
+	$(BUILDDIR)/zaero/m_brain.o \
+	$(BUILDDIR)/zaero/m_chick.o \
+	$(BUILDDIR)/zaero/m_flash.o \
+	$(BUILDDIR)/zaero/m_flipper.o \
+	$(BUILDDIR)/zaero/m_float.o \
+	$(BUILDDIR)/zaero/m_flyer.o \
+	$(BUILDDIR)/zaero/m_gladiator.o \
+	$(BUILDDIR)/zaero/m_gunner.o \
+	$(BUILDDIR)/zaero/m_hover.o \
+	$(BUILDDIR)/zaero/m_infantry.o \
+	$(BUILDDIR)/zaero/m_insane.o \
+	$(BUILDDIR)/zaero/m_medic.o \
+	$(BUILDDIR)/zaero/m_move.o \
+	$(BUILDDIR)/zaero/m_mutant.o \
+	$(BUILDDIR)/zaero/m_parasite.o \
+	$(BUILDDIR)/zaero/m_soldier.o \
+	$(BUILDDIR)/zaero/m_supertank.o \
+	$(BUILDDIR)/zaero/m_tank.o \
+	$(BUILDDIR)/zaero/p_client.o \
+	$(BUILDDIR)/zaero/p_hud.o \
+	$(BUILDDIR)/zaero/p_trail.o \
+	$(BUILDDIR)/zaero/p_view.o \
+	$(BUILDDIR)/zaero/p_weapon.o \
+	$(BUILDDIR)/zaero/q_shared.o \
+	$(BUILDDIR)/zaero/z_acannon.o \
+	$(BUILDDIR)/zaero/z_ai.o \
+	$(BUILDDIR)/zaero/z_anim.o \
+	$(BUILDDIR)/zaero/z_boss.o \
+	$(BUILDDIR)/zaero/z_camera.o \
+	$(BUILDDIR)/zaero/z_debug.o \
+	$(BUILDDIR)/zaero/z_frames.o \
+	$(BUILDDIR)/zaero/z_handler.o \
+	$(BUILDDIR)/zaero/z_hound.o \
+	$(BUILDDIR)/zaero/z_item.o \
+	$(BUILDDIR)/zaero/z_list.o \
+	$(BUILDDIR)/zaero/z_mtest.o \
+	$(BUILDDIR)/zaero/z_sentien.o \
+	$(BUILDDIR)/zaero/z_spawn.o \
+	$(BUILDDIR)/zaero/z_trigger.o \
+	$(BUILDDIR)/zaero/z_weapon.o
+
+$(BUILDDIR)/zaero/game$(ARCH).$(SHLIBEXT) : $(ZAERO_OBJS)
+	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(ZAERO_OBJS)
+
+$(BUILDDIR)/zaero/g_ai.o :         ../zaero/g_ai.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_cmds.o :       ../zaero/g_cmds.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_combat.o :     ../zaero/g_combat.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_func.o :       ../zaero/g_func.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_items.o :      ../zaero/g_items.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_main.o :       ../zaero/g_main.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_misc.o :       ../zaero/g_misc.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_monster.o :    ../zaero/g_monster.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_phys.o :       ../zaero/g_phys.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_save.o :       ../zaero/g_save.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_spawn.o :      ../zaero/g_spawn.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_svcmds.o :     ../zaero/g_svcmds.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_target.o :     ../zaero/g_target.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_trigger.o :    ../zaero/g_trigger.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_turret.o :     ../zaero/g_turret.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_utils.o :      ../zaero/g_utils.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/g_weapon.o :     ../zaero/g_weapon.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_actor.o :      ../zaero/m_actor.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_berserk.o :    ../zaero/m_berserk.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_boss2.o :      ../zaero/m_boss2.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_boss3.o :      ../zaero/m_boss3.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_boss31.o :     ../zaero/m_boss31.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_boss32.o :     ../zaero/m_boss32.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_brain.o :      ../zaero/m_brain.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_chick.o :      ../zaero/m_chick.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_flash.o :      ../zaero/m_flash.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_flipper.o :    ../zaero/m_flipper.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_float.o :      ../zaero/m_float.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_flyer.o :      ../zaero/m_flyer.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_gladiator.o :  ../zaero/m_gladiator.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_gunner.o :     ../zaero/m_gunner.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_hover.o :      ../zaero/m_hover.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_infantry.o :   ../zaero/m_infantry.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_insane.o :     ../zaero/m_insane.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_medic.o :      ../zaero/m_medic.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_move.o :       ../zaero/m_move.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_mutant.o :     ../zaero/m_mutant.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_parasite.o :   ../zaero/m_parasite.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_soldier.o :    ../zaero/m_soldier.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_supertank.o :  ../zaero/m_supertank.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/m_tank.o :       ../zaero/m_tank.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/p_client.o :     ../zaero/p_client.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/p_hud.o :        ../zaero/p_hud.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/p_trail.o :      ../zaero/p_trail.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/p_view.o :       ../zaero/p_view.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/p_weapon.o :     ../zaero/p_weapon.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/q_shared.o :     ../zaero/q_shared.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_acannon.o :    ../zaero/z_acannon.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_ai.o :         ../zaero/z_ai.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_anim.o :       ../zaero/z_anim.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_boss.o :       ../zaero/z_boss.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_camera.o :     ../zaero/z_camera.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_debug.o :      ../zaero/z_debug.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_frames.o :     ../zaero/z_frames.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_handler.o :    ../zaero/z_handler.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_hound.o :      ../zaero/z_hound.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_item.o :       ../zaero/z_item.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_list.o :       ../zaero/z_list.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_mtest.o :      ../zaero/z_mtest.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_sentien.o :    ../zaero/z_sentien.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_spawn.o :      ../zaero/z_spawn.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_trigger.o :    ../zaero/z_trigger.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/zaero/z_weapon.o :     ../zaero/z_weapon.c
+	$(DO_SHLIB_CC)
 
 
 
@@ -1384,7 +1989,7 @@ $(BUILDDIR)/ref_soft/sys_dosa.o :     $(LINUX_DIR)/sys_dosa.s
 	$(DO_SHLIB_AS)
 
 $(BUILDDIR)/ref_soft/q_shared.o :     $(GAME_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/ref_soft/q_shlinux.o :    $(LINUX_DIR)/q_shlinux.c
 	$(DO_SHLIB_O_CC)
@@ -1481,13 +2086,111 @@ $(BUILDDIR)/ref_gl/rw_in_svgalib.o :  $(LINUX_DIR)/rw_in_svgalib.c
 	$(DO_GL_SHLIB_CC)
 
 $(BUILDDIR)/ref_gl/q_shared.o :       $(GAME_DIR)/q_shared.c
-	$(DO_SHLIB_DEBUG_CC)
+	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/ref_gl/q_shlinux.o :      $(LINUX_DIR)/q_shlinux.c
 	$(DO_GL_SHLIB_O_CC)
 
 $(BUILDDIR)/ref_gl/glob.o :           $(LINUX_DIR)/glob.c
 	$(DO_GL_SHLIB_CC)
+
+#############################################################################
+# REF_VK
+#############################################################################
+
+REF_VK_OBJS = \
+	$(BUILDDIR)/ref_vk/vk_buffer.o \
+	$(BUILDDIR)/ref_vk/vk_cmd.o \
+	$(BUILDDIR)/ref_vk/vk_common.o \
+	$(BUILDDIR)/ref_vk/vk_device.o \
+	$(BUILDDIR)/ref_vk/vk_draw.o \
+	$(BUILDDIR)/ref_vk/vk_image.o \
+	$(BUILDDIR)/ref_vk/vk_imp.o \
+	$(BUILDDIR)/ref_vk/vk_light.o \
+	$(BUILDDIR)/ref_vk/vk_mem_alloc.o \
+	$(BUILDDIR)/ref_vk/vk_mesh.o \
+	$(BUILDDIR)/ref_vk/vk_model.o \
+	$(BUILDDIR)/ref_vk/vk_pipeline.o \
+	$(BUILDDIR)/ref_vk/vk_rmain.o \
+	$(BUILDDIR)/ref_vk/vk_rmisc.o \
+	$(BUILDDIR)/ref_vk/vk_rsurf.o \
+	$(BUILDDIR)/ref_vk/vk_shaders.o \
+	$(BUILDDIR)/ref_vk/vk_swapchain.o \
+	$(BUILDDIR)/ref_vk/vk_validation.o \
+	$(BUILDDIR)/ref_vk/vk_warp.o \
+	\
+	$(BUILDDIR)/ref_vk/q_shared.o \
+	$(BUILDDIR)/ref_vk/q_shlinux.o \
+	$(BUILDDIR)/ref_vk/glob.o
+
+$(BUILDDIR)/ref_vk.$(SHLIBEXT) : $(REF_VK_OBJS)
+	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(REF_VK_OBJS) $(VKLDFLAGS)
+
+$(BUILDDIR)/ref_vk/vk_buffer.o :        $(REF_VK_DIR)/vk_buffer.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_cmd.o :       $(REF_VK_DIR)/vk_cmd.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_common.o :      $(REF_VK_DIR)/vk_common.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_device.o :       $(REF_VK_DIR)/vk_device.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_draw.o :        $(REF_VK_DIR)/vk_draw.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_image.o :       $(REF_VK_DIR)/vk_image.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_light.o :       $(REF_VK_DIR)/vk_light.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_mem_alloc.o :       $(REF_VK_DIR)/vk_mem_alloc.cpp
+	$(DO_VK_SHLIB_CPP)
+
+$(BUILDDIR)/ref_vk/vk_mesh.o :       $(REF_VK_DIR)/vk_mesh.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_model.o :        $(REF_VK_DIR)/vk_model.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_pipeline.o :        $(REF_VK_DIR)/vk_pipeline.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_rmain.o :        $(REF_VK_DIR)/vk_rmain.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_rmisc.o :        $(REF_VK_DIR)/vk_rmisc.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_rsurf.o :        $(REF_VK_DIR)/vk_rsurf.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_shaders.o :        $(REF_VK_DIR)/vk_shaders.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_swapchain.o :        $(REF_VK_DIR)/vk_swapchain.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_validation.o :        $(REF_VK_DIR)/vk_validation.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/vk_warp.o :        $(REF_VK_DIR)/vk_warp.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/q_shared.o :       $(GAME_DIR)/q_shared.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/q_shlinux.o :      $(LINUX_DIR)/q_shlinux.c
+	$(DO_VK_SHLIB_O_CC)
+
+$(BUILDDIR)/ref_vk/vk_imp.o :       $(LINUX_DIR)/vk_imp.c
+	$(DO_VK_SHLIB_CC)
+
+$(BUILDDIR)/ref_vk/glob.o :           $(LINUX_DIR)/glob.c
+	$(DO_VK_SHLIB_CC)
 
 #############################################################################
 # RPM
@@ -1588,6 +2291,7 @@ rpm-quake2: quake2.spec
 	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(QUAKE2INSTDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(QUAKE2INSTDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(QUAKE2INSTDIR)
+	cp $(BUILD_RELEASE_DIR)/ref_vk.$(SHLIBEXT) $(QUAKE2INSTDIR)
 	-mkdir $(QUAKE2INSTDIR)/ctf
 	chmod 1777 $(QUAKE2INSTDIR)/ctf
 	cp $(BUILD_RELEASE_DIR)/ctf/game$(ARCH).$(SHLIBEXT) $(QUAKE2INSTDIR)/ctf
@@ -1905,6 +2609,7 @@ copyfiles:
 	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(COPYDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(COPYDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(COPYDIR)
+	cp $(BUILD_RELEASE_DIR)/ref_vk.$(SHLIBEXT) $(COPYDIR)
 #	-mkdir $(COPYDIR)/ctf
 #	chmod 1777 $(COPYDIR)/ctf
 #	cp $(BUILD_RELEASE_DIR)/ctf/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/ctf
@@ -1975,9 +2680,12 @@ clean2:
 	$(CTF_OBJS) \
 	$(XATRIX_OBJS) \
 	$(ROGUE_OBJS) \
+	$(SMD_OBJS) \
+	$(ZAERO_OBJS) \
 	$(REF_SOFT_OBJS) \
 	$(REF_SOFT_SVGA_OBJS) \
 	$(REF_SOFT_X11_OBJS) \
 	$(REF_GL_OBJS) \
 	$(REF_GL_FXMESA_OBJS) \
-	$(REF_GL_GLX_OBJS) 
+	$(REF_GL_GLX_OBJS) \
+	$(REF_VK_OBJS)

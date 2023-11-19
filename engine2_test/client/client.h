@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -36,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "keys.h"
 #include "console.h"
 #include "cdaudio.h"
+#include "snd_miniaudio.h"
 
 //=============================================================================
 
@@ -322,25 +324,6 @@ qboolean	CL_CheckOrDownloadFile (char *filename);
 
 void CL_AddNetgraph (void);
 
-//ROGUE
-typedef struct cl_sustain
-{
-	int			id;
-	int			type;
-	int			endtime;
-	int			nextthink;
-	int			thinkinterval;
-	vec3_t		org;
-	vec3_t		dir;
-	int			color;
-	int			count;
-	int			magnitude;
-	void		(*think)(struct cl_sustain *self);
-} cl_sustain_t;
-
-#define MAX_SUSTAINS		32
-void CL_ParticleSteamEffect2(cl_sustain_t *self);
-
 void CL_TeleporterParticles (entity_state_t *ent);
 void CL_ParticleEffect (vec3_t org, vec3_t dir, int color, int count);
 void CL_ParticleEffect2 (vec3_t org, vec3_t dir, int color, int count);
@@ -408,8 +391,6 @@ void CL_Tracker_Shell(vec3_t origin);
 void CL_MonsterPlasma_Shell(vec3_t origin);
 void CL_ColorExplosionParticles (vec3_t org, int color, int run);
 void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, int color, int count, int magnitude);
-void CL_Widowbeamout (cl_sustain_t *self);
-void CL_Nukeblast (cl_sustain_t *self);
 void CL_WidowSplash (vec3_t org);
 // PGM
 // ========
@@ -575,10 +556,3 @@ void CL_DrawInventory (void);
 // cl_pred.c
 //
 void CL_PredictMovement (void);
-
-#if id386
-void x86_TimerStart( void );
-void x86_TimerStop( void );
-void x86_TimerInit( unsigned long smallest, unsigned longest );
-unsigned long *x86_TimerGetHistogram( void );
-#endif

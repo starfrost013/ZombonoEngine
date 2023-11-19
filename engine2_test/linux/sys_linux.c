@@ -35,7 +35,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/wait.h>
 #include <sys/mman.h>
 #include <errno.h>
+#if defined(__linux__)
 #include <mntent.h>
+#endif
 
 #include <dlfcn.h>
 
@@ -221,8 +223,18 @@ void *Sys_GetGameAPI (void *parms)
 	char	*path;
 #ifdef __i386__
 	const char *gamename = "gamei386.so";
+#elif defined __x86_64__
+	const char *gamename = "gamex64.so";
 #elif defined __alpha__
 	const char *gamename = "gameaxp.so";
+#elif defined __powerpc64__
+	const char *gamename = "gameppc64.so";
+#elif defined __arm__
+	const char *gamename = "gamearmv7l.so";
+#elif defined __aarch64__
+	const char *gamename = "gameaarch64.so";
+#elif defined __e2k__
+	const char *gamename = "gamee2k.so";
 #else
 #error Unknown arch
 #endif
@@ -244,7 +256,7 @@ void *Sys_GetGameAPI (void *parms)
 		path = FS_NextPath (path);
 		if (!path)
 			return NULL;		// couldn't find one anywhere
-		sprintf (name, "%s/%s/%s", curpath, path, gamename);
+		snprintf (name, MAX_OSPATH, "%s/%s/%s", curpath, path, gamename);
 		game_library = dlopen (name, RTLD_LAZY );
 		if (game_library)
 		{
@@ -310,6 +322,11 @@ int main (int argc, char **argv)
     {
 // find time spent rendering last frame
 		do {
+#if defined(__x86_64__)
+			__asm__ __volatile__("pause");
+#elif defined(__aarch64__)
+			__asm__ __volatile__("yield");
+#endif
 			newtime = Sys_Milliseconds ();
 			time = newtime - oldtime;
 		} while (time < 1);
@@ -321,6 +338,7 @@ int main (int argc, char **argv)
 
 void Sys_CopyProtect(void)
 {
+#if defined(__linux__)
 	FILE *mnt;
 	struct mntent *ent;
 	char path[MAX_OSPATH];
@@ -368,6 +386,7 @@ void Sys_CopyProtect(void)
 		Com_Error (ERR_FATAL, "Could not find a Quake2 CD in your CD drive.");
 	Com_Error (ERR_FATAL, "Unable to find a mounted iso9660 file system.\n"
 		"You must mount the Quake2 CD in a cdrom drive in order to play.");
+#endif
 }
 
 #if 0

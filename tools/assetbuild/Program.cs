@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "1.5.0"; // Version
+const string ASSETBUILD_VERSION = "2.0.0"; // Version
 const string TOOLDIR = @"..\..\..\..\..\tools"; // Tool compile directory relative to the Assetbuild CWD (janky)
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 

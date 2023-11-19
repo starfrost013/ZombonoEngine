@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,7 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Quake refresh engine.
 
 #include <assert.h>
+#include <ctype.h>
 #include <dlfcn.h> // ELF dl loader
+#if defined(__FreeBSD__)
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
@@ -40,6 +46,11 @@ cvar_t		*vid_ref;			// Name of Refresh DLL loaded
 cvar_t		*vid_xpos;			// X coordinate of window position
 cvar_t		*vid_ypos;			// Y coordinate of window position
 cvar_t		*vid_fullscreen;
+cvar_t		*vid_refresh;
+cvar_t		*vid_hudscale;
+cvar_t		*r_customwidth;
+cvar_t		*r_customheight;
+cvar_t		*viewsize;
 
 // Global variables used internally by this module
 viddef_t	viddef;				// global video state; used by other modules
@@ -47,8 +58,6 @@ void		*reflib_library;		// Handle to refresh DLL
 qboolean	reflib_active = 0;
 
 #define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
-
-const char so_file[] = "/etc/quake2.conf";
 
 /** KEYBOARD **************************************************************/
 
@@ -79,7 +88,7 @@ DLL GLUE
 ==========================================================================
 */
 
-#define	MAXPRINTMSG	4096
+#define	MAXPRINTMSG	8192
 void VID_Printf (int print_level, char *fmt, ...)
 {
 	va_list		argptr;
@@ -145,13 +154,25 @@ vidmode_t vid_modes[] =
 	{ "Mode 5: 960x720",   960, 720,   5 },
 	{ "Mode 6: 1024x768",  1024, 768,  6 },
 	{ "Mode 7: 1152x864",  1152, 864,  7 },
-	{ "Mode 8: 1280x1024",  1280, 1024, 8 },
-	{ "Mode 9: 1600x1200", 1600, 1200, 9 },
-	{ "Mode 10: 2048x1536", 2048, 1536, 10 }
+	{ "Mode 8: 1280x960",  1280, 960,  8 },
+	{ "Mode 9: 1366x768",  1366, 768,  9 },
+	{ "Mode 10: 1600x1200", 1600, 1200, 10 },
+	{ "Mode 11: 1920x1080", 1920, 1080, 11 },
+	{ "Mode 12: 1920x1200", 1920, 1200, 12 },
+	{ "Mode 13: 2048x1536", 2048, 1536, 13 },
+	{ "Mode 14: 2560x1440", 2560, 1440, 14 },
+	{ "Mode 15: 3840x2160", 3840, 2160, 15 },
 };
 
 qboolean VID_GetModeInfo( int *width, int *height, int mode )
 {
+	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
+	{
+		*width  = r_customwidth->value;
+		*height = r_customheight->value;
+		return true;
+	}
+
 	if ( mode < 0 || mode >= VID_NUM_MODES )
 		return false;
 
@@ -168,6 +189,18 @@ void VID_NewWindow ( int width, int height)
 {
 	viddef.width  = width;
 	viddef.height = height;
+
+	char hudscale[4];
+	memset(hudscale, 0, sizeof(hudscale));
+
+	int wscale = viddef.width / 800;
+	int hscale = viddef.height / 480;
+
+	if (wscale > hscale) wscale = hscale;
+	if (wscale < 1) wscale = 1;
+
+	snprintf(hudscale, 4, "%2d", wscale);
+	vid_hudscale = Cvar_Set("hudscale", hudscale);
 }
 
 void VID_FreeReflib (void)
@@ -205,9 +238,9 @@ qboolean VID_LoadRefresh( char *name )
 	refimport_t	ri;
 	GetRefAPI_t	GetRefAPI;
 	char	fn[MAX_OSPATH];
+	char    so_path[MAX_OSPATH];
 	struct stat st;
 	extern uid_t saved_euid;
-	FILE *fp;
 	
 	if ( reflib_active )
 	{
@@ -223,50 +256,33 @@ qboolean VID_LoadRefresh( char *name )
 
 	Com_Printf( "------- Loading %s -------\n", name );
 
-	//regain root
-	seteuid(saved_euid);
-
-	if ((fp = fopen(so_file, "r")) == NULL) {
-		Com_Printf( "LoadLibrary(\"%s\") failed: can't open %s (required for location of ref libraries)\n", name, so_file);
+	// locate executable location so we don't need the silly /etc/quake2.conf file
+#if defined(__linux__)
+	snprintf(fn, sizeof(fn), "/proc/%d/exe", getpid());
+	int l = readlink(fn, so_path, MAX_OSPATH-1);
+#else
+	int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1};
+	size_t l = sizeof(so_path);
+	if (sysctl(mib, 4, so_path, &l, NULL, 0) == -1)
+	{
+		Com_Printf( "LoadLibrary(\"%s\") failed: %s\n", name , strerror(errno));
 		return false;
 	}
-	fgets(fn, sizeof(fn), fp);
-	fclose(fp);
-	while (*fn && isspace(fn[strlen(fn) - 1]))
-		fn[strlen(fn) - 1] = 0;
-
-	strcat(fn, "/");
-	strcat(fn, name);
-
-	// permission checking
-	if (strstr(fn, "softx") == NULL) { // softx doesn't require root
-		if (stat(fn, &st) == -1) {
-			Com_Printf( "LoadLibrary(\"%s\") failed: %s\n", name, strerror(errno));
-			return false;
-		}
-#if 0
-		if (st.st_uid != 0) {
-			Com_Printf( "LoadLibrary(\"%s\") failed: ref is not owned by root\n", name);
-			return false;
-		}
-		if ((st.st_mode & 0777) & ~0700) {
-			Com_Printf( "LoadLibrary(\"%s\") failed: invalid permissions, must be 700 for security considerations\n", name);
-			return false;
-		}
 #endif
-	} else {
-		// softx requires we give up root now
-		setreuid(getuid(), getuid());
-		setegid(getgid());
-	}
+	so_path[l <= 0 ? 0 : l] = '\0';
+	char *s = strrchr(so_path, '/');
+	// cut off binary from path
+	s[1] = '\0';
 
-	if ( ( reflib_library = dlopen( fn, RTLD_LAZY | RTLD_GLOBAL ) ) == 0 )
+	strcat(so_path, name);
+
+	if ( ( reflib_library = dlopen( so_path, RTLD_LAZY | RTLD_GLOBAL ) ) == 0 )
 	{
 		Com_Printf( "LoadLibrary(\"%s\") failed: %s\n", name , dlerror());
 		return false;
 	}
 
-  Com_Printf( "LoadLibrary(\"%s\")\n", fn );
+  Com_Printf( "LoadLibrary(\"%s\")\n", so_path );
 
 	ri.Cmd_AddCommand = Cmd_AddCommand;
 	ri.Cmd_RemoveCommand = Cmd_RemoveCommand;
@@ -299,6 +315,7 @@ qboolean VID_LoadRefresh( char *name )
 	/* Init IN (Mouse) */
 	in_state.IN_CenterView_fp = IN_CenterView;
 	in_state.Key_Event_fp = Do_Key_Event;
+	in_state.Quit_fp = CL_Quit_f;
 	in_state.viewangles = cl.viewangles;
 	in_state.in_strafe_state = &in_strafe.state;
 
@@ -312,7 +329,7 @@ qboolean VID_LoadRefresh( char *name )
 
 	Real_IN_Init();
 
-	if ( re.Init( 0, 0 ) == -1 )
+	if ( !re.Init( 0, 0 ) )
 	{
 		re.Shutdown();
 		VID_FreeReflib ();
@@ -337,10 +354,7 @@ qboolean VID_LoadRefresh( char *name )
 	}
 #endif
 	KBD_Init_fp(Do_Key_Event);
-
-	// give up root now
-	setreuid(getuid(), getuid());
-	setegid(getgid());
+	Key_ClearStates();
 
 	Com_Printf( "------------------------------------\n");
 	reflib_active = true;
@@ -371,6 +385,18 @@ void VID_CheckChanges (void)
 		/*
 		** refresh has changed
 		*/
+
+		// only allow Vulkan on Linux
+		if(strcmp("vk", vid_ref->string))
+		{
+			Cvar_Set("vid_ref", "vk");
+			vid_ref->modified = false;
+			Com_Printf("Only Vulkan renderer is supported on Linux.\n");
+			// don't restart the renderer if it's already loaded
+			if(reflib_active)
+				break;
+		}
+
 		vid_ref->modified = false;
 		vid_fullscreen->modified = true;
 		cl.refresh_prepped = false;
@@ -405,6 +431,11 @@ Com_Printf("Trying mode 0\n");
 		cls.disable_screen = false;
 	}
 
+	if ( vid_refresh->modified )
+	{
+		vid_refresh->modified = false;
+		cl.refresh_prepped = false;
+	}
 }
 
 /*
@@ -414,16 +445,15 @@ VID_Init
 */
 void VID_Init (void)
 {
-	/* Create the video variables so we know how to start the graphics drivers */
-	// if DISPLAY is defined, try X
-	if (getenv("DISPLAY"))
-		vid_ref = Cvar_Get ("vid_ref", "softx", CVAR_ARCHIVE);
-	else
-		vid_ref = Cvar_Get ("vid_ref", "soft", CVAR_ARCHIVE);
+	vid_ref = Cvar_Get ("vid_ref", "vk", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get ("vid_xpos", "3", CVAR_ARCHIVE);
 	vid_ypos = Cvar_Get ("vid_ypos", "22", CVAR_ARCHIVE);
 	vid_fullscreen = Cvar_Get ("vid_fullscreen", "0", CVAR_ARCHIVE);
+	vid_refresh = Cvar_Get ("vid_refresh", "0", CVAR_NOSET);
 	vid_gamma = Cvar_Get( "vid_gamma", "1", CVAR_ARCHIVE );
+	r_customwidth = Cvar_Get( "r_customwidth", "1024", CVAR_ARCHIVE );
+	r_customheight = Cvar_Get( "r_customheight", "768", CVAR_ARCHIVE );
+	viewsize = Cvar_Get( "viewsize", "100", CVAR_ARCHIVE );
 
 	/* Add some console commands that we want to handle */
 	Cmd_AddCommand ("vid_restart", VID_Restart_f);
@@ -512,6 +542,7 @@ void IN_Activate (qboolean active)
 
 void Do_Key_Event(int key, qboolean down)
 {
-	Key_Event(key, down, Sys_Milliseconds());
+	if(key < 256)
+		Key_Event(key, down, Sys_Milliseconds());
 }
 

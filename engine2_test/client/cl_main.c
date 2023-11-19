@@ -100,6 +100,8 @@ extern	cvar_t *allow_download_models;
 extern	cvar_t *allow_download_sounds;
 extern	cvar_t *allow_download_maps;
 
+extern void SV_ShutdownGameProgs(void);
+
 //======================================================================
 
 
@@ -504,6 +506,7 @@ void CL_Connect_f (void)
 	if (Com_ServerState ())
 	{	// if running a local server, kill it and reissue
 		SV_Shutdown (va("Server quit\n", msg), false);
+		SV_ShutdownGameProgs();
 	}
 	else
 	{
@@ -579,7 +582,7 @@ void CL_Rcon_f (void)
 			to.port = BigShort (PORT_SERVER);
 	}
 	
-	NET_SendPacket (NS_CLIENT, strlen(message)+1, message, to);
+	NET_SendPacket (NS_CLIENT, (int)strlen(message)+1, message, to);
 }
 
 
@@ -644,9 +647,9 @@ void CL_Disconnect (void)
 	// send a disconnect message to the server
 	final[0] = clc_stringcmd;
 	strcpy ((char *)final+1, "disconnect");
-	Netchan_Transmit (&cls.netchan, strlen(final), final);
-	Netchan_Transmit (&cls.netchan, strlen(final), final);
-	Netchan_Transmit (&cls.netchan, strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
 
 	CL_ClearState ();
 
@@ -701,7 +704,7 @@ void CL_Packet_f (void)
 	out = send+4;
 	send[0] = send[1] = send[2] = send[3] = (char)0xff;
 
-	l = strlen (in);
+	l = (int)strlen (in);
 	for (i=0 ; i<l ; i++)
 	{
 		if (in[i] == '\\' && in[i+1] == 'n')
@@ -1542,6 +1545,7 @@ void CL_InitLocal (void)
 	Cmd_AddCommand ("invdrop", NULL);
 	Cmd_AddCommand ("weapnext", NULL);
 	Cmd_AddCommand ("weapprev", NULL);
+	Cmd_AddCommand ("weaplast", NULL);
 }
 
 
@@ -1738,6 +1742,7 @@ void CL_Frame (int msec)
 	S_Update (cl.refdef.vieworg, cl.v_forward, cl.v_right, cl.v_up);
 	
 	CDAudio_Update();
+	Miniaudio_Update();
 
 	// advance local effects for next frame
 	CL_RunDLights ();
@@ -1804,6 +1809,7 @@ void CL_Init (void)
 	cls.disable_screen = true;	// don't draw yet
 
 	CDAudio_Init ();
+	Miniaudio_Init ();
 	CL_InitLocal ();
 	IN_Init ();
 
@@ -1836,6 +1842,7 @@ void CL_Shutdown(void)
 	CL_WriteConfiguration (); 
 
 	CDAudio_Shutdown ();
+	Miniaudio_Shutdown();
 	S_Shutdown();
 	IN_Shutdown ();
 	VID_Shutdown();

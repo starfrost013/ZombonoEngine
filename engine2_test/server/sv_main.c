@@ -29,7 +29,7 @@ cvar_t	*sv_timedemo;
 
 cvar_t	*sv_enforcetime;
 
-cvar_t	*timeout;				// seconds without any message
+cvar_t	*msg_timeout;			// seconds without any message
 cvar_t	*zombietime;			// seconds to sink messages after disconnect
 
 cvar_t	*rcon_password;			// password for remote server commands
@@ -117,7 +117,7 @@ char	*SV_StatusString (void)
 
 	strcpy (status, Cvar_Serverinfo());
 	strcat (status, "\n");
-	statusLength = strlen(status);
+	statusLength = (int)strlen(status);
 
 	for (i=0 ; i<maxclients->value ; i++)
 	{
@@ -126,7 +126,7 @@ char	*SV_StatusString (void)
 		{
 			Com_sprintf (player, sizeof(player), "%i %i \"%s\"\n", 
 				cl->edict->client->ps.stats[STAT_FRAGS], cl->ping, cl->name);
-			playerLength = strlen(player);
+			playerLength = (int)strlen(player);
 			if (statusLength + playerLength >= sizeof(status) )
 				break;		// can't hold any more
 			strcpy (status + statusLength, player);
@@ -284,7 +284,7 @@ void SVC_DirectConnect (void)
 	version = atoi(Cmd_Argv(1));
 	if (version != PROTOCOL_VERSION)
 	{
-		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is version %4.2f.\n", VERSION);
+		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is version %4.2f.\n", ZOMBONO_VERSION);
 		Com_DPrintf ("    rejected connect from version %i\n", version);
 		return;
 	}
@@ -667,7 +667,7 @@ void SV_CheckTimeouts (void)
 	int			droppoint;
 	int			zombiepoint;
 
-	droppoint = svs.realtime - 1000*timeout->value;
+	droppoint = svs.realtime - 1000*msg_timeout->value;
 	zombiepoint = svs.realtime - 1000*zombietime->value;
 
 	for (i=0,cl=svs.clients ; i<maxclients->value ; i++,cl++)
@@ -960,7 +960,7 @@ void SV_Init (void)
 	Cvar_Get ("protocol", va("%i", PROTOCOL_VERSION), CVAR_SERVERINFO|CVAR_NOSET);;
 	maxclients = Cvar_Get ("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
 	hostname = Cvar_Get ("hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE);
-	timeout = Cvar_Get ("timeout", "125", 0);
+	msg_timeout = Cvar_Get ("timeout", "125", 0);
 	zombietime = Cvar_Get ("zombietime", "2", 0);
 	sv_showclamp = Cvar_Get ("showclamp", "0", 0);
 	sv_paused = Cvar_Get ("paused", "0", 0);
@@ -1038,7 +1038,8 @@ void SV_Shutdown (char *finalmsg, qboolean reconnect)
 		SV_FinalMessage (finalmsg, reconnect);
 
 	Master_Shutdown ();
-	SV_ShutdownGameProgs ();
+	// calling this function here causes function stack to be corrupted on 64 bit builds when invoked from Com_Error()
+	//SV_ShutdownGameProgs ();
 
 	// free current level
 	if (sv.demofile)

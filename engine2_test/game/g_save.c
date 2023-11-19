@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -203,6 +204,9 @@ void InitGame (void)
 	// dm map list
 	sv_maplist = gi.cvar ("sv_maplist", "", 0);
 
+	/* others */
+	aimfix = gi.cvar ("aimfix", "0", CVAR_ARCHIVE);
+
 	// items
 	InitItems ();
 
@@ -246,7 +250,7 @@ void WriteField1 (FILE *f, field_t *field, byte *base)
 	case F_LSTRING:
 	case F_GSTRING:
 		if ( *(char **)p )
-			len = strlen(*(char **)p) + 1;
+			len = (int)strlen(*(char **)p) + 1;
 		else
 			len = 0;
 		*(int *)p = len;
@@ -311,9 +315,11 @@ void WriteField2 (FILE *f, field_t *field, byte *base)
 	case F_LSTRING:
 		if ( *(char **)p )
 		{
-			len = strlen(*(char **)p) + 1;
+			len = (int)strlen(*(char **)p) + 1;
 			fwrite (*(char **)p, len, 1, f);
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -710,15 +716,6 @@ void ReadLevel (char *filename)
 
 	// check function pointer base address
 	fread (&base, sizeof(base), 1, f);
-#ifdef _WIN32
-	if (base != (void *)InitGame)
-	{
-		fclose (f);
-		gi.error ("ReadLevel: function pointers have moved");
-	}
-#else
-	gi.dprintf("Function offsets %d\n", ((byte *)base) - ((byte *)InitGame));
-#endif
 
 	// load the level locals
 	ReadLevelLocals (f);
