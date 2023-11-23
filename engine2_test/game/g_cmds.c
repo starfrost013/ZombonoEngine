@@ -31,18 +31,17 @@ char *ClientTeam (edict_t *ent)
 	if (!ent->client)
 		return value;
 
-	strcpy(value, Info_ValueForKey (ent->client->pers.userinfo, "skin"));
+	strcpy(value, Info_ValueForKey (ent->client->pers.userinfo, "team"));
 	p = strchr(value, '/');
 	if (!p)
 		return value;
 
-	if ((int)(dmflags->value) & DF_MODELTEAMS)
+	if ((int)(dmflags->value) & DF_UNUSED2)
 	{
 		*p = 0;
 		return value;
 	}
 
-	// if ((int)(dmflags->value) & DF_SKINTEAMS)
 	return ++p;
 }
 
@@ -50,9 +49,6 @@ qboolean OnSameTeam (edict_t *ent1, edict_t *ent2)
 {
 	char	ent1Team [512];
 	char	ent2Team [512];
-
-	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
-		return false;
 
 	strcpy (ent1Team, ClientTeam (ent1));
 	strcpy (ent2Team, ClientTeam (ent2));
@@ -794,9 +790,6 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 
 	if (gi.argc () < 2 && !arg0)
 		return;
-
-	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
-		team = false;
 
 	if (team)
 		Com_sprintf (text, sizeof(text), "(%s): ", ent->client->pers.netname);

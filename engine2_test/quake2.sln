@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quake2", "quake2.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "quake2.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A3FC275F-39B9-4FFD-AFE2-D132CA644A4F} = {A3FC275F-39B9-4FFD-AFE2-D132CA644A4F}
 		{3CFEFC8B-F59F-4194-97D7-43737A33199C} = {3CFEFC8B-F59F-4194-97D7-43737A33199C}
@@ -20,6 +20,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_vk", "ref_vk\ref_vk.vcxproj", "{A3FC275F-39B9-4FFD-AFE2-D132CA644A4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assetbuild", "..\tools\assetbuild\assetbuild.csproj", "{FE638112-A5C1-4796-82A7-749622BA1F0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wal2tga", "..\tools\bmp2lmp\wal2tga.csproj", "{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +142,24 @@ Global
 		{FE638112-A5C1-4796-82A7-749622BA1F0F}.Release|x64.Build.0 = Release|Any CPU
 		{FE638112-A5C1-4796-82A7-749622BA1F0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE638112-A5C1-4796-82A7-749622BA1F0F}.Release|x86.Build.0 = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|x64.Build.0 = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Debug|x86.Build.0 = Debug|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|Any CPU.ActiveCfg = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|Any CPU.Build.0 = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|x64.ActiveCfg = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|x64.Build.0 = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|x86.ActiveCfg = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Playtest|x86.Build.0 = Playtest|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|x64.ActiveCfg = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|x64.Build.0 = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|x86.ActiveCfg = Release|Any CPU
+		{93FA0C9C-A8CB-47C4-A77C-A64C7F523033}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

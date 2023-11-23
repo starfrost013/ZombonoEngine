@@ -1,10 +1,10 @@
+// Zombono game definition file (.fgd)
 //
-// Quake 2 game definition file (.fgd)
-//
+// Based on quake2 FGD
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// Lasted updated by xaGe : 20200415
+// 2023/11/19 version
 
 //
 // worldspawn
@@ -44,15 +44,13 @@
 //
 
 @PointClass base(PlayerClass) = info_player_start : "Player 1 start" []
-@PointClass base(PlayerClass) = info_player_deathmatch : "Player deathmatch start" []
-@PointClass base(PlayerClass) = info_player_coop : "Player cooperative start" []
 @PointClass base(PlayerClass) = info_player_intermission : "Deathmatch intermission point"
 [
 	angles(string) : "pitch yaw roll"
 ]
 
-@PointClass base(PlayerClass) = info_player_start_director = "Director team start" []
-@PointClass base(PlayerClass) = info_player_start_player = "Player team start" []
+@PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
+@PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
 
 // Notes on the 'team' key: First of all, it's really only useful in DM because it creates a
 // random respawn pattern. Let's say that in one spot, you want to have the shotgun, Quad
@@ -65,7 +63,7 @@
 
 @BaseClass base(Appearflags, Target) color(76 76 255) size(-16 -16 -16, 16 16 16) = Ammo
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 ]
 
 @PointClass base(Ammo) model({ "path": ":models/items/ammo/shells/medium/tris.md2" }) = ammo_shells : "Shotgun ammo" []
@@ -160,7 +158,7 @@
 		64 : "Animated Fast" : 0
 	]
 	killtarget(string) : "Kill Target"
-	team(string) : "Team"
+	team(integer) : "Team"
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
 	speed(integer) : "Speed" : 100
@@ -202,7 +200,7 @@
 		128 : "Y Axis" : 0
 	]
 	killtarget(string) : "Kill Target"
-	team(string) : "Team"
+	team(integer) : "Team"
 	distance(integer) : "Degrees of rotation" : 90
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
@@ -306,7 +304,7 @@
 		64 : "Animated" : 0
 		128 : "Animated Fast" : 0
 	]
-	team(string) : "Team"
+	team(integer) : "Team"
 	speed(integer) : "Speed" : 100
 	dmg(integer) : "Damage when blocked" : 2
 	_minlight(integer) : "Minimum light (optional)"
@@ -334,7 +332,7 @@
 		4 : "Block Stops" : 0
 	]
 	target(string) : "First stop target"
-	team(string) : "Team"
+	team(integer) : "Team"
 	speed(integer) : "Speed" : 100
 	dmg(integer) : "Damage when blocked" : 2
 	noise(string) : "Sound (path/file.wav)"
@@ -376,7 +374,7 @@
 		1 : "Water"
 		2 : "Lava"
 	]
-	team(string) : "Team"
+	team(integer) : "Team"
 	_minlight(integer) : "Minimum light (optional)"
 ]
 
@@ -385,7 +383,7 @@
 
 @BaseClass base(Appearflags, Target) color(76 76 255) size(-16 -16 -16, 16 16 16) = Items
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 ]
 
 @PointClass base(Items) model({ "path": ":models/items/adrenal/tris.md2" }) = item_adrenaline : "+1 to max health" []
@@ -648,7 +646,7 @@
 // 0221 - added "_minlight" key
 @SolidClass base(Appearflags, Targetname) color(0 0 255) = target_character : "Use with target_string and func_clock"
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 	count(integer) : "Position in the string"
 	_minlight(string) : "Minimum light (optional)"
 ]
@@ -796,7 +794,7 @@
 // 0221 - removed "message" key (?)
 @PointClass base(Appearflags, Targetname) color(0 0 255) size(-8 -8 -8, 8 8 8) = target_string : "String"
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 ]
 
 // eye candy... Particles #2 (style 22) is quite cool
@@ -903,19 +901,19 @@
 	maxpitch(integer) : "Maximum pitch angle" : 30
 	minyaw(integer) : "Minimum yaw angle" : 0
 	maxyaw(integer) : "Maximum yaw angle" : 360
-	team(string) : "Team"
+	team(integer) : "Team"
 	_minlight(string) : "Minimum light (optional)"
 ]
 @SolidClass base(Appearflags) color(128 255 128) = turret_base : "Turret base"
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 	_minlight(string) : "Minimum light (optional)"
 ]
 @PointClass base(Appearflags) color(128 255 128) size(-16 -16 -24, 16 16 32) model({ "path": ":models/monsters/infantry/tris.md2"}) = turret_driver : "Turret driver"	[	target(string) : "Target (turret_breach)"	]
 @PointClass base(Appearflags) color(0 128 204) size(-8 -8 -8, 8 8 8) = viewthing : "Just for debugging level - dont use" []
 @BaseClass base(Appearflags, Target) color(76 76 255) size(-16 -16 -16, 16 16 16) = Weapons
 [
-	team(string) : "Team"
+	team(integer) : "Team"
 ]
 
 //

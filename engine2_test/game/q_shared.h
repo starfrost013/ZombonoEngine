@@ -896,8 +896,8 @@ typedef enum
 #define	DF_NO_FALLING		0x00000008	// 8
 #define	DF_INSTANT_ITEMS	0x00000010	// 16
 #define	DF_SAME_LEVEL		0x00000020	// 32
-#define DF_SKINTEAMS		0x00000040	// 64
-#define DF_MODELTEAMS		0x00000080	// 128
+#define DF_UNUSED1			0x00000040	// 64
+#define DF_UNUSED2			0x00000080	// 128
 #define DF_NO_FRIENDLY_FIRE	0x00000100	// 256
 #define	DF_SPAWN_FARTHEST	0x00000200	// 512
 #define DF_FORCE_RESPAWN	0x00000400	// 1024
@@ -913,6 +913,11 @@ typedef enum
 #define GAMEMODE_WAVES			2		// Zombono waves
 #define GAMEMODE_COOP			3		// Coop???
 #define GAMEMODE_CONTROL_POINT	4		// Control Point??? Need more innovative game modes...maybe a build-off
+
+// Teams
+#define TEAM_DIRECTOR			0		// Director team
+#define TEAM_PLAYER				1		// Player team
+#define TEAM_UNASSIGNED			2		// Unassigned team (player does NOT have a team yet)
 
 /*
 ==========================================================

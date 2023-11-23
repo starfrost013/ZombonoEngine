@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1434,7 +1435,7 @@ static const char *creditstext[] =
 	"Connor Hyde (starfrost) (Digital Euphoria???)",
 	"",
 	"+MUSIC",
-	"ZorgDoesStuff (when paypal unfucks my account)",
+	"'Stephanie Peterson, LLC' / zorg_is_also_here / sirZorg",
 	"",
 	"+TOOLS",
 	"",
@@ -1445,7 +1446,7 @@ static const char *creditstext[] =
 	"unsubtract",
 	"",
 	"Based on vkQuake2",
-	"Original code © 1997-2001 Id Software, © 2018-2019 Krzysztof Kondrak",
+	"Original code © 1997-2001 Id Software, © 2018-2023 Krzysztof Kondrak",
 	"",
 	"See licensing file for licensing information",
 	0
@@ -2418,7 +2419,6 @@ static menulist_s	s_instant_powerups_box;
 static menulist_s	s_powerups_box;
 static menulist_s	s_health_box;
 static menulist_s	s_spawn_farthest_box;
-static menulist_s	s_teamplay_box;
 static menulist_s	s_samelevel_box;
 static menulist_s	s_force_respawn_box;
 static menulist_s	s_armor_box;
@@ -2490,25 +2490,6 @@ static void DMFlagCallback( void *self )
 	{
 		bit = DF_SPAWN_FARTHEST;
 	}
-	else if ( f == &s_teamplay_box )
-	{
-		if ( f->curvalue == 1 )
-		{
-			flags |=  DF_SKINTEAMS;
-			flags &= ~DF_MODELTEAMS;
-		}
-		else if ( f->curvalue == 2 )
-		{
-			flags |=  DF_MODELTEAMS;
-			flags &= ~DF_SKINTEAMS;
-		}
-		else
-		{
-			flags &= ~( DF_MODELTEAMS | DF_SKINTEAMS );
-		}
-
-		goto setvalue;
-	}
 	else if ( f == &s_samelevel_box )
 	{
 		bit = DF_SAME_LEVEL;
@@ -2559,10 +2540,7 @@ void DMOptions_MenuInit( void )
 	{
 		"no", "yes", 0
 	};
-	static const char *teamplay_names[] = 
-	{
-		"disabled", "by skin", "by model", 0
-	};
+
 	int dmflags = Cvar_VariableValue( "dmflags" );
 	int y = 0;
 
@@ -2641,13 +2619,6 @@ void DMOptions_MenuInit( void )
 	s_force_respawn_box.itemnames = yes_no_names;
 	s_force_respawn_box.curvalue = ( dmflags & DF_FORCE_RESPAWN ) != 0;
 
-	s_teamplay_box.generic.type = MTYPE_SPINCONTROL;
-	s_teamplay_box.generic.x	= 0;
-	s_teamplay_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_teamplay_box.generic.name	= "teamplay";
-	s_teamplay_box.generic.callback = DMFlagCallback;
-	s_teamplay_box.itemnames = teamplay_names;
-
 	s_allow_exit_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_exit_box.generic.x	= 0;
 	s_allow_exit_box.generic.y	= y += 10 * vid_hudscale->value;
@@ -2700,7 +2671,6 @@ void DMOptions_MenuInit( void )
 	Menu_AddItem( &s_dmoptions_menu, &s_spawn_farthest_box );
 	Menu_AddItem( &s_dmoptions_menu, &s_samelevel_box );
 	Menu_AddItem( &s_dmoptions_menu, &s_force_respawn_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_teamplay_box );
 	Menu_AddItem( &s_dmoptions_menu, &s_allow_exit_box );
 	Menu_AddItem( &s_dmoptions_menu, &s_infinite_ammo_box );
 	Menu_AddItem( &s_dmoptions_menu, &s_fixed_fov_box );

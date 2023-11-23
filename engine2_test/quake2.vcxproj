@@ -101,6 +101,7 @@
     <ProjectGuid>{311C3C36-E612-47A7-B4E8-443ABF32CBA6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>quake2</RootNamespace>
+    <ProjectName>Zombono</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

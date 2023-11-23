@@ -1157,22 +1157,6 @@ GL_Upload8
 Returns has_alpha
 ===============
 */
-/*
-static qboolean IsPowerOf2( int value )
-{
-	int i = 1;
-
-
-	while ( 1 )
-	{
-		if ( value == i )
-			return true;
-		if ( i > value )
-			return false;
-		i <<= 1;
-	}
-}
-*/
 
 qboolean GL_Upload8 (byte *data, int width, int height,  qboolean mipmap, qboolean is_sky )
 {

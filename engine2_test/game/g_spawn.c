@@ -33,9 +33,8 @@ void SP_item_health_large (edict_t *self);
 void SP_item_health_mega (edict_t *self);
 
 void SP_info_player_start (edict_t *ent);
-void SP_info_player_deathmatch (edict_t *ent);
-void SP_info_player_coop (edict_t *ent);
-void SP_info_player_intermission (edict_t *ent);
+void SP_info_player_start_director (edict_t* ent);
+void SP_info_player_start_player (edict_t* ent);
 
 void SP_func_plat (edict_t *ent);
 void SP_func_rotating (edict_t *ent);
@@ -137,9 +136,8 @@ spawn_t	spawns[] = {
 	{"item_health_mega", SP_item_health_mega},
 
 	{"info_player_start", SP_info_player_start},
-	{"info_player_deathmatch", SP_info_player_deathmatch},
-	{"info_player_coop", SP_info_player_coop},
-	{"info_player_intermission", SP_info_player_intermission},
+	{"info_player_start_director", SP_info_player_start_director},
+	{"info_player_start_player", SP_info_player_start_player},
 
 	{"func_plat", SP_func_plat},
 	{"func_button", SP_func_button},

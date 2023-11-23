@@ -1,5 +1,5 @@
 ﻿
-namespace bmp2lmp
+namespace wal2tga
 {
     /// <summary>
     /// LMP32 Header

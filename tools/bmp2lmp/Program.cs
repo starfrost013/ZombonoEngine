@@ -3,11 +3,9 @@
 // Copyright © 2023 starfrost
 // Converts bitmap files to Zombono LMP32 files
 //
-using bmp2lmp;
-using System.Diagnostics;
 
 #region Constants
-string BMP2LMP_VERSION = "2.0.0";
+string WAL2TGA_VERSION = "2.0.0";
 #endregion
 
 #region Variables
@@ -15,7 +13,6 @@ string inputItem = string.Empty;
 string outputItem = string.Empty;
 // very bad, replace with something better later when we add actual arguments
 bool folderMode = false;
-bool quietMode = false;
 string[] inputFiles;
 
 #if DEBUG
@@ -85,18 +82,17 @@ try
     // stuff you can put anywhere
     foreach (string arg in args)
     {
-        if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) quietMode = true;
+        if (arg.Equals("-q", StringComparison.InvariantCultureIgnoreCase)) Util.QuietMode = true;
     }
     #endregion
 
-
-    Print($"bmp2lmp {BMP2LMP_VERSION}");
-    Print("Converts 32-bit BMP to LMP32");
+    Print($"wal2tga {WAL2TGA_VERSION}");
+    Print("Converts WAL to 32-bit TGA");
 
     if (folderMode)
     {
         // add all the files
-        inputFiles = Directory.GetFiles(inputItem, "*.bmp", SearchOption.AllDirectories);
+        inputFiles = Directory.GetFiles(inputItem, "*.wal", SearchOption.AllDirectories);
     }
     else
     {
@@ -126,7 +122,7 @@ try
 
         if (folderMode)
         {
-            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".bmp", ".lmp", StringComparison.InvariantCultureIgnoreCase)}";
+            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".wal", ".tga", StringComparison.InvariantCultureIgnoreCase)}";
             outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
         }
         else
@@ -182,9 +178,9 @@ try
 
 #if DEBUG
     timer.Stop();
-    PrintLoud($"Time taken to run: {(double)timer.ElapsedTicks / 10000d}ms");
+    Util.PrintLoud($"Time taken to run: {(double)timer.ElapsedTicks / 10000d}ms");
 #endif
-    Print($"Done!", ConsoleColor.Green);
+    Util.Print($"Done!", ConsoleColor.Green);
     Environment.Exit(0);
 
     int GetPixelLocation(int imageDataStart, Lmp32Header header, int x, int y)
@@ -199,36 +195,4 @@ catch (Exception ex)
     PrintLoud($"An exception occurred!\n\n{ex}");
     Environment.Exit(4);
 }
-#endregion
-
-#region Utility functions
-
-void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
-{
-    Console.ForegroundColor = foreground;
-    Console.WriteLine(text);
-    Console.ResetColor();
-}
-
-void Print(string text, ConsoleColor foreground = ConsoleColor.Gray)
-{
-    if (!quietMode) PrintLoud(text, foreground);
-}
-
-void PrintHelpAndExit(string error, int exitCode)
-{
-    PrintLoud("bmp2lmp [input file or folder] <output file>");
-    PrintLoud("input file: input bmp file or folder");
-    PrintLoud("output file: output lmp file or folder; optional if folder. if folder mode, files will be renamed to .bmp\n");
-    PrintErrorAndExit(error, exitCode);
-}
-
-void PrintErrorAndExit(string error, int exitCode)
-{
-    PrintLoud(error);
-    Environment.Exit(exitCode);
-}
-
-
-
 #endregion

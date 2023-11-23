@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,12 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "g_local.h"
-
-
-void	Svcmd_Test_f (void)
-{
-	gi.cprintf (NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
-}
 
 /*
 ==============================================================================
@@ -284,9 +279,7 @@ void	ServerCommand (void)
 	char	*cmd;
 
 	cmd = gi.argv(1);
-	if (Q_stricmp (cmd, "test") == 0)
-		Svcmd_Test_f ();
-	else if (Q_stricmp (cmd, "addip") == 0)
+	if (Q_stricmp (cmd, "addip") == 0)
 		SVCmd_AddIP_f ();
 	else if (Q_stricmp (cmd, "removeip") == 0)
 		SVCmd_RemoveIP_f ();

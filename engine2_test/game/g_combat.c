@@ -335,11 +335,7 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 	// it's the same base (walk/swim/fly) type and a different classname and it's not a tank
 	// (they spray too much), get mad at them
 	if (((targ->flags & (FL_FLY|FL_SWIM)) == (attacker->flags & (FL_FLY|FL_SWIM))) &&
-		 (strcmp (targ->classname, attacker->classname) != 0) &&
-		 (strcmp(attacker->classname, "monster_tank") != 0) &&
-		 (strcmp(attacker->classname, "monster_supertank") != 0) &&
-		 (strcmp(attacker->classname, "monster_makron") != 0) &&
-		 (strcmp(attacker->classname, "monster_jorg") != 0) )
+		 (strcmp (targ->classname, attacker->classname) != 0))
 	{
 		if (targ->enemy && targ->enemy->client)
 			targ->oldenemy = targ->enemy;
@@ -389,7 +385,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
-	if ((targ != attacker) && ((deathmatch->value && ((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS))) || coop->value))
+	if ((targ != attacker) && ((deathmatch->value || coop->value)))
 	{
 		if (OnSameTeam (targ, attacker))
 		{
