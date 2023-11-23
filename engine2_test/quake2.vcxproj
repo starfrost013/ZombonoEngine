@@ -177,7 +177,8 @@
       <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\..\tools\assetbuild\bin\$(Configuration)\net8.0\assetbuild.exe</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -206,7 +207,8 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\..\tools\assetbuild\bin\$(Configuration)\net8.0\assetbuild.exe</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -235,7 +237,8 @@
       <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embed.manifest.res</ResourceOutputFileName>
     </ManifestResourceCompile>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\..\tools\assetbuild\bin\$(Configuration)\net8.0\assetbuild.exe</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -272,7 +275,8 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>$(SolutionDir)\..\tools\assetbuild\bin\$(Configuration)\net8.0\assetbuild.exe</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
