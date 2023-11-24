@@ -79,7 +79,7 @@ typedef struct entity_s
 
 #define ENTITY_FLAGS  68
 
-typedef struct
+typedef struct dlight_s
 {
 	vec3_t	origin;
 	vec3_t	color;
@@ -93,7 +93,7 @@ typedef struct
 	float	alpha;
 } particle_t;
 
-typedef struct
+typedef struct lightstyle_s
 {
 	float		rgb[3];			// 0.0 - 2.0
 	float		white;			// highest of rgb
@@ -153,7 +153,7 @@ typedef struct
 	// Skins and images need to be differentiated, because skins
 	// are flood filled to eliminate mip map edge errors, and pics have
 	// an implicit "pics/" prepended to the name. (a pic name that starts with a
-	// slash will not use the "pics/" prefix or the ".pcx" postfix)
+	// slash will not use the "pics/" prefix or the ".tga" postfix)
 	void	(*BeginRegistration) (char *map);
 	struct model_s *(*RegisterModel) (char *name);
 	struct image_s *(*RegisterSkin) (char *name);

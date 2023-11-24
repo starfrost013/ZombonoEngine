@@ -1220,7 +1220,7 @@ void CL_RequestNextDownload (void)
 			precache_check++; // zero is blank
 		while (precache_check < CS_IMAGES+MAX_IMAGES &&
 			cl.configstrings[precache_check][0]) {
-			Com_sprintf(fn, sizeof(fn), "pics/%s.pcx", cl.configstrings[precache_check++]);
+			Com_sprintf(fn, sizeof(fn), "pics/%s.tga", cl.configstrings[precache_check++]);
 			if (!CL_CheckOrDownloadFile(fn))
 				return; // started a download
 		}
@@ -1277,7 +1277,7 @@ void CL_RequestNextDownload (void)
 					/*FALL THROUGH*/
 
 				case 2: // weapon skin
-					Com_sprintf(fn, sizeof(fn), "players/%s/weapon.pcx", model);
+					Com_sprintf(fn, sizeof(fn), "players/%s/weapon.tga", model);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 3;
 						return; // started a download
@@ -1286,7 +1286,7 @@ void CL_RequestNextDownload (void)
 					/*FALL THROUGH*/
 
 				case 3: // skin
-					Com_sprintf(fn, sizeof(fn), "players/%s/%s.pcx", model, skin);
+					Com_sprintf(fn, sizeof(fn), "players/%s/%s.tga", model, skin);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 4;
 						return; // started a download
@@ -1295,7 +1295,7 @@ void CL_RequestNextDownload (void)
 					/*FALL THROUGH*/
 
 				case 4: // skin_i
-					Com_sprintf(fn, sizeof(fn), "players/%s/%s_i.pcx", model, skin);
+					Com_sprintf(fn, sizeof(fn), "players/%s/%s_i.tga", model, skin);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 5;
 						return; // started a download
@@ -1327,7 +1327,7 @@ void CL_RequestNextDownload (void)
 				int n = precache_check++ - ENV_CNT - 1;
 
 				if (n & 1)
-					Com_sprintf(fn, sizeof(fn), "env/%s%s.pcx", 
+					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga", 
 						cl.configstrings[CS_SKY], env_suf[n/2]);
 				else
 					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga", 
@@ -1354,7 +1354,7 @@ void CL_RequestNextDownload (void)
 			while (precache_tex < numtexinfo) {
 				char fn[MAX_OSPATH];
 
-				sprintf(fn, "textures/%s.wal", map_surfaces[precache_tex++].rname);
+				sprintf(fn, "textures/%s.tga", map_surfaces[precache_tex++].rname);
 				if (!CL_CheckOrDownloadFile(fn))
 					return; // started a download
 			}

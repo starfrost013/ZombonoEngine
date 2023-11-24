@@ -227,8 +227,6 @@ void R_PushDlights (void);
 
 extern	model_t	*r_worldmodel;
 
-extern	unsigned	d_8to24table[256];
-
 extern	int		registration_sequence;
 extern	qvksampler_t vk_current_sampler;
 extern	qvksampler_t vk_current_lmap_sampler;

@@ -404,8 +404,8 @@ void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 	{
 		Com_sprintf (model_filename, sizeof(model_filename), "players/male/tris.md2");
 		Com_sprintf (weapon_filename, sizeof(weapon_filename), "players/male/weapon.md2");
-		Com_sprintf (skin_filename, sizeof(skin_filename), "players/male/grunt.pcx");
-		Com_sprintf (ci->iconname, sizeof(ci->iconname), "/players/male/grunt_i.pcx");
+		Com_sprintf (skin_filename, sizeof(skin_filename), "players/male/grunt.tga");
+		Com_sprintf (ci->iconname, sizeof(ci->iconname), "/players/male/grunt_i.tga");
 		ci->model = re.RegisterModel (model_filename);
 		memset(ci->weaponmodel, 0, sizeof(ci->weaponmodel));
 		ci->weaponmodel[0] = re.RegisterModel (weapon_filename);
@@ -437,7 +437,7 @@ void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 		}
 
 		// skin file
-		Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/%s.pcx", model_name, skin_name);
+		Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/%s.tga", model_name, skin_name);
 		ci->skin = re.RegisterSkin (skin_filename);
 
 		// if we don't have the skin and the model wasn't male,
@@ -450,7 +450,7 @@ void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 			ci->model = re.RegisterModel (model_filename);
 
 			// see if the skin exists for the male model
-			Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/%s.pcx", model_name, skin_name);
+			Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/%s.tga", model_name, skin_name);
 			ci->skin = re.RegisterSkin (skin_filename);
 		}
 
@@ -458,7 +458,7 @@ void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 		// it, so default to grunt
 		if (!ci->skin) {
 			// see if the skin exists for the male model
-			Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/grunt.pcx", model_name, skin_name);
+			Com_sprintf (skin_filename, sizeof(skin_filename), "players/%s/grunt.tga", model_name, skin_name);
 			ci->skin = re.RegisterSkin (skin_filename);
 		}
 
@@ -476,7 +476,7 @@ void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 		}
 
 		// icon file
-		Com_sprintf (ci->iconname, sizeof(ci->iconname), "/players/%s/%s_i.pcx", model_name, skin_name);
+		Com_sprintf (ci->iconname, sizeof(ci->iconname), "/players/%s/%s_i.tga", model_name, skin_name);
 		ci->icon = re.RegisterPic (ci->iconname);
 	}
 

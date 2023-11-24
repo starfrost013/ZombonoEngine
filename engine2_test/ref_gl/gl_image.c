@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,11 +31,7 @@ static unsigned char gammatable[256];
 
 cvar_t		*intensity;
 
-unsigned	d_8to24table[256];
-
-qboolean GL_Upload8 (byte *data, int width, int height,  qboolean mipmap, qboolean is_sky );
 qboolean GL_Upload32 (unsigned *data, int width, int height,  qboolean mipmap);
-
 
 int		gl_solid_format = 3;
 int		gl_alpha_format = 4;
@@ -180,9 +177,6 @@ gltmode_t gl_solid_modes[] = {
 	{"GL_RGB5", GL_RGB5},
 	{"GL_RGB4", GL_RGB4},
 	{"GL_R3_G3_B2", GL_R3_G3_B2},
-#ifdef GL_RGB2_EXT
-	{"GL_RGB2", GL_RGB2_EXT},
-#endif
 };
 
 #define NUM_GL_SOLID_MODES (sizeof(gl_solid_modes) / sizeof (gltmode_t))
@@ -389,7 +383,7 @@ void Scrap_Upload (void)
 {
 	scrap_uploads++;
 	GL_Bind(TEXNUM_SCRAPS);
-	GL_Upload8 (scrap_texels[0], BLOCK_WIDTH, BLOCK_HEIGHT, false, false );
+	GL_Upload32 (scrap_texels[0], BLOCK_WIDTH, BLOCK_HEIGHT, false );
 	scrap_dirty = false;
 }
 
@@ -709,93 +703,6 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 	ri.FS_FreeFile (buffer);
 }
 
-
-/*
-====================================================================
-
-IMAGE FLOOD FILLING
-
-====================================================================
-*/
-
-
-/*
-=================
-Mod_FloodFillSkin
-
-Fill background pixels so mipmapping doesn't have haloes
-=================
-*/
-
-typedef struct
-{
-	short		x, y;
-} floodfill_t;
-
-// must be a power of 2
-#define FLOODFILL_FIFO_SIZE 0x1000
-#define FLOODFILL_FIFO_MASK (FLOODFILL_FIFO_SIZE - 1)
-
-#define FLOODFILL_STEP( off, dx, dy ) \
-{ \
-	if (pos[off] == fillcolor) \
-	{ \
-		pos[off] = 255; \
-		fifo[inpt].x = x + (dx), fifo[inpt].y = y + (dy); \
-		inpt = (inpt + 1) & FLOODFILL_FIFO_MASK; \
-	} \
-	else if (pos[off] != 255) fdc = pos[off]; \
-}
-
-void R_FloodFillSkin( byte *skin, int skinwidth, int skinheight )
-{
-	byte				fillcolor = *skin; // assume this is the pixel to fill
-	floodfill_t			fifo[FLOODFILL_FIFO_SIZE];
-	int					inpt = 0, outpt = 0;
-	int					filledcolor = -1;
-	int					i;
-
-	if (filledcolor == -1)
-	{
-		filledcolor = 0;
-		// attempt to find opaque black
-		for (i = 0; i < 256; ++i)
-			if (d_8to24table[i] == (255 << 0)) // alpha 1.0
-			{
-				filledcolor = i;
-				break;
-			}
-	}
-
-	// can't fill to filled color or to transparent color (used as visited marker)
-	if ((fillcolor == filledcolor) || (fillcolor == 255))
-	{
-		//printf( "not filling skin from %d to %d\n", fillcolor, filledcolor );
-		return;
-	}
-
-	fifo[inpt].x = 0, fifo[inpt].y = 0;
-	inpt = (inpt + 1) & FLOODFILL_FIFO_MASK;
-
-	while (outpt != inpt)
-	{
-		int			x = fifo[outpt].x, y = fifo[outpt].y;
-		int			fdc = filledcolor;
-		byte		*pos = &skin[x + skinwidth * y];
-
-		outpt = (outpt + 1) & FLOODFILL_FIFO_MASK;
-
-		if (x > 0)				FLOODFILL_STEP( -1, -1, 0 );
-		if (x < skinwidth - 1)	FLOODFILL_STEP( 1, 1, 0 );
-		if (y > 0)				FLOODFILL_STEP( -skinwidth, 0, -1 );
-		if (y < skinheight - 1)	FLOODFILL_STEP( skinwidth, 0, 1 );
-		skin[x + skinwidth * y] = fdc;
-	}
-}
-
-//=======================================================
-
-
 /*
 ================
 GL_ResampleTexture
@@ -1059,55 +966,6 @@ done: ;
 }
 
 /*
-===============
-GL_Upload8
-
-Returns has_alpha
-===============
-*/
-
-qboolean GL_Upload8 (byte *data, int width, int height,  qboolean mipmap, qboolean is_sky )
-{
-	unsigned	trans[512*256];
-	int			i, s;
-	int			p;
-
-	s = width*height;
-
-	if (s > sizeof(trans)/4)
-		ri.Sys_Error (ERR_DROP, "GL_Upload8: too large");
-
-	for (i = 0; i < s; i++)
-	{
-		p = data[i];
-		trans[i] = d_8to24table[p];
-
-		if (p == 255)
-		{	// transparent, so scan around for another color
-			// to avoid alpha fringes
-			// FIXME: do a full flood fill so mips work...
-			if (i > width && data[i - width] != 255)
-				p = data[i - width];
-			else if (i < s - width && data[i + width] != 255)
-				p = data[i + width];
-			else if (i > 0 && data[i - 1] != 255)
-				p = data[i - 1];
-			else if (i < s - 1 && data[i + 1] != 255)
-				p = data[i + 1];
-			else
-				p = 0;
-			// copy rgb components
-			((byte*)&trans[i])[0] = ((byte*)&d_8to24table[p])[0];
-			((byte*)&trans[i])[1] = ((byte*)&d_8to24table[p])[1];
-			((byte*)&trans[i])[2] = ((byte*)&d_8to24table[p])[2];
-		}
-	}
-
-	return GL_Upload32(trans, width, height, mipmap);
-}
-
-
-/*
 ================
 GL_LoadPic
 
@@ -1142,9 +1000,6 @@ image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t t
 	image->height = height;
 	image->type = type;
 
-	if (type == it_skin && bits == 8)
-		R_FloodFillSkin(pic, width, height);
-
 	// load little pics into the scrap
 	if (image->type == it_pic && bits == 8
 		&& image->width < 64 && image->height < 64)
@@ -1177,10 +1032,7 @@ nonscrap:
 		image->scrap = false;
 		image->texnum = TEXNUM_IMAGES + (image - gltextures);
 		GL_Bind(image->texnum);
-		if (bits == 8)
-			image->has_alpha = GL_Upload8 (pic, width, height, (image->type != it_pic && image->type != it_sky), image->type == it_sky );
-		else
-			image->has_alpha = GL_Upload32 ((unsigned *)pic, width, height, (image->type != it_pic && image->type != it_sky) );
+		image->has_alpha = GL_Upload32 ((unsigned *)pic, width, height, (image->type != it_pic && image->type != it_sky) );
 		image->upload_width = upload_width;		// after power of 2 and scales
 		image->upload_height = upload_height;
 		image->paletted = uploaded_paletted;
@@ -1189,36 +1041,6 @@ nonscrap:
 		image->tl = 0;
 		image->th = 1;
 	}
-
-	return image;
-}
-
-
-/*
-================
-GL_LoadWal
-================
-*/
-image_t *GL_LoadWal (char *name)
-{
-	miptex_t	*mt;
-	int			width, height, ofs;
-	image_t		*image;
-
-	ri.FS_LoadFile (name, (void **)&mt);
-	if (!mt)
-	{
-		ri.Con_Printf (PRINT_ALL, "GL_FindImage: can't load %s\n", name);
-		return r_notexture;
-	}
-
-	width = LittleLong (mt->width);
-	height = LittleLong (mt->height);
-	ofs = LittleLong (mt->offsets[0]);
-
-	image = GL_LoadPic (name, (byte *)mt + ofs, width, height, it_wall, 8);
-
-	ri.FS_FreeFile ((void *)mt);
 
 	return image;
 }
@@ -1258,18 +1080,8 @@ image_t	*GL_FindImage (char *name, imagetype_t type)
 	//
 	pic = NULL;
 	palette = NULL;
-	if (!strcmp(name+len-4, ".pcx"))
-	{
-		LoadPCX (name, &pic, &palette, &width, &height);
-		if (!pic)
-			return NULL; // ri.Sys_Error (ERR_DROP, "GL_FindImage: can't load %s", name);
-		image = GL_LoadPic (name, pic, width, height, type, 8);
-	}
-	else if (!strcmp(name+len-4, ".wal"))
-	{
-		image = GL_LoadWal (name);
-	}
-	else if (!strcmp(name+len-4, ".tga"))
+
+	if (!strcmp(name+len-4, ".tga"))
 	{
 		LoadTGA (name, &pic, &width, &height);
 		if (!pic)
@@ -1334,44 +1146,6 @@ void GL_FreeUnusedImages (void)
 
 /*
 ===============
-Draw_GetPalette
-===============
-*/
-int Draw_GetPalette (void)
-{
-	int		i;
-	int		r, g, b;
-	unsigned	v;
-	byte	*pic, *pal;
-	int		width, height;
-
-	// get the palette
-
-	LoadPCX ("pics/colormap.pcx", &pic, &pal, &width, &height);
-	if (!pal)
-		ri.Sys_Error (ERR_FATAL, "Couldn't load pics/colormap.pcx");
-
-	for (i=0 ; i<256 ; i++)
-	{
-		r = pal[i*3+0];
-		g = pal[i*3+1];
-		b = pal[i*3+2];
-		
-		v = (255<<24) + (r<<0) + (g<<8) + (b<<16);
-		d_8to24table[i] = LittleLong(v);
-	}
-
-	d_8to24table[255] &= LittleLong(0xffffff);	// 255 is transparent
-
-	free (pic);
-	free (pal);
-
-	return 0;
-}
-
-
-/*
-===============
 GL_InitImages
 ===============
 */
@@ -1389,8 +1163,6 @@ void	GL_InitImages (void)
 		ri.Cvar_Set( "intensity", "1" );
 
 	gl_state.inverse_intensity = 1 / intensity->value;
-
-	Draw_GetPalette ();
 
 	for ( i = 0; i < 256; i++ )
 	{

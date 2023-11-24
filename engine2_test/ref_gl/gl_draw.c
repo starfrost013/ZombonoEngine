@@ -256,23 +256,26 @@ Draw_Fill
 Fills a box of pixels with a single color
 =============
 */
-void Draw_Fill (int x, int y, int w, int h, int c)
+void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 {
-	union
+	union color_u
 	{
 		unsigned	c;
 		byte		v[4];
 	} color;
 
-	if ( (unsigned)c > 255)
-		ri.Sys_Error (ERR_FATAL, "Draw_Fill: bad color");
-
 	qglDisable (GL_TEXTURE_2D);
 
-	color.c = d_8to24table[c];
-	qglColor3f (color.v[0]/255.0,
+	// set up RGBA colors
+	color.v[0] = r;
+	color.v[1] = g;
+	color.v[2] = b;
+	color.v[3] = a;
+
+	qglColor4f (color.v[0]/255.0,
 		color.v[1]/255.0,
-		color.v[2]/255.0);
+		color.v[2]/255.0,
+		color.v[3]/255.0);
 
 	qglBegin (GL_QUADS);
 

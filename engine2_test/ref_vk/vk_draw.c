@@ -34,7 +34,7 @@ void Draw_InitLocal (void)
 {
 	// load console characters (don't bilerp characters)
 	qvksampler_t samplerType = S_NEAREST;
-	draw_chars = Vk_FindImage("pics/conchars.pcx", it_pic, &samplerType);
+	draw_chars = Vk_FindImage("pics/conchars.tga", it_pic, &samplerType);
 }
 
 
@@ -91,7 +91,7 @@ image_t	*Draw_FindPic (char *name)
 
 	if (name[0] != '/' && name[0] != '\\')
 	{
-		Com_sprintf(fullname, sizeof(fullname), "pics/%s.pcx", name);
+		Com_sprintf(fullname, sizeof(fullname), "pics/%s.tga", name);
 		vk = Vk_FindImage(fullname, it_pic, NULL);
 	}
 	else
@@ -203,7 +203,7 @@ Draw_Fill
 Fills a box of pixels with a single color
 =============
 */
-void Draw_Fill (int x, int y, int w, int h, int c)
+void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	union
 	{
@@ -214,10 +214,11 @@ void Draw_Fill (int x, int y, int w, int h, int c)
 	if (!vk_frameStarted)
 		return;
 
-	if ((unsigned)c > 255)
-		ri.Sys_Error(ERR_FATAL, "Draw_Fill: bad color");
-
-	color.c = d_8to24table[c];
+	// set up RGBA colors
+	color.v[0] = r;
+	color.v[1] = g;
+	color.v[2] = b;
+	color.v[3] = a;
 
 	float imgTransform[] = { (float)x / vid.width, (float)y / vid.height,
 							 (float)w / vid.width, (float)h / vid.height,

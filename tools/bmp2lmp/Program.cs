@@ -92,7 +92,7 @@ try
     if (folderMode)
     {
         // add all the files
-        inputFiles = Directory.GetFiles(inputItem, "*.wal", SearchOption.AllDirectories);
+        inputFiles = Directory.GetFiles(inputItem, "*.tga", SearchOption.AllDirectories);
     }
     else
     {
@@ -122,7 +122,7 @@ try
 
         if (folderMode)
         {
-            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".wal", ".tga", StringComparison.InvariantCultureIgnoreCase)}";
+            outputFileName = $@"{outputItem}\{Path.GetFileName(inputFileName).Replace(".tga", ".tga", StringComparison.InvariantCultureIgnoreCase)}";
             outputFileStream = new(new FileStream(outputFileName, FileMode.OpenOrCreate));
         }
         else

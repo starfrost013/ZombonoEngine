@@ -33,9 +33,6 @@ static unsigned char gammatable[256];
 cvar_t		*intensity;
 extern cvar_t	*vk_mip_nearfilter;
 
-unsigned	d_8to24table[256];
-
-uint32_t Vk_Upload8 (byte *data, int width, int height,  qboolean mipmap, qboolean is_sky );
 uint32_t Vk_Upload32 (unsigned *data, int width, int height,  qboolean mipmap);
 
 // default global texture and lightmap samplers
@@ -689,7 +686,7 @@ void Vk_TextureMode( char *string )
 	for (j = 0, image = vktextures; j < numvktextures; j++, image++)
 	{
 		// skip console characters - we want them unfiltered at all times
-		if (image->vk_texture.image != VK_NULL_HANDLE && Q_stricmp(image->name, "pics/conchars.pcx"))
+		if (image->vk_texture.image != VK_NULL_HANDLE && Q_stricmp(image->name, "pics/conchars.tga"))
 			QVk_UpdateTextureSampler(&image->vk_texture, i);
 	}
 
@@ -1327,48 +1324,6 @@ Vk_Upload8
 Returns number of mip levels
 ===============
 */
-
-uint32_t Vk_Upload8 (byte *data, int width, int height,  qboolean mipmap, qboolean is_sky )
-{
-	static unsigned	trans[512 * 256];
-	int			i, s;
-	int			p;
-
-	s = width * height;
-
-	if (s > sizeof(trans) / 4)
-		ri.Sys_Error(ERR_DROP, "Vk_Upload8: too large");
-
-	for (i = 0; i < s; i++)
-	{
-		p = data[i];
-		trans[i] = d_8to24table[p];
-
-		if (p == 255)
-		{	// transparent, so scan around for another color
-			// to avoid alpha fringes
-			// FIXME: do a full flood fill so mips work...
-			if (i > width && data[i - width] != 255)
-				p = data[i - width];
-			else if (i < s - width && data[i + width] != 255)
-				p = data[i + width];
-			else if (i > 0 && data[i - 1] != 255)
-				p = data[i - 1];
-			else if (i < s - 1 && data[i + 1] != 255)
-				p = data[i + 1];
-			else
-				p = 0;
-			// copy rgb components
-			((byte *)&trans[i])[0] = ((byte *)&d_8to24table[p])[0];
-			((byte *)&trans[i])[1] = ((byte *)&d_8to24table[p])[1];
-			((byte *)&trans[i])[2] = ((byte *)&d_8to24table[p])[2];
-		}
-	}
-
-	return Vk_Upload32(trans, width, height, mipmap);
-}
-
-
 /*
 ================
 Vk_LoadPic
@@ -1415,7 +1370,7 @@ image_t *Vk_LoadPic (char *name, byte *pic, int width, int height, imagetype_t t
 		int		x, y;
 		int		i, j, k;
 		int		texnum;
-		qboolean	is_crosshair = !Q_stricmp(image->name, "pics/ch1.pcx") || !Q_stricmp(image->name, "pics/ch2.pcx") || !Q_stricmp(image->name, "pics/ch3.pcx");
+		qboolean	is_crosshair = !Q_stricmp(image->name, "pics/ch1.tga") || !Q_stricmp(image->name, "pics/ch2.tga") || !Q_stricmp(image->name, "pics/ch3.tga");
 
 		// store crosshair images exclusively in scrap 0
 		texnum = Scrap_AllocBlock(image->width, image->height, &x, &y, is_crosshair ? 0 : 1);
@@ -1482,36 +1437,6 @@ image_t *Vk_LoadPic (char *name, byte *pic, int width, int height, imagetype_t t
 	return image;
 }
 
-
-/*
-================
-Vk_LoadWal
-================
-*/
-image_t *Vk_LoadWal (char *name)
-{
-	miptex_t	*mt;
-	int			width, height, ofs;
-	image_t		*image;
-
-	ri.FS_LoadFile (name, (void **)&mt);
-	if (!mt)
-	{
-		ri.Con_Printf (PRINT_ALL, "Vk_FindImage: can't load %s\n", name);
-		return r_notexture;
-	}
-
-	width = LittleLong (mt->width);
-	height = LittleLong (mt->height);
-	ofs = LittleLong (mt->offsets[0]);
-
-	image = Vk_LoadPic (name, (byte *)mt + ofs, width, height, it_wall, 8, NULL);
-
-	ri.FS_FreeFile ((void *)mt);
-
-	return image;
-}
-
 /*
 ===============
 Vk_FindImage
@@ -1547,18 +1472,8 @@ image_t	*Vk_FindImage (char *name, imagetype_t type, qvksampler_t *samplerType)
 	//
 	pic = NULL;
 	palette = NULL;
-	if (!strcmp(name+len-4, ".pcx"))
-	{
-		LoadPCX (name, &pic, &palette, &width, &height);
-		if (!pic)
-			return NULL; // ri.Sys_Error (ERR_DROP, "Vk_FindImage: can't load %s", name);
-		image = Vk_LoadPic (name, pic, width, height, type, 8, samplerType);
-	}
-	else if (!strcmp(name+len-4, ".wal"))
-	{
-		image = Vk_LoadWal (name);
-	}
-	else if (!strcmp(name+len-4, ".tga"))
+
+	if (!strcmp(name+len-4, ".tga"))
 	{
 		LoadTGA (name, &pic, &width, &height);
 		if (!pic)
@@ -1620,45 +1535,6 @@ void Vk_FreeUnusedImages (void)
 		memset(image, 0, sizeof(*image));
 	}
 }
-
-
-/*
-===============
-Draw_GetPalette
-===============
-*/
-int Draw_GetPalette (void)
-{
-	int		i;
-	int		r, g, b;
-	unsigned	v;
-	byte	*pic, *pal;
-	int		width, height;
-
-	// get the palette
-
-	LoadPCX ("pics/colormap.pcx", &pic, &pal, &width, &height);
-	if (!pal)
-		ri.Sys_Error (ERR_FATAL, "Couldn't load pics/colormap.pcx");
-
-	for (i=0 ; i<256 ; i++)
-	{
-		r = pal[i*3+0];
-		g = pal[i*3+1];
-		b = pal[i*3+2];
-		
-		v = (255<<24) + (r<<0) + (g<<8) + (b<<16);
-		d_8to24table[i] = LittleLong(v);
-	}
-
-	d_8to24table[255] &= LittleLong(0xffffff);	// 255 is transparent
-
-	free (pic);
-	free (pal);
-
-	return 0;
-}
-
 
 /*
 ===============

@@ -1,10 +1,11 @@
 // Zombono game definition file (.fgd)
+// Copyright © 2023-2024 starfrost
 //
 // Based on quake2 FGD
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2023/11/19 version
+// 2023/11/24 version
 
 //
 // worldspawn

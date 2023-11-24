@@ -262,8 +262,6 @@ void R_PushDlights (void);
 
 extern	model_t	*r_worldmodel;
 
-extern	unsigned	d_8to24table[256];
-
 extern	int		registration_sequence;
 
 
@@ -320,8 +318,6 @@ void	Draw_StretchRaw (int x, int y, int w, int h, int cols, int rows, byte *data
 void	R_BeginFrame( float camera_separation );
 void	R_SwapBuffers( int );
 
-int		Draw_GetPalette (void);
-
 void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,  int outwidth, int outheight);
 
 struct image_s *R_RegisterSkin (char *name);
@@ -339,11 +335,6 @@ void	GL_FreeUnusedImages (void);
 
 void GL_TextureAlphaMode( char *string );
 void GL_TextureSolidMode( char *string );
-
-/*
-** GL extension emulation functions
-*/
-void GL_DrawParticles( int n, const particle_t particles[], const unsigned *colortable );
 
 /*
 ** GL config stuff

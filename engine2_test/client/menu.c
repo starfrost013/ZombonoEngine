@@ -2975,18 +2975,18 @@ static void FreeFileList( char **list, int n )
 	free( list );
 }
 
-static qboolean IconOfSkinExists( char *skin, char **pcxfiles, int npcxfiles )
+static qboolean IconOfSkinExists( char *skin, char **tgafiles, int ntgafiles )
 {
 	int i;
 	char scratch[1024];
 
 	strcpy( scratch, skin );
 	*strrchr( scratch, '.' ) = 0;
-	strcat( scratch, "_i.pcx" );
+	strcat( scratch, "_i.tga" );
 
-	for ( i = 0; i < npcxfiles; i++ )
+	for ( i = 0; i < ntgafiles; i++ )
 	{
-		if ( strcmp( pcxfiles[i], scratch ) == 0 )
+		if ( strcmp( tgafiles[i], scratch ) == 0 )
 			return true;
 	}
 
@@ -3054,7 +3054,7 @@ static qboolean PlayerConfig_ScanDirectories( void )
 
 		// verify the existence of at least one pcx skin
 		strcpy( scratch, dirnames[i] );
-		strcat( scratch, "/*.pcx" );
+		strcat( scratch, "/*.tga" );
 		pcxnames = FS_ListFiles( scratch, &npcxfiles, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM );
 
 		if ( !pcxnames )
@@ -3067,7 +3067,7 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		// count valid skins, which consist of a skin with a matching "_i" icon
 		for ( k = 0; k < npcxfiles-1; k++ )
 		{
-			if ( !strstr( pcxnames[k], "_i.pcx" ) )
+			if ( !strstr( pcxnames[k], "_i.tga" ) )
 			{
 				if ( IconOfSkinExists( pcxnames[k], pcxnames, npcxfiles - 1 ) )
 				{
@@ -3086,7 +3086,7 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		{
 			char *a, *b, *c;
 
-			if ( !strstr( pcxnames[k], "_i.pcx" ) )
+			if ( !strstr( pcxnames[k], "_i.tga" ) )
 			{
 				if ( IconOfSkinExists( pcxnames[k], pcxnames, npcxfiles - 1 ) )
 				{
@@ -3345,7 +3345,7 @@ void PlayerConfig_MenuDraw( void )
 
 		Com_sprintf( scratch, sizeof( scratch ), "players/%s/tris.md2", s_pmi[s_player_model_box.curvalue].directory );
 		entity.model = re.RegisterModel( scratch );
-		Com_sprintf( scratch, sizeof( scratch ), "players/%s/%s.pcx", s_pmi[s_player_model_box.curvalue].directory, s_pmi[s_player_model_box.curvalue].skindisplaynames[s_player_skin_box.curvalue] );
+		Com_sprintf( scratch, sizeof( scratch ), "players/%s/%s.tga", s_pmi[s_player_model_box.curvalue].directory, s_pmi[s_player_model_box.curvalue].skindisplaynames[s_player_skin_box.curvalue] );
 		entity.skin = re.RegisterSkin( scratch );
 		entity.flags = RF_FULLBRIGHT;
 		entity.origin[0] = 80;
@@ -3372,7 +3372,7 @@ void PlayerConfig_MenuDraw( void )
 
 		re.RenderFrame( &refdef );
 
-		Com_sprintf( scratch, sizeof( scratch ), "/players/%s/%s_i.pcx", 
+		Com_sprintf( scratch, sizeof( scratch ), "/players/%s/%s_i.tga", 
 			s_pmi[s_player_model_box.curvalue].directory,
 			s_pmi[s_player_model_box.curvalue].skindisplaynames[s_player_skin_box.curvalue] );
 		re.DrawPic( s_player_config_menu.x - 40 * vid_hudscale->value, refdef.y, scratch );

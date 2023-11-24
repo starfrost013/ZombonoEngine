@@ -952,17 +952,17 @@ void CL_AddPacketEntities (frame_t *frame)
 				{
 					if(!strncmp((char *)ent.skin, "players/male", 12))
 					{
-						ent.skin = re.RegisterSkin ("players/male/disguise.pcx");
+						ent.skin = re.RegisterSkin ("players/male/disguise.tga");
 						ent.model = re.RegisterModel ("players/male/tris.md2");
 					}
 					else if(!strncmp((char *)ent.skin, "players/female", 14))
 					{
-						ent.skin = re.RegisterSkin ("players/female/disguise.pcx");
+						ent.skin = re.RegisterSkin ("players/female/disguise.tga");
 						ent.model = re.RegisterModel ("players/female/tris.md2");
 					}
 					else if(!strncmp((char *)ent.skin, "players/cyborg", 14))
 					{
-						ent.skin = re.RegisterSkin ("players/cyborg/disguise.pcx");
+						ent.skin = re.RegisterSkin ("players/cyborg/disguise.tga");
 						ent.model = re.RegisterModel ("players/cyborg/tris.md2");
 					}
 				}
