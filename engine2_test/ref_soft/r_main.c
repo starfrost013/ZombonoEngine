@@ -1256,44 +1256,6 @@ void R_GammaCorrectAndSetPalette(const unsigned char *palette)
 }
 
 /*
-** R_CinematicSetPalette
-*/
-void R_CinematicSetPalette(const unsigned char *palette)
-{
-	byte palette32[1024];
-	int		i, j, w;
-	int		*d;
-
-	// clear screen to black to avoid any palette flash
-	w = abs(vid.rowbytes) >> 2;	// stupid negative pitch win32 stuff...
-	for (i = 0; i < vid.height; i++, d += w)
-	{
-		d = (int *)(vid.buffer + i*vid.rowbytes);
-		for (j = 0; j < w; j++)
-			d[j] = 0;
-	}
-	// flush it to the screen
-	SWimp_EndFrame();
-
-	if (palette)
-	{
-		for (i = 0; i < 256; i++)
-		{
-			palette32[i * 4 + 0] = palette[i * 3 + 0];
-			palette32[i * 4 + 1] = palette[i * 3 + 1];
-			palette32[i * 4 + 2] = palette[i * 3 + 2];
-			palette32[i * 4 + 3] = 0xFF;
-		}
-
-		R_GammaCorrectAndSetPalette(palette32);
-	}
-	else
-	{
-		R_GammaCorrectAndSetPalette((const unsigned char *)d_8to24table);
-	}
-}
-
-/*
 ================
 Draw_BuildGammaTable
 ================
@@ -1469,7 +1431,6 @@ refexport_t GetRefAPI(refimport_t rimp)
 	re.Init = R_Init;
 	re.Shutdown = R_Shutdown;
 
-	re.CinematicSetPalette = R_CinematicSetPalette;
 	re.BeginFrame = R_BeginFrame;
 	re.EndFrame = SWimp_EndFrame;
 	re.EndWorldRenderpass = R_EndWorldRenderpass;

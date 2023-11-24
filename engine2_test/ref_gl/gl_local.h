@@ -207,7 +207,6 @@ extern	cvar_t	*gl_log;
 extern	cvar_t	*gl_lightmap;
 extern	cvar_t	*gl_shadows;
 extern	cvar_t	*gl_dynamic;
-extern  cvar_t  *gl_monolightmap;
 extern	cvar_t	*gl_nobind;
 extern	cvar_t	*gl_round_down;
 extern	cvar_t	*gl_picmip;
@@ -225,7 +224,6 @@ extern	cvar_t	*gl_lightmaptype;
 extern	cvar_t	*gl_modulate;
 extern	cvar_t	*gl_playermip;
 extern	cvar_t	*gl_drawbuffer;
-extern	cvar_t	*gl_3dlabs_broken;
 extern  cvar_t  *gl_driver;
 extern	cvar_t	*gl_swapinterval;
 extern	cvar_t	*gl_texturemode;
@@ -321,7 +319,6 @@ void	Draw_StretchRaw (int x, int y, int w, int h, int cols, int rows, byte *data
 
 void	R_BeginFrame( float camera_separation );
 void	R_SwapBuffers( int );
-void	R_SetPalette ( const unsigned char *palette);
 
 int		Draw_GetPalette (void);
 
@@ -334,8 +331,6 @@ image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t t
 image_t	*GL_FindImage (char *name, imagetype_t type);
 void	GL_TextureMode( char *string );
 void	GL_ImageList_f (void);
-
-void	GL_SetTexturePalette( unsigned palette[256] );
 
 void	GL_InitImages (void);
 void	GL_ShutdownImages (void);
@@ -353,22 +348,11 @@ void GL_DrawParticles( int n, const particle_t particles[], const unsigned *colo
 /*
 ** GL config stuff
 */
-#define GL_RENDERER_VOODOO		0x00000001
-#define GL_RENDERER_VOODOO2   	0x00000002
-#define GL_RENDERER_VOODOO_RUSH	0x00000004
-#define GL_RENDERER_BANSHEE		0x00000008
-#define		GL_RENDERER_3DFX		0x0000000F
 
 #define GL_RENDERER_PCX1		0x00000010
 #define GL_RENDERER_PCX2		0x00000020
 #define GL_RENDERER_PMX			0x00000040
 #define		GL_RENDERER_POWERVR		0x00000070
-
-#define GL_RENDERER_PERMEDIA2	0x00000100
-#define GL_RENDERER_GLINT_MX	0x00000200
-#define GL_RENDERER_GLINT_TX	0x00000400
-#define GL_RENDERER_3DLABS_MISC	0x00000800
-#define		GL_RENDERER_3DLABS	0x00000F00
 
 #define GL_RENDERER_REALIZM		0x00001000
 #define GL_RENDERER_REALIZM2	0x00002000
@@ -393,7 +377,7 @@ void GL_DrawParticles( int n, const particle_t particles[], const unsigned *colo
 #define GL_RENDERER_MCD			0x01000000
 #define GL_RENDERER_OTHER		0x80000000
 
-typedef struct
+typedef struct glconfig_s
 {
 	int         renderer;
 	const char *renderer_string;
@@ -404,7 +388,7 @@ typedef struct
 	qboolean	allow_cds;
 } glconfig_t;
 
-typedef struct
+typedef struct glstate_s
 {
 	float inverse_intensity;
 	qboolean fullscreen;

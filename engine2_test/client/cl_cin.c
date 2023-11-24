@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -163,11 +164,6 @@ void SCR_StopCinematic (void)
 	{
 		Z_Free (cin.pic_pending);
 		cin.pic_pending = NULL;
-	}
-	if (cl.cinematicpalette_active)
-	{
-		re.CinematicSetPalette(NULL);
-		cl.cinematicpalette_active = false;
 	}
 	if (cl.cinematic_file)
 	{
@@ -454,12 +450,6 @@ byte *SCR_ReadNextFrame (void)
 	if (command == 2)
 		return NULL;	// last frame marker
 
-	if (command == 1)
-	{	// read palette
-		FS_Read (cl.cinematicpalette, sizeof(cl.cinematicpalette), cl.cinematic_file);
-		cl.cinematicpalette_active=0;	// dubious....  exposes an edge case
-	}
-
 	// decompress the next frame
 	FS_Read (&size, 4, cl.cinematic_file);
 	size = LittleLong(size);
@@ -553,19 +543,6 @@ qboolean SCR_DrawCinematic (void)
 		return false;
 	}
 
-	if (cls.key_dest == key_menu)
-	{	// blank screen and pause if menu is up
-		re.CinematicSetPalette(NULL);
-		cl.cinematicpalette_active = false;
-		return true;
-	}
-
-	if (!cl.cinematicpalette_active)
-	{
-		re.CinematicSetPalette(cl.cinematicpalette);
-		cl.cinematicpalette_active = true;
-	}
-
 	if (!cin.pic)
 		return true;
 
@@ -610,7 +587,6 @@ void SCR_PlayCinematic (char *arg)
 		}
 		else
 		{
-			memcpy (cl.cinematicpalette, palette, sizeof(cl.cinematicpalette));
 			Z_Free (palette);
 		}
 		return;

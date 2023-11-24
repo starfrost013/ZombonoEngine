@@ -834,13 +834,10 @@ void    Draw_GetPalette (void);
 
 void	 R_BeginFrame( float camera_separation );
 
-void	R_CinematicSetPalette( const unsigned char *palette );
-
 extern unsigned d_8to24table[256]; // base
 extern unsigned d_8to24tabble[256]; // base
 
 void    Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length);
-void    Sys_SetFPCW (void);
 
 void LoadPCX (char *filename, byte **pic, byte **palette, int *width, int *height);
 
@@ -850,11 +847,6 @@ image_t *R_FindImage (char *name, imagetype_t type);
 void    R_FreeUnusedImages (void);
 
 void	R_GammaCorrectAndSetPalette( const unsigned char *pal );
-
-#ifdef QMAX
-void	R_AddStain (vec3_t org, float intensity, float r, float g, float b);
-void	Draw_ScaledPic (int x, int y, float scale, float alpha, char *pic);
-#endif
 
 extern mtexinfo_t  *sky_texinfo[6];
 

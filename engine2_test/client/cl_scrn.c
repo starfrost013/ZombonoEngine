@@ -59,7 +59,6 @@ cvar_t		*scr_debuggraph;
 cvar_t		*scr_graphheight;
 cvar_t		*scr_graphscale;
 cvar_t		*scr_graphshift;
-cvar_t		*scr_drawall;
 
 extern cvar_t	*vid_hudscale;
 extern cvar_t	*vid_ref;
@@ -421,7 +420,6 @@ void SCR_Init (void)
 	scr_graphheight = Cvar_Get ("graphheight", "32", 0);
 	scr_graphscale = Cvar_Get ("graphscale", "1", 0);
 	scr_graphshift = Cvar_Get ("graphshift", "0", 0);
-	scr_drawall = Cvar_Get ("scr_drawall", "0", 0);
 
 //
 // register our commands
@@ -1281,7 +1279,6 @@ void SCR_UpdateScreen (void)
 			int		w, h;
 
 			re.EndWorldRenderpass();
-			re.CinematicSetPalette(NULL);
 			scr_draw_loading = false;
 			re.DrawGetPicSize (&w, &h, "loading");
 			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "loading");
@@ -1294,11 +1291,6 @@ void SCR_UpdateScreen (void)
 		{
 			if (cls.key_dest == key_menu)
 			{
-				if (cl.cinematicpalette_active)
-				{
-					re.CinematicSetPalette(NULL);
-					cl.cinematicpalette_active = false;
-				}
 				re.EndWorldRenderpass();
 				M_Draw ();
 //				re.EndFrame();
@@ -1306,11 +1298,6 @@ void SCR_UpdateScreen (void)
 			}
 			else if (cls.key_dest == key_console)
 			{
-				if (cl.cinematicpalette_active)
-				{
-					re.CinematicSetPalette(NULL);
-					cl.cinematicpalette_active = false;
-				}
 				re.EndWorldRenderpass();
 				SCR_DrawConsole ();
 //				re.EndFrame();
@@ -1326,14 +1313,6 @@ void SCR_UpdateScreen (void)
 		}
 		else 
 		{
-
-			// make sure the game palette is active
-			if (cl.cinematicpalette_active)
-			{
-				re.CinematicSetPalette(NULL);
-				cl.cinematicpalette_active = false;
-			}
-
 			// do 3D refresh drawing, and then update the screen
 			SCR_CalcVrect ();
 

@@ -433,9 +433,6 @@ void M_Main_Draw (void)
 
 	M_DrawCursor( xoffset - 25 * vid_hudscale->value, ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
 
-	re.DrawGetPicSize( &w, &h, "m_main_plaque" );
-	re.DrawPic( xoffset - 30 * vid_hudscale->value - w, ystart, "m_main_plaque" );
-
 	re.DrawPic( xoffset - 30 * vid_hudscale->value - w, ystart + h + 5*vid_hudscale->value, "m_main_logo" );
 }
 

@@ -114,7 +114,6 @@ cvar_t	*gl_lightmap;
 cvar_t	*gl_shadows;
 cvar_t	*gl_mode;
 cvar_t	*gl_dynamic;
-cvar_t  *gl_monolightmap;
 cvar_t	*gl_modulate;
 cvar_t	*gl_nobind;
 cvar_t	*gl_round_down;
@@ -134,8 +133,6 @@ cvar_t	*gl_texturemode;
 cvar_t	*gl_texturealphamode;
 cvar_t	*gl_texturesolidmode;
 cvar_t	*gl_lockpvs;
-
-cvar_t	*gl_3dlabs_broken;
 
 cvar_t	*vid_fullscreen;
 cvar_t	*vid_gamma;
@@ -1018,7 +1015,6 @@ void R_Register( void )
 	gl_polyblend = ri.Cvar_Get ("gl_polyblend", "1", 0);
 	gl_flashblend = ri.Cvar_Get ("gl_flashblend", "0", 0);
 	gl_playermip = ri.Cvar_Get ("gl_playermip", "0", 0);
-	gl_monolightmap = ri.Cvar_Get( "gl_monolightmap", "0", 0 );
 #ifdef _WIN32
 	gl_driver = ri.Cvar_Get( "gl_driver", "opengl32", CVAR_ARCHIVE );
 #endif
@@ -1043,8 +1039,6 @@ void R_Register( void )
 
 	gl_saturatelighting = ri.Cvar_Get( "gl_saturatelighting", "0", 0 );
 
-	gl_3dlabs_broken = ri.Cvar_Get( "gl_3dlabs_broken", "1", CVAR_ARCHIVE );
-
 	vid_fullscreen = ri.Cvar_Get( "vid_fullscreen", "0", CVAR_ARCHIVE );
 	vid_gamma = ri.Cvar_Get( "vid_gamma", "1.0", CVAR_ARCHIVE );
 	vid_ref = ri.Cvar_Get( "vid_ref", "soft", CVAR_ARCHIVE );
@@ -1064,13 +1058,6 @@ qboolean R_SetMode (void)
 {
 	rserr_t err;
 	qboolean fullscreen;
-
-	if ( vid_fullscreen->modified && !gl_config.allow_cds )
-	{
-		ri.Con_Printf( PRINT_ALL, "R_SetMode() - CDS not allowed with this driver\n" );
-		ri.Cvar_SetValue( "vid_fullscreen", !vid_fullscreen->value );
-		vid_fullscreen->modified = false;
-	}
 
 	fullscreen = vid_fullscreen->value;
 
@@ -1178,19 +1165,8 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	strcpy( vendor_buffer, gl_config.vendor_string );
 	strlwr( vendor_buffer );
 
-	if ( strstr( renderer_buffer, "voodoo" ) )
-	{
-		if ( !strstr( renderer_buffer, "rush" ) )
-			gl_config.renderer = GL_RENDERER_VOODOO;
-		else
-			gl_config.renderer = GL_RENDERER_VOODOO_RUSH;
-	}
-	else if ( strstr( vendor_buffer, "sgi" ) )
+	if ( strstr( vendor_buffer, "sgi" ) )
 		gl_config.renderer = GL_RENDERER_SGI;
-	else if ( strstr( renderer_buffer, "permedia" ) )
-		gl_config.renderer = GL_RENDERER_PERMEDIA2;
-	else if ( strstr( renderer_buffer, "glint" ) )
-		gl_config.renderer = GL_RENDERER_GLINT_MX;
 	else if ( strstr( renderer_buffer, "glzicd" ) )
 		gl_config.renderer = GL_RENDERER_REALIZM;
 	else if ( strstr( renderer_buffer, "gdi" ) )
@@ -1202,34 +1178,6 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	else
 		gl_config.renderer = GL_RENDERER_OTHER;
 
-	if ( toupper( gl_monolightmap->string[1] ) != 'F' )
-	{
-		if ( gl_config.renderer == GL_RENDERER_PERMEDIA2 )
-		{
-			ri.Cvar_Set( "gl_monolightmap", "A" );
-			ri.Con_Printf( PRINT_ALL, "...using gl_monolightmap 'a'\n" );
-		}
-		else if ( gl_config.renderer & GL_RENDERER_POWERVR ) 
-		{
-			ri.Cvar_Set( "gl_monolightmap", "0" );
-		}
-		else
-		{
-			ri.Cvar_Set( "gl_monolightmap", "0" );
-		}
-	}
-
-	// power vr can't have anything stay in the framebuffer, so
-	// the screen needs to redraw the tiled background every frame
-	if ( gl_config.renderer & GL_RENDERER_POWERVR ) 
-	{
-		ri.Cvar_Set( "scr_drawall", "1" );
-	}
-	else
-	{
-		ri.Cvar_Set( "scr_drawall", "0" );
-	}
-
 #ifdef __linux__
 	ri.Cvar_SetValue( "gl_finish", 1 );
 #endif
@@ -1239,23 +1187,6 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	{
 		ri.Cvar_SetValue( "gl_finish", 1 );
 	}
-
-	if ( gl_config.renderer & GL_RENDERER_3DLABS )
-	{
-		if ( gl_3dlabs_broken->value )
-			gl_config.allow_cds = false;
-		else
-			gl_config.allow_cds = true;
-	}
-	else
-	{
-		gl_config.allow_cds = true;
-	}
-
-	if ( gl_config.allow_cds )
-		ri.Con_Printf( PRINT_ALL, "...allowing CDS\n" );
-	else
-		ri.Con_Printf( PRINT_ALL, "...disabling CDS\n" );
 
 	/*
 	** grab extensions
@@ -1300,45 +1231,6 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	else
 	{
 		ri.Con_Printf( PRINT_ALL, "...GL_EXT_point_parameters not found\n" );
-	}
-
-#ifdef __linux__
-	if ( strstr( gl_config.extensions_string, "3DFX_set_global_palette" ))
-	{
-		if ( gl_ext_palettedtexture->value )
-		{
-			ri.Con_Printf( PRINT_ALL, "...using 3DFX_set_global_palette\n" );
-			qgl3DfxSetPaletteEXT = ( void ( APIENTRY * ) (GLuint *) )qwglGetProcAddress( "gl3DfxSetPaletteEXT" );
-			qglColorTableEXT = Fake_glColorTableEXT;
-		}
-		else
-		{
-			ri.Con_Printf( PRINT_ALL, "...ignoring 3DFX_set_global_palette\n" );
-		}
-	}
-	else
-	{
-		ri.Con_Printf( PRINT_ALL, "...3DFX_set_global_palette not found\n" );
-	}
-#endif
-
-	if ( !qglColorTableEXT &&
-		strstr( gl_config.extensions_string, "GL_EXT_paletted_texture" ) && 
-		strstr( gl_config.extensions_string, "GL_EXT_shared_texture_palette" ) )
-	{
-		if ( gl_ext_palettedtexture->value )
-		{
-			ri.Con_Printf( PRINT_ALL, "...using GL_EXT_shared_texture_palette\n" );
-			qglColorTableEXT = ( void ( APIENTRY * ) ( GLenum, GLenum, GLsizei, GLenum, GLenum, const GLvoid * ) ) qwglGetProcAddress( "glColorTableEXT" );
-		}
-		else
-		{
-			ri.Con_Printf( PRINT_ALL, "...ignoring GL_EXT_shared_texture_palette\n" );
-		}
-	}
-	else
-	{
-		ri.Con_Printf( PRINT_ALL, "...GL_EXT_shared_texture_palette not found\n" );
 	}
 
 	if ( strstr( gl_config.extensions_string, "GL_ARB_multitexture" ) )
@@ -1468,25 +1360,11 @@ void R_BeginFrame( float camera_separation )
 		GLimp_LogNewFrame();
 	}
 
-	/*
-	** update 3Dfx gamma -- it is expected that a user will do a vid_restart
-	** after tweaking this value
-	*/
+	// make the gamma not modified
+	// TODO: test if this dies
 	if ( vid_gamma->modified )
 	{
 		vid_gamma->modified = false;
-
-		if ( gl_config.renderer & ( GL_RENDERER_VOODOO ) )
-		{
-			char envbuffer[1024];
-			float g;
-
-			g = 2.00 * ( 0.8 - ( vid_gamma->value - 0.5 ) ) + 1.0F;
-			Com_sprintf( envbuffer, sizeof(envbuffer), "SSTV2_GAMMA=%f", g );
-			putenv( envbuffer );
-			Com_sprintf( envbuffer, sizeof(envbuffer), "SST_GAMMA=%f", g );
-			putenv( envbuffer );
-		}
 	}
 
 	GLimp_BeginFrame( camera_separation );
@@ -1570,39 +1448,6 @@ R_SetPalette
 =============
 */
 unsigned r_rawpalette[256];
-
-void R_SetPalette ( const unsigned char *palette)
-{
-	int		i;
-
-	byte *rp = ( byte * ) r_rawpalette;
-
-	if ( palette )
-	{
-		for ( i = 0; i < 256; i++ )
-		{
-			rp[i*4+0] = palette[i*3+0];
-			rp[i*4+1] = palette[i*3+1];
-			rp[i*4+2] = palette[i*3+2];
-			rp[i*4+3] = 0xff;
-		}
-	}
-	else
-	{
-		for ( i = 0; i < 256; i++ )
-		{
-			rp[i*4+0] = d_8to24table[i] & 0xff;
-			rp[i*4+1] = ( d_8to24table[i] >> 8 ) & 0xff;
-			rp[i*4+2] = ( d_8to24table[i] >> 16 ) & 0xff;
-			rp[i*4+3] = 0xff;
-		}
-	}
-	GL_SetTexturePalette( r_rawpalette );
-
-	qglClearColor (0,0,0,0);
-	qglClear (GL_COLOR_BUFFER_BIT);
-	qglClearColor (1,0, 0.5 , 0.5);
-}
 
 /*
 ** R_DrawBeam
@@ -1728,7 +1573,6 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.Init = R_Init;
 	re.Shutdown = R_Shutdown;
 
-	re.CinematicSetPalette = R_SetPalette;
 	re.BeginFrame = R_BeginFrame;
 	re.EndFrame = GLimp_EndFrame;
 	re.EndWorldRenderpass = R_EndWorldRenderpass;
