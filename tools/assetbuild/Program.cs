@@ -10,7 +10,7 @@ using System.Diagnostics;
 const string ASSETBUILD_VERSION = "2.0.2"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
-string gameDir = $@"..\..\..\..\..\game2\{gameName}"; // Complete relative path to game dir
+string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
 string outputDirectory = string.Empty; //set later
 
 bool quietMode = false; // If true, everything except errors are hushed
@@ -23,7 +23,7 @@ const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
 const string STRING_DESCRIPTION = "Builds assets for Zombono";
 const string STRING_USAGE = "Assetbuild <game> [release cfg] [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
-    "[directory]: Optional - base directory (default is ../../../../../game2/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
+    "[directory]: Optional - base directory (default is ../../../../../game/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
     "[-q]: Optional - quiets everything except errors";
       string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
       string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
@@ -59,7 +59,7 @@ try
     }
     
     // set the final directory
-    outputDirectory = $@"..\..\..\..\..\engine2_test\Quake2\{gameName}"; // final directory
+    outputDirectory = $@"..\..\..\..\..\build\out\{gameName}"; // final directory
 
     // could be first build of a new game so just create final dir if it exists
     if (!Directory.Exists(outputDirectory)) Directory.CreateDirectory(outputDirectory);
