@@ -7,11 +7,11 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.0"; // Version
+const string ASSETBUILD_VERSION = "2.0.1"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game2\{gameName}"; // Complete relative path to game dir
-string finalDir = string.Empty; //set later
+string outputDirectory = string.Empty; //set later
 
 bool quietMode = false; // If true, everything except errors are hushed
 
@@ -19,14 +19,14 @@ bool quietMode = false; // If true, everything except errors are hushed
 
 // Localise here!
 #region Strings
-const string STRING_SIGNON = $"Assetbuild {ASSETBUILD_VERSION}";
+const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
 const string STRING_DESCRIPTION = "Builds assets for Zombono";
 const string STRING_USAGE = "Assetbuild <game> [release cfg] [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
-    "[directory]: Optional - base directory (default is ../../../../../game2) ('raw' after it for gfx files) \n" +
+    "[directory]: Optional - base directory (default is ../../../../../game2/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
     "[-q]: Optional - quiets everything except errors";
-const string STRING_DELETING_OLD_FILES = "Deleting old game files...";
-const string STRING_BUILDING_FILES = "Building game files...";
+      string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
+      string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
 const string STRING_BUILDING_DONE = "Done!";
       string STRING_ERROR_NO_GAMEDIR = $"The base directory {gameDir} does not exist!"; // includes variable in variables section
 const string STRING_ERROR_GENERIC = "An exception occurred: ";
@@ -59,10 +59,10 @@ try
     }
     
     // set the final directory
-    finalDir = $@"..\..\..\..\..\engine2_test\Quake2\{gameName}"; // final directory
+    outputDirectory = $@"..\..\..\..\..\engine2_test\Quake2\{gameName}"; // final directory
 
     // could be first build of a new game so just create final dir if it exists
-    if (!Directory.Exists(finalDir)) Directory.CreateDirectory(finalDir);
+    if (!Directory.Exists(outputDirectory)) Directory.CreateDirectory(outputDirectory);
     #endregion
 
     #region Main code
@@ -70,7 +70,7 @@ try
     // Delete old assets
     Print(STRING_DELETING_OLD_FILES);
 
-    string[] finalFiles = Directory.GetFiles(finalDir, "*.*", SearchOption.AllDirectories);
+    string[] finalFiles = Directory.GetFiles(outputDirectory, "*.*", SearchOption.AllDirectories);
 
     if (finalFiles.Length > 0)
     {
@@ -89,7 +89,13 @@ try
     foreach (string gameFile in gameFiles)
     {
         string relativePath = Path.GetRelativePath(gameDir, gameFile);
-        File.Copy(gameFile, $@"{finalDir}\{relativePath}", true);
+
+        string? finalDirectory = $@"{outputDirectory}\\{Path.GetDirectoryName(relativePath)}";
+
+        if (!Directory.Exists(finalDirectory)
+            && !string.IsNullOrWhiteSpace(finalDirectory)) Directory.CreateDirectory(finalDirectory);
+
+        File.Copy(gameFile, $@"{outputDirectory}\{relativePath}", true);
     }
 
 

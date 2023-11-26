@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -372,7 +373,7 @@ void SV_WriteServerFile (qboolean autosave)
 	fwrite (svs.mapcmd, 1, sizeof(svs.mapcmd), f);
 
 	// write all CVAR_LATCH cvars
-	// these will be things like coop, skill, deathmatch, etc
+	// these will be things like skill and gamemode
 	for (var = cvar_vars ; var ; var=var->next)
 	{
 		if (!(var->flags & CVAR_LATCH))
@@ -655,7 +656,8 @@ void SV_Savegame_f (void)
 		return;
 	}
 
-	if (Cvar_VariableValue("deathmatch"))
+	// might need this later
+	if (Cvar_VariableValue("gamemode"))
 	{
 		Com_Printf ("Can't savegame in a deathmatch\n");
 		return;

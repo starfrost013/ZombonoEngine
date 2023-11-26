@@ -386,12 +386,6 @@ void turret_driver_link (edict_t *self)
 
 void SP_turret_driver (edict_t *self)
 {
-	if (deathmatch->value)
-	{
-		G_FreeEdict (self);
-		return;
-	}
-
 	self->movetype = MOVETYPE_PUSH;
 	self->solid = SOLID_BBOX;
 	self->s.modelindex = gi.modelindex("models/monsters/infantry/tris.md2");

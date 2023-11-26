@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -130,12 +131,6 @@ When fired, the "message" key becomes the current personal computer string, and 
 */
 void SP_target_help(edict_t *ent)
 {
-	if (deathmatch->value)
-	{	// auto-remove for deathmatch
-		G_FreeEdict (ent);
-		return;
-	}
-
 	if (!ent->message)
 	{
 		gi.dprintf ("%s with no message at %s\n", ent->classname, vtos(ent->s.origin));
@@ -163,12 +158,6 @@ void use_target_secret (edict_t *ent, edict_t *other, edict_t *activator)
 
 void SP_target_secret (edict_t *ent)
 {
-	if (deathmatch->value)
-	{	// auto-remove for deathmatch
-		G_FreeEdict (ent);
-		return;
-	}
-
 	ent->use = use_target_secret;
 	if (!st.noise)
 		st.noise = "misc/secret.wav";
@@ -201,12 +190,6 @@ void use_target_goal (edict_t *ent, edict_t *other, edict_t *activator)
 
 void SP_target_goal (edict_t *ent)
 {
-	if (deathmatch->value)
-	{	// auto-remove for deathmatch
-		G_FreeEdict (ent);
-		return;
-	}
-
 	ent->use = use_target_goal;
 	if (!st.noise)
 		st.noise = "misc/secret.wav";
@@ -272,25 +255,17 @@ void use_target_changelevel (edict_t *self, edict_t *other, edict_t *activator)
 	if (level.intermissiontime)
 		return;		// already activated
 
-	if (!deathmatch->value && !coop->value)
-	{
-		if (g_edicts[1].health <= 0)
-			return;
-	}
-
 	// if noexit, do a ton of damage to other
-	if (deathmatch->value && !( (int)dmflags->value & DF_ALLOW_EXIT) && other != world)
+	if (!( (int)gameflags->value & DF_ALLOW_EXIT) && other != world)
 	{
 		T_Damage (other, self, self, vec3_origin, other->s.origin, vec3_origin, 10 * other->max_health, 1000, 0, MOD_EXIT);
 		return;
 	}
 
 	// if multiplayer, let everyone know who hit the exit
-	if (deathmatch->value)
-	{
-		if (activator && activator->client)
-			gi.bprintf (PRINT_HIGH, "%s exited the level.\n", activator->client->pers.netname);
-	}
+
+	if (activator && activator->client)
+		gi.bprintf(PRINT_HIGH, "%s exited the level.\n", activator->client->pers.netname);
 
 	// if going to a new unit, clear cross triggers
 	if (strstr(self->map, "*"))	
@@ -717,12 +692,6 @@ void SP_target_lightramp (edict_t *self)
 	if (!self->message || strlen(self->message) != 2 || self->message[0] < 'a' || self->message[0] > 'z' || self->message[1] < 'a' || self->message[1] > 'z' || self->message[0] == self->message[1])
 	{
 		gi.dprintf("target_lightramp has bad ramp (%s) at %s\n", self->message, vtos(self->s.origin));
-		G_FreeEdict (self);
-		return;
-	}
-
-	if (deathmatch->value)
-	{
 		G_FreeEdict (self);
 		return;
 	}

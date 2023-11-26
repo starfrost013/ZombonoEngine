@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -164,21 +165,15 @@ qboolean Pickup_Powerup (edict_t *ent, edict_t *other)
 	if ((skill->value == 1 && quantity >= 2) || (skill->value >= 2 && quantity >= 1))
 		return false;
 
-	if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
-		return false;
-
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 
-	if (deathmatch->value)
+	if (!(ent->spawnflags & DROPPED_ITEM))
+		SetRespawn(ent, ent->item->quantity);
+	if (((int)gameflags->value & DF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
 	{
-		if (!(ent->spawnflags & DROPPED_ITEM) )
-			SetRespawn (ent, ent->item->quantity);
-		if (((int)dmflags->value & DF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
-		{
-			if ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM))
-				quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
-			ent->item->use (other, ent->item);
-		}
+		if ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM))
+			quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
+		ent->item->use(other, ent->item);
 	}
 
 	return true;
@@ -196,13 +191,16 @@ void Drop_General (edict_t *ent, gitem_t *item)
 
 qboolean Pickup_Adrenaline (edict_t *ent, edict_t *other)
 {
+	/*
+	* this is a bad idea in multiplayer tbf
 	if (!deathmatch->value)
 		other->max_health += 1;
+	*/
 
 	if (other->health < other->max_health)
 		other->health = other->max_health;
 
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn (ent, ent->item->quantity);
 
 	return true;
@@ -212,7 +210,7 @@ qboolean Pickup_AncientHead (edict_t *ent, edict_t *other)
 {
 	other->max_health += 2;
 
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn (ent, ent->item->quantity);
 
 	return true;
@@ -250,7 +248,7 @@ qboolean Pickup_Bandolier (edict_t *ent, edict_t *other)
 			other->client->pers.inventory[index] = other->client->pers.max_shells;
 	}
 
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn (ent, ent->item->quantity);
 
 	return true;
@@ -328,7 +326,7 @@ qboolean Pickup_Pack (edict_t *ent, edict_t *other)
 			other->client->pers.inventory[index] = other->client->pers.max_slugs;
 	}
 
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn (ent, ent->item->quantity);
 
 	return true;
@@ -421,23 +419,6 @@ void	Use_Silencer (edict_t *ent, gitem_t *item)
 
 qboolean Pickup_Key (edict_t *ent, edict_t *other)
 {
-	if (coop->value)
-	{
-		if (strcmp(ent->classname, "key_power_cube") == 0)
-		{
-			if (other->client->pers.power_cubes & ((ent->spawnflags & 0x0000ff00)>> 8))
-				return false;
-			other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
-			other->client->pers.power_cubes |= ((ent->spawnflags & 0x0000ff00) >> 8);
-		}
-		else
-		{
-			if (other->client->pers.inventory[ITEM_INDEX(ent->item)])
-				return false;
-			other->client->pers.inventory[ITEM_INDEX(ent->item)] = 1;
-		}
-		return true;
-	}
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 	return true;
 }
@@ -487,7 +468,7 @@ qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
 	qboolean	weapon;
 
 	weapon = (ent->item->flags & IT_WEAPON);
-	if ( (weapon) && ( (int)dmflags->value & DF_INFINITE_AMMO ) )
+	if ( (weapon) && ( (int)gameflags->value & DF_INFINITE_AMMO ) )
 		count = 1000;
 	else if (ent->count)
 		count = ent->count;
@@ -501,11 +482,11 @@ qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
 
 	if (weapon && !oldcount)
 	{
-		if (other->client->pers.weapon != ent->item && ( !deathmatch->value || other->client->pers.weapon == FindItem("blaster") ) )
+		if (other->client->pers.weapon != ent->item)
 			other->client->newweapon = ent->item;
 	}
 
-	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) && (deathmatch->value))
+	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 		SetRespawn (ent, 30);
 	return true;
 }
@@ -547,7 +528,7 @@ void MegaHealth_think (edict_t *self)
 		return;
 	}
 
-	if (!(self->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(self->spawnflags & DROPPED_ITEM))
 		SetRespawn (self, 20);
 	else
 		G_FreeEdict (self);
@@ -578,7 +559,7 @@ qboolean Pickup_Health (edict_t *ent, edict_t *other)
 	}
 	else
 	{
-		if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+		if (!(ent->spawnflags & DROPPED_ITEM))
 			SetRespawn (ent, 30);
 	}
 
@@ -677,7 +658,7 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 		}
 	}
 
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
+	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn (ent, 20);
 
 	return true;
@@ -732,14 +713,11 @@ qboolean Pickup_PowerArmor (edict_t *ent, edict_t *other)
 
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 
-	if (deathmatch->value)
-	{
-		if (!(ent->spawnflags & DROPPED_ITEM) )
-			SetRespawn (ent, ent->item->quantity);
-		// auto-use for DM only if we didn't already have one
-		if (!quantity)
-			ent->item->use (other, ent->item);
-	}
+	if (!(ent->spawnflags & DROPPED_ITEM))
+		SetRespawn(ent, ent->item->quantity);
+	// auto-use for DM only if we didn't already have one
+	if (!quantity)
+		ent->item->use(other, ent->item);
 
 	return true;
 }
@@ -811,7 +789,7 @@ void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf
 	if (!taken)
 		return;
 
-	if (!((coop->value) &&  (ent->item->flags & IT_STAY_COOP)) || (ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
+	if ((ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 	{
 		if (ent->flags & FL_RESPAWN)
 			ent->flags &= ~FL_RESPAWN;
@@ -833,11 +811,9 @@ static void drop_temp_touch (edict_t *ent, edict_t *other, cplane_t *plane, csur
 static void drop_make_touchable (edict_t *ent)
 {
 	ent->touch = Touch_Item;
-	if (deathmatch->value)
-	{
-		ent->nextthink = level.time + 29;
-		ent->think = G_FreeEdict;
-	}
+
+	ent->nextthink = level.time + 29;
+	ent->think = G_FreeEdict;
 }
 
 edict_t *Drop_Item (edict_t *ent, gitem_t *item)
@@ -1071,53 +1047,37 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 	}
 
-	// some items will be prevented in deathmatch
-	if (deathmatch->value)
+	if ((int)gameflags->value & DF_NO_ARMOR)
 	{
-		if ( (int)dmflags->value & DF_NO_ARMOR )
+		if (item->pickup == Pickup_Armor || item->pickup == Pickup_PowerArmor)
 		{
-			if (item->pickup == Pickup_Armor || item->pickup == Pickup_PowerArmor)
-			{
-				G_FreeEdict (ent);
-				return;
-			}
-		}
-		if ( (int)dmflags->value & DF_NO_ITEMS )
-		{
-			if (item->pickup == Pickup_Powerup)
-			{
-				G_FreeEdict (ent);
-				return;
-			}
-		}
-		if ( (int)dmflags->value & DF_NO_HEALTH )
-		{
-			if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
-			{
-				G_FreeEdict (ent);
-				return;
-			}
-		}
-		if ( (int)dmflags->value & DF_INFINITE_AMMO )
-		{
-			if ( (item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0) )
-			{
-				G_FreeEdict (ent);
-				return;
-			}
+			G_FreeEdict(ent);
+			return;
 		}
 	}
-
-	if (coop->value && (strcmp(ent->classname, "key_power_cube") == 0))
+	if ((int)gameflags->value & DF_NO_ITEMS)
 	{
-		ent->spawnflags |= (1 << (8 + level.power_cubes));
-		level.power_cubes++;
+		if (item->pickup == Pickup_Powerup)
+		{
+			G_FreeEdict(ent);
+			return;
+		}
 	}
-
-	// don't let them drop items that stay in a coop game
-	if ((coop->value) && (item->flags & IT_STAY_COOP))
+	if ((int)gameflags->value & DF_NO_HEALTH)
 	{
-		item->drop = NULL;
+		if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
+		{
+			G_FreeEdict(ent);
+			return;
+		}
+	}
+	if ((int)gameflags->value & DF_INFINITE_AMMO)
+	{
+		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0))
+		{
+			G_FreeEdict(ent);
+			return;
+		}
 	}
 
 	ent->item = item;
@@ -1302,7 +1262,7 @@ always owned, never in the world
 		0,
 		0,
 		NULL,
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_BLASTER,
 		NULL,
 		0,
@@ -1325,7 +1285,7 @@ always owned, never in the world
 		0,
 		1,
 		"Shells",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_SHOTGUN,
 		NULL,
 		0,
@@ -1348,7 +1308,7 @@ always owned, never in the world
 		0,
 		2,
 		"Shells",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_SUPERSHOTGUN,
 		NULL,
 		0,
@@ -1371,7 +1331,7 @@ always owned, never in the world
 		0,
 		1,
 		"Bullets",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_MACHINEGUN,
 		NULL,
 		0,
@@ -1394,7 +1354,7 @@ always owned, never in the world
 		0,
 		1,
 		"Bullets",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_CHAINGUN,
 		NULL,
 		0,
@@ -1440,7 +1400,7 @@ always owned, never in the world
 		0,
 		1,
 		"Grenades",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_GRENADELAUNCHER,
 		NULL,
 		0,
@@ -1463,7 +1423,7 @@ always owned, never in the world
 		0,
 		1,
 		"Rockets",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_ROCKETLAUNCHER,
 		NULL,
 		0,
@@ -1486,7 +1446,7 @@ always owned, never in the world
 		0,
 		1,
 		"Cells",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_HYPERBLASTER,
 		NULL,
 		0,
@@ -1509,7 +1469,7 @@ always owned, never in the world
 		0,
 		1,
 		"Slugs",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_RAILGUN,
 		NULL,
 		0,
@@ -1532,7 +1492,7 @@ always owned, never in the world
 		0,
 		50,
 		"Cells",
-		IT_WEAPON|IT_STAY_COOP,
+		IT_WEAPON,
 		WEAP_BFG,
 		NULL,
 		0,
@@ -1747,7 +1707,7 @@ always owned, never in the world
 /* width */		2,
 		60,
 		NULL,
-		IT_STAY_COOP|IT_POWERUP,
+		IT_POWERUP,
 		0,
 		NULL,
 		0,
@@ -1770,7 +1730,7 @@ always owned, never in the world
 /* width */		2,
 		60,
 		NULL,
-		IT_STAY_COOP|IT_POWERUP,
+		IT_POWERUP,
 		0,
 		NULL,
 		0,
@@ -1871,246 +1831,6 @@ gives +1 to maximum health
 /* precache */ ""
 	},
 
-	//
-	// KEYS
-	//
-/*QUAKED key_data_cd (0 .5 .8) (-16 -16 -16) (16 16 16)
-key for computer centers
-*/
-	{
-		"key_data_cd",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/data_cd/tris.md2", EF_ROTATE,
-		NULL,
-		"k_datacd",
-		"Data CD",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_power_cube (0 .5 .8) (-16 -16 -16) (16 16 16) TRIGGER_SPAWN NO_TOUCH
-warehouse circuits
-*/
-	{
-		"key_power_cube",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/power/tris.md2", EF_ROTATE,
-		NULL,
-		"k_powercube",
-		"Power Cube",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_pyramid (0 .5 .8) (-16 -16 -16) (16 16 16)
-key for the entrance of jail3
-*/
-	{
-		"key_pyramid",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/pyramid/tris.md2", EF_ROTATE,
-		NULL,
-		"k_pyramid",
-		"Pyramid Key",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_data_spinner (0 .5 .8) (-16 -16 -16) (16 16 16)
-key for the city computer
-*/
-	{
-		"key_data_spinner",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/spinner/tris.md2", EF_ROTATE,
-		NULL,
-		"k_dataspin",
-		"Data Spinner",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_pass (0 .5 .8) (-16 -16 -16) (16 16 16)
-security pass for the security level
-*/
-	{
-		"key_pass",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/pass/tris.md2", EF_ROTATE,
-		NULL,
-		"k_security",
-		"Security Pass",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_blue_key (0 .5 .8) (-16 -16 -16) (16 16 16)
-normal door key - blue
-*/
-	{
-		"key_blue_key",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/key/tris.md2", EF_ROTATE,
-		NULL,
-		"k_bluekey",
-		"Blue Key",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_red_key (0 .5 .8) (-16 -16 -16) (16 16 16)
-normal door key - red
-*/
-	{
-		"key_red_key",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/red_key/tris.md2", EF_ROTATE,
-		NULL,
-		"k_redkey",
-		"Red Key",
-		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_commander_head (0 .5 .8) (-16 -16 -16) (16 16 16)
-tank commander's head
-*/
-	{
-		"key_commander_head",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/monsters/commandr/head/tris.md2", EF_GIB,
-		NULL,
-/* icon */		"k_comhead",
-/* pickup */	"Commander's Head",
-/* width */		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-/*QUAKED key_airstrike_target (0 .5 .8) (-16 -16 -16) (16 16 16)
-tank commander's head
-*/
-	{
-		"key_airstrike_target",
-		Pickup_Key,
-		NULL,
-		Drop_General,
-		NULL,
-		"items/pkup.wav",
-		"models/items/keys/target/tris.md2", EF_ROTATE,
-		NULL,
-/* icon */		"i_airstrike",
-/* pickup */	"Airstrike Marker",
-/* width */		2,
-		0,
-		NULL,
-		IT_STAY_COOP|IT_KEY,
-		0,
-		NULL,
-		0,
-/* precache */ ""
-	},
-
-	{
-		NULL,
-		Pickup_Health,
-		NULL,
-		NULL,
-		NULL,
-		"items/pkup.wav",
-		NULL, 0,
-		NULL,
-/* icon */		"i_health",
-/* pickup */	"Health",
-/* width */		3,
-		0,
-		NULL,
-		0,
-		0,
-		NULL,
-		0,
-/* precache */ "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav"
-	},
-
 	// end of list marker
 	{NULL}
 };
@@ -2120,7 +1840,7 @@ tank commander's head
 */
 void SP_item_health (edict_t *self)
 {
-	if ( deathmatch->value && ((int)dmflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & DF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -2136,7 +1856,7 @@ void SP_item_health (edict_t *self)
 */
 void SP_item_health_small (edict_t *self)
 {
-	if ( deathmatch->value && ((int)dmflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & DF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -2153,7 +1873,7 @@ void SP_item_health_small (edict_t *self)
 */
 void SP_item_health_large (edict_t *self)
 {
-	if ( deathmatch->value && ((int)dmflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & DF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -2169,7 +1889,7 @@ void SP_item_health_large (edict_t *self)
 */
 void SP_item_health_mega (edict_t *self)
 {
-	if ( deathmatch->value && ((int)dmflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & DF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;

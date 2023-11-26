@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2023/11/24 version
+// 2023/11/27 version
 
 //
 // worldspawn
@@ -33,7 +33,11 @@
 		256 : "Not in Easy" : 0
 		512 : "Not in Normal" : 0
 		1024 : "Not in Hard" : 0
-		2048 : "Not in Deathmatch" : 0
+		2048 : "Not in TDM mode" : 0
+		4096 : "Not in Hostage mode" : 0
+		8192 : "Not in Waves mode" : 0
+		16384 : "Not in co-op mode" : 0	
+		32768 : "Not in Control Point mode" : 0
 	]
 ]
 @baseclass = Angle [ angle(integer) : "Direction" ]
@@ -409,13 +413,6 @@
 
 @BaseClass base(Appearflags, Target) color(0 128 204) size(-16 -16 -16, 16 16 16) = Keys []
 
-@PointClass base(Keys) model({ "path": ":models/items/keys/target/tris.md2" }) = key_airstrike_target : "Tank commander's head" []
-@PointClass base(Keys) model({ "path": ":models/items/keys/key/tris.md2" }) = key_blue_key : "Normal door key - blue" []
-@PointClass base(Keys) model({ "path": ":models/monsters/commandr/head/tris.md2" }) = key_commander_head : "Tank commander's head" []
-@PointClass base(Keys) model({ "path": ":models/items/keys/data_cd/tris.md2" }) = key_data_cd : "Key for computer centers" []
-@PointClass base(Keys) model({ "path": ":models/items/keys/spinner/tris.md2" }) = key_data_spinner : "Key for city computer" []
-@PointClass base(Keys) model({ "path": ":models/items/keys/pass/tris.md2" }) = key_pass : "Security pass for secret level" []
-
 // 0301 - added "targetname" key
 @PointClass base(Keys, Targetname) model({ "path": ":models/items/keys/power/tris.md2" }) = key_power_cube : "Warehouse circuits"
 [
@@ -425,8 +422,6 @@
 		2 : "No Touch" : 0
 	]
 ]
-@PointClass base(Keys) model({ "path": ":models/items/keys/pyramid/tris.md2" }) = key_pyramid : "Key for entrance to jail3" []
-@PointClass base(Keys) model({ "path": ":models/items/keys/red_key/tris.md2" }) = key_red_key : "normal door key - red" []
 
 @PointClass base(Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Light"
 [

@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -46,14 +47,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define DAMAGE_TIME		0.5
 #define	FALL_TIME		0.3
 
-
 // edict->spawnflags
 // these are set with checkboxes on each entity in the map editor
 #define	SPAWNFLAG_NOT_EASY			0x00000100
 #define	SPAWNFLAG_NOT_MEDIUM		0x00000200
 #define	SPAWNFLAG_NOT_HARD			0x00000400
-#define	SPAWNFLAG_NOT_DEATHMATCH	0x00000800
-#define	SPAWNFLAG_NOT_COOP			0x00001000
+#define	SPAWNFLAG_NOT_TDM			0x00000800
+#define	SPAWNFLAG_NOT_HOSTAGE		0x00001000
+#define SPAWNFLAG_NOT_WAVES			0x00002000
+#define SPAWNFLAG_NOT_COOP			0x00004000
+#define SPAWNFLAG_NOT_CONTROL_POINT	0x00008000
 
 // edict->flags
 #define	FL_FLY					0x00000001
@@ -70,7 +73,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define FL_NO_KNOCKBACK			0x00000800
 #define FL_POWER_ARMOR			0x00001000	// power armor (if any) is active
 #define FL_RESPAWN				0x80000000	// used for item respawning
-
 
 #define	FRAMETIME		0.1
 
@@ -185,7 +187,7 @@ typedef enum
 
 
 // edict->movetype values
-typedef enum
+typedef enum movetype
 {
 MOVETYPE_NONE,			// never moves
 MOVETYPE_NOCLIP,		// origin and angles change with no interaction
@@ -200,9 +202,7 @@ MOVETYPE_FLYMISSILE,	// extra size to monsters
 MOVETYPE_BOUNCE
 } movetype_t;
 
-
-
-typedef struct
+typedef struct gitem_armor_s
 {
 	int		base_count;
 	int		max_count;
@@ -216,8 +216,8 @@ typedef struct
 #define	IT_WEAPON		1		// use makes active weapon
 #define	IT_AMMO			2
 #define IT_ARMOR		4
-#define IT_STAY_COOP	8
-#define IT_KEY			16
+#define IT_UNUSED1		8		// Was IT_STAY_COOP
+#define IT_UNUSED2		16		// Was IT_KEY
 #define IT_POWERUP		32
 
 // gitem_t->weapmodel for weapons indicates model index
@@ -271,7 +271,7 @@ typedef struct gitem_s
 // it should be initialized at dll load time, and read/written to
 // the server.ssv file for savegames
 //
-typedef struct
+typedef struct game_locals_s
 {
 	char		helpmessage1[512];
 	char		helpmessage2[512];
@@ -302,7 +302,7 @@ typedef struct
 // this structure is cleared as each map is entered
 // it is read/written to the level.sav file for savegames
 //
-typedef struct
+typedef struct level_locals_s
 {
 	int			framenum;
 	float		time;
@@ -348,7 +348,7 @@ typedef struct
 // spawn_temp_t is only used to hold entity field values that
 // can be set from the editor, but aren't actualy present
 // in edict_t during gameplay
-typedef struct
+typedef struct spawn_temp_s
 {
 	// world vars
 	char		*sky;
@@ -371,7 +371,7 @@ typedef struct
 } spawn_temp_t;
 
 
-typedef struct
+typedef struct moveinfo_s
 {
 	// fixed data
 	vec3_t		start_origin;
@@ -402,14 +402,14 @@ typedef struct
 } moveinfo_t;
 
 
-typedef struct
+typedef struct mframe_s
 {
 	void	(*aifunc)(edict_t *self, float dist);
 	float	dist;
 	void	(*thinkfunc)(edict_t *self);
 } mframe_t;
 
-typedef struct
+typedef struct mmove_s
 {
 	int			firstframe;
 	int			lastframe;
@@ -417,7 +417,7 @@ typedef struct
 	void		(*endfunc)(edict_t *self);
 } mmove_t;
 
-typedef struct
+typedef struct monsterinfo_s
 {
 	mmove_t		*currentmove;
 	int			aiflags;
@@ -450,8 +450,6 @@ typedef struct
 	int			power_armor_type;
 	int			power_armor_power;
 } monsterinfo_t;
-
-
 
 extern	game_locals_t	game;
 extern	level_locals_t	level;
@@ -502,6 +500,8 @@ extern	int	body_armor_index;
 #define MOD_TRIGGER_HURT	31
 #define MOD_HIT				32
 #define MOD_TARGET_BLASTER	33
+#define MOD_ZOMBIE			34
+#define MOD_CRUSHED			35
 #define MOD_FRIENDLY_FIRE	0x8000000
 
 extern	int	meansOfDeath;
@@ -518,9 +518,8 @@ extern	edict_t			*g_edicts;
 #define crandom()	(2.0 * (random() - 0.5))
 
 extern	cvar_t	*maxentities;
-extern	cvar_t	*deathmatch;
-extern	cvar_t	*coop;
-extern	cvar_t	*dmflags;
+extern	cvar_t	*gamemode;
+extern	cvar_t	*gameflags;
 extern	cvar_t	*skill;
 extern	cvar_t	*fraglimit;
 extern	cvar_t	*timelimit;
@@ -606,7 +605,6 @@ extern	gitem_t	itemlist[];
 //
 // g_cmds.c
 //
-void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
 
 //
@@ -675,7 +673,6 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 #define DEFAULT_BULLET_VSPREAD	500
 #define DEFAULT_SHOTGUN_HSPREAD	1000
 #define DEFAULT_SHOTGUN_VSPREAD	500
-#define DEFAULT_DEATHMATCH_SHOTGUN_COUNT	12
 #define DEFAULT_SHOTGUN_COUNT	12
 #define DEFAULT_SSHOTGUN_COUNT	20
 

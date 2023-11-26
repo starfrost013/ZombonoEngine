@@ -102,8 +102,11 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 		if (!(targ->monsterinfo.aiflags & AI_GOOD_GUY))
 		{
 			level.killed_monsters++;
-			if (coop->value && attacker->client)
+
+			// In zombono you get points for killing zombies. I need to figure out if this is a good idea.
+			if (attacker->client)
 				attacker->client->resp.score++;
+
 			// medics won't heal monsters that they kill themselves
 			if (strcmp(attacker->classname, "monster_medic") == 0)
 				targ->owner = attacker;
@@ -385,11 +388,11 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
-	if ((targ != attacker) && ((deathmatch->value || coop->value)))
+	if ((targ != attacker))
 	{
 		if (OnSameTeam (targ, attacker))
 		{
-			if ((int)(dmflags->value) & DF_NO_FRIENDLY_FIRE)
+			if ((int)(gameflags->value) & DF_NO_FRIENDLY_FIRE)
 				damage = 0;
 			else
 				mod |= MOD_FRIENDLY_FIRE;
@@ -398,7 +401,9 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	meansOfDeath = mod;
 
 	// easy mode takes half damage
-	if (skill->value == 0 && deathmatch->value == 0 && targ->client)
+	// easy mode sucks
+	if (skill->value == 0 
+		&& targ->client)
 	{
 		damage *= 0.5;
 		if (!damage)

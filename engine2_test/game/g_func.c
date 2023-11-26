@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1155,9 +1156,7 @@ void SP_func_door (edict_t *ent)
 	ent->use = door_use;
 	
 	if (!ent->speed)
-		ent->speed = 100;
-	if (deathmatch->value)
-		ent->speed *= 2;
+		ent->speed = 200;
 
 	if (!ent->accel)
 		ent->accel = ent->speed;

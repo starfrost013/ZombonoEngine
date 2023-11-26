@@ -608,11 +608,6 @@ typedef struct
 #define	RDF_UNDERWATER		1		// warp the screen as apropriate
 #define RDF_NOWORLDMODEL	2		// used for player configuration screen
 
-//ROGUE
-#define	RDF_IRGOGGLES		4
-#define RDF_UVGOGGLES		8
-//ROGUE
-
 //
 // muzzle flashes / player effects
 //
@@ -889,7 +884,7 @@ typedef enum
 #define	MAX_STATS				32
 
 
-// dmflags->value flags
+// gameflags->value flags
 #define	DF_NO_HEALTH		0x00000001	// 1
 #define	DF_NO_ITEMS			0x00000002	// 2
 #define	DF_WEAPONS_STAY		0x00000004	// 4
@@ -905,7 +900,7 @@ typedef enum
 #define DF_ALLOW_EXIT		0x00001000	// 4096
 #define DF_INFINITE_AMMO	0x00002000	// 8192
 #define DF_QUAD_DROP		0x00004000	// 16384
-#define DF_FIXED_FOV		0x00008000	// 32768
+#define DF_UNUSED3		0x00008000	// 32768
 
 // Gamemodes
 #define	GAMEMODE_TDM			0		// Team Deathmach

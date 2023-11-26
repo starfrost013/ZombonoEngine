@@ -432,8 +432,6 @@ void M_Main_Draw (void)
 	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname );
 
 	M_DrawCursor( xoffset - 25 * vid_hudscale->value, ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
-
-	re.DrawPic( xoffset - 30 * vid_hudscale->value - w, ystart + h + 5*vid_hudscale->value, "m_main_logo" );
 }
 
 
@@ -1576,9 +1574,8 @@ static void StartGame( void )
 	M_ForceMenuOff ();
 	
 	// TODO: REMOVE
-	Cvar_SetValue( "deathmatch", 0 );
-	Cvar_SetValue( "coop", 0 );
-	
+	Cvar_SetValue( "gamemode", 0 );
+
 	Cvar_SetValue( "gamerules", 0 );		//PGM
 
 	Cbuf_AddText ("loading ; killserver ; wait ; newgame\n");
@@ -2094,13 +2091,6 @@ void RulesChangeFunc ( void *self )
 		s_maxclients_field.generic.statusbar = NULL;
 		s_startserver_dmoptions_action.generic.statusbar = NULL;
 	}
-	else if(s_rules_box.curvalue == 1)		// coop				// PGM
-	{
-		s_maxclients_field.generic.statusbar = "4 maximum for cooperative";
-		if (atoi(s_maxclients_field.buffer) > 4)
-			strcpy( s_maxclients_field.buffer, "4" );
-		s_startserver_dmoptions_action.generic.statusbar = "N/A for cooperative";
-	}
 }
 
 void StartServerActionFunc( void *self )
@@ -2121,11 +2111,10 @@ void StartServerActionFunc( void *self )
 	Cvar_SetValue ("timelimit", ClampCvar( 0, timelimit, timelimit ) );
 	Cvar_SetValue ("fraglimit", ClampCvar( 0, fraglimit, fraglimit ) );
 	Cvar_Set("hostname", s_hostname_field.buffer );
-//	Cvar_SetValue ("deathmatch", !s_rules_box.curvalue );
-//	Cvar_SetValue ("coop", s_rules_box.curvalue );
 
-	Cvar_SetValue("deathmatch", !s_rules_box.curvalue);
-	Cvar_SetValue("coop", s_rules_box.curvalue);
+
+	Cvar_SetValue("gamemode", s_rules_box.curvalue);
+
 	Cvar_SetValue("gamerules", 0);
 
 	spot = NULL;
@@ -2283,10 +2272,8 @@ void StartServer_MenuInit( void )
 	
 	s_rules_box.itemnames = gamemode_names;
 
-	if (Cvar_VariableValue("coop"))
-		s_rules_box.curvalue = 1;
-	else
-		s_rules_box.curvalue = 0;
+	s_rules_box.curvalue = 0;
+
 	s_rules_box.generic.callback = RulesChangeFunc;
 
 	s_timelimit_field.generic.type = MTYPE_FIELD;
@@ -2437,7 +2424,7 @@ static void DMFlagCallback( void *self )
 	int flags;
 	int bit = 0;
 
-	flags = Cvar_VariableValue( "dmflags" );
+	flags = Cvar_VariableValue( "gameflags" );
 
 	if ( f == &s_friendlyfire_box )
 	{
@@ -2509,7 +2496,7 @@ static void DMFlagCallback( void *self )
 	}
 	else if ( f == &s_fixed_fov_box )
 	{
-		bit = DF_FIXED_FOV;
+		bit = DF_UNUSED3;
 	}
 	else if ( f == &s_quad_drop_box )
 	{
@@ -2525,9 +2512,9 @@ static void DMFlagCallback( void *self )
 	}
 
 setvalue:
-	Cvar_SetValue ("dmflags", flags);
+	Cvar_SetValue ("gameflags", flags);
 
-	Com_sprintf( dmoptions_statusbar, sizeof( dmoptions_statusbar ), "dmflags = %d", flags );
+	Com_sprintf( dmoptions_statusbar, sizeof( dmoptions_statusbar ), "gameflags = %d", flags );
 
 }
 
@@ -2538,7 +2525,7 @@ void DMOptions_MenuInit( void )
 		"no", "yes", 0
 	};
 
-	int dmflags = Cvar_VariableValue( "dmflags" );
+	int gameflags = Cvar_VariableValue( "gameflags" );
 	int y = 0;
 
 	s_dmoptions_menu.x = viddef.width * 0.50;
@@ -2550,7 +2537,7 @@ void DMOptions_MenuInit( void )
 	s_falls_box.generic.name	= "falling damage";
 	s_falls_box.generic.callback = DMFlagCallback;
 	s_falls_box.itemnames = yes_no_names;
-	s_falls_box.curvalue = ( dmflags & DF_NO_FALLING ) == 0;
+	s_falls_box.curvalue = ( gameflags & DF_NO_FALLING ) == 0;
 
 	s_weapons_stay_box.generic.type = MTYPE_SPINCONTROL;
 	s_weapons_stay_box.generic.x	= 0;
@@ -2558,7 +2545,7 @@ void DMOptions_MenuInit( void )
 	s_weapons_stay_box.generic.name	= "weapons stay";
 	s_weapons_stay_box.generic.callback = DMFlagCallback;
 	s_weapons_stay_box.itemnames = yes_no_names;
-	s_weapons_stay_box.curvalue = ( dmflags & DF_WEAPONS_STAY ) != 0;
+	s_weapons_stay_box.curvalue = ( gameflags & DF_WEAPONS_STAY ) != 0;
 
 	s_instant_powerups_box.generic.type = MTYPE_SPINCONTROL;
 	s_instant_powerups_box.generic.x	= 0;
@@ -2566,7 +2553,7 @@ void DMOptions_MenuInit( void )
 	s_instant_powerups_box.generic.name	= "instant powerups";
 	s_instant_powerups_box.generic.callback = DMFlagCallback;
 	s_instant_powerups_box.itemnames = yes_no_names;
-	s_instant_powerups_box.curvalue = ( dmflags & DF_INSTANT_ITEMS ) != 0;
+	s_instant_powerups_box.curvalue = ( gameflags & DF_INSTANT_ITEMS ) != 0;
 
 	s_powerups_box.generic.type = MTYPE_SPINCONTROL;
 	s_powerups_box.generic.x	= 0;
@@ -2574,7 +2561,7 @@ void DMOptions_MenuInit( void )
 	s_powerups_box.generic.name	= "allow powerups";
 	s_powerups_box.generic.callback = DMFlagCallback;
 	s_powerups_box.itemnames = yes_no_names;
-	s_powerups_box.curvalue = ( dmflags & DF_NO_ITEMS ) == 0;
+	s_powerups_box.curvalue = ( gameflags & DF_NO_ITEMS ) == 0;
 
 	s_health_box.generic.type = MTYPE_SPINCONTROL;
 	s_health_box.generic.x	= 0;
@@ -2582,7 +2569,7 @@ void DMOptions_MenuInit( void )
 	s_health_box.generic.callback = DMFlagCallback;
 	s_health_box.generic.name	= "allow health";
 	s_health_box.itemnames = yes_no_names;
-	s_health_box.curvalue = ( dmflags & DF_NO_HEALTH ) == 0;
+	s_health_box.curvalue = ( gameflags & DF_NO_HEALTH ) == 0;
 
 	s_armor_box.generic.type = MTYPE_SPINCONTROL;
 	s_armor_box.generic.x	= 0;
@@ -2590,7 +2577,7 @@ void DMOptions_MenuInit( void )
 	s_armor_box.generic.name	= "allow armor";
 	s_armor_box.generic.callback = DMFlagCallback;
 	s_armor_box.itemnames = yes_no_names;
-	s_armor_box.curvalue = ( dmflags & DF_NO_ARMOR ) == 0;
+	s_armor_box.curvalue = ( gameflags & DF_NO_ARMOR ) == 0;
 
 	s_spawn_farthest_box.generic.type = MTYPE_SPINCONTROL;
 	s_spawn_farthest_box.generic.x	= 0;
@@ -2598,7 +2585,7 @@ void DMOptions_MenuInit( void )
 	s_spawn_farthest_box.generic.name	= "spawn farthest";
 	s_spawn_farthest_box.generic.callback = DMFlagCallback;
 	s_spawn_farthest_box.itemnames = yes_no_names;
-	s_spawn_farthest_box.curvalue = ( dmflags & DF_SPAWN_FARTHEST ) != 0;
+	s_spawn_farthest_box.curvalue = ( gameflags & DF_SPAWN_FARTHEST ) != 0;
 
 	s_samelevel_box.generic.type = MTYPE_SPINCONTROL;
 	s_samelevel_box.generic.x	= 0;
@@ -2606,7 +2593,7 @@ void DMOptions_MenuInit( void )
 	s_samelevel_box.generic.name	= "same map";
 	s_samelevel_box.generic.callback = DMFlagCallback;
 	s_samelevel_box.itemnames = yes_no_names;
-	s_samelevel_box.curvalue = ( dmflags & DF_SAME_LEVEL ) != 0;
+	s_samelevel_box.curvalue = ( gameflags & DF_SAME_LEVEL ) != 0;
 
 	s_force_respawn_box.generic.type = MTYPE_SPINCONTROL;
 	s_force_respawn_box.generic.x	= 0;
@@ -2614,7 +2601,7 @@ void DMOptions_MenuInit( void )
 	s_force_respawn_box.generic.name	= "force respawn";
 	s_force_respawn_box.generic.callback = DMFlagCallback;
 	s_force_respawn_box.itemnames = yes_no_names;
-	s_force_respawn_box.curvalue = ( dmflags & DF_FORCE_RESPAWN ) != 0;
+	s_force_respawn_box.curvalue = ( gameflags & DF_FORCE_RESPAWN ) != 0;
 
 	s_allow_exit_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_exit_box.generic.x	= 0;
@@ -2622,7 +2609,7 @@ void DMOptions_MenuInit( void )
 	s_allow_exit_box.generic.name	= "allow exit";
 	s_allow_exit_box.generic.callback = DMFlagCallback;
 	s_allow_exit_box.itemnames = yes_no_names;
-	s_allow_exit_box.curvalue = ( dmflags & DF_ALLOW_EXIT ) != 0;
+	s_allow_exit_box.curvalue = ( gameflags & DF_ALLOW_EXIT ) != 0;
 
 	s_infinite_ammo_box.generic.type = MTYPE_SPINCONTROL;
 	s_infinite_ammo_box.generic.x	= 0;
@@ -2630,7 +2617,7 @@ void DMOptions_MenuInit( void )
 	s_infinite_ammo_box.generic.name	= "infinite ammo";
 	s_infinite_ammo_box.generic.callback = DMFlagCallback;
 	s_infinite_ammo_box.itemnames = yes_no_names;
-	s_infinite_ammo_box.curvalue = ( dmflags & DF_INFINITE_AMMO ) != 0;
+	s_infinite_ammo_box.curvalue = ( gameflags & DF_INFINITE_AMMO ) != 0;
 
 	s_fixed_fov_box.generic.type = MTYPE_SPINCONTROL;
 	s_fixed_fov_box.generic.x	= 0;
@@ -2638,7 +2625,7 @@ void DMOptions_MenuInit( void )
 	s_fixed_fov_box.generic.name	= "fixed FOV";
 	s_fixed_fov_box.generic.callback = DMFlagCallback;
 	s_fixed_fov_box.itemnames = yes_no_names;
-	s_fixed_fov_box.curvalue = ( dmflags & DF_FIXED_FOV ) != 0;
+	s_fixed_fov_box.curvalue = ( gameflags & DF_UNUSED3 ) != 0;
 
 	s_quad_drop_box.generic.type = MTYPE_SPINCONTROL;
 	s_quad_drop_box.generic.x	= 0;
@@ -2646,7 +2633,7 @@ void DMOptions_MenuInit( void )
 	s_quad_drop_box.generic.name	= "quad drop";
 	s_quad_drop_box.generic.callback = DMFlagCallback;
 	s_quad_drop_box.itemnames = yes_no_names;
-	s_quad_drop_box.curvalue = ( dmflags & DF_QUAD_DROP ) != 0;
+	s_quad_drop_box.curvalue = ( gameflags & DF_QUAD_DROP ) != 0;
 
 	s_friendlyfire_box.generic.type = MTYPE_SPINCONTROL;
 	s_friendlyfire_box.generic.x	= 0;
@@ -2654,7 +2641,7 @@ void DMOptions_MenuInit( void )
 	s_friendlyfire_box.generic.name	= "friendly fire";
 	s_friendlyfire_box.generic.callback = DMFlagCallback;
 	s_friendlyfire_box.itemnames = yes_no_names;
-	s_friendlyfire_box.curvalue = ( dmflags & DF_NO_FRIENDLY_FIRE ) == 0;
+	s_friendlyfire_box.curvalue = ( gameflags & DF_NO_FRIENDLY_FIRE ) == 0;
 
 //ROGUE
 //============
@@ -2675,7 +2662,7 @@ void DMOptions_MenuInit( void )
 	Menu_AddItem( &s_dmoptions_menu, &s_friendlyfire_box );
 	Menu_Center( &s_dmoptions_menu );
 
-	// set the original dmflags statusbar
+	// set the original gameflags statusbar
 	DMFlagCallback( 0 );
 	Menu_SetStatusBar( &s_dmoptions_menu, dmoptions_statusbar );
 }

@@ -19,6 +19,7 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[Pp]laytest/
 [Rr]elease/
 [Rr]elease With Symbols/
 [Rr]eleases/
