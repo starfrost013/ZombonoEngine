@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.1"; // Version
+const string ASSETBUILD_VERSION = "2.0.2"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game2\{gameName}"; // Complete relative path to game dir
@@ -86,16 +86,31 @@ try
 
     // copy them all to the output directory
 
+    // exclude raw assets
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json"];
+
     foreach (string gameFile in gameFiles)
     {
-        string relativePath = Path.GetRelativePath(gameDir, gameFile);
+        bool excluded = false;
 
-        string? finalDirectory = $@"{outputDirectory}\\{Path.GetDirectoryName(relativePath)}";
+        foreach (string excludedPattern in excludedPatterns)
+        {
+            if (gameFile.Contains(excludedPattern)) excluded = true;        
+        }
 
-        if (!Directory.Exists(finalDirectory)
-            && !string.IsNullOrWhiteSpace(finalDirectory)) Directory.CreateDirectory(finalDirectory);
+        // create the output dir for this file and then copy
+        if (!excluded)
+        {
+            string relativePath = Path.GetRelativePath(gameDir, gameFile);
 
-        File.Copy(gameFile, $@"{outputDirectory}\{relativePath}", true);
+            string? finalDirectory = $@"{outputDirectory}\\{Path.GetDirectoryName(relativePath)}";
+
+            if (!Directory.Exists(finalDirectory)
+                && !string.IsNullOrWhiteSpace(finalDirectory)) Directory.CreateDirectory(finalDirectory);
+
+            File.Copy(gameFile, $@"{outputDirectory}\{relativePath}", true);
+        }
+
     }
 
 
