@@ -797,7 +797,7 @@ void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
 	}
 	else
 	{
-		gi.bprintf(PRINT_DEVELOPER, "Tried to spawn for unimplemented gamemode %d! Trying to ", gamemode->value);
+		gi.bprintf(PRINT_DEVELOPER, "Tried to spawn for unimplemented gamemode %d! Trying unassigned", gamemode->value);
 		spot = SelectUnassignedSpawnPoint();
 	}
 
