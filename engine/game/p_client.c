@@ -741,11 +741,6 @@ edict_t *SelectFarthestSpawnPoint (char* spawn_class_name)
 // figure out if the other modes use this
 edict_t* SelectTeamSpawnPoint(edict_t *player)
 {
-	if (player->classname != "noclass")
-	{
-		gi.error("???? How tried to teamspawn a non-player");
-	}
-
 	if ((int)gamemode->value != 0)
 	{
 		gi.bprintf(PRINT_ALL, "Can't currently spawn for non-TDM gamemodes");
