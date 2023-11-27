@@ -278,7 +278,6 @@ void Vk_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,
 
 struct image_s *R_RegisterSkin (char *name);
 
-void LoadPCX (char *filename, byte **pic, byte **palette, int *width, int *height);
 image_t *Vk_LoadPic (char *name, byte *pic, int width, int height, imagetype_t type, int bits, qvksampler_t *samplerType);
 image_t	*Vk_FindImage (char *name, imagetype_t type, qvksampler_t *samplerType);
 void	Vk_TextureMode( char *string );

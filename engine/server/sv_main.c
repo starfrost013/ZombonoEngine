@@ -953,7 +953,7 @@ void SV_Init (void)
 	rcon_password = Cvar_Get ("rcon_password", "", 0);
 	Cvar_Get ("skill", "1", 0);
 	Cvar_Get ("gamemode", "0", CVAR_SERVERINFO|CVAR_LATCH);
-	Cvar_Get ("gameflags", va("%i", DF_INSTANT_ITEMS), CVAR_SERVERINFO);
+	Cvar_Get ("gameflags", va("%i", GF_INSTANT_ITEMS), CVAR_SERVERINFO);
 	Cvar_Get ("fraglimit", "0", CVAR_SERVERINFO);
 	Cvar_Get ("timelimit", "0", CVAR_SERVERINFO);
 	Cvar_Get ("cheats", "0", CVAR_SERVERINFO|CVAR_LATCH);

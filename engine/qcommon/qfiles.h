@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -47,34 +48,6 @@ typedef struct
 } dpackheader_t;
 
 #define	MAX_FILES_IN_PACK	4096
-
-
-/*
-========================================================================
-
-PCX files are used for as many images as possible
-
-========================================================================
-*/
-
-typedef struct
-{
-    char	manufacturer;
-    char	version;
-    char	encoding;
-    char	bits_per_pixel;
-    unsigned short	xmin,ymin,xmax,ymax;
-    unsigned short	hres,vres;
-    unsigned char	palette[48];
-    char	reserved;
-    char	color_planes;
-    unsigned short	bytes_per_line;
-    unsigned short	palette_type;
-    char	filler[58];
-    unsigned char	data;			// unbounded
-} pcx_t;
-
-
 /*
 ========================================================================
 
@@ -175,7 +148,7 @@ typedef struct
 {
 	int		width, height;
 	int		origin_x, origin_y;		// raster coordinates inside pic
-	char	name[MAX_SKINNAME];		// name of pcx file
+	char	name[MAX_SKINNAME];		// name of tga file
 } dsprframe_t;
 
 typedef struct {

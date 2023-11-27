@@ -50,7 +50,7 @@ void M_Menu_Main_f (void);
 		void M_Menu_JoinServer_f (void);
 			void M_Menu_AddressBook_f( void );
 		void M_Menu_StartServer_f (void);
-			void M_Menu_DMOptions_f (void);
+			void M_Menu_GameOptions_f (void);
 	void M_Menu_Video_f (void);
 	void M_Menu_Options_f (void);
 		void M_Menu_Keys_f (void);
@@ -2080,7 +2080,7 @@ void DMOptionsFunc( void *self )
 {
 	if (s_rules_box.curvalue == 1)
 		return;
-	M_Menu_DMOptions_f();
+	M_Menu_GameOptions_f();
 }
 
 void RulesChangeFunc ( void *self )
@@ -2394,7 +2394,7 @@ DMOPTIONS BOOK MENU
 */
 static char dmoptions_statusbar[128];
 
-static menuframework_s s_dmoptions_menu;
+static menuframework_s s_gameoptions_menu;
 
 static menulist_s	s_friendlyfire_box;
 static menulist_s	s_falls_box;
@@ -2408,7 +2408,6 @@ static menulist_s	s_force_respawn_box;
 static menulist_s	s_armor_box;
 static menulist_s	s_allow_exit_box;
 static menulist_s	s_infinite_ammo_box;
-static menulist_s	s_fixed_fov_box;
 static menulist_s	s_quad_drop_box;
 
 //ROGUE
@@ -2418,7 +2417,7 @@ static menulist_s	s_stack_double_box;
 static menulist_s	s_no_spheres_box;
 //ROGUE
 
-static void DMFlagCallback( void *self )
+static void GameFlagCallback( void *self )
 {
 	menulist_s *f = ( menulist_s * ) self;
 	int flags;
@@ -2429,78 +2428,74 @@ static void DMFlagCallback( void *self )
 	if ( f == &s_friendlyfire_box )
 	{
 		if ( f->curvalue )
-			flags &= ~DF_NO_FRIENDLY_FIRE;
+			flags &= ~GF_NO_FRIENDLY_FIRE;
 		else
-			flags |= DF_NO_FRIENDLY_FIRE;
+			flags |= GF_NO_FRIENDLY_FIRE;
 		goto setvalue;
 	}
 	else if ( f == &s_falls_box )
 	{
 		if ( f->curvalue )
-			flags &= ~DF_NO_FALLING;
+			flags &= ~GF_NO_FALLING;
 		else
-			flags |= DF_NO_FALLING;
+			flags |= GF_NO_FALLING;
 		goto setvalue;
 	}
 	else if ( f == &s_weapons_stay_box ) 
 	{
-		bit = DF_WEAPONS_STAY;
+		bit = GF_WEAPONS_STAY;
 	}
 	else if ( f == &s_instant_powerups_box )
 	{
-		bit = DF_INSTANT_ITEMS;
+		bit = GF_INSTANT_ITEMS;
 	}
 	else if ( f == &s_allow_exit_box )
 	{
-		bit = DF_ALLOW_EXIT;
+		bit = GF_ALLOW_EXIT;
 	}
 	else if ( f == &s_powerups_box )
 	{
 		if ( f->curvalue )
-			flags &= ~DF_NO_ITEMS;
+			flags &= ~GF_NO_ITEMS;
 		else
-			flags |= DF_NO_ITEMS;
+			flags |= GF_NO_ITEMS;
 		goto setvalue;
 	}
 	else if ( f == &s_health_box )
 	{
 		if ( f->curvalue )
-			flags &= ~DF_NO_HEALTH;
+			flags &= ~GF_NO_HEALTH;
 		else
-			flags |= DF_NO_HEALTH;
+			flags |= GF_NO_HEALTH;
 		goto setvalue;
 	}
 	else if ( f == &s_spawn_farthest_box )
 	{
-		bit = DF_SPAWN_FARTHEST;
+		bit = GF_SPAWN_FARTHEST;
 	}
 	else if ( f == &s_samelevel_box )
 	{
-		bit = DF_SAME_LEVEL;
+		bit = GF_SAME_LEVEL;
 	}
 	else if ( f == &s_force_respawn_box )
 	{
-		bit = DF_FORCE_RESPAWN;
+		bit = GF_FORCE_RESPAWN;
 	}
 	else if ( f == &s_armor_box )
 	{
 		if ( f->curvalue )
-			flags &= ~DF_NO_ARMOR;
+			flags &= ~GF_NO_ARMOR;
 		else
-			flags |= DF_NO_ARMOR;
+			flags |= GF_NO_ARMOR;
 		goto setvalue;
 	}
 	else if ( f == &s_infinite_ammo_box )
 	{
-		bit = DF_INFINITE_AMMO;
-	}
-	else if ( f == &s_fixed_fov_box )
-	{
-		bit = DF_UNUSED3;
+		bit = GF_INFINITE_AMMO;
 	}
 	else if ( f == &s_quad_drop_box )
 	{
-		bit = DF_QUAD_DROP;
+		bit = GF_QUAD_DROP;
 	}
 
 	if ( f )
@@ -2518,7 +2513,7 @@ setvalue:
 
 }
 
-void DMOptions_MenuInit( void )
+void GameOptions_MenuInit( void )
 {
 	static const char *yes_no_names[] =
 	{
@@ -2528,159 +2523,150 @@ void DMOptions_MenuInit( void )
 	int gameflags = Cvar_VariableValue( "gameflags" );
 	int y = 0;
 
-	s_dmoptions_menu.x = viddef.width * 0.50;
-	s_dmoptions_menu.nitems = 0;
+	s_gameoptions_menu.x = viddef.width * 0.50;
+	s_gameoptions_menu.nitems = 0;
 
 	s_falls_box.generic.type = MTYPE_SPINCONTROL;
 	s_falls_box.generic.x	= 0;
 	s_falls_box.generic.y	= y * vid_hudscale->value;
 	s_falls_box.generic.name	= "falling damage";
-	s_falls_box.generic.callback = DMFlagCallback;
+	s_falls_box.generic.callback = GameFlagCallback;
 	s_falls_box.itemnames = yes_no_names;
-	s_falls_box.curvalue = ( gameflags & DF_NO_FALLING ) == 0;
+	s_falls_box.curvalue = ( gameflags & GF_NO_FALLING ) == 0;
 
 	s_weapons_stay_box.generic.type = MTYPE_SPINCONTROL;
 	s_weapons_stay_box.generic.x	= 0;
 	s_weapons_stay_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_weapons_stay_box.generic.name	= "weapons stay";
-	s_weapons_stay_box.generic.callback = DMFlagCallback;
+	s_weapons_stay_box.generic.callback = GameFlagCallback;
 	s_weapons_stay_box.itemnames = yes_no_names;
-	s_weapons_stay_box.curvalue = ( gameflags & DF_WEAPONS_STAY ) != 0;
+	s_weapons_stay_box.curvalue = ( gameflags & GF_WEAPONS_STAY ) != 0;
 
 	s_instant_powerups_box.generic.type = MTYPE_SPINCONTROL;
 	s_instant_powerups_box.generic.x	= 0;
 	s_instant_powerups_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_instant_powerups_box.generic.name	= "instant powerups";
-	s_instant_powerups_box.generic.callback = DMFlagCallback;
+	s_instant_powerups_box.generic.callback = GameFlagCallback;
 	s_instant_powerups_box.itemnames = yes_no_names;
-	s_instant_powerups_box.curvalue = ( gameflags & DF_INSTANT_ITEMS ) != 0;
+	s_instant_powerups_box.curvalue = ( gameflags & GF_INSTANT_ITEMS ) != 0;
 
 	s_powerups_box.generic.type = MTYPE_SPINCONTROL;
 	s_powerups_box.generic.x	= 0;
 	s_powerups_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_powerups_box.generic.name	= "allow powerups";
-	s_powerups_box.generic.callback = DMFlagCallback;
+	s_powerups_box.generic.callback = GameFlagCallback;
 	s_powerups_box.itemnames = yes_no_names;
-	s_powerups_box.curvalue = ( gameflags & DF_NO_ITEMS ) == 0;
+	s_powerups_box.curvalue = ( gameflags & GF_NO_ITEMS ) == 0;
 
 	s_health_box.generic.type = MTYPE_SPINCONTROL;
 	s_health_box.generic.x	= 0;
 	s_health_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_health_box.generic.callback = DMFlagCallback;
+	s_health_box.generic.callback = GameFlagCallback;
 	s_health_box.generic.name	= "allow health";
 	s_health_box.itemnames = yes_no_names;
-	s_health_box.curvalue = ( gameflags & DF_NO_HEALTH ) == 0;
+	s_health_box.curvalue = ( gameflags & GF_NO_HEALTH ) == 0;
 
 	s_armor_box.generic.type = MTYPE_SPINCONTROL;
 	s_armor_box.generic.x	= 0;
 	s_armor_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_armor_box.generic.name	= "allow armor";
-	s_armor_box.generic.callback = DMFlagCallback;
+	s_armor_box.generic.callback = GameFlagCallback;
 	s_armor_box.itemnames = yes_no_names;
-	s_armor_box.curvalue = ( gameflags & DF_NO_ARMOR ) == 0;
+	s_armor_box.curvalue = ( gameflags & GF_NO_ARMOR ) == 0;
 
 	s_spawn_farthest_box.generic.type = MTYPE_SPINCONTROL;
 	s_spawn_farthest_box.generic.x	= 0;
 	s_spawn_farthest_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_spawn_farthest_box.generic.name	= "spawn farthest";
-	s_spawn_farthest_box.generic.callback = DMFlagCallback;
+	s_spawn_farthest_box.generic.callback = GameFlagCallback;
 	s_spawn_farthest_box.itemnames = yes_no_names;
-	s_spawn_farthest_box.curvalue = ( gameflags & DF_SPAWN_FARTHEST ) != 0;
+	s_spawn_farthest_box.curvalue = ( gameflags & GF_SPAWN_FARTHEST ) != 0;
 
 	s_samelevel_box.generic.type = MTYPE_SPINCONTROL;
 	s_samelevel_box.generic.x	= 0;
 	s_samelevel_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_samelevel_box.generic.name	= "same map";
-	s_samelevel_box.generic.callback = DMFlagCallback;
+	s_samelevel_box.generic.callback = GameFlagCallback;
 	s_samelevel_box.itemnames = yes_no_names;
-	s_samelevel_box.curvalue = ( gameflags & DF_SAME_LEVEL ) != 0;
+	s_samelevel_box.curvalue = ( gameflags & GF_SAME_LEVEL ) != 0;
 
 	s_force_respawn_box.generic.type = MTYPE_SPINCONTROL;
 	s_force_respawn_box.generic.x	= 0;
 	s_force_respawn_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_force_respawn_box.generic.name	= "force respawn";
-	s_force_respawn_box.generic.callback = DMFlagCallback;
+	s_force_respawn_box.generic.callback = GameFlagCallback;
 	s_force_respawn_box.itemnames = yes_no_names;
-	s_force_respawn_box.curvalue = ( gameflags & DF_FORCE_RESPAWN ) != 0;
+	s_force_respawn_box.curvalue = ( gameflags & GF_FORCE_RESPAWN ) != 0;
 
 	s_allow_exit_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_exit_box.generic.x	= 0;
 	s_allow_exit_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_allow_exit_box.generic.name	= "allow exit";
-	s_allow_exit_box.generic.callback = DMFlagCallback;
+	s_allow_exit_box.generic.callback = GameFlagCallback;
 	s_allow_exit_box.itemnames = yes_no_names;
-	s_allow_exit_box.curvalue = ( gameflags & DF_ALLOW_EXIT ) != 0;
+	s_allow_exit_box.curvalue = ( gameflags & GF_ALLOW_EXIT ) != 0;
 
 	s_infinite_ammo_box.generic.type = MTYPE_SPINCONTROL;
 	s_infinite_ammo_box.generic.x	= 0;
 	s_infinite_ammo_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_infinite_ammo_box.generic.name	= "infinite ammo";
-	s_infinite_ammo_box.generic.callback = DMFlagCallback;
+	s_infinite_ammo_box.generic.callback = GameFlagCallback;
 	s_infinite_ammo_box.itemnames = yes_no_names;
-	s_infinite_ammo_box.curvalue = ( gameflags & DF_INFINITE_AMMO ) != 0;
-
-	s_fixed_fov_box.generic.type = MTYPE_SPINCONTROL;
-	s_fixed_fov_box.generic.x	= 0;
-	s_fixed_fov_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_fixed_fov_box.generic.name	= "fixed FOV";
-	s_fixed_fov_box.generic.callback = DMFlagCallback;
-	s_fixed_fov_box.itemnames = yes_no_names;
-	s_fixed_fov_box.curvalue = ( gameflags & DF_UNUSED3 ) != 0;
+	s_infinite_ammo_box.curvalue = ( gameflags & GF_INFINITE_AMMO ) != 0;
 
 	s_quad_drop_box.generic.type = MTYPE_SPINCONTROL;
 	s_quad_drop_box.generic.x	= 0;
 	s_quad_drop_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_quad_drop_box.generic.name	= "quad drop";
-	s_quad_drop_box.generic.callback = DMFlagCallback;
+	s_quad_drop_box.generic.callback = GameFlagCallback;
 	s_quad_drop_box.itemnames = yes_no_names;
-	s_quad_drop_box.curvalue = ( gameflags & DF_QUAD_DROP ) != 0;
+	s_quad_drop_box.curvalue = ( gameflags & GF_QUAD_DROP ) != 0;
 
 	s_friendlyfire_box.generic.type = MTYPE_SPINCONTROL;
 	s_friendlyfire_box.generic.x	= 0;
 	s_friendlyfire_box.generic.y	= y += 10 * vid_hudscale->value;
 	s_friendlyfire_box.generic.name	= "friendly fire";
-	s_friendlyfire_box.generic.callback = DMFlagCallback;
+	s_friendlyfire_box.generic.callback = GameFlagCallback;
 	s_friendlyfire_box.itemnames = yes_no_names;
-	s_friendlyfire_box.curvalue = ( gameflags & DF_NO_FRIENDLY_FIRE ) == 0;
+	s_friendlyfire_box.curvalue = ( gameflags & GF_NO_FRIENDLY_FIRE ) == 0;
 
 //ROGUE
 //============
 
-	Menu_AddItem( &s_dmoptions_menu, &s_falls_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_weapons_stay_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_instant_powerups_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_powerups_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_health_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_armor_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_spawn_farthest_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_samelevel_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_force_respawn_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_allow_exit_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_infinite_ammo_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_fixed_fov_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_quad_drop_box );
-	Menu_AddItem( &s_dmoptions_menu, &s_friendlyfire_box );
-	Menu_Center( &s_dmoptions_menu );
+	Menu_AddItem( &s_gameoptions_menu, &s_falls_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_weapons_stay_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_instant_powerups_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_powerups_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_health_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_armor_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_spawn_farthest_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_samelevel_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_force_respawn_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_allow_exit_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_infinite_ammo_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_quad_drop_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_box );
+	Menu_Center( &s_gameoptions_menu );
 
 	// set the original gameflags statusbar
-	DMFlagCallback( 0 );
-	Menu_SetStatusBar( &s_dmoptions_menu, dmoptions_statusbar );
+	GameFlagCallback( 0 );
+	Menu_SetStatusBar( &s_gameoptions_menu, dmoptions_statusbar );
 }
 
-void DMOptions_MenuDraw(void)
+void GameOptions_MenuDraw(void)
 {
-	Menu_Draw( &s_dmoptions_menu );
+	Menu_Draw( &s_gameoptions_menu );
 }
 
-const char *DMOptions_MenuKey( int key )
+const char *GameOptions_MenuKey( int key )
 {
-	return Default_MenuKey( &s_dmoptions_menu, key );
+	return Default_MenuKey( &s_gameoptions_menu, key );
 }
 
-void M_Menu_DMOptions_f (void)
+void M_Menu_GameOptions_f (void)
 {
-	DMOptions_MenuInit();
-	M_PushMenu( DMOptions_MenuDraw, DMOptions_MenuKey );
+	GameOptions_MenuInit();
+	M_PushMenu( GameOptions_MenuDraw, GameOptions_MenuKey );
 }
 
 /*
@@ -3019,9 +3005,9 @@ static qboolean PlayerConfig_ScanDirectories( void )
 	{
 		int k, s;
 		char *a, *b, *c;
-		char **pcxnames;
+		char **tganames;
 		char **skinnames;
-		int npcxfiles;
+		int ntgafiles;
 		int nskins = 0;
 
 		if ( dirnames[i] == 0 )
@@ -3039,12 +3025,12 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		}
 		Sys_FindClose();
 
-		// verify the existence of at least one pcx skin
+		// verify the existence of at least one tga skin
 		strcpy( scratch, dirnames[i] );
 		strcat( scratch, "/*.tga" );
-		pcxnames = FS_ListFiles( scratch, &npcxfiles, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM );
+		tganames = FS_ListFiles( scratch, &ntgafiles, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM );
 
-		if ( !pcxnames )
+		if ( !tganames )
 		{
 			free( dirnames[i] );
 			dirnames[i] = 0;
@@ -3052,11 +3038,11 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		}
 
 		// count valid skins, which consist of a skin with a matching "_i" icon
-		for ( k = 0; k < npcxfiles-1; k++ )
+		for ( k = 0; k < ntgafiles-1; k++ )
 		{
-			if ( !strstr( pcxnames[k], "_i.tga" ) )
+			if ( !strstr( tganames[k], "_i.tga" ) )
 			{
-				if ( IconOfSkinExists( pcxnames[k], pcxnames, npcxfiles - 1 ) )
+				if ( IconOfSkinExists( tganames[k], tganames, ntgafiles - 1 ) )
 				{
 					nskins++;
 				}
@@ -3069,16 +3055,16 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		memset( skinnames, 0, sizeof( char * ) * ( nskins + 1 ) );
 
 		// copy the valid skins
-		for ( s = 0, k = 0; k < npcxfiles-1; k++ )
+		for ( s = 0, k = 0; k < ntgafiles-1; k++ )
 		{
 			char *a, *b, *c;
 
-			if ( !strstr( pcxnames[k], "_i.tga" ) )
+			if ( !strstr( tganames[k], "_i.tga" ) )
 			{
-				if ( IconOfSkinExists( pcxnames[k], pcxnames, npcxfiles - 1 ) )
+				if ( IconOfSkinExists( tganames[k], tganames, ntgafiles - 1 ) )
 				{
-					a = strrchr( pcxnames[k], '/' );
-					b = strrchr( pcxnames[k], '\\' );
+					a = strrchr( tganames[k], '/' );
+					b = strrchr( tganames[k], '\\' );
 
 					if ( a > b )
 						c = a;
@@ -3112,7 +3098,7 @@ static qboolean PlayerConfig_ScanDirectories( void )
 		strncpy( s_pmi[s_numplayermodels].displayname, c + 1, MAX_DISPLAYNAME-1 );
 		strcpy( s_pmi[s_numplayermodels].directory, c + 1 );
 
-		FreeFileList( pcxnames, npcxfiles );
+		FreeFileList( tganames, ntgafiles );
 
 		s_numplayermodels++;
 	}
@@ -3480,7 +3466,7 @@ void M_Init (void)
 		Cmd_AddCommand ("menu_joinserver", M_Menu_JoinServer_f);
 			Cmd_AddCommand ("menu_addressbook", M_Menu_AddressBook_f);
 		Cmd_AddCommand ("menu_startserver", M_Menu_StartServer_f);
-			Cmd_AddCommand ("menu_dmoptions", M_Menu_DMOptions_f);
+			Cmd_AddCommand ("menu_dmoptions", M_Menu_GameOptions_f);
 		Cmd_AddCommand ("menu_playerconfig", M_Menu_PlayerConfig_f);
 			Cmd_AddCommand ("menu_downloadoptions", M_Menu_DownloadOptions_f);
 		Cmd_AddCommand ("menu_credits", M_Menu_Credits_f );

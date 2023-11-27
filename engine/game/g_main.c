@@ -225,7 +225,7 @@ void EndDMLevel (void)
 	static const char *seps = " ,\n\r";
 
 	// stay on same level flag
-	if ((int)gameflags->value & DF_SAME_LEVEL)
+	if ((int)gameflags->value & GF_SAME_LEVEL)
 	{
 		BeginIntermission (CreateTargetChangeLevel (level.mapname) );
 		return;

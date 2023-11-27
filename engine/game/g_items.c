@@ -169,7 +169,7 @@ qboolean Pickup_Powerup (edict_t *ent, edict_t *other)
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn(ent, ent->item->quantity);
-	if (((int)gameflags->value & DF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
+	if (((int)gameflags->value & GF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
 	{
 		if ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM))
 			quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
@@ -468,7 +468,7 @@ qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
 	qboolean	weapon;
 
 	weapon = (ent->item->flags & IT_WEAPON);
-	if ( (weapon) && ( (int)gameflags->value & DF_INFINITE_AMMO ) )
+	if ( (weapon) && ( (int)gameflags->value & GF_INFINITE_AMMO ) )
 		count = 1000;
 	else if (ent->count)
 		count = ent->count;
@@ -1019,7 +1019,7 @@ void PrecacheItem (gitem_t *it)
 			gi.modelindex (data);
 		else if (!strcmp(data+len-3, "wav"))
 			gi.soundindex (data);
-		if (!strcmp(data+len-3, "pcx"))
+		if (!strcmp(data+len-3, "tga"))
 			gi.imageindex (data);
 	}
 }
@@ -1047,7 +1047,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 	}
 
-	if ((int)gameflags->value & DF_NO_ARMOR)
+	if ((int)gameflags->value & GF_NO_ARMOR)
 	{
 		if (item->pickup == Pickup_Armor || item->pickup == Pickup_PowerArmor)
 		{
@@ -1055,7 +1055,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & DF_NO_ITEMS)
+	if ((int)gameflags->value & GF_NO_ITEMS)
 	{
 		if (item->pickup == Pickup_Powerup)
 		{
@@ -1063,7 +1063,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & DF_NO_HEALTH)
+	if ((int)gameflags->value & GF_NO_HEALTH)
 	{
 		if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
 		{
@@ -1071,7 +1071,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & DF_INFINITE_AMMO)
+	if ((int)gameflags->value & GF_INFINITE_AMMO)
 	{
 		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0))
 		{
@@ -1840,7 +1840,7 @@ gives +1 to maximum health
 */
 void SP_item_health (edict_t *self)
 {
-	if (((int)gameflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1856,7 +1856,7 @@ void SP_item_health (edict_t *self)
 */
 void SP_item_health_small (edict_t *self)
 {
-	if (((int)gameflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1873,7 +1873,7 @@ void SP_item_health_small (edict_t *self)
 */
 void SP_item_health_large (edict_t *self)
 {
-	if (((int)gameflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1889,7 +1889,7 @@ void SP_item_health_large (edict_t *self)
 */
 void SP_item_health_mega (edict_t *self)
 {
-	if (((int)gameflags->value & DF_NO_HEALTH) )
+	if (((int)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;

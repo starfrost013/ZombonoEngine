@@ -97,7 +97,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 	char		*message2;
 	qboolean	ff;
 
-	if ((!(int)(gameflags->value) & DF_NO_FRIENDLY_FIRE) && attacker->client)
+	if ((!(int)(gameflags->value) & GF_NO_FRIENDLY_FIRE) && attacker->client)
 		meansOfDeath |= MOD_FRIENDLY_FIRE;
 
 	ff = meansOfDeath & MOD_FRIENDLY_FIRE;
@@ -299,7 +299,7 @@ void TossClientWeapon (edict_t *self)
 	if (item && (strcmp (item->pickup_name, "Blaster") == 0))
 		item = NULL;
 
-	if (!((int)(gameflags->value) & DF_QUAD_DROP))
+	if (!((int)(gameflags->value) & GF_QUAD_DROP))
 		quad = false;
 	else
 		quad = (self->client->quad_framenum > (level.framenum + 10));
@@ -688,7 +688,7 @@ edict_t *SelectFarthestDeathmatchSpawnPoint (void)
 
 edict_t *SelectDeathmatchSpawnPoint (void)
 {
-	if ( (int)(gameflags->value) & DF_SPAWN_FARTHEST)
+	if ( (int)(gameflags->value) & GF_SPAWN_FARTHEST)
 		return SelectFarthestDeathmatchSpawnPoint ();
 	else
 		return SelectRandomDeathmatchSpawnPoint ();
@@ -1555,7 +1555,7 @@ void ClientBeginServerFrame (edict_t *ent)
 			buttonMask = BUTTON_ATTACK;
 
 			if ( ( client->latched_buttons & buttonMask ) ||
-				(((int)gameflags->value & DF_FORCE_RESPAWN) ) )
+				(((int)gameflags->value & GF_FORCE_RESPAWN) ) )
 			{
 				respawn(ent);
 				client->latched_buttons = 0;

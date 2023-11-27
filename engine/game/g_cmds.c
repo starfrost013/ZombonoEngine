@@ -37,7 +37,7 @@ char *ClientTeam (edict_t *ent)
 	if (!p)
 		return value;
 
-	if ((int)(gameflags->value) & DF_UNUSED2)
+	if ((int)(gameflags->value) & GF_UNUSED2)
 	{
 		*p = 0;
 		return value;
