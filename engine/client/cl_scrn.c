@@ -26,7 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   put up loading plaque
   blanked background with loading plaque
   blanked background with menu
-  cinematics
   full screen image for quit and victory
 
   end of unit intermissions
@@ -571,10 +570,9 @@ void SCR_BeginLoadingPlaque (void)
 		return;	// if at console, don't bring up the plaque
 	if (cls.key_dest == key_console)
 		return;
-	if (cl.cinematictime > 0)
-		scr_draw_loading = 2;	// clear to balack first
-	else
-		scr_draw_loading = 1;
+
+	scr_draw_loading = 1;
+
 	SCR_UpdateScreen ();
 	cls.disable_screen = Sys_Milliseconds ();
 	cls.disable_servercount = cl.servercount;
@@ -695,8 +693,6 @@ void SCR_TileClear (void)
 		return;		// full screen console
 	if (scr_viewsize->value == 100)
 		return;		// full screen rendering
-	if (cl.cinematictime > 0)
-		return;		// full screen cinematic
 
 	if (scr_vrect.y > 0)
 	{	// clear above view screen
@@ -1285,32 +1281,6 @@ void SCR_UpdateScreen (void)
 //			re.EndFrame();
 //			return;
 		} 
-		// if a cinematic is supposed to be running, handle menus
-		// and console specially
-		else if (cl.cinematictime > 0)
-		{
-			if (cls.key_dest == key_menu)
-			{
-				re.EndWorldRenderpass();
-				M_Draw ();
-//				re.EndFrame();
-//				return;
-			}
-			else if (cls.key_dest == key_console)
-			{
-				re.EndWorldRenderpass();
-				SCR_DrawConsole ();
-//				re.EndFrame();
-//				return;
-			}
-			else
-			{
-				re.EndWorldRenderpass();
-				SCR_DrawCinematic();
-//				re.EndFrame();
-//				return;
-			}
-		}
 		else 
 		{
 			// do 3D refresh drawing, and then update the screen

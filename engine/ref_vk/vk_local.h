@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -265,8 +266,7 @@ void	Draw_StretchPic (int x, int y, int w, int h, char *name);
 void	Draw_Char (int x, int y, int c);
 void	Draw_TileClear (int x, int y, int w, int h, char *name);
 void	Draw_Fill (int x, int y, int w, int h, int c);
-void	Draw_FadeScreen (void);
-void	Draw_StretchRaw (int x, int y, int w, int h, int cols, int rows, byte *data);
+void	Draw_FadeScreen (void)
 
 void	R_BeginFrame( float camera_separation );
 void	R_EndFrame( void );

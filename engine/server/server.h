@@ -33,8 +33,7 @@ typedef enum {
 	ss_dead,			// no map loaded
 	ss_loading,			// spawning level edicts
 	ss_game,			// actively running
-	ss_cinematic,
-	ss_demo,
+	ss_demo,			// running demo
 	ss_pic
 } server_state_t;
 // some qc commands are only valid before the server has finished

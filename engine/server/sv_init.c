@@ -352,10 +352,6 @@ SV_Map
 
 command from the console or progs.
 Map can also be a.cin, .tga, or .dm2 file
-Nextserver is used to allow a cinematic to play, then proceed to
-another level:
-
-	map tram.cin+jail_e3
 ======================
 */
 void SV_Map (qboolean attractloop, char *levelstring, qboolean loadgame)
@@ -401,13 +397,7 @@ void SV_Map (qboolean attractloop, char *levelstring, qboolean loadgame)
 		--l;
 	}
 
-	if (l > 4 && !strcmp (level+l-4, ".cin") )
-	{
-		SCR_BeginLoadingPlaque ();			// for local system
-		SV_BroadcastCommand ("changing\n");
-		SV_SpawnServer (level, spawnpoint, ss_cinematic, attractloop, loadgame);
-	}
-	else if (l > 4 && !strcmp (level+l-4, ".dm2") )
+	if (l > 4 && !strcmp (level+l-4, ".dm2") )
 	{
 		SCR_BeginLoadingPlaque ();			// for local system
 		SV_BroadcastCommand ("changing\n");

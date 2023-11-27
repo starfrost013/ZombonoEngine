@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,8 +24,6 @@ void	SCR_Init (void);
 
 void	SCR_UpdateScreen (void);
 
-void	SCR_SizeUp (void);
-void	SCR_SizeDown (void);
 void	SCR_CenterPrint (char *str);
 void	SCR_BeginLoadingPlaque (void);
 void	SCR_EndLoadingPlaque (void);
@@ -50,13 +49,3 @@ extern	int			crosshair_width, crosshair_height;
 
 void SCR_AddDirtyPoint (int x, int y);
 void SCR_DirtyScreen (void);
-
-//
-// scr_cin.c
-//
-void SCR_PlayCinematic (char *name);
-qboolean SCR_DrawCinematic (void);
-void SCR_RunCinematic (void);
-void SCR_StopCinematic (void);
-void SCR_FinishCinematic (void);
-

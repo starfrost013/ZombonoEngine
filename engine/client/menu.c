@@ -1569,7 +1569,7 @@ static menuseparator_s	s_blankline;
 
 static void StartGame( void )
 {
-	// disable updates and start the cinematic going
+	// disable updates
 	cl.servercount = -1;
 	M_ForceMenuOff ();
 	
@@ -3506,10 +3506,11 @@ void M_Draw (void)
 	SCR_DirtyScreen ();
 
 	// dim everything behind it down
+	/*
 	if (cl.cinematictime > 0)
-		re.DrawFill (0,0,viddef.width, viddef.height, 0);
-	else
-		re.DrawFadeScreen ();
+		re.DrawFill (0,0,viddef.width, viddef.height, 0);*/
+
+	re.DrawFadeScreen ();
 
 	m_drawfunc ();
 

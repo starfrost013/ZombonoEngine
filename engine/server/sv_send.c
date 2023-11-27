@@ -543,11 +543,11 @@ void SV_SendClientMessages (void)
 			SV_DropClient (c);
 		}
 
-		if (sv.state == ss_cinematic 
-			|| sv.state == ss_demo 
-			|| sv.state == ss_pic
-			)
-			Netchan_Transmit (&c->netchan, msglen, msgbuf);
+		if (sv.state == ss_demo
+			|| sv.state == ss_pic)
+		{
+			Netchan_Transmit(&c->netchan, msglen, msgbuf);
+		}
 		else if (c->state == cs_spawned)
 		{
 			// don't overrun bandwidth

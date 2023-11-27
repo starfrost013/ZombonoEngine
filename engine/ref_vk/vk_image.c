@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 image_t		vktextures[MAX_VKTEXTURES];
 int			numvktextures;
 int			base_textureid;		// gltextures[i] = base_textureid+i
-// texture for storing raw image data (cinematics, endscreens, etc.)
+// texture for storing raw image data (endscreens, etc.)
 qvktexture_t vk_rawTexture = QVVKTEXTURE_INIT;
 
 static byte			 intensitytable[256];

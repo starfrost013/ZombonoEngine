@@ -1496,18 +1496,14 @@ refexport_t GetRefAPI (refimport_t rimp )
 
 	re.DrawGetPicSize = Draw_GetPicSize;
 	re.DrawPic = Draw_Pic;
-	re.DrawStretchPic = Draw_StretchPic;
 	re.DrawChar = Draw_Char;
 	re.DrawTileClear = Draw_TileClear;
 	re.DrawFill = Draw_Fill;
 	re.DrawFadeScreen= Draw_FadeScreen;
 
-	re.DrawStretchRaw = Draw_StretchRaw;
-
 	re.Init = R_Init;
 	re.Shutdown = R_Shutdown;
 
-	re.CinematicSetPalette = R_SetPalette;
 	re.BeginFrame = R_BeginFrame;
 	re.EndFrame = R_EndFrame;
 	re.EndWorldRenderpass = R_EndWorldRenderpass;

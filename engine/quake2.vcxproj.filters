@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="client\cl_cin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\cl_ents.c">
       <Filter>Source Files</Filter>
     </ClCompile>

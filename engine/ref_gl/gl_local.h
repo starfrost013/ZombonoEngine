@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -294,16 +295,6 @@ void R_ClearSkyBox (void);
 void R_DrawSkyBox (void);
 void R_MarkLights (dlight_t *light, int bit, mnode_t *node);
 
-#if 0
-short LittleShort (short l);
-short BigShort (short l);
-int	LittleLong (int l);
-float LittleFloat (float f);
-
-char	*va(char *format, ...);
-// does a varargs printf into a temp buffer
-#endif
-
 void COM_StripExtension (char *in, char *out);
 
 void	Draw_GetPicSize (int *w, int *h, char *name);
@@ -313,7 +304,6 @@ void	Draw_Char (int x, int y, int c);
 void	Draw_TileClear (int x, int y, int w, int h, char *name);
 void	Draw_Fill (int x, int y, int w, int h, int c);
 void	Draw_FadeScreen (void);
-void	Draw_StretchRaw (int x, int y, int w, int h, int cols, int rows, byte *data);
 
 void	R_BeginFrame( float camera_separation );
 void	R_SwapBuffers( int );

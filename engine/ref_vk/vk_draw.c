@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -242,79 +243,4 @@ void Draw_FadeScreen (void)
 		return;
 
 	QVk_DrawColorRect(imgTransform, sizeof(imgTransform), RP_UI);
-}
-
-
-//====================================================================
-
-
-/*
-=============
-Draw_StretchRaw
-=============
-*/
-extern unsigned	r_rawpalette[256];
-extern qvktexture_t vk_rawTexture;
-
-void Draw_StretchRaw (int x, int y, int w, int h, int cols, int rows, byte *data)
-{
-	unsigned	image32[256 * 256];
-	int			i, j, trows;
-	byte		*source;
-	int			frac, fracstep;
-	float		hscale;
-	int			row;
-	float		t;
-
-	if (!vk_frameStarted)
-		return;
-
-	if (rows <= 256)
-	{
-		hscale = 1;
-		trows = rows;
-	}
-	else
-	{
-		hscale = rows / 256.0;
-		trows = 256;
-	}
-	t = rows * hscale / 256;
-
-	unsigned *dest;
-
-	for (i = 0; i < trows; i++)
-	{
-		row = (int)(i*hscale);
-		if (row > rows)
-			break;
-		source = data + cols * row;
-		dest = &image32[i * 256];
-		fracstep = cols * 0x10000 / 256;
-		frac = fracstep >> 1;
-		for (j = 0; j < 256; j++)
-		{
-			dest[j] = r_rawpalette[source[frac >> 16]];
-			frac += fracstep;
-		}
-	}
-
-	if (vk_rawTexture.image != VK_NULL_HANDLE)
-	{
-		QVk_UpdateTextureData(&vk_rawTexture, (unsigned char*)&image32, 0, 0, 256, 256);
-	}
-	else
-	{
-		QVVKTEXTURE_CLEAR(vk_rawTexture);
-		QVk_CreateTexture(&vk_rawTexture, (unsigned char*)&image32, 256, 256, vk_current_sampler);
-		QVk_DebugSetObjectName((uint64_t)vk_rawTexture.image, VK_OBJECT_TYPE_IMAGE, "Image: raw texture");
-		QVk_DebugSetObjectName((uint64_t)vk_rawTexture.imageView, VK_OBJECT_TYPE_IMAGE_VIEW, "Image View: raw texture");
-		QVk_DebugSetObjectName((uint64_t)vk_rawTexture.descriptorSet, VK_OBJECT_TYPE_DESCRIPTOR_SET, "Descriptor Set: raw texture");
-		QVk_DebugSetObjectName((uint64_t)vk_rawTexture.allocInfo.deviceMemory, VK_OBJECT_TYPE_DEVICE_MEMORY, "Memory: raw texture");
-	}
-
-	float imgTransform[] = { (float)x / vid.width, (float)y / vid.height,
-							 (float)w / vid.width, (float)h / vid.height,
-							 0.f, 0.f, 1.f, t };
-	QVk_DrawTexRect(imgTransform, sizeof(imgTransform), &vk_rawTexture);
 }
