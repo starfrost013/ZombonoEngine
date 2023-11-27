@@ -965,6 +965,15 @@ struct gclient_s
 	qboolean	update_chase;		// need to update chase info?
 };
 
+// Zombono Teams
+typedef enum player_team_e
+{
+	team_director = 0,				// The director team. Has access to spawning equipment.
+
+	team_player = 1,				// The player team. Doesn't have access to spawning equipment.
+
+	team_unassigned = 2,			// Used for non-team gamemodes and players that are joining.
+} player_team;
 
 struct edict_s
 {
@@ -973,7 +982,6 @@ struct edict_s
 									// the server expects the first part
 									// of gclient_s to be a player_state_t
 									// but the rest of it is opaque
-
 	qboolean	inuse;
 	int			linkcount;
 
@@ -1018,7 +1026,7 @@ struct edict_s
 	char		*target;
 	char		*targetname;
 	char		*killtarget;
-	char		*team;
+	player_team	team;
 	char		*pathtarget;
 	char		*deathtarget;
 	char		*combattarget;
@@ -1114,4 +1122,3 @@ struct edict_s
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
 };
-

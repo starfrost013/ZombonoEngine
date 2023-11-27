@@ -548,9 +548,6 @@ void FetchClientEntData (edict_t *ent)
 =======================================================================
 */
 
-// needed for selectzombonotdmspawnpoint
-edict_t* SelectRegularSpawnPoint();
-
 /*
 ================
 PlayersRangeFromSpot
@@ -558,9 +555,10 @@ PlayersRangeFromSpot
 Returns the distance to the nearest player from the given spot
 ================
 */
-float	PlayersRangeFromSpot (edict_t *spot)
+
+float	PlayersRangeFromSpot(edict_t* spot)
 {
-	edict_t	*player;
+	edict_t* player;
 	float	bestplayerdistance;
 	vec3_t	v;
 	int		n;
@@ -579,8 +577,8 @@ float	PlayersRangeFromSpot (edict_t *spot)
 		if (player->health <= 0)
 			continue;
 
-		VectorSubtract (spot->s.origin, player->s.origin, v);
-		playerdistance = VectorLength (v);
+		VectorSubtract(spot->s.origin, player->s.origin, v);
+		playerdistance = VectorLength(v);
 
 		if (playerdistance < bestplayerdistance)
 			bestplayerdistance = playerdistance;
@@ -589,144 +587,6 @@ float	PlayersRangeFromSpot (edict_t *spot)
 	return bestplayerdistance;
 }
 
-/*
-================
-SelectRandomDeathmatchSpawnPoint
-
-go to a random point, but NOT the two points closest
-to other players
-================
-*/
-edict_t *SelectRandomDeathmatchSpawnPoint (void)
-{
-	edict_t	*spot, *spot1, *spot2;
-	int		count = 0;
-	int		selection;
-	float	range, range1, range2;
-
-	spot = NULL;
-	range1 = range2 = 99999;
-	spot1 = spot2 = NULL;
-
-	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL)
-	{
-		count++;
-		range = PlayersRangeFromSpot(spot);
-		if (range < range1)
-		{
-			range1 = range;
-			spot1 = spot;
-		}
-		else if (range < range2)
-		{
-			range2 = range;
-			spot2 = spot;
-		}
-	}
-
-	if (!count)
-		return NULL;
-
-	if (count <= 2)
-	{
-		spot1 = spot2 = NULL;
-	}
-	else
-		count -= 2;
-
-	selection = rand() % count;
-
-	spot = NULL;
-	do
-	{
-		spot = G_Find (spot, FOFS(classname), "info_player_deathmatch");
-		if (spot == spot1 || spot == spot2)
-			selection++;
-	} while(selection--);
-
-	return spot;
-}
-
-/*
-================
-SelectFarthestDeathmatchSpawnPoint
-
-================
-*/
-edict_t *SelectFarthestDeathmatchSpawnPoint (void)
-{
-	edict_t	*bestspot;
-	float	bestdistance, bestplayerdistance;
-	edict_t	*spot;
-
-
-	spot = NULL;
-	bestspot = NULL;
-	bestdistance = 0;
-	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL)
-	{
-		bestplayerdistance = PlayersRangeFromSpot (spot);
-
-		if (bestplayerdistance > bestdistance)
-		{
-			bestspot = spot;
-			bestdistance = bestplayerdistance;
-		}
-	}
-
-	if (bestspot)
-	{
-		return bestspot;
-	}
-
-	// if there is a player just spawned on each and every start spot
-	// we have no choice to turn one into a telefrag meltdown
-	spot = G_Find (NULL, FOFS(classname), "info_player_deathmatch");
-
-	return spot;
-}
-
-edict_t *SelectDeathmatchSpawnPoint (void)
-{
-	if ( (int)(gameflags->value) & GF_SPAWN_FARTHEST)
-		return SelectFarthestDeathmatchSpawnPoint ();
-	else
-		return SelectRandomDeathmatchSpawnPoint ();
-}
-
-// figure out if the other modes use this
-edict_t* SelectTDMSpawnPoint(void)
-{
-	if ((int)gamemode->value != 0)
-	{
-		return SelectRegularSpawnPoint();
-	}
-}
-
-/*
-===========
-SelectSpawnPoint
-
-Chooses a player start, gamemode-specific start, etc
-============
-*/
-void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
-{
-	edict_t	*spot = NULL;
-
-	// TODO: Change this for zombono.
-	spot = SelectDeathmatchSpawnPoint();
-
-	// find a single player start spot
-	if (!spot)
-	{
-		spot = SelectRegularSpawnPoint();
-	}
-
-	VectorCopy (spot->s.origin, origin);
-	origin[2] += 9;
-	VectorCopy (spot->s.angles, angles);
-}
 
 /*
 ===========
@@ -735,7 +595,7 @@ SelectSpawnPoint
 Chooses a player start for zombono debugging
 ============
 */
-edict_t* SelectRegularSpawnPoint()
+edict_t* SelectUnassignedSpawnPoint()
 {
 	edict_t* spot = NULL;
 
@@ -760,11 +620,198 @@ edict_t* SelectRegularSpawnPoint()
 
 		if (!spot)
 			gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
-			return NULL;
+		return NULL;
 
 		return spot;
 	}
 }
+
+/*
+================
+SelectRandomSpawnPoint
+
+go to a random point, but NOT the two points closest
+to other players
+================
+*/
+edict_t *SelectRandomSpawnPoint (char* spawn_class_name)
+{
+	edict_t	*spot, *spot1, *spot2;
+	int		count = 0;
+	int		selection;
+	float	range, range1, range2;
+
+	spot = NULL;
+	range1 = range2 = 99999;
+	spot1 = spot2 = NULL;
+
+	while ((spot = G_Find (spot, FOFS(classname), spawn_class_name)) != NULL)
+	{
+		count++;
+		range = PlayersRangeFromSpot(spot);
+		if (range < range1)
+		{
+			range1 = range;
+			spot1 = spot;
+		}
+		else if (range < range2)
+		{
+			range2 = range;
+			spot2 = spot;
+		}
+	}
+
+	// if we failed, try unasigned
+	if (!count)
+		gi.bprintf(PRINT_ALL, "Failed to spawn %s (mode: random), trying unassigned", spawn_class_name);
+		return SelectUnassignedSpawnPoint();
+
+	// is it one of the two closest to other players?
+	if (count <= 2)
+	{
+		spot1 = spot2 = NULL;
+	}
+	else
+		count -= 2;
+
+	selection = rand() % count;
+
+	spot = NULL;
+	do
+	{
+		spot = G_Find (spot, FOFS(classname), spawn_class_name);
+		if (spot == spot1 || spot == spot2)
+			selection++;
+	} while(selection--);
+
+	return spot;
+}
+
+/*
+================
+SelectFarthestDeathmatchSpawnPoint
+
+================
+*/
+edict_t *SelectFarthestSpawnPoint (char* spawn_class_name)
+{
+	edict_t	*bestspot;
+	float	bestdistance, bestplayerdistance;
+	edict_t	*spot;
+
+	if (spawn_class_name == NULL)
+	{
+		gi.error("Tried to spawn a NULL classname");
+		return NULL;
+	}
+
+	spot = NULL;
+	bestspot = NULL;
+	bestdistance = 0;
+	while ((spot = G_Find (spot, FOFS(classname), spawn_class_name)) != NULL)
+	{
+		bestplayerdistance = PlayersRangeFromSpot (spot);
+
+		if (bestplayerdistance > bestdistance)
+		{
+			bestspot = spot;
+			bestdistance = bestplayerdistance;
+		}
+	}
+
+	if (bestspot)
+	{
+		return bestspot;
+	}
+
+	// if there is a player just spawned on each and every start spot
+	// we have no choice to turn one into a telefrag meltdown
+	spot = G_Find (NULL, FOFS(classname), spawn_class_name);
+
+	// still null? try unassigned
+	if (spot == NULL)
+	{
+		gi.bprintf(PRINT_ALL, "Failed to spawn %s (mode: furthest), trying unassigned", spawn_class_name);
+		return SelectUnassignedSpawnPoint();
+	}
+
+	return spot;
+}
+
+// figure out if the other modes use this
+edict_t* SelectTeamSpawnPoint(edict_t *player)
+{
+	if (player->classname != "noclass")
+	{
+		gi.error("???? How tried to teamspawn a non-player");
+	}
+
+	if ((int)gamemode->value != 0)
+	{
+		gi.bprintf(PRINT_ALL, "Can't currently spawn for non-TDM gamemodes");
+
+		return SelectUnassignedSpawnPoint();
+	}
+	else
+	{
+		// Team 0 - Director
+		char* spawn_class_name = "info_player_start_director";
+
+		// Team 1 - Player
+		if (player->team == team_player)
+		{
+			spawn_class_name = "info_player_start_player";
+		} 
+		// Team 2 - Unassigned
+		else if (player->team == team_unassigned)
+		{
+			return SelectUnassignedSpawnPoint();
+		}
+
+		if ((int)(gameflags->value) & GF_SPAWN_FARTHEST)
+		{
+			return SelectFarthestSpawnPoint(spawn_class_name);
+		}
+		else
+		{
+			return SelectRandomSpawnPoint(spawn_class_name);
+		}
+	}
+}
+
+/*
+===========
+SelectSpawnPoint
+
+Chooses a player start, gamemode-specific start, etc
+============
+*/
+void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
+{
+	edict_t	*spot = NULL;
+
+	// TODO: Change this for zombono.
+	if (gamemode->value == GAMEMODE_TDM)
+	{
+		spot = SelectTeamSpawnPoint(ent);
+	}
+	else
+	{
+		gi.bprintf(PRINT_DEVELOPER, "Tried to spawn for unimplemented gamemode %d! Trying to ", gamemode->value);
+		spot = SelectUnassignedSpawnPoint();
+	}
+
+	// find a single player start spot
+	if (!spot)
+	{
+		spot = SelectUnassignedSpawnPoint();
+	}
+
+	VectorCopy (spot->s.origin, origin);
+	origin[2] += 9;
+	VectorCopy (spot->s.angles, angles);
+}
+
 
 //======================================================================
 

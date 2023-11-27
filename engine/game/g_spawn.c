@@ -461,7 +461,7 @@ void G_FindTeams (void)
 				continue;
 			if (e2->flags & FL_TEAMSLAVE)
 				continue;
-			if (!strcmp(e->team, e2->team))
+			if (e->team == e2->team)
 			{
 				c2++;
 				chain->teamchain = e2;

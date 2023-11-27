@@ -908,11 +908,6 @@ typedef enum
 #define GAMEMODE_COOP			3		// Coop???
 #define GAMEMODE_CONTROL_POINT	4		// Control Point??? Need more innovative game modes...maybe a build-off
 
-// Teams
-#define TEAM_DIRECTOR			0		// Director team
-#define TEAM_PLAYER				1		// Player team
-#define TEAM_UNASSIGNED			2		// Unassigned team (player does NOT have a team yet)
-
 /*
 ==========================================================
 
