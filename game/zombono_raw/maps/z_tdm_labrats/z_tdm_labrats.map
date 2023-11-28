@@ -4368,32 +4368,32 @@
 // entity 11
 {
 "classname" "info_player_start_director"
-"origin" "-1128 376 -168"
+"origin" "-1128 376 -120"
 }
 // entity 12
 {
 "classname" "info_player_start_director"
-"origin" "-1128 104 -168"
+"origin" "-1128 104 -120"
 }
 // entity 13
 {
 "classname" "info_player_start_director"
-"origin" "-1128 -136 -168"
+"origin" "-1128 -136 -120"
 }
 // entity 14
 {
 "classname" "info_player_start_director"
-"origin" "-1432 360 -168"
+"origin" "-1432 360 -120"
 }
 // entity 15
 {
 "classname" "info_player_start_director"
-"origin" "-1432 88 -168"
+"origin" "-1432 88 -120"
 }
 // entity 16
 {
 "classname" "info_player_start_director"
-"origin" "-1432 -152 -168"
+"origin" "-1432 -152 -120"
 }
 // entity 17
 {
