@@ -2385,62 +2385,62 @@ rpm-quake2-data: quake2-data.spec
 	cp $(QUAKE2_DIR)/baseq2/players/male/w_rlauncher.md2             $(QUAKE2DATADIR)/baseq2/players/male/w_rlauncher.md2     
 	cp $(QUAKE2_DIR)/baseq2/players/male/w_shotgun.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_shotgun.md2       
 	cp $(QUAKE2_DIR)/baseq2/players/male/w_sshotgun.md2              $(QUAKE2DATADIR)/baseq2/players/male/w_sshotgun.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/female/athena.pcx                $(QUAKE2DATADIR)/baseq2/players/female/athena.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/female/athena_i.pcx              $(QUAKE2DATADIR)/baseq2/players/female/athena_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/female/brianna.pcx               $(QUAKE2DATADIR)/baseq2/players/female/brianna.pcx       
-	cp $(QUAKE2_DIR)/baseq2/players/female/brianna_i.pcx             $(QUAKE2DATADIR)/baseq2/players/female/brianna_i.pcx     
-	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt.pcx                $(QUAKE2DATADIR)/baseq2/players/female/cobalt.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt_i.pcx              $(QUAKE2DATADIR)/baseq2/players/female/cobalt_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/female/ensign.pcx                $(QUAKE2DATADIR)/baseq2/players/female/ensign.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/female/ensign_i.pcx              $(QUAKE2DATADIR)/baseq2/players/female/ensign_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel.pcx               $(QUAKE2DATADIR)/baseq2/players/female/jezebel.pcx       
-	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel_i.pcx             $(QUAKE2DATADIR)/baseq2/players/female/jezebel_i.pcx     
-	cp $(QUAKE2_DIR)/baseq2/players/female/jungle.pcx                $(QUAKE2DATADIR)/baseq2/players/female/jungle.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/female/jungle_i.pcx              $(QUAKE2DATADIR)/baseq2/players/female/jungle_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/female/lotus.pcx                 $(QUAKE2DATADIR)/baseq2/players/female/lotus.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/female/lotus_i.pcx               $(QUAKE2DATADIR)/baseq2/players/female/lotus_i.pcx       
-	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto.pcx              $(QUAKE2DATADIR)/baseq2/players/female/stiletto.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto_i.pcx            $(QUAKE2DATADIR)/baseq2/players/female/stiletto_i.pcx    
+	cp $(QUAKE2_DIR)/baseq2/players/female/athena.tga                $(QUAKE2DATADIR)/baseq2/players/female/athena.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/female/athena_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/athena_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/female/brianna.tga               $(QUAKE2DATADIR)/baseq2/players/female/brianna.tga       
+	cp $(QUAKE2_DIR)/baseq2/players/female/brianna_i.tga             $(QUAKE2DATADIR)/baseq2/players/female/brianna_i.tga     
+	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt.tga                $(QUAKE2DATADIR)/baseq2/players/female/cobalt.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/cobalt_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/female/ensign.tga                $(QUAKE2DATADIR)/baseq2/players/female/ensign.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/female/ensign_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/ensign_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel.tga               $(QUAKE2DATADIR)/baseq2/players/female/jezebel.tga       
+	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel_i.tga             $(QUAKE2DATADIR)/baseq2/players/female/jezebel_i.tga     
+	cp $(QUAKE2_DIR)/baseq2/players/female/jungle.tga                $(QUAKE2DATADIR)/baseq2/players/female/jungle.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/female/jungle_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/jungle_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/female/lotus.tga                 $(QUAKE2DATADIR)/baseq2/players/female/lotus.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/female/lotus_i.tga               $(QUAKE2DATADIR)/baseq2/players/female/lotus_i.tga       
+	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto.tga              $(QUAKE2DATADIR)/baseq2/players/female/stiletto.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto_i.tga            $(QUAKE2DATADIR)/baseq2/players/female/stiletto_i.tga    
 	cp $(QUAKE2_DIR)/baseq2/players/female/tris.md2                  $(QUAKE2DATADIR)/baseq2/players/female/tris.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/female/venus.pcx                 $(QUAKE2DATADIR)/baseq2/players/female/venus.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/female/venus_i.pcx               $(QUAKE2DATADIR)/baseq2/players/female/venus_i.pcx       
-	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo.pcx                $(QUAKE2DATADIR)/baseq2/players/female/voodoo.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo_i.pcx              $(QUAKE2DATADIR)/baseq2/players/female/voodoo_i.pcx      
+	cp $(QUAKE2_DIR)/baseq2/players/female/venus.tga                 $(QUAKE2DATADIR)/baseq2/players/female/venus.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/female/venus_i.tga               $(QUAKE2DATADIR)/baseq2/players/female/venus_i.tga       
+	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo.tga                $(QUAKE2DATADIR)/baseq2/players/female/voodoo.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/voodoo_i.tga      
 	cp $(QUAKE2_DIR)/baseq2/players/female/weapon.md2                $(QUAKE2DATADIR)/baseq2/players/female/weapon.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/female/weapon.pcx                $(QUAKE2DATADIR)/baseq2/players/female/weapon.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/cipher.pcx                  $(QUAKE2DATADIR)/baseq2/players/male/cipher.pcx          
-	cp $(QUAKE2_DIR)/baseq2/players/male/cipher_i.pcx                $(QUAKE2DATADIR)/baseq2/players/male/cipher_i.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/claymore.pcx                $(QUAKE2DATADIR)/baseq2/players/male/claymore.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/claymore_i.pcx              $(QUAKE2DATADIR)/baseq2/players/male/claymore_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/male/flak.pcx                    $(QUAKE2DATADIR)/baseq2/players/male/flak.pcx            
-	cp $(QUAKE2_DIR)/baseq2/players/male/flak_i.pcx                  $(QUAKE2DATADIR)/baseq2/players/male/flak_i.pcx          
-	cp $(QUAKE2_DIR)/baseq2/players/male/grunt.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/grunt.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/grunt_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/grunt_i.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer.pcx                $(QUAKE2DATADIR)/baseq2/players/male/howitzer.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer_i.pcx              $(QUAKE2DATADIR)/baseq2/players/male/howitzer_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/male/major.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/major.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/major_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/major_i.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/nightops.pcx                $(QUAKE2DATADIR)/baseq2/players/male/nightops.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/nightops_i.pcx              $(QUAKE2DATADIR)/baseq2/players/male/nightops_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/male/pointman.pcx                $(QUAKE2DATADIR)/baseq2/players/male/pointman.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/pointman_i.pcx              $(QUAKE2DATADIR)/baseq2/players/male/pointman_i.pcx      
-	cp $(QUAKE2_DIR)/baseq2/players/male/psycho.pcx                  $(QUAKE2DATADIR)/baseq2/players/male/psycho.pcx          
-	cp $(QUAKE2_DIR)/baseq2/players/male/psycho_i.pcx                $(QUAKE2DATADIR)/baseq2/players/male/psycho_i.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/male/rampage.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/rampage.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/rampage_i.pcx               $(QUAKE2DATADIR)/baseq2/players/male/rampage_i.pcx       
-	cp $(QUAKE2_DIR)/baseq2/players/male/razor.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/razor.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/razor_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/razor_i.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/recon.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/recon.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/recon_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/recon_i.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/scout.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/scout.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/scout_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/scout_i.pcx         
-	cp $(QUAKE2_DIR)/baseq2/players/male/sniper.pcx                  $(QUAKE2DATADIR)/baseq2/players/male/sniper.pcx          
-	cp $(QUAKE2_DIR)/baseq2/players/male/sniper_i.pcx                $(QUAKE2DATADIR)/baseq2/players/male/sniper_i.pcx        
+	cp $(QUAKE2_DIR)/baseq2/players/female/weapon.tga                $(QUAKE2DATADIR)/baseq2/players/female/weapon.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/cipher.tga                  $(QUAKE2DATADIR)/baseq2/players/male/cipher.tga          
+	cp $(QUAKE2_DIR)/baseq2/players/male/cipher_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/cipher_i.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/claymore.tga                $(QUAKE2DATADIR)/baseq2/players/male/claymore.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/claymore_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/claymore_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/male/flak.tga                    $(QUAKE2DATADIR)/baseq2/players/male/flak.tga            
+	cp $(QUAKE2_DIR)/baseq2/players/male/flak_i.tga                  $(QUAKE2DATADIR)/baseq2/players/male/flak_i.tga          
+	cp $(QUAKE2_DIR)/baseq2/players/male/grunt.tga                   $(QUAKE2DATADIR)/baseq2/players/male/grunt.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/grunt_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/grunt_i.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer.tga                $(QUAKE2DATADIR)/baseq2/players/male/howitzer.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/howitzer_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/male/major.tga                   $(QUAKE2DATADIR)/baseq2/players/male/major.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/major_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/major_i.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/nightops.tga                $(QUAKE2DATADIR)/baseq2/players/male/nightops.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/nightops_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/nightops_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/male/pointman.tga                $(QUAKE2DATADIR)/baseq2/players/male/pointman.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/pointman_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/pointman_i.tga      
+	cp $(QUAKE2_DIR)/baseq2/players/male/psycho.tga                  $(QUAKE2DATADIR)/baseq2/players/male/psycho.tga          
+	cp $(QUAKE2_DIR)/baseq2/players/male/psycho_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/psycho_i.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/male/rampage.tga                 $(QUAKE2DATADIR)/baseq2/players/male/rampage.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/rampage_i.tga               $(QUAKE2DATADIR)/baseq2/players/male/rampage_i.tga       
+	cp $(QUAKE2_DIR)/baseq2/players/male/razor.tga                   $(QUAKE2DATADIR)/baseq2/players/male/razor.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/razor_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/razor_i.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/recon.tga                   $(QUAKE2DATADIR)/baseq2/players/male/recon.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/recon_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/recon_i.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/scout.tga                   $(QUAKE2DATADIR)/baseq2/players/male/scout.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/scout_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/scout_i.tga         
+	cp $(QUAKE2_DIR)/baseq2/players/male/sniper.tga                  $(QUAKE2DATADIR)/baseq2/players/male/sniper.tga          
+	cp $(QUAKE2_DIR)/baseq2/players/male/sniper_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/sniper_i.tga        
 	cp $(QUAKE2_DIR)/baseq2/players/male/tris.md2                    $(QUAKE2DATADIR)/baseq2/players/male/tris.md2            
-	cp $(QUAKE2_DIR)/baseq2/players/male/viper.pcx                   $(QUAKE2DATADIR)/baseq2/players/male/viper.pcx           
-	cp $(QUAKE2_DIR)/baseq2/players/male/viper_i.pcx                 $(QUAKE2DATADIR)/baseq2/players/male/viper_i.pcx         
+	cp $(QUAKE2_DIR)/baseq2/players/male/viper.tga                   $(QUAKE2DATADIR)/baseq2/players/male/viper.tga           
+	cp $(QUAKE2_DIR)/baseq2/players/male/viper_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/viper_i.tga         
 	cp $(QUAKE2_DIR)/baseq2/players/male/weapon.md2                  $(QUAKE2DATADIR)/baseq2/players/male/weapon.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/male/weapon.pcx                  $(QUAKE2DATADIR)/baseq2/players/male/weapon.pcx          
+	cp $(QUAKE2_DIR)/baseq2/players/male/weapon.tga                  $(QUAKE2DATADIR)/baseq2/players/male/weapon.tga          
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/bump1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/bump1.wav         
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death1.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death1.wav        
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death2.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death2.wav        
@@ -2452,8 +2452,8 @@ rpm-quake2-data: quake2-data.spec
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/gurp1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/gurp1.wav         
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/gurp2.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/gurp2.wav         
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/jump1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/jump1.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911.pcx                $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911_i.pcx              $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911_i.pcx      
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911_i.tga      
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain100_1.wav             $(QUAKE2DATADIR)/baseq2/players/cyborg/pain100_1.wav     
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain100_2.wav             $(QUAKE2DATADIR)/baseq2/players/cyborg/pain100_2.wav     
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain25_1.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain25_1.wav      
@@ -2462,14 +2462,14 @@ rpm-quake2-data: quake2-data.spec
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain50_2.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain50_2.wav      
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain75_1.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain75_1.wav      
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain75_2.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain75_2.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000.pcx                $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000_i.pcx              $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000_i.pcx      
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000_i.tga      
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tris.md2                  $(QUAKE2DATADIR)/baseq2/players/cyborg/tris.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574.pcx                $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574_i.pcx              $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574_i.pcx      
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574_i.tga      
 	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.md2                $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.pcx                $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.pcx        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.pcx.pcx            $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.pcx.pcx    
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.tga        
+	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.tga.tga            $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.tga.tga    
 	cp -r $(QUAKE2_DIR)/docs $(QUAKE2DATADIR)/docs
 	cp $< $(RPMROOT)/SPECS/.
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
