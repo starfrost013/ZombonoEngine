@@ -1602,7 +1602,6 @@ cheatvar_t	cheatvars[] = {
 	{"r_drawflat", "0"},
 	{"paused", "0"},
 	{"fixedtime", "0"},
-	{"sw_draworder", "0"},
 	{"gl_lightmap", "0"},
 	{"gl_saturatelighting", "0"},
 	{NULL, NULL}
