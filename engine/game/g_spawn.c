@@ -424,7 +424,7 @@ char *ED_ParseEdict (char *data, edict_t *ent)
 
 
 /*
-================
+================ 
 G_FindTeams
 
 Chain together all entities with a matching team field.

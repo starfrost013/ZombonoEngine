@@ -1031,7 +1031,7 @@ SpawnItem
 Sets the clipping size and plants the object on the floor.
 
 Items can't be immediately dropped to floor, because they might
-be on an entity that hasn't spawned yet. 
+be on an entity that hasn't spawned yet.
 ============
 */
 void SpawnItem (edict_t *ent, gitem_t *item)
