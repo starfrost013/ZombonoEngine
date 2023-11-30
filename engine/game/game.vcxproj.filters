@@ -114,6 +114,9 @@
     <ClCompile Include="m_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="m_zombie.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">

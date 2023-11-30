@@ -212,6 +212,7 @@
     <ClCompile Include="m_soldier.c" />
     <ClCompile Include="m_supertank.c" />
     <ClCompile Include="m_tank.c" />
+    <ClCompile Include="m_zombie.c" />
     <ClCompile Include="p_client.c" />
     <ClCompile Include="p_hud.c" />
     <ClCompile Include="p_trail.c" />

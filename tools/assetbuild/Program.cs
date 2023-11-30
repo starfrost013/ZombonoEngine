@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.3"; // Version
+const string ASSETBUILD_VERSION = "2.0.4"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
@@ -87,7 +87,7 @@ try
     // copy them all to the output directory
 
     // exclude raw assets
-    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json"];
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/"];
 
     foreach (string gameFile in gameFiles)
     {
