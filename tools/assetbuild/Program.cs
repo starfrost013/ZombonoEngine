@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.2"; // Version
+const string ASSETBUILD_VERSION = "2.0.3"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
@@ -20,7 +20,7 @@ bool quietMode = false; // If true, everything except errors are hushed
 // Localise here!
 #region Strings
 const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
-const string STRING_DESCRIPTION = "Builds assets for Zombono";
+     string STRING_DESCRIPTION = $"Builds assets for {gameName}";
 const string STRING_USAGE = "Assetbuild <game> [release cfg] [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
     "[directory]: Optional - base directory (default is ../../../../../game/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +

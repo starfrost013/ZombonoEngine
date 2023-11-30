@@ -1030,8 +1030,8 @@ SpawnItem
 
 Sets the clipping size and plants the object on the floor.
 
-Items can't be immediately dropped to floor, because they might
-be on an entity that hasn't spawned yet.
+Items can't be immediately dropped to floor, because they might 
+be on an entity that hasn't spawned yet. 
 ============
 */
 void SpawnItem (edict_t *ent, gitem_t *item)
@@ -1124,7 +1124,7 @@ gitem_t	itemlist[] =
 /* precache */ ""
 	},
 
-/*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16) 
 */
 	{
 		"item_armor_combat", 
@@ -1170,7 +1170,7 @@ gitem_t	itemlist[] =
 /* precache */ ""
 	},
 
-/*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16) 
 */
 	{
 		"item_armor_shard", 
