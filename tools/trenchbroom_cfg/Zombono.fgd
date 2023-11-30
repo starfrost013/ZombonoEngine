@@ -873,24 +873,6 @@
 	speed(integer) : "Speed of push" : 1000
 ]
 
-// 0221 - added "_minlight" key to _breach and _base
-@SolidClass base(Appearflags, Targetname, Target) color(128 255 128) = turret_breach : "Turret breach"
-[
-	speed(integer) : "Speed" : 50
-	dmg(integer) : "Damage" : 10
-	minpitch(integer) : "Miminum pitch angle" : -30
-	maxpitch(integer) : "Maximum pitch angle" : 30
-	minyaw(integer) : "Minimum yaw angle" : 0
-	maxyaw(integer) : "Maximum yaw angle" : 360
-	team(integer) : "Team"
-	_minlight(string) : "Minimum light (optional)"
-]
-@SolidClass base(Appearflags) color(128 255 128) = turret_base : "Turret base"
-[
-	team(integer) : "Team"
-	_minlight(string) : "Minimum light (optional)"
-]
-@PointClass base(Appearflags) color(128 255 128) size(-16 -16 -24, 16 16 32) model({ "path": ":models/monsters/infantry/tris.md2"}) = turret_driver : "Turret driver"	[	target(string) : "Target (turret_breach)"	]
 @PointClass base(Appearflags) color(0 128 204) size(-8 -8 -8, 8 8 8) = viewthing : "Just for debugging level - dont use" []
 @BaseClass base(Appearflags, Target) color(76 76 255) size(-16 -16 -16, 16 16 16) = Weapons
 [
