@@ -636,37 +636,6 @@ mframe_t soldier_frames_attack4 [] =
 };
 mmove_t soldier_move_attack4 = {FRAME_attak401, FRAME_attak406, soldier_frames_attack4, soldier_run};
 
-#if 0
-// ATTACK5 (prone)
-
-void soldier_fire5 (edict_t *self)
-{
-	soldier_fire (self, 4);
-}
-
-void soldier_attack5_refire (edict_t *self)
-{
-	if (self->enemy->health <= 0)
-		return;
-
-	if ( ((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE) )
-		self->monsterinfo.nextframe = FRAME_attak505;
-}
-
-mframe_t soldier_frames_attack5 [] =
-{
-	ai_charge, 8, NULL,
-	ai_charge, 8, NULL,
-	ai_charge, 0, NULL,
-	ai_charge, 0, NULL,
-	ai_charge, 0, soldier_fire5,
-	ai_charge, 0, NULL,
-	ai_charge, 0, NULL,
-	ai_charge, 0, soldier_attack5_refire
-};
-mmove_t soldier_move_attack5 = {FRAME_attak501, FRAME_attak508, soldier_frames_attack5, soldier_run};
-#endif
-
 // ATTACK6 (run & shoot)
 
 void soldier_fire8 (edict_t *self)
@@ -1168,24 +1137,6 @@ void SP_monster_soldier_x (edict_t *self)
 	walkmonster_start (self);
 }
 
-
-/*QUAKED monster_soldier_light (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
-*/
-void SP_monster_soldier_light (edict_t *self)
-{
-	SP_monster_soldier_x (self);
-
-	sound_pain_light = gi.soundindex ("soldier/solpain2.wav");
-	sound_death_light =	gi.soundindex ("soldier/soldeth2.wav");
-	gi.modelindex ("models/objects/laser/tris.md2");
-	gi.soundindex ("misc/lasfly.wav");
-	gi.soundindex ("soldier/solatck2.wav");
-
-	self->s.skinnum = 0;
-	self->health = 20;
-	self->gib_health = -30;
-}
-
 /*QUAKED monster_soldier (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
 */
 void SP_monster_soldier (edict_t *self)
@@ -1198,20 +1149,5 @@ void SP_monster_soldier (edict_t *self)
 
 	self->s.skinnum = 2;
 	self->health = 30;
-	self->gib_health = -30;
-}
-
-/*QUAKED monster_soldier_ss (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
-*/
-void SP_monster_soldier_ss (edict_t *self)
-{
-	SP_monster_soldier_x (self);
-
-	sound_pain_ss = gi.soundindex ("soldier/solpain3.wav");
-	sound_death_ss = gi.soundindex ("soldier/soldeth3.wav");
-	gi.soundindex ("soldier/solatck3.wav");
-
-	self->s.skinnum = 4;
-	self->health = 40;
 	self->gib_health = -30;
 }

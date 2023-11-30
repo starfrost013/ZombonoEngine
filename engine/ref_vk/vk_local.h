@@ -265,7 +265,7 @@ void	Draw_Pic (int x, int y, char *name);
 void	Draw_StretchPic (int x, int y, int w, int h, char *name);
 void	Draw_Char (int x, int y, int c);
 void	Draw_TileClear (int x, int y, int w, int h, char *name);
-void	Draw_Fill (int x, int y, int w, int h, int c);
+void	Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a);
 void	Draw_FadeScreen (void)
 
 void	R_BeginFrame( float camera_separation );

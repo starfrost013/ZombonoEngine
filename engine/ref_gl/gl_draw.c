@@ -152,9 +152,6 @@ void Draw_StretchPic (int x, int y, int w, int h, char *pic)
 	if (scrap_dirty)
 		Scrap_Upload ();
 
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) ) && !gl->has_alpha)
-		qglDisable (GL_ALPHA_TEST);
-
 	GL_Bind (gl->texnum);
 	qglBegin (GL_QUADS);
 	qglTexCoord2f (gl->sl, gl->tl);
@@ -166,9 +163,6 @@ void Draw_StretchPic (int x, int y, int w, int h, char *pic)
 	qglTexCoord2f (gl->sl, gl->th);
 	qglVertex2f (x, y+h);
 	qglEnd ();
-
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) ) && !gl->has_alpha)
-		qglEnable (GL_ALPHA_TEST);
 }
 
 
@@ -191,9 +185,6 @@ void Draw_Pic (int x, int y, char *pic)
 	if (scrap_dirty)
 		Scrap_Upload ();
 
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) ) && !gl->has_alpha)
-		qglDisable (GL_ALPHA_TEST);
-
 	GL_Bind (gl->texnum);
 	qglBegin (GL_QUADS);
 	qglTexCoord2f (gl->sl, gl->tl);
@@ -205,9 +196,6 @@ void Draw_Pic (int x, int y, char *pic)
 	qglTexCoord2f (gl->sl, gl->th);
 	qglVertex2f (x, y+gl->height*scale->value);
 	qglEnd ();
-
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) )  && !gl->has_alpha)
-		qglEnable (GL_ALPHA_TEST);
 }
 
 /*
@@ -229,9 +217,6 @@ void Draw_TileClear (int x, int y, int w, int h, char *pic)
 		return;
 	}
 
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) )  && !image->has_alpha)
-		qglDisable (GL_ALPHA_TEST);
-
 	GL_Bind (image->texnum);
 	qglBegin (GL_QUADS);
 	qglTexCoord2f (x/64.0, y/64.0);
@@ -244,8 +229,6 @@ void Draw_TileClear (int x, int y, int w, int h, char *pic)
 	qglVertex2f (x, y+h);
 	qglEnd ();
 
-	if ( ( ( gl_config.renderer == GL_RENDERER_MCD ) || ( gl_config.renderer & GL_RENDERER_RENDITION ) )  && !image->has_alpha)
-		qglEnable (GL_ALPHA_TEST);
 }
 
 
@@ -260,7 +243,6 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	union color_u
 	{
-		unsigned	c;
 		byte		v[4];
 	} color;
 

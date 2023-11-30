@@ -121,6 +121,7 @@ MATHLIB
 
 typedef float vec_t;
 typedef vec_t vec3_t[3];
+typedef vec_t vec4_t[4];
 typedef vec_t vec5_t[5];
 
 typedef	int	fixed4_t;
@@ -1028,7 +1029,6 @@ typedef struct
 // PGM 
 #define VIDREF_VK		1
 #define VIDREF_GL		2
-#define VIDREF_SOFT		3
 #define VIDREF_OTHER	4
 
 extern int vidref_val;

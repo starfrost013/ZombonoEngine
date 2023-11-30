@@ -826,9 +826,6 @@ static void GL_DrawStereoPattern( void )
 {
 	int i;
 
-	if ( !( gl_config.renderer & GL_RENDERER_INTERGRAPH ) )
-		return;
-
 	if ( !gl_state.stereo_enabled )
 		return;
 
@@ -1094,28 +1091,12 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	strcpy( vendor_buffer, gl_config.vendor_string );
 	strlwr( vendor_buffer );
 
-	if ( strstr( vendor_buffer, "sgi" ) )
-		gl_config.renderer = GL_RENDERER_SGI;
-	else if ( strstr( renderer_buffer, "glzicd" ) )
-		gl_config.renderer = GL_RENDERER_REALIZM;
-	else if ( strstr( renderer_buffer, "gdi" ) )
-		gl_config.renderer = GL_RENDERER_MCD;
-	else if ( strstr( renderer_buffer, "pcx2" ) )
-		gl_config.renderer = GL_RENDERER_PCX2;
-	else if ( strstr( renderer_buffer, "verite" ) )
-		gl_config.renderer = GL_RENDERER_RENDITION;
-	else
-		gl_config.renderer = GL_RENDERER_OTHER;
+
+	gl_config.renderer = GL_RENDERER_OTHER;
 
 #ifdef __linux__
 	ri.Cvar_SetValue( "gl_finish", 1 );
 #endif
-
-	// MCD has buffering issues
-	if ( gl_config.renderer == GL_RENDERER_MCD )
-	{
-		ri.Cvar_SetValue( "gl_finish", 1 );
-	}
 
 	/*
 	** grab extensions
@@ -1469,7 +1450,7 @@ struct image_s	*Draw_FindPic (char *name);
 void	Draw_Pic (int x, int y, char *name);
 void	Draw_Char (int x, int y, int c);
 void	Draw_TileClear (int x, int y, int w, int h, char *name);
-void	Draw_Fill (int x, int y, int w, int h, int c);
+void	Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a);
 void	Draw_FadeScreen (void);
 
 /*

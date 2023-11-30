@@ -168,7 +168,7 @@ typedef struct
 	void	(*DrawStretchPic) (int x, int y, int w, int h, char *name);
 	void	(*DrawChar) (int x, int y, int c);
 	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);
-	void	(*DrawFill) (int x, int y, int w, int h, int c);
+	void	(*DrawFill) (int x, int y, int w, int h, int r, int g, int b, int a);
 	void	(*DrawFadeScreen) (void);
 	/*
 	** video mode and refresh state management entry points

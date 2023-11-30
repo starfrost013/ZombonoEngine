@@ -63,9 +63,6 @@
     <ClCompile Include="g_trigger.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_turret.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="g_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,22 +72,7 @@
     <ClCompile Include="m_actor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_gunner.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="m_infantry.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="m_medic.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="m_soldier.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="m_supertank.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="m_tank.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="p_client.c">
@@ -136,25 +118,13 @@
     <ClInclude Include="m_actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_gunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="m_infantry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="m_medic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="m_player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="m_soldier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_supertank.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="m_tank.h">
+    <ClInclude Include="m_zombie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

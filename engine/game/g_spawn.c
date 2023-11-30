@@ -98,7 +98,6 @@ void SP_point_combat (edict_t *self);
 
 void SP_misc_explobox (edict_t *self);
 void SP_misc_banner (edict_t *self);
-void SP_misc_satellite_dish (edict_t *self);
 void SP_misc_actor (edict_t *self);
 void SP_misc_gib_arm (edict_t *self);
 void SP_misc_gib_leg (edict_t *self);
@@ -107,23 +106,9 @@ void SP_misc_deadsoldier (edict_t *self);
 void SP_misc_teleporter (edict_t *self);
 void SP_misc_teleporter_dest (edict_t *self);
 void SP_misc_blackhole (edict_t *self);
-void SP_misc_eastertank (edict_t *self);
-void SP_misc_easterchick (edict_t *self);
-void SP_misc_easterchick2 (edict_t *self);
 
-void SP_monster_gunner (edict_t *self);
-void SP_monster_infantry (edict_t *self);
-void SP_monster_soldier_light (edict_t *self);
 void SP_monster_soldier (edict_t *self);
-void SP_monster_soldier_ss (edict_t *self);
-void SP_monster_tank (edict_t *self);
-void SP_monster_medic (edict_t *self);
-void SP_monster_parasite (edict_t *self);
-void SP_monster_flyer (edict_t *self);
-void SP_monster_supertank (edict_t *self);
-void SP_monster_jorg (edict_t *self);
-
-void SP_monster_commander_body (edict_t *self);
+void SP_monster_zombie (edict_t* self);
 
 void SP_turret_breach (edict_t *self);
 void SP_turret_base (edict_t *self);
@@ -202,7 +187,6 @@ spawn_t	spawns[] = {
 
 	{"misc_explobox", SP_misc_explobox},
 	{"misc_banner", SP_misc_banner},
-	{"misc_satellite_dish", SP_misc_satellite_dish},
 	{"misc_actor", SP_misc_actor},
 	{"misc_gib_arm", SP_misc_gib_arm},
 	{"misc_gib_leg", SP_misc_gib_leg},
@@ -211,23 +195,11 @@ spawn_t	spawns[] = {
 	{"misc_teleporter", SP_misc_teleporter},
 	{"misc_teleporter_dest", SP_misc_teleporter_dest},
 	{"misc_blackhole", SP_misc_blackhole},
-	{"misc_eastertank", SP_misc_eastertank},
 
-	{"monster_gunner", SP_monster_gunner},
-	{"monster_infantry", SP_monster_infantry},
-	{"monster_soldier_light", SP_monster_soldier_light},
 	{"monster_soldier", SP_monster_soldier},
-	{"monster_soldier_ss", SP_monster_soldier_ss},
-	{"monster_tank", SP_monster_tank},
-	{"monster_tank_commander", SP_monster_tank},
-	{"monster_medic", SP_monster_medic},
-	{"monster_supertank", SP_monster_supertank},
+	{"monster_zombie", SP_monster_zombie},
 
-	{"monster_commander_body", SP_monster_commander_body},
-
-	{"turret_breach", SP_turret_breach},
-	{"turret_base", SP_turret_base},
-	{"turret_driver", SP_turret_driver},
+	// turrets dependent on infantry so removed 
 
 	{NULL, NULL}
 };

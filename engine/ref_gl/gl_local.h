@@ -301,11 +301,10 @@ void	Draw_Pic (int x, int y, char *name);
 void	Draw_StretchPic (int x, int y, int w, int h, char *name);
 void	Draw_Char (int x, int y, int c);
 void	Draw_TileClear (int x, int y, int w, int h, char *name);
-void	Draw_Fill (int x, int y, int w, int h, int c);
+void	Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a);
 void	Draw_FadeScreen (void);
 
 void	R_BeginFrame( float camera_separation );
-void	R_SwapBuffers( int );
 
 void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,  int outwidth, int outheight);
 
@@ -328,32 +327,7 @@ void GL_TextureSolidMode( char *string );
 ** GL config stuff
 */
 
-#define GL_RENDERER_PCX1		0x00000010
-#define GL_RENDERER_PCX2		0x00000020
-#define GL_RENDERER_PMX			0x00000040
-#define		GL_RENDERER_POWERVR		0x00000070
-
-#define GL_RENDERER_REALIZM		0x00001000
-#define GL_RENDERER_REALIZM2	0x00002000
-#define		GL_RENDERER_INTERGRAPH	0x00003000
-
-#define GL_RENDERER_3DPRO		0x00004000
-#define GL_RENDERER_REAL3D		0x00008000
-#define GL_RENDERER_RIVA128		0x00010000
-#define GL_RENDERER_DYPIC		0x00020000
-
-#define GL_RENDERER_V1000		0x00040000
-#define GL_RENDERER_V2100		0x00080000
-#define GL_RENDERER_V2200		0x00100000
-#define		GL_RENDERER_RENDITION	0x001C0000
-
-#define GL_RENDERER_O2          0x00100000
-#define GL_RENDERER_IMPACT      0x00200000
-#define GL_RENDERER_RE			0x00400000
-#define GL_RENDERER_IR			0x00800000
-#define		GL_RENDERER_SGI			0x00F00000
-
-#define GL_RENDERER_MCD			0x01000000
+// keep this system in case we need to work around buggy drivers.
 #define GL_RENDERER_OTHER		0x80000000
 
 typedef struct glconfig_s
@@ -419,4 +393,3 @@ int     	GLimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen
 void		GLimp_AppActivate( qboolean active );
 void		GLimp_EnableLogging( qboolean enable );
 void		GLimp_LogNewFrame( void );
-

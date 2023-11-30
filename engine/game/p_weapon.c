@@ -1282,8 +1282,6 @@ void Weapon_SuperShotgun (edict_t *ent)
 	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, weapon_supershotgun_fire);
 }
 
-
-
 /*
 ======================================================================
 

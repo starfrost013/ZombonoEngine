@@ -48,11 +48,7 @@
 // player start, deathmatch, coop, deathmatch intermission
 //
 
-@PointClass base(PlayerClass) = info_player_start : "Player 1 start" []
-@PointClass base(PlayerClass) = info_player_intermission : "Deathmatch intermission point"
-[
-	angles(string) : "pitch yaw roll"
-]
+@PointClass base(PlayerClass) = info_player_start : "Unassigned team start" []
 
 @PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
 @PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
@@ -505,8 +501,6 @@
 
 // The following three entities are eye-candy - they don't do anything
 @PointClass base(Appearflags) color(255 128 0) size(-32 -32 -16, 32 32 32) model({ "path": ":models/monsters/tank/tris.md2",	"frame":254, "skin": 0}) = misc_eastertank : "Tank sitting down. Make him a chair out of brushes." []
-@PointClass base(Appearflags) color(255 128 0) size(-32 -32 0, 32 32 32) model({ "path": ":models/monsters/bitch/tris.md2", "frame":208}) = misc_easterchick : "Chick #1 sitting: Place her near misc_eastertank." []
-@PointClass base(Appearflags) color(255 128 0) size(-32 -32 0, 32 32 32) model({ "path": ":models/monsters/bitch/tris.md2", "frame":248}) = misc_easterchick2 : "Chick #2 sitting w/ different pose. Can be placed close to misc_eastertank's for full effect." []
 
 // 0225 - removed "target" key - id concluded being able to target
 // something with a movable barrel was a bug and removed that function :(
@@ -575,17 +569,8 @@
 // Just fidgets in one spot and teleports away when triggered
 //
 // 0221 - removed Monsters class inheritance
-@PointClass base(Appearflags, Targetname) color(255 128 0) size(-32 -32 0, 32 32 48) model({ "path": ":models/monsters/commandr/tris.md2" }) = monster_commander_body : "Tank commander's decapitated body" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/flyer/tris.md2" }) = monster_flyer : "Flyer" []
-@PointClass base(Monsters) size(-32 -32 -24, 32 32 64) model({ "path": ":models/monsters/gladiatr/tris.md2" }) = monster_gladiator : "Gladiator" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/gunner/tris.md2" }) = monster_gunner : "Gunner" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/infantry/tris.md2", "frame": 64}) = monster_infantry : "Infantry" []
-
-// 0221 - this entity can only spawn once the Jorg dies ... im sure someone will change that tho
-@PointClass base(Monsters) model({ "path": ":models/monsters/medic/tris.md2" }) = monster_medic : "Medic" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/soldier/tris.md2", "skin": 0 }) = monster_soldier_light : "Light Soldier" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/soldier/tris.md2", "skin": 2 }) = monster_soldier : "Soldier" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/soldier/tris.md2", "skin": 4 }) = monster_soldier_ss : "SS Soldier" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/soldier/tris.md2", "skin": 2 }) = monster_soldier : "Soldier (Q2 Base)" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/zombie/tris.md2", "skin": 2 }) = monster_zombie : "Basic Zombie (Zombono)" []
 @PointClass base(Monsters) size(-32 -32 -16, 32 32 72) model({ "path": ":models/monsters/tank/tris.md2" }) = monster_tank : "Tank" []
 @PointClass base(Monsters) size(-32 -32 -16, 32 32 72) model({ "path": ":models/monsters/tank/tris.md2", "skin": 2 }) = monster_tank_commander : "Tank Commander" []
 @PointClass base(Monsters) size(-64 -64 0, 64 64 72) model({ "path": ":models/monsters/boss1/tris.md2" }) = monster_supertank : "Super Tank Boss" []

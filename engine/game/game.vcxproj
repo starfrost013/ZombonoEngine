@@ -200,18 +200,12 @@
     <ClCompile Include="g_svcmds.c" />
     <ClCompile Include="g_target.c" />
     <ClCompile Include="g_trigger.c" />
-    <ClCompile Include="g_turret.c" />
     <ClCompile Include="g_utils.c" />
     <ClCompile Include="g_weapon.c" />
     <ClCompile Include="m_actor.c" />
     <ClCompile Include="m_flash.c" />
-    <ClCompile Include="m_gunner.c" />
-    <ClCompile Include="m_infantry.c" />
-    <ClCompile Include="m_medic.c" />
     <ClCompile Include="m_move.c" />
     <ClCompile Include="m_soldier.c" />
-    <ClCompile Include="m_supertank.c" />
-    <ClCompile Include="m_tank.c" />
     <ClCompile Include="m_zombie.c" />
     <ClCompile Include="p_client.c" />
     <ClCompile Include="p_hud.c" />
@@ -227,13 +221,9 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="g_local.h" />
     <ClInclude Include="m_actor.h" />
-    <ClInclude Include="m_gunner.h" />
-    <ClInclude Include="m_infantry.h" />
-    <ClInclude Include="m_medic.h" />
     <ClInclude Include="m_player.h" />
     <ClInclude Include="m_soldier.h" />
-    <ClInclude Include="m_supertank.h" />
-    <ClInclude Include="m_tank.h" />
+    <ClInclude Include="m_zombie.h" />
     <ClInclude Include="q_shared.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

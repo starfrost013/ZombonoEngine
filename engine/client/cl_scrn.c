@@ -103,10 +103,10 @@ void CL_AddNetgraph (void)
 		return;
 
 	for (i=0 ; i<cls.netchan.dropped ; i++)
-		SCR_DebugGraph (30, 0x40);
+		SCR_DebugGraph (30, 51, 47, 46, 255);
 
 	for (i=0 ; i<cl.surpressCount ; i++)
-		SCR_DebugGraph (30, 0xdf);
+		SCR_DebugGraph (30, 255, 215, 22, 255);
 
 	// see what the latency was on this packet
 	in = cls.netchan.incoming_acknowledged & (CMD_BACKUP-1);
@@ -114,14 +114,14 @@ void CL_AddNetgraph (void)
 	ping /= 30;
 	if (ping > 30)
 		ping = 30;
-	SCR_DebugGraph (ping, 0xd0);
+	SCR_DebugGraph (ping, 18, 15, 22, 255);
 }
 
 
 typedef struct
 {
 	float	value;
-	int		color;
+	vec_t   color[4];
 } graphsamp_t;
 
 static	int			current;
@@ -132,10 +132,13 @@ static	graphsamp_t	values[1024];
 SCR_DebugGraph
 ==============
 */
-void SCR_DebugGraph (float value, int color)
+void SCR_DebugGraph (float value, int r, int g, int b, int a)
 {
-	values[current&1023].value = value;
-	values[current&1023].color = color;
+	values[current & 1023].value = value;
+	values[current & 1023].color[0] = r;
+	values[current & 1023].color[1] = g;
+	values[current & 1023].color[2] = b;
+	values[current & 1023].color[3] = a;
 	current++;
 }
 
@@ -148,7 +151,7 @@ void SCR_DrawDebugGraph (void)
 {
 	int		a, x, y, w, i, h;
 	float	v;
-	int		color;
+	vec_t	color[4];
 
 	//
 	// draw the graph
@@ -158,19 +161,18 @@ void SCR_DrawDebugGraph (void)
 	x = scr_vrect.x;
 	y = scr_vrect.y+scr_vrect.height;
 	re.DrawFill (x, y-scr_graphheight->value,
-		w, scr_graphheight->value, 8);
+		w, scr_graphheight->value, 123, 123, 123, 255);
 
 	for (a=0 ; a<w ; a++)
 	{
 		i = (current-1-a+1024) & 1023;
 		v = values[i].value;
-		color = values[i].color;
 		v = v*scr_graphscale->value + scr_graphshift->value;
 		
 		if (v < 0)
 			v += scr_graphheight->value * (1+(int)(-v/scr_graphheight->value));
 		h = (int)v % (int)scr_graphheight->value;
-		re.DrawFill (x+w-1-a, y - h, 1,	h, color);
+		re.DrawFill (x+w-1-a, y - h, 1,	h, values[i].color[0], values[i].color[1], values[i].color[2], values[i].color[3]);
 	}
 }
 
@@ -534,7 +536,7 @@ void SCR_DrawConsole (void)
 	if (cls.state != ca_active || !cl.refresh_prepped)
 	{	// connected, but can't render
 		Con_DrawConsole (0.5);
-		re.DrawFill (0, viddef.height/2, viddef.width, viddef.height/2, 0);
+		re.DrawFill (0, viddef.height/2, viddef.width, viddef.height/2, 0, 0, 0, 255);
 		return;
 	}
 
@@ -1301,7 +1303,7 @@ void SCR_UpdateScreen (void)
 			SCR_CheckDrawCenterString ();
 
 			if (scr_timegraph->value)
-				SCR_DebugGraph (cls.frametime*300, 0);
+				SCR_DebugGraph (cls.frametime*300, 0, 0, 0, 255);
 
 			if (scr_debuggraph->value || scr_timegraph->value || scr_netgraph->value)
 				SCR_DrawDebugGraph ();
