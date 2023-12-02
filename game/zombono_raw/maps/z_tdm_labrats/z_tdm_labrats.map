@@ -5153,6 +5153,11 @@
 }
 // entity 22
 {
+"classname" "weapon_bamfuslicator"
+"origin" "-1072 112 -160"
+}
+// entity 23
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "entities"

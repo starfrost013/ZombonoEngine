@@ -752,15 +752,22 @@ edict_t* SelectTeamSpawnPoint(edict_t *player)
 	}
 	else
 	{
-		// Team 0 - Director
+		if (player->team == 0)
+		{
+			gi.bprintf(PRINT_ALL, "Error - Player Teamflag not set! Defaulting to info_player_start");
+			return SelectUnassignedSpawnPoint();
+		}
+		// Teamflags are used to allow items to be used with multiple teams, but not all
+		// 
+		// Teamflag 1 - Director
 		char* spawn_class_name = "info_player_start_director";
 
-		// Team 1 - Player
+		// Teamflag 2 - Player
 		if (player->team == team_player)
 		{
 			spawn_class_name = "info_player_start_player";
 		} 
-		// Team 2 - Unassigned
+		// Teamflag 4 - Unassigned
 		else if (player->team == team_unassigned)
 		{
 			return SelectUnassignedSpawnPoint();
@@ -1001,6 +1008,8 @@ void PutClientInServer (edict_t *ent)
 	int		i;
 	client_persistant_t	saved;
 	client_respawn_t	resp;
+
+	ent->team = team_director;
 
 	// find a spawn point
 	// do it before setting health back up, so farthest

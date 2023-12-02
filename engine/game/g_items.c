@@ -1520,7 +1520,7 @@ always owned, never in the world
 			/* pickup */	"Director - Bamfuslicator",
 			0,
 			0, // 0 = infinite
-			"Zombinator-Dezombinator",
+			"Bullets", // TEMP - Change to Zombinator-Dezombinator later
 			IT_WEAPON,
 			WEAP_BAMFUSLICATOR,
 			NULL,
