@@ -25,6 +25,7 @@ qboolean	Pickup_Weapon (edict_t *ent, edict_t *other);
 void		Use_Weapon (edict_t *ent, gitem_t *inv);
 void		Drop_Weapon (edict_t *ent, gitem_t *inv);
 
+// Q2 Base
 void Weapon_Blaster (edict_t *ent);
 void Weapon_Shotgun (edict_t *ent);
 void Weapon_SuperShotgun (edict_t *ent);
@@ -36,6 +37,9 @@ void Weapon_Grenade (edict_t *ent);
 void Weapon_GrenadeLauncher (edict_t *ent);
 void Weapon_Railgun (edict_t *ent);
 void Weapon_BFG (edict_t *ent);
+
+// Zombono
+void Weapon_Bamfuslicator(edict_t *ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -1497,6 +1501,32 @@ always owned, never in the world
 		NULL,
 		0,
 /* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
+	// 
+	// Director team engine
+	//
+
+	{
+		"weapon_bamfuslicator",
+			Pickup_Weapon,
+			Use_Weapon,
+			Drop_Weapon,
+			Weapon_Bamfuslicator,
+			"misc/w_pkup.wav",
+			"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
+			"models/weapons/v_shotg2/tris.md2",
+			/* icon */		"w_bamfuslicator",
+			/* pickup */	"Director - Bamfuslicator",
+			0,
+			0, // 0 = infinite
+			"Zombinator-Dezombinator",
+			IT_WEAPON,
+			WEAP_BAMFUSLICATOR,
+			NULL,
+			0,
+			/* precache */ "weapons/sshotf1b.wav",
+			team_director,
 	},
 
 	//

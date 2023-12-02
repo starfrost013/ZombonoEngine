@@ -145,6 +145,13 @@ qboolean Pickup_Weapon (edict_t *ent, edict_t *other)
 			return false;	// leave the weapon for others to pickup
 	}
 
+	// if the user is on a team that cannot pick up this item (0 = all teams)
+	if (ent->item->allowed_teams > 0
+		&& !(ent->item->allowed_teams & other->team))
+	{
+		return false;
+	}
+
 	other->client->pers.inventory[index]++;
 
 	if (!(ent->spawnflags & DROPPED_ITEM) )
@@ -1410,5 +1417,17 @@ void Weapon_BFG (edict_t *ent)
 	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire);
 }
 
+void weapon_bamfuslicator_fire(edict_t* ent)
+{
+
+}
+
+void Weapon_Bamfuslicator (edict_t *ent)
+{
+	static int	pause_frames[] = { 29, 42, 57, 0 };
+	static int	fire_frames[] = { 7, 0 };
+
+	Weapon_Generic(ent, 6, 17, 56, 61, pause_frames, fire_frames, Weapon_Bamfuslicator_Fire);
+}
 
 //======================================================================

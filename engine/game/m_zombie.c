@@ -21,33 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Zombie - November 30, 2023
 
-/*
-Copyright (C) 1997-2001 Id Software, Inc.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-*/
-/*
-==============================================================================
-
-zombie
-
-==============================================================================
-*/
-
 #include "g_local.h"
 #include "m_zombie.h"
 
@@ -413,10 +386,6 @@ void zombie_pain(edict_t* self, edict_t* other, float kick, int damage)
 // ATTACK
 //
 
-static int blaster_flash[] = { MZ2_SOLDIER_BLASTER_1, MZ2_SOLDIER_BLASTER_2, MZ2_SOLDIER_BLASTER_3, MZ2_SOLDIER_BLASTER_4, MZ2_SOLDIER_BLASTER_5, MZ2_SOLDIER_BLASTER_6, MZ2_SOLDIER_BLASTER_7, MZ2_SOLDIER_BLASTER_8 };
-static int shotgun_flash[] = { MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8 };
-static int machinegun_flash[] = { MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEGUN_2, MZ2_SOLDIER_MACHINEGUN_3, MZ2_SOLDIER_MACHINEGUN_4, MZ2_SOLDIER_MACHINEGUN_5, MZ2_SOLDIER_MACHINEGUN_6, MZ2_SOLDIER_MACHINEGUN_7, MZ2_SOLDIER_MACHINEGUN_8 };
-
 void zombie_fire(edict_t* self, int flash_number)
 {
 	vec3_t	start;
@@ -425,14 +394,7 @@ void zombie_fire(edict_t* self, int flash_number)
 	vec3_t	dir;
 	vec3_t	end;
 	float	r, u;
-	int		flash_index;
-
-	if (self->s.skinnum < 2)
-		flash_index = blaster_flash[flash_number];
-	else if (self->s.skinnum < 4)
-		flash_index = shotgun_flash[flash_number];
-	else
-		flash_index = machinegun_flash[flash_number];
+	int		flash_index; // will be used for Zombination
 
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[flash_index], forward, right, start);
@@ -459,26 +421,6 @@ void zombie_fire(edict_t* self, int flash_number)
 		VectorNormalize(aim);
 	}
 
-	if (self->s.skinnum <= 1)
-	{
-		monster_fire_blaster(self, start, aim, 5, 600, flash_index, EF_BLASTER);
-	}
-	else if (self->s.skinnum <= 3)
-	{
-		monster_fire_shotgun(self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
-	}
-	else
-	{
-		if (!(self->monsterinfo.aiflags & AI_HOLD_FRAME))
-			self->monsterinfo.pausetime = level.time + (3 + rand() % 8) * FRAMETIME;
-
-		monster_fire_bullet(self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
-
-		if (level.time >= self->monsterinfo.pausetime)
-			self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
-		else
-			self->monsterinfo.aiflags |= AI_HOLD_FRAME;
-	}
 }
 
 // ATTACK1 (blaster/shotgun)
@@ -634,29 +576,6 @@ mframe_t zombie_frames_attack3[] =
 };
 mmove_t zombie_move_attack3 = { FRAME_attak301, FRAME_attak309, zombie_frames_attack3, zombie_run };
 
-// ATTACK4 (machinegun)
-
-void zombie_fire4(edict_t* self)
-{
-	zombie_fire(self, 3);
-	//
-	//	if (self->enemy->health <= 0)
-	//		return;
-	//
-	//	if ( ((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE) )
-	//		self->monsterinfo.nextframe = FRAME_attak402;
-}
-
-mframe_t zombie_frames_attack4[] =
-{
-	ai_charge, 0, NULL,
-	ai_charge, 0, NULL,
-	ai_charge, 0, zombie_fire4,
-	ai_charge, 0, NULL,
-	ai_charge, 0, NULL,
-	ai_charge, 0, NULL
-};
-mmove_t zombie_move_attack4 = { FRAME_attak401, FRAME_attak406, zombie_frames_attack4, zombie_run };
 
 // ATTACK6 (run & shoot)
 
@@ -694,23 +613,16 @@ mframe_t zombie_frames_attack6[] =
 	ai_charge, 12, NULL,
 	ai_charge, 17, zombie_attack6_refire
 };
+
 mmove_t zombie_move_attack6 = { FRAME_runs01, FRAME_runs14, zombie_frames_attack6, zombie_run };
 
 void zombie_attack(edict_t* self)
 {
-	if (self->s.skinnum < 4)
-	{
-		if (random() < 0.5)
-			self->monsterinfo.currentmove = &zombie_move_attack1;
-		else
-			self->monsterinfo.currentmove = &zombie_move_attack2;
-	}
+	if (random() < 0.5)
+		self->monsterinfo.currentmove = &zombie_move_attack1;
 	else
-	{
-		self->monsterinfo.currentmove = &zombie_move_attack4;
-	}
+		self->monsterinfo.currentmove = &zombie_move_attack2;
 }
-
 
 //
 // SIGHT

@@ -262,6 +262,8 @@ typedef struct gitem_s
 	int			tag;
 
 	char		*precaches;		// string of all models, sounds, and images this item will use
+
+	int			allowed_teams;	// The teams that are allowed for this item.
 } gitem_t;
 
 
@@ -737,7 +739,7 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
-
+void fire_bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, int zombie_type);
 //
 // g_ptrail.c
 //
@@ -966,13 +968,14 @@ struct gclient_s
 };
 
 // Zombono Teams
+// These are flags so that certain items can be set to only work with certain teams.
 typedef enum player_team_e
 {
-	team_director = 0,				// The director team. Has access to spawning equipment.
+	team_director = 1,				// The director team. Has access to spawning equipment.
 
-	team_player = 1,				// The player team. Doesn't have access to spawning equipment.
+	team_player = 2,				// The player team. Doesn't have access to spawning equipment.
 
-	team_unassigned = 2,			// Used for non-team gamemodes and players that are joining.
+	team_unassigned = 4,			// Used for non-team gamemodes and players that are joining.
 } player_team;
 
 struct edict_s
