@@ -71,7 +71,7 @@ a personal noise (jumping, pain, weapon firing), and a weapon
 target noise (bullet wall impacts)
 
 Monsters that don't directly see the player can move
-to a noise in hopes of seeing the player from there.
+to a noise in hopes of seeing the player from there. 
 ===============
 */
 void PlayerNoise(edict_t *who, vec3_t where, int type)

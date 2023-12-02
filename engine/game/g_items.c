@@ -1861,6 +1861,27 @@ gives +1 to maximum health
 /* precache */ ""
 	},
 
+	{
+		NULL,
+		Pickup_Health,
+		NULL,
+		NULL,
+		NULL,
+		"items/pkup.wav",
+		NULL, 0,
+		NULL,
+		/* icon */		"i_health",
+		/* pickup */	"Health",
+		/* width */		3,
+				0,
+				NULL,
+				0,
+				0,
+				NULL,
+				0,
+				/* precache */ "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav"
+	},
+
 	// end of list marker
 	{NULL}
 };
