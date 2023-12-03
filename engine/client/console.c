@@ -595,7 +595,7 @@ void Con_DrawConsole (float frac)
 
 	Com_sprintf (version, sizeof(version), "Zombono v%s", ZOMBONO_VERSION);
 
-	for (x=0 ; x<15 ; x++)
+	for (x=0 ; x<strlen(version) ; x++)
 		re.DrawChar (viddef.width-122*vid_hudscale->value+x*8*vid_hudscale->value, lines-12*vid_hudscale->value, 128 + version[x] );
 
 // draw the text
