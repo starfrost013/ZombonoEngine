@@ -1095,6 +1095,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 
 //======================================================================
 
+
 gitem_t	itemlist[] = 
 {
 	{

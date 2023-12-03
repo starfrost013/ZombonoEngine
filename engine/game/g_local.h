@@ -964,7 +964,7 @@ struct gclient_s
 	float		respawn_time;		// can respawn when time > this
 
 	edict_t		*chase_target;		// player we are chasing
-	qboolean	update_chase;		// need to update chase info?
+	qboolean	update_chase;		// need to update chase info? 
 };
 
 // Zombono Teams

@@ -104,7 +104,7 @@ field_t fields[] = {
 	{"pausetime", STOFS(pausetime), F_FLOAT, FFL_SPAWNTEMP},
 	{"item", STOFS(item), F_LSTRING, FFL_SPAWNTEMP},
 
-//need for item field in edict struct, FFL_SPAWNTEMP item will be skipped on saves
+//need for item field in edict struct, FFL_SPAWNTEMP item will be skipped on saves 
 	{"item", FOFS(item), F_ITEM},
 
 	{"gravity", STOFS(gravity), F_LSTRING, FFL_SPAWNTEMP},

@@ -118,7 +118,7 @@ spawn_t	spawns[] = {
 	{"item_health_mega", SP_item_health_mega},
 
 	{"info_player_start", SP_info_player_start},
-	{"info_player_start_director", SP_info_player_start_director},
+	{"info_player_start_director", SP_info_player_start_director}, 
 	{"info_player_start_player", SP_info_player_start_player},
 
 	{"func_plat", SP_func_plat},

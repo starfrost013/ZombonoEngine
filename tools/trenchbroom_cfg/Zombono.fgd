@@ -426,6 +426,7 @@
 		1 : "Start Off" : 0
 	]
 	light(integer) : "Brightness" : 300
+	_color(color1) : "RGB Color" // why is this not here already
 	style(Choices) : "Style" : 0 =
 	[
 		0 : "Normal"
