@@ -5353,6 +5353,96 @@
 }
 // entity 52
 {
+"classname" "light"
+"origin" "-664 80 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 53
+{
+"classname" "light"
+"origin" "-136 736 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 54
+{
+"classname" "light"
+"origin" "232 384 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 55
+{
+"classname" "light"
+"origin" "-552 384 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 56
+{
+"classname" "light"
+"origin" "-552 -256 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 57
+{
+"classname" "light"
+"origin" "232 -256 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 58
+{
+"classname" "light"
+"origin" "424 64 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 59
+{
+"classname" "light"
+"origin" "-120 -416 208"
+"_color" "255 255 255"
+"_cone" "150"
+"light" "500"
+"style" "0"
+}
+// entity 60
+{
+"classname" "light"
+"origin" "1000 208 -32"
+"_color" "255 136 0"
+"_cone" "220"
+"light" "500"
+"style" "0"
+}
+// entity 61
+{
+"classname" "light"
+"origin" "-1288 -16 -32"
+"_color" "255 0 127"
+"_cone" "220"
+"light" "500"
+"style" "0"
+}
+// entity 62
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "entities"

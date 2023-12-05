@@ -127,5 +127,8 @@
     <ClInclude Include="m_zombie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="g_spawn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

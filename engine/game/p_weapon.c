@@ -1417,9 +1417,28 @@ void Weapon_BFG (edict_t *ent)
 	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire);
 }
 
+//
+// Director Team Bamfuslicator
+//
+
 void Weapon_Bamfuslicator_Fire(edict_t* ent)
 {
+	//todo: audio
+	vec3_t offset, start, forward, right;
+	int zombie_min_distance = 32;
+	int zombie_max_distance = 2048;
 
+	// only fire forward
+	AngleVectors(ent->client->v_angle, start, forward, NULL);
+
+	// set offset
+	VectorSet(offset, 0, 8, ent->viewheight - 8);
+	
+	P_ProjectSource(ent, offset, forward, right, start);
+
+	fire_bamfuslicator(ent, start, forward, 0);
+
+	ent->client->ps.gunframe++; // increment anim frame
 }
 
 void Weapon_Bamfuslicator (edict_t *ent)

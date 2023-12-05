@@ -18,8 +18,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+#pragma once
 #include "g_local.h"
-
+#include "g_spawn.h"
 
 /*
 =================
@@ -914,5 +915,7 @@ void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, f
 /* Bamfuslicator */
 void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_type)
 {
+	edict_t* zombie;
 
+	SP_monster_zombie(self);
 }
