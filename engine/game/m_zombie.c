@@ -394,10 +394,9 @@ void zombie_fire(edict_t* self, int flash_number)
 	vec3_t	dir;
 	vec3_t	end;
 	float	r, u;
-	int		flash_index; // will be used for Zombination
 
 	AngleVectors(self->s.angles, forward, right, NULL);
-	G_ProjectSource(self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+	G_ProjectSource(self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
 	if (flash_number == 5 || flash_number == 6)
 	{
@@ -1037,14 +1036,14 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 
 void SP_monster_zombie_x(edict_t* self)
 {
-
+	self->classname = "monster_zombie"; // for Bamfuslicator
 	self->s.modelindex = gi.modelindex("models/monsters/zombie/tris.md2");
 	self->monsterinfo.scale = MODEL_SCALE;
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, 32);
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
-
+	
 	sound_idle = gi.soundindex("zombie/idle_w2.wav");
 	sound_sight1 = gi.soundindex("zombie/z_idle.wav");
 	sound_sight2 = gi.soundindex("zombie/z_idle1.wav");
@@ -1072,7 +1071,7 @@ void SP_monster_zombie_x(edict_t* self)
 
 /*Ambush Trigger_Spawn Sight
 */
-void SP_monster_zombie(edict_t* self)
+SP_monster_zombie(edict_t* self)
 {
 	SP_monster_zombie_x(self);
 

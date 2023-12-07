@@ -1429,7 +1429,7 @@ void Weapon_Bamfuslicator_Fire(edict_t* ent)
 	int zombie_max_distance = 2048;
 
 	// only fire forward
-	AngleVectors(ent->client->v_angle, start, forward, NULL);
+	AngleVectors(ent->client->v_angle, forward, right, NULL);
 
 	// set offset
 	VectorSet(offset, 0, 8, ent->viewheight - 8);

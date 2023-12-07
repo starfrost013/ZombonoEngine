@@ -53,6 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	SPAWNFLAG_NOT_MEDIUM		0x00000200
 #define	SPAWNFLAG_NOT_HARD			0x00000400
 #define	SPAWNFLAG_NOT_TDM			0x00000800
+
 #define	SPAWNFLAG_NOT_HOSTAGE		0x00001000
 #define SPAWNFLAG_NOT_WAVES			0x00002000
 #define SPAWNFLAG_NOT_COOP			0x00004000
@@ -265,8 +266,6 @@ typedef struct gitem_s
 
 	int			allowed_teams;	// The teams that are allowed for this item.
 } gitem_t;
-
-
 
 //
 // this structure is left intact through an entire game
