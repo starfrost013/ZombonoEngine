@@ -29,6 +29,7 @@
     <ClCompile Include="client\cl_pred.c" />
     <ClCompile Include="client\cl_scrn.c" />
     <ClCompile Include="client\cl_tent.c" />
+    <ClCompile Include="client\cl_ui.c" />
     <ClCompile Include="client\cl_view.c" />
     <ClCompile Include="client\console.c" />
     <ClCompile Include="client\keys.c" />

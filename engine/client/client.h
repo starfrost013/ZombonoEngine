@@ -547,3 +547,77 @@ void CL_DrawInventory (void);
 // cl_pred.c
 //
 void CL_PredictMovement (void);
+
+//
+// cl_ui.c
+// This is like the Zombono-Q1 UI system, except not broken and not having the server depend on stuff only the client can possibly know.
+// This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
+
+#define CONTROLS_PER_UI			64
+#define MAX_UIS					32
+
+typedef enum ui_control_type_e
+{
+	ui_control_text = 0,
+	ui_control_image = 1,
+	ui_control_button = 2,
+	ui_control_slider = 3,
+	ui_control_checkbox = 4,
+} ui_control_type;
+
+typedef struct ui_control_s
+{
+	// general
+	ui_control_type		type;
+	qboolean			enabled;			// True if the UI is currently being drawn.
+	qboolean			active;				// True if the UI is currently interactable.
+	int					position_x;
+	int					position_y;
+	int					size_x;
+	int					size_y;
+
+	// text
+	char*				text;
+	// image
+	char*				image_path;
+	// slider
+	int					value_min;
+	int					value_max;
+	// checkbox
+	qboolean			checked;
+	// events
+	void				(*on_click)();
+} ui_control_t;
+
+typedef struct ui_e
+{
+	ui_control_t		controls[CONTROLS_PER_UI];
+	int					num_controls;
+	ui_control_t		current_control;	// DON'T PREMATURELY OPTIMISE BUT DON'T WRITE TERRIBLE SLOW CODE!
+} ui_t;
+
+ui_t					ui_list[MAX_UIS];
+ui_t					current_ui;			// the current UI being edited
+
+// UI: Init
+qboolean UI_Init();
+qboolean UI_AddUI(char* name);
+
+// UI: Init Controls
+qboolean UI_AddText(const char* name, char* text, int position_x, int position_y);
+qboolean UI_AddImage(const char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);
+qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y);
+qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int min_value, int max_value);
+qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
+
+// UI: Set Event Handler
+qboolean UI_SetOnClicked(const char* name, void (*func)());
+
+// UI: Toggle
+qboolean UI_SetEnabled(const char* name, qboolean enabled);
+qboolean UI_SetActive(const char* name, qboolean enabled);
+
+void UI_Draw();
+
+// UI Script Done
+qboolean UI_Done();

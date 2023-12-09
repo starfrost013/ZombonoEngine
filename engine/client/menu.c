@@ -420,7 +420,7 @@ void M_Main_Draw (void)
 	}
 
 	ystart = ( viddef.height / 2 - 110 * vid_hudscale->value);
-	xoffset = ( viddef.width - widest + 70 * vid_hudscale->value) / 2;
+	xoffset = ( viddef.width - widest * vid_hudscale->value) / 2; // moved left by 70 pixels, because we got rid of the "QUAKE2" logo
 
 	for ( i = 0; names[i] != 0; i++ )
 	{
