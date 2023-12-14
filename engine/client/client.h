@@ -553,7 +553,7 @@ void CL_PredictMovement (void);
 // This is like the Zombono-Q1 UI system, except not broken and not having the server depend on stuff only the client can possibly know.
 // This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
 
-#define CONTROLS_PER_UI			64
+#define CONTROLS_PER_UI			48
 #define MAX_UIS					32
 
 typedef enum ui_control_type_e
@@ -569,12 +569,12 @@ typedef struct ui_control_s
 {
 	// general
 	ui_control_type		type;
-	qboolean			enabled;			// True if the UI is currently being drawn.
-	qboolean			active;				// True if the UI is currently interactable.
 	int					position_x;
 	int					position_y;
 	int					size_x;
 	int					size_y;
+	char*				name;
+	qboolean			visible;					// Is this control visible/
 
 	// text
 	char*				text;
@@ -589,35 +589,37 @@ typedef struct ui_control_s
 	void				(*on_click)();
 } ui_control_t;
 
-typedef struct ui_e
+typedef struct ui_s
 {
-	ui_control_t		controls[CONTROLS_PER_UI];
-	int					num_controls;
-	ui_control_t		current_control;	// DON'T PREMATURELY OPTIMISE BUT DON'T WRITE TERRIBLE SLOW CODE!
+	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
+	int					num_controls;				// Number of controls in the UI.
+	char* name;
+	qboolean(*on_create)();				// UI Create function for client
+	qboolean			enabled;					// True if the UI is currently being drawn.
+	qboolean			active;						// True if the UI is currently interactable.
 } ui_t;
 
 ui_t					ui_list[MAX_UIS];
-ui_t					current_ui;			// the current UI being edited
+ui_t					current_ui;					// the current UI being edited
+int						num_uis;					// the current number of UIs
 
 // UI: Init
 qboolean UI_Init();
-qboolean UI_AddUI(char* name);
+qboolean UI_AddUI(char* name, qboolean (*on_create)());
 
 // UI: Init Controls
 qboolean UI_AddText(const char* name, char* text, int position_x, int position_y);
 qboolean UI_AddImage(const char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);
 qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y);
-qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int min_value, int max_value);
+qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);
 qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
 
 // UI: Set Event Handler
-qboolean UI_SetOnClicked(const char* name, void (*func)());
+qboolean UI_SetOnClicked(void (*func)());
 
 // UI: Toggle
 qboolean UI_SetEnabled(const char* name, qboolean enabled);
 qboolean UI_SetActive(const char* name, qboolean enabled);
 
+// UI: Draw
 void UI_Draw();
-
-// UI Script Done
-qboolean UI_Done();

@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -52,7 +53,6 @@ cvar_t		*scr_showturtle;
 cvar_t		*scr_showpause;
 cvar_t		*scr_printspeed;
 
-cvar_t		*scr_netgraph;
 cvar_t		*scr_timegraph;
 cvar_t		*scr_debuggraph;
 cvar_t		*scr_graphheight;
@@ -99,7 +99,7 @@ void CL_AddNetgraph (void)
 
 	// if using the debuggraph for something else, don't
 	// add the net lines
-	if (scr_debuggraph->value || scr_timegraph->value)
+	if (scr_timegraph->value)
 		return;
 
 	for (i=0 ; i<cls.netchan.dropped ; i++)
@@ -415,7 +415,6 @@ void SCR_Init (void)
 	scr_showpause = Cvar_Get ("scr_showpause", "1", 0);
 	scr_centertime = Cvar_Get ("scr_centertime", "2.5", 0);
 	scr_printspeed = Cvar_Get ("scr_printspeed", "8", 0);
-	scr_netgraph = Cvar_Get ("netgraph", "0", 0);
 	scr_timegraph = Cvar_Get ("timegraph", "0", 0);
 	scr_debuggraph = Cvar_Get ("debuggraph", "0", 0);
 	scr_graphheight = Cvar_Get ("graphheight", "32", 0);
@@ -1305,7 +1304,7 @@ void SCR_UpdateScreen (void)
 			if (scr_timegraph->value)
 				SCR_DebugGraph (cls.frametime*300, 0, 0, 0, 255);
 
-			if (scr_debuggraph->value || scr_timegraph->value || scr_netgraph->value)
+			if (scr_debuggraph->value || scr_timegraph->value)
 				SCR_DrawDebugGraph ();
 
 			SCR_DrawPause ();

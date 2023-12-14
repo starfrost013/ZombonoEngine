@@ -213,6 +213,7 @@ enum svc_ops_e
 	svc_temp_entity,
 	svc_layout,
 	svc_inventory,
+	svc_drawui,					// <ui name>
 
 	// the rest are private to the client and server
 	svc_nop,
@@ -230,7 +231,7 @@ enum svc_ops_e
 	svc_packetentities,			// [...]
 	svc_deltapacketentities,	// [...]
 	svc_frame
-};
+} svc_ops;
 
 //==============================================
 
@@ -244,7 +245,7 @@ enum clc_ops_e
 	clc_move,				// [[usercmd_t]
 	clc_userinfo,			// [[userinfo string]
 	clc_stringcmd			// [string] message
-};
+} clc_ops;
 
 //==============================================
 

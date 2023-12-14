@@ -311,7 +311,7 @@ void Con_Init (void)
 	
 	Com_Printf ("Console initialized.\n");
 
-	Com_Printf("Zombono © 2023 starfrost.\n");
+	Com_Printf("Zombono © 2023-2024 starfrost.\n");
 	Com_Printf("ALPHA RELEASE\n");
 
 //

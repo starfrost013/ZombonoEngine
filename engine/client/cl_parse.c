@@ -31,6 +31,7 @@ char *svc_strings[256] =
 	"svc_temp_entity",
 	"svc_layout",
 	"svc_inventory",
+	"svc_drawui",
 
 	"svc_nop",
 	"svc_disconnect",
@@ -48,7 +49,6 @@ char *svc_strings[256] =
 	"svc_deltapacketentities",
 	"svc_frame",
 
-	"svc_displayui",
 };
 
 //=============================================================================
@@ -793,6 +793,11 @@ void CL_ParseServerMessage (void)
 		case svc_packetentities:
 		case svc_deltapacketentities:
 			Com_Error (ERR_DROP, "Out of place frame data");
+			break;
+
+		case svc_drawui:
+			s = MSG_ReadString(&net_message);
+			UI_SetEnabled(s, true);
 			break;
 		}
 	}

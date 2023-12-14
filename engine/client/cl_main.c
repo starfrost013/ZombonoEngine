@@ -1786,7 +1786,7 @@ void CL_Init (void)
 	// all archived variables will now be loaded
 
 	Con_Init ();	
-#if defined __linux__ || defined __sgi
+#if defined __linux__
 	S_Init ();	
 	VID_Init ();
 #else
@@ -1808,8 +1808,8 @@ void CL_Init (void)
 	Miniaudio_Init ();
 	CL_InitLocal ();
 	IN_Init ();
+	UI_Init ();
 
-//	Cbuf_AddText ("exec autoexec.cfg\n");
 	FS_ExecAutoexec ();
 	Cbuf_Execute ();
 
