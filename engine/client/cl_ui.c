@@ -43,12 +43,28 @@ void		UI_DrawCheckbox(ui_control_t checkbox);
 qboolean UI_Init()
 {
 	memset(&ui_list, 0x00, sizeof(ui_list));
+
+	UI_AddUI("TeamUI", UI_CreateTeamUI);
 }
 
 qboolean UI_AddUI(char* name, qboolean(*on_create)())
 {
 	current_ui = ui_list[num_uis];
+
+	if (num_uis > MAX_UIS)
+	{
+		Sys_Error("Tried to create a UI when there are more than %d UIs!", MAX_UIS);
+		return false; 
+	}
+
 	num_uis++;
+
+	if (strlen(name) > MAX_UI_NAME_LENGTH)
+	{
+		Sys_Error("Tried to create a UI with name more than %d characters!", MAX_UI_NAME_LENGTH);
+		return false;
+	}
+
 	strcpy(current_ui.name, name);
 
 	if (on_create == NULL)
@@ -57,15 +73,18 @@ qboolean UI_AddUI(char* name, qboolean(*on_create)())
 		return false;
 	}
 
+	current_ui.on_create = on_create;
+
 	if (!on_create())
 	{
 		Sys_Error("UI create function failed for UI %s", name); // should these be fatal?
+		return false; 
 	}
 
 	return true;
 }
 
-// returna pointer s
+// return a pointer to a UI
 ui_t* UI_GetUI(char* name)
 {
 	for (int ui_num = 0; ui_num < num_uis; ui_num++)

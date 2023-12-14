@@ -63,7 +63,7 @@ void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damag
 {
 	fire_grenade (self, start, aimdir, damage, speed, 2.5, damage+40);
 
-	gi.WriteByte (svc_muzzleflash2); yer au
+	gi.WriteByte (svc_muzzleflash2);
 	gi.WriteShort (self - g_edicts);
 	gi.WriteByte (flashtype);
 	gi.multicast (start, MULTICAST_PVS);
