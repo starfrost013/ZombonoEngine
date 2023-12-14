@@ -44,7 +44,11 @@ qboolean UI_Init()
 {
 	memset(&ui_list, 0x00, sizeof(ui_list));
 
-	UI_AddUI("TeamUI", UI_CreateTeamUI);
+	qboolean successful;
+
+	successful = UI_AddUI("TeamUI", UI_CreateTeamUI);
+
+	return successful;
 }
 
 qboolean UI_AddUI(char* name, qboolean(*on_create)())
@@ -147,6 +151,8 @@ qboolean UI_AddImage(const char* name, char* image_path, int position_x, int pos
 	strcpy(ui_control.image_path, image_path);
 
 	ui_control.type = ui_control_image;
+
+	return true; 
 }
 
 qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y)
