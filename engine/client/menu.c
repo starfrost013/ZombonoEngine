@@ -2484,7 +2484,7 @@ void GameOptions_MenuInit( void )
 	s_falls_box.generic.type = MTYPE_SPINCONTROL;
 	s_falls_box.generic.x	= 0;
 	s_falls_box.generic.y	= y * vid_hudscale->value;
-	s_falls_box.generic.name	= "Fall damage";
+	s_falls_box.generic.name	= "Fall Damage";
 	s_falls_box.generic.callback = GameFlagCallback;
 	s_falls_box.itemnames = yes_no_names;
 	s_falls_box.curvalue = ( gameflags & GF_NO_FALLING ) == 0;
@@ -2492,7 +2492,7 @@ void GameOptions_MenuInit( void )
 	s_weapons_stay_box.generic.type = MTYPE_SPINCONTROL;
 	s_weapons_stay_box.generic.x	= 0;
 	s_weapons_stay_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_weapons_stay_box.generic.name	= "Weapons stay after death";
+	s_weapons_stay_box.generic.name	= "Weapons Stay After Death";
 	s_weapons_stay_box.generic.callback = GameFlagCallback;
 	s_weapons_stay_box.itemnames = yes_no_names;
 	s_weapons_stay_box.curvalue = ( gameflags & GF_WEAPONS_STAY ) != 0;
@@ -2840,11 +2840,9 @@ static menufield_s		s_player_name_field;
 static menulist_s		s_player_model_box;
 static menulist_s		s_player_skin_box;
 static menulist_s		s_player_handedness_box;
-static menulist_s		s_player_rate_box;
 static menuseparator_s	s_player_skin_title;
 static menuseparator_s	s_player_model_title;
 static menuseparator_s	s_player_hand_title;
-static menuseparator_s	s_player_rate_title;
 static menuaction_s		s_player_download_action;
 
 #define MAX_DISPLAYNAME 16
@@ -2862,9 +2860,6 @@ static playermodelinfo_s s_pmi[MAX_PLAYERMODELS];
 static char *s_pmnames[MAX_PLAYERMODELS];
 static int s_numplayermodels;
 
-static int rate_tbl[] = { 2500, 3200, 5000, 10000, 25000, 0 };
-static const char *rate_names[] = { "28.8 Modem", "33.6 Modem", "Single ISDN",
-	"Dual ISDN/Cable", "T1/LAN", "User defined", 0 };
 
 void DownloadOptionsFunc( void *self )
 {
@@ -2874,12 +2869,6 @@ void DownloadOptionsFunc( void *self )
 static void HandednessCallback( void *unused )
 {
 	Cvar_SetValue( "hand", s_player_handedness_box.curvalue );
-}
-
-static void RateCallback( void *unused )
-{
-	if (s_player_rate_box.curvalue != sizeof(rate_tbl) / sizeof(*rate_tbl) - 1)
-		Cvar_SetValue( "rate", rate_tbl[s_player_rate_box.curvalue] );
 }
 
 static void ModelCallback( void *unused )
@@ -3205,24 +3194,6 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_handedness_box.curvalue = Cvar_VariableValue( "hand" );
 	s_player_handedness_box.itemnames = handedness;
 
-	for (i = 0; i < sizeof(rate_tbl) / sizeof(*rate_tbl) - 1; i++)
-		if (Cvar_VariableValue("rate") == rate_tbl[i])
-			break;
-
-	s_player_rate_title.generic.type = MTYPE_SEPARATOR;
-	s_player_rate_title.generic.name = "Connect Speed";
-	s_player_rate_title.generic.x    = 56 * vid_hudscale->value;
-	s_player_rate_title.generic.y	 = 156 * vid_hudscale->value;
-
-	s_player_rate_box.generic.type = MTYPE_SPINCONTROL;
-	s_player_rate_box.generic.x	= -56 * vid_hudscale->value;
-	s_player_rate_box.generic.y	= 166 * vid_hudscale->value;
-	s_player_rate_box.generic.name	= 0;
-	s_player_rate_box.generic.cursor_offset = -48;
-	s_player_rate_box.generic.callback = RateCallback;
-	s_player_rate_box.curvalue = i;
-	s_player_rate_box.itemnames = rate_names;
-
 	s_player_download_action.generic.type = MTYPE_ACTION;
 	s_player_download_action.generic.name	= "Download Options:";
 	s_player_download_action.generic.flags= QMF_LEFT_JUSTIFY;
@@ -3241,8 +3212,6 @@ qboolean PlayerConfig_MenuInit( void )
 	}
 	Menu_AddItem( &s_player_config_menu, &s_player_hand_title );
 	Menu_AddItem( &s_player_config_menu, &s_player_handedness_box );
-	Menu_AddItem( &s_player_config_menu, &s_player_rate_title );
-	Menu_AddItem( &s_player_config_menu, &s_player_rate_box );
 	Menu_AddItem( &s_player_config_menu, &s_player_download_action );
 
 	return true;

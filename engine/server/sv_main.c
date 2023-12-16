@@ -913,20 +913,6 @@ void SV_UserinfoChanged (client_t *cl)
 	for (i=0 ; i<sizeof(cl->name) ; i++)
 		cl->name[i] &= 127;
 
-	// rate command
-	val = Info_ValueForKey (cl->userinfo, "rate");
-	if (strlen(val))
-	{
-		i = atoi(val);
-		cl->rate = i;
-		if (cl->rate < 100)
-			cl->rate = 100;
-		if (cl->rate > 15000)
-			cl->rate = 15000;
-	}
-	else
-		cl->rate = 5000;
-
 	// msg command
 	val = Info_ValueForKey (cl->userinfo, "msg");
 	if (strlen(val))
