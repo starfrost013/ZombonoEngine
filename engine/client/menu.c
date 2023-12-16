@@ -280,32 +280,6 @@ void M_DrawCharacter (int cx, int cy, int num)
 	re.DrawChar ( cx + ((viddef.width - 320)>>1), cy + ((viddef.height - 240)>>1), num);
 }
 
-void M_Print (int cx, int cy, char *str)
-{
-	while (*str)
-	{
-		M_DrawCharacter (cx, cy, (*str)+128);
-		str++;
-		cx += 8 * vid_hudscale->value;
-	}
-}
-
-void M_PrintWhite (int cx, int cy, char *str)
-{
-	while (*str)
-	{
-		M_DrawCharacter (cx, cy, *str);
-		str++;
-		cx += 8 * vid_hudscale->value;
-	}
-}
-
-void M_DrawPic (int x, int y, char *pic)
-{
-	re.DrawPic (x + ((viddef.width - 320)>>1), y + ((viddef.height - 240)>>1), pic);
-}
-
-
 /*
 =============
 M_DrawCursor
@@ -538,21 +512,21 @@ void Multiplayer_MenuInit( void )
 	s_join_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_join_network_server_action.generic.x		= 0;
 	s_join_network_server_action.generic.y		= 0;
-	s_join_network_server_action.generic.name	= " join network server";
+	s_join_network_server_action.generic.name	= " Join network server";
 	s_join_network_server_action.generic.callback = JoinNetworkServerFunc;
 
 	s_start_network_server_action.generic.type	= MTYPE_ACTION;
 	s_start_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_start_network_server_action.generic.x		= 0;
 	s_start_network_server_action.generic.y		= 10 * vid_hudscale->value;
-	s_start_network_server_action.generic.name	= " start network server";
+	s_start_network_server_action.generic.name	= " Start network server";
 	s_start_network_server_action.generic.callback = StartNetworkServerFunc;
 
 	s_player_setup_action.generic.type	= MTYPE_ACTION;
 	s_player_setup_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_player_setup_action.generic.x		= 0;
 	s_player_setup_action.generic.y		= 20 * vid_hudscale->value;
-	s_player_setup_action.generic.name	= " player setup";
+	s_player_setup_action.generic.name	= " Player Setup";
 	s_player_setup_action.generic.callback = PlayerSetupFunc;
 
 	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_join_network_server_action );
@@ -1376,9 +1350,9 @@ void Options_MenuDraw (void)
 	if (update_sound_quality)
 	{
 		M_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
 
 		CL_Snd_Restart_f();
 		update_sound_quality = false;
@@ -2033,9 +2007,9 @@ void JoinServer_MenuDraw(void)
 	if (search_local_games)
 	{
 		M_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		M_Print(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
+		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
 
 		// send out info packets
 		CL_PingServers_f();

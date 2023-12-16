@@ -25,5 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void UI_CreateTeamUI()
 {
-	
+	UI_AddText("TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 70, viddef.height / 5);
+	UI_AddImage("TeamUI_DirectorTeam", "ui\\teamui_btn_director", viddef.width / 2 - 40, viddef.height / 2 - 128, 256, 128);
+	UI_AddImage("TeamUI_PlayerTeam", "ui\\teamui_btn_player", viddef.width / 2 - 40, viddef.height / 2 - 128, 256, 128);
 }

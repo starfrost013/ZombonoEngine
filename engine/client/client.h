@@ -555,7 +555,7 @@ void CL_PredictMovement (void);
 
 #define CONTROLS_PER_UI			48
 #define MAX_UIS					32
-#define MAX_UI_NAME_LENGTH		32
+#define MAX_UI_STR_LENGTH		32
 
 typedef enum ui_control_type_e
 {
@@ -574,11 +574,11 @@ typedef struct ui_control_s
 	int					position_y;
 	int					size_x;
 	int					size_y;
-	char*				name;
+	char				name[MAX_UI_STR_LENGTH];
 	qboolean			visible;					// Is this control visible/
 
 	// text
-	char*				text;
+	char				text[MAX_UI_STR_LENGTH];
 	// image
 	char*				image_path;
 	// slider
@@ -594,7 +594,7 @@ typedef struct ui_s
 {
 	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
 	int					num_controls;				// Number of controls in the UI.
-	char				name[MAX_UI_NAME_LENGTH];	// UI name.			
+	char				name[MAX_UI_STR_LENGTH];	// UI name.			
 	qboolean(*on_create)();							// UI Create function for client
 	qboolean			enabled;					// True if the UI is currently being drawn.
 	qboolean			active;						// True if the UI is currently interactable.
