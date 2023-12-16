@@ -512,7 +512,7 @@ void Multiplayer_MenuInit( void )
 	s_join_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_join_network_server_action.generic.x		= 0;
 	s_join_network_server_action.generic.y		= 0;
-	s_join_network_server_action.generic.name	= " Join network server";
+	s_join_network_server_action.generic.name	= " Join Network Server";
 	s_join_network_server_action.generic.callback = JoinNetworkServerFunc;
 
 	s_start_network_server_action.generic.type	= MTYPE_ACTION;
@@ -1272,7 +1272,7 @@ void Options_MenuInit( void )
 	s_options_lookspring_box.generic.type = MTYPE_SPINCONTROL;
 	s_options_lookspring_box.generic.x	= 0;
 	s_options_lookspring_box.generic.y	= 80 * vid_hudscale->value;
-	s_options_lookspring_box.generic.name	= Lookspring";
+	s_options_lookspring_box.generic.name	= "Lookspring";
 	s_options_lookspring_box.generic.callback = LookspringFunc;
 	s_options_lookspring_box.itemnames = yesno_names;
 
@@ -1286,7 +1286,7 @@ void Options_MenuInit( void )
 	s_options_freelook_box.generic.type = MTYPE_SPINCONTROL;
 	s_options_freelook_box.generic.x	= 0;
 	s_options_freelook_box.generic.y	= 100 * vid_hudscale->value;
-	s_options_freelook_box.generic.name	= "Free Lok";
+	s_options_freelook_box.generic.name	= "Free Look";
 	s_options_freelook_box.generic.callback = FreeLookFunc;
 	s_options_freelook_box.itemnames = yesno_names;
 
