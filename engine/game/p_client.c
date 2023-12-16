@@ -351,7 +351,6 @@ void TossClientWeapon (edict_t *self)
 	}
 }
 
-
 /*
 ==================
 LookAtKiller
@@ -493,17 +492,38 @@ This is only called when the game first initializes in single player,
 but is called after each death and level change in deathmatch
 ==============
 */
-void InitClientPersistant (gclient_t *client)
+void InitClientPersistant (edict_t *client_edict)
 {
 	gitem_t		*item;
 
+	gclient_t*	client = client_edict->client;
+
+	// fail
+	if (client == NULL)
+	{
+		Sys_Error("Tried to InitClientPersistent a non-client!");
+		return;
+	}
+
 	memset (&client->pers, 0, sizeof(client->pers));
 
-	item = FindItem("Blaster");
-	client->pers.selected_item = ITEM_INDEX(item);
-	client->pers.inventory[client->pers.selected_item] = 1;
+	// Give them the default weapon!
 
-	client->pers.weapon = item;
+	if (client_edict->team == team_director)
+	{
+		item = FindItem("Director - Bamfuslicator");
+		client->pers.selected_item = ITEM_INDEX(item);
+		client->pers.inventory[client->pers.selected_item] = WEAP_BAMFUSLICATOR;
+		client->pers.weapon = item;
+
+	}
+	else 
+	{
+		item = FindItem("Blaster");
+		client->pers.selected_item = ITEM_INDEX(item);
+		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
+		client->pers.weapon = item;
+	}
 
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
@@ -1034,7 +1054,7 @@ void PutClientInServer (edict_t *ent)
 	G_SendUI(ent, "TeamUI", true);
 
 	// every player starts out as unassigned
-	ent->team = team_unassigned;
+	ent->team = team_director;
 
 	// find a spawn point
 	// do it before setting health back up, so farthest
@@ -1048,7 +1068,7 @@ void PutClientInServer (edict_t *ent)
 
 	resp = client->resp;
 	memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
-	InitClientPersistant(client);
+	InitClientPersistant(ent);
 	ClientUserinfoChanged(ent, userinfo);
 
 	// clear everything but the persistant data
@@ -1056,7 +1076,7 @@ void PutClientInServer (edict_t *ent)
 	memset (client, 0, sizeof(*client));
 	client->pers = saved;
 	if (client->pers.health <= 0)
-		InitClientPersistant(client);
+		InitClientPersistant(ent);
 	client->resp = resp;
 
 	// copy some data from the client to the entity
@@ -1330,7 +1350,7 @@ qboolean ClientConnect (edict_t *ent, char *userinfo)
 		// clear the respawning variables
 		InitClientResp (ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
-			InitClientPersistant (ent->client);
+			InitClientPersistant (ent);
 	}
 
 	ClientUserinfoChanged (ent, userinfo);

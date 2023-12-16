@@ -137,8 +137,4 @@ void CL_DrawInventory (void)
 		Inv_DrawString (x, y, string);
 		y += 8 * vid_hudscale->value;
 	}
-
-
 }
-
-

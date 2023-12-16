@@ -70,7 +70,6 @@ void V_ClearScene (void)
 	r_numparticles = 0;
 }
 
-
 /*
 =====================
 V_AddEntity
@@ -83,7 +82,6 @@ void V_AddEntity (entity_t *ent)
 		return;
 	r_entities[r_numentities++] = *ent;
 }
-
 
 /*
 =====================

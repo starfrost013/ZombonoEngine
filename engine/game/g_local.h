@@ -835,7 +835,7 @@ void GetChaseTarget(edict_t *ent);
 
 
 // client data that stays across multiple level loads
-typedef struct
+typedef struct client_persistant_s
 {
 	char		userinfo[MAX_INFO_STRING];
 	char		netname[16];
@@ -873,7 +873,7 @@ typedef struct
 } client_persistant_t;
 
 // client data that stays across deathmatch respawns
-typedef struct
+typedef struct client_respawn_t
 {
 	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn
 	int			enterframe;			// level.framenum the client entered the game
@@ -885,7 +885,7 @@ typedef struct
 
 // this structure is cleared on each PutClientInServer(),
 // except for 'client->pers'
-struct gclient_s
+typedef struct gclient_s
 {
 	// known to server
 	player_state_t	ps;				// communicated by server to clients
@@ -909,7 +909,7 @@ struct gclient_s
 
 	qboolean	weapon_thunk;
 
-	gitem_t		*newweapon;
+	gitem_t*	newweapon;
 
 	// sum up damage over an entire frame, so
 	// shotgun blasts give a single big kick
@@ -967,7 +967,7 @@ struct gclient_s
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info? 
-};
+} gclient_t;
 
 // Zombono Teams
 // These are flags so that certain items can be set to only work with certain teams.
