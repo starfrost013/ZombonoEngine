@@ -540,7 +540,6 @@ void M_AddToServerList (netadr_t adr, char *info);
 // cl_inv.c
 //
 void CL_ParseInventory (void);
-void CL_KeyInventory (int key);
 void CL_DrawInventory (void);
 
 //
@@ -580,7 +579,7 @@ typedef struct ui_control_s
 	// text
 	char				text[MAX_UI_STR_LENGTH];
 	// image
-	char*				image_path;
+	char				image_path[MAX_UI_STR_LENGTH];
 	// slider
 	int					value_min;
 	int					value_max;
@@ -601,7 +600,7 @@ typedef struct ui_s
 } ui_t;
 
 ui_t					ui_list[MAX_UIS];
-ui_t					current_ui;					// the current UI being edited
+ui_t*					current_ui;					// the current UI being edited
 int						num_uis;					// the current number of UIs
 
 // UI: Init
@@ -616,7 +615,7 @@ qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size
 qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
 
 // UI: Set Event Handler
-qboolean UI_SetOnClicked(void (*func)());
+qboolean UI_SetEventOnClick(void (*func)());
 
 // UI: Toggle
 qboolean UI_SetEnabled(const char* name, qboolean enabled);

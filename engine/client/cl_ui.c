@@ -29,7 +29,7 @@ extern ui_t		ui_list[MAX_UIS];
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
 // You can only access UI elements through the current UI.
-extern ui_t		current_ui;
+extern ui_t*	current_ui;
 
 qboolean	UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y);			// Shared function that adds controls
 ui_t*		UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
@@ -43,10 +43,13 @@ void		UI_DrawCheckbox(ui_control_t checkbox);
 
 qboolean UI_Init()
 {
+	// set everything to 0 in the case of reinitialisation e.g. failed to run singleplayer
 	memset(&ui_list, 0x00, sizeof(ui_list));
+	num_uis = 0;
 
 	qboolean successful;
 
+	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_CreateTeamUI);
 
 	return successful;
@@ -54,7 +57,7 @@ qboolean UI_Init()
 
 qboolean UI_AddUI(char* name, qboolean(*on_create)())
 {
-	current_ui = ui_list[num_uis];
+	current_ui = &ui_list[num_uis];
 
 	if (num_uis > MAX_UIS)
 	{
@@ -70,7 +73,7 @@ qboolean UI_AddUI(char* name, qboolean(*on_create)())
 		return false;
 	}
 
-	strcpy(current_ui.name, name);
+	strcpy(current_ui->name, name);
 
 	if (on_create == NULL)
 	{
@@ -78,7 +81,7 @@ qboolean UI_AddUI(char* name, qboolean(*on_create)())
 		return false;
 	}
 
-	current_ui.on_create = on_create;
+	current_ui->on_create = on_create;
 
 	if (!on_create())
 	{
@@ -107,105 +110,86 @@ ui_t* UI_GetUI(char* name)
 
 qboolean UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y)
 {
-	if (current_ui.num_controls >= CONTROLS_PER_UI)
+	if (current_ui->num_controls >= CONTROLS_PER_UI)
 	{
-		Sys_Error("Tried to add too many controls to the UI %s", current_ui.name);
+		Sys_Error("Tried to add too many controls to the UI %s", current_ui->name);
 		return false;
 	}
 
-	ui_control_t current_control = current_ui.controls[current_ui.num_controls];
-	current_ui.num_controls++;
+	ui_control_t* current_control = &current_ui->controls[current_ui->num_controls];
+	current_ui->num_controls++;
 
-	strcpy(current_control.name, name);
+	strcpy(current_control->name, name);
 
-	current_control.position_x = position_x;
-	current_control.position_y = position_y;
-	current_control.size_x = size_x;
-	current_control.size_y = size_y;
+	current_control->position_x = position_x;
+	current_control->position_y = position_y;
+	current_control->size_x = size_x;
+	current_control->size_y = size_y;
 	 
 	return true;
 }
 
 qboolean UI_AddText(const char* name, char* text, int position_x, int position_y)
 {
-	// size ignored
-	if (!UI_AddControl(name, position_x, position_y, 0, 0))
-	{
-		return false;
-	}
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	strcpy(ui_control->text, text);
+	ui_control->type = ui_control_text;
 
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
-	strcpy(ui_control.text, text);
-	ui_control.type = ui_control_text;
-	return true;
+	return UI_AddControl(name, position_x, position_y, 0, 0);
 }
 
 qboolean UI_AddImage(const char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
 {
-	if (!UI_AddControl(name, position_x, position_y, size_x, size_y))
-	{
-		return false;
-	}
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
+	strcpy(ui_control->image_path, image_path);
 
-	strcpy(ui_control.image_path, image_path);
+	ui_control->type = ui_control_image;
 
-	ui_control.type = ui_control_image;
-
-	return true; 
+	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
 qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y)
 {
-	if (!UI_AddControl(name, position_x, position_y, size_x, size_y))
-	{
-		return false;
-	}
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_control->type = ui_control_button;
 
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
-	ui_control.type = ui_control_button;
-
-	return true; 
+	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
 qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
 {
-	if (!UI_AddControl(name, position_x, position_y, size_x, size_y))
-	{
-		return false; 
-	}
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_control->type = ui_control_slider;
 
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
-	ui_control.type = ui_control_slider;
+	ui_control->value_min = value_min;
+	ui_control->value_max = value_max;
 
-	ui_control.value_min = value_min;
-	ui_control.value_max = value_max;
-
-	return true; 
+	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
 qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
 {
 	UI_AddControl(name, position_x, position_y, size_x, size_y);
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
-	ui_control.checked = checked;
-	ui_control.type = ui_control_checkbox;
-	return true; 
+	ui_control->checked = checked;
+	ui_control->type = ui_control_checkbox;
+
+	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetOnClicked(void (*func)())
+qboolean UI_SetEventOnClick(void (*func)())
 {
-	ui_control_t ui_control = current_ui.controls[current_ui.num_controls];
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
-	if (ui_control.on_click == NULL)
+	if (ui_control->on_click == NULL)
 	{
 		Sys_Error("Tried to set UI clicked event callback to null!");
 		return false;
 	}
 
-	ui_control.on_click = func;
+	ui_control->on_click = func;
 	return true; 
 }
 
@@ -216,7 +200,7 @@ qboolean UI_SetEnabled(const char* name, qboolean enabled)
 	if (ui_ptr != NULL)
 	{
 		ui_ptr->enabled = enabled;
-		current_ui = *ui_ptr;
+		current_ui = ui_ptr;
 		return true; 
 	}
 
@@ -230,7 +214,7 @@ qboolean UI_SetActive(const char* name, qboolean active)
 	if (ui_ptr != NULL)
 	{
 		ui_ptr->active = active;
-		current_ui = *ui_ptr;
+		current_ui = ui_ptr;
 		return true; 
 	}
 

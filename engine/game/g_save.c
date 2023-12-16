@@ -120,7 +120,7 @@ field_t fields[] = {
 // Valve 220 map support 
 	{"mapversion", 0, F_IGNORE},
 
-// Zombono (TEMP: DO NOT IGNORE LATER)
+// Zombono Q1 maps
 	{"level_has_prespawn", 0, F_IGNORE},
 
 	{0, 0, 0, 0}

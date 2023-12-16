@@ -1009,6 +1009,8 @@ void PutClientInServer (edict_t *ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
+	G_SendUI(ent, "TeamUI", true);
+
 	ent->team = team_director;
 
 	// find a spawn point

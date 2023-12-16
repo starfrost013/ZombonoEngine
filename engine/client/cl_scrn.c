@@ -1307,6 +1307,8 @@ void SCR_UpdateScreen (void)
 			if (scr_debuggraph->value || scr_timegraph->value)
 				SCR_DrawDebugGraph ();
 
+			UI_Draw();
+
 			SCR_DrawPause ();
 
 			SCR_DrawConsole ();

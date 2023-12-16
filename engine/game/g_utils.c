@@ -528,9 +528,6 @@ void	G_TouchSolids (edict_t *ent)
 	}
 }
 
-
-
-
 /*
 ==============================================================================
 
@@ -566,4 +563,20 @@ qboolean KillBox (edict_t *ent)
 	}
 
 	return true;		// all clear
+}
+
+/*
+==============================================================================
+
+ZombonoUI
+
+==============================================================================
+*/
+
+void G_SendUI(edict_t* ent, char* ui_name, qboolean enabled)
+{
+	gi.WriteByte(svc_drawui);
+	gi.WriteString(ui_name);
+	gi.WriteByte(enabled);
+	gi.unicast(ent, true); // reliable as not used regularly
 }

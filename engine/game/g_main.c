@@ -303,7 +303,7 @@ void CheckNeedPass (void)
 CheckDMRules
 =================
 */
-void CheckDMRules (void)
+void CheckGamemodeRules (void)
 {
 	int			i;
 	gclient_t	*cl;
@@ -431,7 +431,7 @@ void G_RunFrame (void)
 	}
 
 	// see if it is time to end a deathmatch
-	CheckDMRules ();
+	CheckGamemodeRules ();
 
 	// see if needpass needs updated
 	CheckNeedPass ();

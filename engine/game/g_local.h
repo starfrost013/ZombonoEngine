@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_temp_entity		3
 #define	svc_layout			4
 #define	svc_inventory		5
+#define svc_drawui			6
 #define	svc_stufftext		11
 
 //==================================================================
@@ -645,6 +646,8 @@ void	G_FreeEdict (edict_t *e);
 
 void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
+
+void	G_SendUI (edict_t *ent, char* ui_name, qboolean enabled);
 
 char	*G_CopyString (char *in);
 

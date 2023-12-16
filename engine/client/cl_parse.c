@@ -797,7 +797,7 @@ void CL_ParseServerMessage (void)
 
 		case svc_drawui:
 			s = MSG_ReadString(&net_message);
-			UI_SetEnabled(s, true);
+			UI_SetEnabled(s, (qboolean)MSG_ReadByte(&net_message));
 			break;
 		}
 	}
