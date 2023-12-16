@@ -63,7 +63,6 @@ void player_pain (edict_t *self, edict_t *other, float kick, int damage)
 	// player pain is handled at the end of the frame in P_DamageFeedback
 }
 
-
 qboolean IsFemale (edict_t *ent)
 {
 	char		*info;
@@ -77,6 +76,7 @@ qboolean IsFemale (edict_t *ent)
 	return false;
 }
 
+// WOKE!
 qboolean IsOther(edict_t* ent)
 {
 	char* info;
