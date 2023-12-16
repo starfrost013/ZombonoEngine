@@ -77,6 +77,20 @@ qboolean IsFemale (edict_t *ent)
 	return false;
 }
 
+qboolean IsOther(edict_t* ent)
+{
+	char* info;
+
+	if (!ent->client)
+		return false;
+
+	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+	if (info[0] == 'o' || info[0] == 'O')
+		return true;
+	return false;
+}
+
+
 qboolean IsNeutral (edict_t *ent)
 {
 	char		*info;
@@ -157,6 +171,8 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 				message = "tripped on its own grenade";
 			else if (IsFemale(self))
 				message = "tripped on her own grenade";
+			else if (IsOther(self))
+				message = "tripped on their own grenade";
 			else
 				message = "tripped on his own grenade";
 			break;
@@ -165,6 +181,8 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 				message = "blew itself up";
 			else if (IsFemale(self))
 				message = "blew herself up";
+			else if (IsOther(self))
+				message = "blew themselves up";
 			else
 				message = "blew himself up";
 			break;
@@ -176,6 +194,9 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 				message = "killed itself";
 			else if (IsFemale(self))
 				message = "killed herself";
+			else if (IsOther(self))
+				message = "killed themselves";
+
 			else
 				message = "killed himself";
 			break;

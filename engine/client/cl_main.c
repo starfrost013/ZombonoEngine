@@ -79,7 +79,6 @@ cvar_t	*info_password;
 cvar_t	*info_spectator;
 cvar_t	*name;
 cvar_t	*skin;
-cvar_t	*rate;
 cvar_t	*fov;
 cvar_t	*msg;
 cvar_t	*hand;
@@ -1065,9 +1064,11 @@ void CL_FixUpGender(void)
 		if ((p = strchr(sk, '/')) != NULL)
 			*p = 0;
 		if (Q_stricmp(sk, "male") == 0)
-			Cvar_Set ("gender", "male");
+			Cvar_Set("gender", "male");
 		else if (Q_stricmp(sk, "female") == 0)
-			Cvar_Set ("gender", "female");
+			Cvar_Set("gender", "female");
+		else if (Q_stricmp(sk, "other") == 0)
+			Cvar_Set("gender", "other");
 		else
 			Cvar_Set ("gender", "none");
 		gender->modified = false;
