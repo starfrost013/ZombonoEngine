@@ -281,7 +281,7 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t text)
 {
-	Menu_DrawString(text.position_x, text.position_y, text.text);
+	Menu_DrawString(text.position_x, text.position_y, text.text); 
 }
 
 void UI_DrawImage(ui_control_t image)
