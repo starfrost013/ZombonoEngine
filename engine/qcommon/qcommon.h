@@ -214,6 +214,7 @@ enum svc_ops_e
 	svc_layout,
 	svc_inventory,
 	svc_drawui,					// <ui name>
+	svc_setplayerteam,			// <team flag>
 
 	// the rest are private to the client and server
 	svc_nop,

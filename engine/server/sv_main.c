@@ -755,7 +755,6 @@ void SV_RunGameFrame (void)
 /*
 ==================
 SV_Frame
-
 ==================
 */
 void SV_Frame (int msec)

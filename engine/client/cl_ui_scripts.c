@@ -27,5 +27,19 @@ void UI_CreateTeamUI()
 {
 	UI_AddText("TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
 	UI_AddImage("TeamUI_DirectorTeam", "ui\\teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
+	UI_SetEventOnClick(UI_TeamUISetDirectorTeam);
 	UI_AddImage("TeamUI_PlayerTeam", "ui\\teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
+	UI_SetEventOnClick(UI_TeamUISetPlayerTeam);
+}
+
+void UI_TeamUISetDirectorTeam(int x, int y)
+{
+	UI_SetActive("TeamUI", false);
+	UI_SetEnabled("TeamUI", false);
+}
+
+void UI_TeamUISetPlayerTeam(int x, int y)
+{
+	UI_SetActive("TeamUI", false);
+	UI_SetEnabled("TeamUI", false);
 }

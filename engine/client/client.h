@@ -414,8 +414,8 @@ void CL_RegisterSounds (void);
 
 void CL_Quit_f (void);
 
-void IN_Accumulate (void);
-
+//void IN_ActivateMouse (void);
+//void IN_DeactivateMouse (void);
 void CL_ParseLayout (void);
 
 
@@ -451,14 +451,11 @@ extern 	kbutton_t 	in_speed;
 
 void CL_InitInput (void);
 void CL_SendCmd (void);
-void CL_SendMove (usercmd_t *cmd);
 
 void CL_ClearState (void);
 
 void CL_ReadPackets (void);
 
-int  CL_ReadFromServer (void);
-void CL_WriteToServer (usercmd_t *cmd);
 void CL_BaseMove (usercmd_t *cmd);
 
 void IN_CenterView (void);
@@ -509,7 +506,7 @@ void CL_SmokeAndFlash(vec3_t origin);
 // cl_pred.c
 //
 void CL_InitPrediction (void);
-void CL_PredictMove (void);
+void CL_PredictMovement (void);
 void CL_CheckPredictionError (void);
 
 //
@@ -551,6 +548,7 @@ void CL_PredictMovement (void);
 // cl_ui.c
 // This is like the Zombono-Q1 UI system, except not broken and not having the server depend on stuff only the client can possibly know.
 // This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
+//
 
 #define CONTROLS_PER_UI			48
 #define MAX_UIS					32
@@ -568,25 +566,25 @@ typedef enum ui_control_type_e
 typedef struct ui_control_s
 {
 	// general
-	ui_control_type		type;
-	int					position_x;
-	int					position_y;
-	int					size_x;
-	int					size_y;
-	char				name[MAX_UI_STR_LENGTH];
-	qboolean			visible;					// Is this control visible/
+	ui_control_type		type;						// Type of this UI control.
+	int					position_x;					// UI control position (x-component).
+	int					position_y;					// UI control position (y-component).
+	int					size_x;						// UI control size (x-component).
+	int					size_y;						// UI control size (y-component).
+	char				name[MAX_UI_STR_LENGTH];	// UI control name (for code)
+	qboolean			visible;					// Is this control visible.
 
 	// text
-	char				text[MAX_UI_STR_LENGTH];
+	char				text[MAX_UI_STR_LENGTH];	// Text UI control: Text to display.
 	// image
-	char				image_path[MAX_UI_STR_LENGTH];
+	char				image_path[MAX_UI_STR_LENGTH];// Image path UI control: Image to display (path relative to the "pics" folder)
 	// slider
-	int					value_min;
-	int					value_max;
+	int					value_min;					// Slider UI control: minimum value.
+	int					value_max;					// Slider UI control: maximum value.
 	// checkbox
-	qboolean			checked;
+	qboolean			checked;					// Checkbox UI control: Is it cehcked?
 	// events
-	void				(*on_click)();
+	void				(*on_click)(int x, int y);	// C function to call on click starting with X and Y coordinates.
 } ui_control_t;
 
 typedef struct ui_s
@@ -599,9 +597,10 @@ typedef struct ui_s
 	qboolean			active;						// True if the UI is currently interactable.
 } ui_t;
 
-ui_t					ui_list[MAX_UIS];
+ui_t					ui_list[MAX_UIS];			// The list of UIs.
 ui_t*					current_ui;					// the current UI being edited
 int						num_uis;					// the current number of UIs
+qboolean				ui_active;					// Is a UI active - set in UI_OnActive so we don't have to search through every single UI type
 
 // UI: Init
 qboolean UI_Init();
@@ -614,16 +613,20 @@ qboolean UI_AddButton(const char* name, int position_x, int position_y, int size
 qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);
 qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
 
-// UI: Set Event Handler
-qboolean UI_SetEventOnClick(void (*func)());
-
 // UI: Toggle
 qboolean UI_SetEnabled(const char* name, qboolean enabled);
 qboolean UI_SetActive(const char* name, qboolean enabled);
+
+// UI: Set Event Handler
+qboolean UI_SetEventOnClick(void (*func)(int x, int y));
+
+// UI: Event Handling
+qboolean UI_HandleEventOnClick(int x, int y);
 
 // UI: Draw
 void UI_Draw();
 
 // UI: Create Scripts
-
 void UI_CreateTeamUI();
+void UI_TeamUISetDirectorTeam(int x, int y);
+void UI_TeamUISetPlayerTeam(int x, int y);

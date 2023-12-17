@@ -23,13 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 
-
 static qboolean	is_quad;
 static byte		is_silenced;
 
-
 void weapon_grenade_fire (edict_t *ent, qboolean held);
-
 
 static void P_ProjectSource (edict_t *ent, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
 {
@@ -43,7 +40,6 @@ static void P_ProjectSource (edict_t *ent, vec3_t distance, vec3_t forward, vec3
 	else if (client->pers.hand == CENTER_HANDED)
 		_distance[1] = 0;
 	G_ProjectSource (point, _distance, forward, right, result);
-
 
 	// Berserker: fix - now the projectile hits exactly where the scope is pointing.
 	if (aimfix->value)
@@ -60,7 +56,6 @@ static void P_ProjectSource (edict_t *ent, vec3_t distance, vec3_t forward, vec3
 		}
 	}
 }
-
 
 /*
 ===============

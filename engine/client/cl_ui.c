@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern int		num_uis;
 extern ui_t		ui_list[MAX_UIS];
+extern qboolean	ui_active;																				// This is so we know to turn on the mouse cursor.
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
@@ -179,11 +180,11 @@ qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int si
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEventOnClick(void (*func)())
+qboolean UI_SetEventOnClick(void (*func)(int x, int y))
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
-	if (ui_control->on_click == NULL)
+	if (func == NULL)
 	{
 		Sys_Error("Tried to set UI clicked event callback to null!");
 		return false;
@@ -191,6 +192,27 @@ qboolean UI_SetEventOnClick(void (*func)())
 
 	ui_control->on_click = func;
 	return true; 
+}
+
+qboolean UI_HandleEventOnClick(int x, int y)
+{
+	// Current UI only
+	for (int ui_num = 0; ui_num < current_ui->num_controls; ui_num++)
+	{
+		ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+		
+		if (ui_control->on_click)
+		{
+			// todo: scale/??
+			if (x >= ui_control->position_x
+				&& y >= ui_control->position_y
+				&& x <= ui_control->position_x + ui_control->size_x
+				&& y <= ui_control->position_y + ui_control->size_y)
+			{
+				ui_control->on_click(x, y);
+			}
+		}
+	}
 }
 
 qboolean UI_SetEnabled(const char* name, qboolean enabled)
@@ -214,6 +236,11 @@ qboolean UI_SetActive(const char* name, qboolean active)
 	if (ui_ptr != NULL)
 	{
 		ui_ptr->active = active;
+		ui_active = active;
+
+		// hack!
+		IN_Activate(!active);
+
 		current_ui = ui_ptr;
 		return true; 
 	}

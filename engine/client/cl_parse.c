@@ -32,6 +32,7 @@ char *svc_strings[256] =
 	"svc_layout",
 	"svc_inventory",
 	"svc_drawui",
+	"svc_setplayerteam",
 
 	"svc_nop",
 	"svc_disconnect",
@@ -797,7 +798,12 @@ void CL_ParseServerMessage (void)
 
 		case svc_drawui:
 			s = MSG_ReadString(&net_message);
-			UI_SetEnabled(s, (qboolean)MSG_ReadByte(&net_message));
+			// Active can only be changed from UI script
+
+			qboolean active = (qboolean)MSG_ReadByte(&net_message);
+
+			UI_SetEnabled(s, active);
+			UI_SetActive(s, active);
 			break;
 		}
 	}

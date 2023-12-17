@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -141,7 +142,7 @@ extern char chat_buffer[];
 extern	int chat_bufferlen;
 extern	qboolean	chat_team;
 
-void Key_Event (int key, qboolean down, unsigned time);
+void Key_Event (int key, qboolean down, unsigned time, int x, int y);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int keynum, char *binding);
