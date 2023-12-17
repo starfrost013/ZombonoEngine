@@ -311,7 +311,8 @@ void M_DrawCursor( int x, int y, int f )
 	re.DrawPic( x, y, cursorname );
 }
 
-void M_DrawTextBox (int x, int y, int width, int lines)
+// uses 320*240 coords
+void Menu_DrawTextBox (int x, int y, int width, int lines)
 {
 	int		cx, cy;
 	int		n;
@@ -1349,7 +1350,7 @@ void Options_MenuDraw (void)
 
 	if (update_sound_quality)
 	{
-		M_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
+		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
@@ -1666,14 +1667,24 @@ void Game_MenuInit( void )
 
 void Game_MenuDraw( void )
 {
-	M_Banner( "m_banner_game" );
-	Menu_AdjustCursor( &s_game_menu, 1 );
-	Menu_Draw( &s_game_menu );
+#ifdef PLAYTEST
+	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 92, "This option is not available in playtest builds!");
+	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+#else
+	M_Banner("m_banner_game");
+	Menu_AdjustCursor(&s_game_menu, 1);
+	Menu_Draw(&s_game_menu);
+#endif
+
 }
 
 const char *Game_MenuKey( int key )
 {
+#ifdef PLAYTEST
+	M_PopMenu();
+#else
 	return Default_MenuKey( &s_game_menu, key );
+#endif
 }
 
 void M_Menu_Game_f (void)
@@ -2006,7 +2017,7 @@ void JoinServer_MenuDraw(void)
 
 	if (search_local_games)
 	{
-		M_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
+		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
 		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
@@ -2312,26 +2323,35 @@ void StartServer_MenuInit( void )
 
 void StartServer_MenuDraw(void)
 {
-	Menu_Draw( &s_startserver_menu );
+#ifdef PLAYTEST
+	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 92, "Servers cannot be started in playtest builds!");
+	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+#else
+	Menu_Draw(&s_startserver_menu);
+#endif
 }
 
 const char *StartServer_MenuKey( int key )
 {
-	if ( key == K_ESCAPE )
+#ifdef PLAYTEST
+	M_PopMenu();
+#else
+	if (key == K_ESCAPE)
 	{
-		if ( mapnames )
+		if (mapnames)
 		{
 			int i;
 
-			for ( i = 0; i < nummaps; i++ )
-				free( mapnames[i] );
-			free( mapnames );
+			for (i = 0; i < nummaps; i++)
+				free(mapnames[i]);
+			free(mapnames);
 		}
 		mapnames = 0;
 		nummaps = 0;
 	}
 
-	return Default_MenuKey( &s_startserver_menu, key );
+	return Default_MenuKey(&s_startserver_menu, key);
+#endif
 }
 
 void M_Menu_StartServer_f (void)
@@ -3264,7 +3284,7 @@ void PlayerConfig_MenuDraw( void )
 
 		Menu_Draw( &s_player_config_menu );
 
-		M_DrawTextBox((refdef.x) * (320.0F / viddef.width) - 8 * vid_hudscale->value, (viddef.height / 2) * (240.0F / viddef.height) - 77 * vid_hudscale->value, refdef.width / (8 * vid_hudscale->value), refdef.height / (8 * vid_hudscale->value));
+		Menu_DrawTextBox((refdef.x) * (320.0F / viddef.width) - 8 * vid_hudscale->value, (viddef.height / 2) * (240.0F / viddef.height) - 77 * vid_hudscale->value, refdef.width / (8 * vid_hudscale->value), refdef.height / (8 * vid_hudscale->value));
 		refdef.height += 4 * vid_hudscale->value;
 
 		re.RenderFrame( &refdef );

@@ -223,6 +223,28 @@ qboolean UI_SetActive(const char* name, qboolean active)
 
 void UI_Draw()
 {
+
+// playtest indicator
+	
+// this is NOT!! efficient don't do this (esp. getting the length of the string every frame and stuff) but not used in release 
+#if defined(PLAYTEST) || defined(_DEBUG)
+	time_t		raw_time;
+	struct tm*	local_time;
+
+	time(&raw_time);
+	local_time = localtime(&raw_time);
+	char		time[128];
+#ifdef PLAYTEST
+	strftime(&time, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
+#elif _DEBUG
+	strftime(&time, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
+#endif
+
+	Menu_DrawString(viddef.width - (8 * strlen(time)), 0, time);
+	Menu_DrawStringDark(viddef.width - 144, 10, "Pre-release build!");
+
+#endif
+
 	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		// draw the current UI if enabled (*ACTIVE* means it's receiving input events0
