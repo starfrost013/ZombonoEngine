@@ -32,13 +32,13 @@ void UI_CreateTeamUI()
 	UI_SetEventOnClick(UI_TeamUISetPlayerTeam);
 }
 
-void UI_TeamUISetDirectorTeam(int x, int y)
+void UI_TeamUISetDirectorTeam(int btn, int x, int y)
 {
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 }
 
-void UI_TeamUISetPlayerTeam(int x, int y)
+void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 {
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);

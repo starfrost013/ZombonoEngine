@@ -180,7 +180,7 @@ qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int si
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEventOnClick(void (*func)(int x, int y))
+qboolean UI_SetEventOnClick(void (*func)(int btn, int x, int y))
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
@@ -194,7 +194,7 @@ qboolean UI_SetEventOnClick(void (*func)(int x, int y))
 	return true; 
 }
 
-qboolean UI_HandleEventOnClick(int x, int y)
+qboolean UI_HandleEventOnClick(int btn, int x, int y)
 {
 	// Current UI only
 	for (int ui_num = 0; ui_num < current_ui->num_controls; ui_num++)
@@ -209,7 +209,7 @@ qboolean UI_HandleEventOnClick(int x, int y)
 				&& x <= ui_control->position_x + ui_control->size_x
 				&& y <= ui_control->position_y + ui_control->size_y)
 			{
-				ui_control->on_click(x, y);
+				ui_control->on_click(btn, x, y);
 			}
 		}
 	}
@@ -238,7 +238,7 @@ qboolean UI_SetActive(const char* name, qboolean active)
 		ui_ptr->active = active;
 		ui_active = active;
 
-		// hack!
+		// turn on the mouse cursor, bit hacky
 		IN_Activate(!active);
 
 		current_ui = ui_ptr;

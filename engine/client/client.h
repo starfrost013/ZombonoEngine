@@ -618,15 +618,15 @@ qboolean UI_SetEnabled(const char* name, qboolean enabled);
 qboolean UI_SetActive(const char* name, qboolean enabled);
 
 // UI: Set Event Handler
-qboolean UI_SetEventOnClick(void (*func)(int x, int y));
+qboolean UI_SetEventOnClick(void (*func)(int btn, int x, int y));
 
 // UI: Event Handling
-qboolean UI_HandleEventOnClick(int x, int y);
+qboolean UI_HandleEventOnClick(int btn, int x, int y);
 
 // UI: Draw
 void UI_Draw();
 
 // UI: Create Scripts
 void UI_CreateTeamUI();
-void UI_TeamUISetDirectorTeam(int x, int y);
-void UI_TeamUISetPlayerTeam(int x, int y);
+void UI_TeamUISetDirectorTeam(int btn, int x, int y);
+void UI_TeamUISetPlayerTeam(int btn, int x, int y);
