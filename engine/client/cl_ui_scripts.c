@@ -16,7 +16,6 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
 */
 
 // cl_ui_scripts.c: ZombonoUI UI creation scripts (December 13 - 14, 2023)
@@ -27,19 +26,24 @@ void UI_CreateTeamUI()
 {
 	UI_AddText("TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
 	UI_AddImage("TeamUI_DirectorTeam", "ui\\teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
-	UI_SetEventOnClick(UI_TeamUISetDirectorTeam);
 	UI_AddImage("TeamUI_PlayerTeam", "ui\\teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
-	UI_SetEventOnClick(UI_TeamUISetPlayerTeam);
+
+	UI_SetEventOnClick("TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
+	UI_SetEventOnClick("TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
 }
 
 void UI_TeamUISetDirectorTeam(int btn, int x, int y)
 {
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
+	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
+	MSG_WriteString(&cls.netchan.message, "setteam 1");
 }
 
 void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 {
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
+	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
+	MSG_WriteString(&cls.netchan.message, "setteam 2");
 }

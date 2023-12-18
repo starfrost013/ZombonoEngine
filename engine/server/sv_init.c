@@ -350,8 +350,8 @@ SV_Map
 
   map [*]<map>$<startspot>+<nextserver>
 
-command from the console or progs.
-Map can also be a.cin, .tga, or .dm2 file
+command from the console or game dll
+Map can also be a .tga or .dm2 file
 ======================
 */
 void SV_Map (qboolean attractloop, char *levelstring, qboolean loadgame)

@@ -492,7 +492,7 @@ This is only called when the game first initializes in single player,
 but is called after each death and level change in deathmatch
 ==============
 */
-void InitClientPersistant (edict_t *client_edict)
+void InitClientPersistent (edict_t *client_edict)
 {
 	gitem_t		*item;
 
@@ -660,11 +660,14 @@ edict_t* SelectUnassignedSpawnPoint()
 		}
 
 		if (!spot)
+		{
 			gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
-		return NULL;
-
+		}
+		
 		return spot;
 	}
+
+	return NULL;
 }
 
 /*
@@ -851,7 +854,7 @@ void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
 	if (!spot)
 	{
 		spot = SelectUnassignedSpawnPoint();
-	}
+	} 
 
 	VectorCopy (spot->s.origin, origin);
 	origin[2] += 9;
@@ -942,10 +945,6 @@ void respawn (edict_t *self)
 	self->client->respawn_time = level.time;
 
 	return;
-
-	/*
-	// restart the entire server
-	gi.AddCommandString ("menu_loadgame\n");*/
 }
 
 /* 
@@ -1054,7 +1053,7 @@ void PutClientInServer (edict_t *ent)
 	G_SendUI(ent, "TeamUI", true);
 
 	// every player starts out as unassigned
-	ent->team = team_director;
+	ent->team = team_unassigned;
 
 	// find a spawn point
 	// do it before setting health back up, so farthest
@@ -1068,7 +1067,7 @@ void PutClientInServer (edict_t *ent)
 
 	resp = client->resp;
 	memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
-	InitClientPersistant(ent);
+	InitClientPersistent(ent);
 	ClientUserinfoChanged(ent, userinfo);
 
 	// clear everything but the persistant data
@@ -1076,7 +1075,7 @@ void PutClientInServer (edict_t *ent)
 	memset (client, 0, sizeof(*client));
 	client->pers = saved;
 	if (client->pers.health <= 0)
-		InitClientPersistant(ent);
+		InitClientPersistent(ent);
 	client->resp = resp;
 
 	// copy some data from the client to the entity
@@ -1350,7 +1349,7 @@ qboolean ClientConnect (edict_t *ent, char *userinfo)
 		// clear the respawning variables
 		InitClientResp (ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
-			InitClientPersistant (ent);
+			InitClientPersistent (ent);
 	}
 
 	ClientUserinfoChanged (ent, userinfo);

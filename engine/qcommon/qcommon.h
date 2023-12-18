@@ -214,7 +214,6 @@ enum svc_ops_e
 	svc_layout,
 	svc_inventory,
 	svc_drawui,					// <ui name>
-	svc_setplayerteam,			// <team flag>
 
 	// the rest are private to the client and server
 	svc_nop,
@@ -245,7 +244,8 @@ enum clc_ops_e
 	clc_nop, 		
 	clc_move,				// [[usercmd_t]
 	clc_userinfo,			// [[userinfo string]
-	clc_stringcmd			// [string] message
+	clc_stringcmd,			// [string] message
+	clc_stringcmd_noconsole,			// [int] teamflag
 } clc_ops;
 
 //==============================================

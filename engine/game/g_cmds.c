@@ -772,6 +772,25 @@ void Cmd_Wave_f (edict_t *ent)
 
 /*
 ==================
+Cmd_SetTeam_f
+(noconsole)
+==================
+*/
+void Cmd_SetTeam_f(edict_t* ent, player_team team)
+{
+	vec3_t spawn_origin, spawn_angles;
+
+	ent->team = team;
+
+	// teleport the player to the spanw point
+	SelectSpawnPoint(ent, spawn_origin, spawn_angles);
+
+	VectorCopy(spawn_origin, ent->s.origin);
+	VectorCopy(spawn_angles, ent->s.angles);
+}
+
+/*
+==================
 Cmd_Say_f
 ==================
 */
@@ -972,4 +991,20 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
+}
+
+// ClientCommands that cannot be entered from teh console.
+void ClientCommand_NoConsole(edict_t* ent)
+{
+	char* cmd;
+
+	if (!ent->client)
+		return;		// not fully in game yet
+
+	cmd = gi.argv(0);
+
+	if (!Q_stricmp(cmd, "setteam"))
+	{
+		Cmd_SetTeam_f(ent, atoi(gi.argv(1)));
+	}
 }

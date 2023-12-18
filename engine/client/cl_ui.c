@@ -25,22 +25,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern int		num_uis;
 extern ui_t		ui_list[MAX_UIS];
-extern qboolean	ui_active;																				// This is so we know to turn on the mouse cursor.
+extern qboolean	ui_active;																					// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
 // You can only access UI elements through the current UI.
 extern ui_t*	current_ui;
 
-qboolean	UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y);			// Shared function that adds controls
-ui_t*		UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
-
+qboolean		UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y);			// Shared function that adds controls
+ui_t*			UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
+ui_control_t*	UI_GetControl(char* name);																	// Gets the control with name name in the current UI.
 // Draw methods
-void		UI_DrawText(ui_control_t text);
-void		UI_DrawImage(ui_control_t image);
-void		UI_DrawButton(ui_control_t button);
-void		UI_DrawSlider(ui_control_t slider);
-void		UI_DrawCheckbox(ui_control_t checkbox);
+void			UI_DrawText(ui_control_t text);																// Draws a text control.
+void			UI_DrawImage(ui_control_t image);															// Draws an image control.
+void			UI_DrawButton(ui_control_t button);															// Draws a button control.
+void			UI_DrawSlider(ui_control_t slider);															// Draws a slider control.
+void			UI_DrawCheckbox(ui_control_t checkbox);														// Draws a checkbox control.
 
 qboolean UI_Init()
 {
@@ -98,11 +98,26 @@ ui_t* UI_GetUI(char* name)
 {
 	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
-		ui_t current_ui = ui_list[ui_num];
+		ui_t* current_ui = &ui_list[ui_num];
 
-		if (!strcmp(current_ui.name, name))
+		if (!stricmp(current_ui->name, name))
 		{
-			return &ui_list[ui_num];
+			return current_ui;
+		}
+	}
+
+	return NULL;
+}
+
+ui_control_t* UI_GetControl(char* name)
+{
+	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	{
+		ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
+
+		if (!stricmp(current_ui_control->name, name))
+		{
+			return current_ui_control;
 		}
 	}
 
@@ -130,7 +145,7 @@ qboolean UI_AddControl(char* name, int position_x, int position_y, int size_x, i
 	return true;
 }
 
-qboolean UI_AddText(const char* name, char* text, int position_x, int position_y)
+qboolean UI_AddText(char* name, char* text, int position_x, int position_y)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 	strcpy(ui_control->text, text);
@@ -139,7 +154,7 @@ qboolean UI_AddText(const char* name, char* text, int position_x, int position_y
 	return UI_AddControl(name, position_x, position_y, 0, 0);
 }
 
-qboolean UI_AddImage(const char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
+qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 
@@ -150,7 +165,7 @@ qboolean UI_AddImage(const char* name, char* image_path, int position_x, int pos
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y)
+qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 	ui_control->type = ui_control_button;
@@ -158,7 +173,7 @@ qboolean UI_AddButton(const char* name, int position_x, int position_y, int size
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
+qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
 	ui_control->type = ui_control_slider;
@@ -169,7 +184,7 @@ qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
+qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
 {
 	UI_AddControl(name, position_x, position_y, size_x, size_y);
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
@@ -180,13 +195,19 @@ qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int si
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEventOnClick(void (*func)(int btn, int x, int y))
+qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y))
 {
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_control_t* ui_control = UI_GetControl(name);
+
+	if (ui_control == NULL)
+	{
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
+		return false;
+	}
 
 	if (func == NULL)
 	{
-		Sys_Error("Tried to set UI clicked event callback to null!");
+		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control->name, current_ui->name);
 		return false;
 	}
 
@@ -194,12 +215,12 @@ qboolean UI_SetEventOnClick(void (*func)(int btn, int x, int y))
 	return true; 
 }
 
-qboolean UI_HandleEventOnClick(int btn, int x, int y)
+void UI_HandleEventOnClick(int btn, int x, int y)
 {
 	// Current UI only
-	for (int ui_num = 0; ui_num < current_ui->num_controls; ui_num++)
+	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 	{
-		ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+		ui_control_t* ui_control = &current_ui->controls[ui_control_num];
 		
 		if (ui_control->on_click)
 		{

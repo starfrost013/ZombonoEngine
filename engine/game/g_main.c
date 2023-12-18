@@ -81,6 +81,7 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 void ClientDisconnect (edict_t *ent);
 void ClientBegin (edict_t *ent);
 void ClientCommand (edict_t *ent);
+void ClientCommand_NoConsole (edict_t* ent);
 void RunEntity (edict_t *ent);
 void WriteGame (char *filename, qboolean autosave);
 void ReadGame (char *filename);
@@ -130,6 +131,7 @@ game_export_t *GetGameAPI (game_import_t *import)
 	globals.ClientDisconnect = ClientDisconnect;
 	globals.ClientBegin = ClientBegin;
 	globals.ClientCommand = ClientCommand;
+	globals.ClientCommand_NoConsole = ClientCommand_NoConsole;
 
 	globals.RunFrame = G_RunFrame;
 

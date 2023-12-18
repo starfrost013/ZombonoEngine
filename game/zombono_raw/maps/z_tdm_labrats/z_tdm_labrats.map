@@ -5126,7 +5126,7 @@
 // entity 15
 {
 "classname" "info_player_start_player"
-"origin" "872 -288 -104"
+"origin" "872 -224 -104"
 }
 // entity 16
 {
@@ -5136,12 +5136,12 @@
 // entity 17
 {
 "classname" "info_player_start_player"
-"origin" "872 560 -104"
+"origin" "840 496 -104"
 }
 // entity 18
 {
 "classname" "info_player_start_player"
-"origin" "1160 560 -104"
+"origin" "1128 496 -104"
 }
 // entity 19
 {
@@ -5151,12 +5151,12 @@
 // entity 20
 {
 "classname" "info_player_start_player"
-"origin" "1160 -288 -104"
+"origin" "1160 -224 -104"
 }
 // entity 21
 {
 "classname" "info_player_start"
-"origin" "360 -1760 -24"
+"origin" "360 -1760 8"
 }
 // entity 22
 {

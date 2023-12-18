@@ -607,21 +607,21 @@ qboolean UI_Init();
 qboolean UI_AddUI(char* name, qboolean (*on_create)());
 
 // UI: Init Controls
-qboolean UI_AddText(const char* name, char* text, int position_x, int position_y);
-qboolean UI_AddImage(const char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);
-qboolean UI_AddButton(const char* name, int position_x, int position_y, int size_x, int size_y);
-qboolean UI_AddSlider(const char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);
-qboolean UI_AddCheckbox(const char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
+qboolean UI_AddText(char* name, char* text, int position_x, int position_y);
+qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);
+qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y);
+qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);
+qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
 
 // UI: Toggle
-qboolean UI_SetEnabled(const char* name, qboolean enabled);
-qboolean UI_SetActive(const char* name, qboolean enabled);
+qboolean UI_SetEnabled(char* name, qboolean enabled);
+qboolean UI_SetActive(char* name, qboolean enabled);
 
 // UI: Set Event Handler
-qboolean UI_SetEventOnClick(void (*func)(int btn, int x, int y));
+qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y));
 
 // UI: Event Handling
-qboolean UI_HandleEventOnClick(int btn, int x, int y);
+void UI_HandleEventOnClick(int btn, int x, int y);
 
 // UI: Draw
 void UI_Draw();

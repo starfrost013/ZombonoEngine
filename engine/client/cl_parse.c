@@ -32,7 +32,6 @@ char *svc_strings[256] =
 	"svc_layout",
 	"svc_inventory",
 	"svc_drawui",
-	"svc_setplayerteam",
 
 	"svc_nop",
 	"svc_disconnect",

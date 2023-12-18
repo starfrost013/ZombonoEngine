@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2023/12/08 version
+// 2023/12/17 version
 
 //
 // worldspawn
@@ -447,33 +447,6 @@
 
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light1/tris.md2", "skin": 0 }) = light_mine1 : "Clean fluorescent light fixture"	[spawnflags(Flags) =	[	1 : "" : 0	]]
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light2/tris.md2", "skin": 0 }) = light_mine2 : "Dusty fluorescent light fixture"	[spawnflags(Flags) = [	1 : "" : 0]]
-
-
-
-
-// actor code is still broken...leaving this in because i know *someone* will fix
-// this because its pretty damn cool.
-@PointClass base(PlayerClass, Target) = misc_actor : "Actor"
-[
-	health(integer) : "Health" : 100
-]
-@PointClass base(Appearflags, Targetname) = target_actor : "Actor path"
-[
-	spawnflags(Flags) =
-	[
-		1 : "Jump" : 0
-		2 : "Shoot" : 0
-		4 : "Attack" : 0
-		16 : "Hold" : 0
-		32 : "Brutal" : 0
-	]
-	target(string) : "Next path target"
-	pathtarget(string) : "Action target"
-	wait(integer) : "Pause time"
-	message(string) : "Message"
-	speed(integer) : "Forward (jump)" : 200
-	height(integer) : "Height (jump)" : 200
-]
 
 // 0224 - changed banner size from (-4 -4 -4, 4 4 4) to (-4 -4 0, 4 4 246)
 @PointClass base(Appearflags) color(255 128 0) size(-4 -4 0, 4 4 246) model({ "path": ":models/objects/banner/tris.md2" }) = misc_banner : "Flowing banner" []

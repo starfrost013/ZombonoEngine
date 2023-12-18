@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // game.h -- game dll information visible to server
 
-#define	GAME_API_VERSION	4
+#define	GAME_API_VERSION	5
 
 // edict->svflags
 
@@ -209,6 +209,7 @@ typedef struct
 	void		(*ClientUserinfoChanged) (edict_t *ent, char *userinfo);
 	void		(*ClientDisconnect) (edict_t *ent);
 	void		(*ClientCommand) (edict_t *ent);
+	void		(*ClientCommand_NoConsole) (edict_t* ent);
 	void		(*ClientThink) (edict_t *ent, usercmd_t *cmd);
 
 	void		(*RunFrame) (void);
@@ -233,4 +234,4 @@ typedef struct
 	int			max_edicts;
 } game_export_t;
 
-game_export_t *GetGameApi (game_import_t *import);
+game_export_t *Sys_GetGameApi (game_import_t *import);
