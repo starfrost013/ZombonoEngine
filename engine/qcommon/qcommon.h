@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// qcommon.h -- definitions common between client and server, but not game.dll
+// qcommon.h -- definitions common between client and server, but not game*.dll
 
 #include "../game/q_shared.h"
 
