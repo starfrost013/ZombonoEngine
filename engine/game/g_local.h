@@ -669,6 +669,7 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 // p_client.c
 // 
 void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
+void	GiveBaseWeaponForTeam(edict_t* client_edict);
 
 // damage flags
 #define DAMAGE_RADIUS			0x00000001	// damage was indirect

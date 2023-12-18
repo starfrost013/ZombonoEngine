@@ -784,6 +784,7 @@ void Cmd_SetTeam_f(edict_t* ent, player_team team)
 
 	// teleport the player to the spanw point
 	SelectSpawnPoint(ent, spawn_origin, spawn_angles);
+	GiveBaseWeaponForTeam(ent);
 
 	VectorCopy(spawn_origin, ent->s.origin);
 	VectorCopy(spawn_angles, ent->s.angles);

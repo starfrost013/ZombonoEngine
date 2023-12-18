@@ -509,21 +509,7 @@ void InitClientPersistent (edict_t *client_edict)
 
 	// Give them the default weapon!
 
-	if (client_edict->team == team_director)
-	{
-		item = FindItem("Director - Bamfuslicator");
-		client->pers.selected_item = ITEM_INDEX(item);
-		client->pers.inventory[client->pers.selected_item] = WEAP_BAMFUSLICATOR;
-		client->pers.weapon = item;
-
-	}
-	else 
-	{
-		item = FindItem("Blaster");
-		client->pers.selected_item = ITEM_INDEX(item);
-		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
-		client->pers.weapon = item;
-	}
+	GiveBaseWeaponForTeam(client_edict);
 
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
@@ -538,6 +524,29 @@ void InitClientPersistent (edict_t *client_edict)
 	client->pers.connected = true;
 }
 
+
+void GiveBaseWeaponForTeam(edict_t* client_edict)
+{
+	gclient_t* client = client_edict->client;
+	gitem_t* item;
+
+	if (client_edict->team == team_director)
+	{
+		//todo: make a method
+		item = FindItem("Director - Bamfuslicator");
+		client->pers.selected_item = ITEM_INDEX(item);
+		client->pers.inventory[client->pers.selected_item] = WEAP_BAMFUSLICATOR;
+		client->pers.weapon = item;
+
+	}
+	else
+	{
+		item = FindItem("Blaster");
+		client->pers.selected_item = ITEM_INDEX(item);
+		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
+		client->pers.weapon = item;
+	}
+}
 
 void InitClientResp (gclient_t *client)
 {
