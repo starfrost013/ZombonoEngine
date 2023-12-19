@@ -520,7 +520,7 @@ void Multiplayer_MenuInit( void )
 	s_start_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_start_network_server_action.generic.x		= 0;
 	s_start_network_server_action.generic.y		= 10 * vid_hudscale->value;
-	s_start_network_server_action.generic.name	= " Start network server";
+	s_start_network_server_action.generic.name	= " Start Network Server";
 	s_start_network_server_action.generic.callback = StartNetworkServerFunc;
 
 	s_player_setup_action.generic.type	= MTYPE_ACTION;
