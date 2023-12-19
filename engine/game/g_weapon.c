@@ -62,7 +62,7 @@ fire_hit
 Used for all impact (hit/punch/slash) attacks
 =================
 */
-qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick)
+qboolean fire_hit (edict_t *self, vec3_t attack_radius, int damage, int kick)
 {
 	trace_t		tr;
 	vec3_t		forward, right, up;
@@ -74,10 +74,10 @@ qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick)
 	//see if enemy is in range
 	VectorSubtract (self->enemy->s.origin, self->s.origin, dir);
 	range = VectorLength(dir);
-	if (range > aim[0])
+	if (range > attack_radius[0])
 		return false;
 
-	if (aim[1] > self->mins[0] && aim[1] < self->maxs[0])
+	if (attack_radius[1] > self->mins[0] && attack_radius[1] < self->maxs[0])
 	{
 		// the hit is straight on so back the range up to the edge of their bbox
 		range -= self->enemy->maxs[0];
@@ -85,10 +85,10 @@ qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick)
 	else
 	{
 		// this is a side hit so adjust the "right" value out to the edge of their bbox
-		if (aim[1] < 0)
-			aim[1] = self->enemy->mins[0];
+		if (attack_radius[1] < 0)
+			attack_radius[1] = self->enemy->mins[0];
 		else
-			aim[1] = self->enemy->maxs[0];
+			attack_radius[1] = self->enemy->maxs[0];
 	}
 
 	VectorMA (self->s.origin, range, dir, point);
@@ -105,8 +105,8 @@ qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick)
 
 	AngleVectors(self->s.angles, forward, right, up);
 	VectorMA (self->s.origin, range, forward, point);
-	VectorMA (point, aim[1], right, point);
-	VectorMA (point, aim[2], up, point);
+	VectorMA (point, attack_radius[1], right, point);
+	VectorMA (point, attack_radius[2], up, point);
 	VectorSubtract (point, self->enemy->s.origin, dir);
 
 	// do the damage

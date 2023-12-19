@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_zombie.h"
 
-
 static int	sound_idle;
 static int	sound_sight1;
 static int	sound_sight2;
@@ -34,21 +33,20 @@ static int	sound_pain_ss;
 static int	sound_death_light;
 static int	sound_death;
 static int	sound_death_ss;
-static int	sound_cock;
+static int	sound_hit;
 
+// test zombie types
+// maybe make these load from a file
+#define ZOMBIE_DAMAGE_STANDARD		10
+#define ZOMBIE_DAMAGE_TANK			20
+#define ZOMBIE_DAMAGE_FUCKING_CUNT	45
+
+#define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
 
 void zombie_idle(edict_t* self)
 {
 	if (random() > 0.8)
 		gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
-}
-
-void zombie_cock(edict_t* self)
-{
-	if (self->s.frame == FRAME_stand322)
-		gi.sound(self, CHAN_WEAPON, sound_cock, 1, ATTN_IDLE, 0);
-	else
-		gi.sound(self, CHAN_WEAPON, sound_cock, 1, ATTN_NORM, 0);
 }
 
 // STAND
@@ -117,7 +115,7 @@ mframe_t zombie_frames_stand3[] =
 	ai_stand, 0, NULL,
 
 	ai_stand, 0, NULL,
-	ai_stand, 0, zombie_cock,
+	ai_stand, 0, NULL,
 	ai_stand, 0, NULL,
 	ai_stand, 0, NULL,
 	ai_stand, 0, NULL,
@@ -386,47 +384,21 @@ void zombie_pain(edict_t* self, edict_t* other, float kick, int damage)
 // ATTACK
 //
 
-void zombie_fire(edict_t* self, int flash_number)
+void zombie_fire(edict_t* self)
 {
-	vec3_t	start;
-	vec3_t	forward, right, up;
 	vec3_t	aim;
-	vec3_t	dir;
-	vec3_t	end;
-	float	r, u;
 
-	AngleVectors(self->s.angles, forward, right, NULL);
-	G_ProjectSource(self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-
-	if (flash_number == 5 || flash_number == 6)
-	{
-		VectorCopy(forward, aim);
-	}
-	else
-	{
-		VectorCopy(self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract(end, start, aim);
-		vectoangles(aim, dir);
-		AngleVectors(dir, forward, right, up);
-
-		r = crandom() * 1000;
-		u = crandom() * 500;
-		VectorMA(start, 8192, forward, end);
-		VectorMA(end, r, right, end);
-		VectorMA(end, u, up, end);
-
-		VectorSubtract(end, start, aim);
-		VectorNormalize(aim);
-	}
-
+	VectorSet(aim, ZOMBIE_RANGE_STANDARD, 0, 16);
+	// todo: types
+	fire_hit(self, aim, ZOMBIE_DAMAGE_STANDARD, 2);
 }
 
-// ATTACK1 (blaster/shotgun)
+// Attack 1:
+// The zombie bites you.
 
 void zombie_fire1(edict_t* self)
 {
-	zombie_fire(self, 0);
+	zombie_fire(self);
 }
 
 void zombie_attack1_refire1(edict_t* self)
@@ -464,13 +436,14 @@ mframe_t zombie_frames_attack1[] =
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  zombie_attack1_refire1,
 	ai_charge, 0,  NULL,
-	ai_charge, 0,  zombie_cock,
+	ai_charge, 0,  NULL,
 	ai_charge, 0,  zombie_attack1_refire2,
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  NULL
 };
 mmove_t zombie_move_attack1 = { FRAME_attak101, FRAME_attak112, zombie_frames_attack1, zombie_run };
+
 
 // ATTACK2 (blaster/shotgun)
 
@@ -519,7 +492,7 @@ mframe_t zombie_frames_attack2[] =
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
-	ai_charge, 0, zombie_cock,
+	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
 	ai_charge, 0, zombie_attack2_refire2,
 	ai_charge, 0, NULL,
@@ -1047,7 +1020,7 @@ void SP_monster_zombie_x(edict_t* self)
 	sound_idle = gi.soundindex("zombie/idle_w2.wav");
 	sound_sight1 = gi.soundindex("zombie/z_idle.wav");
 	sound_sight2 = gi.soundindex("zombie/z_idle1.wav");
-	sound_cock = gi.soundindex("zombie/z_hit.wav");
+	sound_hit = gi.soundindex("zombie/z_hit.wav");
 
 	self->mass = 100;
 

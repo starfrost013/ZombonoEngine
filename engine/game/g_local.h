@@ -82,8 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	TAG_GAME	765		// clear when unloading the dll
 #define	TAG_LEVEL	766		// clear when loading a new level
 
-
-#define MELEE_DISTANCE	80
+#define MELEE_DISTANCE	80					// Vector magnitude distance within which an enemy can melee.
 
 #define BODY_QUEUE_SIZE		8
 
