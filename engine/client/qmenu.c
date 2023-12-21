@@ -23,17 +23,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 #include "qmenu.h"
 
-static void	 Action_DoEnter( menuaction_s *a );
-static void	 Action_Draw( menuaction_s *a );
+static void	 Action_DoEnter( menuaction_t *a );
+static void	 Action_Draw( menuaction_t *a );
 static void  Menu_DrawStatusBar( const char *string );
-static void	 Menulist_DoEnter( menulist_s *l );
-static void	 MenuList_Draw( menulist_s *l );
-static void	 Separator_Draw( menuseparator_s *s );
-static void	 Slider_DoSlide( menuslider_s *s, int dir );
-static void	 Slider_Draw( menuslider_s *s );
-static void	 SpinControl_DoEnter( menulist_s *s );
-static void	 SpinControl_Draw( menulist_s *s );
-static void	 SpinControl_DoSlide( menulist_s *s, int dir );
+static void	 Menulist_DoEnter( menulist_t *l );
+static void	 MenuList_Draw( menulist_t *l );
+static void	 Separator_Draw( menuseparator_t *s );
+static void	 Slider_DoSlide( menuslider_t *s, int dir );
+static void	 Slider_Draw( menuslider_t *s );
+static void	 SpinControl_DoEnter( menulist_t *s );
+static void	 SpinControl_Draw( menulist_t *s );
+static void	 SpinControl_DoSlide( menulist_t *s, int dir );
 
 #define RCOLUMN_OFFSET  16 * vid_hudscale->value
 #define LCOLUMN_OFFSET -16 * vid_hudscale->value
@@ -48,13 +48,13 @@ extern cvar_t *vid_hudscale;
 #define Draw_Char re.DrawChar
 #define Draw_Fill re.DrawFill
 
-void Action_DoEnter( menuaction_s *a )
+void Action_DoEnter( menuaction_t *a )
 {
 	if ( a->generic.callback )
 		a->generic.callback( a );
 }
 
-void Action_Draw( menuaction_s *a )
+void Action_Draw( menuaction_t *a )
 {
 	if ( a->generic.flags & QMF_LEFT_JUSTIFY )
 	{
@@ -74,7 +74,7 @@ void Action_Draw( menuaction_s *a )
 		a->generic.ownerdraw( a );
 }
 
-qboolean Field_DoEnter( menufield_s *f )
+qboolean Field_DoEnter( menufield_t *f )
 {
 	if ( f->generic.callback )
 	{
@@ -84,7 +84,7 @@ qboolean Field_DoEnter( menufield_s *f )
 	return false;
 }
 
-void Field_Draw( menufield_s *f )
+void Field_Draw( menufield_t *f )
 {
 	int i;
 	char tempbuffer[128]="";
@@ -132,7 +132,7 @@ void Field_Draw( menufield_s *f )
 	}
 }
 
-qboolean Field_Key( menufield_s *f, int key )
+qboolean Field_Key( menufield_t *f, int key )
 {
 	extern int keydown[];
 
@@ -263,7 +263,7 @@ qboolean Field_Key( menufield_s *f, int key )
 	return true;
 }
 
-void Menu_AddItem( menuframework_s *menu, void *item )
+void Menu_AddItem( menuframework_t *menu, void *item )
 {
 	if ( menu->nitems == 0 )
 		menu->nslots = 0;
@@ -271,7 +271,7 @@ void Menu_AddItem( menuframework_s *menu, void *item )
 	if ( menu->nitems < MAXMENUITEMS )
 	{
 		menu->items[menu->nitems] = item;
-		( ( menucommon_s * ) menu->items[menu->nitems] )->parent = menu;
+		( ( menucommon_t * ) menu->items[menu->nitems] )->parent = menu;
 		menu->nitems++;
 	}
 
@@ -285,9 +285,9 @@ void Menu_AddItem( menuframework_s *menu, void *item )
 ** to adjust the menu's cursor so that it's at the next available
 ** slot.
 */
-void Menu_AdjustCursor( menuframework_s *m, int dir )
+void Menu_AdjustCursor( menuframework_t *m, int dir )
 {
-	menucommon_s *citem;
+	menucommon_t *citem;
 
 	/*
 	** see if it's in a valid spot
@@ -333,45 +333,45 @@ void Menu_AdjustCursor( menuframework_s *m, int dir )
 	}
 }
 
-void Menu_Center( menuframework_s *menu )
+void Menu_Center( menuframework_t *menu )
 {
 	int height;
 
-	height = ( ( menucommon_s * ) menu->items[menu->nitems-1])->y;
+	height = ( ( menucommon_t * ) menu->items[menu->nitems-1])->y;
 	height += 10;
 
 	menu->y = ( VID_HEIGHT - height ) / 2;
 }
 
-void Menu_Draw( menuframework_s *menu )
+void Menu_Draw( menuframework_t *menu )
 {
 	int i;
-	menucommon_s *item;
+	menucommon_t *item;
 
 	/*
 	** draw contents
 	*/
 	for ( i = 0; i < menu->nitems; i++ )
 	{
-		switch ( ( ( menucommon_s * ) menu->items[i] )->type )
+		switch ( ( ( menucommon_t * ) menu->items[i] )->type )
 		{
 		case MTYPE_FIELD:
-			Field_Draw( ( menufield_s * ) menu->items[i] );
+			Field_Draw( ( menufield_t * ) menu->items[i] );
 			break;
 		case MTYPE_SLIDER:
-			Slider_Draw( ( menuslider_s * ) menu->items[i] );
+			Slider_Draw( ( menuslider_t * ) menu->items[i] );
 			break;
 		case MTYPE_LIST:
-			MenuList_Draw( ( menulist_s * ) menu->items[i] );
+			MenuList_Draw( ( menulist_t * ) menu->items[i] );
 			break;
 		case MTYPE_SPINCONTROL:
-			SpinControl_Draw( ( menulist_s * ) menu->items[i] );
+			SpinControl_Draw( ( menulist_t * ) menu->items[i] );
 			break;
 		case MTYPE_ACTION:
-			Action_Draw( ( menuaction_s * ) menu->items[i] );
+			Action_Draw( ( menuaction_t * ) menu->items[i] );
 			break;
 		case MTYPE_SEPARATOR:
-			Separator_Draw( ( menuseparator_s * ) menu->items[i] );
+			Separator_Draw( ( menuseparator_t * ) menu->items[i] );
 			break;
 		}
 	}
@@ -471,7 +471,7 @@ void Menu_DrawStringR2LDark( int x, int y, const char *string )
 	}
 }
 
-void *Menu_ItemAtCursor( menuframework_s *m )
+void *Menu_ItemAtCursor( menuframework_t *m )
 {
 	if ( m->cursor < 0 || m->cursor >= m->nitems )
 		return 0;
@@ -479,18 +479,18 @@ void *Menu_ItemAtCursor( menuframework_s *m )
 	return m->items[m->cursor];
 }
 
-qboolean Menu_SelectItem( menuframework_s *s )
+qboolean Menu_SelectItem( menuframework_t *s )
 {
-	menucommon_s *item = ( menucommon_s * ) Menu_ItemAtCursor( s );
+	menucommon_t *item = ( menucommon_t * ) Menu_ItemAtCursor( s );
 
 	if ( item )
 	{
 		switch ( item->type )
 		{
 		case MTYPE_FIELD:
-			return Field_DoEnter( ( menufield_s * ) item ) ;
+			return Field_DoEnter( ( menufield_t * ) item ) ;
 		case MTYPE_ACTION:
-			Action_DoEnter( ( menuaction_s * ) item );
+			Action_DoEnter( ( menuaction_t * ) item );
 			return true;
 		case MTYPE_LIST:
 //			Menulist_DoEnter( ( menulist_s * ) item );
@@ -503,40 +503,40 @@ qboolean Menu_SelectItem( menuframework_s *s )
 	return false;
 }
 
-void Menu_SetStatusBar( menuframework_s *m, const char *string )
+void Menu_SetStatusBar( menuframework_t *m, const char *string )
 {
 	m->statusbar = string;
 }
 
-void Menu_SlideItem( menuframework_s *s, int dir )
+void Menu_SlideItem( menuframework_t *s, int dir )
 {
-	menucommon_s *item = ( menucommon_s * ) Menu_ItemAtCursor( s );
+	menucommon_t *item = ( menucommon_t * ) Menu_ItemAtCursor( s );
 
 	if ( item )
 	{
 		switch ( item->type )
 		{
 		case MTYPE_SLIDER:
-			Slider_DoSlide( ( menuslider_s * ) item, dir );
+			Slider_DoSlide( ( menuslider_t * ) item, dir );
 			break;
 		case MTYPE_SPINCONTROL:
-			SpinControl_DoSlide( ( menulist_s * ) item, dir );
+			SpinControl_DoSlide( ( menulist_t * ) item, dir );
 			break;
 		}
 	}
 }
 
-int Menu_TallySlots( menuframework_s *menu )
+int Menu_TallySlots( menuframework_t *menu )
 {
 	int i;
 	int total = 0;
 
 	for ( i = 0; i < menu->nitems; i++ )
 	{
-		if ( ( ( menucommon_s * ) menu->items[i] )->type == MTYPE_LIST )
+		if ( ( ( menucommon_t * ) menu->items[i] )->type == MTYPE_LIST )
 		{
 			int nitems = 0;
-			const char **n = ( ( menulist_s * ) menu->items[i] )->itemnames;
+			const char **n = ( ( menulist_t * ) menu->items[i] )->itemnames;
 
 			while (*n)
 				nitems++, n++;
@@ -552,7 +552,7 @@ int Menu_TallySlots( menuframework_s *menu )
 	return total;
 }
 
-void Menulist_DoEnter( menulist_s *l )
+void Menulist_DoEnter( menulist_t *l )
 {
 	int start;
 
@@ -564,7 +564,7 @@ void Menulist_DoEnter( menulist_s *l )
 		l->generic.callback( l );
 }
 
-void MenuList_Draw( menulist_s *l )
+void MenuList_Draw( menulist_t *l )
 {
 	const char **n;
 	int y = 0;
@@ -583,13 +583,13 @@ void MenuList_Draw( menulist_s *l )
 	}
 }
 
-void Separator_Draw( menuseparator_s *s )
+void Separator_Draw( menuseparator_t *s )
 {
 	if ( s->generic.name )
 		Menu_DrawStringR2LDark( s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->generic.name );
 }
 
-void Slider_DoSlide( menuslider_s *s, int dir )
+void Slider_DoSlide( menuslider_t *s, int dir )
 {
 	s->curvalue += dir;
 
@@ -604,7 +604,7 @@ void Slider_DoSlide( menuslider_s *s, int dir )
 
 #define SLIDER_RANGE 10
 
-void Slider_Draw( menuslider_s *s )
+void Slider_Draw( menuslider_t *s )
 {
 	int	i;
 
@@ -625,7 +625,7 @@ void Slider_Draw( menuslider_s *s )
 	Draw_Char( ( int ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, 131);
 }
 
-void SpinControl_DoEnter( menulist_s *s )
+void SpinControl_DoEnter( menulist_t *s )
 {
 	s->curvalue++;
 	if ( s->itemnames[s->curvalue] == 0 )
@@ -635,7 +635,7 @@ void SpinControl_DoEnter( menulist_s *s )
 		s->generic.callback( s );
 }
 
-void SpinControl_DoSlide( menulist_s *s, int dir )
+void SpinControl_DoSlide( menulist_t *s, int dir )
 {
 	s->curvalue += dir;
 
@@ -648,7 +648,7 @@ void SpinControl_DoSlide( menulist_s *s, int dir )
 		s->generic.callback( s );
 }
 
-void SpinControl_Draw( menulist_s *s )
+void SpinControl_Draw( menulist_t *s )
 {
 	char buffer[100];
 

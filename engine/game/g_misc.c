@@ -666,7 +666,7 @@ void func_object_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface
 		return;
 	if (other->takedamage == DAMAGE_NO)
 		return;
-	T_Damage (other, self, self, vec3_origin, self->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH);
+	T_Damage (other, self, self, vec3_origin, self->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH, 0);
 }
 
 void func_object_release (edict_t *self)
@@ -753,7 +753,7 @@ void func_explosive_explode (edict_t *self, edict_t *inflictor, edict_t *attacke
 	self->takedamage = DAMAGE_NO;
 
 	if (self->dmg)
-		T_RadiusDamage (self, attacker, self->dmg, NULL, self->dmg+40, MOD_EXPLOSIVE);
+		T_RadiusDamage (self, attacker, self->dmg, NULL, self->dmg+40, MOD_EXPLOSIVE, 0);
 
 	VectorSubtract (self->s.origin, inflictor->s.origin, self->velocity);
 	VectorNormalize (self->velocity);
@@ -879,7 +879,7 @@ void barrel_explode (edict_t *self)
 	float	spd;
 	vec3_t	save;
 
-	T_RadiusDamage (self, self->activator, self->dmg, NULL, self->dmg+40, MOD_BARREL);
+	T_RadiusDamage (self, self->activator, self->dmg, NULL, self->dmg+40, MOD_BARREL, 0);
 
 	VectorCopy (self->s.origin, save);
 	VectorMA (self->absmin, 0.5, self->size, self->s.origin);

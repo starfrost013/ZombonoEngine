@@ -390,16 +390,11 @@ void zombie_fire(edict_t* self)
 
 	VectorSet(aim, ZOMBIE_RANGE_STANDARD, 0, 16);
 	// todo: types
-	fire_hit(self, aim, ZOMBIE_DAMAGE_STANDARD, 2);
+	fire_hit(self, aim, ZOMBIE_DAMAGE_STANDARD, 0, team_director);
 }
 
 // Attack 1:
 // The zombie bites you.
-
-void zombie_fire1(edict_t* self)
-{
-	zombie_fire(self);
-}
 
 void zombie_attack1_refire1(edict_t* self)
 {
@@ -431,7 +426,7 @@ mframe_t zombie_frames_attack1[] =
 {
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  NULL,
-	ai_charge, 0,  zombie_fire1,
+	ai_charge, 0,  zombie_fire,
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  NULL,
 	ai_charge, 0,  zombie_attack1_refire1,
@@ -444,13 +439,6 @@ mframe_t zombie_frames_attack1[] =
 };
 mmove_t zombie_move_attack1 = { FRAME_attak101, FRAME_attak112, zombie_frames_attack1, zombie_run };
 
-
-// ATTACK2 (blaster/shotgun)
-
-void zombie_fire2(edict_t* self)
-{
-	zombie_fire(self, 1);
-}
 
 void zombie_attack2_refire1(edict_t* self)
 {
@@ -484,7 +472,7 @@ mframe_t zombie_frames_attack2[] =
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
-	ai_charge, 0, zombie_fire2,
+	ai_charge, 0, zombie_fire,
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
 	ai_charge, 0, zombie_attack2_refire1,
@@ -522,12 +510,6 @@ void zombie_duck_up(edict_t* self)
 	gi.linkentity(self);
 }
 
-void zombie_fire3(edict_t* self)
-{
-	zombie_duck_down(self);
-	zombie_fire(self, 2);
-}
-
 void zombie_attack3_refire(edict_t* self)
 {
 	if ((level.time + 0.4) < self->monsterinfo.pausetime)
@@ -538,7 +520,7 @@ mframe_t zombie_frames_attack3[] =
 {
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
-	ai_charge, 0, zombie_fire3,
+	ai_charge, 0, zombie_fire,
 	ai_charge, 0, NULL,
 	ai_charge, 0, NULL,
 	ai_charge, 0, zombie_attack3_refire,
@@ -550,11 +532,6 @@ mmove_t zombie_move_attack3 = { FRAME_attak301, FRAME_attak309, zombie_frames_at
 
 
 // ATTACK6 (run & shoot)
-
-void zombie_fire8(edict_t* self)
-{
-	zombie_fire(self, 7);
-}
 
 void zombie_attack6_refire(edict_t* self)
 {
@@ -573,7 +550,7 @@ mframe_t zombie_frames_attack6[] =
 	ai_charge, 10, NULL,
 	ai_charge,  4, NULL,
 	ai_charge, 12, NULL,
-	ai_charge, 11, zombie_fire8,
+	ai_charge, 11, zombie_fire,
 	ai_charge, 13, NULL,
 	ai_charge, 18, NULL,
 	ai_charge, 15, NULL,
@@ -682,16 +659,6 @@ void zombie_dodge(edict_t* self, edict_t* attacker, float eta)
 // DEATH
 //
 
-void zombie_fire6(edict_t* self)
-{
-	zombie_fire(self, 5);
-}
-
-void zombie_fire7(edict_t* self)
-{
-	zombie_fire(self, 6);
-}
-
 void zombie_dead(edict_t* self)
 {
 	VectorSet(self->mins, -16, -16, -24);
@@ -727,10 +694,10 @@ mframe_t zombie_frames_death1[] =
 	ai_move, 0,   NULL,
 
 	ai_move, 0,   NULL,
-	ai_move, 0,   zombie_fire6,
+	ai_move, 0,   zombie_fire,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,
-	ai_move, 0,   zombie_fire7,
+	ai_move, 0,   zombie_fire,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,

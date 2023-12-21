@@ -146,10 +146,10 @@ void M_PopMenu (void)
 }
 
 
-const char *Default_MenuKey( menuframework_s *m, int key )
+const char *Default_MenuKey( menuframework_t *m, int key )
 {
 	const char *sound = NULL;
-	menucommon_s *item;
+	menucommon_t *item;
 
 	if ( m )
 	{
@@ -157,7 +157,7 @@ const char *Default_MenuKey( menuframework_s *m, int key )
 		{
 			if ( item->type == MTYPE_FIELD )
 			{
-				if ( Field_Key( ( menufield_s * ) item, key ) )
+				if ( Field_Key( ( menufield_t * ) item, key ) )
 					return NULL;
 			}
 		}
@@ -476,10 +476,10 @@ MULTIPLAYER MENU
 
 =======================================================================
 */
-static menuframework_s	s_multiplayer_menu;
-static menuaction_s		s_join_network_server_action;
-static menuaction_s		s_start_network_server_action;
-static menuaction_s		s_player_setup_action;
+static menuframework_t	s_multiplayer_menu;
+static menuaction_t		s_join_network_server_action;
+static menuaction_t		s_start_network_server_action;
+static menuaction_t		s_player_setup_action;
 
 static void Multiplayer_MenuDraw (void)
 {
@@ -592,33 +592,33 @@ char *bindnames[][2] =
 int				keys_cursor;
 static int		bind_grab;
 
-static menuframework_s	s_keys_menu;
-static menuaction_s		s_keys_attack_action;
-static menuaction_s		s_keys_change_weapon_action;
-static menuaction_s		s_keys_change_weapon_prev_action;
-static menuaction_s		s_keys_change_weapon_last_action;
-static menuaction_s		s_keys_walk_forward_action;
-static menuaction_s		s_keys_backpedal_action;
-static menuaction_s		s_keys_turn_left_action;
-static menuaction_s		s_keys_turn_right_action;
-static menuaction_s		s_keys_run_action;
-static menuaction_s		s_keys_step_left_action;
-static menuaction_s		s_keys_step_right_action;
-static menuaction_s		s_keys_sidestep_action;
-static menuaction_s		s_keys_look_up_action;
-static menuaction_s		s_keys_look_down_action;
-static menuaction_s		s_keys_center_view_action;
-static menuaction_s		s_keys_mouse_look_action;
-static menuaction_s		s_keys_keyboard_look_action;
-static menuaction_s		s_keys_move_up_action;
-static menuaction_s		s_keys_move_down_action;
-static menuaction_s		s_keys_inventory_action;
-static menuaction_s		s_keys_inv_use_action;
-static menuaction_s		s_keys_inv_drop_action;
-static menuaction_s		s_keys_inv_prev_action;
-static menuaction_s		s_keys_inv_next_action;
+static menuframework_t	s_keys_menu;
+static menuaction_t		s_keys_attack_action;
+static menuaction_t		s_keys_change_weapon_action;
+static menuaction_t		s_keys_change_weapon_prev_action;
+static menuaction_t		s_keys_change_weapon_last_action;
+static menuaction_t		s_keys_walk_forward_action;
+static menuaction_t		s_keys_backpedal_action;
+static menuaction_t		s_keys_turn_left_action;
+static menuaction_t		s_keys_turn_right_action;
+static menuaction_t		s_keys_run_action;
+static menuaction_t		s_keys_step_left_action;
+static menuaction_t		s_keys_step_right_action;
+static menuaction_t		s_keys_sidestep_action;
+static menuaction_t		s_keys_look_up_action;
+static menuaction_t		s_keys_look_down_action;
+static menuaction_t		s_keys_center_view_action;
+static menuaction_t		s_keys_mouse_look_action;
+static menuaction_t		s_keys_keyboard_look_action;
+static menuaction_t		s_keys_move_up_action;
+static menuaction_t		s_keys_move_down_action;
+static menuaction_t		s_keys_inventory_action;
+static menuaction_t		s_keys_inv_use_action;
+static menuaction_t		s_keys_inv_drop_action;
+static menuaction_t		s_keys_inv_prev_action;
+static menuaction_t		s_keys_inv_next_action;
 
-static menuaction_s		s_keys_help_computer_action;
+static menuaction_t		s_keys_help_computer_action;
 
 static void M_UnbindCommand (char *command)
 {
@@ -664,7 +664,7 @@ static void M_FindKeysForCommand (char *command, int *twokeys)
 	}
 }
 
-static void KeyCursorDrawFunc( menuframework_s *menu )
+static void KeyCursorDrawFunc( menuframework_t *menu )
 {
 	if ( bind_grab )
 		re.DrawChar( menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, '=' );
@@ -675,7 +675,7 @@ static void KeyCursorDrawFunc( menuframework_s *menu )
 static void DrawKeyBindingFunc( void *self )
 {
 	int keys[2];
-	menuaction_s *a = ( menuaction_s * ) self;
+	menuaction_t *a = ( menuaction_t * ) self;
 
 	M_FindKeysForCommand( bindnames[a->generic.localdata[0]][0], keys);
 		
@@ -704,7 +704,7 @@ static void DrawKeyBindingFunc( void *self )
 
 static void KeyBindingFunc( void *self )
 {
-	menuaction_s *a = ( menuaction_s * ) self;
+	menuaction_t *a = ( menuaction_t * ) self;
 	int keys[2];
 
 	M_FindKeysForCommand( bindnames[a->generic.localdata[0]][0], keys );
@@ -966,7 +966,7 @@ static void Keys_MenuDraw (void)
 
 static const char *Keys_MenuKey( int key )
 {
-	menuaction_s *item = ( menuaction_s * ) Menu_ItemAtCursor( &s_keys_menu );
+	menuaction_t *item = ( menuaction_t * ) Menu_ItemAtCursor( &s_keys_menu );
 
 	if ( bind_grab )
 	{	
@@ -1016,23 +1016,23 @@ CONTROLS MENU
 static cvar_t *win_noalttab;
 extern cvar_t *in_joystick;
 
-static menuframework_s	s_options_menu;
-static menuaction_s		s_options_defaults_action;
-static menuaction_s		s_options_customize_options_action;
-static menuslider_s		s_options_sensitivity_slider;
-static menulist_s		s_options_freelook_box;
-static menulist_s		s_options_noalttab_box;
-static menulist_s		s_options_alwaysrun_box;
-static menulist_s		s_options_invertmouse_box;
-static menulist_s		s_options_lookspring_box;
-static menulist_s		s_options_lookstrafe_box;
-static menulist_s		s_options_crosshair_box;
-static menuslider_s		s_options_sfxvolume_slider;
-static menuslider_s		s_options_cdvolume_slider;
-static menulist_s		s_options_joystick_box;
-static menulist_s		s_options_quality_list;
-static menulist_s		s_options_compatibility_list;
-static menulist_s		s_options_console_action;
+static menuframework_t	s_options_menu;
+static menuaction_t		s_options_defaults_action;
+static menuaction_t		s_options_customize_options_action;
+static menuslider_t		s_options_sensitivity_slider;
+static menulist_t		s_options_freelook_box;
+static menulist_t		s_options_noalttab_box;
+static menulist_t		s_options_alwaysrun_box;
+static menulist_t		s_options_invertmouse_box;
+static menulist_t		s_options_lookspring_box;
+static menulist_t		s_options_lookstrafe_box;
+static menulist_t		s_options_crosshair_box;
+static menuslider_t		s_options_sfxvolume_slider;
+static menuslider_t		s_options_cdvolume_slider;
+static menulist_t		s_options_joystick_box;
+static menulist_t		s_options_quality_list;
+static menulist_t		s_options_compatibility_list;
+static menulist_t		s_options_console_action;
 
 static void CrosshairFunc( void *unused )
 {
@@ -1532,15 +1532,15 @@ GAME MENU
 
 static int		m_game_cursor;
 
-static menuframework_s	s_game_menu;
-static menuaction_s		s_easy_game_action;
-static menuaction_s		s_medium_game_action;
-static menuaction_s		s_hard_game_action;
-static menuaction_s		s_hard_plus_game_action;
-static menuaction_s		s_load_game_action;
-static menuaction_s		s_save_game_action;
-static menuaction_s		s_credits_action;
-static menuseparator_s	s_blankline;
+static menuframework_t	s_game_menu;
+static menuaction_t		s_easy_game_action;
+static menuaction_t		s_medium_game_action;
+static menuaction_t		s_hard_game_action;
+static menuaction_t		s_hard_plus_game_action;
+static menuaction_t		s_load_game_action;
+static menuaction_t		s_save_game_action;
+static menuaction_t		s_credits_action;
+static menuseparator_t	s_blankline;
 
 static void StartGame( void )
 {
@@ -1704,10 +1704,10 @@ LOADGAME MENU
 
 #define	MAX_SAVEGAMES	15
 
-static menuframework_s	s_savegame_menu;
+static menuframework_t	s_savegame_menu;
 
-static menuframework_s	s_loadgame_menu;
-static menuaction_s		s_loadgame_actions[MAX_SAVEGAMES];
+static menuframework_t	s_loadgame_menu;
+static menuaction_t		s_loadgame_actions[MAX_SAVEGAMES];
 
 char		m_savestrings[MAX_SAVEGAMES][32];
 qboolean	m_savevalid[MAX_SAVEGAMES];
@@ -1738,7 +1738,7 @@ void Create_Savestrings (void)
 
 void LoadGameCallback( void *self )
 {
-	menuaction_s *a = ( menuaction_s * ) self;
+	menuaction_t *a = ( menuaction_t * ) self;
 
 	if ( m_savevalid[ a->generic.localdata[0] ] )
 		Cbuf_AddText (va("load save%i\n",  a->generic.localdata[0] ) );
@@ -1805,12 +1805,12 @@ SAVEGAME MENU
 
 =============================================================================
 */
-static menuframework_s	s_savegame_menu;
-static menuaction_s		s_savegame_actions[MAX_SAVEGAMES];
+static menuframework_t	s_savegame_menu;
+static menuaction_t		s_savegame_actions[MAX_SAVEGAMES];
 
 void SaveGameCallback( void *self )
 {
-	menuaction_s *a = ( menuaction_s * ) self;
+	menuaction_t *a = ( menuaction_t * ) self;
 
 	Cbuf_AddText (va("save save%i\n", a->generic.localdata[0] ));
 	M_ForceMenuOff ();
@@ -1881,11 +1881,11 @@ JOIN SERVER MENU
 */
 #define MAX_LOCAL_SERVERS 8
 
-static menuframework_s	s_joinserver_menu;
-static menuseparator_s	s_joinserver_server_title;
-static menuaction_s		s_joinserver_search_action;
-static menuaction_s		s_joinserver_address_book_action;
-static menuaction_s		s_joinserver_server_actions[MAX_LOCAL_SERVERS];
+static menuframework_t	s_joinserver_menu;
+static menuseparator_t	s_joinserver_server_title;
+static menuaction_t		s_joinserver_search_action;
+static menuaction_t		s_joinserver_address_book_action;
+static menuaction_t		s_joinserver_server_actions[MAX_LOCAL_SERVERS];
 
 int		m_num_servers;
 #define	NO_SERVER_STRING	"<no server>"
@@ -1921,7 +1921,7 @@ void JoinServerFunc( void *self )
 	char	buffer[128];
 	int		index;
 
-	index = ( menuaction_s * ) self - s_joinserver_server_actions;
+	index = ( menuaction_t * ) self - s_joinserver_server_actions;
 
 	if ( Q_stricmp( local_server_names[index], NO_SERVER_STRING ) == 0 )
 		return;
@@ -2048,18 +2048,18 @@ START SERVER MENU
 
 =============================================================================
 */
-static menuframework_s s_startserver_menu;
+static menuframework_t s_startserver_menu;
 static char **mapnames;
 static int	  nummaps;
 
-static menuaction_s	s_startserver_start_action;
-static menuaction_s	s_startserver_dmoptions_action;
-static menufield_s	s_timelimit_field;
-static menufield_s	s_fraglimit_field;
-static menufield_s	s_maxclients_field;
-static menufield_s	s_hostname_field;
-static menulist_s	s_startmap_list;
-static menulist_s	s_rules_box;
+static menuaction_t	s_startserver_start_action;
+static menuaction_t	s_startserver_dmoptions_action;
+static menufield_t	s_timelimit_field;
+static menufield_t	s_fraglimit_field;
+static menufield_t	s_maxclients_field;
+static menufield_t	s_hostname_field;
+static menulist_t	s_startmap_list;
+static menulist_t	s_rules_box;
 
 void DMOptionsFunc( void *self )
 {
@@ -2369,32 +2369,27 @@ DMOPTIONS BOOK MENU
 */
 static char dmoptions_statusbar[128];
 
-static menuframework_s s_gameoptions_menu;
+static menuframework_t s_gameoptions_menu;
 
-static menulist_s	s_friendlyfire_box;
-static menulist_s	s_falls_box;
-static menulist_s	s_weapons_stay_box;
-static menulist_s	s_instant_powerups_box;
-static menulist_s	s_powerups_box;
-static menulist_s	s_health_box;
-static menulist_s	s_spawn_farthest_box;
-static menulist_s	s_samelevel_box;
-static menulist_s	s_force_respawn_box;
-static menulist_s	s_armor_box;
-static menulist_s	s_allow_exit_box;
-static menulist_s	s_infinite_ammo_box;
-static menulist_s	s_quad_drop_box;
+static menulist_t	s_friendlyfire_box;
+static menulist_t	s_friendlyfire_item_box;
+static menulist_t	s_falls_box;
+static menulist_t	s_weapons_stay_box;
+static menulist_t	s_instant_powerups_box;
+static menulist_t	s_powerups_box;
+static menulist_t	s_health_box;
+static menulist_t	s_spawn_farthest_box;
+static menulist_t	s_samelevel_box;
+static menulist_t	s_force_respawn_box;
+static menulist_t	s_armor_box;
+static menulist_t	s_allow_exit_box;
+static menulist_t	s_infinite_ammo_box;
+static menulist_t	s_quad_drop_box;
 
-//ROGUE
-static menulist_s	s_no_mines_box;
-static menulist_s	s_no_nukes_box;
-static menulist_s	s_stack_double_box;
-static menulist_s	s_no_spheres_box;
-//ROGUE
 
 static void GameFlagCallback( void *self )
 {
-	menulist_s *f = ( menulist_s * ) self;
+	menulist_t *f = ( menulist_t * ) self;
 	int flags;
 	int bit = 0;
 
@@ -2471,6 +2466,14 @@ static void GameFlagCallback( void *self )
 	else if ( f == &s_quad_drop_box )
 	{
 		bit = GF_QUAD_DROP;
+	}
+	else if (f == &s_friendlyfire_item_box)
+	{
+		if (f->curvalue)
+			flags &= ~GF_ITEM_FRIENDLY_FIRE;
+		else
+			flags |= GF_ITEM_FRIENDLY_FIRE;
+		goto setvalue;
 	}
 
 	if ( f )
@@ -2600,13 +2603,18 @@ void GameOptions_MenuInit( void )
 	s_friendlyfire_box.generic.type = MTYPE_SPINCONTROL;
 	s_friendlyfire_box.generic.x	= 0;
 	s_friendlyfire_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_friendlyfire_box.generic.name	= "Allow Friendly Fire";
+	s_friendlyfire_box.generic.name	= "Allow Friendly Player Fire";
 	s_friendlyfire_box.generic.callback = GameFlagCallback;
 	s_friendlyfire_box.itemnames = yes_no_names;
 	s_friendlyfire_box.curvalue = ( gameflags & GF_NO_FRIENDLY_FIRE ) == 0;
 
-//ROGUE
-//============
+	s_friendlyfire_item_box.generic.type = MTYPE_SPINCONTROL;
+	s_friendlyfire_item_box.generic.x = 0;
+	s_friendlyfire_item_box.generic.y = y += 10 * vid_hudscale->value;
+	s_friendlyfire_item_box.generic.name = "Allow Friendly Zombie/Item Fire";
+	s_friendlyfire_item_box.generic.callback = GameFlagCallback;
+	s_friendlyfire_item_box.itemnames = yes_no_names;
+	s_friendlyfire_item_box.curvalue = (gameflags & GF_ITEM_FRIENDLY_FIRE) != 0;
 
 	Menu_AddItem( &s_gameoptions_menu, &s_falls_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_weapons_stay_box );
@@ -2621,6 +2629,7 @@ void GameOptions_MenuInit( void )
 	Menu_AddItem( &s_gameoptions_menu, &s_infinite_ammo_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_quad_drop_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_item_box);
 	Menu_Center( &s_gameoptions_menu );
 
 	// set the original gameflags statusbar
@@ -2651,18 +2660,18 @@ DOWNLOADOPTIONS BOOK MENU
 
 =============================================================================
 */
-static menuframework_s s_downloadoptions_menu;
+static menuframework_t s_downloadoptions_menu;
 
-static menuseparator_s	s_download_title;
-static menulist_s	s_allow_download_box;
-static menulist_s	s_allow_download_maps_box;
-static menulist_s	s_allow_download_models_box;
-static menulist_s	s_allow_download_players_box;
-static menulist_s	s_allow_download_sounds_box;
+static menuseparator_t	s_download_title;
+static menulist_t	s_allow_download_box;
+static menulist_t	s_allow_download_maps_box;
+static menulist_t	s_allow_download_models_box;
+static menulist_t	s_allow_download_players_box;
+static menulist_t	s_allow_download_sounds_box;
 
 static void DownloadCallback( void *self )
 {
-	menulist_s *f = ( menulist_s * ) self;
+	menulist_t *f = ( menulist_t * ) self;
 
 	if (f == &s_allow_download_box)
 	{
@@ -2784,8 +2793,8 @@ ADDRESS BOOK MENU
 */
 #define NUM_ADDRESSBOOK_ENTRIES 9
 
-static menuframework_s	s_addressbook_menu;
-static menufield_s		s_addressbook_fields[NUM_ADDRESSBOOK_ENTRIES];
+static menuframework_t	s_addressbook_menu;
+static menufield_t		s_addressbook_fields[NUM_ADDRESSBOOK_ENTRIES];
 
 void AddressBook_MenuInit( void )
 {
@@ -2855,15 +2864,15 @@ PLAYER CONFIG MENU
 
 =============================================================================
 */
-static menuframework_s	s_player_config_menu;
-static menufield_s		s_player_name_field;
-static menulist_s		s_player_model_box;
-static menulist_s		s_player_skin_box;
-static menulist_s		s_player_handedness_box;
-static menuseparator_s	s_player_skin_title;
-static menuseparator_s	s_player_model_title;
-static menuseparator_s	s_player_hand_title;
-static menuaction_s		s_player_download_action;
+static menuframework_t	s_player_config_menu;
+static menufield_t		s_player_name_field;
+static menulist_t		s_player_model_box;
+static menulist_t		s_player_skin_box;
+static menulist_t		s_player_handedness_box;
+static menuseparator_t	s_player_skin_title;
+static menuseparator_t	s_player_model_title;
+static menuseparator_t	s_player_hand_title;
+static menuaction_t		s_player_download_action;
 
 #define MAX_DISPLAYNAME 16
 #define MAX_PLAYERMODELS 1024

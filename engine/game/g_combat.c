@@ -367,14 +367,7 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 	}
 }
 
-qboolean CheckTeamDamage (edict_t *targ, edict_t *attacker)
-{
-		//FIXME make the next line real and uncomment this block
-		// if ((ability to damage a teammate == OFF) && (targ's team == attacker's team))
-	return false;
-}
-
-void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
+void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod, player_team disallowed_teams)
 {
 	gclient_t	*client;
 	int			take;
@@ -391,14 +384,36 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	// knockback still occurs
 	if ((targ != attacker))
 	{
-		if (OnSameTeam (targ, attacker))
+		// prevent team-specific weapons from harming the teams
+		// todo: gamemode def for more "dynamic" checks? probably stupid and overengineered
+
+		// hack! (if the target is a player and the attacker isn't)
+		if (!strcmp(targ->classname, "player")
+			&& strcmp(attacker->classname, "player"))
 		{
-			if ((int)(gameflags->value) & GF_NO_FRIENDLY_FIRE)
-				damage = 0;
-			else
-				mod |= MOD_FRIENDLY_FIRE;
+
+			if (gamemode->value != GAMEMODE_COOP
+				&& gamemode->value != GAMEMODE_WAVES
+				&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
+			{
+				if ((targ->team) & disallowed_teams)
+				{
+					return;
+				}
+			}
+		}
+		else
+		{
+			if (OnSameTeam(targ, attacker))
+			{
+				if ((int)(gameflags->value) & GF_NO_FRIENDLY_FIRE)
+					damage = 0;
+				else
+					mod |= MOD_FRIENDLY_FIRE;
+			}
 		}
 	}
+
 	meansOfDeath = mod;
 
 	// easy mode takes half damage
@@ -481,9 +496,11 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	//treat cheat/powerup savings the same as armor
 	asave += save;
 
+	/*
 	// team damage avoidance
-	if (!(dflags & DAMAGE_NO_PROTECTION) && CheckTeamDamage (targ, attacker))
+	if (!(dflags & DAMAGE_NO_PROTECTION))
 		return;
+		*/
 
 // do the damage
 	if (take)
@@ -546,7 +563,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 T_RadiusDamage
 ============
 */
-void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod)
+void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod, player_team disallowed_teams)
 {
 	float	points;
 	edict_t	*ent = NULL;
@@ -571,7 +588,7 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 			if (CanDamage (ent, inflictor))
 			{
 				VectorSubtract (ent->s.origin, inflictor->s.origin, dir);
-				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod, disallowed_teams);
 			}
 		}
 	}
