@@ -1437,7 +1437,12 @@ void Qcommon_Init (int argc, char **argv)
 	FS_InitFilesystem ();
 
 	Cbuf_AddText ("exec default.cfg\n");
+
+#ifdef PLAYTEST
+	Cbuf_AddText ("exec config_playtest.cfg\n");
+#else
 	Cbuf_AddText ("exec config.cfg\n");
+#endif
 
 	Cbuf_AddEarlyCommands (true);
 	Cbuf_Execute ();
@@ -1475,11 +1480,12 @@ void Qcommon_Init (int argc, char **argv)
 #endif
 
 	s = va("%s %s %s %s", ZOMBONO_VERSION, CPUSTRING, __DATE__, BUILDSTRING);
-	Cvar_Get ("version", s, CVAR_SERVERINFO|CVAR_NOSET);
-
+	Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);
 
 	if (dedicated->value)
-		Cmd_AddCommand ("quit", Com_Quit);
+	{
+		Cmd_AddCommand("quit", Com_Quit);
+	}
 
 	Sys_Init ();
 

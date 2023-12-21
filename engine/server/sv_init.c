@@ -305,17 +305,19 @@ void SV_InitGame (void)
 	svs.initialized = true;
 
 	// init clients
-	if (Cvar_VariableValue ("gamemode"))
+
+	if (maxclients->value <= 1)
+		Cvar_FullSet("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
+	else if (maxclients->value > MAX_CLIENTS)
+		Cvar_FullSet("maxclients", va("%i", MAX_CLIENTS), CVAR_SERVERINFO | CVAR_LATCH);
+
+	// remove if we decide to not have that 6 level singleplayer campaign#
+	/*
+	if (Cvar_VariableValue("singleplayer"))
 	{
-		if (maxclients->value <= 1)
-			Cvar_FullSet("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
-		else if (maxclients->value > MAX_CLIENTS)
-			Cvar_FullSet("maxclients", va("%i", MAX_CLIENTS), CVAR_SERVERINFO | CVAR_LATCH);
+		Cvar_FullSet("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
 	}
-	else // remove if we decide to not have that 6 level singleplayer campaign
-	{
-		Cvar_FullSet ("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
-	}
+	*/
 
 	svs.spawncount = rand();
 	svs.clients = Z_Malloc (sizeof(client_t)*maxclients->value);
