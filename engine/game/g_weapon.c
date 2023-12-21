@@ -943,6 +943,8 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 
 	SP_monster_zombie(zombie);
 
+
+
 	// stupid hack to AVOID spawning zombies in the wall
 	trace.endpos[0] -= aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;
 	trace.endpos[1] -= aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE;
@@ -950,5 +952,4 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 
 	VectorCopy(trace.endpos, zombie->s.origin);
 	VectorCopy(aimdir, zombie->s.angles);
-
 }

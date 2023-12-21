@@ -931,6 +931,7 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 			ThrowGib(self, "models/objects/gibs/zombie/h_zombie.md2", damage, GIB_ORGANIC);
 		ThrowGib(self, "models/objects/gibs/zombie/zom_gib.md2", damage, GIB_ORGANIC);
 		self->deadflag = DEAD_DEAD;
+		G_FreeEdict(self);
 		return;
 	}
 
@@ -953,6 +954,7 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	{
 		// head shot
 		self->monsterinfo.currentmove = &zombie_move_death3;
+		G_FreeEdict(self);
 		return;
 	}
 
@@ -967,6 +969,9 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		self->monsterinfo.currentmove = &zombie_move_death5;
 	else
 		self->monsterinfo.currentmove = &zombie_move_death6;
+
+	// TODO: temp until not fucked animations
+	G_FreeEdict(self);
 }
 
 
@@ -1020,6 +1025,7 @@ SP_monster_zombie(edict_t* self)
 	gi.soundindex("zombie/z_miss.wav");
 
 	self->s.skinnum = 2;
-	self->health = 30;
-	self->gib_health = -30;
+	self->health = 40;
+	self->max_health = 40;
+	self->gib_health = 0; //test
 }
