@@ -676,10 +676,6 @@ void CL_ParseFrame (void)
 	cl.frame.deltaframe = MSG_ReadLong (&net_message);
 	cl.frame.servertime = cl.frame.serverframe*100;
 
-	// BIG HACK to let old demos continue to work
-	if (cls.serverProtocol != 26)
-		cl.surpressCount = MSG_ReadByte (&net_message);
-
 	if (cl_shownet->value == 3)
 		Com_Printf ("   frame:%i  delta:%i\n", cl.frame.serverframe,
 		cl.frame.deltaframe);

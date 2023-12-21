@@ -107,8 +107,6 @@ typedef struct client_s
 	int				ping;
 
 	int				message_size[RATE_MESSAGES];	// used to rate drop packets
-	int				rate;
-	int				surpressCount;		// number of messages rate supressed
 
 	edict_t			*edict;				// EDICT_NUM(clientnum+1)
 	char			name[32];			// extracted from userinfo, high bits masked

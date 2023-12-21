@@ -447,41 +447,6 @@ void SV_DemoCompleted (void)
 	SV_Nextserver ();
 }
 
-
-/*
-=======================
-SV_RateDrop
-
-Returns true if the client is over its current
-bandwidth estimation and should not be sent another packet
-=======================
-*/
-qboolean SV_RateDrop (client_t *c)
-{
-	int		total;
-	int		i;
-
-	// never drop over the loopback
-	if (c->netchan.remote_address.type == NA_LOOPBACK)
-		return false;
-
-	total = 0;
-
-	for (i = 0 ; i < RATE_MESSAGES ; i++)
-	{
-		total += c->message_size[i];
-	}
-
-	if (total > c->rate)
-	{
-		c->surpressCount++;
-		c->message_size[sv.framenum % RATE_MESSAGES] = 0;
-		return true;
-	}
-
-	return false;
-}
-
 /*
 =======================
 SV_SendClientMessages
@@ -550,9 +515,11 @@ void SV_SendClientMessages (void)
 		}
 		else if (c->state == cs_spawned)
 		{
+			/*
 			// don't overrun bandwidth
 			if (SV_RateDrop (c))
 				continue;
+			*/
 
 			SV_SendClientDatagram (c);
 		}

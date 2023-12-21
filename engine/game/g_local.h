@@ -76,7 +76,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define FL_POWER_ARMOR			0x00001000	// power armor (if any) is active
 #define FL_RESPAWN				0x80000000	// used for item respawning
 
-#define	FRAMETIME		0.1
+#define	FRAMETIME		0.1					//1/(frametime) = tickrate
 
 // memory tags to allow dynamic memory to be cleaned up
 #define	TAG_GAME	765		// clear when unloading the dll
