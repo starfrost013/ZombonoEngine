@@ -2469,10 +2469,12 @@ static void GameFlagCallback( void *self )
 	}
 	else if (f == &s_friendlyfire_item_box)
 	{
+		// intentional, this is an "allow" flag
 		if (f->curvalue)
-			flags &= ~GF_ITEM_FRIENDLY_FIRE;
-		else
 			flags |= GF_ITEM_FRIENDLY_FIRE;
+
+		else
+			flags &= ~GF_ITEM_FRIENDLY_FIRE;
 		goto setvalue;
 	}
 
@@ -2607,6 +2609,7 @@ void GameOptions_MenuInit( void )
 	s_friendlyfire_box.generic.callback = GameFlagCallback;
 	s_friendlyfire_box.itemnames = yes_no_names;
 	s_friendlyfire_box.curvalue = ( gameflags & GF_NO_FRIENDLY_FIRE ) == 0;
+
 
 	s_friendlyfire_item_box.generic.type = MTYPE_SPINCONTROL;
 	s_friendlyfire_item_box.generic.x = 0;
