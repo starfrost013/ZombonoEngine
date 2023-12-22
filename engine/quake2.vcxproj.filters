@@ -129,9 +129,6 @@
     <ClCompile Include="win32\vid_menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\cd_win.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32\conproc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -164,11 +161,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="win32\q2.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="win32\q2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
@@ -181,9 +173,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\anorms.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="client\cdaudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\client.h">

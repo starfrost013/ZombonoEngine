@@ -1738,7 +1738,6 @@ void CL_Frame (int msec)
 	// update audio
 	S_Update (cl.refdef.vieworg, cl.v_forward, cl.v_right, cl.v_up);
 	
-	CDAudio_Update();
 	Miniaudio_Update();
 
 	// advance local effects for next frame
@@ -1804,7 +1803,6 @@ void CL_Init (void)
 	SCR_Init ();
 	cls.disable_screen = true;	// don't draw yet
 
-	CDAudio_Init ();
 	Miniaudio_Init ();
 	CL_InitLocal ();
 	IN_Init ();
@@ -1836,9 +1834,7 @@ void CL_Shutdown(void)
 	isdown = true;
 
 	CL_WriteConfiguration (); 
-
-	CDAudio_Shutdown ();
-	Miniaudio_Shutdown();
+	Miniaudio_Shutdown ();
 	S_Shutdown();
 	IN_Shutdown ();
 	VID_Shutdown();

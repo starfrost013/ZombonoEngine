@@ -354,8 +354,7 @@ void CL_PrepRefresh (void)
 
 	// start the cd track
 	int track = atoi(cl.configstrings[CS_CDTRACK]);
-	if (!CDAudio_Play(track, true))
-		Miniaudio_Play(track, true);
+	Miniaudio_Play(track, true);
 }
 
 /*

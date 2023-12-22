@@ -262,7 +262,6 @@ void AppActivate(BOOL fActive, BOOL minimize)
 	if (!ActiveApp)
 	{
 		IN_Activate (false);
-		CDAudio_Activate (false);
 		S_Activate (false);
 
 		if ( win_noalttab->value )
@@ -274,7 +273,6 @@ void AppActivate(BOOL fActive, BOOL minimize)
 	{
 		// ZombonoUI controls this in the case a UI is active
 		if (!ui_active) IN_Activate (true);
-		CDAudio_Activate (true);
 		S_Activate (true);
 		if ( win_noalttab->value )
 		{
@@ -485,13 +483,6 @@ LONG WINAPI MainWndProc (
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
 		Key_Event( MapKey( lParam ), false, sys_msg_time, 0, 0);
-		break;
-
-	case MM_MCINOTIFY:
-		{
-			LONG CDAudio_MessageHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-			lRet = CDAudio_MessageHandler (hWnd, uMsg, wParam, lParam);
-		}
 		break;
 
 	default:	// pass all unhandled messages to DefWindowProc
