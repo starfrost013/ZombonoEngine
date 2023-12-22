@@ -148,7 +148,16 @@ qboolean UI_AddControl(char* name, int position_x, int position_y, int size_x, i
 qboolean UI_AddText(char* name, char* text, int position_x, int position_y)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+
+	// not recommended to buffer overflow
+	if (strlen(text) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!", name, text, MAX_UI_STR_LENGTH);
+		return false;
+	}
+
 	strcpy(ui_control->text, text);
+
 	ui_control->type = ui_control_text;
 
 	return UI_AddControl(name, position_x, position_y, 0, 0);
@@ -157,6 +166,13 @@ qboolean UI_AddText(char* name, char* text, int position_x, int position_y)
 qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
 {
 	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+
+	// not recommended to buffer overflow
+	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("Tried to set UI control image path %s to %s - too long (max length %d)!", name, image_path, MAX_UI_STR_LENGTH);
+		return false;
+	}
 
 	strcpy(ui_control->image_path, image_path);
 
@@ -236,7 +252,7 @@ void UI_HandleEventOnClick(int btn, int x, int y)
 	}
 }
 
-qboolean UI_SetEnabled(const char* name, qboolean enabled)
+qboolean UI_SetEnabled(char* name, qboolean enabled)
 {
 	ui_t* ui_ptr = UI_GetUI(name);
 
@@ -250,7 +266,7 @@ qboolean UI_SetEnabled(const char* name, qboolean enabled)
 	return false;
 }
 
-qboolean UI_SetActive(const char* name, qboolean active)
+qboolean UI_SetActive(char* name, qboolean active)
 {
 	ui_t* ui_ptr = UI_GetUI(name);
 
@@ -259,7 +275,7 @@ qboolean UI_SetActive(const char* name, qboolean active)
 		ui_ptr->active = active;
 		ui_active = active;
 
-		// turn on the mouse cursor, bit hacky
+		// turn on the mouse cursor, bit hacky - we basically take over the mouse pointer when a UI is active
 		IN_Activate(!active);
 
 		current_ui = ui_ptr;
@@ -267,6 +283,48 @@ qboolean UI_SetActive(const char* name, qboolean active)
 	}
 
 	return false;
+}
+
+qboolean UI_SetText(char* name, char* text)
+{
+	ui_control_t* current_ui = UI_GetControl(name);
+
+	if (current_ui == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control text %s to %s!", name, text);
+		return false;
+	}
+
+	if (strlen(text) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("UI text for control %s, %s, was too long (max %d)", name, text, MAX_UI_STR_LENGTH);
+		return false;
+	}
+
+	strcpy(current_ui->text, text);
+
+	return true; 
+}
+
+qboolean UI_SetImage(char* name, char* image_path)
+{
+	ui_control_t* current_ui = UI_GetControl(name);
+
+	if (current_ui == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image path %s to %s!", name, image_path);
+		return false;
+	}
+
+	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("UI image path for control %s, %s, was too long (max %d)", name, image_path, MAX_UI_STR_LENGTH);
+		return false;
+	}
+
+	strcpy(current_ui->image_path, image_path);
+
+	return true;
 }
 
 void UI_Draw()

@@ -912,7 +912,7 @@ void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, f
 	gi.linkentity (bfg);
 }
 
-#define BAMFUSLICATOR_MIN_DISTANCE		48
+#define BAMFUSLICATOR_MIN_DISTANCE		56		// so you don't get stuck
 #define BAMFUSLICATOR_MAX_DISTANCE		1024
 
 /* Bamfuslicator */
@@ -920,20 +920,22 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 {
 	edict_t*	zombie = G_Spawn();
 	trace_t		trace;
-	vec3_t		end;
+	vec3_t		trace_start;
+	vec3_t		trace_end;
+	vec3_t		distance_to_player;
 
-	start[0] = start[0] + (aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE);
-	start[1] = start[1] + (aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE);
-	start[2] = start[2] + (aimdir[2] * BAMFUSLICATOR_MIN_DISTANCE);
+	trace_start[0] = start[0] + (aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE);
+	trace_start[1] = start[1] + (aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE);
+	trace_start[2] = start[2] + (aimdir[2] * BAMFUSLICATOR_MIN_DISTANCE);
 	
-	// set up positions
-	end[0] = start[0] + (aimdir[0] * BAMFUSLICATOR_MAX_DISTANCE);
-	end[1] = start[1] + (aimdir[1] * BAMFUSLICATOR_MAX_DISTANCE);
-	end[2] = start[2] + (aimdir[2] * BAMFUSLICATOR_MAX_DISTANCE);
+	// set up positions 
+	trace_end[0] = trace_start[0] + (aimdir[0] * BAMFUSLICATOR_MAX_DISTANCE);
+	trace_end[1] = trace_start[1] + (aimdir[1] * BAMFUSLICATOR_MAX_DISTANCE);
+	trace_end[2] = trace_start[2] + (aimdir[2] * BAMFUSLICATOR_MAX_DISTANCE);
 
 	// raycast from where we fired the weapon
 	// check if we hit somethoing
-	trace = gi.trace(start, NULL, NULL, end, self, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA | CONTENTS_WINDOW | CONTENTS_WATER); // zombies don't like water!
+	trace = gi.trace(trace_start, NULL, NULL, trace_end, self, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA | CONTENTS_WINDOW | CONTENTS_WATER); // zombies don't like water!
 	
 	// completed, too far away to spawn a zombie
 	if (trace.fraction == 1.0f)
@@ -941,15 +943,35 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 		return;
 	}
 
+	// spawn the zombie
 	SP_monster_zombie(zombie);
 
-
-
-	// stupid hack to AVOID spawning zombies in the wall
+	// stupid hack to AVOID spawning zombies in the wall or floor
 	trace.endpos[0] -= aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;
 	trace.endpos[1] -= aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE;
 	trace.endpos[2] += 32;
 
+	// don't get the player stuck
+	VectorSubtract(trace.endpos, start, distance_to_player);
+	vec_t vec_length = abs(VectorLength(distance_to_player));
+
+	if (vec_length <= BAMFUSLICATOR_MIN_DISTANCE)
+	{
+		// epsilon pulled out the ass to deal with the case where you are right below the zombie
+		// force moving by BAMFUSLICATOR_MIN_DISTANCE could let people spawn zombies through close enough walls (<=56 units)
+		float stupid_epsilon = 0.625f; // value hand tuned by a retard
+
+		if (aimdir[0] > 0 && aimdir[0] < stupid_epsilon) aimdir[0] = stupid_epsilon;
+		if (aimdir[0] > -stupid_epsilon && aimdir[0] < 0) aimdir[0] = -stupid_epsilon;
+		if (aimdir[1] > 0 && aimdir[1] < stupid_epsilon) aimdir[1] = stupid_epsilon;
+		if (aimdir[1] > -stupid_epsilon && aimdir[1] < 0) aimdir[1] = -stupid_epsilon;
+
+		// don't shove vertical
+		trace.endpos[0] += aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;
+		trace.endpos[1] += aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE;
+	}
+
+	// move the zombie to where the player spawned it
 	VectorCopy(trace.endpos, zombie->s.origin);
 	VectorCopy(aimdir, zombie->s.angles);
 }

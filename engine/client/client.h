@@ -382,8 +382,6 @@ void CL_MonsterPlasma_Shell(vec3_t origin);
 void CL_ColorExplosionParticles (vec3_t org, int color, int run);
 void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, int color, int count, int magnitude);
 void CL_WidowSplash (vec3_t org);
-// PGM
-// ========
 
 int CL_ParseEntityBits (unsigned *bits);
 void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int number, int bits);
@@ -393,7 +391,6 @@ void CL_ParseTEnt (void);
 void CL_ParseConfigString (void);
 void CL_ParseMuzzleFlash (void);
 void CL_ParseMuzzleFlash2 (void);
-void SmokeAndFlash(vec3_t origin);
 
 void CL_SetLightstyle (int i);
 
@@ -413,11 +410,6 @@ void CL_RegisterSounds (void);
 
 void CL_Quit_f (void);
 
-//void IN_ActivateMouse (void);
-//void IN_DeactivateMouse (void);
-void CL_ParseLayout (void);
-
-
 //
 // cl_main
 //
@@ -428,7 +420,6 @@ void CL_Init (void);
 void CL_FixUpGender(void);
 void CL_Disconnect (void);
 void CL_Disconnect_f (void);
-void CL_GetChallengePacket (void);
 void CL_PingServers_f (void);
 void CL_Snd_Restart_f (void);
 void CL_RequestNextDownload (void);
@@ -504,7 +495,6 @@ void CL_SmokeAndFlash(vec3_t origin);
 //
 // cl_pred.c
 //
-void CL_InitPrediction (void);
 void CL_PredictMovement (void);
 void CL_CheckPredictionError (void);
 
@@ -551,7 +541,7 @@ void CL_PredictMovement (void);
 
 #define CONTROLS_PER_UI			48
 #define MAX_UIS					32
-#define MAX_UI_STR_LENGTH		32
+#define MAX_UI_STR_LENGTH		64
 
 typedef enum ui_control_type_e
 {
@@ -615,6 +605,10 @@ qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, 
 // UI: Toggle
 qboolean UI_SetEnabled(char* name, qboolean enabled);
 qboolean UI_SetActive(char* name, qboolean enabled);
+
+// UI: Update
+qboolean UI_SetText(char* control_name, char* text);
+qboolean UI_SetImage(char* control_name, char* image_path);
 
 // UI: Set Event Handler
 qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y));
