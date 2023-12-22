@@ -31,7 +31,7 @@ char *svc_strings[256] =
 	"svc_temp_entity",
 	"svc_layout",
 	"svc_inventory",
-	"svc_drawui",
+	"svc_uidraw",
 
 	"svc_nop",
 	"svc_disconnect",
@@ -795,7 +795,7 @@ void CL_ParseServerMessage (void)
 			Com_Error (ERR_DROP, "Out of place frame data");
 			break;
 
-		case svc_drawui:
+		case svc_uidraw:
 			s = MSG_ReadString(&net_message);
 			// Active can only be changed from UI script
 

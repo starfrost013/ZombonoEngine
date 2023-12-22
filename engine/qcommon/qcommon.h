@@ -213,7 +213,9 @@ enum svc_ops_e
 	svc_temp_entity,
 	svc_layout,
 	svc_inventory,
-	svc_drawui,					// <ui name>
+	svc_uidraw,					// <ui name>
+	svc_uisettext,				// <ui control name> <text>
+	svc_uisetimage,				// <ui control name> <image path in pics folder>
 
 	// the rest are private to the client and server
 	svc_nop,
