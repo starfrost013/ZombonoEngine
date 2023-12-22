@@ -326,16 +326,9 @@ void FS_Read (void *buffer, int len, FILE *f)
 		read = (int)fread (buf, 1, block, f);
 		if (read == 0)
 		{
-			// we might have been trying to read from a CD
-			if (!tries)
-			{
-				tries = 1;
-			}
-			else
-				Com_Error (ERR_FATAL, "FS_Read: 0 bytes read");
+			Com_Error (ERR_FATAL, "FS_Read: 0 bytes read");
 		}
-
-		if (read == -1)
+		else if (read == -1)
 			Com_Error (ERR_FATAL, "FS_Read: -1 bytes read");
 
 		// do some progress bar thing here...
