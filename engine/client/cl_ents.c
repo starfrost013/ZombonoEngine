@@ -722,14 +722,14 @@ void CL_ParseFrame (void)
 
 	// read playerinfo
 	cmd = MSG_ReadByte (&net_message);
-	SHOWNET(svc_strings[cmd]);
+	ShowNet(svc_strings[cmd]);
 	if (cmd != svc_playerinfo)
 		Com_Error (ERR_DROP, "CL_ParseFrame: not playerinfo");
 	CL_ParsePlayerstate (old, &cl.frame);
 
 	// read packet entities
 	cmd = MSG_ReadByte (&net_message);
-	SHOWNET(svc_strings[cmd]);
+	ShowNet(svc_strings[cmd]);
 	if (cmd != svc_packetentities)
 		Com_Error (ERR_DROP, "CL_ParseFrame: not packetentities");
 	CL_ParsePacketEntities (old, &cl.frame);

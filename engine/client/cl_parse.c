@@ -642,7 +642,7 @@ void CL_ParseStartSoundPacket(void)
 }       
 
 
-void SHOWNET(char *s)
+void ShowNet(char *s)
 {
 	if (cl_shownet->value>=2)
 		Com_Printf ("%3i:%s\n", net_message.readcount-1, s);
@@ -657,6 +657,7 @@ void CL_ParseServerMessage (void)
 {
 	int			cmd;
 	char		*s;
+	char		ui_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
 	int			i;
 
 //
@@ -683,7 +684,7 @@ void CL_ParseServerMessage (void)
 
 		if (cmd == -1)
 		{
-			SHOWNET("END OF MESSAGE");
+			ShowNet("END OF MESSAGE");
 			break;
 		}
 
@@ -692,7 +693,7 @@ void CL_ParseServerMessage (void)
 			if (!svc_strings[cmd])
 				Com_Printf ("%3i:BAD CMD %i\n", net_message.readcount-1,cmd);
 			else
-				SHOWNET(svc_strings[cmd]);
+				ShowNet(svc_strings[cmd]);
 		}
 	
 	// other commands
@@ -803,6 +804,24 @@ void CL_ParseServerMessage (void)
 			UI_SetEnabled(s, active);
 			UI_SetActive(s, active);
 			break;
+
+		case svc_uisettext:
+			s = MSG_ReadString(&net_message);
+			strcpy(&ui_tempbuf, s);
+			s = MSG_ReadString(&net_message);
+
+			UI_SetText(&ui_tempbuf, s);
+
+			break;
+
+		case svc_uisetimage:
+			s = MSG_ReadString(&net_message);
+			strcpy(&ui_tempbuf, s);
+			s = MSG_ReadString(&net_message);
+
+			UI_SetImage(&ui_tempbuf, s);
+
+			break;
 		}
 	}
 
@@ -816,5 +835,3 @@ void CL_ParseServerMessage (void)
 		CL_WriteDemoMessage ();
 
 }
-
-

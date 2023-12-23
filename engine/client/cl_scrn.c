@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // cl_scrn.c -- master for refresh, status bar, console, chat, notify, etc
+// This sucks ass get rid of it
 
 /*
 
@@ -967,7 +968,8 @@ void SCR_ExecuteLayoutString (char *s)
 
 		if (!strcmp(token, "client"))
 		{	// draw a deathmatch client block
-			int		score, ping, time;
+			int				score, ping, time;
+			common_team		team;
 
 			token = COM_Parse (&s);
 			x = viddef.width/2 - 160 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
@@ -984,6 +986,9 @@ void SCR_ExecuteLayoutString (char *s)
 
 			token = COM_Parse (&s);
 			score = atoi(token);
+
+			token = COM_Parse(&s);
+			team = atoi(token);
 
 			token = COM_Parse (&s);
 			ping = atoi(token);
@@ -994,47 +999,28 @@ void SCR_ExecuteLayoutString (char *s)
 			DrawAltString (x+32 * vid_hudscale->value, y, ci->name);
 			DrawString (x+32 * vid_hudscale->value, y+8 * vid_hudscale->value,  "Score: ");
 			DrawAltString (x+32 * vid_hudscale->value +7*8 * vid_hudscale->value, y+8 * vid_hudscale->value,  va("%i", score));
-			DrawString (x+32 * vid_hudscale->value, y+16 * vid_hudscale->value, va("Ping:  %i", ping));
-			DrawString (x+32 * vid_hudscale->value, y+24 * vid_hudscale->value, va("Time:  %i", time));
+
+			// draw the team
+			DrawString(x+32 * vid_hudscale->value, y+16 * vid_hudscale->value, "Team: ");
+			switch (team)
+			{
+				case common_team_director:
+					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Director");
+					break;
+				case common_team_player:
+					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Player");
+					break;
+				case common_team_unassigned:
+					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Unassigned");
+					break;
+			}
+			
+			DrawString (x+32 * vid_hudscale->value, y+24 * vid_hudscale->value, va("Ping:  %i", ping));
+			DrawString (x+32 * vid_hudscale->value, y+32 * vid_hudscale->value, va("Time:  %i", time));
 
 			if (!ci->icon)
 				ci = &cl.baseclientinfo;
 			re.DrawPic (x, y, ci->iconname);
-			continue;
-		}
-
-		if (!strcmp(token, "ctf"))
-		{	// draw a ctf client block
-			int		score, ping;
-			char	block[80];
-
-			token = COM_Parse (&s);
-			x = viddef.width/2 - 160 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
-			token = COM_Parse (&s);
-			y = viddef.height/2 - 120 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
-			SCR_AddDirtyPoint (x, y);
-			SCR_AddDirtyPoint (x+159 * vid_hudscale->value, y+31 * vid_hudscale->value);
-
-			token = COM_Parse (&s);
-			value = atoi(token);
-			if (value >= MAX_CLIENTS || value < 0)
-				Com_Error (ERR_DROP, "client >= MAX_CLIENTS");
-			ci = &cl.clientinfo[value];
-
-			token = COM_Parse (&s);
-			score = atoi(token);
-
-			token = COM_Parse (&s);
-			ping = atoi(token);
-			if (ping > 999)
-				ping = 999;
-
-			sprintf(block, "%3d %3d %-12.12s", score, ping, ci->name);
-
-			if (value == cl.playernum)
-				DrawAltString (x, y, block);
-			else
-				DrawString (x, y, block);
 			continue;
 		}
 
@@ -1171,11 +1157,8 @@ void SCR_ExecuteLayoutString (char *s)
 
 			continue;
 		}
-
-
 	}
 }
-
 
 /*
 ================

@@ -41,6 +41,7 @@ void			UI_DrawImage(ui_control_t image);															// Draws an image control
 void			UI_DrawButton(ui_control_t button);															// Draws a button control.
 void			UI_DrawSlider(ui_control_t slider);															// Draws a slider control.
 void			UI_DrawCheckbox(ui_control_t checkbox);														// Draws a checkbox control.
+void			UI_DrawBox(ui_control_t box);
 
 qboolean UI_Init()
 {
@@ -52,12 +53,14 @@ qboolean UI_Init()
 
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_CreateTeamUI);
-
+	if (successful) successful = UI_AddUI("LeaderboardUI", UI_CreateLeaderboardUI);
+	if (successful) successful = UI_AddUI("PostGameUI", UI_CreatePostGameUI);
 	return successful;
 }
 
 qboolean UI_AddUI(char* name, qboolean(*on_create)())
 {
+	Com_DPrintf("Creating UI: %s\n", name);
 	current_ui = &ui_list[num_uis];
 
 	if (num_uis > MAX_UIS)
@@ -207,6 +210,22 @@ qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, 
 
 	ui_control->checked = checked;
 	ui_control->type = ui_control_checkbox;
+
+	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+}
+
+
+qboolean UI_AddBox(char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
+{
+	UI_AddControl(name, position_x, position_y, size_x, size_y);
+	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+
+	ui_control->color[0] = r;
+	ui_control->color[1] = g;
+	ui_control->color[2] = b;
+	ui_control->color[3] = a;
+
+	ui_control->type = ui_control_box;
 
 	return UI_AddControl(name, position_x, position_y, size_x, size_y);
 }
@@ -379,6 +398,9 @@ void UI_Draw()
 					case ui_control_slider:
 						UI_DrawSlider(current_ui_control);
 						break;
+					case ui_control_box:
+						UI_DrawBox(current_ui_control);
+						break;
 				}
 			}
 		}
@@ -397,15 +419,20 @@ void UI_DrawImage(ui_control_t image)
 
 void UI_DrawButton(ui_control_t button)
 {
-
+	Com_Printf("UI: Buttons aren't implemented yet");
 }
 
 void UI_DrawSlider(ui_control_t slider)
 {
-
+	Com_Printf("UI: Sliders aren't implemented yet");
 }
 
 void UI_DrawCheckbox(ui_control_t checkbox)
 {
+	Com_Printf("UI: Checkboxes aren't implemented yet");
+}
 
+void UI_DrawBox(ui_control_t box)
+{
+	re.DrawFill(box.position_x, box.position_y, box.size_x, box.size_y, box.color[0], box.color[1], box.color[2], box.color[3]);
 }

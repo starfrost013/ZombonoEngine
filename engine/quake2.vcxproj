@@ -77,7 +77,7 @@
     <ClCompile Include="win32\vid_menu.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="win32\q2.rc" />
+    <ResourceCompile Include="win32\Zombono.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client\anorms.h" />
@@ -99,7 +99,11 @@
     <ClInclude Include="qcommon\qfiles.h" />
     <ClInclude Include="server\server.h" />
     <ClInclude Include="win32\conproc.h" />
+    <ClInclude Include="win32\resource.h" />
     <ClInclude Include="win32\winquake.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="win32\zombono.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{311C3C36-E612-47A7-B4E8-443ABF32CBA6}</ProjectGuid>

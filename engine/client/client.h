@@ -467,7 +467,7 @@ extern	char *svc_strings[256];
 
 void CL_ParseServerMessage (void);
 void CL_LoadClientinfo (clientinfo_t *ci, char *s);
-void SHOWNET(char *s);
+void ShowNet(char *s);
 void CL_ParseClientinfo (int player);
 void CL_Download_f (void);
 
@@ -550,6 +550,7 @@ typedef enum ui_control_type_e
 	ui_control_button = 2,
 	ui_control_slider = 3,
 	ui_control_checkbox = 4,
+	ui_control_box = 5,
 } ui_control_type;
 
 typedef struct ui_control_s
@@ -571,7 +572,9 @@ typedef struct ui_control_s
 	int					value_min;					// Slider UI control: minimum value.
 	int					value_max;					// Slider UI control: maximum value.
 	// checkbox
-	qboolean			checked;					// Checkbox UI control: Is it cehcked?
+	qboolean			checked;					// Checkbox UI control: Is it checked?
+	// box
+	vec4_t				color;						// The color of this ui element.
 	// events
 	void				(*on_click)(int x, int y);	// C function to call on click starting with X and Y coordinates.
 } ui_control_t;
@@ -596,11 +599,12 @@ qboolean UI_Init();
 qboolean UI_AddUI(char* name, qboolean (*on_create)());
 
 // UI: Init Controls
-qboolean UI_AddText(char* name, char* text, int position_x, int position_y);
-qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);
-qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y);
-qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);
-qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);
+qboolean UI_AddText(char* name, char* text, int position_x, int position_y);													// Draws text.
+qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);						// Draws an image.
+qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y);										// Draws a button.
+qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);		// Draws a slider.
+qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);					// Draws a checkbox.
+qboolean UI_AddBox(char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);				// Draws a regular ole box.
 
 // UI: Toggle
 qboolean UI_SetEnabled(char* name, qboolean enabled);
@@ -620,6 +624,10 @@ void UI_HandleEventOnClick(int btn, int x, int y);
 void UI_Draw();
 
 // UI: Create Scripts
-void UI_CreateTeamUI();
+qboolean UI_CreateTeamUI();
 void UI_TeamUISetDirectorTeam(int btn, int x, int y);
 void UI_TeamUISetPlayerTeam(int btn, int x, int y);
+
+qboolean UI_CreateLeaderboardUI();
+
+qboolean UI_CreatePostGameUI();

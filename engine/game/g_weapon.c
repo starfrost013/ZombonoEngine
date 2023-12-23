@@ -957,6 +957,7 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 
 	if (vec_length <= BAMFUSLICATOR_MIN_DISTANCE)
 	{
+
 		// epsilon pulled out the ass to deal with the case where you are right below the zombie
 		// force moving by BAMFUSLICATOR_MIN_DISTANCE could let people spawn zombies through close enough walls (<=56 units)
 		float stupid_epsilon = 0.625f; // value hand tuned by a retard

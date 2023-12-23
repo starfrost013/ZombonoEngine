@@ -830,5 +830,14 @@ void SV_Init (void);
 void SV_Shutdown (char *finalmsg, qboolean reconnect);
 void SV_Frame (int msec);
 
+// MUST BE KEPT IN SYNC WITH GAME DLL player_team ENUM!
+// Client and server version of game team enum (temp).
+typedef enum common_team_e
+{
+	common_team_director = 1,
 
+	common_team_player = 2,
 
+	common_team_unassigned = 4,
+
+} common_team;

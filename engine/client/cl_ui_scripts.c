@@ -22,7 +22,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-void UI_CreateTeamUI()
+// 
+// TeamUI
+// 
+
+qboolean UI_CreateTeamUI()
 {
 	UI_AddText("TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
 	UI_AddImage("TeamUI_DirectorTeam", "ui\\teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
@@ -46,4 +50,23 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
 	MSG_WriteString(&cls.netchan.message, "setteam 2");
+}
+
+//
+// LeaderboardUI
+//
+
+qboolean UI_CreateLeaderboardUI()
+{
+	UI_AddBox("LeaderboardUI_Box", (viddef.width / 2) - 256, (viddef.height / 2) - 192, 512, 384, 255, 255, 255, 150);
+	UI_AddText("LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 64, (viddef.height / 2) - 188);
+}
+
+//
+// PostGameUI
+//
+
+qboolean UI_CreatePostGameUI()
+{
+	UI_AddImage("PostGameUI_Result", "ui/postgameui_win_director", (viddef.width / 2) - 160, (viddef.height / 2) - 188, 320, 64);
 }

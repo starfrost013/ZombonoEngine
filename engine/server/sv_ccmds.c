@@ -657,9 +657,9 @@ void SV_Savegame_f (void)
 	}
 
 	// might need this later
-	if (Cvar_VariableValue("gamemode"))
+	if (Cvar_VariableValue("gamemode") >= 0)
 	{
-		Com_Printf ("Can't savegame in a deathmatch\n");
+		Com_Printf ("Can't savegame in multiplayer!\n");
 		return;
 	}
 
