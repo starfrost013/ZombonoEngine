@@ -27,7 +27,7 @@ char *svc_strings[256] =
 	"svc_bad",
 
 	"svc_muzzleflash",
-	"svc_muzzlflash2",
+	"svc_muzzleflash2",
 	"svc_temp_entity",
 	"svc_layout",
 	"svc_inventory",
