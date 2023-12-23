@@ -199,13 +199,6 @@ float CL_KeyState (kbutton_t *key)
 		key->downtime = sys_frame_time;
 	}
 
-#if 0
-	if (msec)
-	{
-		Com_Printf ("%i ", msec);
-	}
-#endif
-
 	val = (float)msec / frame_msec;
 	if (val < 0)
 		val = 0;
@@ -214,9 +207,6 @@ float CL_KeyState (kbutton_t *key)
 
 	return val;
 }
-
-
-
 
 //==========================================================================
 
@@ -308,6 +298,8 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->sidemove *= 2;
 		cmd->upmove *= 2;
 	}	
+
+	
 }
 
 void CL_ClampPitch (void)
@@ -391,6 +383,7 @@ usercmd_t CL_CreateCmd (void)
 	// allow mice or other external controllers to add to the move
 	IN_Move (&cmd);
 
+	
 	CL_FinishMove (&cmd);
 
 	old_sys_frame_time = sys_frame_time;
@@ -541,5 +534,3 @@ void CL_SendCmd (void)
 	//
 	Netchan_Transmit (&cls.netchan, buf.cursize, buf.data);	
 }
-
-

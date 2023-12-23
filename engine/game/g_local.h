@@ -269,6 +269,9 @@ typedef struct gitem_s
 	int			allowed_teams;	// The teams that are allowed for this item.
 } gitem_t;
 
+#define SPEED_DIRECTOR			0.8				// Speed multiplier for director team.
+#define SPEED_PLAYER			1.0				// Speed multiplier for player team.
+
 //
 // this structure is left intact through an entire game
 // it should be initialized at dll load time, and read/written to
