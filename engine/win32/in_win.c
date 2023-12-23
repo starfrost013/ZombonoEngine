@@ -280,11 +280,6 @@ void IN_MouseMove (usercmd_t *cmd)
 	mx = current_pos.x - window_center_x;
 	my = current_pos.y - window_center_y;
 
-#if 0
-	if (!mx && !my)
-		return;
-#endif
-
 	if (m_filter->value)
 	{
 		mouse_x = (mx + old_mouse_x) * 0.5;

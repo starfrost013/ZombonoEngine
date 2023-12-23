@@ -244,16 +244,7 @@ void CL_ParseDownload (void)
 
 	if (percent != 100)
 	{
-		// request next block
-// change display routines by zoid
-#if 0
-		Com_Printf (".");
-		if (10*(percent/10) != cls.downloadpercent)
-		{
-			cls.downloadpercent = 10*(percent/10);
-			Com_Printf ("%i%%", cls.downloadpercent);
-		}
-#endif
+
 		cls.downloadpercent = percent;
 
 		MSG_WriteByte (&cls.netchan.message, clc_stringcmd);

@@ -194,33 +194,13 @@ void R_DrawSpriteModel (entity_t *e)
 	// polygon without a surface cache
 
 	psprite = (dsprite_t *)currentmodel->extradata;
-
-#if 0
-	if (e->frame < 0 || e->frame >= psprite->numframes)
-	{
-		ri.Con_Printf (PRINT_ALL, "no such sprite frame %i\n", e->frame);
-		e->frame = 0;
-	}
-#endif
 	e->frame %= psprite->numframes;
 
 	frame = &psprite->frames[e->frame];
 
-#if 0
-	if (psprite->type == SPR_ORIENTED)
-	{	// bullet marks on walls
-	vec3_t		v_forward, v_right, v_up;
-
-	AngleVectors (currententity->angles, v_forward, v_right, v_up);
-		up = v_up;
-		right = v_right;
-	}
-	else
-#endif
-	{	// normal sprite
-		up = vup;
-		right = vright;
-	}
+	// normal sprite
+	up = vup;
+	right = vright;
 
 	if ( e->flags & RF_TRANSLUCENT )
 		alpha = e->alpha;
@@ -501,24 +481,6 @@ void R_SetFrustum (void)
 {
 	int		i;
 
-#if 0
-	/*
-	** this code is wrong, since it presume a 90 degree FOV both in the
-	** horizontal and vertical plane
-	*/
-	// front side is visible
-	VectorAdd (vpn, vright, frustum[0].normal);
-	VectorSubtract (vpn, vright, frustum[1].normal);
-	VectorAdd (vpn, vup, frustum[2].normal);
-	VectorSubtract (vpn, vup, frustum[3].normal);
-
-	// we theoretically don't need to normalize these vectors, but I do it
-	// anyway so that debugging is a little easier
-	VectorNormalize( frustum[0].normal );
-	VectorNormalize( frustum[1].normal );
-	VectorNormalize( frustum[2].normal );
-	VectorNormalize( frustum[3].normal );
-#else
 	// rotate VPN right by FOV_X/2 degrees
 	RotatePointAroundVector( frustum[0].normal, vup, vpn, -(90-r_newrefdef.fov_x / 2 ) );
 	// rotate VPN left by FOV_X/2 degrees
@@ -527,7 +489,6 @@ void R_SetFrustum (void)
 	RotatePointAroundVector( frustum[2].normal, vright, vpn, 90-r_newrefdef.fov_y / 2 );
 	// rotate VPN down by FOV_X/2 degrees
 	RotatePointAroundVector( frustum[3].normal, vright, vpn, -( 90 - r_newrefdef.fov_y / 2 ) );
-#endif
 
 	for (i=0 ; i<4 ; i++)
 	{
@@ -821,35 +782,6 @@ static void GL_DrawColoredStereoLinePair( float r, float g, float b, float y )
 	qglVertex2f( 0, y + 1 );
 	qglVertex2f( vid.width, y + 1 );
 }
-
-static void GL_DrawStereoPattern( void )
-{
-	int i;
-
-	if ( !gl_state.stereo_enabled )
-		return;
-
-	R_SetGL2D();
-
-	qglDrawBuffer( GL_BACK_LEFT );
-
-	for ( i = 0; i < 20; i++ )
-	{
-		qglBegin( GL_LINES );
-			GL_DrawColoredStereoLinePair( 1, 0, 0, 0 );
-			GL_DrawColoredStereoLinePair( 1, 0, 0, 2 );
-			GL_DrawColoredStereoLinePair( 1, 0, 0, 4 );
-			GL_DrawColoredStereoLinePair( 1, 0, 0, 6 );
-			GL_DrawColoredStereoLinePair( 0, 1, 0, 8 );
-			GL_DrawColoredStereoLinePair( 1, 1, 0, 10);
-			GL_DrawColoredStereoLinePair( 1, 1, 0, 12);
-			GL_DrawColoredStereoLinePair( 0, 1, 0, 14);
-		qglEnd();
-		
-		GLimp_EndFrame();
-	}
-}
-
 
 /*
 ====================
@@ -1189,13 +1121,6 @@ qboolean R_Init( void *hinstance, void *hWnd )
 	}
 
 	GL_SetDefaultState();
-
-	/*
-	** draw our stereo patterns
-	*/
-#if 0 // commented out until H3D pays us the money they owe us
-	GL_DrawStereoPattern();
-#endif
 
 	GL_InitImages ();
 	Mod_Init ();

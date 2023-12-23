@@ -148,11 +148,6 @@ Responds with all the info that qplug or qspy can see
 void SVC_Status (void)
 {
 	Netchan_OutOfBandPrint (NS_SERVER, net_from, "print\n%s", SV_StatusString());
-#if 0
-	Com_BeginRedirect (RD_PACKET, sv_outputbuf, SV_OUTPUTBUF_LENGTH, SV_FlushRedirect);
-	Com_Printf (SV_StatusString());
-	Com_EndRedirect ();
-#endif
 }
 
 /*
@@ -531,13 +526,6 @@ void SV_CalcPings (void)
 		if (cl->state != cs_spawned )
 			continue;
 
-#if 0
-		if (cl->lastframe > 0)
-			cl->frame_latency[sv.framenum&(LATENCY_COUNTS-1)] = sv.framenum - cl->lastframe + 1;
-		else
-			cl->frame_latency[sv.framenum&(LATENCY_COUNTS-1)] = 0;
-#endif
-
 		total = 0;
 		count = 0;
 		for (j=0 ; j<LATENCY_COUNTS ; j++)
@@ -551,11 +539,8 @@ void SV_CalcPings (void)
 		if (!count)
 			cl->ping = 0;
 		else
-#if 0
-			cl->ping = total*100/count - 100;
-#else
-			cl->ping = total / count;
-#endif
+
+		cl->ping = total / count;
 
 		// let the game dll know about the ping
 		cl->edict->client->ping = cl->ping;

@@ -31,7 +31,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 int		hunkcount;
 
-
 byte	*membase;
 int		hunkmaxsize;
 int		cursize;
@@ -82,14 +81,6 @@ int Hunk_End (void)
 {
 
 	// free the remaining unused virtual memory
-#if 0
-	void	*buf;
-
-	// write protect it
-	buf = VirtualAlloc (membase, cursize, MEM_COMMIT, PAGE_READONLY);
-	if (!buf)
-		Sys_Error ("VirtualAlloc commit failed");
-#endif
 
 	hunkcount++;
 //Com_Printf ("hunkcount: %i\n", hunkcount);

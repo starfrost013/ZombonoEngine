@@ -528,14 +528,7 @@ void PM_AirMove (void)
 
 	fmove = pm->cmd.forwardmove;
 	smove = pm->cmd.sidemove;
-	
-//!!!!! pitch should be 1/3 so this isn't needed??!
-#if 0
-	pml.forward[2] = 0;
-	pml.right[2] = 0;
-	VectorNormalize (pml.forward);
-	VectorNormalize (pml.right);
-#endif
+
 
 	for (i=0 ; i<2 ; i++)
 		wishvel[i] = pml.forward[i]*fmove + pml.right[i]*smove;
@@ -671,11 +664,6 @@ void PM_CatagorizePosition (void)
 				}
 			}
 		}
-
-#if 0
-		if (trace.fraction < 1.0 && trace.ent && pml.velocity[2] < 0)
-			pml.velocity[2] = 0;
-#endif
 
 		if (pm->numtouch < MAXTOUCH && trace.ent)
 		{
@@ -1065,45 +1053,6 @@ void PM_SnapPosition (void)
 //	Com_DPrintf ("using previous_origin\n");
 }
 
-#if 0
-//NO LONGER USED
-/*
-================
-PM_InitialSnapPosition
-
-================
-*/
-void PM_InitialSnapPosition (void)
-{
-	int		x, y, z;
-	short	base[3];
-
-	VectorCopy (pm->s.origin, base);
-
-	for (z=1 ; z>=-1 ; z--)
-	{
-		pm->s.origin[2] = base[2] + z;
-		for (y=1 ; y>=-1 ; y--)
-		{
-			pm->s.origin[1] = base[1] + y;
-			for (x=1 ; x>=-1 ; x--)
-			{
-				pm->s.origin[0] = base[0] + x;
-				if (PM_GoodPosition ())
-				{
-					pml.origin[0] = pm->s.origin[0]*0.125;
-					pml.origin[1] = pm->s.origin[1]*0.125;
-					pml.origin[2] = pm->s.origin[2]*0.125;
-					VectorCopy (pm->s.origin, pml.previous_origin);
-					return;
-				}
-			}
-		}
-	}
-
-	Com_DPrintf ("Bad InitialSnapPosition\n");
-}
-#else
 /*
 ================
 PM_InitialSnapPosition
@@ -1137,8 +1086,6 @@ void PM_InitialSnapPosition(void)
 
 	Com_DPrintf ("Bad InitialSnapPosition\n");
 }
-
-#endif
 
 /*
 ================
