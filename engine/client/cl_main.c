@@ -1809,8 +1809,7 @@ void CL_Init (void)
 	UI_Init ();
 
 	FS_ExecAutoexec ();
-	Cbuf_Execute ();
-
+	Cbuf_Execute (); 
 }
 
 

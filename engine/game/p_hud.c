@@ -191,7 +191,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
 
 		// add a dogtag
 		if (cl_ent == ent)
-			tag = "tag1";
+			tag = "tag1"; 
 		else if (cl_ent == killer)
 			tag = "tag2";
 		else
