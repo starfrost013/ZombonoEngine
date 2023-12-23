@@ -976,7 +976,7 @@ void SCR_ExecuteLayoutString (char *s)
 			token = COM_Parse (&s);
 			y = viddef.height/2 - 120 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
 			SCR_AddDirtyPoint (x, y);
-			SCR_AddDirtyPoint (x+159 * vid_hudscale->value, y+31 * vid_hudscale->value);
+			SCR_AddDirtyPoint (x+159 * vid_hudscale->value, y+39 * vid_hudscale->value);
 
 			token = COM_Parse (&s);
 			value = atoi(token);
