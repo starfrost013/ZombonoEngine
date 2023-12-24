@@ -318,7 +318,7 @@ void CheckGamemodeRules (void)
 	{
 		if (level.time >= timelimit->value*60)
 		{
-			gi.bprintf (PRINT_HIGH, "Timelimit hit.\n");
+			gi.bprintf (PRINT_HIGH, "Out of time!\n");
 			EndDMLevel ();
 			return;
 		}
@@ -334,7 +334,7 @@ void CheckGamemodeRules (void)
 
 			if (cl->resp.score >= fraglimit->value)
 			{
-				gi.bprintf (PRINT_HIGH, "Fraglimit hit.\n");
+				gi.bprintf (PRINT_HIGH, "Fraglimit hit!\n");
 				EndDMLevel ();
 				return;
 			}
