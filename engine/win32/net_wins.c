@@ -365,7 +365,7 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 			return;
 
 		// some PPP links dont allow broadcasts
-		if ((err == WSAEADDRNOTAVAIL) && ((to.type == NA_BROADCAST)))
+		if ((err == WSAEADDRNOTAVAIL) && ((to.type == NA_BROADCAST))) 
 			return;
 
 		if (dedicated->value)	// let dedicated servers continue after errors
