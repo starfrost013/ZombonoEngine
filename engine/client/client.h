@@ -627,7 +627,7 @@ void UI_HandleEventOnClick(int btn, int x, int y);
 void UI_Draw();
 
 // UI: Clear
-void UI_Clear(char* control_name);
+void UI_Clear(char* name);
 
 // UI: Create Scripts
 qboolean UI_CreateTeamUI();
