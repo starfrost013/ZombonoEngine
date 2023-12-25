@@ -630,10 +630,17 @@ void UI_Draw();
 void UI_Clear(char* name);
 
 // UI: Create Scripts
+// TeamUI
 qboolean UI_CreateTeamUI();
 void UI_TeamUISetDirectorTeam(int btn, int x, int y);
 void UI_TeamUISetPlayerTeam(int btn, int x, int y);
 
+// LeaderboardUI
 qboolean UI_CreateLeaderboardUI();
 
+// Leaderboard utility functions
+void	UI_DrawLeaderboardUI();
+void	UI_UpdateLeaderboardUI();
+
+// Postgame UI
 qboolean UI_CreatePostGameUI();

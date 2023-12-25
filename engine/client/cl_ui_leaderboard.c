@@ -24,14 +24,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-void SCR_DrawLeaderboard()
+void UI_DrawLeaderboardUI()
 {
 	// stupid hack
 	UI_Clear("LeaderboardUI");
 	UI_CreateLeaderboardUI();
 }
 
-void SCR_UpdateLeaderboard()
+void UI_UpdateLeaderboardUI()
 {
 
 }

@@ -783,7 +783,7 @@ void CL_ParseServerMessage (void)
 			strncpy (cl.layout, s, sizeof(cl.layout)-1);
 			break;
 		case svc_leaderboard:
-			
+			UI_UpdateLeaderboardUI();
 			break;
 
 		case svc_playerinfo:
