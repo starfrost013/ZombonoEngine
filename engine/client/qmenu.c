@@ -59,16 +59,16 @@ void Action_Draw( menuaction_t *a )
 	if ( a->generic.flags & QMF_LEFT_JUSTIFY )
 	{
 		if ( a->generic.flags & QMF_GRAYED )
-			Menu_DrawStringDark( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+			Draw_StringAlt( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
 		else
-			Menu_DrawString( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+			Draw_String( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
 	}
 	else
 	{
 		if ( a->generic.flags & QMF_GRAYED )
-			Menu_DrawStringR2LDark( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+			Draw_StringR2LAlt( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
 		else
-			Menu_DrawStringR2L( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+			Draw_StringR2L( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
 	}
 	if ( a->generic.ownerdraw )
 		a->generic.ownerdraw( a );
@@ -90,7 +90,7 @@ void Field_Draw( menufield_t *f )
 	char tempbuffer[128]="";
 
 	if ( f->generic.name )
-		Menu_DrawStringR2LDark( f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET, f->generic.y + f->generic.parent->y, f->generic.name );
+		Draw_StringR2LAlt( f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET, f->generic.y + f->generic.parent->y, f->generic.name );
 
 	strncpy( tempbuffer, f->buffer + f->visible_offset, f->visible_length );
 
@@ -106,7 +106,7 @@ void Field_Draw( menufield_t *f )
 		Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, 25 );
 	}
 
-	Menu_DrawString( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
+	Draw_String( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
 
 	if ( Menu_ItemAtCursor( f->generic.parent ) == f )
 	{
@@ -423,7 +423,7 @@ void Menu_DrawStatusBar( const char *string )
 		int col = maxcol / 2 - l / 2;
 
 		Draw_Fill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
-		Menu_DrawString( col*8*vid_hudscale->value, VID_HEIGHT - 8*vid_hudscale->value, string );
+		Draw_String( col*8*vid_hudscale->value, VID_HEIGHT - 8*vid_hudscale->value, string );
 	}
 	else
 	{
@@ -431,27 +431,7 @@ void Menu_DrawStatusBar( const char *string )
 	}
 }
 
-void Menu_DrawString( int x, int y, const char *string )
-{
-	unsigned i;
-
-	for ( i = 0; i < strlen( string ); i++ )
-	{
-		Draw_Char( ( x + i*8*vid_hudscale->value ), y, string[i] );
-	}
-}
-
-void Menu_DrawStringDark( int x, int y, const char *string )
-{
-	unsigned i;
-
-	for ( i = 0; i < strlen( string ); i++ )
-	{
-		Draw_Char( ( x + i*8*vid_hudscale->value ), y, string[i] + 128 );
-	}
-}
-
-void Menu_DrawStringR2L( int x, int y, const char *string )
+void Draw_StringR2L( int x, int y, const char *string )
 {
 	unsigned i;
 
@@ -461,7 +441,7 @@ void Menu_DrawStringR2L( int x, int y, const char *string )
 	}
 }
 
-void Menu_DrawStringR2LDark( int x, int y, const char *string )
+void Draw_StringR2LAlt( int x, int y, const char *string )
 {
 	unsigned i;
 
@@ -569,14 +549,14 @@ void MenuList_Draw( menulist_t *l )
 	const char **n;
 	int y = 0;
 
-	Menu_DrawStringR2LDark( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name );
+	Draw_StringR2LAlt( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name );
 
 	n = l->itemnames;
 
   	Draw_Fill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, 99, 76, 35, 255);
 	while ( *n )
 	{
-		Menu_DrawStringR2LDark( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y + y + 10, *n );
+		Draw_StringR2LAlt( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y + y + 10, *n );
 
 		n++;
 		y += 10;
@@ -586,7 +566,7 @@ void MenuList_Draw( menulist_t *l )
 void Separator_Draw( menuseparator_t *s )
 {
 	if ( s->generic.name )
-		Menu_DrawStringR2LDark( s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->generic.name );
+		Draw_StringR2LAlt( s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->generic.name );
 }
 
 void Slider_DoSlide( menuslider_t *s, int dir )
@@ -608,7 +588,7 @@ void Slider_Draw( menuslider_t *s )
 {
 	int	i;
 
-	Menu_DrawStringR2LDark( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET,
+	Draw_StringR2LAlt( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET,
 		                s->generic.y + s->generic.parent->y, 
 						s->generic.name );
 
@@ -654,21 +634,21 @@ void SpinControl_Draw( menulist_t *s )
 
 	if ( s->generic.name )
 	{
-		Menu_DrawStringR2LDark( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET, 
+		Draw_StringR2LAlt( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET, 
 							s->generic.y + s->generic.parent->y, 
 							s->generic.name );
 	}
 	if ( !strchr( s->itemnames[s->curvalue], '\n' ) )
 	{
-		Menu_DrawString( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->itemnames[s->curvalue] );
+		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->itemnames[s->curvalue] );
 	}
 	else
 	{
 		strcpy( buffer, s->itemnames[s->curvalue] );
 		*strchr( buffer, '\n' ) = 0;
-		Menu_DrawString( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, buffer );
+		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, buffer );
 		strcpy( buffer, strchr( s->itemnames[s->curvalue], '\n' ) + 1 );
-		Menu_DrawString( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y + 10 * vid_hudscale->value, buffer );
+		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y + 10 * vid_hudscale->value, buffer );
 	}
 }
 

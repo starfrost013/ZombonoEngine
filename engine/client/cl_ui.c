@@ -35,6 +35,7 @@ extern ui_t*	current_ui;
 qboolean		UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y);			// Shared function that adds controls
 ui_t*			UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
 ui_control_t*	UI_GetControl(char* name);																	// Gets the control with name name in the current UI.
+
 // Draw methods
 void			UI_DrawText(ui_control_t text);																// Draws a text control.
 void			UI_DrawImage(ui_control_t image);															// Draws an image control.
@@ -327,9 +328,9 @@ qboolean UI_SetText(char* name, char* text)
 
 qboolean UI_SetImage(char* name, char* image_path)
 {
-	ui_control_t* current_ui = UI_GetControl(name);
+	ui_control_t* current_ui_control = UI_GetControl(name);
 
-	if (current_ui == NULL)
+	if (current_ui_control == NULL)
 	{
 		Com_Printf("Tried to set NULL UI control image path %s to %s!", name, image_path);
 		return false;
@@ -341,9 +342,22 @@ qboolean UI_SetImage(char* name, char* image_path)
 		return false;
 	}
 
-	strcpy(current_ui->image_path, image_path);
+	strcpy(current_ui_control->image_path, image_path);
 
 	return true;
+}
+
+void UI_Clear(char* name)
+{
+	// clear every control but not the ui's info
+	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	{
+		ui_control_t* ui_control = &current_ui->controls[ui_control_num];
+		memset(ui_control, 0x00, sizeof(ui_control_t));
+	}
+
+	current_ui->num_controls = 0;
+	return true; 
 }
 
 void UI_Draw()
@@ -365,8 +379,8 @@ void UI_Draw()
 	strftime(&time, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
-	Menu_DrawString(viddef.width - (8 * strlen(time)), 0, time);
-	Menu_DrawStringDark(viddef.width - 144, 10, "Pre-release build!");
+	Draw_String(viddef.width - (8 * strlen(time)), 0, time);
+	Draw_StringAlt(viddef.width - 144, 10, "Pre-release build!");
 
 #endif
 
@@ -409,7 +423,7 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t text)
 {
-	Menu_DrawString(text.position_x, text.position_y, text.text); 
+	Draw_String(text.position_x, text.position_y, text.text); 
 }
 
 void UI_DrawImage(ui_control_t image)

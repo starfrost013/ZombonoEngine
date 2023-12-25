@@ -132,9 +132,4 @@ void	Menu_SetStatusBar( menuframework_t *s, const char *string );
 void	Menu_SlideItem( menuframework_t *s, int dir );
 int		Menu_TallySlots( menuframework_t *menu );
 
-void	 Menu_DrawString( int, int, const char * );
-void	 Menu_DrawStringDark( int, int, const char * );
-void	 Menu_DrawStringR2L( int, int, const char * );
-void	 Menu_DrawStringR2LDark( int, int, const char * );
-
 #endif

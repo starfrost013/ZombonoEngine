@@ -681,7 +681,7 @@ static void DrawKeyBindingFunc( void *self )
 		
 	if (keys[0] == -1)
 	{
-		Menu_DrawString( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "???" );
+		Draw_String( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "???" );
 	}
 	else
 	{
@@ -690,14 +690,14 @@ static void DrawKeyBindingFunc( void *self )
 
 		name = Key_KeynumToString (keys[0]);
 
-		Menu_DrawString( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, name );
+		Draw_String( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, name );
 
 		x = strlen(name) * 8 * vid_hudscale->value;
 
 		if (keys[1] != -1)
 		{
-			Menu_DrawString( a->generic.x + a->generic.parent->x + 24 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, "or" );
-			Menu_DrawString( a->generic.x + a->generic.parent->x + 48 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, Key_KeynumToString (keys[1]) );
+			Draw_String( a->generic.x + a->generic.parent->x + 24 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, "or" );
+			Draw_String( a->generic.x + a->generic.parent->x + 48 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, Key_KeynumToString (keys[1]) );
 		}
 	}
 }
@@ -1351,9 +1351,9 @@ void Options_MenuDraw (void)
 	if (update_sound_quality)
 	{
 		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
 
 		CL_Snd_Restart_f();
 		update_sound_quality = false;
@@ -1668,8 +1668,8 @@ void Game_MenuInit( void )
 void Game_MenuDraw( void )
 {
 #ifdef PLAYTEST
-	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 92, "This option is not available in playtest builds!");
-	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 92, "This option is not available in playtest builds!");
+	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
 #else
 	M_Banner("m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
@@ -2018,9 +2018,9 @@ void JoinServer_MenuDraw(void)
 	if (search_local_games)
 	{
 		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		Menu_DrawString(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
+		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
 
 		// send out info packets
 		CL_PingServers_f();
@@ -2323,8 +2323,8 @@ void StartServer_MenuInit( void )
 void StartServer_MenuDraw(void)
 {
 #ifdef PLAYTEST
-	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 92, "Servers cannot be started in playtest builds!");
-	Menu_DrawString(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 92, "Servers cannot be started in playtest builds!");
+	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
 #else
 	Menu_Draw(&s_startserver_menu);
 #endif

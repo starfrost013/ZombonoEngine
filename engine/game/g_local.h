@@ -37,12 +37,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_muzzleflash		1
 #define	svc_muzzleflash2	2
 #define	svc_temp_entity		3
-#define	svc_layout			4
+#define	svc_layout			4				// THIS IS GOING TO BE REMOVED FOR BEING A MESS !!!!!
 #define	svc_inventory		5
 #define svc_uidraw			6
 #define svc_uisettext		7
 #define svc_uisetimage		8
-#define	svc_stufftext		12
+#define svc_leaderboard		9
+#define	svc_stufftext		14
 
 //==================================================================
 

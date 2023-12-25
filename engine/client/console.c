@@ -34,7 +34,7 @@ extern	char	key_lines[128][MAXCMDLINE];
 extern	int		edit_line;
 extern	int		key_linepos;
 
-void DrawString (int x, int y, char *s)
+void Draw_String (int x, int y, char *s)
 {
 	while (*s)
 	{
@@ -44,7 +44,7 @@ void DrawString (int x, int y, char *s)
 	}
 }
 
-void DrawAltString (int x, int y, char *s)
+void Draw_StringAlt (int x, int y, char *s)
 {
 	while (*s)
 	{
@@ -535,12 +535,12 @@ void Con_DrawNotify (void)
 	{
 		if (chat_team)
 		{
-			DrawString (8, v*vid_hudscale->value, "say_team:");
+			Draw_String (8, v*vid_hudscale->value, "say_team:");
 			skip = 11;
 		}
 		else
 		{
-			DrawString (8, v*vid_hudscale->value, "say:");
+			Draw_String (8, v*vid_hudscale->value, "say:");
 			skip = 5;
 		}
 

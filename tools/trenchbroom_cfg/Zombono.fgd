@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2023/12/17 version
+// 2023/12/24 version
 
 //
 // worldspawn
@@ -53,8 +53,19 @@
 @PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
 @PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
 
-// Notes on the 'team' key: First of all, it's really only useful in DM because it creates a
-// random respawn pattern. Let's say that in one spot, you want to have the shotgun, Quad
+@PointClass base(APlayerClass) = info_team_door : "Team Door: An invisible entity that only allows certain teams to walk through."
+[
+	allowed_teams(Flags) =
+	[
+		1 : "Director Team" : 0
+		2 : "Player Team" : 0
+		4 : "Unassigned" : 0
+	]
+]
+
+// Notes on the 'team' key: First of all, it creates a random respawn pattern.
+// Not sure if this works in Zombono, need to check.
+// Let's say that in one spot, you want to have the shotgun, Quad
 // damage and mega health item to respawn in alternance. Place all of them in approximately
 // the same location, team them and voila! The FIRST item that you place in the map will be
 // the team MASTER - the others will be SLAVES. In DM play, the Master will be the first one
@@ -66,6 +77,7 @@
 [
 	team(integer) : "Team"
 ]
+
 
 @PointClass base(Ammo) model({ "path": ":models/items/ammo/shells/medium/tris.md2" }) = ammo_shells : "Shotgun ammo" []
 @PointClass base(Ammo) model({ "path": ":models/items/ammo/bullets/medium/tris.md2" }) = ammo_bullets : "Machine/Chain gun ammo" []
@@ -473,9 +485,6 @@
 	]
 ]
 
-// The following three entities are eye-candy - they don't do anything
-@PointClass base(Appearflags) color(255 128 0) size(-32 -32 -16, 32 32 32) model({ "path": ":models/monsters/tank/tris.md2",	"frame":254, "skin": 0}) = misc_eastertank : "Tank sitting down. Make him a chair out of brushes." []
-
 // 0225 - removed "target" key - id concluded being able to target
 // something with a movable barrel was a bug and removed that function :(
 @PointClass base(Appearflags, Targetname) color(0 128 204) size(-16 -16 0, 16 16 40) model({ "path": ":models/objects/barrels/tris.md2" }) = misc_explobox : "Large exploding box"
@@ -489,32 +498,6 @@
 @PointClass base(Appearflags) color(255 0 0) size(-8 -8 -8, 8 8 8) model({ "path": ":models/objects/gibs/arm/tris.md2" }) = misc_gib_arm : "arm gib, use with target_spawner" []
 @PointClass base(Appearflags) color(255 0 0) size(-8 -8 -8, 8 8 8) model({ "path": ":models/objects/gibs/head/tris.md2" }) = misc_gib_head : "head gib, use with target_spawner" []
 @PointClass base(Appearflags) color(255 0 0) size(-8 -8 -8, 8 8 8) model({ "path": ":models/objects/gibs/arm/tris.md2" }) = misc_gib_leg : "leg gib, use with target_spawner" []
-
-
-
-// new
-@PointClass base(Appearflags, Targetname, Target) color(255 128 0) size(-16 -16 -24, 16 16 32) model({{
-  spawnflags & 32 -> { "path": ":models/monsters/insane/tris.md2", "frame": 0 },
-  spawnflags & 16 -> { "path": ":models/monsters/insane/tris.md2", "frame": 74 },
-  spawnflags &  8 -> { "path": ":models/monsters/insane/tris.md2", "frame": 252 },
-  spawnflags &  4 -> { "path": ":models/monsters/insane/tris.md2", "frame": 38 },
-  spawnflags &  2 -> { "path": ":models/monsters/insane/tris.md2", "frame": 0 },
-                             	":models/monsters/insane/tris.md2"
-  }}) = misc_insane : "Insane Soldiers"
-[
-	spawnflags(Flags) =
-	[
-    1 : "Ambush" : 0
-    2 : "Trigger Spawn" : 0
-    4 : "Crawl" : 0
-    8 : "Crucified" : 0
-   16 : "Stand Ground" : 0
-   32 : "Always Stand" : 0
-	]
-  deathtarget(string) : "Entity to trigger at death"
-  killtarget(string) : "Entity to remove at death"
-  item(string) : "Item to spawn at death"
-]
 
 @PointClass base(Appearflags, Targetname) color(255 128 0) size(-64 -64 0, 64 64 128) model({ "path": ":models/objects/satellite/tris.md2" }) = misc_satellite_dish : "Satellite Dish" []
 
@@ -867,4 +850,8 @@
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_rail/tris.md2" }) = weapon_railgun : "Rail gun" []
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_bfg/tris.md2" }) = weapon_bfg : "Big Freakin Gun!" []
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_shotg2/tris.md2" }) = weapon_bamfuslicator : "(Zombono Director) Bamfuslicator" []
+// Spawns zombies.
+@PointClass base(Weapons) model({ "path": ":models/weapons/g_hyperb/tris.md2" }) = weapon_planfuslicator : "(Zombono Director) Planfuslicator" []
+// Spawns things.a
+@PointClass base(Weapons) model({ "path": ":models/weapons/g_rail/tris.md2" }) = weapon_planfuslicator : "(Zombono Director) Tangfuslicator" []
 

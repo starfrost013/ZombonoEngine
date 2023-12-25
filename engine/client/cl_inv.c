@@ -36,22 +36,6 @@ void CL_ParseInventory (void)
 		cl.inventory[i] = MSG_ReadShort (&net_message);
 }
 
-
-/*
-================
-Inv_DrawString
-================
-*/
-void Inv_DrawString (int x, int y, char *string)
-{
-	while (*string)
-	{
-		re.DrawChar (x, y, *string);
-		x+=8 * vid_hudscale->value;
-		string++;
-	}
-}
-
 void SetStringHighBit (char *s)
 {
 	while (*s)
@@ -109,8 +93,8 @@ void CL_DrawInventory (void)
 
 	y += 24 * vid_hudscale->value;
 	x += 24 * vid_hudscale->value;
-	Inv_DrawString (x, y, "hotkey ### item");
-	Inv_DrawString (x, y+8*vid_hudscale->value, "------ --- ----");
+	Draw_String (x, y, "hotkey ### item");
+	Draw_String (x, y+8*vid_hudscale->value, "------ --- ----");
 	y += 16 * vid_hudscale->value;
 	for (i=top ; i<num && i < top+DISPLAY_ITEMS ; i++)
 	{
@@ -134,7 +118,7 @@ void CL_DrawInventory (void)
 			if ( (int)(cls.realtime*10) & 1)
 				re.DrawChar (x - 8 * vid_hudscale->value, y * vid_hudscale->value, 15);
 		}
-		Inv_DrawString (x, y, string);
+		Draw_String (x, y, string);
 		y += 8 * vid_hudscale->value;
 	}
 }

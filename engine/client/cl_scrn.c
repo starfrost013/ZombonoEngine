@@ -968,6 +968,7 @@ void SCR_ExecuteLayoutString (char *s)
 
 		if (!strcmp(token, "client"))
 		{	// draw a deathmatch client block
+			
 			int				score, ping, time;
 			common_team		team;
 
@@ -996,27 +997,27 @@ void SCR_ExecuteLayoutString (char *s)
 			token = COM_Parse (&s);
 			time = atoi(token);
 
-			DrawAltString (x+32 * vid_hudscale->value, y, ci->name);
-			DrawString (x+32 * vid_hudscale->value, y+8 * vid_hudscale->value,  "Score: ");
-			DrawAltString (x+32 * vid_hudscale->value +7*8 * vid_hudscale->value, y+8 * vid_hudscale->value,  va("%i", score));
+			Draw_StringAlt (x+32 * vid_hudscale->value, y, ci->name);
+			Draw_String (x+32 * vid_hudscale->value, y+8 * vid_hudscale->value,  "Score: ");
+			Draw_StringAlt (x+32 * vid_hudscale->value +7*8 * vid_hudscale->value, y+8 * vid_hudscale->value,  va("%i", score));
 
 			// draw the team
-			DrawString(x+32 * vid_hudscale->value, y+16 * vid_hudscale->value, "Team: ");
+			Draw_String(x+32 * vid_hudscale->value, y+16 * vid_hudscale->value, "Team: ");
 			switch (team)
 			{
 				case common_team_director:
-					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Director");
+					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Director");
 					break;
 				case common_team_player:
-					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Player");
+					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Player");
 					break;
 				case common_team_unassigned:
-					DrawAltString(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Unassigned");
+					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Unassigned");
 					break;
 			}
 			
-			DrawString (x+32 * vid_hudscale->value, y+24 * vid_hudscale->value, va("Ping:  %i", ping));
-			DrawString (x+32 * vid_hudscale->value, y+32 * vid_hudscale->value, va("Time:  %i", time));
+			Draw_String (x+32 * vid_hudscale->value, y+24 * vid_hudscale->value, va("Ping:  %i", ping));
+			Draw_String (x+32 * vid_hudscale->value, y+32 * vid_hudscale->value, va("Time:  %i", time));
 
 			if (!ci->icon)
 				ci = &cl.baseclientinfo;
@@ -1111,7 +1112,7 @@ void SCR_ExecuteLayoutString (char *s)
 			index = cl.frame.playerstate.stats[index];
 			if (index < 0 || index >= MAX_CONFIGSTRINGS)
 				Com_Error (ERR_DROP, "Bad stat_string index");
-			DrawString (x, y, cl.configstrings[index]);
+			Draw_String (x, y, cl.configstrings[index]);
 			continue;
 		}
 
@@ -1125,7 +1126,7 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "string"))
 		{
 			token = COM_Parse (&s);
-			DrawString (x, y, token);
+			Draw_String (x, y, token);
 			continue;
 		}
 
@@ -1139,7 +1140,7 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "string2"))
 		{
 			token = COM_Parse (&s);
-			DrawAltString (x, y, token);
+			Draw_StringAlt (x, y, token);
 			continue;
 		}
 

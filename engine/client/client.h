@@ -308,9 +308,12 @@ extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 extern	netadr_t	net_from;
 extern	sizebuf_t	net_message;
 
-void DrawString (int x, int y, char *s);
-void DrawAltString (int x, int y, char *s);	// toggle high bit
-qboolean	CL_CheckOrDownloadFile (char *filename);
+void Draw_String (int x, int y, char *s);		// normal
+void Draw_StringAlt (int x, int y, char *s);	// toggle high bit
+void Draw_StringR2L(int, int, const char*);		// right to left
+void Draw_StringR2LAlt(int, int, const char*);	// right to left, toggle high bit
+
+qboolean CL_CheckOrDownloadFile (char *filename);
 
 void CL_AddNetgraph (void);
 
@@ -545,12 +548,12 @@ void CL_PredictMovement (void);
 
 typedef enum ui_control_type_e
 {
-	ui_control_text = 0,
-	ui_control_image = 1,
-	ui_control_button = 2,
-	ui_control_slider = 3,
-	ui_control_checkbox = 4,
-	ui_control_box = 5,
+	ui_control_text = 0,							// Simple text.
+	ui_control_image = 1,							// An image.
+	ui_control_button = 2,							// A button that you can click. (may remove)
+	ui_control_slider = 3,							// A slider between different values.
+	ui_control_checkbox = 4,						// A checkable box.
+	ui_control_box = 5,								// A simple box.
 } ui_control_type;
 
 typedef struct ui_control_s
@@ -622,6 +625,9 @@ void UI_HandleEventOnClick(int btn, int x, int y);
 
 // UI: Draw
 void UI_Draw();
+
+// UI: Clear
+void UI_Clear(char* control_name);
 
 // UI: Create Scripts
 qboolean UI_CreateTeamUI();

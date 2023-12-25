@@ -29,9 +29,12 @@ char *svc_strings[256] =
 	"svc_muzzleflash",
 	"svc_muzzleflash2",
 	"svc_temp_entity",
-	"svc_layout",
+	"svc_layout",				// WILL BE REMOVED 
 	"svc_inventory",
 	"svc_uidraw",
+	"svc_uisettext",
+	"svc_uisetimage",
+	"svc_leaderboard",
 
 	"svc_nop",
 	"svc_disconnect",
@@ -778,6 +781,9 @@ void CL_ParseServerMessage (void)
 		case svc_layout:
 			s = MSG_ReadString (&net_message);
 			strncpy (cl.layout, s, sizeof(cl.layout)-1);
+			break;
+		case svc_leaderboard:
+			
 			break;
 
 		case svc_playerinfo:
