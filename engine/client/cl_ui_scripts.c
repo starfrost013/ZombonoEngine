@@ -59,7 +59,7 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 
 qboolean UI_CreateLeaderboardUI()
 {
-	UI_AddBox("LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf9
+	UI_AddBox("LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
 	UI_AddText("LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 96, (viddef.height / 2) - 188);
 	UI_AddText("LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 172);
 	UI_AddText("LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 172);
