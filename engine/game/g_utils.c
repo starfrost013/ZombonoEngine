@@ -580,3 +580,21 @@ void G_SendUI(edict_t* ent, char* ui_name, qboolean enabled)
 	gi.WriteByte(enabled);
 	gi.unicast(ent, true); // reliable as not used regularly
 }
+
+int G_CountClients()
+{
+	edict_t*	client_edict;
+	int			real_client_count = 0;
+
+	// count clients
+	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	{
+		// is the client actually being used
+		client_edict = g_edicts + client_num + 1; // client edicts are always at the start???
+
+		// TODO: spectator support (in leaderboard_t)
+		if (client_edict->inuse) real_client_count++;
+	}
+
+	return real_client_count;
+}

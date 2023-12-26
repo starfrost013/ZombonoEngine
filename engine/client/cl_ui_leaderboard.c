@@ -24,14 +24,91 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-void UI_DrawLeaderboardUI()
-{
-	// stupid hack
-	UI_Clear("LeaderboardUI");
-	UI_CreateLeaderboardUI();
-}
+#define TEXT_BUF_LENGTH			16
 
 void UI_UpdateLeaderboardUI()
 {
+	int x, y;
+	char text[TEXT_BUF_LENGTH];
 
+	// stupid hack
+	UI_Clear("LeaderboardUI");
+	UI_CreateLeaderboardUI();
+
+	// byte to reduce net usage
+	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
+
+	y = (viddef.height / 2) - 172;
+
+	// update all the data here so we don't need to clear it
+	for (int client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
+	{
+		// reset x
+		x = (viddef.width / 2) - 304;
+
+		leaderboard_entry_t leaderboard_entry = cl.leaderboard.entries[client_num];
+		strncpy(leaderboard_entry.name, MSG_ReadString(&net_message), 32);
+		leaderboard_entry.ping = MSG_ReadShort(&net_message);
+		leaderboard_entry.score = MSG_ReadByte(&net_message);
+		leaderboard_entry.team = MSG_ReadShort(&net_message);
+		leaderboard_entry.time = MSG_ReadShort(&net_message); //should this be an int?
+		leaderboard_entry.is_spectator = MSG_ReadByte(&net_message);
+
+		// todo: boxes and headers (headers in cl_ui_scripts)
+		
+		// move by one line
+		y += 12;
+
+		// draw name
+		UI_AddText("LeaderboardUIText_TempName", leaderboard_entry.name, x, y);
+		x += 8 * 20;
+		
+		// ping
+		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.ping);
+		UI_AddText("LeaderboardUIText_TempPing", text, x, y);
+		x += 8 * 10;
+
+		//team
+		int box_size = 8 * 11; // a bit of padding
+
+		if (leaderboard_entry.team == common_team_director)
+		{
+			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 87, 0, 127, 255);
+			UI_AddText("LeaderboardUIText_TempTeam", "Director", x, y);
+		}
+		else if (leaderboard_entry.team == common_team_player)
+		{
+			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 219, 87, 0, 255);
+			UI_AddText("LeaderboardUIText_TempTeam", "Player", x, y);
+		}
+		else
+		{
+			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 127, 127, 127, 0, 255);
+			UI_AddText("LeaderboardUIText_TempTeam", "Unassigned", x, y);
+		}
+
+		x += 8 * 12;
+		
+		// score
+		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.score);
+		UI_AddText("LeaderboardUIText_TempScore", text, x, y);
+
+		// time
+		x += 8 * 10;
+		snprintf(text, TEXT_BUF_LENGTH, "%d seconds", leaderboard_entry.time);
+		UI_AddText("LeaderboardUIText_TempTime", text, x, y);
+
+		x += 8 * 10;
+		// are they spectating?
+		if (leaderboard_entry.is_spectator)
+		{
+			UI_AddText("LeaderboardUIText_TempIsSpectating", "Yes", x, y);
+		}
+		else
+		{
+			UI_AddText("LeaderboardUIText_TempIsSpectating", "No", x, y);
+		}
+	}
+
+	UI_SetEnabled("LeaderboardUI", true); // temp
 }

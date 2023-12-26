@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_ui.c -- ZombonoUI (December 9, 2023)
 
 #include "client.h"
-#include "qmenu.h" // todo: reorg
 
 extern int		num_uis;
 extern ui_t		ui_list[MAX_UIS];

@@ -228,7 +228,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
 DeathmatchScoreboard
 
 Draw instead of help message.
-Note that it isn't that hard to overflow the 1400 byte message limit!
+Note that it isn't that hard to overflow the 2800 byte message limit!
 ==================
 */
 void DeathmatchScoreboard (edict_t *ent)
@@ -237,6 +237,45 @@ void DeathmatchScoreboard (edict_t *ent)
 	gi.unicast (ent, true);
 }
 
+/*
+==================
+G_SendLeaderboard
+
+Sends over the leaderboard
+==================
+*/
+void G_SendLeaderboard(edict_t* ent)
+{
+	edict_t* client_edict;
+	// tell the client there is a leaderboard update coming
+	gi.WriteByte(svc_leaderboard);
+
+	int client_count = G_CountClients();
+
+	gi.WriteByte(client_count);
+
+	// 	// loop through them again to actually send each client's data
+	// TODO: SORT SCORES!!!
+
+	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	{
+		// is the client actually being used
+		client_edict = g_edicts + client_num + 1; // client edicts are always at the start???
+
+		if (client_edict->inuse) // always the same number of clients
+		{
+			gi.WriteString(client_edict->client->pers.netname);
+			gi.WriteShort(client_edict->client->ping);
+			gi.WriteByte(client_edict->client->pers.score);
+			gi.WriteShort(client_edict->team);
+			gi.WriteShort((level.framenum - client_edict->client->resp.enterframe) / 600); // inherited from earlier code figure out what this actually does
+			gi.WriteByte(client_edict->client->resp.spectator);
+		}
+	}
+
+	// send it!
+	gi.unicast(ent, true); // make it false? it's still not very common...(only when the user presses TAB)
+}
 
 /*
 ==================
@@ -260,6 +299,13 @@ void Cmd_Score_f (edict_t *ent)
 	DeathmatchScoreboard (ent);
 }
 
+void Cmd_Leaderboard_f(edict_t* ent)
+{
+	ent->client->showinventory = false;
+	ent->client->showhelp = false;
+
+	G_SendLeaderboard(ent);
+}
 
 /*
 ==================

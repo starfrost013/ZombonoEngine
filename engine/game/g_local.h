@@ -613,6 +613,7 @@ extern	gitem_t	itemlist[];
 // g_cmds.c
 //
 void Cmd_Score_f (edict_t *ent);
+void Cmd_Leaderboard_f (edict_t* ent);
 
 //
 // g_items.c
@@ -653,6 +654,8 @@ void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
 
 void	G_SendUI (edict_t *ent, char* ui_name, qboolean enabled);
+
+int		G_CountClients();
 
 char	*G_CopyString (char *in);
 

@@ -237,6 +237,7 @@ void Draw_TileClear (int x, int y, int w, int h, char *pic)
 Draw_Fill
 
 Fills a box of pixels with a single color
+WHY DOES THE ALPHA NOT WORK???
 =============
 */
 void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
@@ -246,6 +247,8 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 		byte		v[4];
 	} color;
 
+	//qglBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+	qglEnable (GL_BLEND);
 	qglDisable (GL_TEXTURE_2D);
 
 	// set up RGBA colors
@@ -257,7 +260,7 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 	qglColor4f (color.v[0]/255.0,
 		color.v[1]/255.0,
 		color.v[2]/255.0,
-		color.v[3]/255.0);
+		(float)color.v[3] / 255.0f);
 
 	qglBegin (GL_QUADS);
 
@@ -267,8 +270,9 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 	qglVertex2f (x, y+h);
 
 	qglEnd ();
-	qglColor3f (1,1,1);
+	qglColor4f (1,1,1,1);
 	qglEnable (GL_TEXTURE_2D);
+	qglDisable (GL_BLEND);
 }
 
 //=============================================================================

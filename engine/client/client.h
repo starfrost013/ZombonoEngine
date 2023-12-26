@@ -84,11 +84,29 @@ extern int num_cl_weaponmodels;
 
 #define	CMD_BACKUP		64	// allow a lot of command backups for very fast systems
 
+typedef struct leaderboard_entry_s
+{
+	char		name[32];
+	int			score;
+	common_team	team;
+	int			ping;
+	int			time;
+	qboolean	is_spectator;
+} leaderboard_entry_t;
+
+// Zombono Leaderboard
+typedef struct leaderboard_s
+{
+	int					num_clients;
+	leaderboard_entry_t	entries[MAX_CLIENTS];
+} leaderboard_t;
+
+
 //
 // the client_state_t structure is wiped completely at every
 // server map change
 //
-typedef struct
+typedef struct client_state_s
 {
 	int			timeoutcount;
 
@@ -135,14 +153,16 @@ typedef struct
 	//
 	// transient data from server
 	//
-	char		layout[1024];		// general 2D overlay
+	char			layout[1024];		// general 2D overlay
+	leaderboard_t	leaderboard;	// ZombonoUI leaderboard
+
 	int			inventory[MAX_ITEMS];
 
 	//
 	// server state information
 	//
 	qboolean	attractloop;		// running the attract loop, any key will menu
-	int			servercount;	// server identification for prespawns
+	int			servercount;		// server identification for prespawns
 	char		gamedir[MAX_QPATH];
 	int			playernum;
 

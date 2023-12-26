@@ -59,14 +59,12 @@ not kill the connection.  This, combined with the tight window of valid
 reliable acknowledgement numbers provides protection against malicious
 address spoofing.
 
-
 The qport field is a workaround for bad address translating routers that
 sometimes remap the client's source port on a packet during gameplay.
 
 If the base part of the net address matches and the qport matches, then the
 channel matches even if the IP port differs.  The IP port should be updated
 to the new value before sending out any replies.
-
 
 If there is no information that needs to be transfered on a given frame,
 such as during the connection stage while waiting for the client to load,
