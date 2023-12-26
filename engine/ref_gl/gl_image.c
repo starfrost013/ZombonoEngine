@@ -427,10 +427,20 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 	// load the file
 	//
 	length = ri.FS_LoadFile (name, (void **)&buffer);
+
 	if (!buffer)
 	{
-		ri.Con_Printf (PRINT_DEVELOPER, "Bad tga file %s\n", name); 
-		return;
+		// try the missing texture texture
+		length = ri.FS_LoadFile("textures/missing_texture.tga", (void**)&buffer);
+
+		// nope
+		if (!buffer)
+		{
+			ri.Con_Printf(PRINT_DEVELOPER, "Bad tga file %s\n (and also couldn't find missing_texture.tga)", name);
+			return;
+		}
+
+		ri.Con_Printf(PRINT_DEVELOPER, "TGA file %s not found (using placeholder texture)", name);
 	}
 
 	buf_p = buffer;

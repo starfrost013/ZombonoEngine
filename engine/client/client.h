@@ -613,41 +613,41 @@ typedef struct ui_s
 } ui_t;
 
 ui_t					ui_list[MAX_UIS];			// The list of UIs.
-ui_t*					current_ui;					// the current UI being edited
+ui_t*					current_ui;					// the current UI being displayed
 int						num_uis;					// the current number of UIs
-qboolean				ui_active;					// Is a UI active - set in UI_OnActive so we don't have to search through every single UI type
+qboolean				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
 qboolean UI_Init();
 qboolean UI_AddUI(char* name, qboolean (*on_create)());
 
 // UI: Init Controls
-qboolean UI_AddText(char* name, char* text, int position_x, int position_y);													// Draws text.
-qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);						// Draws an image.
-qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y);										// Draws a button.
-qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);		// Draws a slider.
-qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);					// Draws a checkbox.
-qboolean UI_AddBox(char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);				// Draws a regular ole box.
+qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);													// Draws text.
+qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);					// Draws an image.
+qboolean UI_AddButton(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y);									// Draws a button.
+qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);		// Draws a slider.
+qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);				// Draws a checkbox.
+qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);			// Draws a regular ole box.
 
 // UI: Toggle
-qboolean UI_SetEnabled(char* name, qboolean enabled);
-qboolean UI_SetActive(char* name, qboolean enabled);
+qboolean UI_SetEnabled(char* name, qboolean enabled);																						// Sets a UI to enabled (visible).
+qboolean UI_SetActive(char* name, qboolean enabled);																						// Sets a UI to active (tangible).
 
 // UI: Update
-qboolean UI_SetText(char* control_name, char* text);
-qboolean UI_SetImage(char* control_name, char* image_path);
+qboolean UI_SetText(char* ui_name, char* control_name, char* text);																			// Updates a UI control's text.
+qboolean UI_SetImage(char* ui_name, char* control_name, char* image_path);																	// Updates a UI control's image.
 
 // UI: Set Event Handler
-qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y));
+qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));												// Sets a UI's OnClick handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClick(int btn, int x, int y);
+void UI_HandleEventOnClick(int btn, int x, int y);																							// Handles clicks.
 
 // UI: Draw
-void UI_Draw();
+void UI_Draw();																																// Draws a UI.
 
 // UI: Clear
-void UI_Clear(char* name);
+void UI_Clear(char* name);																									// Removes all the controls in a UI.
 
 // UI: Create Scripts
 // TeamUI
@@ -659,7 +659,6 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y);
 qboolean UI_CreateLeaderboardUI();
 
 // Leaderboard utility functions
-void	UI_DrawLeaderboardUI();
 void	UI_UpdateLeaderboardUI();
 
 // Postgame UI

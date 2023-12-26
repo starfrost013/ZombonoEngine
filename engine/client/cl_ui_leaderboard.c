@@ -60,12 +60,12 @@ void UI_UpdateLeaderboardUI()
 		y += 12;
 
 		// draw name
-		UI_AddText("LeaderboardUIText_TempName", leaderboard_entry.name, x, y);
+		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempName", leaderboard_entry.name, x, y);
 		x += 8 * 20;
 		
 		// ping
 		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.ping);
-		UI_AddText("LeaderboardUIText_TempPing", text, x, y);
+		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPing", text, x, y);
 		x += 8 * 10;
 
 		//team
@@ -73,42 +73,43 @@ void UI_UpdateLeaderboardUI()
 
 		if (leaderboard_entry.team == common_team_director)
 		{
-			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 87, 0, 127, 255);
-			UI_AddText("LeaderboardUIText_TempTeam", "Director", x, y);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 87, 0, 127, 255);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Director", x, y);
 		}
 		else if (leaderboard_entry.team == common_team_player)
 		{
-			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 219, 87, 0, 255);
-			UI_AddText("LeaderboardUIText_TempTeam", "Player", x, y);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 219, 87, 0, 255);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Player", x, y);
 		}
 		else
 		{
-			UI_AddBox("LeaderboardUIText_TempTeamBox", x, y, box_size, 127, 127, 127, 0, 255);
-			UI_AddText("LeaderboardUIText_TempTeam", "Unassigned", x, y);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 127, 127, 127, 255);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Unassigned", x, y);
 		}
 
 		x += 8 * 12;
 		
 		// score
 		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.score);
-		UI_AddText("LeaderboardUIText_TempScore", text, x, y);
+		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempScore", text, x, y);
 
 		// time
 		x += 8 * 10;
 		snprintf(text, TEXT_BUF_LENGTH, "%d seconds", leaderboard_entry.time);
-		UI_AddText("LeaderboardUIText_TempTime", text, x, y);
+		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", text, x, y);
 
 		x += 8 * 10;
 		// are they spectating?
 		if (leaderboard_entry.is_spectator)
 		{
-			UI_AddText("LeaderboardUIText_TempIsSpectating", "Yes", x, y);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempIsSpectating", "Yes", x, y);
 		}
 		else
 		{
-			UI_AddText("LeaderboardUIText_TempIsSpectating", "No", x, y);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempIsSpectating", "No", x, y);
 		}
 	}
 
-	UI_SetEnabled("LeaderboardUI", true); // temp
+	// don't set up this UI if any other UI is active so it can't override TeamUI
+	if (!ui_active) UI_SetEnabled("LeaderboardUI", true); // temp
 }

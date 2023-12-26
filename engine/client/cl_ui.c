@@ -31,9 +31,9 @@ extern qboolean	ui_active;																					// This is so we know to turn on 
 // You can only access UI elements through the current UI.
 extern ui_t*	current_ui;
 
-qboolean		UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y);			// Shared function that adds controls
+qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls
 ui_t*			UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
-ui_control_t*	UI_GetControl(char* name);																	// Gets the control with name name in the current UI.
+ui_control_t*	UI_GetControl(char* ui_name, char* name);													// Gets the control with name name in the ui UI.
 
 // Draw methods
 void			UI_DrawText(ui_control_t text);																// Draws a text control.
@@ -101,22 +101,32 @@ ui_t* UI_GetUI(char* name)
 {
 	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
-		ui_t* current_ui = &ui_list[ui_num];
+		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!stricmp(current_ui->name, name))
+		if (!stricmp(ui_ptr->name, name))
 		{
-			return current_ui;
+			return ui_ptr;
 		}
 	}
 
+	Com_Printf("Tried to get NULL UI %s", name);
 	return NULL;
 }
 
-ui_control_t* UI_GetControl(char* name)
+// get a UI control on the UI ui
+ui_control_t* UI_GetControl(char* ui_name, char* name)
 {
-	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
 	{
-		ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
+		// message already pinted
+		return NULL; 
+	}
+
+	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+	{
+		ui_control_t* current_ui_control = &ui_ptr->controls[ui_control_num];
 
 		if (!stricmp(current_ui_control->name, name))
 		{
@@ -127,16 +137,16 @@ ui_control_t* UI_GetControl(char* name)
 	return NULL;
 }
 
-qboolean UI_AddControl(char* name, int position_x, int position_y, int size_x, int size_y)
+qboolean UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y, int size_x, int size_y)
 {
-	if (current_ui->num_controls >= CONTROLS_PER_UI)
+	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
-		Sys_Error("Tried to add too many controls to the UI %s", current_ui->name);
+		Sys_Error("Tried to add too many controls to the UI %s", ui_ptr->name);
 		return false;
 	}
 
-	ui_control_t* current_control = &current_ui->controls[current_ui->num_controls];
-	current_ui->num_controls++;
+	ui_control_t* current_control = &ui_ptr->controls[ui_ptr->num_controls];
+	ui_ptr->num_controls++;
 
 	strcpy(current_control->name, name);
 
@@ -148,9 +158,17 @@ qboolean UI_AddControl(char* name, int position_x, int position_y, int size_x, i
 	return true;
 }
 
-qboolean UI_AddText(char* name, char* text, int position_x, int position_y)
+qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y)
 {
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	// not recommended to buffer overflow
 	if (strlen(text) > MAX_UI_STR_LENGTH)
@@ -163,12 +181,20 @@ qboolean UI_AddText(char* name, char* text, int position_x, int position_y)
 
 	ui_control->type = ui_control_text;
 
-	return UI_AddControl(name, position_x, position_y, 0, 0);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
 }
 
-qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
+qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
 {
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	// not recommended to buffer overflow
 	if (strlen(image_path) > MAX_UI_STR_LENGTH)
@@ -181,44 +207,73 @@ qboolean UI_AddImage(char* name, char* image_path, int position_x, int position_
 
 	ui_control->type = ui_control_image;
 
-	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddButton(char* name, int position_x, int position_y, int size_x, int size_y)
+qboolean UI_AddButton(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y)
 {
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 	ui_control->type = ui_control_button;
 
-	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddSlider(char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
+qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
 {
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 	ui_control->type = ui_control_slider;
 
 	ui_control->value_min = value_min;
 	ui_control->value_max = value_max;
 
-	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddCheckbox(char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
+qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
 {
-	UI_AddControl(name, position_x, position_y, size_x, size_y);
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	ui_control->checked = checked;
 	ui_control->type = ui_control_checkbox;
 
-	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-
-qboolean UI_AddBox(char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
+qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
 {
-	UI_AddControl(name, position_x, position_y, size_x, size_y);
-	ui_control_t* ui_control = &current_ui->controls[current_ui->num_controls];
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (!ui_ptr)
+	{
+		// message already printed
+		return false;
+	}
+
+	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	ui_control->color[0] = r;
 	ui_control->color[1] = g;
@@ -227,14 +282,14 @@ qboolean UI_AddBox(char* name, int position_x, int position_y, int size_x, int s
 
 	ui_control->type = ui_control_box;
 
-	return UI_AddControl(name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y))
+qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y))
 {
-	ui_control_t* ui_control = UI_GetControl(name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
-	if (ui_control == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
 		return false;
@@ -242,17 +297,16 @@ qboolean UI_SetEventOnClick(char* name, void (*func)(int btn, int x, int y))
 
 	if (func == NULL)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control->name, current_ui->name);
+		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
 		return false;
 	}
 
-	ui_control->on_click = func;
+	ui_control_ptr->on_click = func;
 	return true; 
 }
 
 void UI_HandleEventOnClick(int btn, int x, int y)
 {
-	// Current UI only
 	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 	{
 		ui_control_t* ui_control = &current_ui->controls[ui_control_num];
@@ -277,9 +331,10 @@ qboolean UI_SetEnabled(char* name, qboolean enabled)
 
 	if (ui_ptr != NULL)
 	{
+		// otherwise enable the ui
 		ui_ptr->enabled = enabled;
+
 		current_ui = ui_ptr;
-		return true; 
 	}
 
 	return false;
@@ -304,9 +359,9 @@ qboolean UI_SetActive(char* name, qboolean active)
 	return false;
 }
 
-qboolean UI_SetText(char* name, char* text)
+qboolean UI_SetText(char* ui_name, char* name, char* text)
 {
-	ui_control_t* current_ui = UI_GetControl(name);
+	ui_control_t* current_ui = UI_GetControl(ui_name, name);
 
 	if (current_ui == NULL)
 	{
@@ -325,9 +380,9 @@ qboolean UI_SetText(char* name, char* text)
 	return true; 
 }
 
-qboolean UI_SetImage(char* name, char* image_path)
+qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
 {
-	ui_control_t* current_ui_control = UI_GetControl(name);
+	ui_control_t* current_ui_control = UI_GetControl(ui_name, name);
 
 	if (current_ui_control == NULL)
 	{
@@ -348,15 +403,19 @@ qboolean UI_SetImage(char* name, char* image_path)
 
 void UI_Clear(char* name)
 {
-	// clear every control but not the ui's info
-	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	ui_t* ui_ptr = UI_GetUI(name);
+
+	if (!ui_ptr)
 	{
-		ui_control_t* ui_control = &current_ui->controls[ui_control_num];
-		memset(ui_control, 0x00, sizeof(ui_control_t));
+		return; 		// message already printed
 	}
 
-	current_ui->num_controls = 0;
-	return true; 
+	// clear every control but not the ui's info
+	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+	{
+		ui_control_t* ui_control = &ui_ptr->controls[ui_control_num];
+		memset(ui_control, 0x00, sizeof(ui_control_t));
+	}
 }
 
 void UI_Draw()

@@ -28,12 +28,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 qboolean UI_CreateTeamUI()
 {
-	UI_AddText("TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
-	UI_AddImage("TeamUI_DirectorTeam", "ui\\teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
-	UI_AddImage("TeamUI_PlayerTeam", "ui\\teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
+	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
+	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "ui/teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
 
-	UI_SetEventOnClick("TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
-	UI_SetEventOnClick("TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
+	UI_SetEventOnClick("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
+	UI_SetEventOnClick("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
 	return true; 
 }
 
@@ -59,14 +59,14 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 
 qboolean UI_CreateLeaderboardUI()
 {
-	UI_AddBox("LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
-	UI_AddText("LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 96, (viddef.height / 2) - 188);
-	UI_AddText("LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 172);
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 96, (viddef.height / 2) - 188);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 172);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 172);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 172);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 172);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 172);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 172);
 	return true;
 }
 
@@ -76,6 +76,6 @@ qboolean UI_CreateLeaderboardUI()
 
 qboolean UI_CreatePostGameUI()
 {
-	UI_AddImage("PostGameUI_Result", "ui/postgameui_win_director", (viddef.width / 2) - 160, (viddef.height / 2) - 188, 320, 64);
+	UI_AddImage("PostGameUI", "PostGameUI_Result", "ui/postgameui_win_director", (viddef.width / 2) - 160, (viddef.height / 2) - 188, 320, 64);
 	return true;
 }

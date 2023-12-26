@@ -807,7 +807,8 @@ void CL_ParseServerMessage (void)
 			strcpy(&ui_tempbuf, s);
 			s = MSG_ReadString(&net_message);
 
-			UI_SetText(&ui_tempbuf, s);
+			// TEMP: THIS WILL PROBABLY CRASH!!! FIX IT ONCE NEW UI CALL METHOD IS WORKING!!!
+			UI_SetText(current_ui->name, &ui_tempbuf, s);
 
 			break;
 
@@ -816,7 +817,8 @@ void CL_ParseServerMessage (void)
 			strcpy(&ui_tempbuf, s);
 			s = MSG_ReadString(&net_message);
 
-			UI_SetImage(&ui_tempbuf, s);
+			// TEMP: THIS WILL PROBABLY CRASH!!! FIX IT ONCE NEW UI CALL METHOD IS WORKING!!!
+			UI_SetImage(current_ui->name, &ui_tempbuf, s);
 
 			break;
 		}
