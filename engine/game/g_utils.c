@@ -565,25 +565,12 @@ qboolean KillBox (edict_t *ent)
 	return true;		// all clear
 }
 
-/*
-==============================================================================
-
-ZombonoUI
-
-==============================================================================
-*/
-
-void G_SendUI(edict_t* ent, char* ui_name, qboolean enabled)
-{
-	gi.WriteByte(svc_uidraw);
-	gi.WriteString(ui_name);
-	gi.WriteByte(enabled);
-	gi.unicast(ent, true); // reliable as not used regularly
-}
-
+//
+// G_CountClients: Counts the number of clients currently playing the game, regardless of their status (alive, dead, spectating, etc)
+//
 int G_CountClients()
 {
-	edict_t*	client_edict;
+	edict_t* client_edict;
 	int			real_client_count = 0;
 
 	// count clients
@@ -597,4 +584,38 @@ int G_CountClients()
 	}
 
 	return real_client_count;
+}
+
+/*
+==============================================================================
+
+ZombonoUI
+
+==============================================================================
+*/
+
+void G_UISend(edict_t* ent, char* ui_name, qboolean enabled)
+{
+	gi.WriteByte(svc_uidraw);
+	gi.WriteString(ui_name);
+	gi.WriteByte(enabled);
+	gi.unicast(ent, true); // reliable as not used regularly
+}
+
+void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text)
+{
+	gi.WriteByte(svc_uisettext);
+	gi.WriteString(ui_name);
+	gi.WriteString(control_name);
+	gi.WriteString(text);
+	gi.unicast(ent, true); // reliable as not used regularly
+}
+
+void G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path)
+{
+	gi.WriteByte(svc_uisetimage);
+	gi.WriteString(ui_name);
+	gi.WriteString(control_name);
+	gi.WriteString(image_path);
+	gi.unicast(ent, true); // reliable as not used regularly
 }

@@ -1059,7 +1059,7 @@ void PutClientInServer (edict_t *ent)
 	client_respawn_t	resp;
 
 	// tell the player to spawn 
-	G_SendUI(ent, "TeamUI", true);
+	G_UISend(ent, "TeamUI", true);
 
 	// every player starts out as unassigned
 	ent->team = team_unassigned;

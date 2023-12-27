@@ -26,14 +26,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define TEXT_BUF_LENGTH			16
 
-void UI_UpdateLeaderboardUI()
+void UI_LeaderboardUIUpdate()
 {
 	int x, y;
 	char text[TEXT_BUF_LENGTH];
 
 	// stupid hack
 	UI_Clear("LeaderboardUI");
-	UI_CreateLeaderboardUI();
+	UI_LeaderboardUICreate();
 
 	// byte to reduce net usage
 	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
@@ -61,11 +61,13 @@ void UI_UpdateLeaderboardUI()
 
 		// draw name
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempName", leaderboard_entry.name, x, y);
+
 		x += 8 * 20;
 		
 		// ping
 		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.ping);
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPing", text, x, y);
+
 		x += 8 * 10;
 
 		//team
@@ -109,7 +111,8 @@ void UI_UpdateLeaderboardUI()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempIsSpectating", "No", x, y);
 		}
 	}
-
-	// don't set up this UI if any other UI is active so it can't override TeamUI
-	if (!ui_active) UI_SetEnabled("LeaderboardUI", true); // temp
+	
+	// You need to toggle it here otherwise you can never turn it on because UIs not being disabled don't get events.
+	// Writing UI code is like being shot into the sun.
+	if (current_ui == NULL || strcmp(current_ui->name, "TeamUI")) UI_LeaderboardUIToggle(K_TAB);
 }

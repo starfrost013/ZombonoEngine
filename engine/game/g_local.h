@@ -653,7 +653,9 @@ void	G_FreeEdict (edict_t *e);
 void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
 
-void	G_SendUI (edict_t *ent, char* ui_name, qboolean enabled);
+void	G_UISend (edict_t *ent, char* ui_name, qboolean enabled);
+void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text);
+void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path);
 
 int		G_CountClients();
 

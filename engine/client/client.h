@@ -568,38 +568,40 @@ void CL_PredictMovement (void);
 
 typedef enum ui_control_type_e
 {
-	ui_control_text = 0,							// Simple text.
-	ui_control_image = 1,							// An image.
-	ui_control_button = 2,							// A button that you can click. (may remove)
-	ui_control_slider = 3,							// A slider between different values.
-	ui_control_checkbox = 4,						// A checkable box.
-	ui_control_box = 5,								// A simple box.
+	ui_control_text = 0,									// Simple text.
+	ui_control_image = 1,									// An image.
+	ui_control_button = 2,									// A button that you can click. (may remove)
+	ui_control_slider = 3,									// A slider between different values.
+	ui_control_checkbox = 4,								// A checkable box.
+	ui_control_box = 5,										// A simple box.
 } ui_control_type;
 
 typedef struct ui_control_s
 {
 	// general
-	ui_control_type		type;						// Type of this UI control.
-	int					position_x;					// UI control position (x-component).
-	int					position_y;					// UI control position (y-component).
-	int					size_x;						// UI control size (x-component).
-	int					size_y;						// UI control size (y-component).
-	char				name[MAX_UI_STR_LENGTH];	// UI control name (for code)
-	qboolean			visible;					// Is this control visible.
+	ui_control_type		type;								// Type of this UI control.
+	int					position_x;							// UI control position (x-component).
+	int					position_y;							// UI control position (y-component).
+	int					size_x;								// UI control size (x-component).
+	int					size_y;								// UI control size (y-component).
+	char				name[MAX_UI_STR_LENGTH];			// UI control name (for code)
+	qboolean			visible;							// Is this control visible?
+	qboolean			focused;							// Is this control focused?
 
 	// text
-	char				text[MAX_UI_STR_LENGTH];	// Text UI control: Text to display.
+	char				text[MAX_UI_STR_LENGTH];			// Text UI control: Text to display.
 	// image
-	char				image_path[MAX_UI_STR_LENGTH];// Image path UI control: Image to display (path relative to the "pics" folder)
+	char				image_path[MAX_UI_STR_LENGTH];		// Image path UI control: Image to display (path relative to the "pics" folder)
 	// slider
-	int					value_min;					// Slider UI control: minimum value.
-	int					value_max;					// Slider UI control: maximum value.
+	int					value_min;							// Slider UI control: minimum value.
+	int					value_max;							// Slider UI control: maximum value.
 	// checkbox
-	qboolean			checked;					// Checkbox UI control: Is it checked?
+	qboolean			checked;							// Checkbox UI control: Is it checked?
 	// box
-	vec4_t				color;						// The color of this ui element.
+	vec4_t				color;								// The color of this ui element.
 	// events
-	void				(*on_click)(int x, int y);	// C function to call on click starting with X and Y coordinates.
+	void				(*on_click)(int btn, int x, int y);	// C function to call on click starting with X and Y coordinates.
+	void				(*on_key_down)(int btn);			// C function to call on a key being pressed. 
 } ui_control_t;
 
 typedef struct ui_s
@@ -639,27 +641,34 @@ qboolean UI_SetImage(char* ui_name, char* control_name, char* image_path);						
 
 // UI: Set Event Handler
 qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));												// Sets a UI's OnClick handler.
+qboolean UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));															// Sets a UI's OnKeyDown handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClick(int btn, int x, int y);																							// Handles clicks.
+void UI_HandleEventOnClick(int btn, int x, int y);																							// Handles click events.
+void UI_HandleEventOnKeyDown(int btn);																										// Handles key down events.
 
 // UI: Draw
 void UI_Draw();																																// Draws a UI.
 
 // UI: Clear
-void UI_Clear(char* name);																									// Removes all the controls in a UI.
+void UI_Clear(char* name);																													// Removes all the controls in a UI.
+
+// UI: Internal
+ui_t* UI_GetUI(char* name);																										// Returns a pointer so NULL can be indicated for failure
+ui_control_t* UI_GetControl(char* ui_name, char* name);																			// Gets the control with name name in the ui UI.
 
 // UI: Create Scripts
 // TeamUI
-qboolean UI_CreateTeamUI();
+qboolean UI_TeamUICreate();
 void UI_TeamUISetDirectorTeam(int btn, int x, int y);
 void UI_TeamUISetPlayerTeam(int btn, int x, int y);
 
 // LeaderboardUI
-qboolean UI_CreateLeaderboardUI();
+qboolean UI_LeaderboardUICreate();
+void UI_LeaderboardUIToggle(int btn);
 
 // Leaderboard utility functions
-void	UI_UpdateLeaderboardUI();
+void UI_LeaderboardUIUpdate();
 
 // Postgame UI
-qboolean UI_CreatePostGameUI();
+qboolean UI_PostGameUICreate();

@@ -38,6 +38,7 @@
     <ClCompile Include="client\cl_scrn.c" />
     <ClCompile Include="client\cl_tent.c" />
     <ClCompile Include="client\cl_ui.c" />
+    <ClCompile Include="client\cl_ui_eventhandling.c" />
     <ClCompile Include="client\cl_ui_leaderboard.c" />
     <ClCompile Include="client\cl_ui_scripts.c" />
     <ClCompile Include="client\cl_view.c" />

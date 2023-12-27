@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // TeamUI
 // 
 
-qboolean UI_CreateTeamUI()
+qboolean UI_TeamUICreate()
 {
 	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
 	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "ui/teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
@@ -57,9 +57,10 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 // LeaderboardUI
 //
 
-qboolean UI_CreateLeaderboardUI()
+qboolean UI_LeaderboardUICreate()
 {
 	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
+	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIToggle);
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 96, (viddef.height / 2) - 188);
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 172);
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 172);
@@ -74,8 +75,20 @@ qboolean UI_CreateLeaderboardUI()
 // PostGameUI
 //
 
-qboolean UI_CreatePostGameUI()
+qboolean UI_PostGameUICreate()
 {
 	UI_AddImage("PostGameUI", "PostGameUI_Result", "ui/postgameui_win_director", (viddef.width / 2) - 160, (viddef.height / 2) - 188, 320, 64);
 	return true;
+}
+
+void UI_LeaderboardUIToggle(int btn)
+{
+	if (btn == K_TAB)
+	{
+		// fucking hack
+		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
+
+		UI_SetEnabled("LeaderboardUI", !leaderboard_ui_ptr->enabled);
+		UI_SetActive("LeaderboardUI", !leaderboard_ui_ptr->active);
+	}
 }

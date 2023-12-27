@@ -32,8 +32,6 @@ extern qboolean	ui_active;																					// This is so we know to turn on 
 extern ui_t*	current_ui;
 
 qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls
-ui_t*			UI_GetUI(char* name);																		// Returns a pointer so NULL can be indicated for failure
-ui_control_t*	UI_GetControl(char* ui_name, char* name);													// Gets the control with name name in the ui UI.
 
 // Draw methods
 void			UI_DrawText(ui_control_t text);																// Draws a text control.
@@ -52,9 +50,9 @@ qboolean UI_Init()
 	qboolean successful;
 
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
-	successful = UI_AddUI("TeamUI", UI_CreateTeamUI);
-	if (successful) successful = UI_AddUI("LeaderboardUI", UI_CreateLeaderboardUI);
-	if (successful) successful = UI_AddUI("PostGameUI", UI_CreatePostGameUI);
+	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
+	if (successful) successful = UI_AddUI("LeaderboardUI", UI_LeaderboardUICreate);
+	if (successful) successful = UI_AddUI("PostGameUI", UI_PostGameUICreate);
 	return successful;
 }
 
@@ -109,7 +107,7 @@ ui_t* UI_GetUI(char* name)
 		}
 	}
 
-	Com_Printf("Tried to get NULL UI %s", name);
+	Com_Printf("Tried to get NULL UI %s\n", name);
 	return NULL;
 }
 
@@ -120,7 +118,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 
 	if (!ui_ptr)
 	{
-		// message already pinted
+		// message already pRinted
 		return NULL; 
 	}
 
@@ -173,7 +171,7 @@ qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int p
 	// not recommended to buffer overflow
 	if (strlen(text) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!", name, text, MAX_UI_STR_LENGTH);
+		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!\n", name, text, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -199,7 +197,7 @@ qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x
 	// not recommended to buffer overflow
 	if (strlen(image_path) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("Tried to set UI control image path %s to %s - too long (max length %d)!", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("Tried to set UI control image path %s to %s - too long (max length %d)!\n", name, image_path, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -285,64 +283,24 @@ qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, in
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y))
+qboolean UI_SetEnabled(char* ui_name, qboolean enabled)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
-
-	if (!ui_control_ptr)
-	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
-		return false;
-	}
-
-	if (func == NULL)
-	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
-		return false;
-	}
-
-	ui_control_ptr->on_click = func;
-	return true; 
-}
-
-void UI_HandleEventOnClick(int btn, int x, int y)
-{
-	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
-	{
-		ui_control_t* ui_control = &current_ui->controls[ui_control_num];
-		
-		if (ui_control->on_click)
-		{
-			// todo: scale/??
-			if (x >= ui_control->position_x
-				&& y >= ui_control->position_y
-				&& x <= ui_control->position_x + ui_control->size_x
-				&& y <= ui_control->position_y + ui_control->size_y)
-			{
-				ui_control->on_click(btn, x, y);
-			}
-		}
-	}
-}
-
-qboolean UI_SetEnabled(char* name, qboolean enabled)
-{
-	ui_t* ui_ptr = UI_GetUI(name);
+	ui_t* ui_ptr = UI_GetUI(ui_name);
 
 	if (ui_ptr != NULL)
 	{
 		// otherwise enable the ui
 		ui_ptr->enabled = enabled;
 
-		current_ui = ui_ptr;
+		current_ui = (ui_ptr->enabled) ? ui_ptr : NULL;
 	}
 
 	return false;
 }
 
-qboolean UI_SetActive(char* name, qboolean active)
+qboolean UI_SetActive(char* ui_name, qboolean active)
 {
-	ui_t* ui_ptr = UI_GetUI(name);
+	ui_t* ui_ptr = UI_GetUI(ui_name);
 
 	if (ui_ptr != NULL)
 	{
@@ -365,13 +323,13 @@ qboolean UI_SetText(char* ui_name, char* name, char* text)
 
 	if (current_ui == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control text %s to %s!", name, text);
+		Com_Printf("Tried to set NULL UI control text %s to %s!\n", name, text);
 		return false;
 	}
 
 	if (strlen(text) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("UI text for control %s, %s, was too long (max %d)", name, text, MAX_UI_STR_LENGTH);
+		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", name, text, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -386,13 +344,13 @@ qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
 
 	if (current_ui_control == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control image path %s to %s!", name, image_path);
+		Com_Printf("Tried to set NULL UI control image path %s to %s!\n", name, image_path);
 		return false;
 	}
 
 	if (strlen(image_path) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("UI image path for control %s, %s, was too long (max %d)", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("UI image path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -401,21 +359,22 @@ qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
 	return true;
 }
 
-void UI_Clear(char* name)
+void UI_Clear(char* ui_name)
 {
-	ui_t* ui_ptr = UI_GetUI(name);
+	ui_t* ui_ptr = UI_GetUI(ui_name);
 
-	if (!ui_ptr)
-	{
-		return; 		// message already printed
-	}
+	if (!ui_ptr) return; 		// message already printed
 
 	// clear every control but not the ui's info
+	// we clear every control, not just the ones that exist currently, in case more controls existed at some point (such as with Leaderboard UI)
 	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 	{
 		ui_control_t* ui_control = &ui_ptr->controls[ui_control_num];
 		memset(ui_control, 0x00, sizeof(ui_control_t));
 	}
+
+	// tell everyone there are no controls
+	ui_ptr->num_controls = 0;
 }
 
 void UI_Draw()
@@ -491,17 +450,17 @@ void UI_DrawImage(ui_control_t image)
 
 void UI_DrawButton(ui_control_t button)
 {
-	Com_Printf("UI: Buttons aren't implemented yet");
+	Com_Printf("UI: Buttons aren't implemented yet!\n");
 }
 
 void UI_DrawSlider(ui_control_t slider)
 {
-	Com_Printf("UI: Sliders aren't implemented yet");
+	Com_Printf("UI: Sliders aren't implemented yet!\n");
 }
 
 void UI_DrawCheckbox(ui_control_t checkbox)
 {
-	Com_Printf("UI: Checkboxes aren't implemented yet");
+	Com_Printf("UI: Checkboxes aren't implemented yet!\n");
 }
 
 void UI_DrawBox(ui_control_t box)

@@ -814,12 +814,20 @@ void Key_Event (int key, qboolean down, unsigned time, int x, int y)
 		key = K_ESCAPE;
 
 	// Send ZombonoUI events
-	if (key >= K_MOUSE1 && key <= K_MOUSE5
-		&& ui_active)
+
+	if (ui_active)
 	{
-		// todo: send mouse button
-		UI_HandleEventOnClick(key, x, y);
-		return; // force an early return so clicks are completely ignored, another stupid hack
+		if (key >= K_MOUSE1 && key <= K_MOUSE5)
+		{
+			// todo: send mouse button
+			UI_HandleEventOnClick(key, x, y);
+			return; // force an early return so clicks are completely ignored, another stupid hack
+		}
+		else
+		{
+			UI_HandleEventOnKeyDown(key);
+			return;
+		}
 	}
 
 	// menu key is hardcoded, so the user can never unbind it

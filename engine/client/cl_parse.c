@@ -652,6 +652,7 @@ void CL_ParseServerMessage (void)
 	int			cmd;
 	char		*s;
 	char		ui_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
+	char		ui_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
 	int			i;
 
 //
@@ -783,7 +784,7 @@ void CL_ParseServerMessage (void)
 			strncpy (cl.layout, s, sizeof(cl.layout)-1);
 			break;
 		case svc_leaderboard:
-			UI_UpdateLeaderboardUI();
+			UI_LeaderboardUIUpdate();
 			break;
 
 		case svc_playerinfo:
