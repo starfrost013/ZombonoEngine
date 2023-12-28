@@ -913,7 +913,7 @@ void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, f
 }
 
 #define BAMFUSLICATOR_MIN_DISTANCE		56		// so you don't get stuck
-#define BAMFUSLICATOR_MAX_DISTANCE		1024
+#define BAMFUSLICATOR_MAX_DISTANCE		768
 
 /* Bamfuslicator */
 void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_type)
