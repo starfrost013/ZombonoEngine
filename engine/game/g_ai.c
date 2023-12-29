@@ -487,6 +487,13 @@ qboolean FindTarget (edict_t *self)
 	else
 		return false;
 
+	// if item and zombie friendly fire is off, 
+	if (self->team == client->team
+		&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
+	{
+		return false;
+	}
+
 	if (!heardit)
 	{
 		r = range (self, client);
