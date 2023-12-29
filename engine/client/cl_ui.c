@@ -52,7 +52,6 @@ qboolean UI_Init()
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
 	if (successful) successful = UI_AddUI("LeaderboardUI", UI_LeaderboardUICreate);
-	if (successful) successful = UI_AddUI("PostGameUI", UI_PostGameUICreate);
 	return successful;
 }
 
@@ -124,11 +123,11 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 
 	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 	{
-		ui_control_t* current_ui_control = &ui_ptr->controls[ui_control_num];
+		ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-		if (!stricmp(current_ui_control->name, name))
+		if (!stricmp(ui_control_ptr->name, name))
 		{
-			return current_ui_control;
+			return ui_control_ptr;
 		}
 	}
 
@@ -319,9 +318,9 @@ qboolean UI_SetActive(char* ui_name, qboolean active)
 
 qboolean UI_SetText(char* ui_name, char* name, char* text)
 {
-	ui_control_t* current_ui = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
-	if (current_ui == NULL)
+	if (ui_control_ptr == NULL)
 	{
 		Com_Printf("Tried to set NULL UI control text %s to %s!\n", name, text);
 		return false;
@@ -333,16 +332,16 @@ qboolean UI_SetText(char* ui_name, char* name, char* text)
 		return false;
 	}
 
-	strcpy(current_ui->text, text);
+	strcpy(ui_control_ptr->text, text);
 
 	return true; 
 }
 
 qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
 {
-	ui_control_t* current_ui_control = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
-	if (current_ui_control == NULL)
+	if (ui_control_ptr == NULL)
 	{
 		Com_Printf("Tried to set NULL UI control image path %s to %s!\n", name, image_path);
 		return false;
@@ -354,7 +353,7 @@ qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
 		return false;
 	}
 
-	strcpy(current_ui_control->image_path, image_path);
+	strcpy(ui_control_ptr->image_path, image_path);
 
 	return true;
 }

@@ -571,7 +571,7 @@ qboolean KillBox (edict_t *ent)
 int G_CountClients()
 {
 	edict_t* client_edict;
-	int			real_client_count = 0;
+	int		 real_client_count = 0;
 
 	// count clients
 	for (int client_num = 0; client_num < game.maxclients; client_num++)
@@ -579,11 +579,53 @@ int G_CountClients()
 		// is the client actually being used
 		client_edict = g_edicts + client_num + 1; // client edicts are always at the start???
 
-		// TODO: spectator support (in leaderboard_t)
 		if (client_edict->inuse) real_client_count++;
 	}
 
 	return real_client_count;
+}
+
+//
+// G_TDMGetWinner : Gets the winner in TDM gamemode.
+// 
+// Returns BOTH teams if there is a draw.
+//
+player_team G_TDMGetWinner()
+{
+	int director_score = 0, player_score = 0;
+	edict_t* client_edict;
+
+	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	{
+		client_edict = g_edicts + client_num + 1;
+
+		if (client_edict->inuse)
+		{
+			// add up the scores
+			switch (client_edict->team)
+			{
+				case team_player:
+					player_score += client_edict->client->resp.score;
+					break;
+				case team_director:
+					director_score += client_edict->client->resp.score;
+					break;
+			}
+		}
+	}
+
+	if (player_score > director_score)
+	{
+		return team_player;
+	}
+	else if (player_score < director_score)
+	{
+		return team_director;
+	}
+	else
+	{
+		return team_director | team_player; // this indicates a draw
+	}
 }
 
 /*

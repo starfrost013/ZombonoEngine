@@ -1,7 +1,23 @@
 Zombono
 Release Notes
-Version 0.04
+Version 0.04-pre2
+December 31?, 2023
+* Reduced Bamfuslicator range from 1024 to 768 units
+* z_tdm_labrats improvements - use actual cylindrical pillars, add more lights and decoration
+* Reduce Bamfuslicator range by 25%
+* Make directors 25% slower than Players
+* Added a new leaderboard!
+* Fixed being able to move around while team ui is active.
+* Lots more stuff to come when I do it before 12/31!
+* Fixed the Zombie textures
+* Targa images now have a missing texture targa loaded in their place when they fail to load
+* TDM gameplay flow - both teams can win/lose/draw
+
+Version 0.04-pre1
+December 23, 2023
 * Rewrote everything using vkquake2 as a base
+* Labrats remodel
+* Basicallty the same feature set as test3, but it works
 
 Version 0.03.1
 September 28, 2023

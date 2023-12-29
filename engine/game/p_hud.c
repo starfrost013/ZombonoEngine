@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 
 
-
 /*
 ======================================================================
 
@@ -31,16 +30,14 @@ INTERMISSION
 ======================================================================
 */
 
-void MoveClientToIntermission (edict_t *ent)
+void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 {
 
-	ent->client->showscores = true;
-
-	VectorCopy (level.intermission_origin, ent->s.origin);
-	ent->client->ps.pmove.origin[0] = level.intermission_origin[0]*8;
-	ent->client->ps.pmove.origin[1] = level.intermission_origin[1]*8;
-	ent->client->ps.pmove.origin[2] = level.intermission_origin[2]*8;
-	VectorCopy (level.intermission_angle, ent->client->ps.viewangles);
+	VectorCopy(level.intermission_origin, ent->s.origin);
+	ent->client->ps.pmove.origin[0] = level.intermission_origin[0] * 8;
+	ent->client->ps.pmove.origin[1] = level.intermission_origin[1] * 8;
+	ent->client->ps.pmove.origin[2] = level.intermission_origin[2] * 8;
+	VectorCopy(level.intermission_angle, ent->client->ps.viewangles);
 	ent->client->ps.pmove.pm_type = PM_FREEZE;
 	ent->client->ps.gunindex = 0;
 	ent->client->ps.blend[3] = 0;
@@ -63,16 +60,53 @@ void MoveClientToIntermission (edict_t *ent)
 	ent->s.sound = 0;
 	ent->solid = SOLID_NOT;
 
-	// add the layout
+	// tell the client to display the leaderboard
+	// 
+	// send the leaderboard info
+	G_SendLeaderboard(ent);
 
-	DeathmatchScoreboardMessage(ent, NULL);
-	gi.unicast(ent, true);
+	// ...and if they won or lost
+	if (gamemode->value == GAMEMODE_TDM
+		&& winning_team > 0)
+	{
+		if (winning_team == team_director)
+		{
+			if (ent->team == winning_team)
+			{
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_director_win");
+			}
+			else
+			{
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_director_lose");
+			}
+		}
+		else if (winning_team == team_director)
+		{
+			if (ent->team == winning_team)
+			{
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_player_win");
+			}
+			else
+			{
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_player_lose");
+			}
+		}
+		else
+		{
+			G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_draw");
+		}
+	}
+
+
+	// reset it
+	//G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_header");
 }
 
 void BeginIntermission (edict_t *targ)
 {
 	int		i, n;
 	edict_t	*ent, *client;
+	player_team winning_team;
 
 	if (level.intermissiontime)
 		return;		// already activated
@@ -117,12 +151,21 @@ void BeginIntermission (edict_t *targ)
 	VectorCopy (ent->s.angles, level.intermission_angle);
 
 	// move all clients to the intermission point
-	for (i=0 ; i<maxclients->value ; i++)
+	for (i = 0; i < maxclients->value; i++)
 	{
 		client = g_edicts + 1 + i;
 		if (!client->inuse)
 			continue;
-		MoveClientToIntermission (client);
+
+		if (gamemode->value == GAMEMODE_TDM)
+		{
+			winning_team = G_TDMGetWinner();
+			MoveClientToIntermission(client, winning_team);
+		}
+		else // indicate no winner as non-TDM gamemode
+		{
+			MoveClientToIntermission(client, 0);
+		}
 	}
 }
 

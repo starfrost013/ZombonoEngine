@@ -791,11 +791,11 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 			// nope
 			if (!buffer)
 			{
-				ri.Con_Printf(PRINT_DEVELOPER, "Bad tga file %s\n (and also couldn't find missing_texture.tga)", name);
+				ri.Con_Printf(PRINT_DEVELOPER, "Bad tga file %s (and also couldn't find missing_texture.tga)\n", name);
 				return;
 			}
 
-			ri.Con_Printf(PRINT_DEVELOPER, "TGA file %s not found (using placeholder texture)", name);
+			ri.Con_Printf(PRINT_DEVELOPER, "TGA file %s not found (using placeholder texture)\n", name);
 		}
 	}
 

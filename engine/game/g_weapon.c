@@ -973,6 +973,9 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 	}
 
 	// move the zombie to where the player spawned it
+	// the zombie is on director team (this is used for things like chasing)
+
+	zombie->team = team_director;
 	VectorCopy(trace.endpos, zombie->s.origin);
 	VectorCopy(aimdir, zombie->s.angles);
 }

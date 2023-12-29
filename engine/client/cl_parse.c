@@ -804,22 +804,24 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_uisettext:
-			s = MSG_ReadString(&net_message);
-			strcpy(&ui_tempbuf, s);
-			s = MSG_ReadString(&net_message);
+			s = MSG_ReadString(&net_message); // UI name
+			strncpy(&ui_tempbuf, s, 64);
+			s = MSG_ReadString(&net_message); // Name
+			strncpy(&ui_tempbuf2, s, 64);
+			s = MSG_ReadString(&net_message); // New Text
 
-			// TEMP: THIS WILL PROBABLY CRASH!!! FIX IT ONCE NEW UI CALL METHOD IS WORKING!!!
-			UI_SetText(current_ui->name, &ui_tempbuf, s);
+			UI_SetText(&ui_tempbuf, &ui_tempbuf2, s);
 
 			break;
 
 		case svc_uisetimage:
-			s = MSG_ReadString(&net_message);
-			strcpy(&ui_tempbuf, s);
-			s = MSG_ReadString(&net_message);
+			s = MSG_ReadString(&net_message); // UI name
+			strncpy(&ui_tempbuf, s, 64);
+			s = MSG_ReadString(&net_message); // Name
+			strncpy(&ui_tempbuf2, s, 64);
+			s = MSG_ReadString(&net_message); // New image path
 
-			// TEMP: THIS WILL PROBABLY CRASH!!! FIX IT ONCE NEW UI CALL METHOD IS WORKING!!!
-			UI_SetImage(current_ui->name, &ui_tempbuf, s);
+			UI_SetImage(&ui_tempbuf, &ui_tempbuf2, s);
 
 			break;
 		}

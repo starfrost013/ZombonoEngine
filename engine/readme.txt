@@ -1,7 +1,7 @@
 Zombono
 Test Build 4
 Pre-Alpha
-XXXXXXXXX XX, 2023
+January XX, 2024
 
 Zombono is (will be) a retro-inspired 3d class-based team shooter, based on a Quake 1 sourceport with various engine improvements, where one side is the left 4 dead 2 director and the other side are normal players; currently the only mode is Team Deathmatch; hostage rescue and many other modes are planned to be implemented eventually.
 

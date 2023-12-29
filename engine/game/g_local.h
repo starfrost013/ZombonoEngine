@@ -270,7 +270,7 @@ typedef struct gitem_s
 	int			allowed_teams;	// The teams that are allowed for this item.
 } gitem_t;
 
-#define SPEED_DIRECTOR			0.8				// Speed multiplier for director team.
+#define SPEED_DIRECTOR			0.75			// Speed multiplier for director team. 
 #define SPEED_PLAYER			1.0				// Speed multiplier for player team.
 
 //
@@ -659,6 +659,8 @@ void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_p
 
 int		G_CountClients();
 
+void	G_SendLeaderboard(edict_t* ent);
+
 char	*G_CopyString (char *in);
 
 float	*tv (float x, float y, float z);
@@ -678,6 +680,7 @@ typedef enum player_team_e
 	team_unassigned = 4,			// Used for non-team gamemodes and players that are joining.
 } player_team;
 
+player_team	G_TDMGetWinner();
 
 //
 // g_combat.c
@@ -811,7 +814,7 @@ void ClientEndServerFrame (edict_t *ent);
 //
 // p_hud.c
 //
-void MoveClientToIntermission (edict_t *client);
+void MoveClientToIntermission (edict_t *ent, player_team winning_team);
 void G_SetStats (edict_t *ent);
 void G_SetSpectatorStats (edict_t *ent);
 void G_CheckChaseStats (edict_t *ent);

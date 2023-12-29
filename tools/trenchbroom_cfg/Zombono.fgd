@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2023/12/24 version
+// 2023/12/28 version
 
 //
 // worldspawn
@@ -53,7 +53,7 @@
 @PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
 @PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
 
-@PointClass base(APlayerClass) = info_team_door : "Team Door: An invisible entity that only allows certain teams to walk through."
+@PointClass base(PlayerClass) = info_team_door : "Team Door: An invisible entity that only allows certain teams to walk through."
 [
 	allowed_teams(Flags) =
 	[
@@ -61,6 +61,7 @@
 		2 : "Player Team" : 0
 		4 : "Unassigned" : 0
 	]
+	extents(Vector3) : "Extents" 
 ]
 
 // Notes on the 'team' key: First of all, it creates a random respawn pattern.

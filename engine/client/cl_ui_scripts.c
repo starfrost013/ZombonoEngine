@@ -61,23 +61,13 @@ qboolean UI_LeaderboardUICreate()
 {
 	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIToggle);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Header", "L E A D E R B O A R D", (viddef.width / 2) - 96, (viddef.height / 2) - 188);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 172);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 172);
-	return true;
-}
-
-//
-// PostGameUI
-//
-
-qboolean UI_PostGameUICreate()
-{
-	UI_AddImage("PostGameUI", "PostGameUI_Result", "ui/postgameui_win_director", (viddef.width / 2) - 160, (viddef.height / 2) - 188, 320, 64);
+	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_header", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 64);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 124);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 124);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 124);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 124);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 124);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 124);
 	return true;
 }
 

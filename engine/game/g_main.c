@@ -215,12 +215,12 @@ edict_t *CreateTargetChangeLevel(char *map)
 
 /*
 =================
-EndDMLevel
+EndMatch
 
-The timelimit or fraglimit has been exceeded
+The conditions to end the current gamemode have been reached.
 =================
 */
-void EndDMLevel (void)
+void EndMatch (void)
 {
 	edict_t		*ent;
 	char *s, *t, *f;
@@ -271,6 +271,12 @@ void EndDMLevel (void)
 		}
 		BeginIntermission (ent);
 	}
+	
+	// reset level time
+	//if (level.time > timelimit->value * 60)
+	//{
+	//	level.time = 0; 
+	//}
 }
 
 
@@ -319,7 +325,7 @@ void CheckGamemodeRules (void)
 		if (level.time >= timelimit->value*60)
 		{
 			gi.bprintf (PRINT_HIGH, "Out of time!\n");
-			EndDMLevel ();
+			EndMatch ();
 			return;
 		}
 	}
@@ -335,7 +341,7 @@ void CheckGamemodeRules (void)
 			if (cl->resp.score >= fraglimit->value)
 			{
 				gi.bprintf (PRINT_HIGH, "Fraglimit hit!\n");
-				EndDMLevel ();
+				EndMatch ();
 				return;
 			}
 		}

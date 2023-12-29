@@ -38,7 +38,7 @@ void UI_LeaderboardUIUpdate()
 	// byte to reduce net usage
 	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
 
-	y = (viddef.height / 2) - 172;
+	y = (viddef.height / 2) - 124;
 
 	// update all the data here so we don't need to clear it
 	for (int client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)

@@ -45,6 +45,13 @@ void SP_info_player_start_player(edict_t* self)
 
 }
 
+/* Team door 
+Must be implemented at runtime as there is no way during BSP compile proces to know what teams there are*/
+void SP_info_team_door(edict_t* self)
+{
+
+}
+
 /*QUAKED info_player_intermission (1 0 1) (-16 -16 -24) (16 16 32)
 The deathmatch intermission point will be at one of these
 Use 'angles' instead of 'angle', so you can set pitch or roll as well as yaw.  'pitch yaw roll'
@@ -1198,9 +1205,11 @@ void ClientBeginDeathmatch (edict_t *ent)
 	// locate ent at a spawn point
 	PutClientInServer (ent);
 
+	player_team winning_team = (gamemode->value == GAMEMODE_TDM) ? G_TDMGetWinner() : 0;
+
 	if (level.intermissiontime)
 	{
-		MoveClientToIntermission (ent);
+		MoveClientToIntermission (ent, winning_team);
 	}
 	else
 	{

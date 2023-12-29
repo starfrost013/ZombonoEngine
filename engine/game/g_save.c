@@ -60,6 +60,9 @@ field_t fields[] = {
 	{"angles", FOFS(s.angles), F_VECTOR},
 	{"angle", FOFS(s.angles), F_ANGLEHACK},
 
+	// Area of effects of entity
+	{"extents", FOFS(s.extents), F_VECTOR},
+
 	{"goalentity", FOFS(goalentity), F_EDICT, FFL_NOSPAWN},
 	{"movetarget", FOFS(movetarget), F_EDICT, FFL_NOSPAWN},
 	{"enemy", FOFS(enemy), F_EDICT, FFL_NOSPAWN},

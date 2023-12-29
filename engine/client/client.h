@@ -101,7 +101,6 @@ typedef struct leaderboard_s
 	leaderboard_entry_t	entries[MAX_CLIENTS];
 } leaderboard_t;
 
-
 //
 // the client_state_t structure is wiped completely at every
 // server map change
@@ -669,6 +668,3 @@ void UI_LeaderboardUIToggle(int btn);
 
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();
-
-// Postgame UI
-qboolean UI_PostGameUICreate();
