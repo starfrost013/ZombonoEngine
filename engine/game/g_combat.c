@@ -367,7 +367,7 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 	}
 }
 
-void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod, player_team disallowed_teams)
+void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
 {
 	gclient_t	*client;
 	int			take;
@@ -396,7 +396,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 				&& gamemode->value != GAMEMODE_WAVES
 				&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
 			{
-				if ((targ->team) & disallowed_teams)
+				if ((targ->team) & (attacker->team))
 				{
 					return;
 				}
@@ -563,7 +563,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 T_RadiusDamage
 ============
 */
-void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod, player_team disallowed_teams)
+void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod)
 {
 	float	points;
 	edict_t	*ent = NULL;
@@ -588,7 +588,7 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 			if (CanDamage (ent, inflictor))
 			{
 				VectorSubtract (ent->s.origin, inflictor->s.origin, dir);
-				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod, disallowed_teams);
+				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
 			}
 		}
 	}

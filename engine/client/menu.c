@@ -2156,7 +2156,7 @@ void StartServer_MenuInit( void )
 	if ( ( fp = fopen( mapsname, "rb" ) ) == 0 )
 	{
 		if ( ( length = FS_LoadFile( "maps.lst", ( void ** ) &buffer ) ) == -1 )
-			Com_Error( ERR_DROP, "couldn't find maps.lst\n" );
+			Com_Error( ERR_DROP, "Couldn't find maps.lst!\n" );
 	}
 	else
 	{
@@ -2233,7 +2233,7 @@ void StartServer_MenuInit( void )
 	s_rules_box.generic.type = MTYPE_SPINCONTROL;
 	s_rules_box.generic.x	= 0;
 	s_rules_box.generic.y	= 20 * vid_hudscale->value;
-	s_rules_box.generic.name	= "Gamemode";
+	s_rules_box.generic.name	= "Game Mode";
 	
 	s_rules_box.itemnames = gamemode_names;
 
@@ -2246,7 +2246,7 @@ void StartServer_MenuInit( void )
 	s_timelimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_timelimit_field.generic.x	= 0;
 	s_timelimit_field.generic.y	= 36 * vid_hudscale->value;
-	s_timelimit_field.generic.statusbar = "0 = no limit";
+	s_timelimit_field.generic.statusbar = "0 = No Limit (this time is in *MINUTES*)";
 	s_timelimit_field.length = 3;
 	s_timelimit_field.visible_length = 3;
 	strcpy( s_timelimit_field.buffer, Cvar_VariableString("timelimit") );
@@ -2256,7 +2256,7 @@ void StartServer_MenuInit( void )
 	s_fraglimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_fraglimit_field.generic.x	= 0;
 	s_fraglimit_field.generic.y	= 54 * vid_hudscale->value;
-	s_fraglimit_field.generic.statusbar = "0 = no limit";
+	s_fraglimit_field.generic.statusbar = "0 = No Limit";
 	s_fraglimit_field.length = 3;
 	s_fraglimit_field.visible_length = 3;
 	strcpy( s_fraglimit_field.buffer, Cvar_VariableString("fraglimit") );
@@ -2275,7 +2275,7 @@ void StartServer_MenuInit( void )
 	s_maxclients_field.generic.statusbar = NULL;
 	s_maxclients_field.length = 3;
 	s_maxclients_field.visible_length = 3;
-	if ( Cvar_VariableValue( "maxclients" ) == 1 )
+	if ( Cvar_VariableValue( "maxclients" ) == 1 ) 
 		strcpy( s_maxclients_field.buffer, "8" );
 	else 
 		strcpy( s_maxclients_field.buffer, Cvar_VariableString("maxclients") );

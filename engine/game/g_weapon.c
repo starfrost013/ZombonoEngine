@@ -62,7 +62,7 @@ fire_hit
 Used for all impact (hit/punch/slash) attacks
 =================
 */
-qboolean fire_hit (edict_t *self, vec3_t attack_radius, int damage, int kick, player_team disallowed_teams)
+qboolean fire_hit (edict_t *self, vec3_t attack_radius, int damage, int kick)
 {
 	trace_t		tr;
 	vec3_t		forward, right, up;
@@ -110,7 +110,7 @@ qboolean fire_hit (edict_t *self, vec3_t attack_radius, int damage, int kick, pl
 	VectorSubtract (point, self->enemy->s.origin, dir);
 
 	// do the damage
-	T_Damage (tr.ent, self, self, dir, point, vec3_origin, damage, kick/2, DAMAGE_NO_KNOCKBACK, MOD_HIT, disallowed_teams);
+	T_Damage (tr.ent, self, self, dir, point, vec3_origin, damage, kick/2, DAMAGE_NO_KNOCKBACK, MOD_HIT);
 
 	if (!(tr.ent->svflags & SVF_MONSTER) && (!tr.ent->client))
 		return false;
@@ -224,7 +224,7 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 		{
 			if (tr.ent->takedamage)
 			{
-				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, mod, 0);
+				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, mod);
 			}
 			else
 			{
@@ -327,7 +327,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 			mod = MOD_HYPERBLASTER;
 		else
 			mod = MOD_BLASTER;
-		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod, 0);
+		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
 	}
 	else
 	{
@@ -421,7 +421,7 @@ static void Grenade_Explode (edict_t *ent)
 			mod = MOD_HANDGRENADE;
 		else
 			mod = MOD_GRENADE;
-		T_Damage (ent->enemy, ent, ent->owner, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod, 0);
+		T_Damage (ent->enemy, ent, ent->owner, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
 	}
 
 	if (ent->spawnflags & 2)
@@ -430,7 +430,7 @@ static void Grenade_Explode (edict_t *ent)
 		mod = MOD_HG_SPLASH;
 	else
 		mod = MOD_G_SPLASH;
-	T_RadiusDamage(ent, ent->owner, ent->dmg, ent->enemy, ent->dmg_radius, mod, 0);
+	T_RadiusDamage(ent, ent->owner, ent->dmg, ent->enemy, ent->dmg_radius, mod);
 
 	VectorMA (ent->s.origin, -0.02, ent->velocity, origin);
 	gi.WriteByte (svc_temp_entity);
@@ -590,7 +590,7 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 
 	if (other->takedamage)
 	{
-		T_Damage (other, ent, ent->owner, ent->velocity, ent->s.origin, plane->normal, ent->dmg, 0, 0, MOD_ROCKET, 0);
+		T_Damage (other, ent, ent->owner, ent->velocity, ent->s.origin, plane->normal, ent->dmg, 0, 0, MOD_ROCKET);
 	}
 	else
 	{
@@ -602,7 +602,7 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 		}
 	}
 
-	T_RadiusDamage(ent, ent->owner, ent->radius_dmg, other, ent->dmg_radius, MOD_R_SPLASH, 0);
+	T_RadiusDamage(ent, ent->owner, ent->radius_dmg, other, ent->dmg_radius, MOD_R_SPLASH);
 
 	gi.WriteByte (svc_temp_entity);
 	if (ent->waterlevel)
@@ -686,7 +686,7 @@ void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
 				ignore = NULL;
 
 			if ((tr.ent != self) && (tr.ent->takedamage))
-				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0, MOD_RAILGUN, 0);
+				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0, MOD_RAILGUN);
 		}
 
 		VectorCopy (tr.endpos, from);
@@ -752,7 +752,7 @@ void bfg_explode (edict_t *self)
 			gi.WriteByte (TE_BFG_EXPLOSION);
 			gi.WritePosition (ent->s.origin);
 			gi.multicast (ent->s.origin, MULTICAST_PHS);
-			T_Damage (ent, self, self->owner, self->velocity, ent->s.origin, vec3_origin, (int)points, 0, DAMAGE_ENERGY, MOD_BFG_EFFECT, 0);
+			T_Damage (ent, self, self->owner, self->velocity, ent->s.origin, vec3_origin, (int)points, 0, DAMAGE_ENERGY, MOD_BFG_EFFECT);
 		}
 	}
 
@@ -778,8 +778,8 @@ void bfg_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf
 
 	// core explosion - prevents firing it into the wall/floor
 	if (other->takedamage)
-		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, 200, 0, 0, MOD_BFG_BLAST, 0);
-	T_RadiusDamage(self, self->owner, 200, other, 100, MOD_BFG_BLAST, 0);
+		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, 200, 0, 0, MOD_BFG_BLAST);
+	T_RadiusDamage(self, self->owner, 200, other, 100, MOD_BFG_BLAST);
 
 	gi.sound (self, CHAN_VOICE, gi.soundindex ("weapons/bfg__x1b.wav"), 1, ATTN_NORM, 0);
 	self->solid = SOLID_NOT;
@@ -846,7 +846,7 @@ void bfg_think (edict_t *self)
 
 			// hurt it if we can
 			if ((tr.ent->takedamage) && !(tr.ent->flags & FL_IMMUNE_LASER) && (tr.ent != self->owner))
-				T_Damage (tr.ent, self, self->owner, dir, tr.endpos, vec3_origin, dmg, 1, DAMAGE_ENERGY, MOD_BFG_LASER, 0);
+				T_Damage (tr.ent, self, self->owner, dir, tr.endpos, vec3_origin, dmg, 1, DAMAGE_ENERGY, MOD_BFG_LASER);
 
 			// if we hit something that's not a monster or player we're done
 			if (!(tr.ent->svflags & SVF_MONSTER) && (!tr.ent->client))

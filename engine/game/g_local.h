@@ -687,8 +687,8 @@ player_team	G_TDMGetWinner();
 //
 qboolean OnSameTeam (edict_t *ent1, edict_t *ent2);
 qboolean CanDamage (edict_t *targ, edict_t *inflictor);
-void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod, player_team disallowed_teams);
-void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod, player_team disallowed_teams);
+void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
+void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod);
 
 //
 // p_client.c
@@ -763,7 +763,7 @@ qboolean FacingIdeal(edict_t *self);
 // g_weapon.c
 //
 void ThrowDebris (edict_t *self, char *modelname, float speed, vec3_t origin);
-qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick, player_team disallowed_teams);
+qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick);
 void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int mod);
 void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int count, int mod);
 void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, qboolean hyper);

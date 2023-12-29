@@ -390,7 +390,7 @@ void zombie_fire(edict_t* self)
 
 	VectorSet(aim, ZOMBIE_RANGE_STANDARD, 0, 16);
 	// todo: types
-	fire_hit(self, aim, ZOMBIE_DAMAGE_STANDARD, 0, team_director);
+	fire_hit(self, aim, ZOMBIE_DAMAGE_STANDARD, 0);
 }
 
 // Attack 1:
