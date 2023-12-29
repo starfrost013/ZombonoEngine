@@ -49,7 +49,7 @@ void UI_LeaderboardUIUpdate()
 		leaderboard_entry_t leaderboard_entry = cl.leaderboard.entries[client_num];
 		strncpy(leaderboard_entry.name, MSG_ReadString(&net_message), 32);
 		leaderboard_entry.ping = MSG_ReadShort(&net_message);
-		leaderboard_entry.score = MSG_ReadByte(&net_message);
+		leaderboard_entry.score = MSG_ReadShort(&net_message);
 		leaderboard_entry.team = MSG_ReadShort(&net_message);
 		leaderboard_entry.time = MSG_ReadShort(&net_message); //should this be an int?
 		leaderboard_entry.is_spectator = MSG_ReadByte(&net_message);

@@ -1017,7 +1017,7 @@ void spectator_respawn (edict_t *ent)
 	}
 
 	// clear client on respawn
-	ent->client->resp.score = ent->client->pers.score = 0;
+	ent->client->resp.score = 0;
 
 	ent->svflags &= ~SVF_NOCLIENT;
 	PutClientInServer (ent);

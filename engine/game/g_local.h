@@ -864,8 +864,7 @@ void GetChaseTarget(edict_t *ent);
 #define	ANIM_DEATH		5
 #define	ANIM_REVERSE	6
 
-
-// client data that stays across multiple level loads
+// client data that stays across multiple levels
 typedef struct client_persistant_s
 {
 	char		userinfo[MAX_INFO_STRING];
@@ -894,8 +893,8 @@ typedef struct client_persistant_s
 	gitem_t		*weapon;
 	gitem_t		*lastweapon;
 
-	int			power_cubes;	// used for tracking the cubes in coop games
-	int			score;			// for calculating total unit score in coop games
+	//restore this if we have resumable co-op games or that 6-level single player campaign.
+	//int		coop_score;
 
 	int			game_helpchanged;
 	int			helpchanged;
@@ -903,7 +902,7 @@ typedef struct client_persistant_s
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
 
-// client data that stays across deathmatch respawns
+// client data that stays across respawns
 typedef struct client_respawn_t
 {
 	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn

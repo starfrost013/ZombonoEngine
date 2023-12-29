@@ -1077,11 +1077,13 @@ void ClientEndServerFrame (edict_t *ent)
 	VectorClear (ent->client->kick_origin);
 	VectorClear (ent->client->kick_angles);
 
-	// if the scoreboard is up, update it
+	// SCOREBOARD IS NOW ONLY UPDATED WHEN THE USER WANTS IT TO BE AND AT END OF MATCH!!!
+	/*
 	if (ent->client->showscores && !(level.framenum & 31) )
 	{
 		DeathmatchScoreboardMessage (ent, ent->enemy);
 		gi.unicast (ent, false);
 	}
+	*/
 }
 

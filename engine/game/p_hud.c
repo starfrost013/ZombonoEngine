@@ -309,7 +309,7 @@ void G_SendLeaderboard(edict_t* ent)
 		{
 			gi.WriteString(client_edict->client->pers.netname);
 			gi.WriteShort(client_edict->client->ping);
-			gi.WriteByte(client_edict->client->pers.score);
+			gi.WriteShort(client_edict->client->resp.score);
 			gi.WriteShort(client_edict->team);
 			gi.WriteShort((level.framenum - client_edict->client->resp.enterframe) / 600); // inherited from earlier code figure out what this actually does
 			gi.WriteByte(client_edict->client->resp.spectator);
