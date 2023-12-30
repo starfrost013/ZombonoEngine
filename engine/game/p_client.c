@@ -432,7 +432,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 		TossClientWeapon (self);
 
 		// show scores
-		Cmd_Score_f (self);		
+		G_SendLeaderboard(self);
 	}
 
 	// remove powerups

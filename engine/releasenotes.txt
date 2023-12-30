@@ -12,6 +12,7 @@ December 31?, 2023
 * Fixed the Zombie textures
 * Targa images now have a missing texture targa loaded in their place when they fail to load
 * TDM gameplay flow - both teams can win/lose/draw
+* Zombies no longer target directors unless GF_ITEM_FRIENDLY_FIRE is enabled
 
 Version 0.04-pre1
 December 23, 2023
