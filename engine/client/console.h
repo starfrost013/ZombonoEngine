@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // console
 //
 
-#define	NUM_CON_TIMES 4
+#define	NUM_CON_CHAT_LINES 9	// Number of lines that will be disabled in chat
 
 #define		CON_TEXTSIZE	131072
 typedef struct console_s
@@ -43,7 +44,7 @@ typedef struct console_s
 
 	int		vislines;
 
-	float	times[NUM_CON_TIMES];	// cls.realtime time the line was generated
+	float	times[NUM_CON_CHAT_LINES];	// cls.realtime time the line was generated
 								// for transparent notify lines
 } console_t;
 

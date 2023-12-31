@@ -210,7 +210,7 @@ void Con_ClearNotify (void)
 {
 	int		i;
 	
-	for (i=0 ; i<NUM_CON_TIMES ; i++)
+	for (i=0 ; i<NUM_CON_CHAT_LINES ; i++)
 		con.times[i] = 0;
 }
 
@@ -397,7 +397,7 @@ void Con_Print (char *txt)
 			Con_Linefeed ();
 		// mark time for transparent overlay
 			if (con.current >= 0)
-				con.times[con.current % NUM_CON_TIMES] = cls.realtime;
+				con.times[con.current % NUM_CON_CHAT_LINES] = cls.realtime;
 		}
 
 		switch (c)
@@ -512,11 +512,11 @@ void Con_DrawNotify (void)
 	int		skip;
 
 	v = 0;
-	for (i= con.current-NUM_CON_TIMES+1 ; i<=con.current ; i++)
+	for (i= con.current-NUM_CON_CHAT_LINES+1 ; i<=con.current ; i++)
 	{
 		if (i < 0)
 			continue;
-		time = con.times[i % NUM_CON_TIMES];
+		time = con.times[i % NUM_CON_CHAT_LINES];
 		if (time == 0)
 			continue;
 		time = cls.realtime - time;
