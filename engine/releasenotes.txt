@@ -4,10 +4,9 @@ Version 0.04-pre2
 December 31, 2023
 * Reduced Bamfuslicator range from 1024 to 768 units
 * z_tdm_labrats improvements - use actual cylindrical pillars, add more lights and decoration
-* Reduce Bamfuslicator range by 25%
 * Make directors 25% slower than Players
 * Added a new leaderboard!
-* Fixed being able to move around while team UI is active. This caused 
+* Fixed being able to move around while team UI is active. This caused teamkilling.
 * Fixed the Zombie textures
 * Targa images now have a missing texture targa loaded in their place when they fail to load
 * TDM gameplay flow - both teams can win/lose/draw
@@ -17,6 +16,7 @@ December 31, 2023
 * Increased maximum controls per UI from 32 to 256. They aren't dynamically allocated yet, sorry for 2 megabytes of your ram.
 * Did some more work on z_tdm_ussr, but nowhere near complete
 * Increase number of messages before the chat scrolls from 4 to 9
+* Fixed lighting on second floor of z_tdm_labrats
 
 Version 0.04-pre1
 December 23, 2023

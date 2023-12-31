@@ -73,22 +73,22 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 		{
 			if (ent->team == winning_team)
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_director_win");
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_director");
 			}
 			else
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_director_lose");
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_lose_director");
 			}
 		}
-		else if (winning_team == team_director)
+		else if (winning_team == team_player)
 		{
 			if (ent->team == winning_team)
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_player_win");
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_player");
 			}
 			else
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_player_lose");
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_player");
 			}
 		}
 		else

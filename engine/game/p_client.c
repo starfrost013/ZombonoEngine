@@ -1205,10 +1205,9 @@ void ClientBeginDeathmatch (edict_t *ent)
 	// locate ent at a spawn point
 	PutClientInServer (ent);
 
-	player_team winning_team = (gamemode->value == GAMEMODE_TDM) ? G_TDMGetWinner() : 0;
-
 	if (level.intermissiontime)
 	{
+		player_team winning_team = (gamemode->value == GAMEMODE_TDM) ? G_TDMGetWinner() : 0;
 		MoveClientToIntermission (ent, winning_team);
 	}
 	else

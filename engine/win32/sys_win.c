@@ -244,12 +244,9 @@ void Sys_Init (void)
 	if (!GetVersionEx (&vinfo))
 		Sys_Error ("Couldn't get OS info");
 
-	if (vinfo.dwMajorVersion < 4)
-		Sys_Error ("Quake2 requires windows version 4 or greater");
-	if (vinfo.dwPlatformId == VER_PLATFORM_WIN32s)
-		Sys_Error ("Quake2 doesn't run on Win32s");
-	else if ( vinfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS )
-		s_win95 = true;
+	if (vinfo.dwMajorVersion < 4
+		|| vinfo.dwPlatformId == VER_PLATFORM_WIN32s)
+		Sys_Error ("Zombono requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)");
 
 	if (dedicated->value)
 	{

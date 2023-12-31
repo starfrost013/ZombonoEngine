@@ -22,38 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 
-char *ClientTeam (edict_t *ent)
-{
-	char		*p;
-	static char	value[512];
-
-	value[0] = 0;
-
-	if (!ent->client)
-		return value;
-
-	strcpy(value, Info_ValueForKey (ent->client->pers.userinfo, "team"));
-	p = strchr(value, '/');
-	if (!p)
-		return value;
-
-	return ++p;
-}
-
-qboolean OnSameTeam (edict_t *ent1, edict_t *ent2)
-{
-	char	ent1Team [512];
-	char	ent2Team [512];
-
-	strcpy (ent1Team, ClientTeam (ent1));
-	strcpy (ent2Team, ClientTeam (ent2));
-
-	if (strcmp(ent1Team, ent2Team) == 0)
-		return true;
-	return false;
-}
-
-
 void SelectNextItem (edict_t *ent, int itflags)
 {
 	gclient_t	*cl;
@@ -870,7 +838,7 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 			continue;
 		if (team)
 		{
-			if (!OnSameTeam(ent, other))
+			if (ent->team != other->team);
 				continue;
 		}
 		gi.cprintf(other, PRINT_CHAT, "%s", text);

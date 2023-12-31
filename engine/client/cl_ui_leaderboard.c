@@ -142,6 +142,8 @@ void UI_LeaderboardUIUpdate()
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
+
+		y = (viddef.height / 2) - 124 + (12 * (client_num + 1));
 	}
 	
 	// You need to toggle it here otherwise you can never turn it on because UIs not being disabled don't get events.
