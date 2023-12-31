@@ -313,6 +313,17 @@ void G_SendLeaderboard(edict_t* ent)
 			gi.WriteShort(client_edict->team);
 			gi.WriteShort((level.framenum - client_edict->client->resp.enterframe) / 600); // inherited from earlier code figure out what this actually does
 			gi.WriteByte(client_edict->client->resp.spectator);
+			gi.WriteString(level.level_name);
+			// send the time remaining if timelimit < 0
+			if (timelimit->value > 0)
+			{
+
+				gi.WriteShort((timelimit->value * 60) - level.time);
+			}
+			else
+			{
+				gi.WriteShort(level.time);
+			}
 		}
 	}
 

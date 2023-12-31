@@ -255,7 +255,13 @@ void EndMatch (void)
 			if (!f)
 				f = t;
 			t = strtok(NULL, seps);
+
+			// --- WHY DOES THIS NOT WORK --- //
+			level.framenum = 0; 
+			level.intermissiontime = 0;
+			level.time = 0;
 		}
+
 		free(s);
 	}
 
@@ -271,12 +277,11 @@ void EndMatch (void)
 		}
 		BeginIntermission (ent);
 	}
-	
-	// reset level time
-	//if (level.time > timelimit->value * 60)
-	//{
-	//	level.time = 0; 
-	//}
+
+	// --- WHY DOES THIS NOT WORK --- //
+	level.framenum = 0; // reset frame number and frametime!
+	level.intermissiontime = 0;
+	level.time = 0;
 }
 
 

@@ -783,6 +783,7 @@ void CL_ParseServerMessage (void)
 			s = MSG_ReadString (&net_message);
 			strncpy (cl.layout, s, sizeof(cl.layout)-1);
 			break;
+
 		case svc_leaderboard:
 			UI_LeaderboardUIUpdate();
 			break;

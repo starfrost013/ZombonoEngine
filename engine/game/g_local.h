@@ -311,8 +311,8 @@ typedef struct game_locals_s
 //
 typedef struct level_locals_s
 {
-	int			framenum;
-	float		time;
+	int			framenum;				// controls level time
+	float		time;					// level time is incremented by framenum*(frametime in seconds) - - 1 instance of level time = 1 tick (10Hz)
 
 	char		level_name[MAX_QPATH];	// the descriptive name (Outer Base, etc)
 	char		mapname[MAX_QPATH];		// the server name (base1, etc)

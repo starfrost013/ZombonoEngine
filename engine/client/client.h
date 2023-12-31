@@ -86,12 +86,14 @@ extern int num_cl_weaponmodels;
 
 typedef struct leaderboard_entry_s
 {
-	char		name[32];
-	int			score;
-	common_team	team;
-	int			ping;
-	int			time;
-	qboolean	is_spectator;
+	char		name[32];		// The player's name
+	int			score;			// The player's score (kills - deaths)
+	common_team	team;			// The player's team
+	int			ping;			// The user's ping
+	int			time;			// Time the player has spent in the game since they joined. 
+	qboolean	is_spectator;	// Is the player a spectator?
+	char		map_name[32];	// Map name
+	int			time_remaining;		// Seconds of time left in game.
 } leaderboard_entry_t;
 
 // Zombono Leaderboard
