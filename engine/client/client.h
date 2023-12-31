@@ -563,7 +563,7 @@ void CL_PredictMovement (void);
 // This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
 //
 
-#define CONTROLS_PER_UI			48
+#define CONTROLS_PER_UI			256
 #define MAX_UIS					32
 #define MAX_UI_STR_LENGTH		64
 

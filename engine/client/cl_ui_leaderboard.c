@@ -120,12 +120,12 @@ void UI_LeaderboardUIUpdate()
 			x = (viddef.width / 2) - 320;
 			y = (viddef.height / 2) + 176;
 
-			char map_str[36]; // 31 map name length + 5 for "Map: "
-			char time_str[38];  // 31 map name length + 7 for "Time: " and optional 0
+			char map_buf[36]; // 31 map name length + 5 for "Map: "
+			char time_buf[38];  // 31 map name length + 7 for "Time: " and optional 0
 
-			snprintf(map_str, 36, "Map: %s", leaderboard_entry.map_name);
+			snprintf(map_buf, 36, "Map: %s", leaderboard_entry.map_name);
 
-			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_str, x, y);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_buf, x, y);
 
 			y += 8;
 
@@ -133,14 +133,14 @@ void UI_LeaderboardUIUpdate()
 
 			if (seconds < 10)
 			{
-				snprintf(time_str, 38, "Time: %d:0%d", leaderboard_entry.time_remaining / 60, seconds);
+				snprintf(time_buf, 38, "Time: %d:0%d", leaderboard_entry.time_remaining / 60, seconds);
 			}
 			else
 			{
-				snprintf(time_str, 38, "Time: %d:%d", leaderboard_entry.time_remaining / 60, seconds);
+				snprintf(time_buf, 38, "Time: %d:%d", leaderboard_entry.time_remaining / 60, seconds);
 			}
 
-			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_str, x, y);
+			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 	}
 	
