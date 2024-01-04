@@ -1,6 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
-Copyright (C) 2023      starfrost
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -670,3 +670,24 @@ void UI_LeaderboardUIToggle(int btn);
 
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();
+
+//
+// cl_ttf.c
+// Truetype Font Loader
+//
+qboolean TTF_Init();
+
+
+//
+// cl_font.c
+// Modern Fontloader
+//
+
+typedef struct font_s
+{
+	char		font_name[32];
+	int			size;
+
+} font_t;
+
+qboolean Font_Init();
