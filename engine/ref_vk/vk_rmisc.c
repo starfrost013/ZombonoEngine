@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -120,7 +121,7 @@ void Vk_ScreenShot_f (void)
 	// 
 	// find a file name to save it to 
 	// 
-	strcpy(picname, "quake00.tga");
+	strcpy(picname, "zombono00.tga");
 
 	for (i = 0; i <= 99; i++)
 	{

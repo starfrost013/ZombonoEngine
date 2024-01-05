@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -56,7 +57,7 @@ void R_InitParticleTexture (void)
 			data[y][x][3] = dottexture[x][y]*255;
 		}
 	}
-	r_particletexture = GL_LoadPic ("***particle***", (byte *)data, 8, 8, it_sprite, 32);
+	r_particletexture = GL_LoadPic ("***particle***", (byte *)data, 8, 8, it_sprite);
 
 	//
 	// also use this for bad textures, but without alpha
@@ -71,7 +72,7 @@ void R_InitParticleTexture (void)
 			data[y][x][3] = 255;
 		}
 	}
-	r_notexture = GL_LoadPic ("***r_notexture***", (byte *)data, 8, 8, it_wall, 32);
+	r_notexture = GL_LoadPic ("***r_notexture***", (byte *)data, 8, 8, it_wall);
 }
 
 
@@ -112,26 +113,61 @@ void GL_ScreenShot_f (void)
 // 
 // find a file name to save it to 
 // 
-	strcpy(picname,"quake00.tga");
 
-	for (i=0 ; i<=99 ; i++) 
-	{ 
-		picname[5] = i/10 + '0'; 
-		picname[6] = i%10 + '0'; 
-		Com_sprintf (checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), picname);
-		f = fopen (checkname, "rb");
-		if (!f)
-			break;	// file doesn't exist
-		fclose (f);
-	} 
-	if (i==100) 
+// get the time
+// TODO: sys_time function
+	time_t time_unix;
+	struct tm* time_now;
+	time(&time_unix);
+	time_now = localtime(&time_unix);
+
+	// should work on all FSes
+	strftime(&picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
+
+	Com_sprintf(checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), picname);
+
+	f = fopen(checkname, "rb");
+
+	// if it exists (theoretically possible to take more than one screenshot in a second)
+	if (f)
 	{
-		ri.Con_Printf (PRINT_ALL, "SCR_ScreenShot_f: Couldn't create a file\n"); 
-		return;
- 	}
+		// remove the .tga (so the extension stays later
+		picname[strlen(picname) - 4] = '\0';
 
+		// this is so we don't endlessly add our concatenated code over and over again
+		char tempbuf[128];
+
+		int n = 2;
+		qboolean exists = true;
+
+		while (exists)
+		{
+			memset(&tempbuf, 0x00, sizeof(char) * 128);
+			snprintf(&tempbuf, 80, "%s-%d", &picname, n);
+
+			exists = fopen(tempbuf, "rb") != NULL;
+
+			if (n > 99) // wtf?
+			{
+				Com_Printf("Somehow someone saved over 100 files in a second");
+				return;
+			}
+		}
+
+		// restore the .tga file
+		strcat(tempbuf, ".tga");
+
+		// copy the final name so the screenshot code can open it
+
+		Com_sprintf(checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), tempbuf);
+
+		fclose(f);
+	}
 
 	buffer = malloc(vid.width*vid.height*3 + 18);
+
+	assert(buffer != NULL);
+
 	memset (buffer, 0, 18);
 	buffer[2] = 2;		// uncompressed type
 	buffer[12] = vid.width&255;
@@ -156,7 +192,7 @@ void GL_ScreenShot_f (void)
 	fclose (f);
 
 	free (buffer);
-	ri.Con_Printf (PRINT_ALL, "Wrote %s\n", picname);
+	ri.Con_Printf (PRINT_ALL, "Wrote %s\n", checkname);
 } 
 
 /*

@@ -147,9 +147,10 @@ typedef struct
 extern	image_t		gltextures[MAX_GLTEXTURES];
 extern	int			numgltextures;
 
-
+//TODO: THESE DON'T WORK BECAUSE THE TEXTURE FORMAT CHANGED
 extern	image_t		*r_notexture;
 extern	image_t		*r_particletexture;
+
 extern	entity_t	*currententity;
 extern	model_t		*currentmodel;
 extern	int			r_visframecount;
@@ -310,7 +311,7 @@ void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,
 
 struct image_s *R_RegisterSkin (char *name);
 
-image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t type, int bits);
+image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t type);
 image_t	*GL_FindImage (char *name, imagetype_t type);
 void	GL_TextureMode( char *string );
 void	GL_ImageList_f (void);

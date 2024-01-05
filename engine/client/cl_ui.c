@@ -388,14 +388,14 @@ void UI_Draw()
 
 	time(&raw_time);
 	local_time = localtime(&raw_time);
-	char		time[128];
+	char		time_str[128];
 #ifdef PLAYTEST
 	strftime(&time, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #elif _DEBUG
-	strftime(&time, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
+	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
-	Draw_String(viddef.width - (8 * strlen(time)), 0, time);
+	Draw_String(viddef.width - (8 * strlen(time_str)), 0, time_str);
 	Draw_StringAlt(viddef.width - 144, 10, "Pre-release build!");
 
 #endif
