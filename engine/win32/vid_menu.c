@@ -23,9 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../client/qmenu.h"
 
 #define REF_OPENGL	0
-#define REF_VULKAN	1
 
-#define NUM_REFS	2
+#define NUM_REFS	1
 
 extern cvar_t *vid_ref;
 extern cvar_t *vid_fullscreen;
@@ -37,19 +36,6 @@ static cvar_t *gl_mode;
 static cvar_t *gl_driver;
 static cvar_t *gl_picmip;
 static cvar_t *gl_finish;
-static cvar_t *vk_finish;
-static cvar_t *vk_msaa;
-static cvar_t *vk_aniso;
-static cvar_t *vk_sampleshading;
-static cvar_t *vk_texturemode;
-static cvar_t *vk_lmaptexturemode;
-static cvar_t *vk_vsync;
-static cvar_t *vk_postprocess;
-static cvar_t *vk_fullscreen_exclusive;
-static cvar_t *vk_picmip;
-
-static cvar_t *vk_mode;
-static cvar_t *vk_driver;
 
 extern void M_ForceMenuOff( void );
 
@@ -61,32 +47,20 @@ MENU INTERACTION
 ====================================================================
 */
 #define OPENGL_MENU   0
-#define VULKAN_MENU   1
 
 #define NUM_REF_MENUS NUM_REFS
 
 static menuframework_t	s_opengl_menu;
-static menuframework_t  s_vulkan_menu;
 static menuframework_t *s_current_menu;
 static int				s_current_menu_index;
 
 static menulist_t		s_mode_list[NUM_REF_MENUS];
 static menulist_t		s_ref_list[NUM_REF_MENUS];
 static menuslider_t		s_tq_slider;
-static menuslider_t		s_tqvk_slider;
 static menuslider_t		s_screensize_slider[3];
 static menuslider_t		s_brightness_slider[3];
 static menulist_t  		s_fs_box[3];
-static menulist_t		s_msaa_mode;
-static menulist_t		s_sampleshading;
-static menulist_t		s_aniso_filter;
-static menulist_t		s_texture_filter;
-static menulist_t		s_lmap_texture_filter;
-static menulist_t		s_vsync;
-static menulist_t		s_postprocess;
-static menulist_t		s_exclusive_fullscreen;
 static menulist_t		s_finish_box;
-static menulist_t		s_vkfinish_box;
 static menuaction_t		s_apply_action[3];
 static menuaction_t		s_cancel_action[3];
 static menuaction_t		s_defaults_action[3];
@@ -94,19 +68,12 @@ static menuaction_t		s_defaults_action[3];
 static void DriverCallback( void *unused )
 {
 	int curr_value = s_ref_list[s_current_menu_index].curvalue;
-	s_ref_list[0].curvalue = curr_value;
-	s_ref_list[1].curvalue = curr_value;
 
-	if ( s_ref_list[s_current_menu_index].curvalue == REF_VULKAN )
-	{
-		s_current_menu = &s_vulkan_menu;
-		s_current_menu_index = 1;
-	}
-	else
-	{
-		s_current_menu = &s_opengl_menu;
-		s_current_menu_index = REF_OPENGL;
-	}
+	s_ref_list[0].curvalue = curr_value;
+
+	// this menu will be replaced anyway
+	s_current_menu = &s_opengl_menu;
+	s_current_menu_index = REF_OPENGL;
 }
 
 static void ScreenSizeCallback( void *s )
@@ -156,56 +123,13 @@ static void ApplyChanges( void *unused )
 	Cvar_SetValue( "gl_picmip", 3 - s_tq_slider.curvalue );
 	Cvar_SetValue( "vid_fullscreen", s_fs_box[s_current_menu_index].curvalue );
 	Cvar_SetValue( "gl_finish", s_finish_box.curvalue );
-	Cvar_SetValue( "vk_finish", s_vkfinish_box.curvalue );
 	Cvar_SetValue( "gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1 );
-	Cvar_SetValue( "vk_mode", s_mode_list[VULKAN_MENU].curvalue == 0 ? -1 : s_mode_list[VULKAN_MENU].curvalue - 1 );
-	Cvar_SetValue( "vk_msaa", s_msaa_mode.curvalue );
-	Cvar_SetValue( "vk_aniso", s_aniso_filter.curvalue );
-	Cvar_SetValue( "vk_sampleshading", s_sampleshading.curvalue );
-	Cvar_SetValue( "vk_vsync", s_vsync.curvalue );
-	Cvar_SetValue( "vk_postprocess", s_postprocess.curvalue );
-	Cvar_SetValue( "vk_fullscreen_exclusive", s_exclusive_fullscreen.curvalue );
-	Cvar_SetValue( "vk_picmip", 3 - s_tqvk_slider.curvalue );
-
-	switch ( s_texture_filter.curvalue )
-	{
-	case 0:
-		Cvar_Set( "vk_texturemode", "VK_NEAREST" );
-		break;
-	case 1:
-		Cvar_Set( "vk_texturemode", "VK_LINEAR" );
-		break;
-	case 2:
-		Cvar_Set( "vk_texturemode", "VK_MIPMAP_NEAREST" );
-		break;
-	default:
-		Cvar_Set( "vk_texturemode", "VK_MIPMAP_LINEAR" );
-	}
-
-	switch ( s_lmap_texture_filter.curvalue )
-	{
-	case 0:
-		Cvar_Set( "vk_lmaptexturemode", "VK_NEAREST" );
-		break;
-	case 1:
-		Cvar_Set( "vk_lmaptexturemode", "VK_LINEAR" );
-		break;
-	case 2:
-		Cvar_Set( "vk_lmaptexturemode", "VK_MIPMAP_NEAREST" );
-		break;
-	default:
-		Cvar_Set( "vk_lmaptexturemode", "VK_MIPMAP_LINEAR" );
-	}
 
 	switch ( s_ref_list[s_current_menu_index].curvalue )
 	{
 	case REF_OPENGL:
 		Cvar_Set( "vid_ref", "gl" );
 		Cvar_Set( "gl_driver", "opengl32" );
-		break;
-	case REF_VULKAN:
-		Cvar_Set( "vid_ref", "vk" );
-		Cvar_Set( "vk_driver", "vulkan" );
 		break;
 	}
 
@@ -265,22 +189,12 @@ void VID_MenuInit( void )
 	static const char *refs[] =
 	{
 		"[default OpenGL]",
-		"[Vulkan        ]",
 		0
 	};
 	static const char *yesno_names[] =
 	{
 		"no",
 		"yes",
-		0
-	};
-	static const char *msaa_modes[] =
-	{
-		"no",
-		"x2",
-		"x4",
-		"x8",
-		"x16",
 		0
 	};
 	static const char *filter_modes[] =
@@ -301,47 +215,15 @@ void VID_MenuInit( void )
 		gl_mode = Cvar_Get( "gl_mode", "6", 0 );
 	if ( !gl_finish )
 		gl_finish = Cvar_Get( "gl_finish", "0", CVAR_ARCHIVE );
-	if ( !vk_finish )
-		vk_finish = Cvar_Get( "vk_finish", "0", CVAR_ARCHIVE );
-	if ( !vk_msaa )
-		vk_msaa = Cvar_Get( "vk_msaa", "0", CVAR_ARCHIVE );
-	if ( !vk_aniso )
-		vk_aniso = Cvar_Get( "vk_aniso", "1", CVAR_ARCHIVE );
-	if ( !vk_sampleshading )
-		vk_sampleshading = Cvar_Get( "vk_sampleshading", "0", CVAR_ARCHIVE );
-	if ( !vk_vsync )
-		vk_vsync = Cvar_Get( "vk_vsync", "0", CVAR_ARCHIVE );
-	if ( !vk_postprocess )
-		vk_postprocess = Cvar_Get( "vk_postprocess", "1", CVAR_ARCHIVE );
-	if ( !vk_fullscreen_exclusive )
-		vk_fullscreen_exclusive = Cvar_Get( "vk_fullscreen_exclusive", "0", CVAR_ARCHIVE );
-	if ( !vk_texturemode )
-		vk_texturemode = Cvar_Get( "vk_texturemode", "VK_MIPMAP_LINEAR", CVAR_ARCHIVE );
-	if ( !vk_lmaptexturemode )
-		vk_lmaptexturemode = Cvar_Get( "vk_lmaptexturemode", "VK_MIPMAP_LINEAR", CVAR_ARCHIVE );
-	if ( !vk_picmip )
-		vk_picmip = Cvar_Get( "vk_picmip", "0", CVAR_ARCHIVE );
-
-	if( !vk_mode )
-		vk_mode = Cvar_Get( "vk_mode", "11", 0 );
-	if( !vk_driver )
-		vk_driver = Cvar_Get( "vk_driver", "vulkan", 0 );
 
 	s_mode_list[OPENGL_MENU].curvalue = gl_mode->value < 0 ? 0 : gl_mode->value + 1;
-	s_mode_list[VULKAN_MENU].curvalue = vk_mode->value < 0 ? 0 : vk_mode->value + 1;
 
 	if ( !scr_viewsize )
 		scr_viewsize = Cvar_Get ("viewsize", "100", CVAR_ARCHIVE);
 
 	s_screensize_slider[OPENGL_MENU].curvalue = scr_viewsize->value/10;
-	s_screensize_slider[VULKAN_MENU].curvalue = scr_viewsize->value/10;
 
-	if ( strcmp(vid_ref->string, "vk") == 0 )
-	{
-		s_current_menu_index = VULKAN_MENU;
-		s_ref_list[s_current_menu_index].curvalue = REF_VULKAN;
-	}
-	else if ( strcmp( vid_ref->string, "gl" ) == 0 )
+	if ( strcmp( vid_ref->string, "gl" ) == 0 )
 	{
 		s_current_menu_index = OPENGL_MENU;
 		if ( strcmp( gl_driver->string, "opengl32" ) == 0 )
@@ -352,8 +234,6 @@ void VID_MenuInit( void )
 
 	s_opengl_menu.x = viddef.width * 0.50;
 	s_opengl_menu.nitems = 0;
-	s_vulkan_menu.x = viddef.width * 0.50;
-	s_vulkan_menu.nitems = 0;
 
 	for ( i = 0; i < NUM_REF_MENUS; i++ )
 	{
@@ -421,101 +301,12 @@ void VID_MenuInit( void )
 	s_tq_slider.maxvalue = 3;
 	s_tq_slider.curvalue = 3-gl_picmip->value;
 
-	// Vulkan renderer only
-	s_tqvk_slider.generic.type = MTYPE_SLIDER;
-	s_tqvk_slider.generic.x = 0;
-	s_tqvk_slider.generic.y = 60 * vid_hudscale->value;
-	s_tqvk_slider.generic.name = "Texture Quality";
-	s_tqvk_slider.minvalue = 0;
-	s_tqvk_slider.maxvalue = 3;
-	s_tqvk_slider.curvalue = 3-vk_picmip->value;
-
-	s_msaa_mode.generic.type = MTYPE_SPINCONTROL;
-	s_msaa_mode.generic.name = "Multisampling";
-	s_msaa_mode.generic.x = 0;
-	s_msaa_mode.generic.y = 70 * vid_hudscale->value;
-	s_msaa_mode.itemnames = msaa_modes;
-	s_msaa_mode.curvalue = vk_msaa->value;
-
 	s_finish_box.generic.type = MTYPE_SPINCONTROL;
 	s_finish_box.generic.x	= 0;
 	s_finish_box.generic.y	= 80 * vid_hudscale->value;
 	s_finish_box.generic.name	= "Sync Every Frame";
 	s_finish_box.curvalue = gl_finish->value;
 	s_finish_box.itemnames = yesno_names;
-
-	// Vulkan renderer only
-	s_vkfinish_box.generic.type = MTYPE_SPINCONTROL;
-	s_vkfinish_box.generic.x = 0;
-	s_vkfinish_box.generic.y = 80 * vid_hudscale->value;
-	s_vkfinish_box.generic.name = "Sync Every Frame";
-	s_vkfinish_box.curvalue = vk_finish->value;
-	s_vkfinish_box.itemnames = yesno_names;
-
-	// Vulkan renderer only
-	s_sampleshading.generic.type = MTYPE_SPINCONTROL;
-	s_sampleshading.generic.name = "Sample Shading";
-	s_sampleshading.generic.x = 0;
-	s_sampleshading.generic.y = 90 * vid_hudscale->value;
-	s_sampleshading.itemnames = yesno_names;
-	s_sampleshading.curvalue = vk_sampleshading->value > 0 ? 1 : 0;
-
-	// Vulkan renderer only
-	s_aniso_filter.generic.type = MTYPE_SPINCONTROL;
-	s_aniso_filter.generic.name = "Anisotropic Filtering";
-	s_aniso_filter.generic.x = 0;
-	s_aniso_filter.generic.y = 100 * vid_hudscale->value;
-	s_aniso_filter.itemnames = yesno_names;
-	s_aniso_filter.curvalue = vk_aniso->value > 0 ? 1 : 0;
-
-	// Vulkan renderer only
-	s_texture_filter.generic.type = MTYPE_SPINCONTROL;
-	s_texture_filter.generic.name = "Texture Filtering";
-	s_texture_filter.generic.x = 0;
-	s_texture_filter.generic.y = 110 * vid_hudscale->value;
-	s_texture_filter.itemnames = filter_modes;
-	s_texture_filter.curvalue = 0;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_LINEAR" ) )
-		s_texture_filter.curvalue = 1;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_MIPMAP_NEAREST" ) )
-		s_texture_filter.curvalue = 2;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_MIPMAP_LINEAR" ) )
-		s_texture_filter.curvalue = 3;
-
-	// Vulkan renderer only
-	s_lmap_texture_filter.generic.type = MTYPE_SPINCONTROL;
-	s_lmap_texture_filter.generic.name = "Lightmap Filtering";
-	s_lmap_texture_filter.generic.x = 0;
-	s_lmap_texture_filter.generic.y = 120 * vid_hudscale->value;
-	s_lmap_texture_filter.itemnames = filter_modes;
-	s_lmap_texture_filter.curvalue = 0;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_LINEAR") )
-		s_lmap_texture_filter.curvalue = 1;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_MIPMAP_NEAREST") )
-		s_lmap_texture_filter.curvalue = 2;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_MIPMAP_LINEAR") )
-		s_lmap_texture_filter.curvalue = 3;
-
-	s_vsync.generic.type = MTYPE_SPINCONTROL;
-	s_vsync.generic.name = "VSync";
-	s_vsync.generic.x = 0;
-	s_vsync.generic.y = 130 * vid_hudscale->value;
-	s_vsync.itemnames = yesno_names;
-	s_vsync.curvalue = vk_vsync->value > 0 ? 1 : 0;
-
-	s_postprocess.generic.type = MTYPE_SPINCONTROL;
-	s_postprocess.generic.name = "Postprocessing";
-	s_postprocess.generic.x = 0;
-	s_postprocess.generic.y = 140 * vid_hudscale->value;
-	s_postprocess.itemnames = yesno_names;
-	s_postprocess.curvalue = vk_postprocess->value > 0 ? 1 : 0;
-
-	s_exclusive_fullscreen.generic.type = MTYPE_SPINCONTROL;
-	s_exclusive_fullscreen.generic.name = "Exclusive Fullscreen";
-	s_exclusive_fullscreen.generic.x = 0;
-	s_exclusive_fullscreen.generic.y = 150 * vid_hudscale->value;
-	s_exclusive_fullscreen.itemnames = yesno_names;
-	s_exclusive_fullscreen.curvalue = vk_fullscreen_exclusive->value > 0 ? 1 : 0;
 
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_ref_list[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_mode_list[OPENGL_MENU] );
@@ -525,37 +316,14 @@ void VID_MenuInit( void )
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_tq_slider );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_finish_box );
 
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_ref_list[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_mode_list[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_screensize_slider[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_brightness_slider[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_fs_box[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_tqvk_slider );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_msaa_mode );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_vkfinish_box );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_sampleshading );
-	if (Cvar_Get("vidmenu_aniso", "1", 0)->value)
-		Menu_AddItem( &s_vulkan_menu, ( void * ) &s_aniso_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_texture_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_lmap_texture_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_vsync );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_postprocess );
-	if (Cvar_Get("vidmenu_efs", "1", 0)->value)
-		Menu_AddItem( &s_vulkan_menu, ( void * ) &s_exclusive_fullscreen );
-
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_apply_action[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_defaults_action[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_cancel_action[OPENGL_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_apply_action[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_defaults_action[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_cancel_action[VULKAN_MENU] );
 
 	Menu_Center( &s_opengl_menu );
-	Menu_Center( &s_vulkan_menu );
+
 	s_opengl_menu.x -= 8 * vid_hudscale->value;
-	s_vulkan_menu.x -= 8 * vid_hudscale->value;
 	s_opengl_menu.y += 30 * vid_hudscale->value;
-	s_vulkan_menu.y += 30 * vid_hudscale->value;
 }
 
 /*
@@ -567,10 +335,7 @@ void VID_MenuDraw (void)
 {
 	int w, h;
 
-	if (s_current_menu_index == REF_VULKAN)
-		s_current_menu = &s_vulkan_menu;
-	else
-		s_current_menu = &s_opengl_menu;
+	s_current_menu = &s_opengl_menu;
 
 	/*
 	** draw the banner
@@ -635,5 +400,3 @@ const char *VID_MenuKey( int key )
 
 	return sound;
 }
-
-
