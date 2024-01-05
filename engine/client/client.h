@@ -395,7 +395,6 @@ void CL_ForceWall (vec3_t start, vec3_t end, int color);
 void CL_FlameEffects (centity_t *ent, vec3_t origin);
 void CL_GenericParticleEffect (vec3_t org, vec3_t dir, int color, int count, int numcolors, int dirspread, float alphavel);
 void CL_BubbleTrail2 (vec3_t start, vec3_t end, int dist);
-void CL_Heatbeam (vec3_t start, vec3_t end);
 void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, int color, int count, int magnitude);
 void CL_TrackerTrail (vec3_t start, vec3_t end, int particleColor);
 void CL_Tracker_Explode(vec3_t origin);
@@ -598,7 +597,7 @@ typedef struct ui_control_s
 	// checkbox
 	qboolean			checked;							// Checkbox UI control: Is it checked?
 	// box
-	vec4_t				color;								// The color of this ui element.
+	vec4_t				color;								// The color of this UI element.
 	// events
 	void				(*on_click)(int btn, int x, int y);	// C function to call on click starting with X and Y coordinates.
 	void				(*on_key_down)(int btn);			// C function to call on a key being pressed. 
@@ -626,7 +625,6 @@ qboolean UI_AddUI(char* name, qboolean (*on_create)());
 // UI: Init Controls
 qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);													// Draws text.
 qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);					// Draws an image.
-qboolean UI_AddButton(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y);									// Draws a button.
 qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);		// Draws a slider.
 qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);				// Draws a checkbox.
 qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);			// Draws a regular ole box.
@@ -675,6 +673,7 @@ void UI_LeaderboardUIUpdate();
 // Truetype Font Loader
 //
 qboolean TTF_Init();
+void TTF_Shutdown();
 
 //
 // cl_font.c

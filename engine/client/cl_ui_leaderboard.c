@@ -190,7 +190,6 @@ void UI_LeaderboardUIUpdate()
 	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
 	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
 
-
 	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, 8 * 14, 8, 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 

@@ -6,6 +6,8 @@ January XX, 2024
 * Began designing textures for z_tdm_labrats
 * Added total player and director scores to leaderboard UI
 * Rewrote how screenshot function generates filenames. Therefore, it doesn't check for the existence of 100 files by fopen()-ing them every single time you take a screenshot, and you can now take more than 100 screenshots. It also now puts the date i the filename as a way to differentiate screenshots from each other.
+* Removed vulkan renderer for now (don't have scope or ability to maintain both renderers, and I have plans to write a GL3 renderer)
+
 
 Version 0.04-pre2
 December 31, 2023

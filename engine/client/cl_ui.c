@@ -207,22 +207,6 @@ qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddButton(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y)
-{
-	ui_t* ui_ptr = UI_GetUI(ui_name);
-
-	if (!ui_ptr)
-	{
-		// message already printed
-		return false;
-	}
-
-	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
-	ui_control->type = ui_control_button;
-
-	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
-}
-
 qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);

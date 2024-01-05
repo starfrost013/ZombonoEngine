@@ -25,3 +25,8 @@ qboolean TTF_Init()
 {
 
 }
+
+void TTF_Shutdown()
+{
+
+}
