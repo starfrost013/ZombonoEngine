@@ -25,11 +25,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 
 #define TEXT_BUF_LENGTH			16
+#define TEXT_BUF_LENGTH_LONG	38
+
+qboolean UI_LeaderboardUICreate()
+{
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
+	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIToggle);
+	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_header", (viddef.width / 2) - 160, (viddef.height / 2) - 192, 320, 64);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 108);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 108);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 108);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 108);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 108);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 108);
+	return true;
+}
+
+void UI_LeaderboardUIToggle(int btn)
+{
+	if (btn == K_TAB)
+	{
+		// fucking hack
+		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
+
+		UI_SetEnabled("LeaderboardUI", !leaderboard_ui_ptr->enabled);
+		UI_SetActive("LeaderboardUI", !leaderboard_ui_ptr->active);
+	}
+}
 
 void UI_LeaderboardUIUpdate()
 {
 	int x, y;
 	char text[TEXT_BUF_LENGTH];
+	// for team score TODO: we do this twice in different places
+	int director_score = 0, player_score = 0;
 
 	// stupid hack
 	UI_Clear("LeaderboardUI");
@@ -38,7 +67,7 @@ void UI_LeaderboardUIUpdate()
 	// byte to reduce net usage
 	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
 
-	y = (viddef.height / 2) - 124;
+	y = (viddef.height / 2) - 108;
 
 	// update all the data here so we don't need to clear it
 	for (int client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
@@ -79,11 +108,14 @@ void UI_LeaderboardUIUpdate()
 		{
 			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 87, 0, 127, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Director", x, y);
+			director_score += leaderboard_entry.score;
+
 		}
 		else if (leaderboard_entry.team == common_team_player)
 		{
 			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 219, 87, 0, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Player", x, y);
+			player_score += leaderboard_entry.score;
 		}
 		else
 		{
@@ -99,7 +131,7 @@ void UI_LeaderboardUIUpdate()
 
 		// time
 		x += 8 * 10;
-		snprintf(text, TEXT_BUF_LENGTH, "%d seconds", leaderboard_entry.time);
+		snprintf(text, TEXT_BUF_LENGTH, "%d minutes", leaderboard_entry.time);
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", text, x, y);
 
 		x += 8 * 10;
@@ -120,10 +152,10 @@ void UI_LeaderboardUIUpdate()
 			x = (viddef.width / 2) - 320;
 			y = (viddef.height / 2) + 176;
 
-			char map_buf[36]; // 31 map name length + 5 for "Map: "
-			char time_buf[38];  // 31 map name length + 7 for "Time: " and optional 0
+			char map_buf[TEXT_BUF_LENGTH_LONG]; // 31 map name length + 5 for "Map: "
+			char time_buf[TEXT_BUF_LENGTH_LONG];  // 31 map name length + 7 for "Time: " and optional 0
 
-			snprintf(map_buf, 36, "Map: %s", leaderboard_entry.map_name);
+			snprintf(map_buf, TEXT_BUF_LENGTH_LONG, "Map: %s", leaderboard_entry.map_name);
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_buf, x, y);
 
@@ -133,11 +165,11 @@ void UI_LeaderboardUIUpdate()
 
 			if (seconds < 10)
 			{
-				snprintf(time_buf, 38, "Time: %d:0%d", leaderboard_entry.time_remaining / 60, seconds);
+				snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:0%d", leaderboard_entry.time_remaining / 60, seconds);
 			}
 			else
 			{
-				snprintf(time_buf, 38, "Time: %d:%d", leaderboard_entry.time_remaining / 60, seconds);
+				snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:%d", leaderboard_entry.time_remaining / 60, seconds);
 			}
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
@@ -146,6 +178,27 @@ void UI_LeaderboardUIUpdate()
 		y = (viddef.height / 2) - 124 + (12 * (client_num + 1));
 	}
 	
+	x = (viddef.width / 2) - 160;
+	y = (viddef.height / 2) - 124;
+
+	char director_text[TEXT_BUF_LENGTH]; // "Director: " + 4 numbers + 1 for safety
+	char player_text[TEXT_BUF_LENGTH]; // "Player: " + 4 numbers + 1 for safety
+
+	// draw the director and player total scores
+	//TODO: ONLY DO THIS ON TDM MODE!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
+	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
+
+
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, 8 * 14, 8, 87, 0, 127, 255); 	// todo: define team colours somewhere
+	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
+
+	x = (viddef.width / 2) + 48;
+
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, 8 * 14, 8, 219, 87, 0, 255); 	// todo: define team colours somewhere
+	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);
+
 	// You need to toggle it here otherwise you can never turn it on because UIs not being disabled don't get events.
 	// Writing UI code is like being shot into the sun.
 	if (current_ui == NULL || strcmp(current_ui->name, "TeamUI")) UI_LeaderboardUIToggle(K_TAB);

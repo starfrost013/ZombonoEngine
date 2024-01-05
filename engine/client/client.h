@@ -677,7 +677,6 @@ void UI_LeaderboardUIUpdate();
 //
 qboolean TTF_Init();
 
-
 //
 // cl_font.c
 // Modern Fontloader

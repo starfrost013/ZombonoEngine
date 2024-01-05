@@ -54,31 +54,5 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 }
 
 //
-// LeaderboardUI
+// LeaderboardUI is in cl_ui_leaderboard.c
 //
-
-qboolean UI_LeaderboardUICreate()
-{
-	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 255); // why does alpha not work. wtf
-	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIToggle);
-	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_header", (viddef.width / 2) - 160, (viddef.height / 2) - 192, 320, 64);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - 304, (viddef.height / 2) - 124);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - 144, (viddef.height / 2) - 124);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - 64, (viddef.height / 2) - 124);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + 32, (viddef.height / 2) - 124);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + 112, (viddef.height / 2) - 124);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + 192, (viddef.height / 2) - 124);
-	return true;
-}
-
-void UI_LeaderboardUIToggle(int btn)
-{
-	if (btn == K_TAB)
-	{
-		// fucking hack
-		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
-
-		UI_SetEnabled("LeaderboardUI", !leaderboard_ui_ptr->enabled);
-		UI_SetActive("LeaderboardUI", !leaderboard_ui_ptr->active);
-	}
-}
