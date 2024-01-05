@@ -419,9 +419,6 @@ void UI_Draw()
 					case ui_control_image:
 						UI_DrawImage(current_ui_control);
 						break;
-					case ui_control_button:
-						UI_DrawButton(current_ui_control);
-						break;
 					case ui_control_checkbox:
 						UI_DrawCheckbox(current_ui_control);
 						break;
@@ -445,11 +442,6 @@ void UI_DrawText(ui_control_t text)
 void UI_DrawImage(ui_control_t image)
 {
 	re.DrawPic(image.position_x, image.position_y, image.image_path);
-}
-
-void UI_DrawButton(ui_control_t button)
-{
-	Com_Printf("UI: Buttons aren't implemented yet!\n");
 }
 
 void UI_DrawSlider(ui_control_t slider)

@@ -571,10 +571,9 @@ typedef enum ui_control_type_e
 {
 	ui_control_text = 0,									// Simple text.
 	ui_control_image = 1,									// An image.
-	ui_control_button = 2,									// A button that you can click. (may remove)
-	ui_control_slider = 3,									// A slider between different values.
-	ui_control_checkbox = 4,								// A checkable box.
-	ui_control_box = 5,										// A simple box.
+	ui_control_slider = 2,									// A slider between different values.
+	ui_control_checkbox = 3,								// A checkable box.
+	ui_control_box = 4,										// A simple box.
 } ui_control_type;
 
 typedef struct ui_control_s

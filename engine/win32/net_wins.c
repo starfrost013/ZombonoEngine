@@ -147,7 +147,6 @@ qboolean	NET_StringToSockaddr (char *s, struct sockaddr *sadr)
 {
 	struct hostent	*h;
 	char	*colon;
-	int		val;
 	char	copy[128];
 	
 	memset (sadr, 0, sizeof(*sadr));
@@ -356,6 +355,7 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 	NetadrToSockadr (&to, &addr);
 
 	ret = sendto (net_socket, data, length, 0, &addr, sizeof(addr) );
+
 	if (ret == -1)
 	{
 		int err = WSAGetLastError();

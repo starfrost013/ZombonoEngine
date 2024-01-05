@@ -789,5 +789,3 @@ void VID_Shutdown (void)
 		VID_FreeReflib ();
 	}
 }
-
-
