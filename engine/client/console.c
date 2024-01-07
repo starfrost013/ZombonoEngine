@@ -588,8 +588,16 @@ void Con_DrawConsole (float frac)
 	if (lines > viddef.height)
 		lines = viddef.height;
 
-// draw the background
-	re.DrawStretchPic (0, lines-viddef.height, viddef.width, viddef.height, "conback");
+// draw the background (draw widescreen 457*240 background if 16:9 res)
+	if ((float)viddef.width / (float)viddef.height > 1.4f)
+	{
+		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "conback_16x9");
+	}
+	else
+	{
+		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "conback");
+	}
+
 	SCR_AddDirtyPoint (0,0);
 	SCR_AddDirtyPoint (viddef.width-1,lines-1);
 
