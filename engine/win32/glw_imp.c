@@ -386,8 +386,9 @@ qboolean GLimp_InitGL (void)
     };
     int  pixelformat;
 	cvar_t *stereo;
-	
+
 	stereo = ri.Cvar_Get( "cl_stereo", "0", 0 );
+
 
 	/*
 	** set PFD_STEREO if necessary

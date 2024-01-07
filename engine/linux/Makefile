@@ -4,7 +4,7 @@
 #
 # Nov '97 by Zoid <zoid@idsoftware.com>
 # Jan '19 by Krzysztof Kondrak <krzysztof.kondrak@gmail.com>
-# Dec '23 by starfrost
+# Dec '23-Jan '24 by starfrost
 
 # ELF only
 #
@@ -171,6 +171,7 @@ targets: $(TARGETS)
 QUAKE2_OBJS = \
 	$(BUILDDIR)/client/cl_cin.o \
 	$(BUILDDIR)/client/cl_ents.o \
+	$(BUILDDIR)/client/cl_font.o \
 	$(BUILDDIR)/client/cl_fx.o \
 	$(BUILDDIR)/client/cl_input.o \
 	$(BUILDDIR)/client/cl_inv.o \
@@ -180,7 +181,11 @@ QUAKE2_OBJS = \
 	$(BUILDDIR)/client/cl_pred.o \
 	$(BUILDDIR)/client/cl_tent.o \
 	$(BUILDDIR)/client/cl_scrn.o \
+	$(BUILDDIR)/client/cl_ttf.o \
 	$(BUILDDIR)/client/cl_ui.o \
+	$(BUILDDIR)/client/cl_ui_eventhandling.o \
+	$(BUILDDIR)/client/cl_ui_leaderboard.o \
+	$(BUILDDIR)/client/cl_ui_scripts.o \
 	$(BUILDDIR)/client/cl_view.o \
 	$(BUILDDIR)/client/console.o \
 	$(BUILDDIR)/client/keys.o \
@@ -238,6 +243,9 @@ $(BUILDDIR)/client/cl_cin.o :     $(CLIENT_DIR)/cl_cin.c
 $(BUILDDIR)/client/cl_ents.o :    $(CLIENT_DIR)/cl_ents.c
 	$(DO_CC)
 
+$(BUILDDIR)/client/cl_fx.o :      $(CLIENT_DIR)/cl_font.c
+	$(DO_CC)
+
 $(BUILDDIR)/client/cl_fx.o :      $(CLIENT_DIR)/cl_fx.c
 	$(DO_CC)
 
@@ -262,10 +270,19 @@ $(BUILDDIR)/client/cl_pred.o :    $(CLIENT_DIR)/cl_pred.c
 $(BUILDDIR)/client/cl_tent.o :    $(CLIENT_DIR)/cl_tent.c
 	$(DO_CC)
 
+$(BUILDDIR)/client/cl_ttf.o :    $(CLIENT_DIR)/cl_ttf.c
+	$(DO_CC)
+
 $(BUILDDIR)/client/cl_scrn.o :    $(CLIENT_DIR)/cl_scrn.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_ui.o :    $(CLIENT_DIR)/cl_ui.c
+	$(DO_CC)
+$(BUILDDIR)/client/cl_ui_eventhandling.o :    $(CLIENT_DIR)/cl_ui_eventhandling.c
+	$(DO_CC)
+$(BUILDDIR)/client/cl_ui_leaderboard.o :    $(CLIENT_DIR)/cl_ui_leaderboard.c
+	$(DO_CC)
+$(BUILDDIR)/client/cl_ui_scripts.o :    $(CLIENT_DIR)/cl_ui_scripts.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_view.o :    $(CLIENT_DIR)/cl_view.c
@@ -366,9 +383,6 @@ $(BUILDDIR)/client/vid_so.o :     $(LINUX_DIR)/vid_so.c
 
 $(BUILDDIR)/client/snd_alsa.o :  $(LINUX_DIR)/snd_alsa.c
 	$(DO_CC)
-
-$(BUILDDIR)/client/snd_mixa.o :   $(LINUX_DIR)/snd_mixa.s
-	$(DO_AS)
 
 $(BUILDDIR)/client/sys_linux.o :  $(LINUX_DIR)/sys_linux.c
 	$(DO_CC)
@@ -511,11 +525,11 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/g_spawn.o \
 	$(BUILDDIR)/game/g_target.o \
 	$(BUILDDIR)/game/g_trigger.o \
-	$(BUILDDIR)/game/g_turret.o \
 	$(BUILDDIR)/game/g_utils.o \
 	$(BUILDDIR)/game/g_weapon.o \
 	$(BUILDDIR)/game/m_actor.o \
 	$(BUILDDIR)/game/m_soldier.o \
+	$(BUILDDIR)/game/m_zombie.o \
 	$(BUILDDIR)/game/p_hud.o \
 	$(BUILDDIR)/game/p_trail.o \
 	$(BUILDDIR)/game/p_view.o \
@@ -571,9 +585,6 @@ $(BUILDDIR)/game/g_target.o :    $(GAME_DIR)/g_target.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/g_trigger.o :   $(GAME_DIR)/g_trigger.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/g_turret.o :    $(GAME_DIR)/g_turret.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/g_utils.o :     $(GAME_DIR)/g_utils.c
@@ -693,104 +704,6 @@ $(BUILDDIR)/ref_gl/q_shlinux.o :      $(LINUX_DIR)/q_shlinux.c
 
 $(BUILDDIR)/ref_gl/glob.o :           $(LINUX_DIR)/glob.c
 	$(DO_GL_SHLIB_CC)
-
-#############################################################################
-# REF_VK
-#############################################################################
-
-REF_VK_OBJS = \
-	$(BUILDDIR)/ref_vk/vk_buffer.o \
-	$(BUILDDIR)/ref_vk/vk_cmd.o \
-	$(BUILDDIR)/ref_vk/vk_common.o \
-	$(BUILDDIR)/ref_vk/vk_device.o \
-	$(BUILDDIR)/ref_vk/vk_draw.o \
-	$(BUILDDIR)/ref_vk/vk_image.o \
-	$(BUILDDIR)/ref_vk/vk_imp.o \
-	$(BUILDDIR)/ref_vk/vk_light.o \
-	$(BUILDDIR)/ref_vk/vk_mem_alloc.o \
-	$(BUILDDIR)/ref_vk/vk_mesh.o \
-	$(BUILDDIR)/ref_vk/vk_model.o \
-	$(BUILDDIR)/ref_vk/vk_pipeline.o \
-	$(BUILDDIR)/ref_vk/vk_rmain.o \
-	$(BUILDDIR)/ref_vk/vk_rmisc.o \
-	$(BUILDDIR)/ref_vk/vk_rsurf.o \
-	$(BUILDDIR)/ref_vk/vk_shaders.o \
-	$(BUILDDIR)/ref_vk/vk_swapchain.o \
-	$(BUILDDIR)/ref_vk/vk_validation.o \
-	$(BUILDDIR)/ref_vk/vk_warp.o \
-	\
-	$(BUILDDIR)/ref_vk/q_shared.o \
-	$(BUILDDIR)/ref_vk/q_shlinux.o \
-	$(BUILDDIR)/ref_vk/glob.o
-
-$(BUILDDIR)/ref_vk.$(SHLIBEXT) : $(REF_VK_OBJS)
-	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(REF_VK_OBJS) $(VKLDFLAGS)
-
-$(BUILDDIR)/ref_vk/vk_buffer.o :        $(REF_VK_DIR)/vk_buffer.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_cmd.o :       $(REF_VK_DIR)/vk_cmd.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_common.o :      $(REF_VK_DIR)/vk_common.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_device.o :       $(REF_VK_DIR)/vk_device.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_draw.o :        $(REF_VK_DIR)/vk_draw.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_image.o :       $(REF_VK_DIR)/vk_image.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_light.o :       $(REF_VK_DIR)/vk_light.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_mem_alloc.o :       $(REF_VK_DIR)/vk_mem_alloc.cpp
-	$(DO_VK_SHLIB_CPP)
-
-$(BUILDDIR)/ref_vk/vk_mesh.o :       $(REF_VK_DIR)/vk_mesh.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_model.o :        $(REF_VK_DIR)/vk_model.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_pipeline.o :        $(REF_VK_DIR)/vk_pipeline.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_rmain.o :        $(REF_VK_DIR)/vk_rmain.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_rmisc.o :        $(REF_VK_DIR)/vk_rmisc.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_rsurf.o :        $(REF_VK_DIR)/vk_rsurf.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_shaders.o :        $(REF_VK_DIR)/vk_shaders.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_swapchain.o :        $(REF_VK_DIR)/vk_swapchain.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_validation.o :        $(REF_VK_DIR)/vk_validation.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/vk_warp.o :        $(REF_VK_DIR)/vk_warp.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/q_shared.o :       $(GAME_DIR)/q_shared.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/q_shlinux.o :      $(LINUX_DIR)/q_shlinux.c
-	$(DO_VK_SHLIB_O_CC)
-
-$(BUILDDIR)/ref_vk/vk_imp.o :       $(LINUX_DIR)/vk_imp.c
-	$(DO_VK_SHLIB_CC)
-
-$(BUILDDIR)/ref_vk/glob.o :           $(LINUX_DIR)/glob.c
-	$(DO_VK_SHLIB_CC)
 
 #############################################################################
 # RPM
