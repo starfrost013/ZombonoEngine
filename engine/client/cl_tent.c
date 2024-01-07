@@ -253,26 +253,6 @@ void CL_SmokeAndFlash(vec3_t origin)
 
 /*
 =================
-CL_ParseParticles
-=================
-*/
-void CL_ParseParticles (void)
-{
-	int		color, count;
-	vec3_t	pos, dir;
-
-	MSG_ReadPos (&net_message, pos);
-	MSG_ReadDir (&net_message, dir);
-
-	color = MSG_ReadByte (&net_message);
-
-	count = MSG_ReadByte (&net_message);
-
-	CL_ParticleEffect (pos, dir, color, count);
-}
-
-/*
-=================
 CL_ParseBeam
 =================
 */
@@ -520,7 +500,15 @@ void CL_ParseLaser (int colors)
 CL_ParseTEnt
 =================
 */
-static byte splash_color[] = {0x00, 0xe0, 0xb0, 0x50, 0xd0, 0xe0, 0xe8};
+static vec4_t splash_color[] = {
+	{ 0, 0, 0, 0 },
+	{ 254, 171, 7, 255 }, 
+	{ 118, 123, 207, 255 }, 
+	{ 123, 95, 74, 255 }, 
+	{ 0, 255, 0, 255 },
+	{ 254, 171, 7, 255 },
+	{ 156, 31, 1, 255 }
+};
 
 void CL_ParseTEnt (void)
 {
@@ -528,10 +516,17 @@ void CL_ParseTEnt (void)
 	vec3_t	pos, pos2, dir;
 	explosion_t	*ex;
 	int		cnt;
-	int		color;
+	vec4_t	color;
 	int		r;
 	int		ent;
 	int		magnitude;
+
+	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
+	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
+	vec4_t legacy_colour_d0 = { 0, 255, 0, 255 };
+	vec4_t legacy_colour_df = { 254, 191, 15, 255 };
+	vec4_t legacy_colour_e0 = { 254, 171, 7, 255 };
+	vec4_t legacy_colour_e8 = { 156, 31, 1, 255 };
 
 	type = MSG_ReadByte (&net_message);
 
@@ -540,7 +535,7 @@ void CL_ParseTEnt (void)
 	case TE_BLOOD:			// bullet hitting flesh
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		CL_ParticleEffect (pos, dir, 0xe8, 60);
+		CL_ParticleEffect (pos, dir, legacy_colour_e8, 60);
 		break;
 
 	case TE_GUNSHOT:			// bullet hitting wall
@@ -549,9 +544,9 @@ void CL_ParseTEnt (void)
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
 		if (type == TE_GUNSHOT)
-			CL_ParticleEffect (pos, dir, 0, 40);
+			CL_ParticleEffect (pos, dir, legacy_colour_0, 40);
 		else
-			CL_ParticleEffect (pos, dir, 0xe0, 6);
+			CL_ParticleEffect (pos, dir, legacy_colour_e0, 6);
 
 		if (type != TE_SPARKS)
 		{
@@ -574,9 +569,9 @@ void CL_ParseTEnt (void)
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
 		if (type == TE_SCREEN_SPARKS)
-			CL_ParticleEffect (pos, dir, 0xd0, 40);
+			CL_ParticleEffect (pos, dir, legacy_colour_d0, 40);
 		else
-			CL_ParticleEffect (pos, dir, 0xb0, 40);
+			CL_ParticleEffect (pos, dir, legacy_colour_b0, 40);
 		//FIXME : replace or remove this sound
 		S_StartSound (pos, 0, 0, cl_sfx_lashit, 1, ATTN_NORM, 0);
 		break;
@@ -584,7 +579,7 @@ void CL_ParseTEnt (void)
 	case TE_SHOTGUN:			// bullet hitting wall
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		CL_ParticleEffect (pos, dir, 0, 20);
+		CL_ParticleEffect (pos, dir, legacy_colour_0, 20);
 		CL_SmokeAndFlash(pos);
 		break;
 
@@ -594,9 +589,20 @@ void CL_ParseTEnt (void)
 		MSG_ReadDir (&net_message, dir);
 		r = MSG_ReadByte (&net_message);
 		if (r > 6)
-			color = 0x00;
+		{
+
+			color[0] = legacy_colour_0[0];
+			color[1] = legacy_colour_0[1];
+			color[2] = legacy_colour_0[2];
+			color[3] = legacy_colour_0[3];
+		}
 		else
-			color = splash_color[r];
+		{
+			color[0] = splash_color[r][0];
+			color[1] = splash_color[r][1];
+			color[2] = splash_color[r][2];
+			color[3] = splash_color[r][3];
+		}
 		CL_ParticleEffect (pos, dir, color, cnt);
 
 		if (r == SPLASH_SPARKS)
@@ -615,7 +621,12 @@ void CL_ParseTEnt (void)
 		cnt = MSG_ReadByte (&net_message);
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		color = MSG_ReadByte (&net_message);
+
+		color[0] = MSG_ReadByte(&net_message);
+		color[1] = MSG_ReadByte(&net_message);
+		color[2] = MSG_ReadByte(&net_message);
+		color[3] = MSG_ReadByte(&net_message);
+		
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
 
@@ -786,7 +797,12 @@ void CL_ParseTEnt (void)
 		cnt = MSG_ReadByte (&net_message);
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		color = MSG_ReadByte (&net_message);
+
+		color[0] = MSG_ReadByte(&net_message);
+		color[1] = MSG_ReadByte(&net_message);
+		color[2] = MSG_ReadByte(&net_message);
+		color[3] = MSG_ReadByte(&net_message);
+
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 
 		ex = CL_AllocExplosion ();
@@ -807,7 +823,7 @@ void CL_ParseTEnt (void)
 	case TE_GREENBLOOD:
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		CL_ParticleEffect2 (pos, dir, 0xdf, 30);
+		CL_ParticleEffect2 (pos, dir, legacy_colour_df, 30);
 		break;
 
 	// RAFAEL
@@ -815,8 +831,13 @@ void CL_ParseTEnt (void)
 		cnt = MSG_ReadByte (&net_message);
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
-		color = MSG_ReadByte (&net_message);
-		CL_ParticleEffect3 (pos, dir, color, cnt);
+
+		color[0] = MSG_ReadByte(&net_message);
+		color[1] = MSG_ReadByte(&net_message);
+		color[2] = MSG_ReadByte(&net_message);
+		color[3] = MSG_ReadByte(&net_message);
+
+		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
 //PGM
 //==============
