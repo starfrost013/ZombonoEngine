@@ -11,6 +11,8 @@ January 14, 2024
 * Ported particle engine to 32-bit colour
 * You don't have to press tab to hide the leaderboard anymore, it just hides itself when you stop holding tab
 * Leaderboard now updates in real time
+* Changed conback and made a 16*9 widescreen conback.
+* Removed old scoreboard from Quake2
 
 Version 0.04-pre2
 December 31, 2023

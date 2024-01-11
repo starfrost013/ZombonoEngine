@@ -963,65 +963,6 @@ void SCR_ExecuteLayoutString (char *s)
 			continue;
 		}
 
-		if (!strcmp(token, "client"))
-		{	// draw a deathmatch client block
-			
-			int				score, ping, time;
-			common_team		team;
-
-			token = COM_Parse (&s);
-			x = viddef.width/2 - 160 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
-			token = COM_Parse (&s);
-			y = viddef.height/2 - 120 * vid_hudscale->value + atoi(token)*vid_hudscale->value;
-			SCR_AddDirtyPoint (x, y);
-			SCR_AddDirtyPoint (x+159 * vid_hudscale->value, y+39 * vid_hudscale->value);
-
-			token = COM_Parse (&s);
-			value = atoi(token);
-			if (value >= MAX_CLIENTS || value < 0)
-				Com_Error (ERR_DROP, "client >= MAX_CLIENTS");
-			ci = &cl.clientinfo[value];
-
-			token = COM_Parse (&s);
-			score = atoi(token);
-
-			token = COM_Parse(&s);
-			team = atoi(token);
-
-			token = COM_Parse (&s);
-			ping = atoi(token);
-
-			token = COM_Parse (&s);
-			time = atoi(token);
-
-			Draw_StringAlt (x+32 * vid_hudscale->value, y, ci->name);
-			Draw_String (x+32 * vid_hudscale->value, y+8 * vid_hudscale->value,  "Score: ");
-			Draw_StringAlt (x+32 * vid_hudscale->value +7*8 * vid_hudscale->value, y+8 * vid_hudscale->value,  va("%i", score));
-
-			// draw the team
-			Draw_String(x+32 * vid_hudscale->value, y+16 * vid_hudscale->value, "Team: ");
-			switch (team)
-			{
-				case common_team_director:
-					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Director");
-					break;
-				case common_team_player:
-					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Player");
-					break;
-				case common_team_unassigned:
-					Draw_StringAlt(x + 32 + (8 * 7) * vid_hudscale->value, y + 16 * vid_hudscale->value, "Unassigned");
-					break;
-			}
-			
-			Draw_String (x+32 * vid_hudscale->value, y+24 * vid_hudscale->value, va("Ping:  %i", ping));
-			Draw_String (x+32 * vid_hudscale->value, y+32 * vid_hudscale->value, va("Time:  %i", time));
-
-			if (!ci->icon)
-				ci = &cl.baseclientinfo;
-			re.DrawPic (x, y, ci->iconname);
-			continue;
-		}
-
 		if (!strcmp(token, "picn"))
 		{	// draw a pic from a name
 			token = COM_Parse (&s);

@@ -429,7 +429,6 @@ void Cmd_Inven_f (edict_t *ent)
 
 	cl = ent->client;
 
-	cl->showscores = false;
 	cl->showhelp = false;
 
 	if (cl->showinventory)
@@ -621,7 +620,6 @@ Cmd_PutAway_f
 */
 void Cmd_PutAway_f (edict_t *ent)
 {
-	ent->client->showscores = false;
 	ent->client->showhelp = false;
 	ent->client->showinventory = false;
 }
@@ -905,11 +903,6 @@ void ClientCommand (edict_t *ent)
 	else if (!Q_stricmp (cmd, "say_team"))
 	{
 		Cmd_Say_f (ent, true, false);
-		return;
-	}
-	else if (!Q_stricmp (cmd, "score"))
-	{
-		Cmd_Score_f (ent);
 		return;
 	}
 	else if (!Q_stricmp(cmd, "leaderboard"))

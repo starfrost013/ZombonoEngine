@@ -169,29 +169,28 @@ void BeginIntermission (edict_t *targ)
 	}
 }
 
-
 /*
 ==================
-DeathmatchScoreboardMessage
+G_SendLeaderboard
 
+Sends over the leaderboard
 ==================
 */
-void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
+void G_SendLeaderboard(edict_t* ent)
 {
-	char	entry[1024];
-	char	string[1400];
-	int		stringlength;
-	int		i, j, k;
-	int		sorted[MAX_CLIENTS];
-	int		sortedscores[MAX_CLIENTS];
-	int		score, total;
-	int		picnum;
-	int		x, y;
-	gclient_t	*cl;
-	edict_t		*cl_ent;
-	char	*tag;
+	edict_t* client_edict;
+	// tell the client there is a leaderboard update coming
+	gi.WriteByte(svc_leaderboard);
 
-	// sort the clients by score
+	int client_count = G_CountClients();
+
+	gi.WriteByte(client_count);
+
+	// 	// loop through them again to actually send each client's data
+	// TODO: SORT SCORES!!!
+	// sorting algorithm from previous code:
+	/*
+		// sort the clients by score
 	total = 0;
 	for (i=0 ; i<game.maxclients ; i++)
 	{
@@ -213,92 +212,8 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
 		sortedscores[j] = score;
 		total++;
 	}
-
-	// print level name and exit rules
-	string[0] = 0;
-
-	stringlength = (int)strlen(string);
-
-	// add the clients in sorted order
-	if (total > 12)
-		total = 12;
-
-	for (i=0 ; i<total ; i++)
-	{
-		cl = &game.clients[sorted[i]];
-		cl_ent = g_edicts + 1 + sorted[i];
-
-		picnum = gi.imageindex ("i_fixme");
-		x = (i>=6) ? 160 : 0;
-		y = 32 + 32 * (i%6);
-
-		// add a dogtag
-		if (cl_ent == ent)
-			tag = "tag1"; 
-		else if (cl_ent == killer)
-			tag = "tag2";
-		else
-			tag = NULL;
-		if (tag)
-		{
-			Com_sprintf (entry, sizeof(entry),
-				"xv %i yv %i picn %s ",x+32, y, tag);
-			j = (int)strlen(entry);
-			if (stringlength + j > 1024)
-				break;
-			strcpy (string + stringlength, entry);
-			stringlength += j;
-		}
-
-		// send the layout
-		Com_sprintf (entry, sizeof(entry),
-			"client %i %i %i %i %i %i %i ",
-			x, y, sorted[i], cl->resp.score, cl_ent->team, cl->ping, (level.framenum - cl->resp.enterframe)/600);
-		j = (int)strlen(entry);
-		if (stringlength + j > 1024)
-			break;
-		strcpy (string + stringlength, entry);
-		stringlength += j;
-	}
-
-	gi.WriteByte (svc_layout);
-	gi.WriteString (string);
-}
-
-
-/*
-==================
-DeathmatchScoreboard
-
-Draw instead of help message.
-Note that it isn't that hard to overflow the 2800 byte message limit!
-==================
 */
-void DeathmatchScoreboard (edict_t *ent)
-{
-	DeathmatchScoreboardMessage (ent, ent->enemy);
-	gi.unicast (ent, true);
-}
 
-/*
-==================
-G_SendLeaderboard
-
-Sends over the leaderboard
-==================
-*/
-void G_SendLeaderboard(edict_t* ent)
-{
-	edict_t* client_edict;
-	// tell the client there is a leaderboard update coming
-	gi.WriteByte(svc_leaderboard);
-
-	int client_count = G_CountClients();
-
-	gi.WriteByte(client_count);
-
-	// 	// loop through them again to actually send each client's data
-	// TODO: SORT SCORES!!!
 
 	for (int client_num = 0; client_num < game.maxclients; client_num++)
 	{
@@ -329,28 +244,6 @@ void G_SendLeaderboard(edict_t* ent)
 
 	// send it!
 	gi.unicast(ent, true); // make it false? it's still not very common...(only when the user presses TAB)
-}
-
-/*
-==================
-Cmd_Score_f
-
-Display the scoreboard
-==================
-*/
-void Cmd_Score_f (edict_t *ent)
-{
-	ent->client->showinventory = false;
-	ent->client->showhelp = false;
-
-	if (ent->client->showscores)
-	{
-		ent->client->showscores = false;
-		return;
-	}
-
-	ent->client->showscores = true;
-	DeathmatchScoreboard (ent);
 }
 
 void Cmd_Leaderboard_f(edict_t* ent)
@@ -522,8 +415,7 @@ void G_SetStats (edict_t *ent)
 	//
 	ent->client->ps.stats[STAT_LAYOUTS] = 0;
 
-	if (ent->client->pers.health <= 0 || level.intermissiontime
-		|| ent->client->showscores)
+	if (ent->client->pers.health <= 0 || level.intermissiontime)
 		ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 	if (ent->client->showinventory && ent->client->pers.health > 0)
 		ent->client->ps.stats[STAT_LAYOUTS] |= 2;
@@ -582,7 +474,7 @@ void G_SetSpectatorStats (edict_t *ent)
 
 	// layouts are independant in spectator
 	cl->ps.stats[STAT_LAYOUTS] = 0;
-	if (cl->pers.health <= 0 || level.intermissiontime || cl->showscores)
+	if (cl->pers.health <= 0 || level.intermissiontime)
 		cl->ps.stats[STAT_LAYOUTS] |= 1;
 	if (cl->showinventory && cl->pers.health > 0)
 		cl->ps.stats[STAT_LAYOUTS] |= 2;
