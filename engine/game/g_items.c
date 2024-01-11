@@ -1505,7 +1505,7 @@ always owned, never in the world
 	},
 
 	// 
-	// Director team engine
+	// Director team weapons: Bamfuslicator
 	//
 
 	{
@@ -1529,6 +1529,52 @@ always owned, never in the world
 			/* precache */ "weapons/sshotf1b.wav",
 			team_director,
 	},
+
+	{
+		"weapon_planfuslicator",
+			Pickup_Weapon,
+			Use_Weapon,
+			Drop_Weapon,
+			Weapon_Bamfuslicator,
+			"misc/w_pkup.wav",
+			"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
+			"models/weapons/v_shotg2/tris.md2",
+			/* icon */		"w_planfuslicator",
+			/* pickup */	"Director - Planfuslicator",
+			0,
+			0, // 0 = infinite
+			NULL, // Also means infinite
+			IT_WEAPON,
+			WEAP_PLANFUSLICATOR,
+			NULL,
+			0,
+			/* precache */ "weapons/sshotf1b.wav",
+			team_director,
+	},
+	{
+		"weapon_tangfuslicator",
+			Pickup_Weapon,
+			Use_Weapon,
+			Drop_Weapon,
+			Weapon_Bamfuslicator,
+			"misc/w_pkup.wav",
+			"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
+			"models/weapons/v_shotg2/tris.md2",
+			/* icon */		"w_tangfuslicator",
+			/* pickup */	"Director - fuslicator",
+			0,
+			0, // 0 = infinite
+			NULL, // Also means infinite
+			IT_WEAPON,
+			WEAP_TANGFUSLICATOR,
+			NULL,
+			0,
+			/* precache */ "weapons/sshotf1b.wav",
+			team_director,
+	},
+
+
+
 
 	//
 	// AMMO ITEMS

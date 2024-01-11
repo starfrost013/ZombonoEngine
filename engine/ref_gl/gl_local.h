@@ -249,7 +249,6 @@ extern	int		c_visible_textures;
 
 extern	float	r_world_matrix[16];
 
-void R_TranslatePlayerSkin (int playernum);
 void GL_Bind (int texnum);
 void GL_MBind( GLenum target, int texnum );
 void GL_TexEnv( GLenum value );
@@ -264,9 +263,6 @@ void R_PushDlights (void);
 extern	model_t	*r_worldmodel;
 
 extern	int		registration_sequence;
-
-
-void V_AddBlend (float r, float g, float b, float a, float *v_blend);
 
 qboolean R_Init( void *hinstance, void *hWnd );
 void	 R_Shutdown( void );
@@ -288,7 +284,6 @@ qboolean R_CullBox (vec3_t mins, vec3_t maxs);
 void R_RotateForEntity (entity_t *e);
 void R_MarkLeaves (void);
 
-glpoly_t *WaterWarpPolyVerts (glpoly_t *p);
 void EmitWaterPolys (msurface_t *fa);
 void R_AddSkySurface (msurface_t *fa);
 void R_ClearSkyBox (void);
@@ -376,7 +371,6 @@ IMPORTED FUNCTIONS
 */
 
 extern	refimport_t	ri;
-
 
 /*
 ====================================================================

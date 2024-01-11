@@ -45,6 +45,12 @@ void UI_LeaderboardUIToggle(int btn)
 {
 	if (btn == K_TAB)
 	{
+		if (current_ui != NULL)
+		{
+			// ugly hack so we can't override teamui
+			if (!strncmp(current_ui->name, "TeamUI", 6)) return;
+		}
+
 		// fucking hack
 		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
 
@@ -59,7 +65,6 @@ void UI_LeaderboardUIUpdate()
 	char text[TEXT_BUF_LENGTH];
 	// for team score TODO: we do this twice in different places
 	int director_score = 0, player_score = 0;
-
 	// stupid hack
 	UI_Clear("LeaderboardUI");
 	UI_LeaderboardUICreate();
@@ -200,5 +205,5 @@ void UI_LeaderboardUIUpdate()
 
 	// You need to toggle it here otherwise you can never turn it on because UIs not being disabled don't get events.
 	// Writing UI code is like being shot into the sun.
-	if (current_ui == NULL || strcmp(current_ui->name, "TeamUI")) UI_LeaderboardUIToggle(K_TAB);
+	//if (current_ui == NULL || strcmp(current_ui->name, "TeamUI")) UI_LeaderboardUIToggle(K_TAB);
 }

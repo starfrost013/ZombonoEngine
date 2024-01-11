@@ -225,6 +225,7 @@ typedef struct gitem_armor_s
 #define IT_POWERUP		32
 
 // gitem_t->weapmodel for weapons indicates model index
+// Todo: Replace most of the Q2 weapons
 #define WEAP_BLASTER				1 
 #define WEAP_SHOTGUN				2 
 #define WEAP_SUPERSHOTGUN			3 
@@ -237,7 +238,8 @@ typedef struct gitem_armor_s
 #define WEAP_RAILGUN				10
 #define WEAP_BFG					11
 #define WEAP_BAMFUSLICATOR			12
-#define WEAP_MATERIALIZER			13
+#define WEAP_PLANFUSLICATOR			13		// Materialiser
+#define WEAP_TANGFUSLICATOR			14		// Fuslicator 3: Zombie Edition
 
 typedef struct gitem_s
 {

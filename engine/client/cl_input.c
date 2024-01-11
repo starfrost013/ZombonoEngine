@@ -369,6 +369,7 @@ CL_CreateCmd
 */
 usercmd_t CL_CreateCmd (void)
 {
+	// you can't move if a UI is active
 	usercmd_t	cmd;
 
 	frame_msec = sys_frame_time - old_sys_frame_time;
@@ -383,7 +384,6 @@ usercmd_t CL_CreateCmd (void)
 	// allow mice or other external controllers to add to the move
 	IN_Move (&cmd);
 
-	
 	CL_FinishMove (&cmd);
 
 	old_sys_frame_time = sys_frame_time;

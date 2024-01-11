@@ -39,6 +39,9 @@ qboolean UI_TeamUICreate()
 
 void UI_TeamUISetDirectorTeam(int btn, int x, int y)
 {
+	if (current_ui == NULL) return;
+	if (strncmp(current_ui->name, "TeamUI", 6)) return;
+
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
@@ -47,6 +50,9 @@ void UI_TeamUISetDirectorTeam(int btn, int x, int y)
 
 void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 {
+	if (current_ui == NULL) return;
+	if (strncmp(current_ui->name, "TeamUI", 6)) return;
+
 	UI_SetActive("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);

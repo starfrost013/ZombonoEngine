@@ -1077,13 +1077,10 @@ void ClientEndServerFrame (edict_t *ent)
 	VectorClear (ent->client->kick_origin);
 	VectorClear (ent->client->kick_angles);
 
-	// SCOREBOARD IS NOW ONLY UPDATED WHEN THE USER WANTS IT TO BE AND AT END OF MATCH!!!
-	/*
-	if (ent->client->showscores && !(level.framenum & 31) )
+	// update the leaderboard every 31 frames
+	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
+	if (level.framenum & 31) // todo : check if inverting this (!(framenum & 31)) was causing crashes or not
 	{
-		DeathmatchScoreboardMessage (ent, ent->enemy);
-		gi.unicast (ent, false);
+		G_SendLeaderboard(ent);
 	}
-	*/
 }
-

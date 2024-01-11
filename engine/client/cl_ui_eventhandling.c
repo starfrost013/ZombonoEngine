@@ -66,47 +66,56 @@ void UI_HandleEventOnClick(int btn, int x, int y)
 {
 	if (current_ui == NULL) return;
 
-	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
-		ui_control_t* ui_control_ptr = &current_ui->controls[ui_control_num];
+		ui_t* ui_ptr = &ui_list[ui_num];
 
-		// Handle focus changes for key events
-		// TODO: Scaling
-		if (x >= ui_control_ptr->position_x
-			&& y >= ui_control_ptr->position_y
-			&& x <= ui_control_ptr->position_x + ui_control_ptr->size_x
-			&& y <= ui_control_ptr->position_y + ui_control_ptr->size_y)
+		for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
-			ui_control_ptr->focused = true;
+			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-			// if the UI has an onclick event handler, call it
-			if (ui_control_ptr->on_click)
+			// Handle focus changes for key events
+			// TODO: Scaling
+			if (x >= ui_control_ptr->position_x
+				&& y >= ui_control_ptr->position_y
+				&& x <= ui_control_ptr->position_x + ui_control_ptr->size_x
+				&& y <= ui_control_ptr->position_y + ui_control_ptr->size_y
+				&& ui_ptr == current_ui)
 			{
-				ui_control_ptr->on_click(btn, x, y);
-			}
 
-			// UI may be disabled
-			if (current_ui == NULL) return;
-		}
-		else
-		{
-			ui_control_ptr->focused = false;
+				// if the UI has an onclick event handler, call it
+				if (ui_control_ptr->on_click)
+				{
+					// YES this is terribly inefficient because you have to check 8 billion uis. I dont care. Fuck UI
+					ui_control_ptr->on_click(btn, x, y);
+				}
+
+			}
+			else
+			{
+				ui_control_ptr->focused = false;
+			}
 		}
 	}
+
 }
 
 void UI_HandleEventOnKeyDown(int btn)
 {
-	if (current_ui == NULL) return;
-
-	for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
-		ui_control_t* ui_control_ptr = &current_ui->controls[ui_control_num];
+		ui_t* ui_ptr = &ui_list[ui_num];
 
-		// checking for focusing is the choice of each individual UI
-		if (ui_control_ptr->on_key_down)
+		for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
-			ui_control_ptr->on_key_down(btn);
-		}
+			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
+
+			// checking for focusing is the choice of each individual UI
+			if (ui_control_ptr->on_key_down)
+			{
+				ui_control_ptr->on_key_down(btn);
+			}
+		}		
 	}
+
 }

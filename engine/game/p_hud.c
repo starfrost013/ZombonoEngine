@@ -63,7 +63,7 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 	// tell the client to display the leaderboard
 	// 
 	// send the leaderboard info
-	G_SendLeaderboard(ent);
+	G_SendLeaderboard(ent, true);
 
 	// ...and if they won or lost
 	if (gamemode->value == GAMEMODE_TDM
@@ -314,6 +314,7 @@ void G_SendLeaderboard(edict_t* ent)
 			gi.WriteShort((level.framenum - client_edict->client->resp.enterframe) / 600); // inherited from earlier code figure out what this actually does
 			gi.WriteByte(client_edict->client->resp.spectator);
 			gi.WriteString(level.level_name);
+
 			// send the time remaining if timelimit > 0
 			if (timelimit->value > 0)
 			{

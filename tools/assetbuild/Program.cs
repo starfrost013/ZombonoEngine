@@ -87,7 +87,7 @@ try
     // copy them all to the output directory
 
     // exclude raw assets
-    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/"];
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "scrnshot", "screenshot"];
 
     foreach (string gameFile in gameFiles)
     {
