@@ -14,6 +14,7 @@ January 14, 2024
 * Changed conback and made a 16*9 widescreen conback.
 * Removed old scoreboard from Quake2
 * Better integrated new UI -you won't slide around anymore, and you still can't input commands to the player while a UI is active.
+* Green zombies.
 
 Version 0.04-pre2
 December 31, 2023
