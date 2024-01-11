@@ -1398,25 +1398,29 @@ static char *creditsIndex[256];
 static char *creditsBuffer;
 static const char *creditstext[] =
 {
-	"Zombono",
-	"© 2023-2024 starfrost",
+	"+Z O M B O N O  C R E D I T S"
+	"",
 	"",
 	"+PROGRAMMING",
+	"",
 	"Connor Hyde (starfrost) (Digital Euphoria???)",
 	"",
 	"+MUSIC",
+	"",
 	"'Stephanie Peterson, LLC' / zorg_is_also_here / sirZorg",
 	"",
 	"+TOOLS",
 	"",
-	"TrenchBroom Team",
+	"TrenchBroom +Team",
 	"ericw-tools Team",
 	"Krzysztof Kondrak",
 	"id Software",
 	"unsubtract",
 	"",
+	"Game software (C) 2023-2024 starfrost",
+	"",
 	"Based on vkQuake2",
-	"Original code © 1997-2001 Id Software, © 2018-2023 Krzysztof Kondrak",
+	"Original code (C) 1997-2001 Id Software, (C) 2018-2023 Krzysztof Kondrak",
 	"",
 	"See licensing file for licensing information",
 	0
