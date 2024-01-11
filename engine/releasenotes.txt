@@ -16,7 +16,7 @@ January 14, 2024
 * Better integrated new UI -you won't slide around anymore, and you still can't input commands to the player while a UI is active.
 * Changed zombies to be a green colour.
 * Fixed zombie gib models - they were pointing to the wrong texture. This doesn't fix the gibs yet...
-* Default intensity convar value changed from 2 to 1. Is it too dark?
+* Default intensity convar value changed from 2 to 1.2. Is it too dark?
 
 Version 0.04-pre2
 December 31, 2023

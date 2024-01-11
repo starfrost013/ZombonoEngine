@@ -30,8 +30,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <inttypes.h>
 
+#define	GAMENAME	"Zombono"
+
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"Zombono"
+#define GAMEVERSION GAMENAME " v0.0.4 " __DATE__
 
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1
