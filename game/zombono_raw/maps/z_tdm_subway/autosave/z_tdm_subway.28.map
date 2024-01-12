@@ -2372,3 +2372,11 @@
 ( 144 -616 904 ) ( 144 -617 904 ) ( 144 -616 905 ) blockout/blockout 0 0 0 1 1
 }
 }
+// entity 19
+{
+"classname" "path_corner"
+"origin" "-64 -784 792"
+"target" "train_stop02"
+"targetname" "train_stop01"
+"wait" "10"
+}

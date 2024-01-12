@@ -1546,6 +1546,12 @@ again:
 		return;
 	}
 
+	if (ent->target == ent->targetname)
+	{
+		gi.dprintf("train_next: target for %s same as targetname\n", ent->target);
+		return;
+	}
+
 	self->target = ent->target;
 
 	// check for a teleport path_corner

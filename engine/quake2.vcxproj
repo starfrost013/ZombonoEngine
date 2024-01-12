@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="client\cl_ents.c" />
-    <ClCompile Include="client\cl_font.c" />
+    <ClCompile Include="client\cl_text.c" />
     <ClCompile Include="client\cl_fx.c" />
     <ClCompile Include="client\cl_input.c" />
     <ClCompile Include="client\cl_inv.c" />

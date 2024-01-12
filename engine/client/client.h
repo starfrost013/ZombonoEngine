@@ -376,7 +376,7 @@ void CL_BlasterTrail (vec3_t start, vec3_t end);
 void CL_QuadTrail (vec3_t start, vec3_t end);
 void CL_RailTrail (vec3_t start, vec3_t end);
 void CL_BubbleTrail (vec3_t start, vec3_t end);
-void CL_FlagTrail (vec3_t start, vec3_t end, float color);
+void CL_FlagTrail (vec3_t start, vec3_t end, vec4_t color);
 
 // RAFAEL
 void CL_IonripperTrail (vec3_t start, vec3_t end);
@@ -414,7 +414,6 @@ void CL_ParseMuzzleFlash2 (void);
 
 void CL_SetLightstyle (int i);
 
-void CL_RunParticles (void);
 void CL_RunDLights (void);
 void CL_RunLightStyles (void);
 
@@ -649,8 +648,8 @@ void UI_Draw();																																// Draws a UI.
 void UI_Clear(char* name);																													// Removes all the controls in a UI.
 
 // UI: Internal
-ui_t* UI_GetUI(char* name);																										// Returns a pointer so NULL can be indicated for failure
-ui_control_t* UI_GetControl(char* ui_name, char* name);																			// Gets the control with name name in the ui UI.
+ui_t* UI_GetUI(char* name);																													// Returns a pointer so NULL can be indicated for failure
+ui_control_t* UI_GetControl(char* ui_name, char* name);																						// Gets the control with name name in the ui UI.
 
 // UI: Create Scripts
 // TeamUI
@@ -665,23 +664,27 @@ void UI_LeaderboardUIToggle(int btn);
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();
 
-//
-// cl_ttf.c
-// Truetype Font Loader
-//
-qboolean TTF_Init();
-void TTF_Shutdown();
+#define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at one time.
 
 //
-// cl_font.c
-// Modern Fontloader
+// cl_ttf.c
+// Truetype Font Loader (Modern Fontloader)
 //
 
 typedef struct font_s
 {
 	char		font_name[32];
 	int			size;
-
 } font_t;
 
-qboolean Font_Init();
+font_t			fonts[MAX_FONTS];
+
+qboolean TTF_Init();
+void TTF_Shutdown();
+
+//
+// cl_text.c
+// Modern Text Engine
+//
+
+qboolean Text_Init();

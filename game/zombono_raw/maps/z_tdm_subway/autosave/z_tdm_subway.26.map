@@ -1172,6 +1172,15 @@
 ( -96 -592 896 ) ( -26.499999999999996 -592 896 ) ( -96 -592 898 ) blockout/blockout 0 0 0 1 1
 ( 1016 -608 912 ) ( 1016 -610 912 ) ( 1016 -608 914 ) blockout/blockout 0 0 0 1 1
 }
+// brush 116
+{
+( 368 -656 904 ) ( 368 -655 904 ) ( 368 -656 905 ) blockout/blockout 0 0 0 1 1
+( 368 -656 904 ) ( 368 -656 905 ) ( 369 -656 904 ) blockout/blockout 0 0 0 1 1
+( 368 -656 904 ) ( 369 -656 904 ) ( 368 -655 904 ) blockout/blockout 0 0 0 1 1
+( 432 -648 912 ) ( 432 -647 912 ) ( 433 -648 912 ) blockout/blockout 0 0 0 1 1
+( 432 -648 912 ) ( 433 -648 912 ) ( 432 -648 913 ) blockout/blockout 0 0 0 1 1
+( 432 -648 912 ) ( 432 -648 913 ) ( 432 -647 912 ) blockout/blockout 0 0 0 1 1
+}
 }
 // entity 1
 {
@@ -1877,82 +1886,22 @@
 // entity 8
 {
 "classname" "path_corner"
-"origin" "1240 -792 792"
-"target" "train_stop03"
+"origin" "1024 -616 904"
+"target" "train_stop01"
 "targetname" "train_stop02"
 }
 // entity 9
 {
-"classname" "path_corner"
-"origin" "-80 -784 792"
-"target" "train_stop02"
-"targetname" "train_stop01"
-"wait" "10"
+"classname" "func_group"
+"_tb_type" "_tb_group"
+"_tb_name" "train_test"
+"_tb_id" "15"
 }
 // entity 10
 {
-"classname" "path_corner"
-"origin" "1272 -776 792"
-"target" "train_stop04"
-"targetname" "train_stop03"
-}
-// entity 11
-{
-"classname" "path_corner"
-"origin" "1296 -736 792"
-"target" "train_stop05"
-"targetname" "train_stop04"
-}
-// entity 12
-{
-"classname" "path_corner"
-"origin" "1304 -680 792"
-"target" "train_stop06"
-"targetname" "train_stop05"
-}
-// entity 13
-{
-"classname" "path_corner"
-"origin" "1304 312 792"
-"target" "train_stop07"
-"targetname" "train_stop06"
-}
-// entity 14
-{
-"classname" "path_corner"
-"origin" "1320 344 792"
-"target" "train_stop08"
-"targetname" "train_stop07"
-}
-// entity 15
-{
-"classname" "path_corner"
-"origin" "1352 368 792"
-"target" "train_stop09"
-"targetname" "train_stop08"
-}
-// entity 16
-{
-"classname" "path_corner"
-"origin" "1408 384 792"
-"target" "train_stop10"
-"targetname" "train_stop09"
-}
-// entity 17
-{
-"classname" "path_corner"
-"origin" "1688 384 792"
-"target" "train_stop10"
-"targetname" "train_stop10"
-"wait" "0"
-}
-// entity 18
-{
 "classname" "func_train"
 "target" "train_stop01"
-"targetname" "the_train"
-"speed" "100"
-"spawnflags" "1"
+"_tb_group" "15"
 // brush 0
 {
 ( -96 -776 784 ) ( -96 -775.5000000000001 784 ) ( -96 -776 799 ) blockout/blockout 0 0 0 1 1
@@ -2371,4 +2320,11 @@
 ( -96 -608 896 ) ( -81 -608 896 ) ( -96 -608 897 ) blockout/blockout 0 0 0 1 1
 ( 144 -616 904 ) ( 144 -617 904 ) ( 144 -616 905 ) blockout/blockout 0 0 0 1 1
 }
+}
+// entity 11
+{
+"classname" "path_corner"
+"origin" "248 -624 904"
+"target" "train_stop02"
+"targetname" "train_stop01"
 }

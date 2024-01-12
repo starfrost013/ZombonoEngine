@@ -1877,82 +1877,25 @@
 // entity 8
 {
 "classname" "path_corner"
-"origin" "1240 -792 792"
-"target" "train_stop03"
+"origin" "1024 -616 792"
+"target" "train_stop01"
 "targetname" "train_stop02"
 }
 // entity 9
 {
-"classname" "path_corner"
-"origin" "-80 -784 792"
-"target" "train_stop02"
-"targetname" "train_stop01"
-"wait" "10"
+"classname" "func_group"
+"_tb_type" "_tb_group"
+"_tb_name" "train_test"
+"_tb_id" "15"
 }
 // entity 10
 {
-"classname" "path_corner"
-"origin" "1272 -776 792"
-"target" "train_stop04"
-"targetname" "train_stop03"
-}
-// entity 11
-{
-"classname" "path_corner"
-"origin" "1296 -736 792"
-"target" "train_stop05"
-"targetname" "train_stop04"
-}
-// entity 12
-{
-"classname" "path_corner"
-"origin" "1304 -680 792"
-"target" "train_stop06"
-"targetname" "train_stop05"
-}
-// entity 13
-{
-"classname" "path_corner"
-"origin" "1304 312 792"
-"target" "train_stop07"
-"targetname" "train_stop06"
-}
-// entity 14
-{
-"classname" "path_corner"
-"origin" "1320 344 792"
-"target" "train_stop08"
-"targetname" "train_stop07"
-}
-// entity 15
-{
-"classname" "path_corner"
-"origin" "1352 368 792"
-"target" "train_stop09"
-"targetname" "train_stop08"
-}
-// entity 16
-{
-"classname" "path_corner"
-"origin" "1408 384 792"
-"target" "train_stop10"
-"targetname" "train_stop09"
-}
-// entity 17
-{
-"classname" "path_corner"
-"origin" "1688 384 792"
-"target" "train_stop10"
-"targetname" "train_stop10"
-"wait" "0"
-}
-// entity 18
-{
 "classname" "func_train"
 "target" "train_stop01"
-"targetname" "the_train"
+"targetname" ""
 "speed" "100"
 "spawnflags" "1"
+"_tb_group" "15"
 // brush 0
 {
 ( -96 -776 784 ) ( -96 -775.5000000000001 784 ) ( -96 -776 799 ) blockout/blockout 0 0 0 1 1
@@ -2371,4 +2314,67 @@
 ( -96 -608 896 ) ( -81 -608 896 ) ( -96 -608 897 ) blockout/blockout 0 0 0 1 1
 ( 144 -616 904 ) ( 144 -617 904 ) ( 144 -616 905 ) blockout/blockout 0 0 0 1 1
 }
+}
+// entity 11
+{
+"classname" "path_corner"
+"origin" "168 -624 792"
+"target" "train_stop02"
+"targetname" "train_stop01"
+}
+// entity 12
+{
+"classname" "path_corner"
+"origin" "1072 -608 792"
+"target" "train_stop04"
+"targetname" "train_stop03"
+}
+// entity 13
+{
+"classname" "path_corner"
+"origin" "1104 -584 792"
+"target" "train_stop05"
+"targetname" "train_stop04"
+}
+// entity 14
+{
+"classname" "path_corner"
+"origin" "1120 -552 792"
+"target" "train_stop06"
+"targetname" "train_stop05"
+}
+// entity 15
+{
+"classname" "path_corner"
+"origin" "1120 520 792"
+"target" "train_stop08"
+"targetname" "train_stop07"
+}
+// entity 16
+{
+"classname" "path_corner"
+"origin" "1128 544 792"
+"target" "train_stop09"
+"targetname" "train_stop08"
+}
+// entity 17
+{
+"classname" "path_corner"
+"origin" "1152 560 792"
+"target" "train_stop10"
+"targetname" "train_stop09"
+}
+// entity 18
+{
+"classname" "path_corner"
+"origin" "1184 568 792"
+"target" "train_stop11"
+"targetname" "train_stop10"
+}
+// entity 19
+{
+"classname" "path_corner"
+"origin" "1688 576 792"
+"target" "train_stop12"
+"targetname" "train_stop11"
 }

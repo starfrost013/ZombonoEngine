@@ -165,7 +165,7 @@
     <ClCompile Include="client\cl_ui_eventhandling.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_font.c">
+    <ClCompile Include="client\cl_text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_ttf.c">

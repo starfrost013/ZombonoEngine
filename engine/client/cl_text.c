@@ -19,9 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "client.h"
-// cl_font.c : Modern Font Loader (January 1, 2024)
+// cl_text.c : Modern Font Draw (January 11-12, 2024)
 
-qboolean Font_Init()
+qboolean Text_Init()
 {
 
 }

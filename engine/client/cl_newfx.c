@@ -446,7 +446,7 @@ CL_ParticleSteamEffect
 Puffs with velocity along direction, with some randomness thrown in
 ===============
 */
-void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec3_t color, int count, int magnitude)
+void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int count, int magnitude)
 {
 	int			i, j;
 	cparticle_t	*p;

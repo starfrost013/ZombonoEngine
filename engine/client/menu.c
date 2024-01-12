@@ -375,6 +375,8 @@ void M_Main_Draw (void)
 	int widest = -1;
 	int totalheight = 0;
 	char litname[80];
+
+	// menu options name
 	char *names[] =
 	{
 		"m_main_game",
@@ -394,7 +396,7 @@ void M_Main_Draw (void)
 		totalheight += ( h + 12 );
 	}
 
-	ystart = ( viddef.height / 2 - 110 * vid_hudscale->value);
+	ystart = ( viddef.height / 2 - 100 * vid_hudscale->value);
 	xoffset = ( viddef.width - widest * vid_hudscale->value) / 2; // moved left by 70 pixels, because we got rid of the "QUAKE2" logo
 
 	for ( i = 0; names[i] != 0; i++ )
@@ -407,6 +409,8 @@ void M_Main_Draw (void)
 	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname );
 
 	M_DrawCursor( xoffset - 25 * vid_hudscale->value, ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
+
+	Draw_String(xoffset - 108, ystart + (6 * 40 + 20), "Use Up and Down arrow keys to navigate"); 
 }
 
 
@@ -2195,8 +2199,8 @@ void StartServer_MenuInit( void )
 
 	for ( i = 0; i < nummaps; i++ )
 	{
-    char  shortname[MAX_TOKEN_CHARS];
-    char  longname[MAX_TOKEN_CHARS];
+		char  shortname[MAX_TOKEN_CHARS];
+		char  longname[MAX_TOKEN_CHARS];
 		char  scratch[200];
 		int		j, l;
 
