@@ -217,6 +217,7 @@ enum svc_ops_e
 	svc_uisettext,				// <ui control name> <text>
 	svc_uisetimage,				// <ui control name> <image path in pics folder>
 	svc_leaderboard,			// <leaderboard_t struct>
+	svc_leaderboarddraw,		// nothing
 
 	// the rest are private to the client and server
 	svc_nop,

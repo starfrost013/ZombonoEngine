@@ -63,7 +63,11 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 	// tell the client to display the leaderboard
 	// 
 	// send the leaderboard info
-	G_SendLeaderboard(ent, true);
+	G_SendLeaderboard(ent);
+
+	// make it draw the leaderboard (hack, reliable)
+	gi.WriteByte(svc_leaderboarddraw);
+	gi.unicast(ent, true);
 
 	// ...and if they won or lost
 	if (gamemode->value == GAMEMODE_TDM
@@ -97,9 +101,6 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 		}
 	}
 
-
-	// reset it
-	//G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_header");
 }
 
 void BeginIntermission (edict_t *targ)

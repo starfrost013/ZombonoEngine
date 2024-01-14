@@ -35,6 +35,7 @@ char *svc_strings[256] =
 	"svc_uisettext",
 	"svc_uisetimage",
 	"svc_leaderboard",
+	"svc_leaderboarddraw",		// Hack for TDM mode
 
 	"svc_nop",
 	"svc_disconnect",
@@ -786,6 +787,10 @@ void CL_ParseServerMessage (void)
 
 		case svc_leaderboard:
 			UI_LeaderboardUIUpdate();
+			break;
+
+		case svc_leaderboarddraw:
+			UI_LeaderboardUIToggle(K_TAB);
 			break;
 
 		case svc_playerinfo:

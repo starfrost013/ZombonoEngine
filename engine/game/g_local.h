@@ -45,7 +45,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_uisettext		7
 #define svc_uisetimage		8
 #define svc_leaderboard		9
-#define	svc_stufftext		14
+#define svc_leaderboarddraw	10				// hack for tdm mode
+
+#define	svc_stufftext		15
 
 //==================================================================
 

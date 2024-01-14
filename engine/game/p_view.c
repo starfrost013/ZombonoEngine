@@ -1079,8 +1079,9 @@ void ClientEndServerFrame (edict_t *ent)
 
 	// update the leaderboard every 31 frames
 	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
-	if (level.framenum & 31) // todo : check if inverting this (!(framenum & 31)) was causing crashes or not
+	if ((level.framenum % 31) == 0)
 	{
+		Com_Printf("%d\n", level.framenum);
 		G_SendLeaderboard(ent);
 	}
 }
