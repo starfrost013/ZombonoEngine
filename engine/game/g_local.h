@@ -1147,4 +1147,6 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
+
+	int			allowed_teams;	// Allowed Teams for Zombono Teamdoors
 };

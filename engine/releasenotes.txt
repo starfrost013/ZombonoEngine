@@ -5,18 +5,24 @@ Version 0.04-pre3
 January 14, 2024
 * Began designing textures for z_tdm_labrats
 * Added total player and director scores to leaderboard UI
+* Removed old scoreboard from Quake2
+* Leaderboard now updates in real time
+* You don't have to press tab to hide the leaderboard anymore, it just hides itself when you stop holding tab
 * Rewrote how screenshot function generates filenames. Therefore, it doesn't check for the existence of 100 files by fopen()-ing them every single time you take a screenshot, and you can now take more than 100 screenshots. It also now puts the date in the filename as a way to differentiate screenshots from each other.
 * Removed vulkan renderer for now (don't have scope or ability to maintain both renderers, and I have plans to write a GL3 renderer)
 * Fixed zombie animations, changed zombie speed a bit.
 * Ported particle engine to 32-bit colour
-* You don't have to press tab to hide the leaderboard anymore, it just hides itself when you stop holding tab
-* Leaderboard now updates in real time
 * Changed conback and made a 16*9 widescreen conback.
-* Removed old scoreboard from Quake2
 * Better integrated new UI -you won't slide around anymore, and you still can't input commands to the player while a UI is active.
 * Changed zombies to be a green colour.
 * Fixed zombie gibs - they were pointing to the wrong model path, and those models were pointing to the wrong textures.
 * Default intensity convar value changed from 2 to 1.2. Is it too dark?
+* Fixed fullscreen mode. As a result of this, the resolution you select in settings will now actually correspond to the resolution that is set.
+* Changed icons.
+* Frags actually show correctly in leaderboard.
+* Increased map vis data size limit from 1mb to 4mb. This is to facilitate map development so maps can be run with -fast vis (slow vis will be under the limit, but will take a very long time to compile on maps with many detailed angles, 15-30 minutes on a modern PC, or even longer)
+* Added "gameversion" command (which was intended to be implemented in Quake 2)
+* Added a prompt on how to use the main menu, someone struggled with this.
 
 Version 0.04-pre2
 December 31, 2023

@@ -98,6 +98,7 @@ field_t fields[] = {
 	{"currentmove", FOFS(monsterinfo.currentmove), F_MMOVE, FFL_NOSPAWN},
 
 	{"endfunc", FOFS(moveinfo.endfunc), F_FUNCTION, FFL_NOSPAWN},
+	{"allowed_teams", FOFS(allowed_teams), F_INT, FFL_NOSPAWN},							// Team doors 
 
 	// temp spawn vars -- only valid when the spawn function is called
 	{"lip", STOFS(lip), F_INT, FFL_SPAWNTEMP},

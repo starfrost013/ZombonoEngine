@@ -664,18 +664,31 @@ void UI_LeaderboardUIToggle(int btn);
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();
 
-#define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at one time.
-
+#define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
+#define MAX_CACHED_GLYPHS		1024			// Maximum number of glyphs that can be cached at any one time.
 //
 // cl_ttf.c
 // Truetype Font Loader (Modern Fontloader)
 //
 
+// font_t defines the font
 typedef struct font_s
 {
 	char		font_name[32];
 	int			size;
+
 } font_t;
+
+typedef struct glyph_s
+{
+	char		char_name;
+} glyph_t;
+
+typedef struct glyph_cached_s
+{
+	char		font_name[32];
+	char		char_name;
+} glyph_cached_te;
 
 font_t			fonts[MAX_FONTS];
 
