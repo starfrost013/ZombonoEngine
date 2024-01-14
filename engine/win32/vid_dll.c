@@ -717,9 +717,7 @@ void VID_CheckChanges (void)
 		Com_sprintf( name, sizeof(name), "ref_%s.dll", vid_ref->string );
 		if ( !VID_LoadRefresh( name ) )
 		{
-			if ( strcmp (vid_ref->string, "soft") == 0 )
-				Com_Error (ERR_FATAL, "Couldn't fall back to software refresh!");
-			Cvar_Set( "vid_ref", "soft" );
+			Com_Error("Failed to initialise renderer. Renderer name: %s", vid_ref->string);
 
 			/*
 			** drop the console if we fail to load a refresh
