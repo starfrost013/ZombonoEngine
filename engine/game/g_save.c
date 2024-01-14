@@ -212,7 +212,7 @@ void InitGame (void)
 	flood_persecond = gi.cvar ("flood_persecond", "4", 0);
 	flood_waitdelay = gi.cvar ("flood_waitdelay", "10", 0);
 
-	// dm map list
+	// multiplayer server map list
 	sv_maplist = gi.cvar ("sv_maplist", "", 0);
 
 	/* others */

@@ -105,8 +105,11 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 			level.killed_monsters++;
 
 			// In zombono you get points for killing zombies. I need to figure out if this is a good idea.
-			if (attacker->client)
-				attacker->client->resp.score++;
+			if (attacker->client
+				&& targ->team != attacker->team)
+			{
+				attacker->client->resp.score_monsters++;
+			}
 
 			// medics won't heal monsters that they kill themselves
 			if (strcmp(attacker->classname, "monster_medic") == 0)

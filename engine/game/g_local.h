@@ -912,6 +912,7 @@ typedef struct client_respawn_t
 	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
+	int			score_monsters;		// Monster score
 	vec3_t		cmd_angles;			// angles sent over in the last command
 
 	qboolean	spectator;			// client is a spectator

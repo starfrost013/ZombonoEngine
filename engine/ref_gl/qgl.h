@@ -434,16 +434,6 @@ extern BOOL ( WINAPI * qwglSetDeviceGammaRampEXT ) ( const unsigned char *pRed, 
 // local function in dll
 extern void *qwglGetProcAddress(char *symbol);
 
-/*
-//FX Mesa Functions
-extern fxMesaContext (*qfxMesaCreateContext)(GLuint win, GrScreenResolution_t, GrScreenRefresh_t, const GLint attribList[]);
-extern fxMesaContext (*qfxMesaCreateBestContext)(GLuint win, GLint width, GLint height, const GLint attribList[]);
-extern void (*qfxMesaDestroyContext)(fxMesaContext ctx);
-extern void (*qfxMesaMakeCurrent)(fxMesaContext ctx);
-extern fxMesaContext (*qfxMesaGetCurrentContext)(void);
-extern void (*qfxMesaSwapBuffers)(void);
-*/
-
 //GLX Functions
 extern XVisualInfo * (*qglXChooseVisual)( Display *dpy, int screen, int *attribList );
 extern GLXContext (*qglXCreateContext)( Display *dpy, XVisualInfo *vis, GLXContext shareList, Bool direct );
