@@ -1,5 +1,10 @@
 Zombono
 Release Notes
+Version 0.04-pre4
+January 14, 2024
+* Fix TDM end screen not displaying.
+* Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
+
 
 Version 0.04-pre3
 January 14, 2024
@@ -23,6 +28,7 @@ January 14, 2024
 * Increased map vis data size limit from 1mb to 4mb. This is to facilitate map development so maps can be run with -fast vis (slow vis will be under the limit, but will take a very long time to compile on maps with many detailed angles, 15-30 minutes on a modern PC, or even longer)
 * Added "gameversion" command (which was intended to be implemented in Quake 2)
 * Added a prompt on how to use the main menu, someone struggled with this.
+* New map - z_tdm_subway! Still blockout though
 
 Version 0.04-pre2
 December 31, 2023

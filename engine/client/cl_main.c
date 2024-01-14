@@ -601,9 +601,11 @@ void CL_ClearState (void)
 // wipe the entire cl structure
 	memset (&cl, 0, sizeof(cl));
 	memset (&cl_entities, 0, sizeof(cl_entities));
+	
+	// disable any active UIs
+	UI_Reset();
 
 	SZ_Clear (&cls.netchan.message);
-
 }
 
 /*

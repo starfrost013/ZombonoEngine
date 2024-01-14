@@ -36,7 +36,6 @@ qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, in
 // Draw methods
 void			UI_DrawText(ui_control_t text);																// Draws a text control.
 void			UI_DrawImage(ui_control_t image);															// Draws an image control.
-void			UI_DrawButton(ui_control_t button);															// Draws a button control.
 void			UI_DrawSlider(ui_control_t slider);															// Draws a slider control.
 void			UI_DrawCheckbox(ui_control_t checkbox);														// Draws a checkbox control.
 void			UI_DrawBox(ui_control_t box);
@@ -358,6 +357,18 @@ void UI_Clear(char* ui_name)
 
 	// tell everyone there are no controls
 	ui_ptr->num_controls = 0;
+}
+
+// Resets all UIs
+void UI_Reset()
+{
+	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	{
+		ui_t* ui_ptr = &ui_list[ui_num];
+
+		UI_SetEnabled(ui_ptr->name, false);
+		UI_SetActive(ui_ptr->name, false);
+	}
 }
 
 void UI_Draw()

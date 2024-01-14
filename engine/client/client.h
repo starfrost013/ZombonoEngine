@@ -619,37 +619,38 @@ qboolean UI_Init();
 qboolean UI_AddUI(char* name, qboolean (*on_create)());
 
 // UI: Init Controls
-qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);													// Draws text.
-qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);					// Draws an image.
-qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);		// Draws a slider.
-qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);				// Draws a checkbox.
-qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);			// Draws a regular ole box.
+qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);												// Draws text.
+qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);				// Draws an image.
+qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);	// Draws a slider.
+qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);			// Draws a checkbox.
+qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);		// Draws a regular ole box.
 
 // UI: Toggle
-qboolean UI_SetEnabled(char* name, qboolean enabled);																						// Sets a UI to enabled (visible).
-qboolean UI_SetActive(char* name, qboolean enabled);																						// Sets a UI to active (tangible).
+qboolean UI_SetEnabled(char* name, qboolean enabled);																					// Sets a UI to enabled (visible).
+qboolean UI_SetActive(char* name, qboolean enabled);																					// Sets a UI to active (tangible).
 
 // UI: Update
-qboolean UI_SetText(char* ui_name, char* control_name, char* text);																			// Updates a UI control's text.
-qboolean UI_SetImage(char* ui_name, char* control_name, char* image_path);																	// Updates a UI control's image.
+qboolean UI_SetText(char* ui_name, char* control_name, char* text);																		// Updates a UI control's text.
+qboolean UI_SetImage(char* ui_name, char* control_name, char* image_path);																// Updates a UI control's image.
 
 // UI: Set Event Handler
-qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));												// Sets a UI's OnClick handler.
-qboolean UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));															// Sets a UI's OnKeyDown handler.
+qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));											// Sets a UI's OnClick handler.
+qboolean UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));														// Sets a UI's OnKeyDown handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClick(int btn, int x, int y);																							// Handles click events.
-void UI_HandleEventOnKeyDown(int btn);																										// Handles key down events.
+void UI_HandleEventOnClick(int btn, int x, int y);																						// Handles click events.
+void UI_HandleEventOnKeyDown(int btn);																									// Handles key down events.
 
 // UI: Draw
-void UI_Draw();																																// Draws a UI.
+void UI_Draw();																															// Draws a UI.
 
 // UI: Clear
-void UI_Clear(char* name);																													// Removes all the controls in a UI.
+void UI_Clear(char* name);																												// Removes all the controls in a UI.
+void UI_Reset();																														// INTERNAL, resets all UI states.
 
 // UI: Internal
-ui_t* UI_GetUI(char* name);																													// Returns a pointer so NULL can be indicated for failure
-ui_control_t* UI_GetControl(char* ui_name, char* name);																						// Gets the control with name name in the ui UI.
+ui_t* UI_GetUI(char* name);																												// Returns a pointer so NULL can be indicated for failure
+ui_control_t* UI_GetControl(char* ui_name, char* name);																					// Gets the control with name name in the ui UI.
 
 // UI: Create Scripts
 // TeamUI
