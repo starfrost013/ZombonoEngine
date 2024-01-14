@@ -1081,7 +1081,6 @@ void ClientEndServerFrame (edict_t *ent)
 	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
 	if ((level.framenum % 31) == 0)
 	{
-		Com_Printf("%d\n", level.framenum);
 		G_SendLeaderboard(ent);
 	}
 }

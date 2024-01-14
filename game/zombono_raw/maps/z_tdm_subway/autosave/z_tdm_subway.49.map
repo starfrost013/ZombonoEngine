@@ -5119,209 +5119,6 @@
 ( -32 -776 856 ) ( -30.333333333333346 -776 856 ) ( -32 -776 860 ) blockout/blockout 0 0 0 1 1 0 0 0
 ( -32 -776 856 ) ( -32 -776 860 ) ( -32 -775 856 ) blockout/blockout 0 0 0 1 1 0 0 0
 }
-// brush 56
-{
-( 144 -776 784 ) ( 144 -775.5000000000001 784 ) ( 144 -776 798 ) blockout/blockout 0 0 0 1 1
-( 144 -776 784 ) ( 144 -776 798 ) ( 144.33333333333334 -776 784 ) blockout/blockout 0 0 0 1 1
-( 144 -776 784 ) ( 144.33333333333334 -776 784 ) ( 144 -775.5000000000001 784 ) blockout/blockout 0 0 0 1 1
-( 152 -752 896 ) ( 152 -751.5000000000001 896 ) ( 152.33333333333334 -752 896 ) blockout/blockout 0 0 0 1 1
-( 152 -752 896 ) ( 152.33333333333334 -752 896 ) ( 152 -752 910 ) blockout/blockout 0 0 0 1 1
-( 152 -752 896 ) ( 152 -752 910 ) ( 152 -751.5000000000001 896 ) blockout/blockout 0 0 0 1 1
-}
-// brush 57
-{
-( 144 -752 880 ) ( 144 -749.6666666666667 880 ) ( 144 -752 882 ) blockout/blockout 0 0 0 1 1
-( 144 -752 880 ) ( 144 -752 882 ) ( 144.33333333333334 -752 880 ) blockout/blockout 0 0 0 1 1
-( 144 -752 880 ) ( 144.33333333333334 -752 880 ) ( 144 -749.6666666666667 880 ) blockout/blockout 0 0 0 1 1
-( 152 -640 896 ) ( 152 -637.6666666666667 896 ) ( 152.33333333333334 -640 896 ) blockout/blockout 0 0 0 1 1
-( 152 -640 896 ) ( 152.33333333333334 -640 896 ) ( 152 -640 898 ) blockout/blockout 0 0 0 1 1
-( 152 -640 896 ) ( 152 -640 898 ) ( 152 -637.6666666666667 896 ) blockout/blockout 0 0 0 1 1
-}
-// brush 58
-{
-( 144 -720 880 ) ( 144 -728 880 ) ( 144 -728 864 ) blockout/blockout 0 0 0 1 1
-( 144 -728 880 ) ( 152 -728 880 ) ( 152 -728 864 ) blockout/blockout 0 0 0 1 1
-( 144 -720 880 ) ( 152 -720 880 ) ( 152 -728 880 ) blockout/blockout 0 0 0 1 1
-( 152 -728 864 ) ( 152 -720 868 ) ( 144 -720 868 ) blockout/blockout 0 0 0 1 1
-( 152 -720 868 ) ( 152 -720 880 ) ( 144 -720 880 ) blockout/blockout 0 0 0 1 1
-( 152 -728 880 ) ( 152 -720 880 ) ( 152 -720 868 ) blockout/blockout 0 0 0 1 1
-}
-// brush 59
-{
-( 144 -728 880 ) ( 144 -736 880 ) ( 144 -736 856 ) blockout/blockout 0 0 0 1 1
-( 144 -736 880 ) ( 152 -736 880 ) ( 152 -736 856 ) blockout/blockout 0 0 0 1 1
-( 144 -728 880 ) ( 152 -728 880 ) ( 152 -736 880 ) blockout/blockout 0 0 0 1 1
-( 152 -736 856 ) ( 152 -728 864 ) ( 144 -728 864 ) blockout/blockout 0 -120 0 1 1
-( 152 -728 864 ) ( 152 -728 880 ) ( 144 -728 880 ) blockout/blockout 0 0 0 1 1
-( 152 -736 880 ) ( 152 -728 880 ) ( 152 -728 864 ) blockout/blockout 0 0 0 1 1
-}
-// brush 60
-{
-( 144 -736 880 ) ( 144 -744 880 ) ( 144 -744 844 ) blockout/blockout 0 0 0 1 1
-( 144 -744 880 ) ( 152 -744 880 ) ( 152 -744 844 ) blockout/blockout 0 0 0 1 1
-( 144 -736 880 ) ( 152 -736 880 ) ( 152 -744 880 ) blockout/blockout 0 0 0 1 1
-( 152 -744 844 ) ( 152 -736 856 ) ( 144 -736 856 ) blockout/blockout 0 72 0 1 1
-( 152 -736 856 ) ( 152 -736 880 ) ( 144 -736 880 ) blockout/blockout 0 0 0 1 1
-( 152 -744 880 ) ( 152 -736 880 ) ( 152 -736 856 ) blockout/blockout 0 0 0 1 1
-}
-// brush 61
-{
-( 144 -744 880 ) ( 144 -752 880 ) ( 144 -752 826 ) blockout/blockout 0 0 0 1 1
-( 144 -752 880 ) ( 152 -752 880 ) ( 152 -752 826 ) blockout/blockout 0 0 0 1 1
-( 144 -744 880 ) ( 152 -744 880 ) ( 152 -752 880 ) blockout/blockout 0 0 0 1 1
-( 152 -752 826 ) ( 152 -744 844 ) ( 144 -744 844 ) blockout/blockout 0 80 0 1 1
-( 152 -744 844 ) ( 152 -744 880 ) ( 144 -744 880 ) blockout/blockout 0 0 0 1 1
-( 152 -752 880 ) ( 152 -744 880 ) ( 152 -744 844 ) blockout/blockout 0 0 0 1 1
-}
-// brush 62
-{
-( 144 -712 880 ) ( 144 -720 880 ) ( 144 -720 868 ) blockout/blockout 0 0 0 1 1
-( 144 -720 880 ) ( 152 -720 880 ) ( 152 -720 868 ) blockout/blockout 0 0 0 1 1
-( 144 -712 880 ) ( 152 -712 880 ) ( 152 -720 880 ) blockout/blockout 0 0 0 1 1
-( 152 -720 868 ) ( 152 -712 870 ) ( 144 -712 870 ) blockout/blockout 0 0 0 1 1
-( 152 -712 870 ) ( 152 -712 880 ) ( 144 -712 880 ) blockout/blockout 0 0 0 1 1
-( 152 -720 880 ) ( 152 -712 880 ) ( 152 -712 870 ) blockout/blockout 0 0 0 1 1
-}
-// brush 63
-{
-( 144 -704 872 ) ( 144 -703.5 872 ) ( 144 -704 873 ) blockout/blockout 0 0 0 1 1
-( 144 -704 872 ) ( 144 -704 873 ) ( 145 -704 872 ) blockout/blockout 0 0 0 1 1
-( 144 -704 872 ) ( 145 -704 872 ) ( 144 -703.5 872 ) blockout/blockout 0 0 0 1 1
-( 152 -696 880 ) ( 152 -695.5 880 ) ( 153 -696 880 ) blockout/blockout 0 0 0 1 1
-( 152 -696 880 ) ( 153 -696 880 ) ( 152 -696 881 ) blockout/blockout 0 0 0 1 1
-( 152 -696 880 ) ( 152 -696 881 ) ( 152 -695.5 880 ) blockout/blockout 0 0 0 1 1
-}
-// brush 64
-{
-( 144 -696 872 ) ( 144 -695.5 872 ) ( 144 -696 873 ) blockout/blockout 0 0 0 1 1
-( 144 -696 872 ) ( 144 -696 873 ) ( 145 -696 872 ) blockout/blockout 0 0 0 1 1
-( 144 -696 872 ) ( 145 -696 872 ) ( 144 -695.5 872 ) blockout/blockout 0 0 0 1 1
-( 152 -688 880 ) ( 152 -687.5 880 ) ( 153 -688 880 ) blockout/blockout 0 0 0 1 1
-( 152 -688 880 ) ( 153 -688 880 ) ( 152 -688 881 ) blockout/blockout 0 0 0 1 1
-( 152 -688 880 ) ( 152 -688 881 ) ( 152 -687.5 880 ) blockout/blockout 0 0 0 1 1
-}
-// brush 65
-{
-( 144 -680 880 ) ( 144 -688 880 ) ( 144 -688 872 ) blockout/blockout 0 0 0 1 1
-( 144 -688 880 ) ( 152 -688 880 ) ( 152 -688 872 ) blockout/blockout 0 0 0 1 1
-( 152 -688 872 ) ( 152 -680 870 ) ( 144 -680 870 ) blockout/blockout 0 0 0 1 1
-( 144 -680 880 ) ( 152 -680 880 ) ( 152 -688 880 ) blockout/blockout 0 0 0 1 1
-( 152 -680 870 ) ( 152 -680 880 ) ( 144 -680 880 ) blockout/blockout 0 0 0 1 1
-( 152 -688 880 ) ( 152 -680 880 ) ( 152 -680 870 ) blockout/blockout 0 0 0 1 1
-}
-// brush 66
-{
-( 144 -672 880 ) ( 144 -680 880 ) ( 144 -680 870 ) blockout/blockout 0 0 0 1 1
-( 144 -680 880 ) ( 152 -680 880 ) ( 152 -680 870 ) blockout/blockout 0 0 0 1 1
-( 152 -680 870 ) ( 152 -672 868 ) ( 144 -672 868 ) blockout/blockout 0 0 0 1 1
-( 144 -672 880 ) ( 152 -672 880 ) ( 152 -680 880 ) blockout/blockout 0 0 0 1 1
-( 152 -672 868 ) ( 152 -672 880 ) ( 144 -672 880 ) blockout/blockout 0 0 0 1 1
-( 152 -680 880 ) ( 152 -672 880 ) ( 152 -672 868 ) blockout/blockout 0 0 0 1 1
-}
-// brush 67
-{
-( 144 -664 880 ) ( 144 -672 880 ) ( 144 -672 868 ) blockout/blockout 0 0 0 1 1
-( 144 -672 880 ) ( 152 -672 880 ) ( 152 -672 868 ) blockout/blockout 0 0 0 1 1
-( 152 -672 868 ) ( 152 -664 864 ) ( 144 -664 864 ) blockout/blockout 0 0 0 1 1
-( 144 -664 880 ) ( 152 -664 880 ) ( 152 -672 880 ) blockout/blockout 0 0 0 1 1
-( 152 -664 864 ) ( 152 -664 880 ) ( 144 -664 880 ) blockout/blockout 0 0 0 1 1
-( 152 -672 880 ) ( 152 -664 880 ) ( 152 -664 864 ) blockout/blockout 0 0 0 1 1
-}
-// brush 68
-{
-( 144 -656 880 ) ( 144 -664 880 ) ( 144 -664 864 ) blockout/blockout 0 0 0 1 1
-( 144 -664 880 ) ( 152 -664 880 ) ( 152 -664 864 ) blockout/blockout 0 0 0 1 1
-( 152 -664 864 ) ( 152 -656 856 ) ( 144 -656 856 ) blockout/blockout 0 0 0 1 1
-( 144 -656 880 ) ( 152 -656 880 ) ( 152 -664 880 ) blockout/blockout 0 0 0 1 1
-( 152 -656 856 ) ( 152 -656 880 ) ( 144 -656 880 ) blockout/blockout 0 0 0 1 1
-( 152 -664 880 ) ( 152 -656 880 ) ( 152 -656 856 ) blockout/blockout 0 0 0 1 1
-}
-// brush 69
-{
-( 144 -640 784 ) ( 144 -639.5000000000001 784 ) ( 144 -640 798 ) blockout/blockout 0 0 0 1 1
-( 144 -640 784 ) ( 144 -640 798 ) ( 144.33333333333334 -640 784 ) blockout/blockout 0 0 0 1 1
-( 144 -640 784 ) ( 144.33333333333334 -640 784 ) ( 144 -639.5000000000001 784 ) blockout/blockout 0 0 0 1 1
-( 152 -616 896 ) ( 152 -615.5000000000001 896 ) ( 152.33333333333334 -616 896 ) blockout/blockout 0 0 0 1 1
-( 152 -616 896 ) ( 152.33333333333334 -616 896 ) ( 152 -616 910 ) blockout/blockout 0 0 0 1 1
-( 152 -616 896 ) ( 152 -616 910 ) ( 152 -615.5000000000001 896 ) blockout/blockout 0 0 0 1 1
-}
-// brush 70
-{
-( 144 -704 880 ) ( 144 -712 880 ) ( 144 -712 870 ) blockout/blockout 0 0 0 1 1
-( 144 -712 880 ) ( 152 -712 880 ) ( 152 -712 870 ) blockout/blockout 0 0 0 1 1
-( 144 -704 880 ) ( 152 -704 880 ) ( 152 -712 880 ) blockout/blockout 0 0 0 1 1
-( 152 -712 870 ) ( 152 -704 872 ) ( 144 -704 872 ) blockout/blockout 0 0 0 1 1
-( 152 -704 872 ) ( 152 -704 880 ) ( 144 -704 880 ) blockout/blockout 0 0 0 1 1
-( 152 -712 880 ) ( 152 -704 880 ) ( 152 -704 872 ) blockout/blockout 0 0 0 1 1
-}
-// brush 71
-{
-( -96 -640 880 ) ( -96 -648 880 ) ( -96 -648 844 ) blockout/blockout 0 0 0 1 1
-( -96 -648 844 ) ( -96 -648 880 ) ( -88 -648 880 ) blockout/blockout 0 0 0 1 1
-( -96 -640 826 ) ( -96 -648 844 ) ( -88 -648 844 ) blockout/blockout 0 80 0 1 1
-( -88 -648 880 ) ( -96 -648 880 ) ( -96 -640 880 ) blockout/blockout 0 0 0 1 1
-( -88 -640 880 ) ( -96 -640 880 ) ( -96 -640 826 ) blockout/blockout 0 0 0 1 1
-( -88 -648 880 ) ( -88 -640 880 ) ( -88 -640 826 ) blockout/blockout 0 0 0 1 1
-}
-// brush 72
-{
-( -96 -648 880 ) ( -96 -656 880 ) ( -96 -656 856 ) blockout/blockout 0 0 0 1 1
-( -96 -656 856 ) ( -96 -656 880 ) ( -88 -656 880 ) blockout/blockout 0 0 0 1 1
-( -96 -648 844 ) ( -96 -656 856 ) ( -88 -656 856 ) blockout/blockout 0 72 0 1 1
-( -88 -656 880 ) ( -96 -656 880 ) ( -96 -648 880 ) blockout/blockout 0 0 0 1 1
-( -88 -648 880 ) ( -96 -648 880 ) ( -96 -648 844 ) blockout/blockout 0 0 0 1 1
-( -88 -656 880 ) ( -88 -648 880 ) ( -88 -648 844 ) blockout/blockout 0 0 0 1 1
-}
-// brush 73
-{
-( 144 -648 880 ) ( 144 -656 880 ) ( 144 -656 856 ) blockout/blockout 0 0 0 1 1
-( 144 -656 856 ) ( 144 -656 880 ) ( 152 -656 880 ) blockout/blockout 0 0 0 1 1
-( 144 -648 844 ) ( 144 -656 856 ) ( 152 -656 856 ) blockout/blockout 0 72 0 1 1
-( 152 -656 880 ) ( 144 -656 880 ) ( 144 -648 880 ) blockout/blockout 0 0 0 1 1
-( 152 -648 880 ) ( 144 -648 880 ) ( 144 -648 844 ) blockout/blockout 0 0 0 1 1
-( 152 -656 880 ) ( 152 -648 880 ) ( 152 -648 844 ) blockout/blockout 0 0 0 1 1
-}
-// brush 74
-{
-( 144 -640 880 ) ( 144 -648 880 ) ( 144 -648 844 ) blockout/blockout 0 0 0 1 1
-( 144 -648 844 ) ( 144 -648 880 ) ( 152 -648 880 ) blockout/blockout 0 0 0 1 1
-( 144 -640 826 ) ( 144 -648 844 ) ( 152 -648 844 ) blockout/blockout 0 80 0 1 1
-( 152 -648 880 ) ( 144 -648 880 ) ( 144 -640 880 ) blockout/blockout 0 0 0 1 1
-( 152 -640 880 ) ( 144 -640 880 ) ( 144 -640 826 ) blockout/blockout 0 0 0 1 1
-( 152 -648 880 ) ( 152 -640 880 ) ( 152 -640 826 ) blockout/blockout 0 0 0 1 1
-}
-// brush 75
-{
-( 128 -616 904 ) ( 144 -632 1032 ) ( 144 -632 904 ) blockout/blockout 0 0 0 1 1
-( 128 -632 784 ) ( 128.66666666666669 -632 784 ) ( 128 -631.6666666666667 784 ) blockout/blockout 0 0 0 1 1
-( 144 -616 904 ) ( 144 -615.6666666666667 904 ) ( 144.66666666666669 -616 904 ) blockout/blockout 0 0 0 1 1
-( 144 -616 904 ) ( 144.66666666666669 -616 904 ) ( 144 -616 919 ) blockout/blockout 0 0 0 1 1
-( 144 -616 904 ) ( 144 -616 919 ) ( 144 -615.6666666666667 904 ) blockout/blockout 0 0 0 1 1
-}
-// brush 76
-{
-( 144 -760 904 ) ( 128 -776 1032 ) ( 128 -776 904 ) blockout/blockout 0 0 0 1 1
-( 128 -776 784 ) ( 128 -776 799 ) ( 128.66666666666669 -776 784 ) blockout/blockout 0 0 0 1 1
-( 128 -776 784 ) ( 128.66666666666669 -776 784 ) ( 128 -775.6666666666667 784 ) blockout/blockout 0 0 0 1 1
-( 144 -760 904 ) ( 144 -759.6666666666667 904 ) ( 144.66666666666669 -760 904 ) blockout/blockout 0 0 0 1 1
-( 144 -760 904 ) ( 144 -760 919 ) ( 144 -759.6666666666667 904 ) blockout/blockout 0 0 0 1 1
-}
-// brush 77
-{
-( -88 -776 784 ) ( -88 -775.6666666666667 784 ) ( -88 -776 799 ) blockout/blockout 0 0 0 1 1
-( -88 -776 784 ) ( -88 -776 799 ) ( -87.33333333333331 -776 784 ) blockout/blockout 0 0 0 1 1
-( -88 -776 784 ) ( -87.33333333333331 -776 784 ) ( -88 -775.6666666666667 784 ) blockout/blockout 0 0 0 1 1
-( -72 -760 904 ) ( -72 -759.6666666666667 904 ) ( -71.33333333333331 -760 904 ) blockout/blockout 0 0 0 1 1
-( -72 -776 904 ) ( -88 -760 1032 ) ( -88 -760 904 ) blockout/blockout 0 0 0 1 1
-}
-// brush 78
-{
-( -88 -632 784 ) ( -88 -631.6666666666667 784 ) ( -88 -632 799 ) blockout/blockout 0 0 0 1 1
-( -88 -632 784 ) ( -87.33333333333331 -632 784 ) ( -88 -631.6666666666667 784 ) blockout/blockout 0 0 0 1 1
-( -72 -616 904 ) ( -72 -615.6666666666667 904 ) ( -71.33333333333331 -616 904 ) blockout/blockout 0 0 0 1 1
-( -72 -616 904 ) ( -71.33333333333331 -616 904 ) ( -72 -616 919 ) blockout/blockout 0 0 0 1 1
-( -88 -632 904 ) ( -72 -616 1032 ) ( -72 -616 904 ) blockout/blockout 0 0 0 1 1
-}
 }
 // entity 9
 {
@@ -6237,6 +6034,216 @@
 }
 // entity 15
 {
+"classname" "func_train"
+"target" "train_stop01"
+"speed" "150"
+"spawnflags" "1"
+// brush 0
+{
+( 144 -776 784 ) ( 144 -775.5000000000001 784 ) ( 144 -776 798 ) blockout/blockout 0 0 0 1 1
+( 144 -776 784 ) ( 144 -776 798 ) ( 144.33333333333334 -776 784 ) blockout/blockout 0 0 0 1 1
+( 144 -776 784 ) ( 144.33333333333334 -776 784 ) ( 144 -775.5000000000001 784 ) blockout/blockout 0 0 0 1 1
+( 152 -752 896 ) ( 152 -751.5000000000001 896 ) ( 152.33333333333334 -752 896 ) blockout/blockout 0 0 0 1 1
+( 152 -752 896 ) ( 152.33333333333334 -752 896 ) ( 152 -752 910 ) blockout/blockout 0 0 0 1 1
+( 152 -752 896 ) ( 152 -752 910 ) ( 152 -751.5000000000001 896 ) blockout/blockout 0 0 0 1 1
+}
+// brush 1
+{
+( 144 -752 880 ) ( 144 -749.6666666666667 880 ) ( 144 -752 882 ) blockout/blockout 0 0 0 1 1
+( 144 -752 880 ) ( 144 -752 882 ) ( 144.33333333333334 -752 880 ) blockout/blockout 0 0 0 1 1
+( 144 -752 880 ) ( 144.33333333333334 -752 880 ) ( 144 -749.6666666666667 880 ) blockout/blockout 0 0 0 1 1
+( 152 -640 896 ) ( 152 -637.6666666666667 896 ) ( 152.33333333333334 -640 896 ) blockout/blockout 0 0 0 1 1
+( 152 -640 896 ) ( 152.33333333333334 -640 896 ) ( 152 -640 898 ) blockout/blockout 0 0 0 1 1
+( 152 -640 896 ) ( 152 -640 898 ) ( 152 -637.6666666666667 896 ) blockout/blockout 0 0 0 1 1
+}
+// brush 2
+{
+( 144 -720 880 ) ( 144 -728 880 ) ( 144 -728 864 ) blockout/blockout 0 0 0 1 1
+( 144 -728 880 ) ( 152 -728 880 ) ( 152 -728 864 ) blockout/blockout 0 0 0 1 1
+( 144 -720 880 ) ( 152 -720 880 ) ( 152 -728 880 ) blockout/blockout 0 0 0 1 1
+( 152 -728 864 ) ( 152 -720 868 ) ( 144 -720 868 ) blockout/blockout 0 0 0 1 1
+( 152 -720 868 ) ( 152 -720 880 ) ( 144 -720 880 ) blockout/blockout 0 0 0 1 1
+( 152 -728 880 ) ( 152 -720 880 ) ( 152 -720 868 ) blockout/blockout 0 0 0 1 1
+}
+// brush 3
+{
+( 144 -728 880 ) ( 144 -736 880 ) ( 144 -736 856 ) blockout/blockout 0 0 0 1 1
+( 144 -736 880 ) ( 152 -736 880 ) ( 152 -736 856 ) blockout/blockout 0 0 0 1 1
+( 144 -728 880 ) ( 152 -728 880 ) ( 152 -736 880 ) blockout/blockout 0 0 0 1 1
+( 152 -736 856 ) ( 152 -728 864 ) ( 144 -728 864 ) blockout/blockout 0 -120 0 1 1
+( 152 -728 864 ) ( 152 -728 880 ) ( 144 -728 880 ) blockout/blockout 0 0 0 1 1
+( 152 -736 880 ) ( 152 -728 880 ) ( 152 -728 864 ) blockout/blockout 0 0 0 1 1
+}
+// brush 4
+{
+( 144 -736 880 ) ( 144 -744 880 ) ( 144 -744 844 ) blockout/blockout 0 0 0 1 1
+( 144 -744 880 ) ( 152 -744 880 ) ( 152 -744 844 ) blockout/blockout 0 0 0 1 1
+( 144 -736 880 ) ( 152 -736 880 ) ( 152 -744 880 ) blockout/blockout 0 0 0 1 1
+( 152 -744 844 ) ( 152 -736 856 ) ( 144 -736 856 ) blockout/blockout 0 72 0 1 1
+( 152 -736 856 ) ( 152 -736 880 ) ( 144 -736 880 ) blockout/blockout 0 0 0 1 1
+( 152 -744 880 ) ( 152 -736 880 ) ( 152 -736 856 ) blockout/blockout 0 0 0 1 1
+}
+// brush 5
+{
+( 144 -744 880 ) ( 144 -752 880 ) ( 144 -752 826 ) blockout/blockout 0 0 0 1 1
+( 144 -752 880 ) ( 152 -752 880 ) ( 152 -752 826 ) blockout/blockout 0 0 0 1 1
+( 144 -744 880 ) ( 152 -744 880 ) ( 152 -752 880 ) blockout/blockout 0 0 0 1 1
+( 152 -752 826 ) ( 152 -744 844 ) ( 144 -744 844 ) blockout/blockout 0 80 0 1 1
+( 152 -744 844 ) ( 152 -744 880 ) ( 144 -744 880 ) blockout/blockout 0 0 0 1 1
+( 152 -752 880 ) ( 152 -744 880 ) ( 152 -744 844 ) blockout/blockout 0 0 0 1 1
+}
+// brush 6
+{
+( 144 -712 880 ) ( 144 -720 880 ) ( 144 -720 868 ) blockout/blockout 0 0 0 1 1
+( 144 -720 880 ) ( 152 -720 880 ) ( 152 -720 868 ) blockout/blockout 0 0 0 1 1
+( 144 -712 880 ) ( 152 -712 880 ) ( 152 -720 880 ) blockout/blockout 0 0 0 1 1
+( 152 -720 868 ) ( 152 -712 870 ) ( 144 -712 870 ) blockout/blockout 0 0 0 1 1
+( 152 -712 870 ) ( 152 -712 880 ) ( 144 -712 880 ) blockout/blockout 0 0 0 1 1
+( 152 -720 880 ) ( 152 -712 880 ) ( 152 -712 870 ) blockout/blockout 0 0 0 1 1
+}
+// brush 7
+{
+( 144 -704 872 ) ( 144 -703.5 872 ) ( 144 -704 873 ) blockout/blockout 0 0 0 1 1
+( 144 -704 872 ) ( 144 -704 873 ) ( 145 -704 872 ) blockout/blockout 0 0 0 1 1
+( 144 -704 872 ) ( 145 -704 872 ) ( 144 -703.5 872 ) blockout/blockout 0 0 0 1 1
+( 152 -696 880 ) ( 152 -695.5 880 ) ( 153 -696 880 ) blockout/blockout 0 0 0 1 1
+( 152 -696 880 ) ( 153 -696 880 ) ( 152 -696 881 ) blockout/blockout 0 0 0 1 1
+( 152 -696 880 ) ( 152 -696 881 ) ( 152 -695.5 880 ) blockout/blockout 0 0 0 1 1
+}
+// brush 8
+{
+( 144 -696 872 ) ( 144 -695.5 872 ) ( 144 -696 873 ) blockout/blockout 0 0 0 1 1
+( 144 -696 872 ) ( 144 -696 873 ) ( 145 -696 872 ) blockout/blockout 0 0 0 1 1
+( 144 -696 872 ) ( 145 -696 872 ) ( 144 -695.5 872 ) blockout/blockout 0 0 0 1 1
+( 152 -688 880 ) ( 152 -687.5 880 ) ( 153 -688 880 ) blockout/blockout 0 0 0 1 1
+( 152 -688 880 ) ( 153 -688 880 ) ( 152 -688 881 ) blockout/blockout 0 0 0 1 1
+( 152 -688 880 ) ( 152 -688 881 ) ( 152 -687.5 880 ) blockout/blockout 0 0 0 1 1
+}
+// brush 9
+{
+( 144 -680 880 ) ( 144 -688 880 ) ( 144 -688 872 ) blockout/blockout 0 0 0 1 1
+( 144 -688 880 ) ( 152 -688 880 ) ( 152 -688 872 ) blockout/blockout 0 0 0 1 1
+( 152 -688 872 ) ( 152 -680 870 ) ( 144 -680 870 ) blockout/blockout 0 0 0 1 1
+( 144 -680 880 ) ( 152 -680 880 ) ( 152 -688 880 ) blockout/blockout 0 0 0 1 1
+( 152 -680 870 ) ( 152 -680 880 ) ( 144 -680 880 ) blockout/blockout 0 0 0 1 1
+( 152 -688 880 ) ( 152 -680 880 ) ( 152 -680 870 ) blockout/blockout 0 0 0 1 1
+}
+// brush 10
+{
+( 144 -672 880 ) ( 144 -680 880 ) ( 144 -680 870 ) blockout/blockout 0 0 0 1 1
+( 144 -680 880 ) ( 152 -680 880 ) ( 152 -680 870 ) blockout/blockout 0 0 0 1 1
+( 152 -680 870 ) ( 152 -672 868 ) ( 144 -672 868 ) blockout/blockout 0 0 0 1 1
+( 144 -672 880 ) ( 152 -672 880 ) ( 152 -680 880 ) blockout/blockout 0 0 0 1 1
+( 152 -672 868 ) ( 152 -672 880 ) ( 144 -672 880 ) blockout/blockout 0 0 0 1 1
+( 152 -680 880 ) ( 152 -672 880 ) ( 152 -672 868 ) blockout/blockout 0 0 0 1 1
+}
+// brush 11
+{
+( 144 -664 880 ) ( 144 -672 880 ) ( 144 -672 868 ) blockout/blockout 0 0 0 1 1
+( 144 -672 880 ) ( 152 -672 880 ) ( 152 -672 868 ) blockout/blockout 0 0 0 1 1
+( 152 -672 868 ) ( 152 -664 864 ) ( 144 -664 864 ) blockout/blockout 0 0 0 1 1
+( 144 -664 880 ) ( 152 -664 880 ) ( 152 -672 880 ) blockout/blockout 0 0 0 1 1
+( 152 -664 864 ) ( 152 -664 880 ) ( 144 -664 880 ) blockout/blockout 0 0 0 1 1
+( 152 -672 880 ) ( 152 -664 880 ) ( 152 -664 864 ) blockout/blockout 0 0 0 1 1
+}
+// brush 12
+{
+( 144 -656 880 ) ( 144 -664 880 ) ( 144 -664 864 ) blockout/blockout 0 0 0 1 1
+( 144 -664 880 ) ( 152 -664 880 ) ( 152 -664 864 ) blockout/blockout 0 0 0 1 1
+( 152 -664 864 ) ( 152 -656 856 ) ( 144 -656 856 ) blockout/blockout 0 0 0 1 1
+( 144 -656 880 ) ( 152 -656 880 ) ( 152 -664 880 ) blockout/blockout 0 0 0 1 1
+( 152 -656 856 ) ( 152 -656 880 ) ( 144 -656 880 ) blockout/blockout 0 0 0 1 1
+( 152 -664 880 ) ( 152 -656 880 ) ( 152 -656 856 ) blockout/blockout 0 0 0 1 1
+}
+// brush 13
+{
+( 144 -640 784 ) ( 144 -639.5000000000001 784 ) ( 144 -640 798 ) blockout/blockout 0 0 0 1 1
+( 144 -640 784 ) ( 144 -640 798 ) ( 144.33333333333334 -640 784 ) blockout/blockout 0 0 0 1 1
+( 144 -640 784 ) ( 144.33333333333334 -640 784 ) ( 144 -639.5000000000001 784 ) blockout/blockout 0 0 0 1 1
+( 152 -616 896 ) ( 152 -615.5000000000001 896 ) ( 152.33333333333334 -616 896 ) blockout/blockout 0 0 0 1 1
+( 152 -616 896 ) ( 152.33333333333334 -616 896 ) ( 152 -616 910 ) blockout/blockout 0 0 0 1 1
+( 152 -616 896 ) ( 152 -616 910 ) ( 152 -615.5000000000001 896 ) blockout/blockout 0 0 0 1 1
+}
+// brush 14
+{
+( 144 -704 880 ) ( 144 -712 880 ) ( 144 -712 870 ) blockout/blockout 0 0 0 1 1
+( 144 -712 880 ) ( 152 -712 880 ) ( 152 -712 870 ) blockout/blockout 0 0 0 1 1
+( 144 -704 880 ) ( 152 -704 880 ) ( 152 -712 880 ) blockout/blockout 0 0 0 1 1
+( 152 -712 870 ) ( 152 -704 872 ) ( 144 -704 872 ) blockout/blockout 0 0 0 1 1
+( 152 -704 872 ) ( 152 -704 880 ) ( 144 -704 880 ) blockout/blockout 0 0 0 1 1
+( 152 -712 880 ) ( 152 -704 880 ) ( 152 -704 872 ) blockout/blockout 0 0 0 1 1
+}
+// brush 15
+{
+( -96 -640 880 ) ( -96 -648 880 ) ( -96 -648 844 ) blockout/blockout 0 0 0 1 1
+( -96 -648 844 ) ( -96 -648 880 ) ( -88 -648 880 ) blockout/blockout 0 0 0 1 1
+( -96 -640 826 ) ( -96 -648 844 ) ( -88 -648 844 ) blockout/blockout 0 80 0 1 1
+( -88 -648 880 ) ( -96 -648 880 ) ( -96 -640 880 ) blockout/blockout 0 0 0 1 1
+( -88 -640 880 ) ( -96 -640 880 ) ( -96 -640 826 ) blockout/blockout 0 0 0 1 1
+( -88 -648 880 ) ( -88 -640 880 ) ( -88 -640 826 ) blockout/blockout 0 0 0 1 1
+}
+// brush 16
+{
+( -96 -648 880 ) ( -96 -656 880 ) ( -96 -656 856 ) blockout/blockout 0 0 0 1 1
+( -96 -656 856 ) ( -96 -656 880 ) ( -88 -656 880 ) blockout/blockout 0 0 0 1 1
+( -96 -648 844 ) ( -96 -656 856 ) ( -88 -656 856 ) blockout/blockout 0 72 0 1 1
+( -88 -656 880 ) ( -96 -656 880 ) ( -96 -648 880 ) blockout/blockout 0 0 0 1 1
+( -88 -648 880 ) ( -96 -648 880 ) ( -96 -648 844 ) blockout/blockout 0 0 0 1 1
+( -88 -656 880 ) ( -88 -648 880 ) ( -88 -648 844 ) blockout/blockout 0 0 0 1 1
+}
+// brush 17
+{
+( 144 -648 880 ) ( 144 -656 880 ) ( 144 -656 856 ) blockout/blockout 0 0 0 1 1
+( 144 -656 856 ) ( 144 -656 880 ) ( 152 -656 880 ) blockout/blockout 0 0 0 1 1
+( 144 -648 844 ) ( 144 -656 856 ) ( 152 -656 856 ) blockout/blockout 0 72 0 1 1
+( 152 -656 880 ) ( 144 -656 880 ) ( 144 -648 880 ) blockout/blockout 0 0 0 1 1
+( 152 -648 880 ) ( 144 -648 880 ) ( 144 -648 844 ) blockout/blockout 0 0 0 1 1
+( 152 -656 880 ) ( 152 -648 880 ) ( 152 -648 844 ) blockout/blockout 0 0 0 1 1
+}
+// brush 18
+{
+( 144 -640 880 ) ( 144 -648 880 ) ( 144 -648 844 ) blockout/blockout 0 0 0 1 1
+( 144 -648 844 ) ( 144 -648 880 ) ( 152 -648 880 ) blockout/blockout 0 0 0 1 1
+( 144 -640 826 ) ( 144 -648 844 ) ( 152 -648 844 ) blockout/blockout 0 80 0 1 1
+( 152 -648 880 ) ( 144 -648 880 ) ( 144 -640 880 ) blockout/blockout 0 0 0 1 1
+( 152 -640 880 ) ( 144 -640 880 ) ( 144 -640 826 ) blockout/blockout 0 0 0 1 1
+( 152 -648 880 ) ( 152 -640 880 ) ( 152 -640 826 ) blockout/blockout 0 0 0 1 1
+}
+// brush 19
+{
+( 128 -616 904 ) ( 144 -632 1032 ) ( 144 -632 904 ) blockout/blockout 0 0 0 1 1
+( 128 -632 784 ) ( 128.66666666666669 -632 784 ) ( 128 -631.6666666666667 784 ) blockout/blockout 0 0 0 1 1
+( 144 -616 904 ) ( 144 -615.6666666666667 904 ) ( 144.66666666666669 -616 904 ) blockout/blockout 0 0 0 1 1
+( 144 -616 904 ) ( 144.66666666666669 -616 904 ) ( 144 -616 919 ) blockout/blockout 0 0 0 1 1
+( 144 -616 904 ) ( 144 -616 919 ) ( 144 -615.6666666666667 904 ) blockout/blockout 0 0 0 1 1
+}
+// brush 20
+{
+( 144 -760 904 ) ( 128 -776 1032 ) ( 128 -776 904 ) blockout/blockout 0 0 0 1 1
+( 128 -776 784 ) ( 128 -776 799 ) ( 128.66666666666669 -776 784 ) blockout/blockout 0 0 0 1 1
+( 128 -776 784 ) ( 128.66666666666669 -776 784 ) ( 128 -775.6666666666667 784 ) blockout/blockout 0 0 0 1 1
+( 144 -760 904 ) ( 144 -759.6666666666667 904 ) ( 144.66666666666669 -760 904 ) blockout/blockout 0 0 0 1 1
+( 144 -760 904 ) ( 144 -760 919 ) ( 144 -759.6666666666667 904 ) blockout/blockout 0 0 0 1 1
+}
+// brush 21
+{
+( -88 -776 784 ) ( -88 -775.6666666666667 784 ) ( -88 -776 799 ) blockout/blockout 0 0 0 1 1
+( -88 -776 784 ) ( -88 -776 799 ) ( -87.33333333333331 -776 784 ) blockout/blockout 0 0 0 1 1
+( -88 -776 784 ) ( -87.33333333333331 -776 784 ) ( -88 -775.6666666666667 784 ) blockout/blockout 0 0 0 1 1
+( -72 -760 904 ) ( -72 -759.6666666666667 904 ) ( -71.33333333333331 -760 904 ) blockout/blockout 0 0 0 1 1
+( -72 -776 904 ) ( -88 -760 1032 ) ( -88 -760 904 ) blockout/blockout 0 0 0 1 1
+}
+// brush 22
+{
+( -88 -632 784 ) ( -88 -631.6666666666667 784 ) ( -88 -632 799 ) blockout/blockout 0 0 0 1 1
+( -88 -632 784 ) ( -87.33333333333331 -632 784 ) ( -88 -631.6666666666667 784 ) blockout/blockout 0 0 0 1 1
+( -72 -616 904 ) ( -72 -615.6666666666667 904 ) ( -71.33333333333331 -616 904 ) blockout/blockout 0 0 0 1 1
+( -72 -616 904 ) ( -71.33333333333331 -616 904 ) ( -72 -616 919 ) blockout/blockout 0 0 0 1 1
+( -88 -632 904 ) ( -72 -616 1032 ) ( -72 -616 904 ) blockout/blockout 0 0 0 1 1
+}
+}
+// entity 16
+{
 "classname" "func_group"
 "_tb_type" "_tb_group"
 "_tb_name" "pillar_reallybig"
@@ -6387,7 +6394,7 @@
 ( 2429.856418475424 -1138.1435907186435 1024 ) ( 2430.6274291362597 -1144 800 ) ( 2430.6274291362597 -1144 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 16
+// entity 17
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -6539,7 +6546,7 @@
 ( 2429.8563751484608 917.8564092813565 1024 ) ( 2430.627385809298 912 800 ) ( 2430.627385809298 912 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 17
+// entity 18
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -6691,7 +6698,7 @@
 ( 2429.8564011109193 -314.1435907186435 1024 ) ( 2430.627411771757 -320 800 ) ( 2430.627411771757 -320 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 18
+// entity 19
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -6843,7 +6850,7 @@
 ( 2429.856409877464 -730.1435907186433 1024 ) ( 2430.6274205383015 -736 800 ) ( 2430.6274205383015 -736 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 19
+// entity 20
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -6995,7 +7002,7 @@
 ( 2429.8563840835927 493.8564092813565 1024 ) ( 2430.6273947444306 488 800 ) ( 2430.6273947444306 488 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 20
+// entity 21
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7147,7 +7154,7 @@
 ( 2429.856392850137 77.85640928135672 1024 ) ( 2430.6274035109745 72 800 ) ( 2430.6274035109745 72 1024 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 21
+// entity 22
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7263,7 +7270,7 @@
 ( 1758 924 924 ) ( 1758 930 924 ) ( 1758 930 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 22
+// entity 23
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7379,7 +7386,7 @@
 ( 1758 540 924 ) ( 1758 546 924 ) ( 1758 546 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 23
+// entity 24
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7495,7 +7502,7 @@
 ( 1758 156 924 ) ( 1758 162 924 ) ( 1758 162 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 24
+// entity 25
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7611,7 +7618,7 @@
 ( 1758 -228 924 ) ( 1758 -222 924 ) ( 1758 -222 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 25
+// entity 26
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7727,7 +7734,7 @@
 ( 1758 -724 924 ) ( 1758 -718 924 ) ( 1758 -718 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 26
+// entity 27
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -7843,97 +7850,97 @@
 ( 1758 -1076 924 ) ( 1758 -1070 924 ) ( 1758 -1070 920 ) blockout/blockout 0 0 0 1 1
 }
 }
-// entity 27
+// entity 28
 {
 "classname" "info_player_start_player"
 "origin" "-392 808 792"
 }
-// entity 28
+// entity 29
 {
 "classname" "info_player_start_player"
 "origin" "-392 568 792"
 }
-// entity 29
+// entity 30
 {
 "classname" "info_player_start_player"
 "origin" "-392 264 792"
 }
-// entity 30
+// entity 31
 {
 "classname" "info_player_start_player"
 "origin" "-712 264 792"
 }
-// entity 31
+// entity 32
 {
 "classname" "info_player_start_player"
 "origin" "-712 808 792"
 }
-// entity 32
+// entity 33
 {
 "classname" "info_player_start_player"
 "origin" "-712 568 792"
 }
-// entity 33
+// entity 34
 {
 "classname" "info_player_start_player"
 "origin" "-1064 264 792"
 }
-// entity 34
+// entity 35
 {
 "classname" "info_player_start_player"
 "origin" "-1064 808 792"
 }
-// entity 35
+// entity 36
 {
 "classname" "info_player_start_player"
 "origin" "-1064 568 792"
 }
-// entity 36
+// entity 37
 {
 "classname" "info_player_start_director"
 "origin" "1944 -1912 800"
 }
-// entity 37
+// entity 38
 {
 "classname" "info_player_start_director"
 "origin" "1944 -1624 800"
 }
-// entity 38
+// entity 39
 {
 "classname" "info_player_start_director"
 "origin" "1944 -1336 800"
 }
-// entity 39
+// entity 40
 {
 "classname" "info_player_start_director"
 "origin" "2216 -1336 800"
 }
-// entity 40
+// entity 41
 {
 "classname" "info_player_start_director"
 "origin" "2216 -1624 800"
 }
-// entity 41
+// entity 42
 {
 "classname" "info_player_start_director"
 "origin" "2216 -1912 800"
 }
-// entity 42
+// entity 43
 {
 "classname" "info_player_start_director"
 "origin" "2616 -1352 800"
 }
-// entity 43
+// entity 44
 {
 "classname" "info_player_start_director"
 "origin" "2616 -1640 800"
 }
-// entity 44
+// entity 45
 {
 "classname" "info_player_start_director"
 "origin" "2616 -1928 800"
 }
-// entity 45
+// entity 46
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -7941,27 +7948,19 @@
 "_tb_id" "16"
 "_tb_layer_sort_index" "0"
 }
-// entity 46
+// entity 47
 {
 "classname" "path_corner"
 "origin" "-80 -784 776"
 "target" "train_stop01"
-"targetname" "train_stop21"
-"wait" "0"
-"_tb_layer" "16"
-}
-// entity 47
-{
-"classname" "path_corner"
-"origin" "1112 -816 792"
-"target" "train_stop21"
 "targetname" "train_stop20"
+"wait" "0"
 "_tb_layer" "16"
 }
 // entity 48
 {
 "classname" "path_corner"
-"origin" "1112 -576 792"
+"origin" "1112 -816 792"
 "target" "train_stop20"
 "targetname" "train_stop19"
 "_tb_layer" "16"
@@ -7969,7 +7968,7 @@
 // entity 49
 {
 "classname" "path_corner"
-"origin" "1120 -376 792"
+"origin" "1112 -576 792"
 "target" "train_stop19"
 "targetname" "train_stop18"
 "_tb_layer" "16"
@@ -7977,7 +7976,7 @@
 // entity 50
 {
 "classname" "path_corner"
-"origin" "1128 -168 792"
+"origin" "1120 -376 792"
 "target" "train_stop18"
 "targetname" "train_stop17"
 "_tb_layer" "16"
@@ -7985,45 +7984,53 @@
 // entity 51
 {
 "classname" "path_corner"
-"origin" "1200 416 792"
-"target" "train_stop14"
-"targetname" "train_stop13"
+"origin" "1128 -168 792"
+"target" "train_stop17"
+"targetname" "train_stop16"
 "_tb_layer" "16"
 }
 // entity 52
 {
 "classname" "path_corner"
-"origin" "1144 400 792"
-"target" "train_stop15"
-"targetname" "train_stop14"
+"origin" "1216 592 792"
+"target" "train_stop13"
+"targetname" "train_stop12"
 "_tb_layer" "16"
 }
 // entity 53
 {
 "classname" "path_corner"
-"origin" "1112 376 792"
-"target" "train_stop16"
-"targetname" "train_stop15"
+"origin" "1160 576 792"
+"target" "train_stop14"
+"targetname" "train_stop13"
 "_tb_layer" "16"
 }
 // entity 54
 {
 "classname" "path_corner"
-"origin" "1096 344 792"
-"target" "train_stop17"
-"targetname" "train_stop16"
+"origin" "1128 552 792"
+"target" "train_stop15"
+"targetname" "train_stop14"
 "_tb_layer" "16"
 }
 // entity 55
 {
 "classname" "path_corner"
-"origin" "1696 392 792"
+"origin" "1112 520 792"
+"target" "train_stop16"
+"targetname" "train_stop15"
+"_tb_layer" "16"
+}
+// entity 56
+{
+"classname" "path_corner"
+"origin" "1600 440 792"
 "target" "train_stop12"
 "targetname" "train_stop11"
 "wait" "10"
 "_tb_layer" "16"
 }
-// entity 56
+// entity 57
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -8031,7 +8038,7 @@
 "_tb_id" "20"
 "_tb_layer_sort_index" "1"
 }
-// entity 57
+// entity 58
 {
 "classname" "path_corner"
 "origin" "-88 -784 776"
@@ -8041,7 +8048,7 @@
 "angle" "0"
 "_tb_layer" "20"
 }
-// entity 58
+// entity 59
 {
 "classname" "path_corner"
 "origin" "-88 -784 776"
@@ -8050,7 +8057,7 @@
 "wait" "0"
 "_tb_layer" "20"
 }
-// entity 59
+// entity 60
 {
 "classname" "path_corner"
 "origin" "1096 -816 792"
@@ -8058,7 +8065,7 @@
 "targetname" "train_stop03"
 "_tb_layer" "20"
 }
-// entity 60
+// entity 61
 {
 "classname" "path_corner"
 "origin" "1096 -576 792"
@@ -8066,7 +8073,7 @@
 "targetname" "train_stop04"
 "_tb_layer" "20"
 }
-// entity 61
+// entity 62
 {
 "classname" "path_corner"
 "origin" "1104 -376 792"
@@ -8074,7 +8081,7 @@
 "targetname" "train_stop05"
 "_tb_layer" "20"
 }
-// entity 62
+// entity 63
 {
 "classname" "path_corner"
 "origin" "1112 -168 792"
@@ -8082,44 +8089,44 @@
 "targetname" "train_stop06"
 "_tb_layer" "20"
 }
-// entity 63
-{
-"classname" "path_corner"
-"origin" "1216 416 792"
-"target" "train_stop11"
-"targetname" "train_stop10"
-"_tb_layer" "20"
-}
 // entity 64
 {
 "classname" "path_corner"
-"origin" "1160 400 792"
-"target" "train_stop10"
-"targetname" "train_stop09"
+"origin" "1232 592 792"
+"target" "train_stop11"
+"targetname" "train_stop10"
 "_tb_layer" "20"
 }
 // entity 65
 {
 "classname" "path_corner"
-"origin" "1128 376 792"
-"target" "train_stop09"
-"targetname" "train_stop08"
+"origin" "1176 576 792"
+"target" "train_stop10"
+"targetname" "train_stop09"
 "_tb_layer" "20"
 }
 // entity 66
 {
 "classname" "path_corner"
-"origin" "1112 344 792"
-"target" "train_stop08"
-"targetname" "train_stop07"
+"origin" "1144 552 792"
+"target" "train_stop09"
+"targetname" "train_stop08"
 "_tb_layer" "20"
 }
 // entity 67
 {
 "classname" "path_corner"
-"origin" "1712 392 792"
-"target" "train_stop13"
-"targetname" "train_stop12"
+"origin" "1128 520 792"
+"target" "train_stop08"
+"targetname" "train_stop07"
+"_tb_layer" "20"
+}
+// entity 68
+{
+"classname" "path_corner"
+"origin" "1688 384 792"
+"target" "train_stop10"
+"targetname" "train_stop11"
 "wait" "0"
 "_tb_layer" "20"
 }

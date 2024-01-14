@@ -943,6 +943,7 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 		return;
 	}
 
+
 	// spawn the zombie
 	SP_monster_zombie(zombie);
 
@@ -955,9 +956,9 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 	VectorSubtract(trace.endpos, start, distance_to_player);
 	vec_t vec_length = abs(VectorLength(distance_to_player));
 
-	if (vec_length <= BAMFUSLICATOR_MIN_DISTANCE)
+	if (vec_length <= BAMFUSLICATOR_MIN_DISTANCE
+		|| !strcmp(trace.ent->classname, "player")) // also push out if player
 	{
-
 		// epsilon pulled out the ass to deal with the case where you are right below the zombie
 		// force moving by BAMFUSLICATOR_MIN_DISTANCE could let people spawn zombies through close enough walls (<=56 units)
 		float stupid_epsilon = 0.625f; // value hand tuned by a retard
