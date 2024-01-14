@@ -1,13 +1,12 @@
 ﻿// Assetbuild Utility
-// Copyright © 2023 starfrost
+// Copyright © 2023-2024 starfrost
 // 
 // This is a mess primarily due to the fact it was rushed,
 // and due to the fact pak.exe sucks ass
-using System.Diagnostics;
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.4"; // Version
+const string ASSETBUILD_VERSION = "2.0.5b"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
@@ -87,7 +86,7 @@ try
     // copy them all to the output directory
 
     // exclude raw assets
-    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "scrnshot", "screenshot"];
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "scrnshot", "screenshot", ".skp", ".skb", ".mtl", ".obj"];
 
     foreach (string gameFile in gameFiles)
     {

@@ -1500,8 +1500,8 @@ void train_wait (edict_t *self)
 	{
 		if (self->moveinfo.wait > 0)
 		{
-			self->nextthink = level.time + self->moveinfo.wait;
-			self->think = train_next;
+ 			self->nextthink = level.time + self->moveinfo.wait;
+ 			self->think = train_next;
 		}
 		else if (self->spawnflags & TRAIN_TOGGLE)  // && wait < 0
 		{

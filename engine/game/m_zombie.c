@@ -659,8 +659,8 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	{
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
 		for (n = 0; n < 3; n++)
-			ThrowGib(self, "models/objects/gibs/zombie/h_zombie.md2", damage, GIB_ORGANIC);
-		ThrowGib(self, "models/objects/gibs/zombie/zom_gib.md2", damage, GIB_ORGANIC);
+			ThrowGib(self, "models/objects/gibs/zombie_hand/h_zombie.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/zombie_main/zom_gib.md2", damage, GIB_ORGANIC);
 		self->deadflag = DEAD_DEAD;
 		G_FreeEdict(self);
 		return;

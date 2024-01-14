@@ -163,6 +163,7 @@ static void CancelChanges( void *unused )
 */
 void VID_MenuInit( void )
 {
+	// THIS LIST **MUST** CORRESPOND EXACTLY WITH THE LIST IN VID_DLL.C!!!
 	static const char *resolutions[] = 
 	{
 		"[custom   ]",

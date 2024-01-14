@@ -513,12 +513,14 @@ vidmode_t vid_modes[] =
 	{ "Mode 7: 1152x864",  1152, 864,  7 },
 	{ "Mode 8: 1280x960",  1280, 960,  8 },
 	{ "Mode 9: 1366x768",  1366, 768,  9 },
-	{ "Mode 10: 1600x1200", 1600, 1200, 10 },
-	{ "Mode 11: 1920x1080", 1920, 1080, 11 },
-	{ "Mode 12: 1920x1200", 1920, 1200, 12 },
-	{ "Mode 13: 2048x1536", 2048, 1536, 13 },
-	{ "Mode 14: 2560x1440", 2560, 1440, 14 },
-	{ "Mode 15: 3840x2160", 3840, 2160, 15 },
+	{ "Mode 10: 1440x900", 1440, 900,  10},
+	{ "Mode 11: 1600x900", 1600, 900,  11},
+	{ "Mode 12: 1600x1200", 1600, 1200, 11 },
+	{ "Mode 13: 1920x1080", 1920, 1080, 12 },
+	{ "Mode 14: 1920x1200", 1920, 1200, 13 },
+	{ "Mode 15: 2048x1536", 2048, 1536, 14 },
+	{ "Mode 16: 2560x1440", 2560, 1440, 15 },
+	{ "Mode 17: 3840x2160", 3840, 2160, 16 },
 };
 
 qboolean VID_GetModeInfo( int *width, int *height, int mode )
@@ -571,7 +573,7 @@ void VID_NewWindow ( int width, int height)
 	viddef.height = height;
 
 	cl.force_refdef = true;		// can't use a paused refdef
-
+	
 	char hudscale[4];
 	memset(hudscale, 0, sizeof(hudscale));
 

@@ -541,10 +541,10 @@ void GiveBaseWeaponForTeam(edict_t* client_edict)
 	{
 		//todo: make a method
 		item = FindItem("Director - Bamfuslicator");
+
 		client->pers.selected_item = ITEM_INDEX(item);
 		client->pers.inventory[client->pers.selected_item] = WEAP_BAMFUSLICATOR;
 		client->pers.weapon = item;
-
 	}
 	else
 	{
@@ -553,6 +553,7 @@ void GiveBaseWeaponForTeam(edict_t* client_edict)
 		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
 		client->pers.weapon = item;
 	}
+
 }
 
 void InitClientResp (gclient_t *client)
@@ -594,8 +595,6 @@ void FetchClientEntData (edict_t *ent)
 	ent->max_health = ent->client->pers.max_health;
 	ent->flags |= ent->client->pers.savedFlags;
 }
-
-
 
 /*
 =======================================================================
