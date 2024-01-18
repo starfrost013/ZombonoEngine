@@ -47,7 +47,6 @@ cvar_t		*vid_xpos;			// X coordinate of window position
 cvar_t		*vid_ypos;			// Y coordinate of window position
 cvar_t		*vid_fullscreen;
 cvar_t		*vid_refresh;
-cvar_t		*vid_hudscale;
 cvar_t		*r_customwidth;
 cvar_t		*r_customheight;
 cvar_t		*viewsize;
@@ -717,7 +716,7 @@ void VID_CheckChanges (void)
 		Com_sprintf( name, sizeof(name), "ref_%s.dll", vid_ref->string );
 		if ( !VID_LoadRefresh( name ) )
 		{
-			Com_Error("Failed to initialise renderer. Renderer name: %s", vid_ref->string);
+			Com_Error(ERR_FATAL, "Failed to initialise renderer. Renderer name: %s", vid_ref->string);
 
 			/*
 			** drop the console if we fail to load a refresh
@@ -726,7 +725,11 @@ void VID_CheckChanges (void)
 			{
 				Con_ToggleConsole_f();
 			}
-		}
+		} 
+
+		// reload UIs so that their positions are relative to the new refdef
+		UI_Init();
+
 		cls.disable_screen = false;
 	}
 

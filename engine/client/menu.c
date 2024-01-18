@@ -2184,7 +2184,7 @@ void StartServer_MenuInit( void )
 	i = 0;
 	while ( i < length )
 	{
-		if ( s[i] == '\r' )
+		if ( s[i] == '\n' )
 			nummaps++;
 		i++;
 	}

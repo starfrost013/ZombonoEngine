@@ -662,6 +662,12 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y);
 qboolean UI_LeaderboardUICreate();
 void UI_LeaderboardUIToggle(int btn);
 
+// BamfuslicatorUI
+
+// UI: Required CVars
+
+cvar_t* vid_hudscale;
+
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();
 

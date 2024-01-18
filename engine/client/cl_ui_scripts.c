@@ -62,3 +62,12 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 //
 // LeaderboardUI is in cl_ui_leaderboard.c
 //
+
+//
+// BamfuslicatorUI
+//
+
+void UI_BamfuslicatorUICreate()
+{
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", "**** UNKNOWN ZOMBIE TYPE ****", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25));
+}
