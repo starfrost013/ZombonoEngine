@@ -51,6 +51,7 @@ qboolean UI_Init()
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
 	if (successful) successful = UI_AddUI("LeaderboardUI", UI_LeaderboardUICreate);
+	if (successful) successful = UI_AddUI("BamfuslicatorUI", UI_BamfuslicatorUICreate);
 	return successful;
 }
 
@@ -289,11 +290,29 @@ qboolean UI_SetActive(char* ui_name, qboolean active)
 		ui_ptr->active = active;
 		ui_active = active;
 
-		// turn on the mouse cursor, bit hacky - we basically take over the mouse pointer when a UI is active
-		IN_Activate(!active);
+		// if the UI requires the mouse....
+		if (!ui_ptr->passive)
+		{
+			// turn on the mouse cursor, bit hacky - we basically take over the mouse pointer when a UI is active
+			IN_Activate(!active);
+		}
 
 		current_ui = ui_ptr;
 		return true; 
+	}
+
+	return false;
+}
+
+// set UI ui_name passivity to passive
+qboolean UI_SetPassive(char* ui_name, qboolean passive)
+{
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (ui_ptr != NULL)
+	{
+		ui_ptr->passive = passive; 
+		return true;
 	}
 
 	return false;

@@ -1641,8 +1641,9 @@ CL_SendCommand
 */
 void CL_SendCommand (void)
 {
-	// Kill input when a UI is active
-	if (!ui_active)
+	// Kill input when a UI that captures input is active
+	if (!ui_active
+		|| (ui_active && current_ui->passive))
 	{
 		// get new key events
 		Sys_SendKeyEvents();

@@ -432,7 +432,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 		TossClientWeapon (self);
 
 		// show scores
-		G_SendLeaderboard(self);
+		G_LeaderboardSend(self);
 	}
 
 	// remove powerups
@@ -534,8 +534,9 @@ void InitClientPersistent (edict_t *client_edict)
 
 void GiveBaseWeaponForTeam(edict_t* client_edict)
 {
-	gclient_t* client = client_edict->client;
-	gitem_t* item;
+	gclient_t*	client = client_edict->client;
+	gitem_t*	item;
+	int			i;
 
 	if (client_edict->team == team_director)
 	{
@@ -553,7 +554,6 @@ void GiveBaseWeaponForTeam(edict_t* client_edict)
 		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
 		client->pers.weapon = item;
 	}
-
 }
 
 void InitClientResp (gclient_t *client)

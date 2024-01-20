@@ -6,6 +6,7 @@ January XX, 2024
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
 * Directors killing zombies don't get frags anymore. Players killing zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
+* Visually indicate weapons on team change.
 
 Version 0.04-pre3
 January 14, 2024

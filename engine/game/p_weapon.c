@@ -198,6 +198,22 @@ void ChangeWeapon (edict_t *ent)
 
 	ent->client->pers.lastweapon = ent->client->pers.weapon;
 	ent->client->pers.weapon = ent->client->newweapon;
+
+
+	if (ent->client->newweapon != NULL)
+	{
+		// toggle the UI depending on if we are switching into or out of the bamfuslicator
+		if (!strcmp(ent->client->newweapon->classname, "weapon_bamfuslicator"))
+		{
+			G_UISend(ent, "BamfuslicatorUI", true);
+		}
+		else if (!strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator"))
+		{
+			G_UISend(ent, "BamfuslicatorUI", false);
+		}
+	}
+
+
 	ent->client->newweapon = NULL;
 	ent->client->machinegun_shots = 0;
 
@@ -209,6 +225,7 @@ void ChangeWeapon (edict_t *ent)
 			i = 0;
 		ent->s.skinnum = (ent - g_edicts - 1) | i;
 	}
+
 
 	if (ent->client->pers.weapon && ent->client->pers.weapon->ammo)
 		ent->client->ammo_index = ITEM_INDEX(FindItem(ent->client->pers.weapon->ammo));
@@ -235,7 +252,6 @@ void ChangeWeapon (edict_t *ent)
 	{
 			ent->s.frame = FRAME_pain301;
 			ent->client->anim_end = FRAME_pain304;
-			
 	}
 }
 

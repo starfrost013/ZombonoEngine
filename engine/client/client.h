@@ -601,12 +601,13 @@ typedef struct ui_control_s
 
 typedef struct ui_s
 {
-	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
 	int					num_controls;				// Number of controls in the UI.
 	char				name[MAX_UI_STR_LENGTH];	// UI name.			
 	qboolean(*on_create)();							// UI Create function for client
 	qboolean			enabled;					// True if the UI is currently being drawn.
 	qboolean			active;						// True if the UI is currently interactable.
+	qboolean			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
+	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
 ui_t					ui_list[MAX_UIS];			// The list of UIs.
@@ -627,7 +628,8 @@ qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, in
 
 // UI: Toggle
 qboolean UI_SetEnabled(char* name, qboolean enabled);																					// Sets a UI to enabled (visible).
-qboolean UI_SetActive(char* name, qboolean enabled);																					// Sets a UI to active (tangible).
+qboolean UI_SetActive(char* name, qboolean active);																					// Sets a UI to active (tangible).
+qboolean UI_SetPassive(char* name, qboolean passive);
 
 // UI: Update
 qboolean UI_SetText(char* ui_name, char* control_name, char* text);																		// Updates a UI control's text.
@@ -663,6 +665,7 @@ qboolean UI_LeaderboardUICreate();
 void UI_LeaderboardUIToggle(int btn);
 
 // BamfuslicatorUI
+qboolean UI_BamfuslicatorUICreate();
 
 // UI: Required CVars
 

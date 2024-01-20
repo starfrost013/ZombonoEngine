@@ -665,7 +665,7 @@ void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_p
 
 int		G_CountClients();
 
-void	G_SendLeaderboard(edict_t* ent);
+void	G_LeaderboardSend(edict_t* ent);
 
 char	*G_CopyString (char *in);
 

@@ -67,7 +67,10 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 // BamfuslicatorUI
 //
 
-void UI_BamfuslicatorUICreate()
+qboolean UI_BamfuslicatorUICreate()
 {
-	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", "**** UNKNOWN ZOMBIE TYPE ****", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25));
+	UI_SetPassive("BamfuslicatorUI", true);
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25));
+	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25), 8 * 48, 8, 232, 96, 0, 255);
+	return true; 
 }

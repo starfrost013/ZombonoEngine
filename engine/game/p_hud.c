@@ -63,7 +63,7 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 	// tell the client to display the leaderboard
 	// 
 	// send the leaderboard info
-	G_SendLeaderboard(ent);
+	G_LeaderboardSend(ent);
 
 	// make it draw the leaderboard (hack, reliable)
 	gi.WriteByte(svc_leaderboarddraw);
@@ -172,12 +172,12 @@ void BeginIntermission (edict_t *targ)
 
 /*
 ==================
-G_SendLeaderboard
+G_LeaderboardSend
 
 Sends over the leaderboard
 ==================
 */
-void G_SendLeaderboard(edict_t* ent)
+void G_LeaderboardSend(edict_t* ent)
 {
 	edict_t* client_edict;
 	// tell the client there is a leaderboard update coming
@@ -252,7 +252,7 @@ void Cmd_Leaderboard_f(edict_t* ent)
 	ent->client->showinventory = false;
 	ent->client->showhelp = false;
 
-	G_SendLeaderboard(ent);
+	G_LeaderboardSend(ent);
 }
 
 /*
