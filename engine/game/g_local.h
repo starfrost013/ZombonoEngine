@@ -105,7 +105,8 @@ typedef enum
 	WEAPON_READY, 
 	WEAPON_ACTIVATING,
 	WEAPON_DROPPING,
-	WEAPON_FIRING
+	WEAPON_FIRING_PRIMARY,
+	WEAPON_FIRING_SECONDARY,
 } weaponstate_t;
 
 typedef enum
@@ -274,6 +275,7 @@ typedef struct gitem_s
 	char		*precaches;		// string of all models, sounds, and images this item will use
 
 	int			allowed_teams;	// The teams that are allowed for this item.
+	int			spawn_type;		// Type of entity to spawn (item-specific)
 } gitem_t;
 
 #define SPEED_DIRECTOR			0.75			// Speed multiplier for director team. 
@@ -1140,6 +1142,8 @@ struct edict_s
 	vec3_t		move_origin;
 	vec3_t		move_angles;
 
+	int			allowed_teams;	// Allowed Teams for Zombono Teamdoors
+
 	// move this to clientinfo?
 	int			light_level;
 
@@ -1150,6 +1154,21 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
-
-	int			allowed_teams;	// Allowed Teams for Zombono Teamdoors
 };
+
+
+// Zombie specific defines
+// test zombie types
+// maybe make these load from a file
+#define ZOMBIE_TYPE_NORMAL			0
+#define ZOMBIE_TYPE_FAST			1
+#define ZOMBIE_TYPE_FUCKING_CUNT	2
+
+#define MAX_ZOMBIE_TYPE				2
+
+#define ZOMBIE_DAMAGE_STANDARD		10
+#define ZOMBIE_DAMAGE_TANK			20
+#define ZOMBIE_DAMAGE_FUCKING_CUNT	45
+
+#define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
+

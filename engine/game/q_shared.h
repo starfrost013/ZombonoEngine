@@ -498,10 +498,10 @@ typedef struct
 //
 // button bits
 //
-#define	BUTTON_ATTACK		1
-#define	BUTTON_USE			2
+#define	BUTTON_ATTACK1		1			// primary attack
+#define	BUTTON_USE			2			// use key
+#define BUTTON_ATTACK2		4			// secondary attack
 #define	BUTTON_ANY			128			// any key whatsoever
-
 
 // usercmd_t is sent to the server each client frame
 typedef struct usercmd_s

@@ -1605,7 +1605,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	ent->light_level = ucmd->lightlevel;
 
 	// fire weapon from final position if needed
-	if (client->latched_buttons & BUTTON_ATTACK)
+	if (client->latched_buttons & BUTTON_ATTACK1)
 	{
 		if (client->resp.spectator) {
 
@@ -1682,7 +1682,7 @@ void ClientBeginServerFrame (edict_t *ent)
 		{
 			// in deathmatch, only wait for attack button
 			// TODO: investigate (-1 for all buttons)
-			buttonMask = BUTTON_ATTACK;
+			buttonMask = BUTTON_ATTACK1;
 
 			if ( ( client->latched_buttons & buttonMask ) ||
 				(((int)gameflags->value & GF_FORCE_RESPAWN) ) )

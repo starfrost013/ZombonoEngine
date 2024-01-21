@@ -249,7 +249,8 @@ void AppActivate(BOOL fActive, BOOL minimize)
 	else
 	{
 		// ZombonoUI controls this in the case a UI is active
-		if (!ui_active) IN_Activate (true);
+		if (!ui_active
+			|| ui_active && current_ui->passive) IN_Activate (true);
 		S_Activate (true);
 		if ( win_noalttab->value )
 		{
@@ -392,7 +393,8 @@ LONG WINAPI MainWndProc (
 				vid_xpos->modified = false;
 				vid_ypos->modified = false;
 				if (ActiveApp
-					&& !ui_active) // ZombonoUI
+					&& (!ui_active
+						|| (ui_active && current_ui->passive))) // ZombonoUI
 					IN_Activate (true);
 			}
 		}

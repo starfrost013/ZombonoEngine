@@ -118,7 +118,7 @@ int Sys_Milliseconds (void)
 		base = timeGetTime() & 0xffff0000;
 		initialized = true;
 	}
-	curtime = timeGetTime() - base;
+	curtime = timeGetTime() - base; 
 
 	return curtime;
 }

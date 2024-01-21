@@ -48,7 +48,7 @@ Cmd_Wait_f
 
 Causes execution of the remainder of the command buffer to be delayed until
 next frame.  This allows commands like:
-bind g "impulse 5 ; +attack ; wait ; -attack ; impulse 2"
+bind g "impulse 5 ; +attack1 ; wait ; -attack1 ; impulse 2"
 ============
 */
 void Cmd_Wait_f (void)

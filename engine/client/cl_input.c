@@ -58,7 +58,7 @@ Key_Event (int key, qboolean down, unsigned time);
 kbutton_t	in_klook;
 kbutton_t	in_left, in_right, in_forward, in_back;
 kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
-kbutton_t	in_strafe, in_speed, in_use, in_attack;
+kbutton_t	in_speed, in_use, in_attack1, in_attack2;
 kbutton_t	in_up, in_down;
 
 int			in_impulse;
@@ -165,11 +165,11 @@ void IN_MoverightUp(void) {KeyUp(&in_moveright);}
 
 void IN_SpeedDown(void) {KeyDown(&in_speed);}
 void IN_SpeedUp(void) {KeyUp(&in_speed);}
-void IN_StrafeDown(void) {KeyDown(&in_strafe);}
-void IN_StrafeUp(void) {KeyUp(&in_strafe);}
 
-void IN_AttackDown(void) {KeyDown(&in_attack);}
-void IN_AttackUp(void) {KeyUp(&in_attack);}
+void IN_Attack1Down(void) {KeyDown(&in_attack1);}
+void IN_Attack1Up(void) {KeyUp(&in_attack1);}
+void IN_Attack2Down(void) { KeyDown(&in_attack2); }
+void IN_Attack2Up(void) { KeyUp(&in_attack2); }
 
 void IN_UseDown (void) {KeyDown(&in_use);}
 void IN_UseUp (void) {KeyUp(&in_use);}
@@ -239,11 +239,10 @@ void CL_AdjustAngles (void)
 	else
 		speed = cls.frametime;
 
-	if (!(in_strafe.state & 1))
-	{
-		cl.viewangles[YAW] -= speed*cl_yawspeed->value*CL_KeyState (&in_right);
-		cl.viewangles[YAW] += speed*cl_yawspeed->value*CL_KeyState (&in_left);
-	}
+
+	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&in_right);
+	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&in_left);
+
 	if (in_klook.state & 1)
 	{
 		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&in_forward);
@@ -271,11 +270,6 @@ void CL_BaseMove (usercmd_t *cmd)
 	memset (cmd, 0, sizeof(*cmd));
 	
 	VectorCopy (cl.viewangles, cmd->angles);
-	if (in_strafe.state & 1)
-	{
-		cmd->sidemove += cl_sidespeed->value * CL_KeyState (&in_right);
-		cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&in_left);
-	}
 
 	cmd->sidemove += cl_sidespeed->value * CL_KeyState (&in_moveright);
 	cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&in_moveleft);
@@ -334,10 +328,14 @@ void CL_FinishMove (usercmd_t *cmd)
 //
 // figure button bits
 //	
-	if ( in_attack.state & 3 )
-		cmd->buttons |= BUTTON_ATTACK;
-	in_attack.state &= ~2;
+	if ( in_attack1.state & 3 )
+		cmd->buttons |= BUTTON_ATTACK1;
+	in_attack1.state &= ~2;
 	
+	if ( in_attack2.state & 3 )
+		cmd->buttons |= BUTTON_ATTACK2;
+	in_attack2.state &= ~2;
+
 	if (in_use.state & 3)
 		cmd->buttons |= BUTTON_USE;
 	in_use.state &= ~2;
@@ -424,16 +422,16 @@ void CL_InitInput (void)
 	Cmd_AddCommand ("-lookup", IN_LookupUp);
 	Cmd_AddCommand ("+lookdown", IN_LookdownDown);
 	Cmd_AddCommand ("-lookdown", IN_LookdownUp);
-	Cmd_AddCommand ("+strafe", IN_StrafeDown);
-	Cmd_AddCommand ("-strafe", IN_StrafeUp);
 	Cmd_AddCommand ("+moveleft", IN_MoveleftDown);
 	Cmd_AddCommand ("-moveleft", IN_MoveleftUp);
 	Cmd_AddCommand ("+moveright", IN_MoverightDown);
 	Cmd_AddCommand ("-moveright", IN_MoverightUp);
 	Cmd_AddCommand ("+speed", IN_SpeedDown);
 	Cmd_AddCommand ("-speed", IN_SpeedUp);
-	Cmd_AddCommand ("+attack", IN_AttackDown);
-	Cmd_AddCommand ("-attack", IN_AttackUp);
+	Cmd_AddCommand ("+attack1", IN_Attack1Down);
+	Cmd_AddCommand ("-attack1", IN_Attack1Up);
+	Cmd_AddCommand ("+attack2", IN_Attack2Down);
+	Cmd_AddCommand ("-attack2", IN_Attack2Up);
 	Cmd_AddCommand ("+use", IN_UseDown);
 	Cmd_AddCommand ("-use", IN_UseUp);
 	Cmd_AddCommand ("impulse", IN_Impulse);

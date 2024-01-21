@@ -35,14 +35,6 @@ static int	sound_death;
 static int	sound_death_ss;
 static int	sound_hit;
 
-// test zombie types
-// maybe make these load from a file
-#define ZOMBIE_DAMAGE_STANDARD		10
-#define ZOMBIE_DAMAGE_TANK			20
-#define ZOMBIE_DAMAGE_FUCKING_CUNT	45
-
-#define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
-
 void zombie_idle(edict_t* self)
 {
 	if (random() > 0.8)

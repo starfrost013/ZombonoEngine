@@ -406,9 +406,11 @@ A generic function to handle the basics of weapon thinking
 #define FRAME_IDLE_FIRST		(FRAME_FIRE_LAST + 1)
 #define FRAME_DEACTIVATE_FIRST	(FRAME_IDLE_LAST + 1)
 
-void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_DEACTIVATE_LAST, int *pause_frames, int *fire_frames, void (*fire)(edict_t *ent))
+void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_DEACTIVATE_LAST, 
+	int *pause_frames, int *fire_frames, void (*fire_primary)(edict_t *ent), void(*fire_secondary)(edict_t *ent))
 {
-	int		n;
+	int			n;
+	qboolean	no_ammo = false;
 
 	if(ent->deadflag || ent->s.modelindex != 255) // VWep animations screw up corpses
 	{
@@ -455,7 +457,7 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 		return;
 	}
 
-	if ((ent->client->newweapon) && (ent->client->weaponstate != WEAPON_FIRING))
+	if ((ent->client->newweapon) && (ent->client->weaponstate != WEAPON_FIRING_PRIMARY) && (ent->client->weaponstate != WEAPON_FIRING_SECONDARY))
 	{
 		ent->client->weaponstate = WEAPON_DROPPING;
 		ent->client->ps.gunframe = FRAME_DEACTIVATE_FIRST;
@@ -480,14 +482,14 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 
 	if (ent->client->weaponstate == WEAPON_READY)
 	{
-		if ( ((ent->client->latched_buttons|ent->client->buttons) & BUTTON_ATTACK) )
+		if ( ((ent->client->latched_buttons|ent->client->buttons) & BUTTON_ATTACK1) )
 		{
-			ent->client->latched_buttons &= ~BUTTON_ATTACK;
+			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
 			if ((!ent->client->ammo_index) || 
 				( ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
-				ent->client->weaponstate = WEAPON_FIRING;
+				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
 
 				// start the animation
 				ent->client->anim_priority = ANIM_ATTACK;
@@ -504,12 +506,36 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 			}
 			else
 			{
-				if (level.time >= ent->pain_debounce_time)
+				no_ammo = true;
+			}
+		}
+		else if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK2)
+			&& fire_secondary != NULL)
+		{
+			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
+
+			if ((!ent->client->ammo_index) ||
+				(ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
+			{
+				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
+				ent->client->weaponstate = WEAPON_FIRING_SECONDARY;
+
+				// start the animation (TODO: secondary animations)
+				ent->client->anim_priority = ANIM_ATTACK;
+				if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
 				{
-					gi.sound(ent, CHAN_VOICE, gi.soundindex("weapons/noammo.wav"), 1, ATTN_NORM, 0);
-					ent->pain_debounce_time = level.time + 1;
+					ent->s.frame = FRAME_crattak1 - 1;
+					ent->client->anim_end = FRAME_crattak9;
 				}
-				NoAmmoWeaponChange (ent);
+				else
+				{
+					ent->s.frame = FRAME_attack1 - 1;
+					ent->client->anim_end = FRAME_attack8;
+				}
+			}
+			else
+			{
+				no_ammo = true;
 			}
 		}
 		else
@@ -535,9 +561,21 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 			ent->client->ps.gunframe++;
 			return;
 		}
+
+		if (no_ammo)
+		{
+			if (level.time >= ent->pain_debounce_time)
+			{
+				gi.sound(ent, CHAN_VOICE, gi.soundindex("weapons/noammo.wav"), 1, ATTN_NORM, 0);
+				ent->pain_debounce_time = level.time + 1;
+			}
+			NoAmmoWeaponChange(ent);
+		}
+
 	}
 
-	if (ent->client->weaponstate == WEAPON_FIRING)
+	if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY
+		|| ent->client->weaponstate == WEAPON_FIRING_SECONDARY)
 	{
 		for (n = 0; fire_frames[n]; n++)
 		{
@@ -546,7 +584,15 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 				if (ent->client->quad_framenum > level.framenum)
 					gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
 
-				fire (ent);
+				// fire primary or secondary based on button no.
+				if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY)
+				{
+					fire_primary(ent);
+				}
+				else if (ent->client->weaponstate == WEAPON_FIRING_SECONDARY)
+				{
+					fire_secondary(ent);
+				}
 				break;
 			}
 		}
@@ -623,6 +669,8 @@ void weapon_grenade_fire (edict_t *ent, qboolean held)
 
 void Weapon_Grenade (edict_t *ent)
 {
+	qboolean	no_ammo = false;
+
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
 		ChangeWeapon (ent);
@@ -638,25 +686,32 @@ void Weapon_Grenade (edict_t *ent)
 
 	if (ent->client->weaponstate == WEAPON_READY)
 	{
-		if ( ((ent->client->latched_buttons|ent->client->buttons) & BUTTON_ATTACK) )
+		if ( ((ent->client->latched_buttons|ent->client->buttons) & BUTTON_ATTACK1) )
 		{
-			ent->client->latched_buttons &= ~BUTTON_ATTACK;
+			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
 			if (ent->client->pers.inventory[ent->client->ammo_index])
 			{
 				ent->client->ps.gunframe = 1;
-				ent->client->weaponstate = WEAPON_FIRING;
+				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
 				ent->client->grenade_time = 0;
 			}
 			else
 			{
-				if (level.time >= ent->pain_debounce_time)
-				{
-					gi.sound(ent, CHAN_VOICE, gi.soundindex("weapons/noammo.wav"), 1, ATTN_NORM, 0);
-					ent->pain_debounce_time = level.time + 1;
-				}
-				NoAmmoWeaponChange (ent);
+				no_ammo = true;
 			}
 			return;
+		}
+
+
+		// if there is no ammo, play the no ammo sound
+		if (no_ammo)
+		{
+			if (level.time >= ent->pain_debounce_time)
+			{
+				gi.sound(ent, CHAN_VOICE, gi.soundindex("weapons/noammo.wav"), 1, ATTN_NORM, 0);
+				ent->pain_debounce_time = level.time + 1;
+			}
+			NoAmmoWeaponChange(ent);
 		}
 
 		if ((ent->client->ps.gunframe == 29) || (ent->client->ps.gunframe == 34) || (ent->client->ps.gunframe == 39) || (ent->client->ps.gunframe == 48))
@@ -670,7 +725,7 @@ void Weapon_Grenade (edict_t *ent)
 		return;
 	}
 
-	if (ent->client->weaponstate == WEAPON_FIRING)
+	if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY)
 	{
 		if (ent->client->ps.gunframe == 5)
 			gi.sound(ent, CHAN_WEAPON, gi.soundindex("weapons/hgrena1b.wav"), 1, ATTN_NORM, 0);
@@ -691,8 +746,8 @@ void Weapon_Grenade (edict_t *ent)
 				ent->client->grenade_blew_up = true;
 			}
 
-			if (ent->client->buttons & BUTTON_ATTACK)
-				return;
+			if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY
+				&& ent->client->buttons & BUTTON_ATTACK1) return;
 
 			if (ent->client->grenade_blew_up)
 			{
@@ -774,7 +829,7 @@ void Weapon_GrenadeLauncher (edict_t *ent)
 	static int	pause_frames[]	= {34, 51, 59, 0};
 	static int	fire_frames[]	= {6, 0};
 
-	Weapon_Generic (ent, 5, 16, 59, 64, pause_frames, fire_frames, weapon_grenadelauncher_fire);
+	Weapon_Generic (ent, 5, 16, 59, 64, pause_frames, fire_frames, weapon_grenadelauncher_fire, NULL);
 }
 
 /*
@@ -830,7 +885,7 @@ void Weapon_RocketLauncher (edict_t *ent)
 	static int	pause_frames[]	= {25, 33, 42, 50, 0};
 	static int	fire_frames[]	= {5, 0};
 
-	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_RocketLauncher_Fire);
+	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_RocketLauncher_Fire, NULL);
 }
 
 
@@ -888,7 +943,7 @@ void Weapon_Blaster (edict_t *ent)
 	static int	pause_frames[]	= {19, 32, 0};
 	static int	fire_frames[]	= {5, 0};
 
-	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire);
+	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire, NULL);
 }
 
 
@@ -901,7 +956,7 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 
 	ent->client->weapon_sound = gi.soundindex("weapons/hyprbl1a.wav");
 
-	if (!(ent->client->buttons & BUTTON_ATTACK))
+	if (!(ent->client->buttons & BUTTON_ATTACK1))
 	{
 		ent->client->ps.gunframe++;
 	}
@@ -965,7 +1020,7 @@ void Weapon_HyperBlaster (edict_t *ent)
 	static int	pause_frames[]	= {0};
 	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
 
-	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_HyperBlaster_Fire);
+	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_HyperBlaster_Fire, NULL);
 }
 
 /*
@@ -986,7 +1041,7 @@ void Machinegun_Fire (edict_t *ent)
 	int			kick = 2;
 	vec3_t		offset;
 
-	if (!(ent->client->buttons & BUTTON_ATTACK))
+	if (!(ent->client->buttons & BUTTON_ATTACK1))
 	{
 		ent->client->machinegun_shots = 0;
 		ent->client->ps.gunframe++;
@@ -1059,7 +1114,7 @@ void Weapon_Machinegun (edict_t *ent)
 	static int	pause_frames[]	= {23, 45, 0};
 	static int	fire_frames[]	= {4, 5, 0};
 
-	Weapon_Generic (ent, 3, 5, 45, 49, pause_frames, fire_frames, Machinegun_Fire);
+	Weapon_Generic (ent, 3, 5, 45, 49, pause_frames, fire_frames, Machinegun_Fire, NULL);
 }
 
 void Chaingun_Fire (edict_t *ent)
@@ -1078,13 +1133,13 @@ void Chaingun_Fire (edict_t *ent)
 	if (ent->client->ps.gunframe == 5)
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/chngnu1a.wav"), 1, ATTN_IDLE, 0);
 
-	if ((ent->client->ps.gunframe == 14) && !(ent->client->buttons & BUTTON_ATTACK))
+	if ((ent->client->ps.gunframe == 14) && !(ent->client->buttons & BUTTON_ATTACK1))
 	{
 		ent->client->ps.gunframe = 32;
 		ent->client->weapon_sound = 0;
 		return;
 	}
-	else if ((ent->client->ps.gunframe == 21) && (ent->client->buttons & BUTTON_ATTACK)
+	else if ((ent->client->ps.gunframe == 21) && (ent->client->buttons & BUTTON_ATTACK1)
 		&& ent->client->pers.inventory[ent->client->ammo_index])
 	{
 		ent->client->ps.gunframe = 15;
@@ -1120,7 +1175,7 @@ void Chaingun_Fire (edict_t *ent)
 		shots = 1;
 	else if (ent->client->ps.gunframe <= 14)
 	{
-		if (ent->client->buttons & BUTTON_ATTACK)
+		if (ent->client->buttons & BUTTON_ATTACK1)
 			shots = 2;
 		else
 			shots = 1;
@@ -1184,7 +1239,7 @@ void Weapon_Chaingun (edict_t *ent)
 	static int	pause_frames[]	= {38, 43, 51, 61, 0};
 	static int	fire_frames[]	= {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0};
 
-	Weapon_Generic (ent, 4, 31, 61, 64, pause_frames, fire_frames, Chaingun_Fire);
+	Weapon_Generic (ent, 4, 31, 61, 64, pause_frames, fire_frames, Chaingun_Fire, NULL);
 }
 
 
@@ -1243,7 +1298,7 @@ void Weapon_Shotgun (edict_t *ent)
 	static int	pause_frames[]	= {22, 28, 34, 0};
 	static int	fire_frames[]	= {8, 9, 0};
 
-	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire);
+	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire, NULL);
 }
 
 
@@ -1297,7 +1352,7 @@ void Weapon_SuperShotgun (edict_t *ent)
 	static int	pause_frames[]	= {29, 42, 57, 0};
 	static int	fire_frames[]	= {7, 0};
 
-	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, weapon_supershotgun_fire);
+	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, weapon_supershotgun_fire, NULL);
 }
 
 /*
@@ -1353,7 +1408,7 @@ void Weapon_Railgun (edict_t *ent)
 	static int	pause_frames[]	= {56, 0};
 	static int	fire_frames[]	= {4, 0};
 
-	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, weapon_railgun_fire);
+	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, weapon_railgun_fire, NULL);
 }
 
 
@@ -1425,12 +1480,35 @@ void Weapon_BFG (edict_t *ent)
 	static int	pause_frames[]	= {39, 45, 50, 55, 0};
 	static int	fire_frames[]	= {9, 17, 0};
 
-	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire);
+	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire, NULL);
 }
 
 //
 // Director Team Bamfuslicator
 //
+
+void Weapon_Bamfuslicator_SetType(edict_t* ent)
+{
+	// cycle spawn types
+	ent->client->pers.weapon->spawn_type++;
+	if (ent->client->pers.weapon->spawn_type > MAX_ZOMBIE_TYPE) ent->client->pers.weapon->spawn_type = 0;
+
+	switch (ent->client->pers.weapon->spawn_type)
+	{
+	case ZOMBIE_TYPE_NORMAL:
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Regular [TEMP]");
+		break;
+	case ZOMBIE_TYPE_FAST:
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fast [TEMP]");
+		break;
+	case ZOMBIE_TYPE_FUCKING_CUNT:
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fucking Cunt [TEMP]");
+		break;
+	}
+
+	// todo: separate primary and secondary fire frames
+	ent->client->ps.gunframe++; // increment anim frame
+}
 
 void Weapon_Bamfuslicator_Fire(edict_t* ent)
 {
@@ -1457,7 +1535,7 @@ void Weapon_Bamfuslicator (edict_t *ent)
 	static int	pause_frames[] = { 29, 42, 57, 0 };
 	static int	fire_frames[] = { 7, 0 };
 
-	Weapon_Generic(ent, 6, 17, 56, 61, pause_frames, fire_frames, Weapon_Bamfuslicator_Fire);
+	Weapon_Generic(ent, 6, 17, 56, 61, pause_frames, fire_frames, Weapon_Bamfuslicator_Fire, Weapon_Bamfuslicator_SetType);
 }
 
 //======================================================================
