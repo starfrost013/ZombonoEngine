@@ -5,8 +5,18 @@ January XX, 2024
 * Fix TDM end screen not displaying.
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
-* Directors killing zombies don't get frags anymore. Players killing zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
-* Visually indicate weapons on team change.
+* Directors killing zombies don't get frags anymore. Players kilng zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
+* Fixed a bug where, on team change, weapons were not being visually indicated.
+* Very rough implementation of primary and secondary attack (presently, only attack functions and state are separated, animations and reload time aren't)
+	* Renamed +attack to +attack1
+	* Added +attack2
+* Bamfuslicator now allows changing which zombie type to spawn.
+	* Use right click to do this.
+* Removed right click to strafe (and therefore +strafe binding).
+* Removed by default CTRL to shoot.
+* Capitalised binding names.
+* Properly lit and textured z_tdm_subway
+* Redesigned textures for z_tdm_labrats. They suck.
 
 Version 0.04-pre3
 January 14, 2024

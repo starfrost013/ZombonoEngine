@@ -109,6 +109,9 @@ typedef enum
 	WEAPON_FIRING_SECONDARY,
 } weaponstate_t;
 
+// STUPID hack
+void Weapon_Bamfuslicator_SetType(edict_t* ent);
+
 typedef enum
 {
 	AMMO_BULLETS,

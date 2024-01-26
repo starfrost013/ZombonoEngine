@@ -1574,8 +1574,6 @@ always owned, never in the world
 	},
 
 
-
-
 	//
 	// AMMO ITEMS
 	//
