@@ -304,6 +304,8 @@ extern	cvar_t	*cl_timedemo;
 
 extern	cvar_t	*cl_vwep;
 
+extern	cvar_t  *cl_drawui;
+
 typedef struct
 {
 	int		key;				// so entities can reuse same entry

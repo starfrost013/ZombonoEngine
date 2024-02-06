@@ -603,8 +603,7 @@ void Con_DrawConsole (float frac)
 
 	Com_sprintf (version, sizeof(version), "Zombono v%s", ZOMBONO_VERSION);
 
-	for (x=0 ; x<strlen(version) ; x++)
-		re.DrawChar (viddef.width-122*vid_hudscale->value+x*8*vid_hudscale->value, lines-12*vid_hudscale->value, 128 + version[x] );
+	Draw_StringAlt(viddef.width - (8 * strlen(version)), lines - 12 * vid_hudscale->value, version);
 
 // draw the text
 	con.vislines = lines;

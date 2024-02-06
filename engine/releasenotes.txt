@@ -1,7 +1,7 @@
 Zombono
 Release Notes
 Version 0.04-pre4
-January XX, 2024
+February XX, 2024
 * Fix TDM end screen not displaying.
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
@@ -15,8 +15,10 @@ January XX, 2024
 * Removed right click to strafe (and therefore +strafe binding).
 * Removed by default CTRL to shoot.
 * Capitalised binding names.
-* Properly lit and textured z_tdm_subway
+* Properly lit and textured z_tdm_subway, and added many new details.
 * Redesigned textures for z_tdm_labrats. They suck.
+* Rewrote the way the game version number is handled.
+* Added cl_drawui: It determines if UI is drawn.
 
 Version 0.04-pre3
 January 14, 2024

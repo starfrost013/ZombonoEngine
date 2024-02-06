@@ -1501,7 +1501,7 @@ void Weapon_Bamfuslicator_SetType(edict_t* ent)
 		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fast [TEMP]");
 		break;
 	case ZOMBIE_TYPE_FUCKING_CUNT:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fucking Cunt [TEMP]");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Ogre [TEMP]");
 		break;
 	}
 

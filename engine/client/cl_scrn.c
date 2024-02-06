@@ -50,7 +50,6 @@ cvar_t		*scr_viewsize;
 cvar_t		*scr_conspeed;
 cvar_t		*scr_centertime;
 cvar_t		*scr_showpause;
-cvar_t		*scr_printspeed;
 
 cvar_t		*scr_timegraph;
 cvar_t		*scr_debuggraph;
@@ -412,7 +411,6 @@ void SCR_Init (void)
 	scr_conspeed = Cvar_Get ("scr_conspeed", "3", 0);
 	scr_showpause = Cvar_Get ("scr_showpause", "1", 0);
 	scr_centertime = Cvar_Get ("scr_centertime", "2.5", 0);
-	scr_printspeed = Cvar_Get ("scr_printspeed", "8", 0);
 	scr_timegraph = Cvar_Get ("timegraph", "0", 0);
 	scr_debuggraph = Cvar_Get ("debuggraph", "0", 0);
 	scr_graphheight = Cvar_Get ("graphheight", "32", 0);
@@ -1213,24 +1211,29 @@ void SCR_UpdateScreen (void)
 			// clear any dirty part of the background
 			SCR_TileClear ();
 
-			SCR_DrawStats ();
-			if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)
-				SCR_DrawLayout ();
-			if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 2)
-				CL_DrawInventory ();
+			// still draw console if cl_drawui is 0
+			if (cl_drawui->value)
+			{
+				SCR_DrawStats();
+				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)
+					SCR_DrawLayout();
+				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 2)
+					CL_DrawInventory();
 
-			SCR_DrawNet ();
-			SCR_CheckDrawCenterString ();
+				SCR_DrawNet();
+				SCR_CheckDrawCenterString();
 
-			if (scr_timegraph->value)
-				SCR_DebugGraph (cls.frametime*300, 0, 0, 0, 255);
+				if (scr_timegraph->value)
+					SCR_DebugGraph(cls.frametime * 300, 0, 0, 0, 255);
 
-			if (scr_debuggraph->value || scr_timegraph->value)
-				SCR_DrawDebugGraph ();
+				if (scr_debuggraph->value || scr_timegraph->value)
+					SCR_DrawDebugGraph();
 
-			UI_Draw();
+				SCR_DrawPause();
 
-			SCR_DrawPause ();
+				UI_Draw();
+			}
+
 
 			SCR_DrawConsole ();
 

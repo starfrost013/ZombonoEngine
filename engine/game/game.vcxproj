@@ -313,6 +313,7 @@
     <ClInclude Include="m_player.h" />
     <ClInclude Include="m_soldier.h" />
     <ClInclude Include="m_zombie.h" />
+    <ClInclude Include="m_zombie_fast.h" />
     <ClInclude Include="q_shared.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
