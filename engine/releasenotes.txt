@@ -18,7 +18,8 @@ February XX, 2024
 * Properly lit and textured z_tdm_subway, and added many new details.
 * Redesigned textures for z_tdm_labrats. They suck.
 * Rewrote the way the game version number is handled.
-* Added cl_drawui: It determines if UI is drawn.
+* Added cl_drawhud: It determines if UI is drawn.
+* Removed scr_printspeed - it was dummied out and obsolete
 
 Version 0.04-pre3
 January 14, 2024

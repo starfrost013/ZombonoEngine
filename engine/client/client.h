@@ -304,7 +304,7 @@ extern	cvar_t	*cl_timedemo;
 
 extern	cvar_t	*cl_vwep;
 
-extern	cvar_t  *cl_drawui;
+extern	cvar_t  *cl_drawhud;
 
 typedef struct
 {

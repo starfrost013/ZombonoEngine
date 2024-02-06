@@ -1211,8 +1211,8 @@ void SCR_UpdateScreen (void)
 			// clear any dirty part of the background
 			SCR_TileClear ();
 
-			// still draw console if cl_drawui is 0
-			if (cl_drawui->value)
+			// still draw console if cl_drawhud is 0
+			if (cl_drawhud->value)
 			{
 				SCR_DrawStats();
 				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)

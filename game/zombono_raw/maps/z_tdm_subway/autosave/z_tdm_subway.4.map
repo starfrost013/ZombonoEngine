@@ -2102,11 +2102,11 @@
 }
 // brush 197
 {
-( -1012 -1140 912 ) ( -958 -1140 912 ) ( -1012 -1140 940 ) blockout/blockout 0 0 0 1 1
-( -1012 -1140 808 ) ( -1228 -1140 912 ) ( -1228 -1012 912 ) blockout/blockout 0 0 0 1 1
 ( -1228 -1144 800 ) ( -1228 -1143.5 800 ) ( -1228 -1144 828 ) blockout/blockout 0 0 0 1 1
 ( -1012 -1144 800 ) ( -1228 -1016 892 ) ( -1228 -1144 892 ) blockout/blockout 0 0 0 1 1
 ( -1228 -1144 800 ) ( -1228 -1144 828 ) ( -1174 -1144 800 ) blockout/blockout 0 0 0 1 1
+( -1012 -1140 912 ) ( -958 -1140 912 ) ( -1012 -1140 940 ) blockout/blockout 0 0 0 1 1
+( -1012 -1140 808 ) ( -1228 -1140 912 ) ( -1228 -1012 912 ) blockout/blockout 0 0 0 1 1
 ( -1012 -1140 912 ) ( -1012 -1140 940 ) ( -1012 -1139.5 912 ) blockout/blockout 0 0 0 1 1
 }
 // brush 198
@@ -3526,16 +3526,16 @@
 }
 // brush 335
 {
-( 2776 -188 1040 ) ( 2776 -188 1048 ) ( 2776 -204 1040 ) signage/sign_railway_departure_01 -120 32 0 -0.5 0.5
-( 2776 -188 1040 ) ( 2775.8749922449797 -188 1040 ) ( 2776 -188 1048 ) blockout/blockout 0 0 0 1 1
-( 2776 -184 976 ) ( 2776 -188 980 ) ( 2904 -188 980 ) blockout/blockout 0 0 0 1 1
-( 2776 -188 1036 ) ( 2776 -184 1040 ) ( 2904 -184 1040 ) blockout/blockout 0 0 0 1 1
-( 2778 -60 976 ) ( 2777.8749890418194 -60 976 ) ( 2778 -76 976 ) blockout/blockout 0 0 0 1 1
-( 2776 -188 1040 ) ( 2776 -204 1040 ) ( 2775.8749922449797 -188 1040 ) blockout/blockout 0 0 0 1 1
-( 2776 -60 980 ) ( 2776 -64 976 ) ( 2904 -64 976 ) blockout/blockout 0 0 0 1 1
-( 2776 -64 1040 ) ( 2776 -60 1036 ) ( 2904 -60 1036 ) blockout/blockout 0 0 0 1 1
-( 2778 -60 976 ) ( 2778 -60 984 ) ( 2777.8749890418194 -60 976 ) blockout/blockout 0 0 0 1 1
-( 2778 -60 976 ) ( 2778 -76 976 ) ( 2778 -60 984 ) blockout/blockout 0 0 0 1 1
+( 2776 -188 1040 ) ( 2776 -188 1048 ) ( 2776 -204 1040 ) signage/sign_railway_depart_01 -120 32 0 -0.5 0.5
+( 2776 -188 1040 ) ( 2775.8749922449797 -188 1040 ) ( 2776 -188 1048 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -184 976 ) ( 2776 -188 980 ) ( 2904 -188 980 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -188 1036 ) ( 2776 -184 1040 ) ( 2904 -184 1040 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2778 -60 976 ) ( 2777.8749890418194 -60 976 ) ( 2778 -76 976 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -188 1040 ) ( 2776 -204 1040 ) ( 2775.8749922449797 -188 1040 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -60 980 ) ( 2776 -64 976 ) ( 2904 -64 976 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -64 1040 ) ( 2776 -60 1036 ) ( 2904 -60 1036 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2778 -60 976 ) ( 2778 -60 984 ) ( 2777.8749890418194 -60 976 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2778 -60 976 ) ( 2778 -76 976 ) ( 2778 -60 984 ) signage/sign_railway_depart_01 0 0 0 1 1
 }
 }
 // entity 1
@@ -7460,13 +7460,28 @@
 }
 // entity 28
 {
+"classname" "info_player_start_player"
+"origin" "-392 808 792"
+}
+// entity 29
+{
+"classname" "info_player_start_player"
+"origin" "-392 568 792"
+}
+// entity 30
+{
+"classname" "info_player_start_player"
+"origin" "-392 264 792"
+}
+// entity 31
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "train_phase2"
 "_tb_id" "16"
 "_tb_layer_sort_index" "0"
 }
-// entity 29
+// entity 32
 {
 "classname" "path_corner"
 "origin" "-80 -784 776"
@@ -7475,7 +7490,7 @@
 "wait" "0"
 "_tb_layer" "16"
 }
-// entity 30
+// entity 33
 {
 "classname" "path_corner"
 "origin" "1112 -816 792"
@@ -7483,7 +7498,7 @@
 "targetname" "train_stop19"
 "_tb_layer" "16"
 }
-// entity 31
+// entity 34
 {
 "classname" "path_corner"
 "origin" "1112 -576 792"
@@ -7491,7 +7506,7 @@
 "targetname" "train_stop18"
 "_tb_layer" "16"
 }
-// entity 32
+// entity 35
 {
 "classname" "path_corner"
 "origin" "1120 -376 792"
@@ -7499,7 +7514,7 @@
 "targetname" "train_stop17"
 "_tb_layer" "16"
 }
-// entity 33
+// entity 36
 {
 "classname" "path_corner"
 "origin" "1128 -168 792"
@@ -7507,7 +7522,7 @@
 "targetname" "train_stop16"
 "_tb_layer" "16"
 }
-// entity 34
+// entity 37
 {
 "classname" "path_corner"
 "origin" "1216 592 792"
@@ -7515,7 +7530,7 @@
 "targetname" "train_stop12"
 "_tb_layer" "16"
 }
-// entity 35
+// entity 38
 {
 "classname" "path_corner"
 "origin" "1160 576 792"
@@ -7523,7 +7538,7 @@
 "targetname" "train_stop13"
 "_tb_layer" "16"
 }
-// entity 36
+// entity 39
 {
 "classname" "path_corner"
 "origin" "1128 552 792"
@@ -7531,7 +7546,7 @@
 "targetname" "train_stop14"
 "_tb_layer" "16"
 }
-// entity 37
+// entity 40
 {
 "classname" "path_corner"
 "origin" "1112 520 792"
@@ -7539,7 +7554,7 @@
 "targetname" "train_stop15"
 "_tb_layer" "16"
 }
-// entity 38
+// entity 41
 {
 "classname" "path_corner"
 "origin" "1600 440 792"
@@ -7548,7 +7563,7 @@
 "wait" "10"
 "_tb_layer" "16"
 }
-// entity 39
+// entity 42
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -7556,7 +7571,7 @@
 "_tb_id" "20"
 "_tb_layer_sort_index" "1"
 }
-// entity 40
+// entity 43
 {
 "classname" "path_corner"
 "origin" "-96 -784 776"
@@ -7566,7 +7581,7 @@
 "angle" "0"
 "_tb_layer" "20"
 }
-// entity 41
+// entity 44
 {
 "classname" "path_corner"
 "origin" "-96 -784 776"
@@ -7575,7 +7590,7 @@
 "wait" "0"
 "_tb_layer" "20"
 }
-// entity 42
+// entity 45
 {
 "classname" "path_corner"
 "origin" "1096 -816 792"
@@ -7583,7 +7598,7 @@
 "targetname" "train_stop03"
 "_tb_layer" "20"
 }
-// entity 43
+// entity 46
 {
 "classname" "path_corner"
 "origin" "1096 -576 792"
@@ -7591,7 +7606,7 @@
 "targetname" "train_stop04"
 "_tb_layer" "20"
 }
-// entity 44
+// entity 47
 {
 "classname" "path_corner"
 "origin" "1104 -376 792"
@@ -7599,7 +7614,7 @@
 "targetname" "train_stop05"
 "_tb_layer" "20"
 }
-// entity 45
+// entity 48
 {
 "classname" "path_corner"
 "origin" "1112 -168 792"
@@ -7607,7 +7622,7 @@
 "targetname" "train_stop06"
 "_tb_layer" "20"
 }
-// entity 46
+// entity 49
 {
 "classname" "path_corner"
 "origin" "1232 592 792"
@@ -7615,7 +7630,7 @@
 "targetname" "train_stop10"
 "_tb_layer" "20"
 }
-// entity 47
+// entity 50
 {
 "classname" "path_corner"
 "origin" "1176 576 792"
@@ -7623,7 +7638,7 @@
 "targetname" "train_stop09"
 "_tb_layer" "20"
 }
-// entity 48
+// entity 51
 {
 "classname" "path_corner"
 "origin" "1144 552 792"
@@ -7631,7 +7646,7 @@
 "targetname" "train_stop08"
 "_tb_layer" "20"
 }
-// entity 49
+// entity 52
 {
 "classname" "path_corner"
 "origin" "1128 520 792"
@@ -7639,7 +7654,7 @@
 "targetname" "train_stop07"
 "_tb_layer" "20"
 }
-// entity 50
+// entity 53
 {
 "classname" "path_corner"
 "origin" "1688 384 792"

@@ -2713,7 +2713,7 @@ void DownloadOptions_MenuInit( void )
 {
 	static const char *yes_no_names[] =
 	{
-		"no", "yes", 0
+		"No", "Yes", 0
 	};
 	int y = 0;
 
@@ -2728,7 +2728,7 @@ void DownloadOptions_MenuInit( void )
 	s_allow_download_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_box.generic.x	= 0;
 	s_allow_download_box.generic.y	= y += 20 * vid_hudscale->value;
-	s_allow_download_box.generic.name	= "Allow downloading";
+	s_allow_download_box.generic.name	= "Allow Downloading";
 	s_allow_download_box.generic.callback = DownloadCallback;
 	s_allow_download_box.itemnames = yes_no_names;
 	s_allow_download_box.curvalue = (Cvar_VariableValue("allow_download") != 0);
@@ -2736,7 +2736,7 @@ void DownloadOptions_MenuInit( void )
 	s_allow_download_maps_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_maps_box.generic.x	= 0;
 	s_allow_download_maps_box.generic.y	= y += 20 * vid_hudscale->value;
-	s_allow_download_maps_box.generic.name	= "maps";
+	s_allow_download_maps_box.generic.name	= "Maps";
 	s_allow_download_maps_box.generic.callback = DownloadCallback;
 	s_allow_download_maps_box.itemnames = yes_no_names;
 	s_allow_download_maps_box.curvalue = (Cvar_VariableValue("allow_download_maps") != 0);
@@ -2744,7 +2744,7 @@ void DownloadOptions_MenuInit( void )
 	s_allow_download_players_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_players_box.generic.x	= 0;
 	s_allow_download_players_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_allow_download_players_box.generic.name	= "player models/skins";
+	s_allow_download_players_box.generic.name	= "Player Models & Skins";
 	s_allow_download_players_box.generic.callback = DownloadCallback;
 	s_allow_download_players_box.itemnames = yes_no_names;
 	s_allow_download_players_box.curvalue = (Cvar_VariableValue("allow_download_players") != 0);
@@ -2752,7 +2752,7 @@ void DownloadOptions_MenuInit( void )
 	s_allow_download_models_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_models_box.generic.x	= 0;
 	s_allow_download_models_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_allow_download_models_box.generic.name	= "models";
+	s_allow_download_models_box.generic.name = "Models";
 	s_allow_download_models_box.generic.callback = DownloadCallback;
 	s_allow_download_models_box.itemnames = yes_no_names;
 	s_allow_download_models_box.curvalue = (Cvar_VariableValue("allow_download_models") != 0);
@@ -2760,7 +2760,7 @@ void DownloadOptions_MenuInit( void )
 	s_allow_download_sounds_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_sounds_box.generic.x	= 0;
 	s_allow_download_sounds_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_allow_download_sounds_box.generic.name	= "sounds";
+	s_allow_download_sounds_box.generic.name	= "Sounds";
 	s_allow_download_sounds_box.generic.callback = DownloadCallback;
 	s_allow_download_sounds_box.itemnames = yes_no_names;
 	s_allow_download_sounds_box.curvalue = (Cvar_VariableValue("allow_download_sounds") != 0);
@@ -2876,12 +2876,14 @@ PLAYER CONFIG MENU
 */
 static menuframework_t	s_player_config_menu;
 static menufield_t		s_player_name_field;
-static menulist_t		s_player_model_box;
 static menulist_t		s_player_skin_box;
-static menulist_t		s_player_handedness_box;
 static menuseparator_t	s_player_skin_title;
 static menuseparator_t	s_player_model_title;
-static menuseparator_t	s_player_hand_title;
+static menulist_t		s_player_model_box;
+static menuseparator_t	s_player_handedness_title;
+static menulist_t		s_player_handedness_box;
+static menuseparator_t	s_player_gender_title;
+static menulist_t		s_player_gender_box;
 static menuaction_t		s_player_download_action;
 
 #define MAX_DISPLAYNAME 16
@@ -2908,6 +2910,11 @@ void DownloadOptionsFunc( void *self )
 static void HandednessCallback( void *unused )
 {
 	Cvar_SetValue( "hand", s_player_handedness_box.curvalue );
+}
+
+static void HandednessCallback(void* unused)
+{
+	Cvar_SetValue("gender", s_player_gender_box.curvalue);
 }
 
 static void ModelCallback( void *unused )
@@ -3127,7 +3134,8 @@ qboolean PlayerConfig_MenuInit( void )
 
 	cvar_t *hand = Cvar_Get( "hand", "0", CVAR_USERINFO | CVAR_ARCHIVE );
 
-	static const char *handedness[] = { "right", "left", "center", 0 };
+	static const char *handedness[] = { "Right", "Left", "Center", 0 };
+	static const char *genders[] = { "Male", "Female", "None", "Other", 0}; 	// WOKE!
 
 	PlayerConfig_ScanDirectories();
 
@@ -3219,10 +3227,10 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_skin_box.curvalue = currentskinindex;
 	s_player_skin_box.itemnames = (const char**)s_pmi[currentdirectoryindex].skindisplaynames;
 
-	s_player_hand_title.generic.type = MTYPE_SEPARATOR;
-	s_player_hand_title.generic.name = "Handedness";
-	s_player_hand_title.generic.x    = 32 * vid_hudscale->value;
-	s_player_hand_title.generic.y	 = 108 * vid_hudscale->value;
+	s_player_handedness_title.generic.type = MTYPE_SEPARATOR;
+	s_player_handedness_title.generic.name = "Handedness";
+	s_player_handedness_title.generic.x    = 32 * vid_hudscale->value;
+	s_player_handedness_title.generic.y	 = 108 * vid_hudscale->value;
 
 	s_player_handedness_box.generic.type = MTYPE_SPINCONTROL;
 	s_player_handedness_box.generic.x	= -56 * vid_hudscale->value;
@@ -3233,11 +3241,26 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_handedness_box.curvalue = Cvar_VariableValue( "hand" );
 	s_player_handedness_box.itemnames = handedness;
 
+	// ULTRA WOKE!
+	s_player_gender_title.generic.type = MTYPE_SEPARATOR;
+	s_player_gender_title.generic.name = "Gender";
+	s_player_gender_title.generic.x = 0;
+	s_player_gender_title.generic.y = 132 * vid_hudscale->value;
+
+	s_player_gender_box.generic.type = MTYPE_SPINCONTROL;
+	s_player_gender_box.generic.x = -56 * vid_hudscale->value;
+	s_player_gender_box.generic.y = 142 * vid_hudscale->value;
+	s_player_gender_box.generic.name = 0;
+	s_player_gender_box.generic.cursor_offset = -48;
+	s_player_gender_box.generic.callback = HandednessCallback;
+	s_player_gender_box.curvalue = Cvar_VariableValue("gender");
+	s_player_gender_box.itemnames = genders;
+
 	s_player_download_action.generic.type = MTYPE_ACTION;
-	s_player_download_action.generic.name	= "Download Options:";
+	s_player_download_action.generic.name	= "Download Options";
 	s_player_download_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_player_download_action.generic.x	= -24 * vid_hudscale->value;
-	s_player_download_action.generic.y	= 186 * vid_hudscale->value;
+	s_player_download_action.generic.y	= 210 * vid_hudscale->value;
 	s_player_download_action.generic.statusbar = NULL;
 	s_player_download_action.generic.callback = DownloadOptionsFunc;
 
@@ -3249,8 +3272,10 @@ qboolean PlayerConfig_MenuInit( void )
 		Menu_AddItem( &s_player_config_menu, &s_player_skin_title );
 		Menu_AddItem( &s_player_config_menu, &s_player_skin_box );
 	}
-	Menu_AddItem( &s_player_config_menu, &s_player_hand_title );
+	Menu_AddItem( &s_player_config_menu, &s_player_handedness_title );
 	Menu_AddItem( &s_player_config_menu, &s_player_handedness_box );
+	Menu_AddItem(&s_player_config_menu, &s_player_gender_title);
+	Menu_AddItem(&s_player_config_menu, &s_player_gender_box);
 	Menu_AddItem( &s_player_config_menu, &s_player_download_action );
 
 	return true;

@@ -54,7 +54,7 @@ cvar_t	*cl_add_lights;
 cvar_t	*cl_add_entities;
 cvar_t	*cl_add_blend;
 
-cvar_t	*cl_drawui;
+cvar_t	*cl_drawhud;
 
 cvar_t	*cl_shownet;
 cvar_t	*cl_showmiss;
@@ -1426,7 +1426,7 @@ void CL_InitLocal (void)
 	cl_add_lights = Cvar_Get ("cl_lights", "1", 0);
 	cl_add_particles = Cvar_Get ("cl_particles", "1", 0);
 	cl_add_entities = Cvar_Get ("cl_entities", "1", 0);
-	cl_drawui = Cvar_Get ("cl_drawui", "1", 0);
+	cl_drawhud = Cvar_Get ("cl_drawhud", "1", 0);
 	cl_gun = Cvar_Get ("cl_gun", "1", 0);
 	cl_footsteps = Cvar_Get ("cl_footsteps", "1", 0);
 	cl_noskins = Cvar_Get ("cl_noskins", "0", 0);
@@ -1480,7 +1480,6 @@ void CL_InitLocal (void)
 	gender->modified = false; // clear this so we know when user sets it manually
 
 	cl_vwep = Cvar_Get ("cl_vwep", "1", CVAR_ARCHIVE);
-
 
 	//
 	// register our commands

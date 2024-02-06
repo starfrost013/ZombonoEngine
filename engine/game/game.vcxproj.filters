@@ -130,5 +130,8 @@
     <ClInclude Include="m_zombie_fast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="m_ogre.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
