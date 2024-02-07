@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/01/11 version
+// 2024/02/07 version
 
 //
 // worldspawn
@@ -529,9 +529,8 @@
 // 0221 - removed Monsters class inheritance
 @PointClass base(Monsters) model({ "path": ":models/monsters/soldier/tris.md2", "skin": 2 }) = monster_soldier : "Soldier (Q2 Base)" []
 @PointClass base(Monsters) model({ "path": ":models/monsters/zombie/tris.md2", "skin": 2 }) = monster_zombie : "Basic Zombie (Zombono)" []
-@PointClass base(Monsters) size(-32 -32 -16, 32 32 72) model({ "path": ":models/monsters/tank/tris.md2" }) = monster_tank : "Tank" []
-@PointClass base(Monsters) size(-32 -32 -16, 32 32 72) model({ "path": ":models/monsters/tank/tris.md2", "skin": 2 }) = monster_tank_commander : "Tank Commander" []
-@PointClass base(Monsters) size(-64 -64 0, 64 64 72) model({ "path": ":models/monsters/boss1/tris.md2" }) = monster_supertank : "Super Tank Boss" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/zombie_fast/tris.md2", "skin": 2 }) = monster_zombie : "Fast Zombie (Zombono)" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/ogre/tris.md2", "skin": 2 }) = monster_zombie : "Ogre (Zombono)" []
 
 // using a "wait" value of -1 on a path corner causes a func_train to go silent between
 // itself and the next path corner when the train is restarted. The train's sound will

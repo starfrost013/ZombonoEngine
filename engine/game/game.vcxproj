@@ -293,8 +293,10 @@
     <ClCompile Include="g_weapon.c" />
     <ClCompile Include="m_flash.c" />
     <ClCompile Include="m_move.c" />
+    <ClCompile Include="m_ogre.c" />
     <ClCompile Include="m_soldier.c" />
     <ClCompile Include="m_zombie.c" />
+    <ClCompile Include="m_zombie_fast.c" />
     <ClCompile Include="p_client.c" />
     <ClCompile Include="p_hud.c" />
     <ClCompile Include="p_trail.c" />
@@ -315,6 +317,7 @@
     <ClInclude Include="m_soldier.h" />
     <ClInclude Include="m_zombie.h" />
     <ClInclude Include="m_zombie_fast.h" />
+    <ClInclude Include="m_zombie_shared.h" />
     <ClInclude Include="q_shared.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

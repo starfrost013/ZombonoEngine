@@ -651,8 +651,8 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	{
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
 		for (n = 0; n < 3; n++)
-			ThrowGib(self, "models/objects/gibs/zombie_hand/h_zombie.md2", damage, GIB_ORGANIC);
-		ThrowGib(self, "models/objects/gibs/zombie_main/zom_gib.md2", damage, GIB_ORGANIC);
+			ThrowGib(self, "models/objects/gibs/zombie/zombie_hand.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/zombie/zombie_main.md2", damage, GIB_ORGANIC);
 		self->deadflag = DEAD_DEAD;
 		G_FreeEdict(self);
 		return;
@@ -666,12 +666,8 @@ void zombie_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	self->takedamage = DAMAGE_YES;
 	self->s.skinnum |= 1;
 
-	if (self->s.skinnum == 1)
-		gi.sound(self, CHAN_VOICE, sound_death_light, 1, ATTN_NORM, 0);
-	else if (self->s.skinnum == 3)
-		gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
-	else // (self->s.skinnum == 5)
-		gi.sound(self, CHAN_VOICE, sound_death_ss, 1, ATTN_NORM, 0);
+	//todo: add multiple death sounds
+	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
 
 	if (fabs((self->s.origin[2] + self->viewheight) - point[2]) <= 4)
 	{
@@ -709,6 +705,9 @@ void SP_monster_zombie_x(edict_t* self)
 	sound_sight1 = gi.soundindex("zombie/z_idle.wav");
 	sound_sight2 = gi.soundindex("zombie/z_idle1.wav");
 	sound_hit = gi.soundindex("zombie/z_hit.wav");
+	sound_pain = gi.soundindex("zombie/z_pain1.wav");
+	sound_death = gi.soundindex("zombie/z_gib.wav");
+	gi.soundindex("zombie/z_miss.wav");
 
 	self->mass = 100;
 
@@ -735,10 +734,6 @@ void SP_monster_zombie_x(edict_t* self)
 SP_monster_zombie(edict_t* self)
 {
 	SP_monster_zombie_x(self);
-
-	sound_pain = gi.soundindex("zombie/z_pain1.wav");
-	sound_death = gi.soundindex("zombie/z_gib.wav");
-	gi.soundindex("zombie/z_miss.wav");
 
 	self->s.skinnum = 2;
 	self->health = 40;

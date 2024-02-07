@@ -916,7 +916,7 @@ void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, f
 #define BAMFUSLICATOR_MAX_DISTANCE		768
 
 /* Bamfuslicator */
-void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_type)
+void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type)
 {
 	edict_t*	zombie = G_Spawn();
 	trace_t		trace;
@@ -943,9 +943,20 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, int zombie_t
 		return;
 	}
 
-
+	
 	// spawn the zombie
-	SP_monster_zombie(zombie);
+	switch (zombie_type)
+	{
+	case zombie_type_normal:
+		SP_monster_zombie(zombie);
+		break;
+	case zombie_type_fast:
+		SP_monster_zombie_fast(zombie);
+		break;
+	case zombie_type_ogre:
+		SP_monster_ogre(zombie);
+		break;
+	}
 
 	// stupid hack to AVOID spawning zombies in the wall or floor
 	trace.endpos[0] -= aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;

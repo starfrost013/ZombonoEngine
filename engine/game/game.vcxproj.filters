@@ -96,6 +96,12 @@
     <ClCompile Include="m_zombie.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="m_zombie_fast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="m_ogre.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -131,6 +137,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="m_ogre.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="m_zombie_shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

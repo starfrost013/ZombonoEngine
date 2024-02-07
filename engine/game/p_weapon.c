@@ -1494,13 +1494,13 @@ void Weapon_Bamfuslicator_SetType(edict_t* ent)
 
 	switch (ent->client->pers.weapon->spawn_type)
 	{
-	case ZOMBIE_TYPE_NORMAL:
+	case zombie_type_normal:
 		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Regular [TEMP]");
 		break;
-	case ZOMBIE_TYPE_FAST:
+	case zombie_type_fast:
 		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fast [TEMP]");
 		break;
-	case ZOMBIE_TYPE_FUCKING_CUNT:
+	case zombie_type_ogre:
 		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Ogre [TEMP]");
 		break;
 	}
@@ -1524,7 +1524,7 @@ void Weapon_Bamfuslicator_Fire(edict_t* ent)
 	
 	P_ProjectSource(ent, offset, forward, right, start);
 
-	fire_bamfuslicator(ent, start, forward, 0);
+	fire_bamfuslicator(ent, start, forward, ent->client->pers.weapon->spawn_type); // will always store current spawn type
 
 	ent->client->ps.gunframe++; // increment anim frame
 }

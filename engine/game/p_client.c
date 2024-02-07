@@ -106,7 +106,8 @@ qboolean IsNeutral (edict_t *ent)
 		return false;
 
 	info = Info_ValueForKey (ent->client->pers.userinfo, "gender");
-	if (info[0] != 'f' && info[0] != 'F' && info[0] != 'm' && info[0] != 'M')
+	if (info[0] != 'f' && info[0] != 'F' && info[0] != 'm' && info[0] != 'M'
+		&& info[0] != 'o' && info[0] != 'O')
 		return true;
 	return false;
 }

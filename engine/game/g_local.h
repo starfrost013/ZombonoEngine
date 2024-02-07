@@ -619,11 +619,39 @@ typedef struct
 extern	field_t fields[];
 extern	gitem_t	itemlist[];
 
+// Zombie specific defines
+// test zombie types
+// maybe make these load from a file
+
+typedef enum zombie_type_e
+{
+	zombie_type_normal = 0,
+
+	zombie_type_fast = 1,
+
+	zombie_type_ogre = 2,
+
+} zombie_type;
+
+#define MAX_ZOMBIE_TYPE				2
+
+#define ZOMBIE_DAMAGE_STANDARD		10
+#define ZOMBIE_DAMAGE_FAST			20
+
+#define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
+// todo: fast has more range?
+
+// ogre stuff
+// shrek attack
+#define OGRE_RANGE_MELEE			MELEE_DISTANCE
+#define OGRE_RANGE_FUNNY_SHREK		350
+
+#define OGRE_DAMAGE_MELEE			15
+#define OGRE_DAMAGE_FUNNY_SHREK		45
 
 //
 // g_cmds.c
 //
-void Cmd_Score_f (edict_t *ent);
 void Cmd_Leaderboard_f (edict_t* ent);
 
 //
@@ -782,7 +810,7 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
-void fire_bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, int zombie_type);
+void fire_bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
 //
 // g_ptrail.c
 //
@@ -1158,20 +1186,4 @@ struct edict_s
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
 };
-
-
-// Zombie specific defines
-// test zombie types
-// maybe make these load from a file
-#define ZOMBIE_TYPE_NORMAL			0
-#define ZOMBIE_TYPE_FAST			1
-#define ZOMBIE_TYPE_FUCKING_CUNT	2
-
-#define MAX_ZOMBIE_TYPE				2
-
-#define ZOMBIE_DAMAGE_STANDARD		10
-#define ZOMBIE_DAMAGE_TANK			20
-#define ZOMBIE_DAMAGE_FUCKING_CUNT	45
-
-#define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
 

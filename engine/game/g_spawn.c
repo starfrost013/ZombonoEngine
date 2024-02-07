@@ -110,6 +110,8 @@ spawn_t	spawns[] = {
 
 	{"monster_soldier", SP_monster_soldier},
 	{"monster_zombie", SP_monster_zombie},
+	{"monster_zombie_fast", SP_monster_zombie_fast},
+	{"monster_ogre", SP_monster_ogre},
 
 	// turrets dependent on infantry so removed 
 

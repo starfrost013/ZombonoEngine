@@ -94,7 +94,6 @@ void SP_point_combat(edict_t* self);
 
 void SP_misc_explobox(edict_t* self);
 void SP_misc_banner(edict_t* self);
-void SP_misc_actor(edict_t* self);
 void SP_misc_gib_arm(edict_t* self);
 void SP_misc_gib_leg(edict_t* self);
 void SP_misc_gib_head(edict_t* self);
@@ -105,3 +104,5 @@ void SP_misc_blackhole(edict_t* self);
 
 void SP_monster_soldier(edict_t* self);
 void SP_monster_zombie(edict_t* self);
+void SP_monster_zombie_fast(edict_t* self);
+void SP_monster_ogre(edict_t* self);

@@ -2912,7 +2912,7 @@ static void HandednessCallback( void *unused )
 	Cvar_SetValue( "hand", s_player_handedness_box.curvalue );
 }
 
-static void HandednessCallback(void* unused)
+static void Genderallback(void* unused)
 {
 	Cvar_SetValue("gender", s_player_gender_box.curvalue);
 }
