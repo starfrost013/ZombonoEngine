@@ -4,7 +4,7 @@
 {
 "classname" "worldspawn"
 "_tb_textures" "textures;textures/architecture;textures/blockout;textures/e1u1;textures/e1u2;textures/e1u3;textures/e1u4;textures/e2u1;textures/e2u2;textures/e2u3;textures/e3u1;textures/e3u2;textures/e3u3;textures/signage;textures/tech"
-"sky" "unit5_"
+"sky" "unit5"
 // brush 0
 {
 ( -990 711 -144 ) ( -990 705 -144 ) ( -990 705 -155 ) blockout/blockout 0 0 0 0.083333336 1
