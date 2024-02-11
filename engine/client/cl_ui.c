@@ -34,11 +34,11 @@ extern ui_t*	current_ui;
 qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls
 
 // Draw methods
-void			UI_DrawText(ui_control_t text);																// Draws a text control.
-void			UI_DrawImage(ui_control_t image);															// Draws an image control.
-void			UI_DrawSlider(ui_control_t slider);															// Draws a slider control.
-void			UI_DrawCheckbox(ui_control_t checkbox);														// Draws a checkbox control.
-void			UI_DrawBox(ui_control_t box);
+void			UI_DrawText(ui_control_t* text);																// Draws a text control.
+void			UI_DrawImage(ui_control_t* image);															// Draws an image control.
+void			UI_DrawSlider(ui_control_t* slider);															// Draws a slider control.
+void			UI_DrawCheckbox(ui_control_t* checkbox);														// Draws a checkbox control.
+void			UI_DrawBox(ui_control_t* box);
 
 qboolean UI_Init()
 {
@@ -423,9 +423,9 @@ void UI_Draw()
 		{
 			for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
-				ui_control_t current_ui_control = current_ui->controls[ui_control_num];
+				ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
 				
-				switch (current_ui_control.type)
+				switch (current_ui_control->type)
 				{
 					case ui_control_text:
 						UI_DrawText(current_ui_control);
@@ -448,27 +448,27 @@ void UI_Draw()
 	}
 }
 
-void UI_DrawText(ui_control_t text)
+void UI_DrawText(ui_control_t* text)
 {
-	Draw_String(text.position_x, text.position_y, text.text); 
+	Draw_String(text->position_x, text->position_y, text->text);
 }
 
-void UI_DrawImage(ui_control_t image)
+void UI_DrawImage(ui_control_t* image)
 {
-	re.DrawPic(image.position_x, image.position_y, image.image_path);
+	re.DrawPic(image->position_x, image->position_y, image->image_path);
 }
 
-void UI_DrawSlider(ui_control_t slider)
+void UI_DrawSlider(ui_control_t* slider)
 {
 	Com_Printf("UI: Sliders aren't implemented yet!\n");
 }
 
-void UI_DrawCheckbox(ui_control_t checkbox)
+void UI_DrawCheckbox(ui_control_t* checkbox)
 {
 	Com_Printf("UI: Checkboxes aren't implemented yet!\n");
 }
 
-void UI_DrawBox(ui_control_t box)
+void UI_DrawBox(ui_control_t* box)
 {
-	re.DrawFill(box.position_x, box.position_y, box.size_x, box.size_y, box.color[0], box.color[1], box.color[2], box.color[3]);
+	re.DrawFill(box->position_x, box->position_y, box->size_x, box->size_y, box->color[0], box->color[1], box->color[2], box->color[3]);
 }
