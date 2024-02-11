@@ -913,7 +913,7 @@ void SV_UserinfoChanged (client_t *cl)
 ===============
 SV_Init
 
-Only called at quake2.exe startup, not for each game
+Only called at zombono.exe startup, not for each game
 ===============
 */
 void SV_Init (void)

@@ -1,7 +1,12 @@
 Zombono
 Release Notes
-Version 0.04-pre4
+Version 0.04-pre5
 February XX, 2024
+* Fixed Gender option in player setup menu changing handedness instead of gender.
+* Many more details in z_tdm_subway.
+
+Version 0.04-pre4
+February 10, 2024
 * Fix TDM end screen not displaying.
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
@@ -20,6 +25,10 @@ February XX, 2024
 * Rewrote the way the game version number is handled.
 * Added cl_drawhud: It determines if UI is drawn.
 * Removed scr_printspeed - it was dummied out and obsolete
+* Implemented very rough versions of new enemy types that can be spawned with the Planfuslicator:
+	* Fast Zombies: Zombies that wander around randomly and move twice as fast, in a char
+	* Ogres: They will have a range attack in the future and move slowly. The Shrek voice lins are temporary.
+* Added gender option in player setup menu.
 
 Version 0.04-pre3
 January 14, 2024

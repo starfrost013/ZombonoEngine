@@ -358,7 +358,6 @@ void M_SetEffects (edict_t *ent)
 	}
 }
 
-
 void M_MoveFrame (edict_t *self)
 {
 	mmove_t	*move;
@@ -456,7 +455,6 @@ void monster_use (edict_t *self, edict_t *other, edict_t *activator)
 
 
 void monster_start_go (edict_t *self);
-
 
 void monster_triggered_spawn (edict_t *self)
 {

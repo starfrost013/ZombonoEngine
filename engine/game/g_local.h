@@ -15,7 +15,7 @@ See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
 
 */
 // g_local.h -- local definitions for game module
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	GAMENAME	"Zombono"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION GAMENAME " v0.0.4-pre4 " __DATE__
+#define GAMEVERSION GAMENAME " v0.0.4-pre5 " __DATE__
 
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1

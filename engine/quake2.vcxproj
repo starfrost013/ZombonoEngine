@@ -38,7 +38,7 @@
     <ClCompile Include="client\cl_pred.c" />
     <ClCompile Include="client\cl_scrn.c" />
     <ClCompile Include="client\cl_tent.c" />
-    <ClCompile Include="client\cl_ttf.c" />
+    <ClCompile Include="client\cl_font.c" />
     <ClCompile Include="client\cl_ui.c" />
     <ClCompile Include="client\cl_ui_eventhandling.c" />
     <ClCompile Include="client\cl_ui_leaderboard.c" />
@@ -62,6 +62,7 @@
     <ClCompile Include="qcommon\files.c" />
     <ClCompile Include="qcommon\md4.c" />
     <ClCompile Include="qcommon\net_chan.c" />
+    <ClCompile Include="qcommon\pdjson.c" />
     <ClCompile Include="qcommon\pmove.c" />
     <ClCompile Include="server\sv_ccmds.c" />
     <ClCompile Include="server\sv_ents.c" />
@@ -99,6 +100,7 @@
     <ClInclude Include="client\vid.h" />
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\q_shared.h" />
+    <ClInclude Include="qcommon\pdjson.h" />
     <ClInclude Include="qcommon\qcommon.h" />
     <ClInclude Include="qcommon\qfiles.h" />
     <ClInclude Include="server\server.h" />

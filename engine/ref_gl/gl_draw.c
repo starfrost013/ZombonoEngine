@@ -257,10 +257,12 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 	color.v[2] = b;
 	color.v[3] = a;
 
+	float alpha = (float)color.v[3] / 255.0f;
+
 	qglColor4f (color.v[0]/255.0,
 		color.v[1]/255.0,
 		color.v[2]/255.0,
-		(float)color.v[3] / 255.0f);
+		alpha);
 
 	qglBegin (GL_QUADS);
 

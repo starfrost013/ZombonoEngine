@@ -34,10 +34,10 @@ cvar_t		*intensity;
 qboolean GL_Upload32 (unsigned *data, int width, int height,  qboolean mipmap);
 
 int		gl_solid_format = 3;
-int		gl_alpha_format = 4;
+int		gl_alpha_format = 2;
 
 int		gl_tex_solid_format = 3;
-int		gl_tex_alpha_format = 4;
+int		gl_tex_alpha_format = 2;
 
 int		gl_filter_min = GL_LINEAR_MIPMAP_NEAREST;
 int		gl_filter_max = GL_LINEAR;
@@ -160,7 +160,7 @@ typedef struct
 } gltmode_t;
 
 gltmode_t gl_alpha_modes[] = {
-	{"default", 4},
+	{"default", 2},
 	{"GL_RGBA", GL_RGBA},
 	{"GL_RGBA8", GL_RGBA8},
 	{"GL_RGB5_A1", GL_RGB5_A1},

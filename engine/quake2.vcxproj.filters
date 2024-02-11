@@ -168,7 +168,10 @@
     <ClCompile Include="client\cl_text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ttf.c">
+    <ClCompile Include="client\cl_font.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qcommon\pdjson.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,6 +242,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qcommon\pdjson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

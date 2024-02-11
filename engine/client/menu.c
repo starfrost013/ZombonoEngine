@@ -2912,7 +2912,7 @@ static void HandednessCallback( void *unused )
 	Cvar_SetValue( "hand", s_player_handedness_box.curvalue );
 }
 
-static void Genderallback(void* unused)
+static void GenderCallback(void* unused)
 {
 	Cvar_SetValue("gender", s_player_gender_box.curvalue);
 }
@@ -3252,7 +3252,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_gender_box.generic.y = 142 * vid_hudscale->value;
 	s_player_gender_box.generic.name = 0;
 	s_player_gender_box.generic.cursor_offset = -48;
-	s_player_gender_box.generic.callback = HandednessCallback;
+	s_player_gender_box.generic.callback = GenderCallback;
 	s_player_gender_box.curvalue = Cvar_VariableValue("gender");
 	s_player_gender_box.itemnames = genders;
 

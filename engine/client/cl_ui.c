@@ -402,7 +402,7 @@ void UI_Draw()
 
 	time(&raw_time);
 	local_time = localtime(&raw_time);
-	char		time_str[128];
+	char		time_str[128] = { 0 };
 #ifdef PLAYTEST
 	strftime(&time, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #elif _DEBUG
@@ -417,13 +417,13 @@ void UI_Draw()
 	for (int ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		// draw the current UI if enabled (*ACTIVE* means it's receiving input events0
-		ui_t current_ui = ui_list[ui_num];
+		ui_t* current_ui = &ui_list[ui_num];
 
-		if (current_ui.enabled)
+		if (current_ui->enabled)
 		{
-			for (int ui_control_num = 0; ui_control_num < current_ui.num_controls; ui_control_num++)
+			for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
-				ui_control_t current_ui_control = current_ui.controls[ui_control_num];
+				ui_control_t current_ui_control = current_ui->controls[ui_control_num];
 				
 				switch (current_ui_control.type)
 				{

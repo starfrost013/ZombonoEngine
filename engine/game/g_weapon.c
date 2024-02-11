@@ -954,7 +954,7 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 		SP_monster_zombie_fast(zombie);
 		break;
 	case zombie_type_ogre:
-		SP_monster_ogre(zombie);
+		SP_monster_ogre(zombie); 
 		break;
 	}
 

@@ -23,7 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "../game/q_shared.h"
 
-#define ZOMBONO_VERSION "0.0.4-pre4"
+// Engine version
+#define ZOMBONO_VERSION "0.0.4-pre5"
 
 #define	BASEDIRNAME	"zombono"
 

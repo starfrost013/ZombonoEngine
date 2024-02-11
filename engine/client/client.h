@@ -676,35 +676,38 @@ cvar_t* vid_hudscale;
 void UI_LeaderboardUIUpdate();
 
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
-#define MAX_CACHED_GLYPHS		1024			// Maximum number of glyphs that can be cached at any one time.
+#define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
+
 //
-// cl_ttf.c
-// Truetype Font Loader (Modern Fontloader)
+// cl_font.c
+// Image Font Loader (Modern Fontloader)
 //
 
-// font_t defines the font
+// Defines a cached glyph standard.
+typedef struct glyph_s
+{
+	char		char_code;						// Character code for this character (ansi for now, utf-8 later?)
+	int			x_start;						// Start X position of the glyph within the texture.
+	int			x_advance;						// Amount X has to advance to reach the end of the glyph.
+	int			x_offset;						// X offset of where the character starts relative to start_x - x_start + x_offset + x_advance = end of char
+	int			y_start;						// Start Y position of the glyph within the texture.
+	int			y_advance;						// Amount Y has to advance to reach the end of the glyph.
+	int			y_offset;						// Y offset of where the character starts relative to start_y - y_start + y_offset + y_advance = end of char
+} glyph_t;
+
+// font_t defines a font
 typedef struct font_s
 {
 	char		font_name[32];
 	int			size;
-
+	glyph_t		glyphs[MAX_GLYPHS];
 } font_t;
 
-typedef struct glyph_s
-{
-	char		char_name;
-} glyph_t;
-
-typedef struct glyph_cached_s
-{
-	char		font_name[32];
-	char		char_name;
-} glyph_cached_te;
 
 font_t			fonts[MAX_FONTS];
 
-qboolean TTF_Init();
-void TTF_Shutdown();
+qboolean Font_Init();
+void Font_Shutdown();
 
 //
 // cl_text.c
