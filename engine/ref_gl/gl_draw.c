@@ -198,6 +198,70 @@ void Draw_Pic (int x, int y, char *pic)
 	qglEnd ();
 }
 
+
+/*
+================
+Draw_PicRegion
+================
+*/
+void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char *pic)
+{
+	image_t* gl;
+	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
+
+	gl = Draw_FindPic(pic);
+
+	if (scrap_dirty)
+	{
+		Scrap_Upload();
+	}
+
+	// set up UV coordinates
+	int coord_begin_x = (float)start_x * scale->value / (float)(gl->width * scale->value);
+	int coord_begin_y = (float)start_y * scale->value / (float)(gl->height * scale->value);
+	int coord_end_x = (float)end_x * scale->value / (float)(gl->width * scale->value);
+	int coord_end_y = (float)end_y * scale->value / (float)(gl->height * scale->value);
+	GL_Bind(gl->texnum);
+
+	// draw it
+	qglBegin(GL_QUADS);
+	qglTexCoord2f(coord_begin_x, coord_begin_y);
+	qglVertex2f(x, y);
+	qglTexCoord2f(coord_end_x, coord_begin_y);
+	qglVertex2f(x + gl->width * scale->value, y);
+	qglTexCoord2f(coord_end_x, coord_end_y);
+	qglVertex2f(x + gl->width * scale->value, y + gl->height * scale->value);
+	qglTexCoord2f(coord_begin_x, coord_end_y);
+	qglVertex2f(x, y + gl->height * scale->value);
+	qglEnd();
+}
+
+/*
+=============
+Load_Pic
+
+Load an image but don't draw immediately.
+=============
+*/
+void Load_Pic(int x, int y, char* pic)
+{
+	image_t* gl;
+	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
+
+	gl = Draw_FindPic(pic);
+
+	if (!gl)
+	{
+		ri.Con_Printf(PRINT_ALL, "Can't find pic: %s\n", pic);
+		return;
+	}
+
+	if (scrap_dirty)
+		Scrap_Upload();
+
+}
+
+
 /*
 =============
 Draw_TileClear
@@ -278,6 +342,7 @@ void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
 }
 
 //=============================================================================
+
 
 /*
 ================

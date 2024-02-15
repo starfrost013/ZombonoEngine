@@ -501,7 +501,7 @@ qboolean FindTarget (edict_t *self)
 		if (r == RANGE_FAR)
 			return false;
 
-// this is where we would check invisibility
+		// this is where we would check invisibility
 
 		// is client in an spot too dark to be seen?
 		if (client->light_level <= 5)

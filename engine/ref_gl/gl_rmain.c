@@ -1401,6 +1401,8 @@ refexport_t GetRefAPI (refimport_t rimp )
 
 	re.DrawGetPicSize = Draw_GetPicSize;
 	re.DrawPic = Draw_Pic;
+	re.LoadPic = Load_Pic;
+	re.DrawPicRegion = Draw_PicRegion;
 	re.DrawStretchPic = Draw_StretchPic;
 	re.DrawChar = Draw_Char;
 	re.DrawTileClear = Draw_TileClear;

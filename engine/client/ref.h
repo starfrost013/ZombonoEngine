@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,6 +18,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+// ref.h: header for exported refresh (rendering) dll
+
 #ifndef __REF_H
 #define __REF_H
 
@@ -34,7 +38,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SHELL_BLUE_COLOR	0xF3
 
 #define SHELL_RG_COLOR		0xDC
-//#define SHELL_RB_COLOR		0x86
 #define SHELL_RB_COLOR		0x68
 #define SHELL_BG_COLOR		0x78
 
@@ -125,7 +128,7 @@ typedef struct
 
 
 
-#define	API_VERSION		4
+#define	API_VERSION		5
 
 //
 // these are the functions exported by the refresh module
@@ -165,10 +168,12 @@ typedef struct
 
 	void	(*DrawGetPicSize) (int *w, int *h, char *name);	// will return 0 0 if not found
 	void	(*DrawPic) (int x, int y, char *name);
+	void	(*LoadPic) (int x, int y, char* name);
 	void	(*DrawStretchPic) (int x, int y, int w, int h, char *name);
 	void	(*DrawChar) (int x, int y, int c);
 	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);
 	void	(*DrawFill) (int x, int y, int w, int h, int r, int g, int b, int a);
+	void	(*DrawPicRegion)(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic);
 	void	(*DrawFadeScreen) (void);
 	/*
 	** video mode and refresh state management entry points
