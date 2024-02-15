@@ -81,15 +81,15 @@ void ogre_walk1_random(edict_t* self)
 
 mframe_t ogre_frames_walk1[] =
 {
-	ai_walk, 3,  NULL,
-	ai_walk, 6,  NULL,
-	ai_walk, 2,  NULL,
-	ai_walk, 2,  NULL,
-	ai_walk, 2,  NULL,
 	ai_walk, 1,  NULL,
-	ai_walk, 6,  NULL,
-	ai_walk, 5,  NULL,
+	ai_walk, 2,  NULL,
+	ai_walk, 4,  NULL,
+	ai_walk, 4,  NULL,
+	ai_walk, 1,  NULL,
+	ai_walk, 2,  NULL,
 	ai_walk, 3,  NULL,
+	ai_walk, 4,  NULL,
+	ai_walk, 2,  NULL,
 	ai_walk, -1, ogre_walk1_random,
 	ai_walk, 0,  NULL,
 	ai_walk, 0,  NULL,
@@ -125,24 +125,24 @@ mmove_t ogre_move_start_run = { FRAME_run1, FRAME_run2, ogre_frames_start_run, o
 // this is 18 frames for some reason it crashes despite only being a 15 frame animation because of ogre_move_start_run WTF?
 mframe_t ogre_frames_run[] =
 {
-	ai_run, 10, NULL,
-	ai_run, 11, NULL,
-	ai_run, 11, NULL,
-	ai_run, 16, NULL,
-	ai_run, 10, NULL,
-	ai_run, 15, NULL,
-	ai_run, 10, NULL,
-	ai_run, 11, NULL,
-	ai_run, 11, NULL,
-	ai_run, 16, NULL,
-	ai_run, 10, NULL,
-	ai_run, 15, NULL,
-	ai_run, 10, NULL,
-	ai_run, 11, NULL,
-	ai_run, 11, NULL,
-	ai_run, 16, NULL,
-	ai_run, 10, NULL,
-	ai_run, 15, NULL,
+	ai_run, 3, NULL,
+	ai_run, 4, NULL,
+	ai_run, 4, NULL,
+	ai_run, 5, NULL,
+	ai_run, 3, NULL,
+	ai_run, 5, NULL,
+	ai_run, 3, NULL,
+	ai_run, 4, NULL,
+	ai_run, 4, NULL,
+	ai_run, 5, NULL,
+	ai_run, 3, NULL,
+	ai_run, 4, NULL,
+	ai_run, 4, NULL,
+	ai_run, 3, NULL,
+	ai_run, 3, NULL,
+	ai_run, 3, NULL,
+	ai_run, 4, NULL,
+	ai_run, 3, NULL,
 };
 
 mmove_t ogre_move_run = { FRAME_run3, FRAME_run18, ogre_frames_run, NULL };
@@ -175,13 +175,13 @@ mframe_t ogre_frames_pain1[] =
 {
 	ai_move, -1,  NULL,
 	ai_move, -3,  NULL, // -4
-	ai_move, -4,  NULL, // -8
-	ai_move, -2,  NULL, // -10
-	ai_move, -1,  NULL, // -11
-	ai_move, 0,   NULL, // -11
-	ai_move, 1,   NULL, // -10
-	ai_move, 3,   NULL, // -7
-	ai_move, 4,   NULL, // -3
+	ai_move, -3,  NULL, // -7
+	ai_move, -2,  NULL, // -9
+	ai_move, -1,  NULL, // -10
+	ai_move, 0,   NULL, // -10
+	ai_move, 1,   NULL, // -9
+	ai_move, 3,   NULL, // -6
+	ai_move, 3,   NULL, // -3
 	ai_move, 2,   NULL, // -1
 	ai_move, 1,   NULL, // 0
 	ai_move, 0,   NULL  // 0 
@@ -193,12 +193,12 @@ mframe_t ogre_frames_pain2[] =
 {
 	ai_move, -1,  NULL, // -1
 	ai_move, -1,  NULL, // -2
-	ai_move, -2,  NULL, // -4
+	ai_move, -1,  NULL, // -3
+	ai_move, -2,  NULL, // -5
 	ai_move, -3,  NULL, // -7
-	ai_move, -3,  NULL, // -10
-	ai_move, -2,  NULL, // -12
-	ai_move, -1,  NULL, // -13
-	ai_move, -1,  NULL, // -14
+	ai_move, -2,  NULL, // -9
+	ai_move, -1,  NULL, // -10
+	ai_move, -1,  NULL, // -11
 	ai_move, 0,  NULL,
 	ai_move, 0,  NULL,
 	ai_move, 0,  NULL,
@@ -211,58 +211,57 @@ mframe_t ogre_frames_pain2[] =
 	ai_move, 0,  NULL,
 	ai_move, 0,  NULL,
 	ai_move, 0,  NULL,
-	ai_move, 1,  NULL, // 1
-	ai_move, 1,  NULL, // 2
-	ai_move, 2,  NULL, // 4
-	ai_move, 3,  NULL, // 7
-	ai_move, 3,  NULL, // 10
-	ai_move, 2,  NULL, // 12
-	ai_move, 1,  NULL, // 13
-	ai_move, 1,  NULL  // 14
+	ai_move, 1,  NULL, // -10
+	ai_move, 1,  NULL, // -9
+	ai_move, 2,  NULL, // -7
+	ai_move, 3,  NULL, // -4
+	ai_move, 2,  NULL, // -2
+	ai_move, 1,  NULL, // -1
+	ai_move, 1,  NULL, // 0
+	ai_move, 0,  NULL  // 1
 };
 mmove_t ogre_move_pain2 = { FRAME_painb1, FRAME_painb28, ogre_frames_pain2, ogre_run };
 
 mframe_t ogre_frames_pain3[] =
 {
-	ai_move, -8, NULL,
-	ai_move, 10, NULL,
 	ai_move, -4, NULL,
-	ai_move, -1, NULL,
-	ai_move, -3, NULL,
-	ai_move, 0,  NULL,
-	ai_move, 3,  NULL,
-	ai_move, 0,  NULL,
-	ai_move, 0,  NULL,
-	ai_move, 0,  NULL,
+	ai_move, 5, NULL,
+	ai_move, -2, NULL,
+	ai_move, 0, NULL,
+	ai_move, -2, NULL,
 	ai_move, 0,  NULL,
 	ai_move, 1,  NULL,
 	ai_move, 0,  NULL,
+	ai_move, 0,  NULL,
+	ai_move, 0,  NULL,
+	ai_move, 0,  NULL,
+	ai_move, 3,  NULL,
+	ai_move, 0,  NULL,
+	ai_move, 1,  NULL,
 	ai_move, 1,  NULL,
 	ai_move, 2,  NULL,
-	ai_move, 4,  NULL,
-	ai_move, 3,  NULL,
-	ai_move, 2,  NULL
+	ai_move, 1,  NULL,
+	ai_move, 1,  NULL
 };
 mmove_t ogre_move_pain3 = { FRAME_painc1, FRAME_painc18, ogre_frames_pain3, ogre_run };
 
 mframe_t ogre_frames_pain4[] =
 {
-	ai_move, -10, NULL,
-	ai_move, -6,  NULL,
-	ai_move, 8,   NULL,
-	ai_move, 4,   NULL,
+	ai_move, -3, NULL,
+	ai_move, -2,  NULL,
+	ai_move, 3,   NULL,
+	ai_move, 2,   NULL,
 	ai_move, 1,   NULL,
 	ai_move, 0,   NULL,
-	ai_move, 2,   NULL,
-	ai_move, 5,   NULL,
-	ai_move, 2,   NULL,
-	ai_move, -1,  NULL,
-	ai_move, -1,  NULL,
+	ai_move, 1,   NULL,
 	ai_move, 3,   NULL,
-	ai_move, 2,   NULL
+	ai_move, 1,   NULL,
+	ai_move, -1,  NULL,
+	ai_move, -1,  NULL,
+	ai_move, 1,   NULL,
+	ai_move, 1,   NULL
 };
 mmove_t ogre_move_pain4 = { FRAME_paind1, FRAME_paind13, ogre_frames_pain4, ogre_run };
-
 
 void ogre_pain(edict_t* self, edict_t* other, float kick, int damage)
 {
@@ -477,24 +476,24 @@ void ogre_attack6_refire(edict_t* self)
 
 mframe_t ogre_frames_attack6[] =
 {
-	ai_charge, 10, NULL,
-	ai_charge,  4, NULL,
-	ai_charge, 12, NULL,
-	ai_charge, 11, ogre_fire,
-	ai_charge, 13, NULL,
-	ai_charge, 18, NULL,
-	ai_charge, 15, NULL,
-	ai_charge, 14, NULL,
-	ai_charge, 11, NULL,
-	ai_charge,  8, NULL,
-	ai_charge, 11, NULL,
-	ai_charge, 12, NULL,
-	ai_charge, 12, NULL,
-	ai_charge, 17, ogre_attack6_refire,
-	ai_charge, 9,  NULL,
-	ai_charge, 12, NULL,
-	ai_charge, 12, NULL,
-	ai_charge, 17, NULL,
+	ai_charge, 3, NULL,
+	ai_charge, 1, NULL,
+	ai_charge, 3, NULL,
+	ai_charge, 4, ogre_fire,
+	ai_charge, 3, NULL,
+	ai_charge, 4, NULL,
+	ai_charge, 3, NULL,
+	ai_charge, 4, NULL,
+	ai_charge, 3, NULL,
+	ai_charge, 2, NULL,
+	ai_charge, 4, NULL,
+	ai_charge, 5, NULL,
+	ai_charge, 3, NULL,
+	ai_charge, 2, ogre_attack6_refire,
+	ai_charge, 3,  NULL,
+	ai_charge, 2, NULL,
+	ai_charge, 2, NULL,
+	ai_charge, 5, NULL,
 };
 
 mmove_t ogre_move_attack6 = { FRAME_run1, FRAME_run18, ogre_frames_attack6, ogre_run };
@@ -606,10 +605,10 @@ void ogre_dead(edict_t* self)
 mframe_t ogre_frames_death1[] =
 {
 	ai_move, 0,   NULL,
-	ai_move, -10, NULL,
-	ai_move, -10, NULL,
-	ai_move, -10, NULL,
-	ai_move, -5,  NULL,
+	ai_move, -2, NULL,
+	ai_move, -2, NULL,
+	ai_move, -2, NULL,
+	ai_move, -1,  NULL,
 	ai_move, 0,   ogre_fire,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,
@@ -624,9 +623,9 @@ mmove_t ogre_move_death1 = { FRAME_paine1, FRAME_paine12, ogre_frames_death1, og
 
 mframe_t ogre_frames_death2[] =
 {
-	ai_move, -5,  NULL,
-	ai_move, -5,  NULL,
-	ai_move, -5,  NULL,
+	ai_move, -1,  NULL,
+	ai_move, -2,  NULL,
+	ai_move, -1,  NULL,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,
 	ai_move, 0,   NULL,
