@@ -5,6 +5,7 @@ February XX, 2024
 * Fixed Gender option in player setup menu changing handedness instead of gender.
 * Many more details in z_tdm_subway.
 * Added Load_PicRegion and Draw_Pic to legacy OpenGL renderer, to draw certain sections of pics.
+* Made the leaderboard translucent.
 * Changed GL_FindPic to not always load 2D images from the "pics" folder (for the purposes of loading fonts). Therefore, if you see any Prigozhin's, report them.
 * Ogre changes:
 	* They move a lot slower.
