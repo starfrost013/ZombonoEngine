@@ -27,7 +27,6 @@ server_t		sv;					// local server
 /*
 ================
 SV_FindIndex
-
 ================
 */
 int SV_FindIndex (char *name, int start, int max, qboolean create)

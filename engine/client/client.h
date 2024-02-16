@@ -677,6 +677,8 @@ void UI_LeaderboardUIUpdate();
 
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
 #define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
+#define FONT_LIST_FILENAME		"fonts\\fonts.txt"	// Font name of the file list.
+#define	FONT_MAX_FILENAME_LEN	256				// Maximum length of a file filename. (+4 added when lodaing).
 
 //
 // cl_font.c
@@ -698,13 +700,15 @@ typedef struct glyph_s
 // font_t defines a font
 typedef struct font_s
 {
-	char		font_name[32];
-	int			size;
-	glyph_t		glyphs[MAX_GLYPHS];
+	char		font_name[FONT_MAX_FILENAME_LEN];	// The name of the current font.
+	int			size;								// The size of the current font.
+	int			num_glyphs;							// The number of loaded glyphs.
+	glyph_t		glyphs[MAX_GLYPHS];					// The glyphs loaded for the current font.
 } font_t;
 
-
 font_t			fonts[MAX_FONTS];
+
+int				num_fonts;						// The number of loaded fonts.
 
 qboolean Font_Init();
 void Font_Shutdown();

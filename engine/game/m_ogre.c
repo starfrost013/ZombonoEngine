@@ -732,9 +732,8 @@ SP_monster_ogre(edict_t* self)
 {
 	SP_monster_ogre_x(self);
 
-
 	self->s.skinnum = 2;
 	self->health = 40;
-	self->max_health = 40;
+	self->max_health = 90;
 	self->gib_health = 0; //test
 }

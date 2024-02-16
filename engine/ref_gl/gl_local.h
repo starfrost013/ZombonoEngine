@@ -292,8 +292,9 @@ void R_MarkLights (dlight_t *light, int bit, mnode_t *node);
 
 void COM_StripExtension (char *in, char *out);
 
+// Mostly exports here.
 void	Draw_GetPicSize (int *w, int *h, char *name);
-void	Load_Pic(int x, int y, char *name); // load but don't draw a pic.
+void	Load_Pic(char *name); // load but don't draw a pic.
 void	Draw_Pic(int x, int y, char *name);
 void	Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic);
 void	Draw_StretchPic (int x, int y, int w, int h, char *name);

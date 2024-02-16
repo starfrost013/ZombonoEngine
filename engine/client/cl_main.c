@@ -1215,7 +1215,7 @@ void CL_RequestNextDownload (void)
 			precache_check++; // zero is blank
 		while (precache_check < CS_IMAGES+MAX_IMAGES &&
 			cl.configstrings[precache_check][0]) {
-			Com_sprintf(fn, sizeof(fn), "pics/%s.tga", cl.configstrings[precache_check++]);
+			Com_sprintf(fn, sizeof(fn), "%s.tga", cl.configstrings[precache_check++]);
 			if (!CL_CheckOrDownloadFile(fn))
 				return; // started a download
 		}

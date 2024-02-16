@@ -234,7 +234,7 @@ int FS_FOpenFile (char *filename, FILE **file)
 		
 	}
 	
-	Com_DPrintf ("FindFile: can't find %s\n", filename);
+	Com_DPrintf ("FindFile: can't find %s\n", filename); 
 	
 	*file = NULL;
 	return -1;

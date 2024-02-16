@@ -89,7 +89,7 @@ void CL_DrawInventory (void)
 	// repaint everything next frame
 	SCR_DirtyScreen ();
 
-	re.DrawPic (x, y + 8 * vid_hudscale->value, "inventory");
+	re.DrawPic (x, y + 8 * vid_hudscale->value, "pics/inventory");
 
 	y += 24 * vid_hudscale->value;
 	x += 24 * vid_hudscale->value;

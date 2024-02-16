@@ -4,6 +4,11 @@ Version 0.04-pre5
 February XX, 2024
 * Fixed Gender option in player setup menu changing handedness instead of gender.
 * Many more details in z_tdm_subway.
+* Added Load_PicRegion and Draw_Pic to legacy OpenGL renderer, to draw certain sections of pics.
+* Changed GL_FindPic to not always load 2D images from the "pics" folder (for the purposes of loading fonts). Therefore, if you see any Prigozhin's, report them.
+* Ogre changes:
+	* They move a lot slower.
+	* Changed health from 40 to 90.
 
 Version 0.04-pre4
 February 10, 2024
@@ -22,7 +27,7 @@ February 10, 2024
 * Capitalised binding names.
 * Properly lit and textured z_tdm_subway, and added many new details.
 * Redesigned textures for z_tdm_labrats. They suck.
-* Rewrote the way the game version number is handled.
+* Rewrote the way the game version number is handled and drawn.
 * Added cl_drawhud: It determines if UI is drawn.
 * Removed scr_printspeed - it was dummied out and obsolete
 * Implemented very rough versions of new enemy types that can be spawned with the Planfuslicator:

@@ -300,14 +300,14 @@ void M_DrawCursor( int x, int y, int f )
 
 		for ( i = 0; i < NUM_CURSOR_FRAMES; i++ )
 		{
-			Com_sprintf( cursorname, sizeof( cursorname ), "m_cursor%d", i );
+			Com_sprintf( cursorname, sizeof( cursorname ), "pics/m_cursor%d", i );
 
 			re.RegisterPic( cursorname );
 		}
 		cached = true;
 	}
 
-	Com_sprintf( cursorname, sizeof(cursorname), "m_cursor%d", f );
+	Com_sprintf( cursorname, sizeof(cursorname), "pics/m_cursor%d", f );
 	re.DrawPic( x, y, cursorname );
 }
 
@@ -379,11 +379,11 @@ void M_Main_Draw (void)
 	// menu options name
 	char *names[] =
 	{
-		"m_main_game",
-		"m_main_multiplayer",
-		"m_main_options",
-		"m_main_video",
-		"m_main_quit",
+		"pics/m_main_game",
+		"pics/m_main_multiplayer",
+		"pics/m_main_options",
+		"pics/m_main_video",
+		"pics/m_main_quit",
 		0
 	};
 
@@ -487,7 +487,7 @@ static menuaction_t		s_player_setup_action;
 
 static void Multiplayer_MenuDraw (void)
 {
-	M_Banner( "m_banner_multiplayer" );
+	M_Banner( "pics/m_banner_multiplayer" );
 
 	Menu_AdjustCursor( &s_multiplayer_menu, 1 );
 	Menu_Draw( &s_multiplayer_menu );
@@ -1348,7 +1348,7 @@ void Options_MenuInit( void )
 
 void Options_MenuDraw (void)
 {
-	M_Banner( "m_banner_options" );
+	M_Banner( "pics/m_banner_options" );
 	Menu_AdjustCursor( &s_options_menu, 1 );
 	Menu_Draw( &s_options_menu );
 
@@ -1679,7 +1679,7 @@ void Game_MenuDraw( void )
 	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 92, "This option is not available in playtest builds!");
 	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
 #else
-	M_Banner("m_banner_game");
+	M_Banner("pics/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
 	Menu_Draw(&s_game_menu);
 #endif
@@ -1783,7 +1783,7 @@ void LoadGame_MenuInit( void )
 
 void LoadGame_MenuDraw( void )
 {
-	M_Banner( "m_banner_load_game" );
+	M_Banner( "pics/m_banner_load_game" );
 //	Menu_AdjustCursor( &s_loadgame_menu, 1 );
 	Menu_Draw( &s_loadgame_menu );
 }
@@ -1826,7 +1826,7 @@ void SaveGameCallback( void *self )
 
 void SaveGame_MenuDraw( void )
 {
-	M_Banner( "m_banner_save_game" );
+	M_Banner( "pics/m_banner_save_game" );
 	Menu_AdjustCursor( &s_savegame_menu, 1 );
 	Menu_Draw( &s_savegame_menu );
 }
@@ -2020,7 +2020,7 @@ void JoinServer_MenuInit( void )
 
 void JoinServer_MenuDraw(void)
 {
-	M_Banner( "m_banner_join_server" );
+	M_Banner( "pics/m_banner_join_server" );
 	Menu_Draw( &s_joinserver_menu );
 
 	if (search_local_games)
@@ -2145,6 +2145,7 @@ void StartServer_MenuInit( void )
 		"Waves",
 		"Co-op",
 		"Control Point???",
+		"Tournament",
 		0
 	};
 
@@ -2857,7 +2858,7 @@ const char *AddressBook_MenuKey( int key )
 
 void AddressBook_MenuDraw(void)
 {
-	M_Banner( "m_banner_addressbook" );
+	M_Banner( "pics/m_banner_addressbook" );
 	Menu_Draw( &s_addressbook_menu );
 }
 
@@ -3424,8 +3425,8 @@ void M_Quit_Draw (void)
 {
 	int		w, h;
 
-	re.DrawGetPicSize (&w, &h, "quit");
-	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "quit");
+	re.DrawGetPicSize (&w, &h, "pics/quit");
+	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "pics/quit");
 }
 
 

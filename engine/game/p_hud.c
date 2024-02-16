@@ -348,7 +348,7 @@ void G_SetStats (edict_t *ent)
 	index = ArmorIndex (ent);
 	if (power_armor_type && (!index || (level.framenum & 8) ) )
 	{	// flash between power armor and other armor icon
-		ent->client->ps.stats[STAT_ARMOR_ICON] = gi.imageindex ("i_powershield");
+		ent->client->ps.stats[STAT_ARMOR_ICON] = gi.imageindex ("pics/i_powershield");
 		ent->client->ps.stats[STAT_ARMOR] = cells;
 	}
 	else if (index)
@@ -377,22 +377,22 @@ void G_SetStats (edict_t *ent)
 	//
 	if (ent->client->quad_framenum > level.framenum)
 	{
-		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("p_quad");
+		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("pics/p_quad");
 		ent->client->ps.stats[STAT_TIMER] = (ent->client->quad_framenum - level.framenum)/10;
 	}
 	else if (ent->client->invincible_framenum > level.framenum)
 	{
-		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("p_invulnerability");
+		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("pics/p_invulnerability");
 		ent->client->ps.stats[STAT_TIMER] = (ent->client->invincible_framenum - level.framenum)/10;
 	}
 	else if (ent->client->enviro_framenum > level.framenum)
 	{
-		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("p_envirosuit");
+		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("pics/p_envirosuit");
 		ent->client->ps.stats[STAT_TIMER] = (ent->client->enviro_framenum - level.framenum)/10;
 	}
 	else if (ent->client->breather_framenum > level.framenum)
 	{
-		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("p_rebreather");
+		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex ("pics/p_rebreather");
 		ent->client->ps.stats[STAT_TIMER] = (ent->client->breather_framenum - level.framenum)/10;
 	}
 	else
@@ -430,7 +430,7 @@ void G_SetStats (edict_t *ent)
 	// help icon / current weapon if not shown
 	//
 	if (ent->client->pers.helpchanged && (level.framenum&8) )
-		ent->client->ps.stats[STAT_HELPICON] = gi.imageindex ("i_help");
+		ent->client->ps.stats[STAT_HELPICON] = gi.imageindex ("pics/i_help");
 	else if ( (ent->client->pers.hand == CENTER_HANDED)
 		&& ent->client->pers.weapon)
 		ent->client->ps.stats[STAT_HELPICON] = gi.imageindex (ent->client->pers.weapon->icon);

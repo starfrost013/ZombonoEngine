@@ -441,7 +441,7 @@ void SCR_DrawNet (void)
 		< CMD_BACKUP-1)
 		return;
 
-	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "net");
+	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "pics/net");
 }
 
 /*
@@ -459,8 +459,8 @@ void SCR_DrawPause (void)
 	if (!cl_paused->value)
 		return;
 
-	re.DrawGetPicSize (&w, &h, "pause");
-	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "pause");
+	re.DrawGetPicSize (&w, &h, "pics/pause");
+	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "pics/pause");
 }
 
 /*
@@ -476,8 +476,8 @@ void SCR_DrawLoading (void)
 		return;
 
 	scr_draw_loading = false;
-	re.DrawGetPicSize (&w, &h, "loading");
-	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "loading");
+	re.DrawGetPicSize (&w, &h, "pics/loading");
+	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "pics/loading");
 }
 
 //=============================================================================
@@ -716,18 +716,15 @@ void SCR_TileClear (void)
 #define STAT_MINUS		10	// num frame for '-' stats digit
 char		*sb_nums[2][11] = 
 {
-	{"num_0", "num_1", "num_2", "num_3", "num_4", "num_5",
-	"num_6", "num_7", "num_8", "num_9", "num_minus"},
-	{"anum_0", "anum_1", "anum_2", "anum_3", "anum_4", "anum_5",
-	"anum_6", "anum_7", "anum_8", "anum_9", "anum_minus"}
+	// 2 sets of big numbers
+	{"pics/num_0", "pics/num_1", "pics/num_2", "pics/num_3", "pics/num_4", "pics/num_5", "pics/num_6", "pics/num_7", "pics/num_8", "pics/num_9", "pics/num_minus"},
+	{"pics/anum_0", "pics/anum_1", "pics/anum_2", "pics/anum_3", "pics/anum_4", "pics/anum_5", "pics/anum_6", "pics/anum_7", "pics/anum_8", "pics/anum_9", "pics/anum_minus"}
 };
 
 #define	ICON_WIDTH	24
 #define	ICON_HEIGHT	24
 #define	CHAR_WIDTH	16 * vid_hudscale->value
 #define	ICON_SPACE	8
-
-
 
 /*
 ================
@@ -865,7 +862,7 @@ void SCR_TouchPics (void)
 		if (crosshair->value > 3 || crosshair->value < 0)
 			crosshair->value = 3;
 
-		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "ch%i", (int)(crosshair->value));
+		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "pics/ch%i", (int)(crosshair->value));
 		re.DrawGetPicSize (&crosshair_width, &crosshair_height, crosshair_pic);
 
 		// remove scaling - it will be applied during draw with proper screen centering
@@ -994,7 +991,7 @@ void SCR_ExecuteLayoutString (char *s)
 				color = 1;
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
-				re.DrawPic (x, y, "field_3");
+				re.DrawPic (x, y, "pics/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -1014,7 +1011,7 @@ void SCR_ExecuteLayoutString (char *s)
 				continue;	// negative number = don't show
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
-				re.DrawPic (x, y, "field_3");
+				re.DrawPic (x, y, "pics/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -1032,7 +1029,7 @@ void SCR_ExecuteLayoutString (char *s)
 			color = 0;	// green
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
-				re.DrawPic (x, y, "field_3");
+				re.DrawPic (x, y, "pics/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -1196,8 +1193,8 @@ void SCR_UpdateScreen (void)
 
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
-			re.DrawGetPicSize (&w, &h, "loading");
-			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "loading");
+			re.DrawGetPicSize (&w, &h, "pics/loading");
+			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "pics/loading");
 //			re.EndFrame();
 //			return;
 		} 

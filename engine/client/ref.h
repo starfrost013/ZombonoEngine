@@ -154,9 +154,8 @@ typedef struct
 	// are no longer valid after EndRegistration.
 	//
 	// Skins and images need to be differentiated, because skins
-	// are flood filled to eliminate mip map edge errors, and pics have
-	// an implicit "pics/" prepended to the name. (a pic name that starts with a
-	// slash will not use the "pics/" prefix or the ".tga" postfix)
+	// are flood filled to eliminate mip map edge errors.
+	// Pics can be loaded from any directory.
 	void	(*BeginRegistration) (char *map);
 	struct model_s *(*RegisterModel) (char *name);
 	struct image_s *(*RegisterSkin) (char *name);
@@ -168,7 +167,7 @@ typedef struct
 
 	void	(*DrawGetPicSize) (int *w, int *h, char *name);	// will return 0 0 if not found
 	void	(*DrawPic) (int x, int y, char *name);
-	void	(*LoadPic) (int x, int y, char* name);
+	void	(*LoadPic) (char* name);
 	void	(*DrawStretchPic) (int x, int y, int w, int h, char *name);
 	void	(*DrawChar) (int x, int y, int c);
 	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);

@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 qboolean UI_TeamUICreate()
 {
 	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - 64, (viddef.height / 2) - 96);
-	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "ui/teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
-	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director", (viddef.width / 2) - 256, (viddef.height / 2) - 64, 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "pics/ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - 64, 256, 128);
 
 	UI_SetEventOnClick("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
 	UI_SetEventOnClick("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);

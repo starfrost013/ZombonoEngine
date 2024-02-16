@@ -23,9 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_font.c: 
 // Font Engine (February 8, 2024)
 
-#define FONT_LIST_FILENAME "fonts\\fonts.txt"
-#define	FONT_MAX_FILENAME_LEN	256
-
 // Functions not exposed in headers
 qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN]);
 
@@ -125,10 +122,33 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 {
 	Com_DPrintf("Loading font %s\n", file_name);
 
+	// create the font object.
+
 	FILE* tga_stream;
 	FILE* json_stream;
+	//+4 for extension
+	char tga_filename[FONT_MAX_FILENAME_LEN+4] = {0};
+	char json_filename[FONT_MAX_FILENAME_LEN+4] = {0};
 
-	
+	// open up json, load targa as a texture.
+	// .tga is *assumed* by LoadPic!!
+	snprintf(&tga_filename, FONT_MAX_FILENAME_LEN + 4, "%s/fonts/%s", FS_Gamedir(), file_name);
+	snprintf(&json_filename, FONT_MAX_FILENAME_LEN + 4, "%s/fonts/%s.json", FS_Gamedir(), file_name);
+
+	Com_DPrintf("Font_LoadFont: Loading Font TGA %s\n", tga_filename);
+	Com_DPrintf("Font_LoadFont: Loading Font JSON %s\n", json_filename);
+
+	// TODO: MERGE PICS AND IMAGES!!!
+	re.LoadPic(tga_filename);
+	json_stream = fopen(json_filename, "rb");
+
+	if (json_stream == NULL)
+	{
+		Sys_Error("Failed to load Font JSON %s!", json_filename);
+		return false; 
+	}
+
+	fclose(json_stream);
 }
 
 void Font_Shutdown()

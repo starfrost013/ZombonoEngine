@@ -102,7 +102,7 @@ image_t	*Draw_FindPic (char *name)
 
 	if (name[0] != '/' && name[0] != '\\')
 	{
-		Com_sprintf (fullname, sizeof(fullname), "pics/%s.tga", name);
+		Com_sprintf (fullname, sizeof(fullname), "%s.tga", name);
 		gl = GL_FindImage (fullname, it_pic);
 	}
 	else
@@ -243,7 +243,7 @@ Load_Pic
 Load an image but don't draw immediately.
 =============
 */
-void Load_Pic(int x, int y, char* pic)
+void Load_Pic(char* pic)
 {
 	image_t* gl;
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
