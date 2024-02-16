@@ -24,6 +24,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 server_static_t	svs;				// persistant server info
 server_t		sv;					// local server
 
+const char* master_base = "servers.zombono.com";
+const char* master_alternative = "iswearimnotanazi.bjornhocke.com"; // temp
+
 /*
 ================
 SV_FindIndex
@@ -272,6 +275,8 @@ void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate,
 	Com_Printf ("-------------------------------------\n");
 }
 
+#define ZOMBONO_MASTER_LENGTH	32
+
 /*
 ==============
 SV_InitGame
@@ -283,7 +288,7 @@ void SV_InitGame (void)
 {
 	int		i;
 	edict_t	*ent;
-	char	idmaster[32];
+	char	zombono_master[ZOMBONO_MASTER_LENGTH];
 
 	if (svs.initialized)
 	{
@@ -328,8 +333,17 @@ void SV_InitGame (void)
 
 	// heartbeats will always be sent to the id master
 	svs.last_heartbeat = -99999;		// send immediately
-	Com_sprintf(idmaster, sizeof(idmaster), "192.246.40.37:%i", PORT_MASTER);
-	NET_StringToAdr (idmaster, &master_adr[0]);
+	Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_base, PORT_MASTER);
+	
+	if (!NET_StringToAdr(zombono_master, &master_adr[0]))
+	{
+		Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_alternative, PORT_MASTER);
+		
+		if (!NET_StringToAdr(zombono_master, &master_adr[0]))
+		{
+			Com_Printf("Warning: Failed to contact both base and alternative master server");
+		}
+	}
 
 	// init game
 	SV_InitGameProgs ();
