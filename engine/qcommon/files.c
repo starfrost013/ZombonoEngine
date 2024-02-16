@@ -83,7 +83,6 @@ typedef struct searchpath_s
 searchpath_t	*fs_searchpaths;
 searchpath_t	*fs_base_searchpaths;	// without gamedirs
 
-
 /*
 
 All of Quake's data access is through a hierchal file system, but the contents of the file system can be transparently merged from several sources.
@@ -94,7 +93,6 @@ only used during filesystem initialization.
 The "game directory" is the first tree on the search path and directory that all generated files (savegames, screenshots, demos, config files) will be saved to.  This can be overridden with the "-game" command line parameter.  The game directory can never be changed while quake is executing.  This is a precacution against having a malicious server instruct clients to write files over areas they shouldn't.
 
 */
-
 
 /*
 ================
@@ -136,7 +134,6 @@ void	FS_CreatePath (char *path)
 		}
 	}
 }
-
 
 /*
 ==============

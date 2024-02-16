@@ -132,23 +132,23 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 
 	// open up json, load targa as a texture.
 	// .tga is *assumed* by LoadPic!!
-	snprintf(&tga_filename, FONT_MAX_FILENAME_LEN + 4, "%s/fonts/%s", FS_Gamedir(), file_name);
-	snprintf(&json_filename, FONT_MAX_FILENAME_LEN + 4, "%s/fonts/%s.json", FS_Gamedir(), file_name);
+	snprintf(&tga_filename, FONT_MAX_FILENAME_LEN + 4, "fonts/%s", file_name);
+	snprintf(&json_filename, FONT_MAX_FILENAME_LEN + 4, "fonts/%s.json", file_name);
 
-	Com_DPrintf("Font_LoadFont: Loading Font TGA %s\n", tga_filename);
-	Com_DPrintf("Font_LoadFont: Loading Font JSON %s\n", json_filename);
-
+	Com_DPrintf("Font_LoadFont: Loading Font TGA %s.tga\n", tga_filename);
 	// TODO: MERGE PICS AND IMAGES!!!
 	re.LoadPic(tga_filename);
-	json_stream = fopen(json_filename, "rb");
 
-	if (json_stream == NULL)
+	Com_DPrintf("Font_LoadFont: Loading Font JSON %s\n", json_filename);
+
+	if (FS_FOpenFile(json_filename, &json_stream) == -1)
 	{
 		Sys_Error("Failed to load Font JSON %s!", json_filename);
-		return false; 
+		return false;
 	}
 
 	fclose(json_stream);
+	return true; 
 }
 
 void Font_Shutdown()

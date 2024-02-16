@@ -66,8 +66,8 @@ typedef enum {false, true}	qboolean;
 #define	MAX_STRING_TOKENS	80		// max tokens resulting from Cmd_TokenizeString
 #define	MAX_TOKEN_CHARS		128		// max length of an individual token
 
-#define	MAX_QPATH			80		// max length of a quake game pathname
-#define	MAX_OSPATH			256		// max length of a filesystem pathname
+#define	MAX_QPATH			256		// max length of a quake game pathname (todo: implement in pak files)
+#define	MAX_OSPATH			260		// max length of a filesystem pathname
 
 //
 // per-level limits

@@ -345,6 +345,8 @@ void SV_InitGame (void)
 		}
 	}
 
+	Com_DPrintf("Master server is %s (TODO: MAKE CVAR!!!)\n", zombono_master);
+
 	// init game
 	SV_InitGameProgs ();
 	for (i=0 ; i<maxclients->value ; i++)
