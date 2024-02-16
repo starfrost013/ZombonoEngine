@@ -25,10 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 image_t		*draw_chars;
 
-extern	qboolean	scrap_dirty;
-void Scrap_Upload (void);
-
-
 /*
 ===============
 Draw_InitLocal
@@ -149,9 +145,6 @@ void Draw_StretchPic (int x, int y, int w, int h, char *pic)
 		return;
 	}
 
-	if (scrap_dirty)
-		Scrap_Upload ();
-
 	GL_Bind (gl->texnum);
 	qglBegin (GL_QUADS);
 	qglTexCoord2f (gl->sl, gl->tl);
@@ -182,8 +175,6 @@ void Draw_Pic (int x, int y, char *pic)
 		ri.Con_Printf (PRINT_ALL, "Can't find pic: %s\n", pic);
 		return;
 	}
-	if (scrap_dirty)
-		Scrap_Upload ();
 
 	GL_Bind (gl->texnum);
 	qglBegin (GL_QUADS);
@@ -210,11 +201,6 @@ void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
 
 	gl = Draw_FindPic(pic);
-
-	if (scrap_dirty)
-	{
-		Scrap_Upload();
-	}
 
 	// set up UV coordinates
 	int coord_begin_x = (float)start_x * scale->value / (float)(gl->width * scale->value);
@@ -255,10 +241,6 @@ void Load_Pic(char* pic)
 		ri.Con_Printf(PRINT_ALL, "Can't find pic: %s\n", pic);
 		return;
 	}
-
-	if (scrap_dirty)
-		Scrap_Upload();
-
 }
 
 

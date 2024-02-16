@@ -188,7 +188,7 @@ void G_LeaderboardSend(edict_t* ent)
 	gi.WriteByte(client_count);
 
 	// 	// loop through them again to actually send each client's data
-	// TODO: SORT SCORES!!!
+	// TODO: SORT SCORES FOR EACH TEAM!!!
 	// sorting algorithm from previous code:
 	/*
 		// sort the clients by score
