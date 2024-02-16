@@ -565,6 +565,14 @@ void SV_Map_f (void)
 	map = Cmd_Argv(1);
 	if (!strstr (map, "."))
 	{
+#ifdef PLAYTEST
+		if (!strstr(map, "coop"))
+		{
+			Com_Printf("Nuh uh! No spoilers here!");
+			return;
+		}
+#endif
+
 		Com_sprintf (expanded, sizeof(expanded), "maps/%s.bsp", map);
 		if (FS_LoadFile (expanded, NULL) == -1)
 		{

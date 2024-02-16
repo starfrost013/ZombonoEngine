@@ -81,14 +81,11 @@ typedef enum {false, true}	qboolean;
 #define	MAX_ITEMS			256
 #define MAX_GENERAL			(MAX_CLIENTS*2)	// general config strings
 
-
 // game print flags
 #define	PRINT_LOW			0		// pickup messages
 #define	PRINT_MEDIUM		1		// death messages
 #define	PRINT_HIGH			2		// critical messages
 #define	PRINT_CHAT			3		// chat messages
-
-
 
 #define	ERR_FATAL			0		// exit the entire game with a popup window
 #define	ERR_DROP			1		// print to console and disconnect from game
@@ -109,7 +106,6 @@ MULTICAST_ALL_R,
 MULTICAST_PHS_R,
 MULTICAST_PVS_R
 } multicast_t;
-
 
 /*
 ==============================================================
