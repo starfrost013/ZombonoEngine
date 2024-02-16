@@ -481,8 +481,9 @@ MULTIPLAYER MENU
 =======================================================================
 */
 static menuframework_t	s_multiplayer_menu;
-static menuaction_t		s_join_network_server_action;
-static menuaction_t		s_start_network_server_action;
+static menuaction_t		s_browse_servers_action;
+static menuaction_t		s_direct_connect_action;
+static menuaction_t		s_start_server_action;
 static menuaction_t		s_player_setup_action;
 
 static void Multiplayer_MenuDraw (void)
@@ -498,7 +499,14 @@ static void PlayerSetupFunc( void *unused )
 	M_Menu_PlayerConfig_f();
 }
 
-static void JoinNetworkServerFunc( void *unused )
+static void BrowseServersFunc(void* unused)
+{
+	// todo: 
+	//UI_SetEnabled("BrowseServersUI", true);
+	//UI_SetActive("BrowseServersUI", true);
+}
+
+static void DirectConnectFunc( void *unused )
 {
 	M_Menu_JoinServer_f();
 }
@@ -513,29 +521,38 @@ void Multiplayer_MenuInit( void )
 	s_multiplayer_menu.x = viddef.width * 0.50 - 64 * vid_hudscale->value;
 	s_multiplayer_menu.nitems = 0;
 
-	s_join_network_server_action.generic.type	= MTYPE_ACTION;
-	s_join_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
-	s_join_network_server_action.generic.x		= 0;
-	s_join_network_server_action.generic.y		= 0;
-	s_join_network_server_action.generic.name	= " Join Network Server";
-	s_join_network_server_action.generic.callback = JoinNetworkServerFunc;
+	s_browse_servers_action.generic.type = MTYPE_ACTION;
+	s_browse_servers_action.generic.flags = QMF_LEFT_JUSTIFY;
+	s_browse_servers_action.generic.x = 0;
+	s_browse_servers_action.generic.y = 0;
+	s_browse_servers_action.generic.name = " Browse Servers";
+	s_browse_servers_action.generic.callback = BrowseServersFunc;
 
-	s_start_network_server_action.generic.type	= MTYPE_ACTION;
-	s_start_network_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
-	s_start_network_server_action.generic.x		= 0;
-	s_start_network_server_action.generic.y		= 10 * vid_hudscale->value;
-	s_start_network_server_action.generic.name	= " Start Network Server";
-	s_start_network_server_action.generic.callback = StartNetworkServerFunc;
+	s_direct_connect_action.generic.type	= MTYPE_ACTION;
+	s_direct_connect_action.generic.flags  = QMF_LEFT_JUSTIFY;
+	s_direct_connect_action.generic.x		= 0;
+	s_direct_connect_action.generic.y		= 10 * vid_hudscale->value;
+	s_direct_connect_action.generic.name	= " Direct Connect";
+	s_direct_connect_action.generic.callback = DirectConnectFunc;
+
+	s_start_server_action.generic.type	= MTYPE_ACTION;
+	s_start_server_action.generic.flags  = QMF_LEFT_JUSTIFY;
+	s_start_server_action.generic.x		= 0;
+	s_start_server_action.generic.y		= 20 * vid_hudscale->value;
+	s_start_server_action.generic.name	= " Start Server";
+	s_start_server_action.generic.callback = StartNetworkServerFunc;
 
 	s_player_setup_action.generic.type	= MTYPE_ACTION;
 	s_player_setup_action.generic.flags  = QMF_LEFT_JUSTIFY;
 	s_player_setup_action.generic.x		= 0;
-	s_player_setup_action.generic.y		= 20 * vid_hudscale->value;
+	s_player_setup_action.generic.y		= 30 * vid_hudscale->value;
 	s_player_setup_action.generic.name	= " Player Setup";
 	s_player_setup_action.generic.callback = PlayerSetupFunc;
 
-	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_join_network_server_action );
-	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_start_network_server_action );
+	
+	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_browse_servers_action );
+	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_direct_connect_action );
+	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_start_server_action );
 	Menu_AddItem( &s_multiplayer_menu, ( void * ) &s_player_setup_action );
 
 	Menu_SetStatusBar( &s_multiplayer_menu, NULL );
