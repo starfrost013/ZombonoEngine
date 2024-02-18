@@ -12,3 +12,4 @@ bahnschrift_italic_18
 bahnschrift_regular_8
 bahnschrift_regular_12
 bahnschrift_regular_18
+cascadia_code_regular_8

@@ -23,8 +23,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_font.c: 
 // Font Engine (February 8, 2024)
 
+// Globals
+
+font_t			fonts[MAX_FONTS] = { 0 };
+
+int				num_fonts;						// The number of loaded fonts.
+
 // Functions not exposed in headers
+// TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
 qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN]);
+qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
+qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 
 qboolean Font_Init()
 {
@@ -80,10 +89,10 @@ qboolean Font_Init()
 		if (token[0] != '/'
 			&& token[0] != '\n'
 			&& token[0] != '\r'
-			&& ((file_length - file_location > 1) && token[1] != '/')) // don't overflow if we're on he last byte
+			&& ((file_length - file_location > 1) && token[1] != '/')) // don't overflow if we're on the last byte
 		{
 			while (token[0] != '\n'
-				&& token[0] != '\r') // prevent /r from being added to filenames
+				&& token[0] != '\r') // prevents /r from being added to filenames
 			{
 				// copy 1 byte at a time (memory alignment to word size?), ignore windows newlines
 				memcpy(file_name_font + n, token, 1);
@@ -115,6 +124,8 @@ qboolean Font_Init()
 	// close it
 	fclose(font_list_stream); 
 	free(file);
+
+	Com_Printf("Successfully loaded %d fonts!\n", num_fonts);
 	return true; 
 }
 
@@ -122,10 +133,11 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 {
 	Com_DPrintf("Loading font %s\n", file_name);
 
-	// create the font object.
+	// allocate a JSON stream, FILE handle and the font object
+	FILE*			json_handle;
+	JSON_stream*	json_stream = malloc(sizeof(JSON_stream));
+	font_t*			font = &fonts[num_fonts];
 
-	FILE* tga_stream;
-	FILE* json_stream;
 	//+4 for extension
 	char tga_filename[FONT_MAX_FILENAME_LEN+4] = {0};
 	char json_filename[FONT_MAX_FILENAME_LEN+4] = {0};
@@ -141,14 +153,245 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 
 	Com_DPrintf("Font_LoadFont: Loading Font JSON %s\n", json_filename);
 
-	if (FS_FOpenFile(json_filename, &json_stream) == -1)
+	if (FS_FOpenFile(json_filename, &json_handle) == -1)
 	{
 		Sys_Error("Failed to load Font JSON %s!", json_filename);
 		return false;
 	}
 
-	fclose(json_stream);
+	JSON_open_stream(json_stream, json_handle);
+
+	enum JSON_type next_type = JSON_peek(json_stream);
+
+	// start the real parsing
+	// two JSON_DONES means EOF
+	int					done_count = 0;
+	bool				running = true; 
+	const char*			json_string = { 0 };
+	font_json_section	json_section_current = font_json_config;
+
+	while (running)
+	{	
+		if (next_type != JSON_DONE) done_count = 0;
+
+		// check the type
+		switch (next_type)
+		{
+		case JSON_OBJECT:
+		case JSON_ARRAY:
+			//JSON_next(json_stream);
+			json_string = JSON_get_string(json_stream, NULL);
+
+			if (!strcmp(json_string, "config"))
+			{
+				json_section_current = font_json_config;
+
+				if (!Font_LoadFontConfig(json_stream, font))
+				{
+					Sys_Error("Failed to load font configuration for font %s: %s (line %d, column %d)",
+						&json_filename, JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+				}
+			}
+			else if (!strcmp(json_string, "kerning"))
+			{
+				json_section_current = font_json_kerning;
+				//not implemented for now
+			}
+			else if (!strcmp(json_string, "symbols"))
+			{
+				json_section_current = font_json_symbols;
+
+				if (!Font_LoadFontGlyphs(json_stream, font))
+				{
+					Sys_Error("Failed to load font glyph information for font %s: %s (line %d, column %d)",
+						&json_filename, JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+				}
+			}
+			break;
+		case JSON_OBJECT_END:
+		case JSON_ARRAY_END:
+			JSON_next(json_stream); // just skip????
+			break;
+		case JSON_ERROR:
+			Sys_Error("Invalid Font JSON %s: %s (Line %d, column %d)!", json_filename, 
+				JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+			return false; 
+		case JSON_DONE:
+			done_count++;
+			// two JSON_DONEs returned if it's the end of the file
+			if (done_count >= 2)
+			{
+				running = false;
+			}
+			else
+			{
+				JSON_reset(json_stream);
+			}
+			break;
+		}
+
+		next_type = JSON_next(json_stream);
+	}
+
+	JSON_close(json_stream);
+
+	free(json_stream);
+
+	fclose(json_handle);
+	
+	// increment the number of fonts
+	num_fonts++;
 	return true; 
+}
+
+qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
+{
+	enum json_type json_type = JSON_peek(json_stream);
+	const char* json_string = { 0 };
+	double		json_number = 0.0;
+
+	while (json_type != JSON_OBJECT_END)
+	{
+		switch (json_type)
+		{
+		case JSON_STRING:
+			json_string = JSON_get_string(json_stream, NULL);
+
+			if (json_type == JSON_ERROR) return false;
+
+			// we don't need to load most of these
+			// as we make the following assumptions:
+			//
+			// - texture is 256*256
+			// - difference between bold, italic, et cetera will be stored in the glyph information
+			// - not a monospace font, and x and y information is stored per-glyph, so we don't need to care about charHeight and spacing
+			if (!strcmp(json_string, "size"))
+			{	
+				json_type = JSON_next(json_stream);
+				font_ptr->size = JSON_get_number(json_stream);
+			}
+			else if (!strcmp(json_string, "face"))
+			{
+				json_type = JSON_next(json_stream);
+				strncpy(font_ptr->name, json_string, FONT_MAX_FILENAME_LEN);
+			}
+
+			// go to the next one
+
+			break;
+		case JSON_ERROR:
+			return false;
+		// will not be the end of the file as it will be preceded by the end of object marker, so don't bother checking for two here
+		case JSON_DONE:
+			JSON_reset(json_stream);
+			break;
+		}
+
+		json_type = JSON_next(json_stream);
+	}
+
+	return true; 
+}
+
+qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
+{
+	// for some reason the first object in the array is not returned by JSON_next
+	// todo: possibly PD-Json bug?
+	enum json_type json_type = JSON_OBJECT;
+	const char* json_string = { 0 };
+	double		json_number = 0.0;
+	glyph_t*	current_glyph;
+
+	while (json_type != JSON_ARRAY_END)
+	{
+		switch (json_type)
+		{
+		case JSON_OBJECT:
+			
+			current_glyph = &font_ptr->glyphs[font_ptr->num_glyphs];
+
+			// load an individual glyph
+			// for this JSON section, all parsing must be within an object
+			while (json_type != JSON_OBJECT_END)
+			{
+				switch (json_type)
+				{
+				case JSON_NUMBER:
+					json_number = JSON_get_number(json_stream);
+					break;
+				case JSON_STRING:
+					json_string = JSON_get_string(json_stream, NULL);
+
+					// we don't bother parsing the width as we use advance (again, not monospaced)
+					if (!strcmp(json_string, "height"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->height = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "id"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->char_code = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "x"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->x_start = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "xadvance"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->x_advance = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "xoffset"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->x_offset = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "y"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->y_start = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "yadvance"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->y_advance = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "yoffset"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->y_offset = JSON_get_number(json_stream);
+					}
+					break;
+				case JSON_ERROR:
+					return false;
+				
+				}
+
+				json_type = JSON_next(json_stream);
+			}
+
+			if (font_ptr->num_glyphs >= MAX_GLYPHS)
+			{
+				Com_Printf("More than %d glyphs in font %s. Not loading any more glyphs", MAX_GLYPHS, font_ptr->name);
+				return false;
+			}
+
+			font_ptr->num_glyphs++;
+			break;
+		case JSON_ERROR:
+			return false;
+			// will not be the end of the file as the two JSON_DONEs indicating EOF will always be preceded by the end of object marker, so don't bother checking for two here
+		case JSON_DONE:
+			JSON_reset(json_stream);
+			break;
+		}
+
+		json_type = JSON_next(json_stream);
+	}
+
+	Com_DPrintf("Loaded %d glyphs\n", font_ptr->num_glyphs);
 }
 
 void Font_Shutdown()

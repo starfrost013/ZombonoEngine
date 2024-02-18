@@ -80,7 +80,6 @@ qboolean CanDamage (edict_t *targ, edict_t *inflictor)
 	if (trace.fraction == 1.0)
 		return true;
 
-
 	return false;
 }
 

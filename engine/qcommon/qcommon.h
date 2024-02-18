@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // qcommon.h -- definitions common between client and server, but not game*.dll
 #include "../game/q_shared.h"
+#include "pdjson.h"
 
 // Engine version
 #define ZOMBONO_VERSION "0.0.4-pre5"
@@ -106,8 +107,8 @@ void MSG_WriteCoord (sizebuf_t *sb, float f);
 void MSG_WritePos (sizebuf_t *sb, vec3_t pos);
 void MSG_WriteAngle (sizebuf_t *sb, float f);
 void MSG_WriteAngle16 (sizebuf_t *sb, float f);
-void MSG_WriteDeltaUsercmd (sizebuf_t *sb, struct usercmd_s *from, struct usercmd_s *cmd);
-void MSG_WriteDeltaEntity (struct entity_state_s *from, struct entity_state_s *to, sizebuf_t *msg, qboolean force, qboolean newentity);
+void MSG_WriteDeltaUsercmd (sizebuf_t* buf, usercmd_t* from, usercmd_t* cmd);
+void MSG_WriteDeltaEntity (entity_state_t* from, entity_state_t* to, sizebuf_t* msg, qboolean force, qboolean newentity);
 void MSG_WriteDir (sizebuf_t *sb, vec3_t vector);
 
 
@@ -125,7 +126,7 @@ float	MSG_ReadCoord (sizebuf_t *sb);
 void	MSG_ReadPos (sizebuf_t *sb, vec3_t pos);
 float	MSG_ReadAngle (sizebuf_t *sb);
 float	MSG_ReadAngle16 (sizebuf_t *sb);
-void	MSG_ReadDeltaUsercmd (sizebuf_t *sb, struct usercmd_s *from, struct usercmd_s *cmd);
+void	MSG_ReadDeltaUsercmd (sizebuf_t* msg_read, usercmd_t* from, usercmd_t* move);
 
 void	MSG_ReadDir (sizebuf_t *sb, vec3_t vector);
 
@@ -151,7 +152,6 @@ void COM_ClearArgv (int arg);
 int COM_CheckParm (char *parm);
 void COM_AddParm (char *parm);
 
-void COM_Init (void);
 void COM_InitArgv (int argc, char **argv);
 
 char *CopyString (char *in);
@@ -160,15 +160,12 @@ char *CopyString (char *in);
 
 void Info_Print (char *s);
 
-
 /* crc.h */
 
 void CRC_Init(unsigned short *crcvalue);
 void CRC_ProcessByte(unsigned short *crcvalue, byte data);
 unsigned short CRC_Value(unsigned short crcvalue);
 unsigned short CRC_Block (byte *start, int count);
-
-
 
 /*
 ==============================================================
@@ -193,8 +190,6 @@ PROTOCOL
 #define	UPDATE_BACKUP	16	// copies of entity_state_t to keep buffered
 							// must be power of two
 #define	UPDATE_MASK		(UPDATE_BACKUP-1)
-
-
 
 //==================
 // the svc_strings[] array in cl_parse.c should mirror this

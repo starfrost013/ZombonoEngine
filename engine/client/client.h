@@ -688,6 +688,7 @@ void UI_LeaderboardUIUpdate();
 // Defines a cached glyph standard.
 typedef struct glyph_s
 {
+	int			height;							// Height of this glyph.
 	char		char_code;						// Character code for this character (ansi for now, utf-8 later?)
 	int			x_start;						// Start X position of the glyph within the texture.
 	int			x_advance;						// Amount X has to advance to reach the end of the glyph.
@@ -700,15 +701,25 @@ typedef struct glyph_s
 // font_t defines a font
 typedef struct font_s
 {
-	char		font_name[FONT_MAX_FILENAME_LEN];	// The name of the current font.
+	char		name[FONT_MAX_FILENAME_LEN];	// The name of the current font.
 	int			size;								// The size of the current font.
 	int			num_glyphs;							// The number of loaded glyphs.
 	glyph_t		glyphs[MAX_GLYPHS];					// The glyphs loaded for the current font.
 } font_t;
 
-font_t			fonts[MAX_FONTS];
+// util methods
+typedef enum font_json_section_e
+{
+	font_json_config = 0,
 
-int				num_fonts;						// The number of loaded fonts.
+	font_json_kerning = 1,
+
+	font_json_symbols = 2,
+} font_json_section;
+
+extern font_t			fonts[MAX_FONTS];
+
+extern int				num_fonts;						// The number of loaded fonts.
 
 qboolean Font_Init();
 void Font_Shutdown();
