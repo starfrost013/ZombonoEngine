@@ -10,16 +10,22 @@ February XX, 2024
 * Ogre changes:
 	* They move a lot slower.
 	* Changed health from 40 to 90.
-* Implemented walk-through walls that work like Quake's func_illusionary into the engine. They are toggled by creating a func_wall with spawnflag 32 (FGD description: Walk-Through). They work with triggers.
-
-* Many fixes to geometry and textures in z_tdm_labrats.
+* Implemented walk-through walls that work like Quake 1's func_illusionary into the engine. They are toggled by creating a func_wall with spawnflag 32 (FGD description: Walk-Through). They work with triggers.
+* Many fixes to geometry and textures in z_tdm_labrats. Made the hidden room a secret and allowed both teams to access it. I'm not sure how good this is.
 * Many more posters and details in z_tdm_subway.
+* Rename skyboxes
+* Made the "Police Line do not Cross" thing blow you up in z_tdm_subway.
+* Add a "Browse Servers" button to multiplayer menu - does not work yet.
+* Added real ogre sound effects (thanks Zorg)
+* Engine Limits:
+	- Max Lightmaps 128 -> 256
+
 Version 0.04-pre4
 February 10, 2024
 * Fix TDM end screen not displaying.
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
-* Directors killing zombies don't get frags anymore. Players kilng zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
+* Directors killing zombies don't get frags anymore. Players killing zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
 * Fixed a bug where, on team change, weapons were not being visually indicated.
 * Very rough implementation of primary and secondary attack (presently, only attack functions and state are separated, animations and reload time aren't)
 	* Renamed +attack to +attack1
