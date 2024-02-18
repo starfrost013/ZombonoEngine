@@ -611,10 +611,10 @@ typedef struct ui_s
 	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
-ui_t					ui_list[MAX_UIS];			// The list of UIs.
-ui_t*					current_ui;					// the current UI being displayed
-int						num_uis;					// the current number of UIs
-qboolean				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern ui_t					ui_list[MAX_UIS];			// The list of UIs.
+extern ui_t*				current_ui;					// the current UI being displayed
+extern int					num_uis;					// the current number of UIs
+extern qboolean				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
 qboolean UI_Init();

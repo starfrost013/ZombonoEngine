@@ -22,22 +22,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-extern int		num_uis;
-extern ui_t		ui_list[MAX_UIS];
-extern qboolean	ui_active;																					// This is so we know to turn on the mouse cursor when a UI is being displayed.
+// Globals
+// see client.h for explanations on what these are 
+int			num_uis;																					
+ui_t		ui_list[MAX_UIS];
+qboolean	ui_active;																					// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
 // You can only access UI elements through the current UI.
-extern ui_t*	current_ui;
+ui_t*	current_ui;
 
-qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls
+qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls.
 
 // Draw methods
-void			UI_DrawText(ui_control_t* text);																// Draws a text control.
+void			UI_DrawText(ui_control_t* text);															// Draws a text control.
 void			UI_DrawImage(ui_control_t* image);															// Draws an image control.
-void			UI_DrawSlider(ui_control_t* slider);															// Draws a slider control.
-void			UI_DrawCheckbox(ui_control_t* checkbox);														// Draws a checkbox control.
+void			UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
+void			UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
 void			UI_DrawBox(ui_control_t* box);
 
 qboolean UI_Init()
