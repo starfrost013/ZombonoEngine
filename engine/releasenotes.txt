@@ -10,7 +10,10 @@ February XX, 2024
 * Ogre changes:
 	* They move a lot slower.
 	* Changed health from 40 to 90.
+* Implemented walk-through walls that work like Quake's func_illusionary into the engine. They are toggled by creating a func_wall with spawnflag 32 (FGD description: Walk-Through). They work with triggers.
 
+* Many fixes to geometry and textures in z_tdm_labrats.
+* Many more posters and details in z_tdm_subway.
 Version 0.04-pre4
 February 10, 2024
 * Fix TDM end screen not displaying.

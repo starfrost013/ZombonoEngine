@@ -394,7 +394,6 @@ void UI_Reset()
 
 void UI_Draw()
 {
-
 // playtest indicator
 	
 // this is NOT!! efficient don't do this (esp. getting the length of the string every frame and stuff) but not used in release 

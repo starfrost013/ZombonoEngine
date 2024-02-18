@@ -566,7 +566,7 @@ void SV_Map_f (void)
 	if (!strstr (map, "."))
 	{
 #ifdef PLAYTEST
-		if (!strstr(map, "coop"))
+		if (strstr(map, "coop") != NULL)
 		{
 			Com_Printf("Nuh uh! No spoilers here!");
 			return;

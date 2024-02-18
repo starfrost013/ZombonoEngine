@@ -702,9 +702,9 @@ typedef struct glyph_s
 typedef struct font_s
 {
 	char		name[FONT_MAX_FILENAME_LEN];	// The name of the current font.
-	int			size;								// The size of the current font.
-	int			num_glyphs;							// The number of loaded glyphs.
-	glyph_t		glyphs[MAX_GLYPHS];					// The glyphs loaded for the current font.
+	int			size;							// The size of the current font.
+	int			num_glyphs;						// The number of loaded glyphs.
+	glyph_t		glyphs[MAX_GLYPHS];				// The glyphs loaded for the current font.
 } font_t;
 
 // util methods
@@ -729,4 +729,4 @@ void Font_Shutdown();
 // Modern Text Engine
 //
 
-qboolean Text_Init();
+void Text_Draw(char* font, char* text, ...);

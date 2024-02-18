@@ -19,9 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "client.h"
-// cl_text.c : Modern Font Draw (January 11-12, 2024)
 
-qboolean Text_Init()
+// cl_text.c : Modern Font Draw (February 18, 2024)
+
+void Text_Draw(char* font, char* text, ...)
 {
 
 }

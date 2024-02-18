@@ -179,10 +179,10 @@ void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate,
 
 	Com_Printf ("------- Server Initialization -------\n");
 
-	Com_DPrintf ("SpawnServer: %s\n",server);
+	Com_DPrintf ("SpawnServer: %s\n", server);
 
 #ifdef PLAYTEST
-	if (!strstr(server, "coop"))
+	if (strstr(server, "coop") != NULL)
 	{
 		Com_Printf("Nuh uh! No spoilers here!");
 		return;

@@ -589,7 +589,8 @@ void func_wall_use (edict_t *self, edict_t *other, edict_t *activator)
 {
 	if (self->solid == SOLID_NOT)
 	{
-		self->solid = SOLID_BSP;
+		// ignore walkthrough walls
+		if (!(self->spawnflags & 32)) self->solid = SOLID_BSP;
 		self->svflags &= ~SVF_NOCLIENT;
 		KillBox (self);
 	}
@@ -617,7 +618,17 @@ void SP_func_wall (edict_t *self)
 	// just a wall
 	if ((self->spawnflags & 7) == 0)
 	{
-		self->solid = SOLID_BSP;
+		// 32 = walkthrough
+		// implemented like this so you can use triggers with walk-through walls
+		if (self->spawnflags & 32)
+		{
+			self->s.solid = SOLID_NOT;
+		}
+		else
+		{
+			self->solid = SOLID_BSP;
+		}
+
 		gi.linkentity (self);
 		return;
 	}
@@ -651,7 +662,6 @@ void SP_func_wall (edict_t *self)
 	}
 	gi.linkentity (self);
 }
-
 
 /*QUAKED func_object (0 .5 .8) ? TRIGGER_SPAWN ANIMATED ANIMATED_FAST
 This is solid bmodel that will fall if it's support it removed.

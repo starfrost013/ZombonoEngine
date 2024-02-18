@@ -243,7 +243,6 @@ void Load_Pic(char* pic)
 	}
 }
 
-
 /*
 =============
 Draw_TileClear

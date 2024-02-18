@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/02/07 version
+// 2024/02/18 version
 
 //
 // worldspawn
@@ -363,6 +363,7 @@
 		4 : "Start On" : 0
 		8 : "Animated" : 0
 		16 : "Animated Fast" : 0
+		32 : "Walkthrough" : 0
 	]
 	_minlight(integer) : "Minimum light (optional)"
 ]

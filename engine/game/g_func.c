@@ -1698,7 +1698,6 @@ void SP_func_train (edict_t *self)
 	}
 }
 
-
 /*QUAKED trigger_elevator (0.3 0.1 0.6) (-8 -8 -8) (8 8 8)
 */
 void trigger_elevator_use (edict_t *self, edict_t *other, edict_t *activator)

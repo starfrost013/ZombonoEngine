@@ -1805,13 +1805,12 @@ void CL_Init (void)
 	Miniaudio_Init();
 	CL_InitLocal();
 	IN_Init();
-	Font_Init();
+	if (!Font_Init()) Sys_Error("Unknown error initialising font engine");
 	UI_Init();
 
 	FS_ExecAutoexec();
 	Cbuf_Execute(); 
 }
-
 
 /*
 ===============
@@ -1838,5 +1837,3 @@ void CL_Shutdown(void)
 	IN_Shutdown ();
 	VID_Shutdown();
 }
-
-
