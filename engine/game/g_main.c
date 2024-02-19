@@ -82,7 +82,6 @@ void ClientDisconnect (edict_t *ent);
 void ClientBegin (edict_t *ent);
 void ClientCommand (edict_t *ent);
 void ClientCommand_NoConsole (edict_t* ent);
-void RunEntity (edict_t *ent);
 void WriteGame (char *filename, qboolean autosave);
 void ReadGame (char *filename);
 void WriteLevel (char *filename);
@@ -90,6 +89,9 @@ void ReadLevel (char *filename);
 void InitGame (void);
 void G_RunFrame (void);
 
+// Gamemode-specific stuff
+void CheckGamemodeRules();
+void CheckTDMRules();
 
 //===================================================================
 
@@ -313,46 +315,53 @@ void CheckNeedPass (void)
 
 /*
 =================
-CheckDMRules
+CheckGamemodeRules
 =================
 */
 void CheckGamemodeRules (void)
 {
-	int			i;
-	gclient_t	*cl;
-
 	if (level.intermissiontime)
 		return;
 
+	// todo: IMPLEMENT
+	if (gamemode == GAMEMODE_TDM)
+	{
+		CheckTDMRules();
+	}
+}
+
+void CheckTDMRules()
+{
+	int			i;
+	gclient_t* cl;
 
 	if (timelimit->value)
 	{
-		if (level.time >= timelimit->value*60)
+		if (level.time >= timelimit->value * 60)
 		{
-			gi.bprintf (PRINT_HIGH, "Out of time!\n");
-			EndMatch ();
+			gi.bprintf(PRINT_HIGH, "Out of time!\n");
+			EndMatch();
 			return;
 		}
 	}
 
 	if (fraglimit->value)
 	{
-		for (i=0 ; i<maxclients->value ; i++)
+		for (i = 0; i < maxclients->value; i++)
 		{
 			cl = game.clients + i;
-			if (!g_edicts[i+1].inuse)
+			if (!g_edicts[i + 1].inuse)
 				continue;
 
 			if (cl->resp.score >= fraglimit->value)
 			{
-				gi.bprintf (PRINT_HIGH, "Fraglimit hit!\n");
-				EndMatch ();
+				gi.bprintf(PRINT_HIGH, "Fraglimit hit!\n");
+				EndMatch();
 				return;
 			}
 		}
 	}
 }
-
 
 /*
 =============

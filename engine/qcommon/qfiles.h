@@ -194,6 +194,11 @@ typedef struct miptex_s
 
 #define BSPVERSION	38
 
+// maximum allocation sizes for various models
+// boosted by 4x to account for 32-bit texturing
+#define MAX_SP2_ALLOC		0x40000	  // 256KB (from 64) 		
+#define MAX_MD2_ALLOC		0x800000  // 8MB (from 4)
+#define MAX_BSP_ALLOC		0x4000000 // 64MB (from 16)
 
 // upper design bounds
 // leaffaces, leafbrushes, planes, and verts are still bounded by

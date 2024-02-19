@@ -2582,7 +2582,7 @@ void GameOptions_MenuInit( void )
 	s_spawn_farthest_box.generic.type = MTYPE_SPINCONTROL;
 	s_spawn_farthest_box.generic.x	= 0;
 	s_spawn_farthest_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_spawn_farthest_box.generic.name	= "Use farthest spawn point";
+	s_spawn_farthest_box.generic.name	= "Use Farthest Spawn Point";
 	s_spawn_farthest_box.generic.callback = GameFlagCallback;
 	s_spawn_farthest_box.itemnames = yes_no_names;
 	s_spawn_farthest_box.curvalue = ( gameflags & GF_SPAWN_FARTHEST ) != 0;
@@ -2590,7 +2590,7 @@ void GameOptions_MenuInit( void )
 	s_samelevel_box.generic.type = MTYPE_SPINCONTROL;
 	s_samelevel_box.generic.x	= 0;
 	s_samelevel_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_samelevel_box.generic.name	= "Don't cycle maps";
+	s_samelevel_box.generic.name	= "Don't Cycle Maps";
 	s_samelevel_box.generic.callback = GameFlagCallback;
 	s_samelevel_box.itemnames = yes_no_names;
 	s_samelevel_box.curvalue = ( gameflags & GF_SAME_LEVEL ) != 0;
@@ -2622,7 +2622,7 @@ void GameOptions_MenuInit( void )
 	s_quad_drop_box.generic.type = MTYPE_SPINCONTROL;
 	s_quad_drop_box.generic.x	= 0;
 	s_quad_drop_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_quad_drop_box.generic.name	= "Allow quad damage";
+	s_quad_drop_box.generic.name	= "Allow Quad Damage";
 	s_quad_drop_box.generic.callback = GameFlagCallback;
 	s_quad_drop_box.itemnames = yes_no_names;
 	s_quad_drop_box.curvalue = ( gameflags & GF_QUAD_DROP ) != 0;

@@ -18,10 +18,25 @@ February XX, 2024
 * Add a "Browse Servers" button to multiplayer menu - does not work yet.
 * Added real ogre sound effects (thanks Zorg)
 * Engine Limits:
-	- Max Lightmaps 128 -> 256
+	* Max Lightmaps 128 -> 256
+	* Max BSP Mem Allocation (actual maximum filesize will be slightly less) 16MB -> 64MB
+	* Max MD2 Mem Allocation (actual maximum filesize will be slightly less) 2MB -> 8MB
+	* Max SP2 Mem Allocation (actual maximum filesize will be slightly less) 64KB -> 256KB
+		* This does not increase memory use as the memory is not committed until it is used by the BSP/MD2/SP2 loader.
+	* May increase further, esp. for SP2s (which may just be replaced with UV-mapped TGAs entirely but not sure) but will be considered later
+	* Lightmap Sub-map Block Size 128x128 -> 256x256 (seems to prevent a buffer overflow, only 16x16 lightmap textures per map as well)
+		* This **DOES NOT REDUCE QUALITY**, as mapping is done within each block based on the BSP tree.
+	* QPath 80 -> 256 chars (PAK files won't be compatible with Quake2, and slightly higher mem usage)
 * MAJOR ENGINE CHANGE:
 	* Positions are now floats rather than fixed-points with 12 bits of mantissa and 3 exponent bits. This means worlds can be larger than 8192 units across, but 			PLEASE TEST FOR MOVEMENT BUGS!
+	* The actual practical limit, owing to issues with lightmap generation, ericw-tools QBSP scalability issues, and long loading times is somewhere between 27000 and 27500 units across.
 * Made some error messages more verbose.
+* Added several debugging cvars.
+	* cl_showposition - Shows your position.
+	* cl_showvelocity - Shows your velocity.	
+	* These will probably be replaced with a more full-featured debug at some point.
+* Fixed bug where pressing X would make you say "score" (it used to bring up the old leaderboard)
+* Don't enforce TDM rules on non-TDM.
 
 Version 0.04-pre4
 February 10, 2024

@@ -1642,11 +1642,12 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
 	}
-	//todo: cvar_get
+	
+	cvar_t* cl_showvelocity = gi.cvar("cl_showvelocity", "0", 0);
+	cvar_t* cl_showposition = gi.cvar("cl_showposition", "0", 0);
 
-	//gi.dprintf("vel x: %f y: %f z: %f\n", ent->client->ps.pmove.velocity[0], ent->client->ps.pmove.velocity[1], ent->client->ps.pmove.velocity[2]);
-
-	//gi.dprintf("pos x: %f y: %f z: %f\n", ent->client->ps.pmove.origin[0], ent->client->ps.pmove.origin[1], ent->client->ps.pmove.origin[2]);
+	if (cl_showvelocity->value) gi.dprintf("vel x: %f y: %f z: %f\n", ent->client->ps.pmove.velocity[0], ent->client->ps.pmove.velocity[1], ent->client->ps.pmove.velocity[2]);
+	if (cl_showposition->value) gi.dprintf("pos x: %f y: %f z: %f\n", ent->client->ps.pmove.origin[0], ent->client->ps.pmove.origin[1], ent->client->ps.pmove.origin[2]);
 }
 
 

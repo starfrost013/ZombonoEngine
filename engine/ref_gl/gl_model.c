@@ -245,17 +245,17 @@ model_t *Mod_ForName (char *name, qboolean crash)
 	switch (LittleLong(*(unsigned *)buf))
 	{
 	case IDALIASHEADER:
-		loadmodel->extradata = Hunk_Begin (0x200000);
+		loadmodel->extradata = Hunk_Begin (MAX_MD2_ALLOC);
 		Mod_LoadAliasModel (mod, buf);
 		break;
 		
 	case IDSPRITEHEADER:
-		loadmodel->extradata = Hunk_Begin (0x10000);
+		loadmodel->extradata = Hunk_Begin (MAX_SP2_ALLOC);
 		Mod_LoadSpriteModel (mod, buf);
 		break;
 	
 	case IDBSPHEADER:
-		loadmodel->extradata = Hunk_Begin (0x1000000);
+		loadmodel->extradata = Hunk_Begin (MAX_BSP_ALLOC);
 		Mod_LoadBrushModel (mod, buf);
 		break;
 
