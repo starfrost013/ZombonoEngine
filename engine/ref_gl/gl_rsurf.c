@@ -1302,16 +1302,14 @@ static qboolean LM_AllocBlock (int w, int h, int *x, int *y)
 	int		i, j;
 	int		best, best2;
 
-	if (w > 16)
+	// still not ENTIRELY sure what's going on with this bug (lightmap texture being too big causes texture corruption), but this prevents it from getting too big
+	// bit HACKey (it fucks up the lightmap)
+	if (w > 16
+		&& h > 16)
 	{
-		ri.Con_Printf(PRINT_DEVELOPER, "WARNING: Your lightmap will look fucked (increase BLOCK_WIDTH or fix the shitty code)");
-		w = 16;
-	}
-
-	if (h > 16)
-	{
-		ri.Con_Printf(PRINT_DEVELOPER, "WARNING: Your lightmap will look fucked (increase BLOCK_WIDTH or fix the shitty code)");
-		h = 16;
+		ri.Con_Printf(PRINT_DEVELOPER, "Too many lightmap blocks). Please raise BLOCK_WIDTH, fix the code or make your map smaller. Your lightmap now looks fucked\n");
+		if (w > 16) w = 16;
+		if (h > 16) h = 16;
 	}
 
 	best = BLOCK_HEIGHT;
@@ -1459,7 +1457,7 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 	R_BuildLightMap (surf, base, BLOCK_WIDTH*LIGHTMAP_BYTES);
 }
 
-unsigned		dummy[BLOCK_HEIGHT * BLOCK_WIDTH] = { 0 };
+unsigned*		dummy[BLOCK_HEIGHT * BLOCK_WIDTH];
 
 /*
 ==================
@@ -1471,7 +1469,6 @@ void GL_BeginBuildingLightmaps (model_t *m)
 {
 	static lightstyle_t	lightstyles[MAX_LIGHTSTYLES];
 	int				i;
-
 	memset( gl_lms.allocated, 0, sizeof(gl_lms.allocated) );
 
 	r_framecount = 1;		// no dlightcache
@@ -1517,6 +1514,8 @@ void GL_BeginBuildingLightmaps (model_t *m)
 				   GL_LIGHTMAP_FORMAT, 
 				   GL_UNSIGNED_BYTE, 
 				   dummy );
+
+	//free(dummy);
 }
 
 /*
