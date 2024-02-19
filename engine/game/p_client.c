@@ -1125,9 +1125,9 @@ void PutClientInServer (edict_t *ent)
 	// clear playerstate values
 	memset (&ent->client->ps, 0, sizeof(client->ps));
 
-	client->ps.pmove.origin[0] = spawn_origin[0]*8;
-	client->ps.pmove.origin[1] = spawn_origin[1]*8;
-	client->ps.pmove.origin[2] = spawn_origin[2]*8;
+	client->ps.pmove.origin[0] = spawn_origin[0];
+	client->ps.pmove.origin[1] = spawn_origin[1];
+	client->ps.pmove.origin[2] = spawn_origin[2];
 
 	client->ps.fov = atoi(Info_ValueForKey(client->pers.userinfo, "fov"));
 	if (client->ps.fov < 1)
@@ -1503,8 +1503,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 		for (i=0 ; i<3 ; i++)
 		{
-			pm.s.origin[i] = ent->s.origin[i]*8;
-			pm.s.velocity[i] = ent->velocity[i]*8;
+			pm.s.origin[i] = ent->s.origin[i];
+			pm.s.velocity[i] = ent->velocity[i];
 		}
 
 		if (memcmp(&client->old_pmove, &pm.s, sizeof(pm.s)))
@@ -1527,7 +1527,6 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			pm.cmd.sidemove *= SPEED_PLAYER;
 		}
 
-
 		pm.trace = PM_trace;	// adds default parms
 		pm.pointcontents = gi.pointcontents;
 
@@ -1540,8 +1539,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 		for (i=0 ; i<3 ; i++)
 		{
-			ent->s.origin[i] = pm.s.origin[i]*0.125;
-			ent->velocity[i] = pm.s.velocity[i]*0.125;
+			ent->s.origin[i] = pm.s.origin[i];
+			ent->velocity[i] = pm.s.velocity[i];
 		}
 
 		VectorCopy (pm.mins, ent->mins);
@@ -1643,7 +1642,13 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
 	}
+	//todo: cvar_get
+
+	//gi.dprintf("vel x: %f y: %f z: %f\n", ent->client->ps.pmove.velocity[0], ent->client->ps.pmove.velocity[1], ent->client->ps.pmove.velocity[2]);
+
+	//gi.dprintf("pos x: %f y: %f z: %f\n", ent->client->ps.pmove.origin[0], ent->client->ps.pmove.origin[1], ent->client->ps.pmove.origin[2]);
 }
+
 
 
 /*

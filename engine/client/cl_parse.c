@@ -310,12 +310,9 @@ void CL_ParseServerData (void)
 	i = MSG_ReadLong (&net_message);
 	cls.serverProtocol = i;
 
-	// BIG HACK to let demos from release work with the 3.0x patch!!!
-	if (Com_ServerState() && PROTOCOL_VERSION == 34)
-	{
-	}
-	else if (i != PROTOCOL_VERSION)
-		Com_Error (ERR_DROP,"Server returned version %i, not %i", i, PROTOCOL_VERSION);
+	if (i != PROTOCOL_VERSION)
+		Com_Error (ERR_DROP,
+			"Server returned version %i, not %i\nEither your engine is incompatible with the server, or you need to re-record the demo file you're trying to play.", i, PROTOCOL_VERSION);
 
 	cl.servercount = MSG_ReadLong (&net_message);
 	cl.attractloop = MSG_ReadByte (&net_message);

@@ -177,7 +177,12 @@ PROTOCOL
 
 // protocol.h -- communications protocols
 
-#define	PROTOCOL_VERSION	35	// The game protocol version. 34 for vanilla quake 2, 35 for Zombono 0.04, incremented by 1 for each version. 
+// The game protocol version
+// 34 - Vanilla Q2
+// 35 - Zombono start (0.04).
+// 36 - Zombono with larger map bounds
+// Then incremented by one for each version.
+#define	PROTOCOL_VERSION	36	
 
 //=========================================
 

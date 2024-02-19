@@ -216,16 +216,16 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 
 	if (pflags & PS_M_ORIGIN)
 	{
-		MSG_WriteShort (msg, ps->pmove.origin[0]);
-		MSG_WriteShort (msg, ps->pmove.origin[1]);
-		MSG_WriteShort (msg, ps->pmove.origin[2]);
+		MSG_WriteFloat (msg, ps->pmove.origin[0]);
+		MSG_WriteFloat (msg, ps->pmove.origin[1]);
+		MSG_WriteFloat(msg, ps->pmove.origin[2]);
 	}
 
 	if (pflags & PS_M_VELOCITY)
 	{
-		MSG_WriteShort (msg, ps->pmove.velocity[0]);
-		MSG_WriteShort (msg, ps->pmove.velocity[1]);
-		MSG_WriteShort (msg, ps->pmove.velocity[2]);
+		MSG_WriteFloat(msg, ps->pmove.velocity[0]);
+		MSG_WriteFloat(msg, ps->pmove.velocity[1]);
+		MSG_WriteFloat(msg, ps->pmove.velocity[2]);
 	}
 
 	if (pflags & PS_M_TIME)
@@ -446,7 +446,7 @@ void SV_BuildClientFrame (client_t *client)
 
 	// find the client's PVS
 	for (i=0 ; i<3 ; i++)
-		org[i] = clent->client->ps.pmove.origin[i]*0.125 + clent->client->ps.viewoffset[i];
+		org[i] = clent->client->ps.pmove.origin[i] + clent->client->ps.viewoffset[i];
 
 	leafnum = CM_PointLeafnum (org);
 	clientarea = CM_LeafArea (leafnum);

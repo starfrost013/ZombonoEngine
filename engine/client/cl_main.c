@@ -59,6 +59,8 @@ cvar_t	*cl_drawhud;
 cvar_t	*cl_shownet;
 cvar_t	*cl_showmiss;
 cvar_t	*cl_showclamp;
+cvar_t	*cl_showvelocity;
+cvar_t	*cl_showposition;
 
 cvar_t	*cl_paused;
 cvar_t	*cl_timedemo;
@@ -1455,6 +1457,8 @@ void CL_InitLocal (void)
 	m_side = Cvar_Get ("m_side", "1", 0);
 
 	cl_shownet = Cvar_Get ("cl_shownet", "0", 0);
+	cl_showvelocity = Cvar_Get("cl_showvelocity", "0", 0);
+	cl_showposition = Cvar_Get("cl_showvelocity", "0", 0);
 	cl_showmiss = Cvar_Get ("cl_showmiss", "0", 0);
 	cl_showclamp = Cvar_Get ("showclamp", "0", 0);
 	cl_timeout = Cvar_Get ("cl_timeout", "120", 0);
