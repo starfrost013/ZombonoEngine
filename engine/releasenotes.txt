@@ -19,6 +19,9 @@ February XX, 2024
 * Added real ogre sound effects (thanks Zorg)
 * Engine Limits:
 	- Max Lightmaps 128 -> 256
+* MAJOR ENGINE CHANGE:
+	* Positions are now floats rather than fixed-points with 12 bits of mantissa and 3 exponent bits. This means worlds can be larger than 8192 units across, but 			PLEASE TEST FOR MOVEMENT BUGS!
+* Made some error messages more verbose.
 
 Version 0.04-pre4
 February 10, 2024

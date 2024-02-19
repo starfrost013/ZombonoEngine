@@ -114,8 +114,13 @@ qboolean Font_Init()
 		}
 		else // go to next line
 		{
-			while (token[0] != '\n') token++;
-			token++; // go past the newline
+			if (file_location < file_length)
+			{
+				while (token[0] != '\n') token++;
+				token++; // go past the newline
+				file_location += 2; 
+			}
+
 		}
 		// token at this point is the character after the newline
 

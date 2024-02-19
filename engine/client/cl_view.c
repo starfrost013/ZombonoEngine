@@ -281,6 +281,7 @@ void CL_PrepRefresh (void)
 	num_cl_weaponmodels = 1;
 	strcpy(cl_weaponmodels[0], "weapon.md2");
 
+	
 	for (i=1 ; i<MAX_MODELS && cl.configstrings[CS_MODELS+i][0] ; i++)
 	{
 		strcpy (name, cl.configstrings[CS_MODELS+i]);
@@ -310,7 +311,7 @@ void CL_PrepRefresh (void)
 		if (name[0] != '*')
 			Com_Printf ("                                     \r");
 	}
-
+	
 	Com_Printf ("images\r", i); 
 	SCR_UpdateScreen ();
 	for (i=1 ; i<MAX_IMAGES && cl.configstrings[CS_IMAGES+i][0] ; i++)

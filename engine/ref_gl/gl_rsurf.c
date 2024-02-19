@@ -32,8 +32,8 @@ msurface_t	*r_alpha_surfaces;
 
 #define LIGHTMAP_BYTES 4
 
-#define	BLOCK_WIDTH		128
-#define	BLOCK_HEIGHT	128
+#define	BLOCK_WIDTH		256
+#define	BLOCK_HEIGHT	256
 
 #define	MAX_LIGHTMAPS	256
 
@@ -53,7 +53,7 @@ typedef struct
 
 	// the lightmap texture data needs to be kept in
 	// main memory so texsubimage can update properly
-	byte		lightmap_buffer[4*BLOCK_WIDTH*BLOCK_HEIGHT];
+	byte		lightmap_buffer[BLOCK_WIDTH*BLOCK_HEIGHT];
 } gllightmapstate_t;
 
 static gllightmapstate_t gl_lms;
@@ -637,7 +637,7 @@ dynamic:
 
 	if ( is_dynamic )
 	{
-		unsigned	temp[128*128];
+		unsigned	temp[DYNAMIC_LIGHT_WIDTH*DYNAMIC_LIGHT_HEIGHT];
 		int			smax, tmax;
 
 		if ( ( surf->styles[map] >= 32 || surf->styles[map] == 0 ) && ( surf->dlightframe != r_framecount ) )
@@ -1302,6 +1302,18 @@ static qboolean LM_AllocBlock (int w, int h, int *x, int *y)
 	int		i, j;
 	int		best, best2;
 
+	if (w > 16)
+	{
+		ri.Con_Printf(PRINT_DEVELOPER, "WARNING: Your lightmap will look fucked (increase BLOCK_WIDTH or fix the shitty code)");
+		w = 16;
+	}
+
+	if (h > 16)
+	{
+		ri.Con_Printf(PRINT_DEVELOPER, "WARNING: Your lightmap will look fucked (increase BLOCK_WIDTH or fix the shitty code)");
+		h = 16;
+	}
+
 	best = BLOCK_HEIGHT;
 
 	for (i=0 ; i<BLOCK_WIDTH-w ; i++)
@@ -1412,6 +1424,7 @@ void GL_BuildPolygonFromSurface(msurface_t *fa)
 /*
 ========================
 GL_CreateSurfaceLightmap
+
 ========================
 */
 void GL_CreateSurfaceLightmap (msurface_t *surf)
@@ -1422,9 +1435,11 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 	if (surf->flags & (SURF_DRAWSKY|SURF_DRAWTURB))
 		return;
 
+
 	smax = (surf->extents[0]>>4)+1;
 	tmax = (surf->extents[1]>>4)+1;
 
+	//this is causing corruption on 12596 +
 	if ( !LM_AllocBlock( smax, tmax, &surf->light_s, &surf->light_t ) )
 	{
 		LM_UploadBlock( false );
@@ -1434,7 +1449,7 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 			ri.Sys_Error( ERR_FATAL, "Consecutive calls to LM_AllocBlock(%d,%d) failed\n", smax, tmax ); 
 		}
 	}
-
+	
 	surf->lightmaptexturenum = gl_lms.current_lightmap_texture;
 
 	base = gl_lms.lightmap_buffer;
@@ -1444,6 +1459,7 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 	R_BuildLightMap (surf, base, BLOCK_WIDTH*LIGHTMAP_BYTES);
 }
 
+unsigned		dummy[BLOCK_HEIGHT * BLOCK_WIDTH] = { 0 };
 
 /*
 ==================
@@ -1455,7 +1471,6 @@ void GL_BeginBuildingLightmaps (model_t *m)
 {
 	static lightstyle_t	lightstyles[MAX_LIGHTSTYLES];
 	int				i;
-	unsigned		dummy[128*128];
 
 	memset( gl_lms.allocated, 0, sizeof(gl_lms.allocated) );
 
