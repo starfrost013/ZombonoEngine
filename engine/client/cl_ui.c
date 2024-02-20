@@ -412,7 +412,7 @@ void UI_Draw()
 
 	// TODO: Text_GetSize
 	Text_Draw("bahnschrift_bold_8", viddef.width - 232, 0, time_str);
-	Text_Draw("bahnschrift_bold_8", viddef.width - 90, 10, "Pre-release build!");
+	Text_Draw("bahnschrift_bold_8", viddef.width - 92, 10, "Pre-release build!");
 
 #endif
 
