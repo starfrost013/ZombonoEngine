@@ -410,9 +410,13 @@ void UI_Draw()
 	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
+	int size_x = 0, size_y = 0;
+	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
-	Text_Draw("bahnschrift_bold_8", viddef.width - 232, 0, time_str);
-	Text_Draw("bahnschrift_bold_8", viddef.width - 92, 10, "Pre-release build!");
+	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 0, time_str);
+	const char* prerelease_text = "Pre-release build!";
+	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, prerelease_text);
+	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 10, "Pre-release build!");
 
 #endif
 

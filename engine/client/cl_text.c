@@ -48,6 +48,77 @@ color_code_t color_codes[16] =
 
 // cl_text.c : Modern Font Draw (February 18, 2024)
 
+qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
+{
+	font_t* font_ptr = Font_GetByName(font);
+
+	if (font_ptr == NULL)
+	{
+		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n)", text, font);
+		return false;
+	}
+
+	int string_length = strlen(text);
+
+	if (string_length == 0)
+	{
+		// set the size to 0 and return
+		*x = 0;
+		*y = 0;
+		return false;
+	}
+
+	int longest_line_x = 0;
+
+	int size_x = 0;
+	int size_y = font_ptr->line_height; // assume 1 line
+
+	for (int char_num = 0; char_num < string_length; char_num++)
+	{
+		char next_char = text[char_num];
+
+		// if we found a newline, return x to the start and advance by the font's line height
+		if (next_char == '\n')
+		{
+			size_y += font_ptr->line_height;
+			if (size_x > longest_line_x) longest_line_x = size_x;
+			size_x = 0;
+			continue; // skip newlines
+		}
+
+		// if we found a space, advance (no character drawn)
+		if (next_char == ' ')
+		{
+			// just use the size/2 for now
+			size_x += font_ptr->size / 2;
+			continue; // skip spaces
+		}
+
+		// get the glyph to be drawn
+		glyph_t* glyph = Glyph_GetByChar(font_ptr, next_char);
+
+		if (glyph == NULL)
+		{
+			// todo: block character
+			Com_Printf("Error: Tried to get size of glyph char code %02xh not defined in font TGA %s (Skipping)!\n", next_char, font);
+			continue; // skip
+		}
+
+		// ignore offset for size calculation as it's not used in calculating next position
+		// we don't need y as char_height automatically accounts for the "longest" characters' y, plus one pixel.
+		// move to next char
+		size_x += (glyph->x_advance);
+	}
+
+	// in the case of only 1 line
+	if (longest_line_x == 0) longest_line_x = size_x;
+
+	*x = longest_line_x;
+	*y = size_y;
+
+	return true;
+}
+
 void Text_Draw(const char* font, int x, int y, char* text, ...)
 {
 	// TODO: COLOUR
@@ -83,7 +154,7 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		{
 			y += font_ptr->line_height;
 			current_x = initial_x;
-			continue; // skip newlinse
+			continue; // skip newlines
 		}
 
 		// if we found a space, advance (no character drawn)

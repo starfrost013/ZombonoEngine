@@ -741,4 +741,5 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 // Modern Text Engine
 //
 
-void Text_Draw(const char* font, int x, int y, char* text, ...);	// Draws text using font font.
+void Text_Draw(const char* font, int x, int y, char* text, ...);					// Draws text using font font.
+qboolean Text_GetSize(const char* font, int *size_x, int *size_y, char* text, ...);	// Gets the size of the text text.
