@@ -31,15 +31,15 @@ int				num_fonts;						// The number of loaded fonts.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
-qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN]);
+qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN]);
 qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
 qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 
 qboolean Font_Init()
 {
 	FILE*	font_list_stream;
-	char	file_name_list[FONT_MAX_FILENAME_LEN] = { 0 };
-	char	file_name_font[FONT_MAX_FILENAME_LEN] = { 0 };
+	char	file_name_list[MAX_FONT_FILENAME_LEN] = { 0 };
+	char	file_name_font[MAX_FONT_FILENAME_LEN] = { 0 };
 	long	file_length = 0;
 	long	file_location = 0;
 	char*	token;
@@ -48,7 +48,7 @@ qboolean Font_Init()
 	Com_Printf("Loading fonts...\n");
 
 	// open up fonts.txt
-	snprintf(file_name_list, FONT_MAX_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
+	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
 
 	font_list_stream = fopen(file_name_list, "rb");
 
@@ -99,9 +99,9 @@ qboolean Font_Init()
 				n++;
 				token++;
 
-				if (n > FONT_MAX_FILENAME_LEN - 2) // -2 because of expression below
+				if (n > MAX_FONT_FILENAME_LEN - 2) // -2 because of expression below
 				{
-					file_name_font[FONT_MAX_FILENAME_LEN - 1] = '\0'; // terminate string
+					file_name_font[MAX_FONT_FILENAME_LEN - 1] = '\0'; // terminate string
 
 					Com_Printf("Tried to load font with path name > 256 chars (not allowed): truncated name %s", file_name_font);
 				}
@@ -134,7 +134,7 @@ qboolean Font_Init()
 	return true; 
 }
 
-qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
+qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 {
 	Com_DPrintf("Loading font %s\n", file_name);
 
@@ -144,13 +144,13 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 	font_t*			font = &fonts[num_fonts];
 
 	//+4 for extension
-	char tga_filename[FONT_MAX_FILENAME_LEN+4] = {0};
-	char json_filename[FONT_MAX_FILENAME_LEN+4] = {0};
+	char tga_filename[MAX_FONT_FILENAME_LEN+4] = {0};
+	char json_filename[MAX_FONT_FILENAME_LEN+4] = {0};
 
 	// open up json, load targa as a texture.
 	// .tga is *assumed* by LoadPic!!
-	snprintf(&tga_filename, FONT_MAX_FILENAME_LEN + 4, "fonts/%s", file_name);
-	snprintf(&json_filename, FONT_MAX_FILENAME_LEN + 4, "fonts/%s.json", file_name);
+	snprintf(&tga_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s", file_name);
+	snprintf(&json_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s.json", file_name);
 
 	Com_DPrintf("Font_LoadFont: Loading Font TGA %s.tga\n", tga_filename);
 	// TODO: MERGE PICS AND IMAGES!!!
@@ -238,12 +238,24 @@ qboolean Font_LoadFont(char file_name[FONT_MAX_FILENAME_LEN])
 		next_type = JSON_next(json_stream);
 	}
 
+	// we're done, close up
 	JSON_close(json_stream);
 
 	free(json_stream);
 
 	fclose(json_handle);
-	
+
+	// make sure we didn't hit the font limit
+
+	if (num_fonts >= MAX_FONTS-1) // -1 is for the index
+	{
+		Com_Printf("[BUG] Tried to load too many fonts (the limit is %d). Not loading any more.", MAX_FONTS);
+		return true;
+	}
+
+	// set the font name to what fonts.lst indicated
+	strncpy(font->name, file_name, MAX_FONT_FILENAME_LEN);
+
 	// increment the number of fonts
 	num_fonts++;
 	return true; 
@@ -269,16 +281,21 @@ qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 			//
 			// - texture is 256*256
 			// - difference between bold, italic, et cetera will be stored in the glyph information
-			// - not a monospace font, and x and y information is stored per-glyph, so we don't need to care about charHeight and spacing
+			// - not a monospace font, and x and y information is stored per-glyph, so we don't need to care about spacing (charHeight is used for newlines)
 			if (!strcmp(json_string, "size"))
 			{	
 				json_type = JSON_next(json_stream);
 				font_ptr->size = JSON_get_number(json_stream);
 			}
+			else if (!strcmp(json_string, "charHeight"))
+			{
+				json_type = JSON_next(json_stream);
+				font_ptr->line_height = JSON_get_number(json_stream);
+			}
 			else if (!strcmp(json_string, "face"))
 			{
 				json_type = JSON_next(json_stream);
-				strncpy(font_ptr->name, json_string, FONT_MAX_FILENAME_LEN);
+				strncpy(font_ptr->name, json_string, MAX_FONT_FILENAME_LEN);
 			}
 
 			// go to the next one
@@ -377,7 +394,7 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 				json_type = JSON_next(json_stream);
 			}
 
-			if (font_ptr->num_glyphs >= MAX_GLYPHS)
+			if (font_ptr->num_glyphs >= MAX_GLYPHS-1) // -1 for index
 			{
 				Com_Printf("More than %d glyphs in font %s. Not loading any more glyphs", MAX_GLYPHS, font_ptr->name);
 				return false;
@@ -399,7 +416,41 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 	Com_DPrintf("Loaded %d glyphs\n", font_ptr->num_glyphs);
 }
 
-void Font_Shutdown()
+font_t* Font_GetByName(const char* name)
 {
+	for (int font_num = 0; font_num < num_fonts; font_num++)
+	{
+		font_t* fnt_ptr = &fonts[font_num];
 
+		if (!strncmp(fnt_ptr->name, name, MAX_FONT_FILENAME_LEN))
+		{
+			return fnt_ptr;
+		}
+	}
+
+	// error condition handled by calling function
+	return NULL;
+}
+
+glyph_t* Glyph_GetByChar(font_t* font, char glyph)
+{
+	if (font == NULL)
+	{
+		// considered a crashing issue
+		Sys_Error("NULL font pointer passed to Glyph_GetByChar");
+		return NULL;
+	}
+
+	for (int glyph_num = 0; glyph_num < font->num_glyphs; glyph_num++)
+	{
+		glyph_t* candidate_glyph = &font->glyphs[glyph_num];
+
+		if (candidate_glyph->char_code == glyph)
+		{
+			return candidate_glyph;
+		}
+	}
+
+	// error condition handled by calling function (usually Text_Draw)
+	return NULL;
 }

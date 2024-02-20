@@ -410,8 +410,9 @@ void UI_Draw()
 	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
-	Draw_String(viddef.width - (8 * strlen(time_str)), 0, time_str);
-	Draw_StringAlt(viddef.width - 144, 10, "Pre-release build!");
+	// TODO: Text_GetSize
+	Text_Draw("bahnschrift_bold_8", viddef.width - 232, 0, time_str);
+	Text_Draw("bahnschrift_bold_8", viddef.width - 90, 10, "Pre-release build!");
 
 #endif
 

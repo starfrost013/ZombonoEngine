@@ -187,6 +187,7 @@ void Draw_Pic (int x, int y, char *pic)
 	qglTexCoord2f (gl->sl, gl->th);
 	qglVertex2f (x, y+gl->height*scale->value);
 	qglEnd ();
+
 }
 
 
@@ -202,24 +203,36 @@ void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y
 
 	gl = Draw_FindPic(pic);
 
+	if (!gl)
+	{
+		ri.Con_Printf(PRINT_ALL, "Can't find pic: %s\n", pic);
+		return;
+	}
+
 	// set up UV coordinates
-	int coord_begin_x = (float)start_x * scale->value / (float)(gl->width * scale->value);
-	int coord_begin_y = (float)start_y * scale->value / (float)(gl->height * scale->value);
-	int coord_end_x = (float)end_x * scale->value / (float)(gl->width * scale->value);
-	int coord_end_y = (float)end_y * scale->value / (float)(gl->height * scale->value);
+	float coord_begin_x = (float)start_x * scale->value / (float)(gl->upload_width * scale->value);
+	float coord_begin_y = (float)start_y * scale->value / (float)(gl->upload_height * scale->value);
+	float coord_end_x = (float)end_x * scale->value / (float)(gl->upload_width * scale->value);
+	float coord_end_y = (float)end_y * scale->value / (float)(gl->upload_height * scale->value);
+
+	float size_x = end_x - start_x;
+	float size_y = end_y - start_y;
+
 	GL_Bind(gl->texnum);
 
 	// draw it
-	qglBegin(GL_QUADS);
+	qglEnable(GL_BLEND);
+ 	qglBegin(GL_QUADS);
 	qglTexCoord2f(coord_begin_x, coord_begin_y);
 	qglVertex2f(x, y);
 	qglTexCoord2f(coord_end_x, coord_begin_y);
-	qglVertex2f(x + gl->width * scale->value, y);
+	qglVertex2f(x + size_x * scale->value, y);
 	qglTexCoord2f(coord_end_x, coord_end_y);
-	qglVertex2f(x + gl->width * scale->value, y + gl->height * scale->value);
+	qglVertex2f(x + size_x * scale->value, y + size_y * scale->value);
 	qglTexCoord2f(coord_begin_x, coord_end_y);
-	qglVertex2f(x, y + gl->height * scale->value);
+	qglVertex2f(x, y + size_y * scale->value);
 	qglEnd();
+	qglDisable(GL_BLEND);
 }
 
 /*
