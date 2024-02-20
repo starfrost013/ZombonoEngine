@@ -438,75 +438,21 @@
 }
 // brush 48
 {
-( 3744 -3384 368 ) ( 3744 -3376.5 368 ) ( 3744 -3384 412 ) blockout/blockout 0 0 0 1 1
-( 3856 -3504 16 ) ( 3851.333333333333 -3504 16 ) ( 3856 -3504 60 ) blockout/blockout 0 0 0 1 1
+( 3744 -3384 272 ) ( 3744 -3376.5 272 ) ( 3744 -3384 304 ) blockout/blockout 0 0 0 1 1
+( 3856 -3504 16 ) ( 3851.333333333333 -3504 16 ) ( 3856 -3504 48 ) blockout/blockout 0 0 0 1 1
 ( 3856 -3504 16 ) ( 3856 -3496.5 16 ) ( 3851.333333333333 -3504 16 ) blockout/blockout 0 0 0 1 1
-( 3744 -3384 368 ) ( 3739.3333333333326 -3384 368 ) ( 3744 -3376.5 368 ) blockout/blockout 0 0 0 1 1
-( 3744 -3384 368 ) ( 3744 -3384 412 ) ( 3739.3333333333326 -3384 368 ) blockout/blockout 0 0 0 1 1
-( 3856 -3504 16 ) ( 3856 -3504 60 ) ( 3856 -3496.5 16 ) blockout/blockout 0 0 0 1 1
+( 3744 -3384 272 ) ( 3739.3333333333326 -3384 272 ) ( 3744 -3376.5 272 ) blockout/blockout 0 0 0 1 1
+( 3744 -3384 272 ) ( 3744 -3384 304 ) ( 3739.3333333333326 -3384 272 ) blockout/blockout 0 0 0 1 1
+( 3856 -3504 16 ) ( 3856 -3504 48 ) ( 3856 -3496.5 16 ) blockout/blockout 0 0 0 1 1
 }
 // brush 49
 {
-( 3744 -3552 368 ) ( 3744 -3544.5 368 ) ( 3744 -3552 412 ) blockout/blockout 0 0 0 1 1
-( 3856 -3672 16 ) ( 3851.333333333333 -3672 16 ) ( 3856 -3672 60 ) blockout/blockout 0 0 0 1 1
+( 3744 -3552 272 ) ( 3744 -3544.5 272 ) ( 3744 -3552 304 ) blockout/blockout 0 0 0 1 1
+( 3856 -3672 16 ) ( 3851.333333333333 -3672 16 ) ( 3856 -3672 48 ) blockout/blockout 0 0 0 1 1
 ( 3856 -3672 16 ) ( 3856 -3664.5 16 ) ( 3851.333333333333 -3672 16 ) blockout/blockout 0 0 0 1 1
-( 3744 -3552 368 ) ( 3739.3333333333326 -3552 368 ) ( 3744 -3544.5 368 ) blockout/blockout 0 0 0 1 1
-( 3744 -3552 368 ) ( 3744 -3552 412 ) ( 3739.3333333333326 -3552 368 ) blockout/blockout 0 0 0 1 1
-( 3856 -3672 16 ) ( 3856 -3672 60 ) ( 3856 -3664.5 16 ) blockout/blockout 0 0 0 1 1
-}
-// brush 50
-{
-( 3696 -3728 112 ) ( 3696 -3720.5 112 ) ( 3696 -3728 124 ) blockout/blockout 0 0 0 1 1
-( 3888 -3848 16 ) ( 3880 -3848 16 ) ( 3888 -3848 28 ) blockout/blockout 0 0 0 1 1
-( 3888 -3848 16 ) ( 3888 -3840.5 16 ) ( 3880 -3848 16 ) blockout/blockout 0 0 0 1 1
-( 3696 -3728 112 ) ( 3688 -3728 112 ) ( 3696 -3720.5 112 ) blockout/blockout 0 0 0 1 1
-( 3696 -3728 112 ) ( 3696 -3728 124 ) ( 3688 -3728 112 ) blockout/blockout 0 0 0 1 1
-( 3888 -3848 16 ) ( 3888 -3848 28 ) ( 3888 -3840.5 16 ) blockout/blockout 0 0 0 1 1
-}
-// brush 51
-{
-( 3704 -3896 112 ) ( 3704 -3888.5 112 ) ( 3704 -3896 124 ) blockout/blockout 0 0 0 1 1
-( 3896 -4016 16 ) ( 3888 -4016 16 ) ( 3896 -4016 28 ) blockout/blockout 0 0 0 1 1
-( 3896 -4016 16 ) ( 3896 -4008.5 16 ) ( 3888 -4016 16 ) blockout/blockout 0 0 0 1 1
-( 3704 -3896 112 ) ( 3696 -3896 112 ) ( 3704 -3888.5 112 ) blockout/blockout 0 0 0 1 1
-( 3704 -3896 112 ) ( 3704 -3896 124 ) ( 3696 -3896 112 ) blockout/blockout 0 0 0 1 1
-( 3896 -4016 16 ) ( 3896 -4016 28 ) ( 3896 -4008.5 16 ) blockout/blockout 0 0 0 1 1
-}
-// brush 52
-{
-( 3704 -4064 112 ) ( 3704 -4056.5 112 ) ( 3704 -4064 124 ) blockout/blockout 0 0 0 1 1
-( 3896 -4184 16 ) ( 3888 -4184 16 ) ( 3896 -4184 28 ) blockout/blockout 0 0 0 1 1
-( 3896 -4184 16 ) ( 3896 -4176.5 16 ) ( 3888 -4184 16 ) blockout/blockout 0 0 0 1 1
-( 3704 -4064 112 ) ( 3696 -4064 112 ) ( 3704 -4056.5 112 ) blockout/blockout 0 0 0 1 1
-( 3704 -4064 112 ) ( 3704 -4064 124 ) ( 3696 -4064 112 ) blockout/blockout 0 0 0 1 1
-( 3896 -4184 16 ) ( 3896 -4184 28 ) ( 3896 -4176.5 16 ) blockout/blockout 0 0 0 1 1
-}
-// brush 53
-{
-( 3456 -1840 112 ) ( 3456 -1832 112 ) ( 3456 -1840 124 ) blockout/blockout 0 0 0 1 1
-( 3456 -1840 112 ) ( 3456 -1840 124 ) ( 3467.5 -1840 112 ) blockout/blockout 0 0 0 1 1
-( 3456 -1840 112 ) ( 3467.5 -1840 112 ) ( 3456 -1832 112 ) blockout/blockout 0 0 0 1 1
-( 3640 -1648 208 ) ( 3640 -1640 208 ) ( 3651.5 -1648 208 ) blockout/blockout 0 0 0 1 1
-( 3640 -1648 208 ) ( 3651.5 -1648 208 ) ( 3640 -1648 220 ) blockout/blockout 0 0 0 1 1
-( 3640 -1648 208 ) ( 3640 -1648 220 ) ( 3640 -1640 208 ) blockout/blockout 0 0 0 1 1
-}
-// brush 54
-{
-( 3456 -1560 112 ) ( 3456 -1552 112 ) ( 3456 -1560 124 ) blockout/blockout 0 0 0 1 1
-( 3456 -1560 112 ) ( 3456 -1560 124 ) ( 3467.5 -1560 112 ) blockout/blockout 0 0 0 1 1
-( 3456 -1560 112 ) ( 3467.5 -1560 112 ) ( 3456 -1552 112 ) blockout/blockout 0 0 0 1 1
-( 3640 -1368 208 ) ( 3640 -1360 208 ) ( 3651.5 -1368 208 ) blockout/blockout 0 0 0 1 1
-( 3640 -1368 208 ) ( 3651.5 -1368 208 ) ( 3640 -1368 220 ) blockout/blockout 0 0 0 1 1
-( 3640 -1368 208 ) ( 3640 -1368 220 ) ( 3640 -1360 208 ) blockout/blockout 0 0 0 1 1
-}
-// brush 55
-{
-( 3248 -1704 112 ) ( 3248 -1696 112 ) ( 3248 -1704 124 ) blockout/blockout 0 0 0 1 1
-( 3248 -1704 112 ) ( 3248 -1704 124 ) ( 3259.5 -1704 112 ) blockout/blockout 0 0 0 1 1
-( 3248 -1704 112 ) ( 3259.5 -1704 112 ) ( 3248 -1696 112 ) blockout/blockout 0 0 0 1 1
-( 3432 -1512 208 ) ( 3432 -1504 208 ) ( 3443.5 -1512 208 ) blockout/blockout 0 0 0 1 1
-( 3432 -1512 208 ) ( 3443.5 -1512 208 ) ( 3432 -1512 220 ) blockout/blockout 0 0 0 1 1
-( 3432 -1512 208 ) ( 3432 -1512 220 ) ( 3432 -1504 208 ) blockout/blockout 0 0 0 1 1
+( 3744 -3552 272 ) ( 3739.3333333333326 -3552 272 ) ( 3744 -3544.5 272 ) blockout/blockout 0 0 0 1 1
+( 3744 -3552 272 ) ( 3744 -3552 304 ) ( 3739.3333333333326 -3552 272 ) blockout/blockout 0 0 0 1 1
+( 3856 -3672 16 ) ( 3856 -3672 48 ) ( 3856 -3664.5 16 ) blockout/blockout 0 0 0 1 1
 }
 }
 // entity 1
@@ -527,7 +473,7 @@
 {
 "classname" "func_train"
 "target" "phase01_car_stop_01"
-"speed" "700"
+"speed" "525"
 "spawnflags" "1"
 // brush 0
 {
@@ -576,7 +522,7 @@
 // entity 8
 {
 "classname" "path_corner"
-"origin" "4224 -3272 40"
+"origin" "4216 -3416 40"
 "target" "phase01_car_stop_05"
 "targetname" "phase01_car_stop_04"
 "_tb_layer" "1"
@@ -584,7 +530,7 @@
 // entity 9
 {
 "classname" "path_corner"
-"origin" "4224 -3168 40"
+"origin" "4256 -3216 40"
 "target" "phase01_car_stop_06"
 "targetname" "phase01_car_stop_05"
 "_tb_layer" "1"
@@ -600,7 +546,7 @@
 // entity 11
 {
 "classname" "path_corner"
-"origin" "4024 -2560 40"
+"origin" "4024 -2424 40"
 "target" "phase01_car_stop_08"
 "targetname" "phase01_car_stop_07"
 "_tb_layer" "1"
@@ -608,7 +554,7 @@
 // entity 12
 {
 "classname" "path_corner"
-"origin" "4280 -2344 40"
+"origin" "4264 -2360 40"
 "target" "phase01_car_stop_09"
 "targetname" "phase01_car_stop_08"
 "_tb_layer" "1"
@@ -616,7 +562,7 @@
 // entity 13
 {
 "classname" "path_corner"
-"origin" "4296 -2064 40"
+"origin" "4264 -2160 40"
 "target" "phase01_car_stop_10"
 "targetname" "phase01_car_stop_09"
 "_tb_layer" "1"
@@ -624,7 +570,7 @@
 // entity 14
 {
 "classname" "path_corner"
-"origin" "4024 -1936 40"
+"origin" "4024 -2024 40"
 "target" "phase01_car_stop_11"
 "targetname" "phase01_car_stop_10"
 "_tb_layer" "1"
@@ -632,7 +578,7 @@
 // entity 15
 {
 "classname" "path_corner"
-"origin" "4024 -1720 40"
+"origin" "4024 -1832 40"
 "target" "phase01_car_stop_12"
 "targetname" "phase01_car_stop_11"
 "pathtarget" ""
@@ -641,7 +587,7 @@
 // entity 16
 {
 "classname" "path_corner"
-"origin" "4264 -1224 40"
+"origin" "4264 -1456 40"
 "target" "phase01_car_stop_14"
 "targetname" "phase01_car_stop_13"
 "_tb_layer" "1"
@@ -649,7 +595,7 @@
 // entity 17
 {
 "classname" "path_corner"
-"origin" "4088 -1464 40"
+"origin" "4080 -1592 40"
 "target" "phase01_car_stop_13"
 "targetname" "phase01_car_stop_12"
 "_tb_layer" "1"
@@ -665,7 +611,7 @@
 // entity 19
 {
 "classname" "path_corner"
-"origin" "4024 -16 40"
+"origin" "4024 -264 40"
 "target" "phase01_car_stop_16"
 "targetname" "phase01_car_stop_15"
 "_tb_layer" "1"
@@ -682,17 +628,16 @@
 {
 "classname" "path_corner"
 "origin" "4200 640 40"
-"target" "phase01_car_stop_18"
-"targetname" "phase01_car_stop_17"
+"target" "phase01_car_stop_19"
+"targetname" "phase01_car_stop_18"
 "_tb_layer" "1"
 }
 // entity 22
 {
 "classname" "path_corner"
-"origin" "4264 1464 40"
-"target" "phase01_car_stop_19"
-"targetname" "phase01_car_stop_18"
-"angle" "90"
+"origin" "4264 1376 40"
+"target" "phase01_car_stop_18"
+"targetname" "phase01_car_stop_17"
 "_tb_layer" "1"
 }
 // entity 23
@@ -714,17 +659,14 @@
 // entity 24
 {
 "classname" "func_explosive"
-"targetname" "phase01_car_explode"
-"mass" "350"
-"dmg" "25"
 "_tb_layer" "1"
 // brush 0
 {
-( 3976 1272 24 ) ( 3976 1277.8333333333335 24 ) ( 3976 1272 51 ) e1u1/trigger 0 0 0 1 1 0 640 0
-( 3976 1272 24 ) ( 3976 1272 51 ) ( 3988.5 1272 24 ) e1u1/trigger 0 0 0 1 1 0 640 0
-( 3976 1272 24 ) ( 3988.5 1272 24 ) ( 3976 1277.8333333333335 24 ) e1u1/trigger 0 0 0 1 1 0 640 0
-( 4376 1552 240 ) ( 4376 1557.8333333333335 240 ) ( 4388.5 1552 240 ) e1u1/trigger 0 0 0 1 1 0 640 0
-( 4376 1552 240 ) ( 4388.5 1552 240 ) ( 4376 1552 267 ) e1u1/trigger 0 0 0 1 1 0 640 0
-( 4376 1552 240 ) ( 4376 1552 267 ) ( 4376 1557.8333333333335 240 ) e1u1/trigger 0 0 0 1 1 0 640 0
+( 3976 1312 32 ) ( 3976 1317 32 ) ( 3976 1312 59 ) e1u1/trigger 0 0 0 1 1 0 128 0
+( 3976 1312 32 ) ( 3976 1312 59 ) ( 3988.5 1312 32 ) e1u1/trigger 0 0 0 1 1 0 128 0
+( 3976 1312 32 ) ( 3988.5 1312 32 ) ( 3976 1317 32 ) e1u1/trigger 0 0 0 1 1 0 128 0
+( 4376 1552 248 ) ( 4376 1557 248 ) ( 4388.5 1552 248 ) e1u1/trigger 0 0 0 1 1 0 128 0
+( 4376 1552 248 ) ( 4388.5 1552 248 ) ( 4376 1552 275 ) e1u1/trigger 0 0 0 1 1 0 128 0
+( 4376 1552 248 ) ( 4376 1552 275 ) ( 4376 1557 248 ) e1u1/trigger 0 0 0 1 1 0 128 0
 }
 }
