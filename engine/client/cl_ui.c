@@ -414,9 +414,9 @@ void UI_Draw()
 	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
 	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 0, time_str);
-	const char* prerelease_text = "Pre-release build!";
+	const char* prerelease_text = "^2Pre-release build!";
 	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, prerelease_text);
-	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 10, "Pre-release build!");
+	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 10, prerelease_text);
 
 #endif
 

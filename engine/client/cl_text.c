@@ -20,10 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "client.h"
 
+#define NUM_COLOR_CODES			16
+
 // The list of valid colour codes.
 // This is based on Quake 3 (which is also used by COD games as late as Black Ops III), but additional colours are added while still remaining compatible.
 // RGBA format
-color_code_t color_codes[16] =
+color_code_t color_codes[] =
 {
 	// Original id Q3 colour codes
 	{"^0", { 0, 0, 0, 255 } },		// Black
@@ -94,6 +96,34 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 			continue; // skip spaces
 		}
 
+		// skip colour codes in size determination
+		// ^ is used for colour codes
+		if (next_char == '^')
+		{
+			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
+			// don't do anything (will draw the invalid color code) if 
+			bool done = false;
+			for (int color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
+			{
+				color_code_t current_color_code = color_codes[color_code_num];
+
+				if (!strncmp(text + char_num, color_codes[color_code_num].name, 2))
+				{
+					// ignore
+					done = true;
+					break;
+				}
+			}
+
+			// stupid hack
+			// if we've found a valid color code, skip BOTH the color code indicator (^) and the 
+			if (done)
+			{
+				char_num++;
+				continue; // skip next 2 characters (character after is skipped by the for loop)
+			}
+		}
+
 		// get the glyph to be drawn
 		glyph_t* glyph = Glyph_GetByChar(font_ptr, next_char);
 
@@ -145,6 +175,9 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 	int current_x = x;
 	int current_y = y;
 
+	// default is white
+	float color[4] = { 255, 255, 255, 255 };
+
 	for (int char_num = 0; char_num < string_length; char_num++)
 	{
 		char next_char = text[char_num];
@@ -163,6 +196,39 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 			// just use the size/2 for now
 			current_x += font_ptr->size/2;
 			continue; // skip spaces
+		}
+
+		
+		// ^ is used for colour codes
+		if (next_char == '^')
+		{
+			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
+			// don't do anything (will draw the invalid color code) if 
+			bool done = false;
+			for (int color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
+			{
+				color_code_t current_color_code = color_codes[color_code_num];
+				if (!strncmp(text + char_num, color_codes[color_code_num].name, 2))
+				{
+					// todo: vector* macros for 4
+					color[0] = current_color_code.color[0];
+					color[1] = current_color_code.color[1];
+					color[2] = current_color_code.color[2];
+					color[3] = current_color_code.color[3];
+
+					// ignore
+					done = true;
+					break;
+				}
+			}
+
+			// stupid hack
+			// if we've found a valid color code, skip BOTH the color code indicator (^) and the 
+			if (done)
+			{
+				char_num++;
+				continue; // skip next 2 characters (character after is skipped by the for loop)
+			}
 		}
 
 		// get the glyph to be drawn
@@ -185,7 +251,7 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		snprintf(&final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
 
 		// draw it
-		re.DrawPicRegion(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->x_advance, glyph->y_start + glyph->height, final_name);
+		re.DrawPicRegion(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->x_advance, glyph->y_start + glyph->height, final_name, color);
 
 		// move to next char
 		current_x += (glyph->x_advance);

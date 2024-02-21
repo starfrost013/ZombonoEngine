@@ -196,7 +196,7 @@ void Draw_Pic (int x, int y, char *pic)
 Draw_PicRegion
 ================
 */
-void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char *pic)
+void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char *pic, float color[4])
 {
 	image_t* gl;
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -221,7 +221,10 @@ void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y
 	GL_Bind(gl->texnum);
 
 	// draw it
+	// set up the colour as well
 	qglEnable(GL_BLEND);
+	GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
+	qglColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
  	qglBegin(GL_QUADS);
 	qglTexCoord2f(coord_begin_x, coord_begin_y);
 	qglVertex2f(x, y);
@@ -232,6 +235,7 @@ void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y
 	qglTexCoord2f(coord_begin_x, coord_end_y);
 	qglVertex2f(x, y + size_y * scale->value);
 	qglEnd();
+	qglColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	qglDisable(GL_BLEND);
 }
 

@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "g_local.h"
 
-
 /*QUAKED func_group (0 0 0) ?
 Used to group brushes together just for editor convenience.
 */
@@ -49,7 +48,6 @@ void SP_func_areaportal (edict_t *ent)
 }
 
 //=====================================================
-
 
 /*
 =================

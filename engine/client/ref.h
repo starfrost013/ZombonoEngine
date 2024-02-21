@@ -102,7 +102,7 @@ typedef struct lightstyle_s
 	float		white;			// highest of rgb
 } lightstyle_t;
 
-typedef struct
+typedef struct refdef_s
 {
 	int			x, y, width, height;// in virtual screen coordinates
 	float		fov_x, fov_y;
@@ -133,7 +133,7 @@ typedef struct
 //
 // these are the functions exported by the refresh module
 //
-typedef struct
+typedef struct refexport_s
 {
 	// if api_version is different, the dll cannot be used
 	int		api_version;
@@ -172,7 +172,7 @@ typedef struct
 	void	(*DrawChar) (int x, int y, int c);
 	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);
 	void	(*DrawFill) (int x, int y, int w, int h, int r, int g, int b, int a);
-	void	(*DrawPicRegion)(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic);
+	void	(*DrawPicRegion)(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic, float color[4]);
 	void	(*DrawFadeScreen) (void);
 	/*
 	** video mode and refresh state management entry points
