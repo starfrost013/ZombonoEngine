@@ -222,7 +222,8 @@ typedef struct miptex_s
 #define	MAX_MAP_PORTALS		65536
 #define	MAX_MAP_EDGES		128000
 #define	MAX_MAP_SURFEDGES	256000
-#define	MAX_MAP_VISIBILITY	0x400000
+#define MAX_MAP_VIS_WARNING	0x400000
+#define	MAX_MAP_VISIBILITY	0x800000
 
 // key / value pair sizes
 

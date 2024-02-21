@@ -20,6 +20,8 @@ February XX, 2024
 * Engine Limits:
 	* Max Lightmaps 128 -> 256
 	* Max BSP Mem Allocation (actual maximum filesize will be slightly less) 16MB -> 64MB
+		* Max Map Vis Data Size 4MB (was originally 1MB) -> 16MB
+		* If your visdata is above 8MB a message will be printed if the developer cvar is set to 1
 	* Max MD2 Mem Allocation (actual maximum filesize will be slightly less) 2MB -> 8MB
 	* Max SP2 Mem Allocation (actual maximum filesize will be slightly less) 64KB -> 256KB
 		* This does not increase memory use as the memory is not committed until it is used by the BSP/MD2/SP2 loader.
@@ -37,6 +39,10 @@ February XX, 2024
 	* These will probably be replaced with a more full-featured debug at some point.
 * Fixed bug where pressing X would make you say "score" (it used to bring up the old leaderboard)
 * Don't enforce TDM rules on non-TDM.
+* Complete rewrite of text engine
+	* Supports arbitrary fonts.
+	* Not used for all text currently.
+* Used detail brush optimisation in z_tdm_labrats to reduce its size from 11.5mb to 5mb.
 
 Version 0.04-pre4
 February 10, 2024

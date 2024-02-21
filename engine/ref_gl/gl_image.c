@@ -844,7 +844,7 @@ image_t	*GL_FindImage (char *name, imagetype_t type)
 	len = (int)strlen(name);
 	if (len<5)
 		return NULL;	//	ri.Sys_Error (ERR_DROP, "GL_FindImage: bad name: %s", name);
-
+	
 	// look for it
 	for (i=0, image=gltextures ; i<numgltextures ; i++,image++)
 	{

@@ -510,7 +510,12 @@ void CMod_LoadVisibility (lump_t *l)
 
 	numvisibility = l->filelen;
 	if (l->filelen > MAX_MAP_VISIBILITY)
-		Com_Error (ERR_DROP, "Map has too large visibility lump");
+		Com_Error (ERR_DROP, "Map has too large visibility lump (add more detail brushes)");
+
+	if (l->filelen > MAX_MAP_VIS_WARNING)
+	{
+		Com_DPrintf("Warning: Very large visibility lump (0x%X bytes, max 0x%X). Add more detail brushes\nto exclude complicated geometry from VIS, or use less wide open spaces.", l->filelen, MAX_MAP_VISIBILITY);
+	}
 
 	memcpy (map_visibility, cmod_base + l->fileofs, l->filelen);
 
