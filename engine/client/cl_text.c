@@ -100,7 +100,7 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 		if (next_char == '\n'
 			|| next_char == '\v')
 		{
-			size_y += font_ptr->line_height;
+			size_y += font_ptr->line_height * vid_hudscale->value;
 			if (size_x > longest_line_x) longest_line_x = size_x;
 			size_x = 0;
 			continue; // skip newlines
@@ -110,14 +110,14 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 		if (next_char == ' ')
 		{
 			// just use the size/2 for now
-			size_x += font_ptr->size / 2;
+			size_x += (font_ptr->size / 2) * vid_hudscale->value;
 			continue; // skip spaces
 		}
 
 		// if we've found a tab, advance by the amount above
 		if (next_char == '\t')
 		{
-			size_x += (font_ptr->size / 2) * TAB_SIZE_CHARS;
+			size_x += (font_ptr->size / 2) * vid_hudscale->value * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 
@@ -162,7 +162,7 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 		// ignore offset for size calculation as it's not used in calculating next position
 		// we don't need y as char_height automatically accounts for the "longest" characters' y, plus one pixel.
 		// move to next char
-		size_x += (glyph->x_advance);
+		size_x += (glyph->x_advance * vid_hudscale->value);
 	}
 
 	// in the case of only 1 line
@@ -226,7 +226,7 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		if (next_char == '\n'
 			|| next_char == '\v') // uses vertical tabs as well? 
 		{
-			y += font_ptr->line_height;
+			y += font_ptr->line_height * vid_hudscale->value;
 			current_x = initial_x;
 			continue; // skip newlines
 		}
@@ -235,14 +235,14 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		if (next_char == ' ')
 		{
 			// just use the size/2 for now
-			current_x += font_ptr->size/2;
+			current_x += (font_ptr->size/2) * vid_hudscale->value;
 			continue; // skip spaces
 		}
 
 		// if we've found a tab, advance by the amount above
 		if (next_char == '\t')
 		{
-			current_x += (font_ptr->size / 2) * TAB_SIZE_CHARS;
+			current_x += (font_ptr->size / 2) * vid_hudscale->value * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 
@@ -289,8 +289,8 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		}
 
 		// handle offset
-		int draw_x = current_x + glyph->x_offset;
-		int draw_y = current_y + glyph->y_offset;
+		int draw_x = current_x + glyph->x_offset * vid_hudscale->value;
+		int draw_y = current_y + glyph->y_offset * vid_hudscale->value;
 
 		// convert to a file path that drawpicregion in the fonts folder
 		char final_name[MAX_FONT_FILENAME_LEN] = { 0 };
@@ -301,6 +301,6 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		re.DrawPicRegion(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color);
 
 		// move to next char
-		current_x += (glyph->x_advance);
+		current_x += (glyph->x_advance * vid_hudscale->value);
 	}
 }

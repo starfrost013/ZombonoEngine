@@ -49,6 +49,7 @@ February XX, 2024
 	* Any invalid color codes are printed
 * Added new cl_system_font cvar - it controls the system font. If you set it to an invalid value, it resets to the default.
 * Changed "say" and "say_team" messages to "Chat: " and "Chat (Team): " and made them green and blue respectively.
+* Chat messages (svc_print) no longer have the high bit set on client receive - this was done to make them have the green color in the quake 2 character set, but this is no longer required in the new system and was therefore corrupting the text.
 * Removed already dead CTRL and ALT bindings from default.cfg.
 
 Version 0.04-pre4
