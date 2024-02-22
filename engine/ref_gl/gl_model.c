@@ -731,8 +731,8 @@ void Mod_LoadLeafs (lump_t *l)
 		out->area = LittleShort(in->area);
 
 		out->firstmarksurface = loadmodel->marksurfaces +
-			LittleShort(in->firstleafface);
-		out->nummarksurfaces = LittleShort(in->numleaffaces);
+			LittleShortUnsigned(in->firstleafface);
+		out->nummarksurfaces = LittleShortUnsigned(in->numleaffaces);
 
 	}	
 }

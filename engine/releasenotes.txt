@@ -29,6 +29,8 @@ February XX, 2024
 	* Lightmap Sub-map Block Size 128x128 -> 256x256 (seems to prevent a buffer overflow, only 16x16 lightmap textures per map as well)
 		* This **DOES NOT REDUCE QUALITY**, as mapping is done within each block based on the BSP tree.
 	* QPath 80 -> 256 chars (PAK files won't be compatible with Quake2, and slightly higher mem usage)
+	* Number of leafs 32768 -> 65536 
+		* Allow endian swapping of unsigned shorts as well as shorts, ints and longs to make the game not interpret BSP marksurface data as signed when it's 			really unsigned.
 * MAJOR ENGINE CHANGE:
 	* Positions are now floats rather than fixed-points with 12 bits of mantissa and 3 exponent bits. This means worlds can be larger than 8192 units across, but 			PLEASE TEST FOR MOVEMENT BUGS!
 	* The actual practical limit, owing to issues with lightmap generation, ericw-tools QBSP scalability issues, and long loading times is somewhere between 27000 and 27500 units across.

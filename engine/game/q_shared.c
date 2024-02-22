@@ -678,6 +678,8 @@ qboolean	bigendien;
 // mess up when qcommon is included in multiple places
 short	(*_BigShort) (short l);
 short	(*_LittleShort) (short l);
+unsigned short	(*_BigShortUnsigned) (short l);
+unsigned short	(*_LittleShortUnsigned) (short l);
 int		(*_BigLong) (int l);
 int		(*_LittleLong) (int l);
 float	(*_BigFloat) (float l);
@@ -685,6 +687,8 @@ float	(*_LittleFloat) (float l);
 
 short	BigShort(short l){return _BigShort(l);}
 short	LittleShort(short l) {return _LittleShort(l);}
+short	BigShortUnsigned(short l) { return _BigShort(l); }
+short	LittleShortUnsigned(short l) { return _LittleShort(l); }
 int		BigLong (int l) {return _BigLong(l);}
 int		LittleLong (int l) {return _LittleLong(l);}
 float	BigFloat (float l) {return _BigFloat(l);}
@@ -701,6 +705,21 @@ short   ShortSwap (short l)
 }
 
 short	ShortNoSwap (short l)
+{
+	return l;
+}
+
+unsigned short   ShortSwapUnsigned(short l)
+{
+	byte    b1, b2;
+
+	b1 = l & 255;
+	b2 = (l >> 8) & 255;
+
+	return (b1 << 8) + b2;
+}
+
+unsigned short	ShortNoSwapUnsigned(short l)
 {
 	return l;
 }
@@ -759,6 +778,8 @@ void Swap_Init (void)
 		bigendien = false;
 		_BigShort = ShortSwap;
 		_LittleShort = ShortNoSwap;
+		_BigShortUnsigned = ShortSwapUnsigned;
+		_LittleShortUnsigned = ShortNoSwapUnsigned;
 		_BigLong = LongSwap;
 		_LittleLong = LongNoSwap;
 		_BigFloat = FloatSwap;
@@ -769,6 +790,8 @@ void Swap_Init (void)
 		bigendien = true;
 		_BigShort = ShortNoSwap;
 		_LittleShort = ShortSwap;
+		_BigShortUnsigned = ShortNoSwapUnsigned;
+		_LittleShortUnsigned = ShortSwapUnsigned;
 		_BigLong = LongNoSwap;
 		_LittleLong = LongSwap;
 		_BigFloat = FloatNoSwap;

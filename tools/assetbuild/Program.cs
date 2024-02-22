@@ -6,7 +6,7 @@
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.5b"; // Version
+const string ASSETBUILD_VERSION = "2.0.5c"; // Version
 const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
@@ -86,7 +86,8 @@ try
     // copy them all to the output directory
 
     // exclude raw assets
-    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "scrnshot", "screenshot", ".skp", ".skb", ".mtl", ".obj"];
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "save0", 
+        "scrnshot", "screenshot", ".skp", ".skb", ".mtl", ".obj"];
 
     foreach (string gameFile in gameFiles)
     {
