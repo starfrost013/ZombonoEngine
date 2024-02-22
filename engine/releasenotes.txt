@@ -39,15 +39,17 @@ February XX, 2024
 	* These will probably be replaced with a more full-featured debug at some point.
 * Fixed bug where pressing X would make you say "score" (it used to bring up the old leaderboard)
 * Don't enforce TDM rules on non-TDM.
-* Complete rewrite of text engine
+* Complete rewrite of how text is drawn.
 	* Supports arbitrary fonts.
-	* Not used for all text currently.
-* Used detail brush optimisation in z_tdm_labrats to reduce its size from 11.5mb to 5mb.
+	* Not used for all text currently. Needs to be ported to the menus as of 2/21, used in the console and chat though.
+* Used detail brush optimisation in z_tdm_subway to reduce its size from 11.5mb to 5mb.
 * Added Quake 3 color codes, with extensions:
 	* Originals: ^0 - Black, ^1 - Red, ^2 - Green, ^3 - Yellow, ^4 - Blue, ^5 - Light Blue, ^6 - Pink, ^7 - White
 	* Extended: ^8 - Grey, ^9 - Light Grey, ^a - Orange, ^b - Brown, ^c - Purple, ^d - Bright pink, ^e - Gold, ^f - Deep blue
 	* Any invalid color codes are printed
 * Added new cl_system_font cvar - it controls the system font. If you set it to an invalid value, it resets to the default.
+* Changed "say" and "say_team" messages to "Chat: " and "Chat (Team): " and made them green and blue respectively.
+* Removed already dead CTRL and ALT bindings from default.cfg.
 
 Version 0.04-pre4
 February 10, 2024

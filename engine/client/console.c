@@ -540,15 +540,15 @@ void Con_DrawNotify (void)
 	{
 		if (chat_team)
 		{
-			const char* say_text = "Chat (Team):";
+			const char* say_text = "^4Chat (Team):^7";
 			Text_GetSize(cl_system_font->string, &skip_size_x, &skip_size_y, say_text);
-			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, "Chat (Team):");
+			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, say_text);
 		}
 		else
 		{
-			const char* say_text = "Chat:";
+			const char* say_text = "^2Chat:^7";
 			Text_GetSize(cl_system_font->string, &skip_size_x, &skip_size_y, say_text);
-			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, "Chat:");
+			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, say_text);
 		}
 
 		s = chat_buffer;
