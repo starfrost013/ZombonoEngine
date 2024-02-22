@@ -43,6 +43,11 @@ February XX, 2024
 	* Supports arbitrary fonts.
 	* Not used for all text currently.
 * Used detail brush optimisation in z_tdm_labrats to reduce its size from 11.5mb to 5mb.
+* Added Quake 3 color codes, with extensions:
+	* Originals: ^0 - Black, ^1 - Red, ^2 - Green, ^3 - Yellow, ^4 - Blue, ^5 - Light Blue, ^6 - Pink, ^7 - White
+	* Extended: ^8 - Grey, ^9 - Light Grey, ^a - Orange, ^b - Brown, ^c - Purple, ^d - Bright pink, ^e - Gold, ^f - Deep blue
+	* Any invalid color codes are printed
+* Added new cl_system_font cvar - it controls the system font. If you set it to an invalid value, it resets to the default.
 
 Version 0.04-pre4
 February 10, 2024

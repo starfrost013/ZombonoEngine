@@ -465,6 +465,8 @@ void Con_DrawInput (void)
 	int		y;
 	int		i;
 	char	*text;
+	int		size_x = 0, size_y = 0;
+	font_t*	system_font_ptr = Font_GetByName(cl_system_font->string); // checked by drawconsole
 
 	if (cls.key_dest == key_menu)
 		return;
@@ -487,8 +489,8 @@ void Con_DrawInput (void)
 // draw it
 	y = con.vislines-16;
 
-	for (i=0 ; i<con.linewidth ; i++)
-		re.DrawChar ( ((i+1)<<3)*vid_hudscale->value, con.vislines - 22*vid_hudscale->value, text[i]);
+	// temp code
+	Text_Draw(cl_system_font->string, 8*vid_hudscale->value, con.vislines - system_font_ptr->line_height * vid_hudscale->value, text);
 
 // remove cursor
 	key_lines[edit_line][key_linepos] = 0;
@@ -504,15 +506,15 @@ Draws the last few lines of output transparently over the game top
 */
 void Con_DrawNotify (void)
 {
-	int		x, v;
+	int		x, v = 0;
+	int		skip_size_x = 0, skip_size_y = 0;
 	char	*text;
 	int		i;
 	int		time;
 	char	*s;
-	int		skip;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
-	v = 0;
-	for (i= con.current-NUM_CON_CHAT_LINES+1 ; i<=con.current ; i++)
+	for (i = con.current-NUM_CON_CHAT_LINES+1 ; i <= con.current ; i++)
 	{
 		if (i < 0)
 			continue;
@@ -524,37 +526,44 @@ void Con_DrawNotify (void)
 			continue;
 		text = con.text + (i % con.totallines)*con.linewidth;
 		
-		for (x = 0 ; x < con.linewidth ; x++)
-			re.DrawChar ( ((x+1)<<3)*vid_hudscale->value, v*vid_hudscale->value, text[x]);
+		// temporary set a text terminator for the text system
+		// TODO: does this overflow if we print all the 128kb.
+		char temp = text[con.linewidth];
+		text[con.linewidth] = '\0';
+		Text_Draw(cl_system_font->string, 8 * vid_hudscale->value, v * vid_hudscale->value, text);
+		text[con.linewidth] = temp;
 
-		v += 8;
+		v += system_font_ptr->line_height;
 	}
-
 
 	if (cls.key_dest == key_message)
 	{
 		if (chat_team)
 		{
-			Draw_String (8, v*vid_hudscale->value, "say_team:");
-			skip = 11;
+			const char* say_text = "Chat (Team):";
+			Text_GetSize(cl_system_font->string, &skip_size_x, &skip_size_y, say_text);
+			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, "Chat (Team):");
 		}
 		else
 		{
-			Draw_String (8, v*vid_hudscale->value, "say:");
-			skip = 5;
+			const char* say_text = "Chat:";
+			Text_GetSize(cl_system_font->string, &skip_size_x, &skip_size_y, say_text);
+			Text_Draw (cl_system_font->string, 8, v*vid_hudscale->value, "Chat:");
 		}
 
 		s = chat_buffer;
-		if (chat_bufferlen > (viddef.width>>3)-(skip+1))
-			s += chat_bufferlen - ((viddef.width>>3)-(skip+1));
-		x = 0;
-		while(s[x])
-		{
-			re.DrawChar ( ((x+skip)<<3)*vid_hudscale->value, v*vid_hudscale->value, s[x]);
-			x++;
-		}
-		re.DrawChar ( ((x+skip)<<3)*vid_hudscale->value, v*vid_hudscale->value, 10+((cls.realtime>>8)&1));
-		v += 8;
+		if (chat_bufferlen > (viddef.width>>3)-(skip_size_x+1))
+			s += chat_bufferlen - ((viddef.width>>3)-(skip_size_x+1));
+
+		// terminator for text engine
+		char original = s[chat_bufferlen];
+		s[chat_bufferlen] = '\0';
+		Text_Draw(cl_system_font->string, 8 + (skip_size_x) + system_font_ptr->size / 2, v, s);
+
+		// wtf does this do? it draws a newline or vertical tab depending on if its realtime?
+		Text_DrawChar (cl_system_font->string, 8 * skip_size_x * vid_hudscale->value, v*vid_hudscale->value, 10+((cls.realtime>>8)&1));
+		v += system_font_ptr->line_height;
+		s[chat_bufferlen] = original;
 	}
 	
 	if (v)
@@ -580,6 +589,27 @@ void Con_DrawConsole (float frac)
 	int				lines;
 	char			version[64];
 	char			dlbar[1024];
+	int				size_x = 0, size_y = 0;
+	font_t*			system_font_ptr;
+
+	system_font_ptr = Font_GetByName(cl_system_font->string);
+
+	// we already check it can't be null and exit earlier, but the user can change the cvar
+	if (!system_font_ptr)
+	{
+		Com_Printf("You changed the system font to an invalid value (%s). Trying the default...", cl_system_font->string);
+		Cvar_Set("cl_system_font", "bahnschrift_bold_8");
+
+		system_font_ptr = Font_GetByName(cl_system_font->string);
+
+		// we tried again with the default but it failed
+		if (!system_font_ptr)
+		{
+			// just go down
+			Sys_Error("You changed the system font to an invalid value, and then deleted the default system font. You deserve this :(");
+			return;
+		}
+	}
 
 	lines = viddef.height * frac;
 	if (lines <= 0)
@@ -601,9 +631,9 @@ void Con_DrawConsole (float frac)
 	SCR_AddDirtyPoint (0,0);
 	SCR_AddDirtyPoint (viddef.width-1,lines-1);
 
-	Com_sprintf (version, sizeof(version), "Zombono v%s", ZOMBONO_VERSION);
-
-	Draw_StringAlt(viddef.width - (8 * strlen(version)), lines - 12 * vid_hudscale->value, version);
+	Com_sprintf (version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, version);
+	Text_Draw(cl_system_font->string, viddef.width - size_x, lines - 12 * vid_hudscale->value, version);
 
 // draw the text
 	con.vislines = lines;
@@ -615,15 +645,16 @@ void Con_DrawConsole (float frac)
 	if (con.display != con.current)
 	{
 	// draw arrows to show the buffer is backscrolled
-		for (x=0 ; x<con.linewidth ; x+=4)
-			re.DrawChar ( ((x+1)<<3)*vid_hudscale->value, y*vid_hudscale->value, '^');
+		for (x = 0; x < con.linewidth; x += 4)
+
+			Text_DrawChar(cl_system_font->string, ((x+1)<<3)*vid_hudscale->value, y*vid_hudscale->value, '^');
 	
-		y -= 8;
+		y -= system_font_ptr->line_height;
 		rows--;
 	}
 	
 	row = con.display;
-	for (i=0 ; i<rows ; i++, y-=8, row--)
+	for (i=0 ; i<rows ; i++, y-= system_font_ptr->line_height, row--)
 	{
 		if (row < 0)
 			break;
@@ -631,9 +662,14 @@ void Con_DrawConsole (float frac)
 			break;		// past scrollback wrap point
 			
 		text = con.text + (row % con.totallines)*con.linewidth;
+		
+		char original_character = text[con.linewidth];
 
-		for (x=0 ; x<con.linewidth ; x++)
-			re.DrawChar ( ((x+1)<<3)*vid_hudscale->value, y*vid_hudscale->value, text[x]);
+		// send to the text drawing system
+		// this is a stupid hack: we temporarily set the end of the line to a null byte to draw the line, then restore it so the entire console doesn't get fucked.
+		text[con.linewidth] = '\0';
+		Text_Draw(cl_system_font->string, 8 * vid_hudscale->value, y * vid_hudscale->value, text);
+		text[con.linewidth] = original_character;
 	}
 
 //ZOID
@@ -677,7 +713,7 @@ void Con_DrawConsole (float frac)
 		// draw it
 		y = con.vislines-12*vid_hudscale->value;
 		for (i = 0; i < strlen(dlbar); i++)
-			re.DrawChar ( ((i+1)<<3)*vid_hudscale->value, y, dlbar[i]);
+			Text_DrawChar(cl_system_font, ((i+1)<<3)*vid_hudscale->value, y, dlbar[i]);
 	}
 //ZOID
 

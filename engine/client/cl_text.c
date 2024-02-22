@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 
 #define NUM_COLOR_CODES			16
+#define TAB_SIZE_CHARS				8 // make a cvar?
 
 // The list of valid colour codes.
 // This is based on Quake 3 (which is also used by COD games as late as Black Ops III), but additional colours are added while still remaining compatible.
@@ -50,14 +51,30 @@ color_code_t color_codes[] =
 
 // cl_text.c : Modern Font Draw (February 18, 2024)
 
+qboolean Text_GetSizeChar(const char* font, int* x, int* y, char text)
+{
+	// munge it for the fucking console which uses a 128kb buffer
+	char	new_string[2] = { 0 };
+	new_string[0] = text;
+	new_string[1] = '\0';
+	return Text_GetSize(font, x, y, &new_string);
+}
+
 qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 {
 	font_t* font_ptr = Font_GetByName(font);
 
-	if (font_ptr == NULL)
+	if (!font_ptr)
 	{
-		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n)", text, font);
-		return false;
+		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
+
+		font_t* font_ptr = Font_GetByName(cl_system_font->string);
+
+		if (!font_ptr)
+		{
+			// already a check for this
+			return false;
+		}
 	}
 
 	int string_length = strlen(text);
@@ -80,7 +97,8 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 		char next_char = text[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
-		if (next_char == '\n')
+		if (next_char == '\n'
+			|| next_char == '\v')
 		{
 			size_y += font_ptr->line_height;
 			if (size_x > longest_line_x) longest_line_x = size_x;
@@ -93,6 +111,13 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 		{
 			// just use the size/2 for now
 			size_x += font_ptr->size / 2;
+			continue; // skip spaces
+		}
+
+		// if we've found a tab, advance by the amount above
+		if (next_char == '\t')
+		{
+			size_x += (font_ptr->size / 2) * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 
@@ -149,17 +174,32 @@ qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
 	return true;
 }
 
+void Text_DrawChar(const char* font, int x, int y, char text)
+{
+	// munge it for the fucking console which uses a 128kb buffer
+	char	new_string[2] = { 0 };
+	new_string[0] = text;
+	new_string[1] = '\0';
+	Text_Draw(font, x, y, &new_string);
+}
+
 void Text_Draw(const char* font, int x, int y, char* text, ...)
 {
-	// TODO: COLOUR
 	// TODO: VARARGS
 
 	font_t* font_ptr = Font_GetByName(font);
 
-	if (font_ptr == NULL)
+	if (!font_ptr)
 	{
-		Com_Printf("Modern Font Engine failed to draw text: %s (tried to use invalid font %s\n)", text, font);
-		return;
+		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
+
+		font_t* font_ptr = Font_GetByName(cl_system_font->string);
+
+		if (!font_ptr)
+		{
+			// already a check for this
+			return false;
+		}
 	}
 
 	int string_length = strlen(text);
@@ -183,7 +223,8 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		char next_char = text[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
-		if (next_char == '\n')
+		if (next_char == '\n'
+			|| next_char == '\v') // uses vertical tabs as well? 
 		{
 			y += font_ptr->line_height;
 			current_x = initial_x;
@@ -198,7 +239,13 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 			continue; // skip spaces
 		}
 
-		
+		// if we've found a tab, advance by the amount above
+		if (next_char == '\t')
+		{
+			current_x += (font_ptr->size / 2) * TAB_SIZE_CHARS;
+			continue; // skip spaces
+		}
+
 		// ^ is used for colour codes
 		if (next_char == '^')
 		{
@@ -251,7 +298,7 @@ void Text_Draw(const char* font, int x, int y, char* text, ...)
 		snprintf(&final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
 
 		// draw it
-		re.DrawPicRegion(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->x_advance, glyph->y_start + glyph->height, final_name, color);
+		re.DrawPicRegion(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color);
 
 		// move to next char
 		current_x += (glyph->x_advance);

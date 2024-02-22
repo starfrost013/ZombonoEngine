@@ -698,13 +698,14 @@ typedef struct color_code_s
 // Defines a cached glyph standard.
 typedef struct glyph_s
 {
+	int			width;							// Width of this glyph.
 	int			height;							// Height of this glyph.
 	char		char_code;						// Character code for this character (ansi for now, utf-8 later?)
 	int			x_start;						// Start X position of the glyph within the texture.
-	int			x_advance;						// Amount X has to advance to reach the end of the glyph.
+	int			x_advance;						// Amount X has to advance to reach the next character.
 	int			x_offset;						// X offset of where the character starts relative to start_x - x_start + x_offset + x_advance = end of char
 	int			y_start;						// Start Y position of the glyph within the texture.
-	int			y_advance;						// Amount Y has to advance to reach the end of the glyph.
+	int			y_advance;						// Amount Y has to advance to reach the next character. Only used if you are drawing vertically written languages e.g. Japanese
 	int			y_offset;						// Y offset of where the character starts relative to start_y - y_start + y_offset + y_advance = end of char
 } glyph_t;
 
@@ -730,6 +731,7 @@ typedef enum font_json_section_e
 
 extern font_t			fonts[MAX_FONTS];			// Global object containing all loaded fonts.
 
+extern cvar_t*			cl_system_font;				// The font used for the console.	
 extern int				num_fonts;					// The number of loaded fonts.
 
 qboolean Font_Init();								// Initialises the font subsystem.
@@ -742,4 +744,6 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 //
 
 void Text_Draw(const char* font, int x, int y, char* text, ...);					// Draws text using font font.
-qboolean Text_GetSize(const char* font, int *size_x, int *size_y, char* text, ...);	// Gets the size of the text text.
+void Text_DrawChar(const char* font, int x, int y, char text);						// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+qboolean Text_GetSize(const char* font, int *size_x, int *size_y, char* text, ...);	// Gets the size of the text text.#
+qboolean Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);	// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.

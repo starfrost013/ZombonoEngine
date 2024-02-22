@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Globals
 
 font_t			fonts[MAX_FONTS] = { 0 };
-
+cvar_t*			cl_system_font;
 int				num_fonts;						// The number of loaded fonts.
 
 // Functions not exposed in headers
@@ -46,6 +46,9 @@ qboolean Font_Init()
 	char*	file;
 
 	Com_Printf("Loading fonts...\n");
+
+	// create the system font cvar
+	cl_system_font = Cvar_Get("cl_system_font", "bahnschrift_bold_8", 0);
 
 	// open up fonts.txt
 	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
@@ -108,6 +111,7 @@ qboolean Font_Init()
 			}
 
 			file_name_font[n] = '\0'; // terminate string
+			
 			Font_LoadFont(file_name_font);
 
 			// n re-initialised above
@@ -129,6 +133,15 @@ qboolean Font_Init()
 	// close it
 	fclose(font_list_stream); 
 	free(file);
+
+	// check if the system font (font used by the system) was loaded properly.
+	// Sys_Error if it failed
+
+	if (!Font_GetByName(cl_system_font->string))
+	{
+		Sys_Error("Failed to load system font %s", cl_system_font->string);
+		return false; 
+	}
 
 	Com_Printf("Successfully loaded %d fonts!\n", num_fonts);
 	return true; 
@@ -349,6 +362,11 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 					{
 						json_type = JSON_next(json_stream);
 						current_glyph->height = JSON_get_number(json_stream);
+					}
+					else if (!strcmp(json_string, "width"))
+					{
+						json_type = JSON_next(json_stream);
+						current_glyph->width = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "id"))
 					{

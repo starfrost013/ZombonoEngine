@@ -411,12 +411,12 @@ void UI_Draw()
 #endif
 
 	int size_x = 0, size_y = 0;
-	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, time_str);
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
-	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 0, time_str);
-	const char* prerelease_text = "^2Pre-release build!";
-	Text_GetSize("bahnschrift_bold_8", &size_x, &size_y, prerelease_text);
-	Text_Draw("bahnschrift_bold_8", viddef.width - size_x, 10, prerelease_text);
+	Text_Draw(cl_system_font->string, viddef.width - size_x, 0, time_str);
+	const char* prerelease_text = "^3Pre-release build!";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, prerelease_text);
+	Text_Draw(cl_system_font->string, viddef.width - size_x, 10, prerelease_text);
 
 #endif
 

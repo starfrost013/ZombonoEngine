@@ -258,7 +258,8 @@ void SCR_DrawCenterString (void)
 	int		j;
 	int		x, y;
 	int		remaining;
-
+	int		size_x = 0, size_y = 0;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 // the finale prints the characters one at a time
 	remaining = 9999;
 
@@ -272,21 +273,30 @@ void SCR_DrawCenterString (void)
 
 	do	
 	{
-	// scan the width of the line
-		for (l=0 ; l<40 ; l++)
-			if (start[l] == '\n' || !start[l])
-				break;
-		x = (viddef.width - l*8*vid_hudscale->value)/2;
-		SCR_AddDirtyPoint (x, y);
-		for (j=0 ; j<l ; j++, x+=8*vid_hudscale->value)
+	// scan the width of the line to get where it REALLY ends
+	// we do the same hack here as in the cosnole
+		char temp = ' ';
+		for (l = 0; l < 40; l++)
 		{
-			re.DrawChar (x, y, start[j]);
-			if (!remaining--)
-				return;
+			if (start[l] == '\n' || !start[l])
+			{
+				temp = start[l];
+				start[l] = '\0'; // line terminator for text system
+				break;
+			}
 		}
-		SCR_AddDirtyPoint (x, y+8*vid_hudscale->value);
+
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
+		x = (viddef.width - size_x*vid_hudscale->value)/2;
+		SCR_AddDirtyPoint (x, y);
+		Text_Draw(cl_system_font->string, x, y, start);
+
+		// restore original character
+		start[l] = temp;
+
+		SCR_AddDirtyPoint (x, y+system_font_ptr->line_height*vid_hudscale->value);
 			
-		y += 8*vid_hudscale->value;
+		y += system_font_ptr->line_height*vid_hudscale->value;
 
 		while (*start && *start != '\n')
 			start++;
