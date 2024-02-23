@@ -372,6 +372,7 @@ void M_Main_Draw (void)
 	int w, h;
 	int ystart;
 	int	xoffset;
+	int size_x = 0, size_y = 0;
 	int widest = -1;
 	int totalheight = 0;
 	char litname[80];
@@ -410,7 +411,10 @@ void M_Main_Draw (void)
 
 	M_DrawCursor( xoffset - 25 * vid_hudscale->value, ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
 
-	Draw_String(xoffset - 108, ystart + (6 * 40 + 20), "Use Up and Down arrow keys to navigate"); 
+	const char* nav_text = "Use Up and Down arrow keys to navigate";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, nav_text);
+	// bad positioning hack
+	Text_Draw(cl_system_font->string, xoffset - (size_x / 4), ystart + (6 * 40 + 20), "Use Up and Down arrow keys to navigate"); 
 }
 
 
@@ -693,32 +697,45 @@ static void KeyCursorDrawFunc( menuframework_t *menu )
 		re.DrawChar( menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, 12 + ( ( int ) ( Sys_Milliseconds() / 250 ) & 1 ) );
 }
 
+#define NAME_ARRAY_SIZE		128
+
 static void DrawKeyBindingFunc( void *self )
 {
 	int keys[2];
 	menuaction_t *a = ( menuaction_t * ) self;
-
+	int size_x = 0, size_y = 0;
 	M_FindKeysForCommand( bindnames[a->generic.localdata[0]][0], keys);
 		
 	if (keys[0] == -1)
 	{
-		Draw_String( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "???" );
+		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "???");
 	}
 	else
 	{
 		int x;
-		const char *name;
-
-		name = Key_KeynumToString (keys[0]);
-
-		Draw_String( a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, name );
-
-		x = strlen(name) * 8 * vid_hudscale->value;
+		char name[NAME_ARRAY_SIZE];
 
 		if (keys[1] != -1)
 		{
-			Draw_String( a->generic.x + a->generic.parent->x + 24 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, "or" );
-			Draw_String( a->generic.x + a->generic.parent->x + 48 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, Key_KeynumToString (keys[1]) );
+			snprintf(name, NAME_ARRAY_SIZE, "^5%s^7 OR ^5%s", Key_KeynumToString(keys[0]), Key_KeynumToString(keys[1]));
+		}
+		else
+		{
+			snprintf(name, NAME_ARRAY_SIZE, "^5%s^7", Key_KeynumToString(keys[0]));
+		}
+
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, name);
+		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, name );
+
+		x = strlen(name) * size_x * vid_hudscale->value;
+
+		if (keys[1] != -1)
+		{
+			const char* str = "or";
+			Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + size_x + 12 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, str );
+			str = Key_KeynumToString(keys[1]);
+			Text_GetSize(cl_system_font->string, &size_x, &size_y, str);
+			Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + size_x/2 * vid_hudscale->value + x, a->generic.y + a->generic.parent->y, str );
 		}
 	}
 }
@@ -1693,14 +1710,18 @@ void Game_MenuInit( void )
 void Game_MenuDraw( void )
 {
 #ifdef PLAYTEST
-	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 92, "This option is not available in playtest builds!");
-	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
+	int size_x = 0, size_y = 0;
+	const char* no_playtest_text = "^1This option is not available in playtest builds!";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - 92, no_playtest_text_1);
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - (92 - system_font_ptr->line_height), no_playtest_text_2);
 #else
 	M_Banner("pics/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
 	Menu_Draw(&s_game_menu);
 #endif
-
 }
 
 const char *Game_MenuKey( int key )
@@ -2349,8 +2370,13 @@ void StartServer_MenuInit( void )
 void StartServer_MenuDraw(void)
 {
 #ifdef PLAYTEST
-	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 92, "Servers cannot be started in playtest builds!");
-	Draw_String(viddef.width / 2 - 192, viddef.height / 2 - 76, "Press any key to exit");
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
+	int size_x = 0, size_y = 0;
+	const char* no_playtest_text = "^1Servers cannot be started in playtest builds!";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - 92, no_playtest_text_1);
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - (92 - system_font_ptr->line_height), no_playtest_text_2);
 #else
 	Menu_Draw(&s_startserver_menu);
 #endif

@@ -56,19 +56,18 @@ void Action_DoEnter( menuaction_t *a )
 
 void Action_Draw( menuaction_t *a )
 {
+	// emulate r2l 
+	int size_x = 0, size_y = 0;
+
 	if ( a->generic.flags & QMF_LEFT_JUSTIFY )
 	{
-		if ( a->generic.flags & QMF_GRAYED )
-			Draw_StringAlt( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
-		else
-			Draw_String( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+		// todo: non-system fonts in menu UI?
+		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name);
 	}
 	else
 	{
-		if ( a->generic.flags & QMF_GRAYED )
-			Draw_StringR2LAlt( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
-		else
-			Draw_StringR2L( a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET, a->generic.y + a->generic.parent->y, a->generic.name );
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, a->generic.name);
+		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + LCOLUMN_OFFSET - size_x, a->generic.y + a->generic.parent->y, a->generic.name);
 	}
 	if ( a->generic.ownerdraw )
 		a->generic.ownerdraw( a );
@@ -87,11 +86,15 @@ qboolean Field_DoEnter( menufield_t *f )
 void Field_Draw( menufield_t *f )
 {
 	int i;
+	int size_x = 0, size_y = 0;
 	char tempbuffer[128]="";
 
-	if ( f->generic.name )
-		Draw_StringR2LAlt( f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET, f->generic.y + f->generic.parent->y, f->generic.name );
-
+	if (f->generic.name)
+	{
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, f->generic.name);
+		Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET - size_x, f->generic.y + f->generic.parent->y, f->generic.name);
+	}
+	
 	strncpy( tempbuffer, f->buffer + f->visible_offset, f->visible_length );
 
 	Draw_Char( f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, 18 );
@@ -106,7 +109,7 @@ void Field_Draw( menufield_t *f )
 		Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, 25 );
 	}
 
-	Draw_String( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
+	Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
 
 	if ( Menu_ItemAtCursor( f->generic.parent ) == f )
 	{
@@ -416,38 +419,23 @@ void Menu_Draw( menuframework_t *menu )
 
 void Menu_DrawStatusBar( const char *string )
 {
+	int size_x = 0, size_y = 0;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
+
 	if ( string )
 	{
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, string);
 		int l = (int)strlen( string );
 		int maxcol = VID_WIDTH / (8*vid_hudscale->value);
 		int col = maxcol / 2 - l / 2;
 
-		Draw_Fill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
-		Draw_String( col*8*vid_hudscale->value, VID_HEIGHT - 8*vid_hudscale->value, string );
+		Draw_Fill( 0, (VID_HEIGHT-system_font_ptr->line_height)*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
+
+		Text_Draw(cl_system_font->string, col*size_x*vid_hudscale->value, VID_HEIGHT - size_y*vid_hudscale->value, string );
 	}
 	else
 	{
 		Draw_Fill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 0, 0, 0, 255 );
-	}
-}
-
-void Draw_StringR2L( int x, int y, const char *string )
-{
-	unsigned i;
-
-	for ( i = 0; i < strlen( string ); i++ )
-	{
-		Draw_Char( ( x - i*8*vid_hudscale->value), y, string[strlen(string)-i-1] );
-	}
-}
-
-void Draw_StringR2LAlt( int x, int y, const char *string )
-{
-	unsigned i;
-
-	for ( i = 0; i < strlen( string ); i++ )
-	{
-		Draw_Char( ( x - i*8*vid_hudscale->value ), y, string[strlen(string)-i-1]+128 );
 	}
 }
 
@@ -472,12 +460,6 @@ qboolean Menu_SelectItem( menuframework_t *s )
 		case MTYPE_ACTION:
 			Action_DoEnter( ( menuaction_t * ) item );
 			return true;
-		case MTYPE_LIST:
-//			Menulist_DoEnter( ( menulist_s * ) item );
-			return false;
-		case MTYPE_SPINCONTROL:
-//			SpinControl_DoEnter( ( menulist_s * ) item );
-			return false;
 		}
 	}
 	return false;
@@ -548,15 +530,17 @@ void MenuList_Draw( menulist_t *l )
 {
 	const char **n;
 	int y = 0;
+	int size_x = 0, size_y = 0;
 
-	Draw_StringR2LAlt( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name );
+	Text_Draw(cl_system_font->string, l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name);
 
 	n = l->itemnames;
 
   	Draw_Fill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, 99, 76, 35, 255);
 	while ( *n )
 	{
-		Draw_StringR2LAlt( l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y + y + 10, *n );
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, *n);
+		Text_Draw(cl_system_font->string, l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET - size_x, l->generic.y + l->generic.parent->y + y + 10, *n );
 
 		n++;
 		y += 10;
@@ -565,8 +549,14 @@ void MenuList_Draw( menulist_t *l )
 
 void Separator_Draw( menuseparator_t *s )
 {
-	if ( s->generic.name )
-		Draw_StringR2LAlt( s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->generic.name );
+	int size_x = 0, size_y = 0; // emulate original code R2L drawing
+
+	if (s->generic.name)
+	{
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, s->generic.name);
+		Text_Draw(cl_system_font->string, s->generic.x + s->generic.parent->x - size_x, s->generic.y + s->generic.parent->y, s->generic.name);
+	}
+
 }
 
 void Slider_DoSlide( menuslider_t *s, int dir )
@@ -587,8 +577,10 @@ void Slider_DoSlide( menuslider_t *s, int dir )
 void Slider_Draw( menuslider_t *s )
 {
 	int	i;
+	int size_x = 0, size_y = 0; // emulate original code R2L drawing
 
-	Draw_StringR2LAlt( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET,
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, s->generic.name);
+	Text_Draw(cl_system_font->string, s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET - size_x,
 		                s->generic.y + s->generic.parent->y, 
 						s->generic.name );
 
@@ -631,24 +623,26 @@ void SpinControl_DoSlide( menulist_t *s, int dir )
 void SpinControl_Draw( menulist_t *s )
 {
 	char buffer[100];
-
+	int size_x = 0, size_y = 0;
 	if ( s->generic.name )
 	{
-		Draw_StringR2LAlt( s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET, 
-							s->generic.y + s->generic.parent->y, 
-							s->generic.name );
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, s->generic.name);
+		Text_Draw(cl_system_font->string, s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET - size_x,
+			s->generic.y + s->generic.parent->y,
+			s->generic.name);
 	}
 	if ( !strchr( s->itemnames[s->curvalue], '\n' ) )
 	{
-		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->itemnames[s->curvalue] );
+		Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, s->itemnames[s->curvalue] );
 	}
 	else
 	{
+		// old code also did this hack
 		strcpy( buffer, s->itemnames[s->curvalue] );
 		*strchr( buffer, '\n' ) = 0;
-		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, buffer );
+		Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y, buffer );
 		strcpy( buffer, strchr( s->itemnames[s->curvalue], '\n' ) + 1 );
-		Draw_String( RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y + 10 * vid_hudscale->value, buffer );
+		Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + s->generic.x + s->generic.parent->x, s->generic.y + s->generic.parent->y + 10 * vid_hudscale->value, buffer );
 	}
 }
 

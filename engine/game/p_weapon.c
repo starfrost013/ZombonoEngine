@@ -1495,13 +1495,13 @@ void Weapon_Bamfuslicator_SetType(edict_t* ent)
 	switch (ent->client->pers.weapon->spawn_type)
 	{
 	case zombie_type_normal:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Regular [TEMP]");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^2Regular^7 [TEMP]");
 		break;
 	case zombie_type_fast:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Fast [TEMP]");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^4Fast^7 [TEMP]");
 		break;
 	case zombie_type_ogre:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: Ogre [TEMP]");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^5Ogre^7");
 		break;
 	}
 

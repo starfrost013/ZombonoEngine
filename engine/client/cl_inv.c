@@ -60,6 +60,7 @@ void CL_DrawInventory (void)
 	char	*bind;
 	int		selected;
 	int		top;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	selected = cl.frame.playerstate.stats[STAT_SELECTED_ITEM];
 
@@ -93,8 +94,8 @@ void CL_DrawInventory (void)
 
 	y += 24 * vid_hudscale->value;
 	x += 24 * vid_hudscale->value;
-	Draw_String (x, y, "hotkey ### item");
-	Draw_String (x, y+8*vid_hudscale->value, "------ --- ----");
+	Text_Draw(cl_system_font->string, x, y, "hotkey ### item");
+	Text_Draw(cl_system_font->string, x, y+8*vid_hudscale->value, "------ --- ----");
 	y += 16 * vid_hudscale->value;
 	for (i=top ; i<num && i < top+DISPLAY_ITEMS ; i++)
 	{
@@ -118,7 +119,7 @@ void CL_DrawInventory (void)
 			if ( (int)(cls.realtime*10) & 1)
 				re.DrawChar (x - 8 * vid_hudscale->value, y * vid_hudscale->value, 15);
 		}
-		Draw_String (x, y, string);
-		y += 8 * vid_hudscale->value;
+		Text_Draw(cl_system_font->string, x, y, string);
+		y += system_font_ptr->line_height * vid_hudscale->value;
 	}
 }

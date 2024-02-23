@@ -335,8 +335,6 @@ extern	sizebuf_t	net_message;
 
 void Draw_String (int x, int y, char *s);		// normal
 void Draw_StringAlt (int x, int y, char *s);	// toggle high bit
-void Draw_StringR2L(int, int, const char*);		// right to left
-void Draw_StringR2LAlt(int, int, const char*);	// right to left, toggle high bit
 
 qboolean CL_CheckOrDownloadFile (char *filename);
 
@@ -565,6 +563,9 @@ void CL_PredictMovement (void);
 #define MAX_UIS					32
 #define MAX_UI_STR_LENGTH		64
 
+// Defined her for use by UI
+#define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
+
 typedef enum ui_control_type_e
 {
 	ui_control_text = 0,									// Simple text.
@@ -580,6 +581,7 @@ typedef struct ui_control_s
 	ui_control_type		type;								// Type of this UI control.
 	int					position_x;							// UI control position (x-component).
 	int					position_y;							// UI control position (y-component).
+	char				font[MAX_FONT_FILENAME_LEN];
 	int					size_x;								// UI control size (x-component).
 	int					size_y;								// UI control size (y-component).
 	char				name[MAX_UI_STR_LENGTH];			// UI control name (for code)
@@ -651,11 +653,11 @@ void UI_Draw();																															// Draws a UI.
 
 // UI: Clear
 void UI_Clear(char* name);																												// Removes all the controls in a UI.
-void UI_Reset();																														// INTERNAL, resets all UI states.
 
 // UI: Internal
 ui_t* UI_GetUI(char* name);																												// Returns a pointer so NULL can be indicated for failure
 ui_control_t* UI_GetControl(char* ui_name, char* name);																					// Gets the control with name name in the ui UI.
+void UI_Reset();																														// INTERNAL, resets all UI states to their defaults.																													// INTERNAL, deletes all UIs, and restarts the UI system
 
 // UI: Create Scripts
 // TeamUI
@@ -680,7 +682,7 @@ void UI_LeaderboardUIUpdate();
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
 #define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
 #define FONT_LIST_FILENAME		"fonts\\fonts.txt"	// File name of the font list.
-#define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
+
 
 //
 // cl_font.c
@@ -743,7 +745,7 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 // Modern Text Engine
 //
 
-void Text_Draw(const char* font, int x, int y, char* text, ...);					// Draws text using font font.
-void Text_DrawChar(const char* font, int x, int y, char text);						// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
-qboolean Text_GetSize(const char* font, int *size_x, int *size_y, char* text, ...);	// Gets the size of the text text.#
-qboolean Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);	// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+void Text_Draw(const char* font, int x, int y, const char* text, ...);					// Draws text using font font.
+void Text_DrawChar(const char* font, int x, int y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+qboolean Text_GetSize(const char* font, int *size_x, int *size_y, const char* text, ...);	// Gets the size of the text text.#
+qboolean Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.

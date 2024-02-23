@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // see client.h for explanations on what these are 
 int			num_uis;																					
 ui_t		ui_list[MAX_UIS];
-qboolean	ui_active;																					// This is so we know to turn on the mouse cursor when a UI is being displayed.
+qboolean	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
@@ -44,10 +44,9 @@ void			UI_DrawBox(ui_control_t* box);
 
 qboolean UI_Init()
 {
-	// set everything to 0 in the case of reinitialisation e.g. failed to run singleplayer
-	memset(&ui_list, 0x00, sizeof(ui_list));
+	// they are not statically initalised here because UI gets reinit'd on vidmode change so we need to wipe everything clean
+	memset(&ui_list, 0x00, sizeof(ui_t) * num_uis); // only clear the uis that actually exist
 	num_uis = 0;
-
 	qboolean successful;
 
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
@@ -108,7 +107,7 @@ ui_t* UI_GetUI(char* name)
 		}
 	}
 
-	Com_Printf("Tried to get NULL UI %s\n", name);
+	Com_Printf("UI_GetUI: Couldn't find UI: %s\n", name);
 	return NULL;
 }
 
@@ -140,7 +139,7 @@ qboolean UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y,
 {
 	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
-		Sys_Error("Tried to add too many controls to the UI %s", ui_ptr->name);
+		Sys_Error("Tried to add too many controls to the UI %s, max %d", ui_ptr->name, ui_ptr->num_controls);
 		return false;
 	}
 
@@ -198,7 +197,7 @@ qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x
 	// not recommended to buffer overflow
 	if (strlen(image_path) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("Tried to set UI control image path %s to %s - too long (max length %d)!\n", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("The UI control %s's image path %s is too long (max length %d)!\n", name, image_path, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -326,7 +325,7 @@ qboolean UI_SetText(char* ui_name, char* name, char* text)
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control text %s to %s!\n", name, text);
+		Com_Printf("Couldn't find UI control %s to set text to %s!\n", name, text);
 		return false;
 	}
 
@@ -456,7 +455,16 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t* text)
 {
-	Draw_String(text->position_x, text->position_y, text->text);
+	// initialised to 0
+	// if the font is not set use the system font
+	if (strlen(text->font) == 0)
+	{
+		Text_Draw(cl_system_font->string, text->position_x, text->position_y, text->text);
+	}
+	else
+	{
+		Text_Draw(text->font, text->position_x, text->position_y, text->text);
+	}
 }
 
 void UI_DrawImage(ui_control_t* image)

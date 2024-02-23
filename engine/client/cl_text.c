@@ -60,7 +60,7 @@ qboolean Text_GetSizeChar(const char* font, int* x, int* y, char text)
 	return Text_GetSize(font, x, y, &new_string);
 }
 
-qboolean Text_GetSize(const char* font, int *x, int *y, char* text, ...)
+qboolean Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 {
 	font_t* font_ptr = Font_GetByName(font);
 
@@ -183,7 +183,7 @@ void Text_DrawChar(const char* font, int x, int y, char text)
 	Text_Draw(font, x, y, &new_string);
 }
 
-void Text_Draw(const char* font, int x, int y, char* text, ...)
+void Text_Draw(const char* font, int x, int y, const char* text, ...)
 {
 	// TODO: VARARGS
 

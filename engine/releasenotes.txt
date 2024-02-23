@@ -43,7 +43,7 @@ February 22, 2024
 * Don't enforce TDM rules on non-TDM.
 * Complete rewrite of how text is drawn.
 	* Supports arbitrary fonts.
-	* Not used for all text currently. Needs to be ported to the menus as of 2/21, used in the console and chat though.
+	* Not used for all text currently. Needs to be ported to the menus currently, used in the console and chat though.
 * Used detail brush optimisation in z_tdm_subway to reduce its size from 11.5mb to 5mb.
 * Added Quake 3 color codes, with extensions:
 	* Originals: ^0 - Black, ^1 - Red, ^2 - Green, ^3 - Yellow, ^4 - Blue, ^5 - Light Blue, ^6 - Pink, ^7 - White
@@ -53,6 +53,7 @@ February 22, 2024
 * Changed "say" and "say_team" messages to "Chat: " and "Chat (Team): " and made them green and blue respectively.
 * Chat messages (svc_print) no longer have the high bit set on client receive - this was done to make them have the green color in the quake 2 character set, but this is no longer required in the new system and was therefore corrupting the text.
 * Removed already dead CTRL and ALT bindings from default.cfg.
+* Fixed save files being accidentally added to game build.
 
 Version 0.04-pre4
 February 10, 2024

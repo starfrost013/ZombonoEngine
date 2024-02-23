@@ -942,7 +942,6 @@ void fire_bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 	{
 		return;
 	}
-
 	
 	// spawn the zombie
 	switch (zombie_type)
