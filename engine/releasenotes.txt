@@ -1,5 +1,13 @@
 Zombono
 Release Notes
+Version 0.04-pre6
+February XX, 2024
+
+* Changed menus to use new text system.
+* Rewrote credits.
+* Fixed Subway lighting.
+* Fixed Subway skybox not existing on one side.
+
 Version 0.04-pre5
 February 22, 2024
 * Fixed Gender option in player setup menu changing handedness instead of gender.

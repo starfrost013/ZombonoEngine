@@ -3044,15 +3044,15 @@
 // brush 293
 {
 ( 2776 -188 1040 ) ( 2776 -188 1048 ) ( 2776 -204 1040 ) signage/sign_railway_depart_01 -120 32 0 -0.5 0.5
-( 2776 -188 1040 ) ( 2775.8749922449797 -188 1040 ) ( 2776 -188 1048 ) signage/sign_railway_depart_01 0 0 0 1 1
-( 2776 -184 976 ) ( 2776 -188 980 ) ( 2904 -188 980 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -188 1040 ) ( 2775.8749922449797 -188 1040 ) ( 2776 -188 1048 ) e3u3/metal4_4 0 0 0 1 1
+( 2776 -184 976 ) ( 2776 -188 980 ) ( 2904 -188 980 ) e3u3/metal4_4 0 0 0 1 1
 ( 2776 -188 1036 ) ( 2776 -184 1040 ) ( 2904 -184 1040 ) signage/sign_railway_depart_01 0 0 0 1 1
-( 2778 -60 976 ) ( 2777.8749890418194 -60 976 ) ( 2778 -76 976 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2778 -60 976 ) ( 2777.8749890418194 -60 976 ) ( 2778 -76 976 ) e3u3/metal4_4 0 0 0 1 1
 ( 2776 -188 1040 ) ( 2776 -204 1040 ) ( 2775.8749922449797 -188 1040 ) signage/sign_railway_depart_01 0 0 0 1 1
-( 2776 -60 980 ) ( 2776 -64 976 ) ( 2904 -64 976 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2776 -60 980 ) ( 2776 -64 976 ) ( 2904 -64 976 ) e3u3/metal4_4 0 0 0 1 1
 ( 2776 -64 1040 ) ( 2776 -60 1036 ) ( 2904 -60 1036 ) signage/sign_railway_depart_01 0 0 0 1 1
-( 2778 -60 976 ) ( 2778 -60 984 ) ( 2777.8749890418194 -60 976 ) signage/sign_railway_depart_01 0 0 0 1 1
-( 2778 -60 976 ) ( 2778 -76 976 ) ( 2778 -60 984 ) signage/sign_railway_depart_01 0 0 0 1 1
+( 2778 -60 976 ) ( 2778 -60 984 ) ( 2777.8749890418194 -60 976 ) e3u3/metal4_4 0 0 0 1 1
+( 2778 -60 976 ) ( 2778 -76 976 ) ( 2778 -60 984 ) e3u3/metal4_4 0 0 0 1 1
 }
 // brush 294
 {
@@ -3714,9 +3714,9 @@
 {
 ( 2704 -232 816 ) ( 2704 -232 820 ) ( 2704 -235.85695875799547 816 ) signage/sign_warning_01 159.95721 -64 180 0.24998806 -0.25
 ( 2704 -160 784 ) ( 2576 -160 816 ) ( 2704 -160 816 ) signage/sign_warning_01 31.998047 -64 180 0.25 -0.25
-( 2704 -120 816 ) ( 2704 -232 809.6 ) ( 2576 -232 809.6 ) signage/sign_warning_01 32 0 180 0.25 0.25
+( 2704 -120 816 ) ( 2704 -232 809.6 ) ( 2576 -232 809.6 ) signage/sign_warning_02 32 0 180 0.25 0.25
 ( 2720 -16 784 ) ( 2718 -16 784 ) ( 2720 -19.857142857143117 784 ) signage/sign_warning_01 32 0 180 0.25 0.25
-( 2704 -16 809.6 ) ( 2704 -120 816 ) ( 2576 -120 816 ) signage/sign_warning_01 32 0 180 0.25 0.25
+( 2704 -16 809.6 ) ( 2704 -120 816 ) ( 2576 -120 816 ) signage/sign_warning_02 32 0 180 0.25 0.25
 ( 2704 -96 784 ) ( 2704 -96 816 ) ( 2576 -96 816 ) signage/sign_warning_01 32 -64 180 0.25 -0.25
 ( 2720 -16 784 ) ( 2720 -19.857142857143117 784 ) ( 2720 -16 788 ) signage/sign_warning_01 159.99997 -64 180 0.25 -0.25
 }
@@ -10258,13 +10258,27 @@
 }
 // entity 95
 {
+"classname" "trigger_hurt"
+"dmg" "200"
+// brush 0
+{
+( 2752 -232 904 ) ( 2752 -232 919 ) ( 2752 -235 904 ) e1u1/metal1_1 47.999985 0 180 1 -1
+( 2752 -232 904 ) ( 2738 -232 904 ) ( 2752 -232 919 ) e1u1/metal1_1 -48 0 180 1 -1
+( 2864 -16 784 ) ( 2850 -16 784 ) ( 2864 -19 784 ) e1u1/metal1_1 -48 -48 180 1 1
+( 2752 -232 904 ) ( 2752 -235 904 ) ( 2738 -232 904 ) e1u1/metal1_1 -48 -48 180 1 1
+( 2864 -16 784 ) ( 2864 -16 799 ) ( 2850 -16 784 ) e1u1/metal1_1 -48 0 180 1 -1
+( 2864 -16 784 ) ( 2864 -19 784 ) ( 2864 -16 799 ) e1u1/metal1_1 -15.999992 0 180 1 -1
+}
+}
+// entity 96
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "train_phase2"
 "_tb_id" "16"
 "_tb_layer_sort_index" "0"
 }
-// entity 96
+// entity 97
 {
 "classname" "path_corner"
 "origin" "-88 -784 776"
@@ -10273,7 +10287,7 @@
 "wait" "0"
 "_tb_layer" "16"
 }
-// entity 97
+// entity 98
 {
 "classname" "path_corner"
 "origin" "1112 -816 792"
@@ -10281,7 +10295,7 @@
 "targetname" "train_stop20"
 "_tb_layer" "16"
 }
-// entity 98
+// entity 99
 {
 "classname" "path_corner"
 "origin" "1112 -576 792"
@@ -10289,7 +10303,7 @@
 "targetname" "train_stop19"
 "_tb_layer" "16"
 }
-// entity 99
+// entity 100
 {
 "classname" "path_corner"
 "origin" "1120 -376 792"
@@ -10297,7 +10311,7 @@
 "targetname" "train_stop18"
 "_tb_layer" "16"
 }
-// entity 100
+// entity 101
 {
 "classname" "path_corner"
 "origin" "1128 -168 792"
@@ -10305,7 +10319,7 @@
 "targetname" "train_stop17"
 "_tb_layer" "16"
 }
-// entity 101
+// entity 102
 {
 "classname" "path_corner"
 "origin" "1200 416 792"
@@ -10313,7 +10327,7 @@
 "targetname" "train_stop13"
 "_tb_layer" "16"
 }
-// entity 102
+// entity 103
 {
 "classname" "path_corner"
 "origin" "1144 400 792"
@@ -10321,7 +10335,7 @@
 "targetname" "train_stop14"
 "_tb_layer" "16"
 }
-// entity 103
+// entity 104
 {
 "classname" "path_corner"
 "origin" "1112 376 792"
@@ -10329,7 +10343,7 @@
 "targetname" "train_stop15"
 "_tb_layer" "16"
 }
-// entity 104
+// entity 105
 {
 "classname" "path_corner"
 "origin" "1096 344 792"
@@ -10337,7 +10351,7 @@
 "targetname" "train_stop16"
 "_tb_layer" "16"
 }
-// entity 105
+// entity 106
 {
 "classname" "path_corner"
 "origin" "1712 392 792"
@@ -10346,7 +10360,7 @@
 "wait" "10"
 "_tb_layer" "16"
 }
-// entity 106
+// entity 107
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -10354,7 +10368,7 @@
 "_tb_id" "20"
 "_tb_layer_sort_index" "1"
 }
-// entity 107
+// entity 108
 {
 "classname" "path_corner"
 "origin" "-88 -784 776"
@@ -10364,7 +10378,7 @@
 "angle" "0"
 "_tb_layer" "20"
 }
-// entity 108
+// entity 109
 {
 "classname" "path_corner"
 "origin" "-88 -784 776"
@@ -10373,7 +10387,7 @@
 "wait" "0"
 "_tb_layer" "20"
 }
-// entity 109
+// entity 110
 {
 "classname" "path_corner"
 "origin" "1096 -816 792"
@@ -10381,7 +10395,7 @@
 "targetname" "train_stop03"
 "_tb_layer" "20"
 }
-// entity 110
+// entity 111
 {
 "classname" "path_corner"
 "origin" "1096 -576 792"
@@ -10389,7 +10403,7 @@
 "targetname" "train_stop04"
 "_tb_layer" "20"
 }
-// entity 111
+// entity 112
 {
 "classname" "path_corner"
 "origin" "1104 -376 792"
@@ -10397,7 +10411,7 @@
 "targetname" "train_stop05"
 "_tb_layer" "20"
 }
-// entity 112
+// entity 113
 {
 "classname" "path_corner"
 "origin" "1112 -168 792"
@@ -10405,7 +10419,7 @@
 "targetname" "train_stop06"
 "_tb_layer" "20"
 }
-// entity 113
+// entity 114
 {
 "classname" "path_corner"
 "origin" "1216 416 792"
@@ -10413,7 +10427,7 @@
 "targetname" "train_stop10"
 "_tb_layer" "20"
 }
-// entity 114
+// entity 115
 {
 "classname" "path_corner"
 "origin" "1160 400 792"
@@ -10421,7 +10435,7 @@
 "targetname" "train_stop09"
 "_tb_layer" "20"
 }
-// entity 115
+// entity 116
 {
 "classname" "path_corner"
 "origin" "1128 376 792"
@@ -10429,7 +10443,7 @@
 "targetname" "train_stop08"
 "_tb_layer" "20"
 }
-// entity 116
+// entity 117
 {
 "classname" "path_corner"
 "origin" "1112 344 792"
@@ -10437,7 +10451,7 @@
 "targetname" "train_stop07"
 "_tb_layer" "20"
 }
-// entity 117
+// entity 118
 {
 "classname" "path_corner"
 "origin" "1712 392 792"
@@ -10445,4 +10459,12 @@
 "targetname" "train_stop12"
 "wait" "0"
 "_tb_layer" "20"
+}
+// entity 119
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "explode_trigger"
+"_tb_id" "47"
+"_tb_layer_sort_index" "2"
 }

@@ -708,7 +708,7 @@ static void DrawKeyBindingFunc( void *self )
 		
 	if (keys[0] == -1)
 	{
-		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "???");
+		Text_Draw(cl_system_font->string, a->generic.x + a->generic.parent->x + 16 * vid_hudscale->value, a->generic.y + a->generic.parent->y, "^1???");
 	}
 	else
 	{
@@ -716,11 +716,11 @@ static void DrawKeyBindingFunc( void *self )
 
 		if (keys[1] != -1)
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^3%s^7 OR ^3%s", Key_KeynumToString(keys[0]), Key_KeynumToString(keys[1]));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7 OR ^2%s", Key_KeynumToString(keys[0]), Key_KeynumToString(keys[1]));
 		}
 		else
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^3%s^7", Key_KeynumToString(keys[0]));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7", Key_KeynumToString(keys[0]));
 		}
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, name);
@@ -1334,13 +1334,13 @@ void Options_MenuInit( void )
 	s_options_customize_options_action.generic.type	= MTYPE_ACTION;
 	s_options_customize_options_action.generic.x		= 0;
 	s_options_customize_options_action.generic.y		= 140 * vid_hudscale->value;
-	s_options_customize_options_action.generic.name	= "^5Customize Controls";
+	s_options_customize_options_action.generic.name	= "^3Customize Controls";
 	s_options_customize_options_action.generic.callback = CustomizeControlsFunc;
 
 	s_options_defaults_action.generic.type	= MTYPE_ACTION;
 	s_options_defaults_action.generic.x		= 0;
 	s_options_defaults_action.generic.y		= 150 * vid_hudscale->value;
-	s_options_defaults_action.generic.name	= "^5Reset to Defaults";
+	s_options_defaults_action.generic.name	= "^3Reset to Defaults";
 	s_options_defaults_action.generic.callback = ControlsResetDefaultsFunc;
 
 	s_options_console_action.generic.type	= MTYPE_ACTION;
@@ -2011,7 +2011,7 @@ void JoinServer_MenuInit( void )
 	s_joinserver_search_action.generic.x	= 0;
 	s_joinserver_search_action.generic.y	= 10 * vid_hudscale->value;
 	s_joinserver_search_action.generic.callback = SearchLocalGamesFunc;
-	s_joinserver_search_action.generic.statusbar = "^0Search for Servers";
+	s_joinserver_search_action.generic.statusbar = "Search for Servers";
 
 	s_joinserver_server_title.generic.type = MTYPE_SEPARATOR;
 	s_joinserver_server_title.generic.name = "^5Connect to...";
@@ -2027,7 +2027,7 @@ void JoinServer_MenuInit( void )
 		s_joinserver_server_actions[i].generic.x		= 0;
 		s_joinserver_server_actions[i].generic.y		= (40 + i*10) * vid_hudscale->value;
 		s_joinserver_server_actions[i].generic.callback = JoinServerFunc;
-		s_joinserver_server_actions[i].generic.statusbar = "^0Press ENTER to connect!";
+		s_joinserver_server_actions[i].generic.statusbar = "Press ENTER to connect!";
 	}
 
 	Menu_AddItem( &s_joinserver_menu, &s_joinserver_address_book_action );
@@ -2164,12 +2164,12 @@ void StartServer_MenuInit( void )
 {
 	static const char *gamemode_names[] =
 	{
-		"^3TDM",
-		"^3Hostage",
-		"^3Waves",
-		"^3Co-op",
-		"^3Control Point???",
-		"^3Tournament",
+		"^2TDM",
+		"^2Hostage",
+		"^2Waves",
+		"^2Co-op",
+		"^2Control Point???",
+		"^2Tournament",
 		0
 	};
 
@@ -2279,13 +2279,13 @@ void StartServer_MenuInit( void )
 	s_timelimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_timelimit_field.generic.x	= 0;
 	s_timelimit_field.generic.y	= 36 * vid_hudscale->value;
-	s_timelimit_field.generic.statusbar = "^00 = No Limit (this time is in *MINUTES*)";
+	s_timelimit_field.generic.statusbar = "0 = No Limit (this time is in *MINUTES*)";
 	s_timelimit_field.length = 3;
 	s_timelimit_field.visible_length = 3;
 	strcpy( s_timelimit_field.buffer, Cvar_VariableString("timelimit") );
 
 	s_fraglimit_field.generic.type = MTYPE_FIELD;
-	s_fraglimit_field.generic.name = "^5 Limit";
+	s_fraglimit_field.generic.name = "^5 Frag Limit";
 	s_fraglimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_fraglimit_field.generic.x	= 0;
 	s_fraglimit_field.generic.y	= 54 * vid_hudscale->value;
@@ -2324,7 +2324,7 @@ void StartServer_MenuInit( void )
 	strcpy( s_hostname_field.buffer, Cvar_VariableString("hostname") );
 
 	s_startserver_dmoptions_action.generic.type = MTYPE_ACTION;
-	s_startserver_dmoptions_action.generic.name	= " ^5Game Settings";
+	s_startserver_dmoptions_action.generic.name	= " ^3Game Settings";
 	s_startserver_dmoptions_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_startserver_dmoptions_action.generic.x	= 24 * vid_hudscale->value;
 	s_startserver_dmoptions_action.generic.y	= 108 * vid_hudscale->value;
@@ -2332,7 +2332,7 @@ void StartServer_MenuInit( void )
 	s_startserver_dmoptions_action.generic.callback = DMOptionsFunc;
 
 	s_startserver_start_action.generic.type = MTYPE_ACTION;
-	s_startserver_start_action.generic.name	= " ^5Start";
+	s_startserver_start_action.generic.name	= " ^3Start";
 	s_startserver_start_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_startserver_start_action.generic.x	= 24 * vid_hudscale->value;
 	s_startserver_start_action.generic.y	= 128 * vid_hudscale->value;
@@ -2526,7 +2526,7 @@ static void GameFlagCallback( void *self )
 setvalue:
 	Cvar_SetValue ("gameflags", flags);
 
-	Com_sprintf( dmoptions_statusbar, sizeof( dmoptions_statusbar ), "^0gameflags = %d", flags );
+	Com_sprintf( dmoptions_statusbar, sizeof( dmoptions_statusbar ), "gameflags = %d", flags );
 
 }
 
@@ -2751,7 +2751,7 @@ void DownloadOptions_MenuInit( void )
 	s_downloadoptions_menu.nitems = 0;
 
 	s_download_title.generic.type = MTYPE_SEPARATOR;
-	s_download_title.generic.name = "^5Download Options";
+	s_download_title.generic.name = "^4Download Options";
 	s_download_title.generic.x    = 48;
 	s_download_title.generic.y	 = y * vid_hudscale->value;
 
@@ -3231,7 +3231,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_name_field.cursor = (int)strlen( name->string );
 
 	s_player_model_title.generic.type = MTYPE_SEPARATOR;
-	s_player_model_title.generic.name = "Model";
+	s_player_model_title.generic.name = "^5Model";
 	s_player_model_title.generic.x    = -8 * vid_hudscale->value;
 	s_player_model_title.generic.y	 = 60 * vid_hudscale->value;
 
@@ -3244,7 +3244,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_model_box.itemnames = (const char**)s_pmnames;
 
 	s_player_skin_title.generic.type = MTYPE_SEPARATOR;
-	s_player_skin_title.generic.name = "Skin";
+	s_player_skin_title.generic.name = "^5Skin";
 	s_player_skin_title.generic.x    = -16 * vid_hudscale->value;
 	s_player_skin_title.generic.y	 = 84 * vid_hudscale->value;
 
@@ -3258,7 +3258,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_skin_box.itemnames = (const char**)s_pmi[currentdirectoryindex].skindisplaynames;
 
 	s_player_handedness_title.generic.type = MTYPE_SEPARATOR;
-	s_player_handedness_title.generic.name = "Handedness";
+	s_player_handedness_title.generic.name = "^5Handedness";
 	s_player_handedness_title.generic.x    = 32 * vid_hudscale->value;
 	s_player_handedness_title.generic.y	 = 108 * vid_hudscale->value;
 
@@ -3273,7 +3273,7 @@ qboolean PlayerConfig_MenuInit( void )
 
 	// ULTRA WOKE!
 	s_player_gender_title.generic.type = MTYPE_SEPARATOR;
-	s_player_gender_title.generic.name = "Gender";
+	s_player_gender_title.generic.name = "^5Gender";
 	s_player_gender_title.generic.x = 0;
 	s_player_gender_title.generic.y = 132 * vid_hudscale->value;
 
@@ -3287,7 +3287,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_gender_box.itemnames = genders;
 
 	s_player_download_action.generic.type = MTYPE_ACTION;
-	s_player_download_action.generic.name	= "Download Options";
+	s_player_download_action.generic.name	= "^4Download Options";
 	s_player_download_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_player_download_action.generic.x	= -24 * vid_hudscale->value;
 	s_player_download_action.generic.y	= 210 * vid_hudscale->value;

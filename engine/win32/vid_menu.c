@@ -192,10 +192,10 @@ void VID_MenuInit( void )
 		"[default OpenGL]",
 		0
 	};
-	static const char *yesno_names[] =
+	static const char *yes_no_names[] =
 	{
-		"no",
-		"yes",
+		"^1No",
+		"^2Yes",
 		0
 	};
 	static const char *filter_modes[] =
@@ -239,14 +239,14 @@ void VID_MenuInit( void )
 	for ( i = 0; i < NUM_REF_MENUS; i++ )
 	{
 		s_ref_list[i].generic.type = MTYPE_SPINCONTROL;
-		s_ref_list[i].generic.name = "Driver";
+		s_ref_list[i].generic.name = "^5Driver";
 		s_ref_list[i].generic.x = 0;
 		s_ref_list[i].generic.y = 0;
 		s_ref_list[i].generic.callback = DriverCallback;
 		s_ref_list[i].itemnames = refs;
 
 		s_mode_list[i].generic.type = MTYPE_SPINCONTROL;
-		s_mode_list[i].generic.name = "Video Mode";
+		s_mode_list[i].generic.name = "^5Video Mode";
 		s_mode_list[i].generic.x = 0;
 		s_mode_list[i].generic.y = 10 * vid_hudscale->value;
 		s_mode_list[i].itemnames = resolutions;
@@ -254,7 +254,7 @@ void VID_MenuInit( void )
 		s_screensize_slider[i].generic.type	= MTYPE_SLIDER;
 		s_screensize_slider[i].generic.x		= 0;
 		s_screensize_slider[i].generic.y		= 20 * vid_hudscale->value;
-		s_screensize_slider[i].generic.name	= "Screen Size";
+		s_screensize_slider[i].generic.name	= "^5Screen Size";
 		s_screensize_slider[i].minvalue = 4;
 		s_screensize_slider[i].maxvalue = 10;
 		s_screensize_slider[i].generic.callback = ScreenSizeCallback;
@@ -262,7 +262,7 @@ void VID_MenuInit( void )
 		s_brightness_slider[i].generic.type	= MTYPE_SLIDER;
 		s_brightness_slider[i].generic.x	= 0;
 		s_brightness_slider[i].generic.y	= 30 * vid_hudscale->value;
-		s_brightness_slider[i].generic.name	= "Brightness";
+		s_brightness_slider[i].generic.name	= "^5Brightness";
 		s_brightness_slider[i].generic.callback = BrightnessCallback;
 		s_brightness_slider[i].minvalue = 5;
 		s_brightness_slider[i].maxvalue = 13;
@@ -271,24 +271,24 @@ void VID_MenuInit( void )
 		s_fs_box[i].generic.type = MTYPE_SPINCONTROL;
 		s_fs_box[i].generic.x	= 0;
 		s_fs_box[i].generic.y	= 40 * vid_hudscale->value;
-		s_fs_box[i].generic.name	= "Fullscreen";
-		s_fs_box[i].itemnames = yesno_names;
+		s_fs_box[i].generic.name	= "^5Fullscreen";
+		s_fs_box[i].itemnames = yes_no_names;
 		s_fs_box[i].curvalue = vid_fullscreen->value;
 
 		s_apply_action[i].generic.type = MTYPE_ACTION;
-		s_apply_action[i].generic.name = "Apply Changes";
+		s_apply_action[i].generic.name = "^5Apply Changes";
 		s_apply_action[i].generic.x = 0;
 		s_apply_action[i].generic.y = 170 * vid_hudscale->value;
 		s_apply_action[i].generic.callback = ApplyChanges;
 
 		s_defaults_action[i].generic.type = MTYPE_ACTION;
-		s_defaults_action[i].generic.name = "Reset to Defaults";
+		s_defaults_action[i].generic.name = "^5Reset to Defaults";
 		s_defaults_action[i].generic.x    = 0;
 		s_defaults_action[i].generic.y    = 180 * vid_hudscale->value;
 		s_defaults_action[i].generic.callback = ResetDefaults;
 
 		s_cancel_action[i].generic.type = MTYPE_ACTION;
-		s_cancel_action[i].generic.name = "Cancel";
+		s_cancel_action[i].generic.name = "^5Cancel";
 		s_cancel_action[i].generic.x    = 0;
 		s_cancel_action[i].generic.y    = 190 * vid_hudscale->value;
 		s_cancel_action[i].generic.callback = CancelChanges;
@@ -297,7 +297,7 @@ void VID_MenuInit( void )
 	s_tq_slider.generic.type	= MTYPE_SLIDER;
 	s_tq_slider.generic.x		= 0;
 	s_tq_slider.generic.y		= 60 * vid_hudscale->value;
-	s_tq_slider.generic.name	= "Texture Quality";
+	s_tq_slider.generic.name	= "^5Texture Quality";
 	s_tq_slider.minvalue = 0;
 	s_tq_slider.maxvalue = 3;
 	s_tq_slider.curvalue = 3-gl_picmip->value;
@@ -305,9 +305,9 @@ void VID_MenuInit( void )
 	s_finish_box.generic.type = MTYPE_SPINCONTROL;
 	s_finish_box.generic.x	= 0;
 	s_finish_box.generic.y	= 80 * vid_hudscale->value;
-	s_finish_box.generic.name	= "Sync Every Frame";
+	s_finish_box.generic.name	= "^5Sync Every Frame";
 	s_finish_box.curvalue = gl_finish->value;
-	s_finish_box.itemnames = yesno_names;
+	s_finish_box.itemnames = yes_no_names;
 
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_ref_list[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_mode_list[OPENGL_MENU] );
