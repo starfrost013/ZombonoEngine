@@ -69,8 +69,16 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 
 qboolean UI_BamfuslicatorUICreate()
 {
+	int size_x = 0, size_y = 0;
 	UI_SetPassive("BamfuslicatorUI", true);
-	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25), 8 * 42, 8, 232, 96, 0, 255);
-	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****", (viddef.width / 2) - (150 * vid_hudscale->value), (viddef.height / 1.25));
+	// we only care about precise Y size here
+	// as all the text actually being drawn is smaller than the temp text, this positions it in the middle
+	const char* temp_text = "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****"; 
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
+	int x = (viddef.width / 2) - (120 * vid_hudscale->value);
+	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
+		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 255);
+	// terrible manual positioning because we don't know what the text is (changed at runtime)
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + 80) * vid_hudscale->value, (viddef.height / 1.25) * vid_hudscale->value);
 	return true; 
 }

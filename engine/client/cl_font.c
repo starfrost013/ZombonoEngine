@@ -45,6 +45,10 @@ qboolean Font_Init()
 	char*	token;
 	char*	file;
 
+	// we init every time we change vid so we need to reload and set num_fonts to 0
+	memset(&fonts, 0x00, sizeof(font_t) * num_fonts);
+	num_fonts = 0;
+
 	Com_Printf("Loading fonts...\n");
 
 	// create the system font cvar

@@ -730,6 +730,8 @@ void VID_CheckChanges (void)
 		} 
 
 		// reload UIs so that their positions are relative to the new refdef
+		// this also requires a font reload
+		Font_Init();
 		UI_Init();
 
 		cls.disable_screen = false;
