@@ -3,10 +3,17 @@ Release Notes
 Version 0.04-pre6
 February XX, 2024
 
-* Changed menus to use new text system.
-* Rewrote credits.
+* Changed menus to use new text system and colorised them.
+* Rewrote credits code to use text system.
 * Fixed Subway lighting.
 * Fixed Subway skybox not existing on one side.
+* The Bamfuslicator will now take into account distance from the target as well as from the player while spawning zombies. I need to test if this fixes spawning zombies inside of other players.
+* Added Planfuslicator icon.
+* Added new aiflag: AI_WONDER
+	* Wanders in a direction for a value (represented by the monsterinfo.wander_steps_total value) generated between edict monsterinfo.wander_steps_min and monsterinfo.wander_steps_max, before generating another random direction to wander.
+		* Regular zombies now wander for 20 to 100 steps.
+		* Ogres now wander for 30 to 50 steps.
+		* Fast zombies now wander for 10 to 30 steps.
 
 Version 0.04-pre5
 February 22, 2024

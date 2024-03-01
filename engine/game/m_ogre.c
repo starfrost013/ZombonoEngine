@@ -697,6 +697,10 @@ void SP_monster_ogre_x(edict_t* self)
 	VectorSet(self->maxs, 16, 16, 32);
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
+	self->monsterinfo.aiflags |= AI_WANDER;
+	// move this?
+	self->monsterinfo.wander_steps_min = 30;
+	self->monsterinfo.wander_steps_max = 50;
 
 	sound_idle = gi.soundindex("ogre/ogre_idle.wav");
 	sound_sight1 = gi.soundindex("ogre/ogre_sight1.wav");

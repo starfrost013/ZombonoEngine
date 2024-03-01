@@ -155,6 +155,7 @@ typedef enum
 #define AI_COMBAT_POINT			0x00001000
 #define AI_MEDIC				0x00002000
 #define AI_RESURRECTING			0x00004000
+#define AI_WANDER				0x00008000
 
 //monster attack state
 #define AS_STRAIGHT				1
@@ -467,6 +468,12 @@ typedef struct monsterinfo_s
 
 	int			power_armor_type;
 	int			power_armor_power;
+
+	// AI_Wander only.
+	int			wander_steps_min;		// The minimum number of wander steps.
+	int			wander_steps_max;		// The maximum number of wander steps.
+	int			wander_steps;			// The current number of wander steps.
+	int			wander_steps_total;		// The current total number of wander steps.
 } monsterinfo_t;
 
 extern	game_locals_t	game;

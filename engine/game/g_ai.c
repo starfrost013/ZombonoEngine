@@ -181,6 +181,36 @@ void ai_walk (edict_t *self, float dist)
 			self->monsterinfo.idle_time = level.time + random() * 15;
 		}
 	}
+	else if (!self->monsterinfo.search
+		&& self->monsterinfo.aiflags & AI_WANDER)
+	{
+		// if we haven't moved long enough yet to change wander
+
+		if (self->monsterinfo.wander_steps > self->monsterinfo.wander_steps_total)
+		{
+			// walk in a random direction
+			self->ideal_yaw = rand() % 360;
+
+			M_ChangeYaw(self);
+
+			// generate a number from zero to highest wand erstuep
+			self->monsterinfo.wander_steps_total = rand() % (self->monsterinfo.wander_steps_max + 1);
+
+			// if it's lower than the minimu
+			while (self->monsterinfo.wander_steps_total < self->monsterinfo.wander_steps_min)
+			{
+				self->monsterinfo.wander_steps_total = rand() % (self->monsterinfo.wander_steps_max + 1);
+			}
+
+			self->monsterinfo.wander_steps = 0;
+		}
+
+
+		// wander randomly
+		M_walkmove(self, self->ideal_yaw, dist);
+
+		self->monsterinfo.wander_steps++;
+	}
 }
 
 

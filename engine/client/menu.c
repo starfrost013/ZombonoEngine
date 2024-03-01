@@ -1999,14 +1999,14 @@ void JoinServer_MenuInit( void )
 	s_joinserver_menu.nitems = 0;
 
 	s_joinserver_address_book_action.generic.type	= MTYPE_ACTION;
-	s_joinserver_address_book_action.generic.name	= "^5Address Book";
+	s_joinserver_address_book_action.generic.name	= "^3Address Book";
 	s_joinserver_address_book_action.generic.flags	= QMF_LEFT_JUSTIFY;
 	s_joinserver_address_book_action.generic.x		= 0;
 	s_joinserver_address_book_action.generic.y		= 0;
 	s_joinserver_address_book_action.generic.callback = AddressBookFunc;
 
 	s_joinserver_search_action.generic.type = MTYPE_ACTION;
-	s_joinserver_search_action.generic.name	= "^5Refresh Server List";
+	s_joinserver_search_action.generic.name	= "^3Refresh Server List";
 	s_joinserver_search_action.generic.flags	= QMF_LEFT_JUSTIFY;
 	s_joinserver_search_action.generic.x	= 0;
 	s_joinserver_search_action.generic.y	= 10 * vid_hudscale->value;

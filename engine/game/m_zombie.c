@@ -700,7 +700,11 @@ void SP_monster_zombie_x(edict_t* self)
 	VectorSet(self->maxs, 16, 16, 32);
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
-	
+	self->monsterinfo.aiflags |= AI_WANDER;
+	// move this?
+	self->monsterinfo.wander_steps_min = 20;
+	self->monsterinfo.wander_steps_max = 100;
+
 	sound_idle = gi.soundindex("zombie/idle_w2.wav");
 	sound_sight1 = gi.soundindex("zombie/z_idle.wav");
 	sound_sight2 = gi.soundindex("zombie/z_idle1.wav");
