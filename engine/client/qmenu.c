@@ -45,9 +45,6 @@ extern cvar_t *vid_hudscale;
 #define VID_WIDTH viddef.width
 #define VID_HEIGHT viddef.height
 
-#define Draw_Char re.DrawChar
-#define Draw_Fill re.DrawFill
-
 void Action_DoEnter( menuaction_t *a )
 {
 	if ( a->generic.callback )
@@ -86,29 +83,31 @@ qboolean Field_DoEnter( menufield_t *f )
 void Field_Draw( menufield_t *f )
 {
 	int i;
-	int size_x = 0, size_y = 0;
+	int name_size_x = 0, name_size_y = 0;
+	int text_size_x = 0, text_size_y = 0;
 	char tempbuffer[128]="";
 
 	if (f->generic.name)
 	{
-		Text_GetSize(cl_system_font->string, &size_x, &size_y, f->generic.name);
-		Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET - size_x, f->generic.y + f->generic.parent->y, f->generic.name);
+		Text_GetSize(cl_system_font->string, &name_size_x, &name_size_y, f->generic.name);
+		Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + LCOLUMN_OFFSET - name_size_x, f->generic.y + f->generic.parent->y, f->generic.name);
 	}
 	
 	strncpy( tempbuffer, f->buffer + f->visible_offset, f->visible_length );
 
-	Draw_Char( f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, 18 );
-	Draw_Char( f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, 24 );
+	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "pics/field_top_01" );
+	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "pics/field_bottom_01" );
 
-	Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, 20 );
-	Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, 26 );
+	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "pics/field_top_03");
+	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "pics/field_bottom_03");
 
 	for ( i = 0; i < f->visible_length; i++ )
 	{
-		Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, 19 );
-		Draw_Char( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, 25 );
+		re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "pics/field_top_02");
+		re.DrawPic( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "pics/field_bottom_02");
 	}
 
+	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
 	Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
 
 	if ( Menu_ItemAtCursor( f->generic.parent ) == f )
@@ -122,15 +121,10 @@ void Field_Draw( menufield_t *f )
 
 		if ( ( ( int ) ( Sys_Milliseconds() / 250 ) ) & 1 )
 		{
-			Draw_Char( f->generic.x + f->generic.parent->x + ( offset + 2 ) * 8 * vid_hudscale->value + 8 * vid_hudscale->value,
+			// 8x8 is cursor size
+			re.DrawPic(f->generic.x + f->generic.parent->x + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
 					   f->generic.y + f->generic.parent->y,
-					   11 );
-		}
-		else
-		{
-			Draw_Char( f->generic.x + f->generic.parent->x + ( offset + 2 ) * 8 * vid_hudscale->value + 8 * vid_hudscale->value,
-					   f->generic.y + f->generic.parent->y,
-					   ' ' );
+						"pics/field_cursor_on");
 		}
 	}
 }
@@ -391,14 +385,18 @@ void Menu_Draw( menuframework_t *menu )
 	}
 	else if ( item && item->type != MTYPE_FIELD )
 	{
-		if ( item->flags & QMF_LEFT_JUSTIFY )
+		if (((int)(Sys_Milliseconds() / 250) & 1))
 		{
-			Draw_Char( menu->x + item->x - 24*vid_hudscale->value + item->cursor_offset*vid_hudscale->value, menu->y + item->y, 12 + ( ( int ) ( Sys_Milliseconds()/250 ) & 1 ) );
+			if (item->flags & QMF_LEFT_JUSTIFY)
+			{
+				re.DrawPic(menu->x + item->x - 24 * vid_hudscale->value + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "pics/menu_cursor_on");
+			}
+			else
+			{
+				re.DrawPic(menu->x + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "pics/menu_cursor_on");
+			}
 		}
-		else
-		{
-			Draw_Char( menu->x + item->cursor_offset*vid_hudscale->value, menu->y + item->y, 12 + ( ( int ) ( Sys_Milliseconds()/250 ) & 1 ) );
-		}
+
 	}
 
 	if ( item )
@@ -429,13 +427,13 @@ void Menu_DrawStatusBar( const char *string )
 		int maxcol = VID_WIDTH / (8*vid_hudscale->value);
 		int col = maxcol / 2 - l / 2;
 
-		Draw_Fill( 0, (VID_HEIGHT-system_font_ptr->line_height)*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
+		re.DrawFill( 0, (VID_HEIGHT-system_font_ptr->line_height)*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
 
 		Text_Draw(cl_system_font->string, col*size_x*vid_hudscale->value, VID_HEIGHT - size_y*vid_hudscale->value, string );
 	}
 	else
 	{
-		Draw_Fill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 0, 0, 0, 255 );
+		re.DrawFill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 0, 0, 0, 255 );
 	}
 }
 
@@ -536,7 +534,7 @@ void MenuList_Draw( menulist_t *l )
 
 	n = l->itemnames;
 
-  	Draw_Fill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, 99, 76, 35, 255);
+	re.DrawFill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, 99, 76, 35, 255);
 	while ( *n )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, *n);
@@ -590,11 +588,11 @@ void Slider_Draw( menuslider_t *s )
 		s->range = 0;
 	if ( s->range > 1)
 		s->range = 1;
-	Draw_Char( s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, 128);
+	re.DrawPic( s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, "pics/slider_01");
 	for ( i = 0; i < SLIDER_RANGE; i++ )
-		Draw_Char( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, 129);
-	Draw_Char( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, 130);
-	Draw_Char( ( int ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, 131);
+		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "pics/slider_02");
+	re.DrawPic( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, "pics/slider_03");
+	re.DrawPic( ( int ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, "pics/slider_value");
 }
 
 void SpinControl_DoEnter( menulist_t *s )

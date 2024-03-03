@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/02/18 version
+// 2024/03/01 version
 
 //
 // worldspawn
@@ -351,6 +351,20 @@
 	dmg(integer) : "Damage when blocked" : 2
 	noise(string) : "Sound (path/file.wav)"
 	_minlight(integer) : "Minimum light (optional)"
+]
+
+@SolidClass base(Appearflags, Targetname) color(0 128 204) = func_trampoline : "Trampoline"
+[
+	team(integer) : "Team"
+	jump_velocity(integer): "Jump Height" : 100
+	dmg(integer): "Damage on hit"
+	noise(string) : "Sound (path/file.wav)"
+	_minlight(integer) : "Minimum light (optional)"
+	spawnflags(Flags) =
+	[
+		1 : "Has Knockback" : 0
+		8 : "No Protection" : 0
+	]
 ]
 
 // 0221 - added a "_minlight" key

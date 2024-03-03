@@ -92,7 +92,6 @@ typedef struct _TargaHeader {
 	unsigned char	pixel_size, attributes;
 } TargaHeader;
 
-
 /* 
 ================== 
 GL_ScreenShot_f
@@ -101,8 +100,8 @@ GL_ScreenShot_f
 void GL_ScreenShot_f (void) 
 {
 	byte		*buffer;
-	char		picname[80]; 
-	char		checkname[MAX_OSPATH];
+	char		picname[MAX_OSPATH] = { 0 };
+	char		checkname[MAX_OSPATH] = { 0 };
 	int			i, c, temp;
 	FILE		*f;
 
@@ -134,7 +133,7 @@ void GL_ScreenShot_f (void)
 		// remove the .tga (so the extension stays later
 		picname[strlen(picname) - 4] = '\0';
 
-		// this is so we don't endlessly add our concatenated code over and over again
+		// this is so we don't endlessly add our concatenated date and time over and over again
 		char tempbuf[128];
 
 		int n = 2;

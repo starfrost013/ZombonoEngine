@@ -65,6 +65,8 @@ void UI_LeaderboardUIUpdate()
 	char text[TEXT_BUF_LENGTH];
 	// for team score TODO: we do this twice in different places
 	int director_score = 0, player_score = 0;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
+
 	// stupid hack
 	UI_Clear("LeaderboardUI");
 	UI_LeaderboardUICreate();
@@ -107,24 +109,25 @@ void UI_LeaderboardUIUpdate()
 		x += 8 * 10;
 
 		//team
-		int box_size = 8 * 11; // a bit of padding
+		int box_size_x = 8 * 11; // a bit of padding
+		int box_size_y = system_font_ptr->line_height - 1; // -1 because it looks weird with noen
 
 		if (leaderboard_entry.team == common_team_director)
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 87, 0, 127, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 87, 0, 127, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Director", x, y);
 			director_score += leaderboard_entry.score;
 
 		}
 		else if (leaderboard_entry.team == common_team_player)
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 219, 87, 0, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 219, 87, 0, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Player", x, y);
 			player_score += leaderboard_entry.score;
 		}
 		else
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size, 8, 127, 127, 127, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 127, 127, 127, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Unassigned", x, y);
 		}
 
@@ -155,16 +158,17 @@ void UI_LeaderboardUIUpdate()
 		if (client_num == 0)
 		{
 			x = (viddef.width / 2) - 320;
-			y = (viddef.height / 2) + 176;
+			y = (viddef.height / 2) + 168;
 
-			char map_buf[TEXT_BUF_LENGTH_LONG]; // 31 map name length + 5 for "Map: "
-			char time_buf[TEXT_BUF_LENGTH_LONG];  // 31 map name length + 7 for "Time: " and optional 0
+			// 38 map name length + 7 for "Time: " and optional 0
+			char map_buf[TEXT_BUF_LENGTH_LONG];
+			char time_buf[TEXT_BUF_LENGTH_LONG];
 
 			snprintf(map_buf, TEXT_BUF_LENGTH_LONG, "Map: %s", leaderboard_entry.map_name);
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_buf, x, y);
 
-			y += 8;
+			y += system_font_ptr->line_height;
 
 			int seconds = leaderboard_entry.time_remaining % 60;
 
@@ -180,7 +184,7 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 
-		y = (viddef.height / 2) - 124 + (12 * (client_num + 1));
+		y = (viddef.height / 2) - 124 + (system_font_ptr->line_height * (client_num + 1));
 	}
 	
 	x = (viddef.width / 2) - 160;
@@ -195,15 +199,11 @@ void UI_LeaderboardUIUpdate()
 	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
 	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, 8 * 14, 8, 87, 0, 127, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, 8 * 14, system_font_ptr->line_height - 1, 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 
 	x = (viddef.width / 2) + 48;
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, 8 * 14, 8, 219, 87, 0, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, 8 * 14, system_font_ptr->line_height - 1, 219, 87, 0, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);
-
-	// You need to toggle it here otherwise you can never turn it on because UIs not being disabled don't get events.
-	// Writing UI code is like being shot into the sun.
-	//if (current_ui == NULL || strcmp(current_ui->name, "TeamUI")) UI_LeaderboardUIToggle(K_TAB);
 }

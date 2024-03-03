@@ -184,44 +184,49 @@ void G_LeaderboardSend(edict_t* ent)
 	gi.WriteByte(svc_leaderboard);
 
 	int client_count = G_CountClients();
+	int total = 0, score = 0;
+	int j, k;
+
+	edict_t* sorted_client_edicts[MAX_CLIENTS] = { 0 }; 
+
+	// if someone leaves before someone who joins earlier the edicts may not be perfectly sorted. so we don't use this to iterate.
 
 	gi.WriteByte(client_count);
 
 	// 	// loop through them again to actually send each client's data
 	// TODO: SORT SCORES FOR EACH TEAM!!!
-	// sorting algorithm from previous code:
-	/*
-		// sort the clients by score
-	total = 0;
-	for (i=0 ; i<game.maxclients ; i++)
+
+	for (int i=0 ; i<game.maxclients ; i++)
 	{
-		cl_ent = g_edicts + 1 + i;
-		if (!cl_ent->inuse || game.clients[i].resp.spectator)
+		client_edict = g_edicts + 1 + i;
+
+		// not in use, ignore
+		if (!client_edict->inuse || game.clients[i].resp.spectator)
 			continue;
+
 		score = game.clients[i].resp.score;
+
 		for (j=0 ; j<total ; j++)
 		{
-			if (score > sortedscores[j])
+			if (score > sorted_client_edicts[j]->client->resp.score)
 				break;
 		}
+
 		for (k=total ; k>j ; k--)
 		{
-			sorted[k] = sorted[k-1];
-			sortedscores[k] = sortedscores[k-1];
+			sorted_client_edicts[k] = sorted_client_edicts[k-1];
 		}
-		sorted[j] = i;
-		sortedscores[j] = score;
+
+		sorted_client_edicts[j] = client_edict;
 		total++;
 	}
-*/
-
 
 	for (int client_num = 0; client_num < game.maxclients; client_num++)
 	{
-		// is the client actually being used
-		client_edict = g_edicts + client_num + 1; // client edicts are always at the start???
+		client_edict = sorted_client_edicts[client_num]; // client edicts are always at the start???
 
-		if (client_edict->inuse) // always the same number of clients
+		// is the client actually being used?
+		if (client_edict != NULL) // always the same number of clients
 		{
 			gi.WriteString(client_edict->client->pers.netname);
 			gi.WriteShort(client_edict->client->ping);
@@ -279,12 +284,12 @@ void HelpComputer (edict_t *ent)
 	// send the layout
 	Com_sprintf (string, sizeof(string),
 		"xv 32 yv 8 picn help "			// background
-		"xv 202 yv 12 string2 \"%s\" "		// skill
-		"xv 0 yv 24 cstring2 \"%s\" "		// level name
-		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
-		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
-		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ", 
+		"xv 202 yv 12 string \"%s\" "		// skill
+		"xv 0 yv 24 cstring \"^2%s^7\" "		// level name
+		"xv 0 yv 54 cstring \"^2%s^7\" "		// help 1
+		"xv 0 yv 110 cstring \"^2%s^7\" "		// help 2
+		"xv 50 yv 164 string \"^2 kills     goals    secrets\"^7 "
+		"xv 50 yv 172 string \"^2%3i/%3i     %i/%i       %i/%i\"^7 ", 
 		sk,
 		level.level_name,
 		game.helpmessage1,

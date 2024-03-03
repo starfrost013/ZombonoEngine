@@ -268,16 +268,16 @@ const char *Default_MenuKey( menuframework_t *m, int key )
 
 /*
 ================
-M_DrawCharacter
+Menu_DrawCenteredImage
 
-Draws one solid graphics character
+Draws a centered graphics image.
 cx and cy are in 320*240 coordinates, and will be centered on
 higher res screens.
 ================
 */
-void M_DrawCharacter (int cx, int cy, int num)
+void Menu_DrawCenteredImage (int cx, int cy, char* image)
 {
-	re.DrawChar ( cx + ((viddef.width - 320)>>1), cy + ((viddef.height - 240)>>1), num);
+	re.DrawPic ( cx + ((viddef.width - 320)>>1) * vid_hudscale->value, cy + ((viddef.height - 240)>>1) * vid_hudscale->value, image);
 }
 
 /*
@@ -320,39 +320,39 @@ void Menu_DrawTextBox (int x, int y, int width, int lines)
 	// draw left side
 	cx = x;
 	cy = y;
-	M_DrawCharacter (cx, cy, 1);
+	Menu_DrawCenteredImage(cx, cy, "pics/textbox_top_01");
 	for (n = 0; n < lines; n++)
 	{
 		cy += 8 * vid_hudscale->value;
-		M_DrawCharacter (cx, cy, 4);
+		Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_01");
 	}
-	M_DrawCharacter (cx, cy + 8 * vid_hudscale->value, 7);
+	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_01");
 
 	// draw middle
 	cx += 8 * vid_hudscale->value;
 	while (width > 0)
 	{
 		cy = y;
-		M_DrawCharacter (cx, cy, 2);
+		Menu_DrawCenteredImage (cx, cy, "pics/textbox_top_02");
 		for (n = 0; n < lines; n++)
 		{
 			cy += 8 * vid_hudscale->value;
-			M_DrawCharacter (cx, cy, 5);
+			Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_02");
 		}
-		M_DrawCharacter (cx, cy + 8 * vid_hudscale->value, 8);
+		Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_02");
 		width -= 1;
 		cx += 8 * vid_hudscale->value;
 	}
 
 	// draw right side
 	cy = y;
-	M_DrawCharacter (cx, cy, 3);
+	Menu_DrawCenteredImage (cx, cy, "pics/textbox_top_03");
 	for (n = 0; n < lines; n++)
 	{
 		cy += 8 * vid_hudscale->value;
-		M_DrawCharacter (cx, cy, 6);
+		Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_03");
 	}
-	M_DrawCharacter (cx, cy + 8 * vid_hudscale->value, 9);
+	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_03");
 }
 
 		
@@ -691,10 +691,17 @@ static void M_FindKeysForCommand (char *command, int *twokeys)
 
 static void KeyCursorDrawFunc( menuframework_t *menu )
 {
-	if ( bind_grab )
-		re.DrawChar( menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, '=' );
+	if (bind_grab)
+	{
+		Text_DrawChar(cl_system_font->string, menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, '=');
+	}
 	else
-		re.DrawChar( menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, 12 + ( ( int ) ( Sys_Milliseconds() / 250 ) & 1 ) );
+	{
+		if ((int)(Sys_Milliseconds() / 250) & 1)
+		{
+			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "pics/menu_cursor_on");
+		}
+	}
 }
 
 #define NAME_ARRAY_SIZE		128
@@ -1373,13 +1380,19 @@ void Options_MenuDraw (void)
 	M_Banner( "pics/m_banner_options" );
 	Menu_AdjustCursor( &s_options_menu, 1 );
 	Menu_Draw( &s_options_menu );
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string); // get pointer to system font
 
 	if (update_sound_quality)
 	{
+		int y = 120 - 48 * vid_hudscale->value;
+
 		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Restarting the sound system. This");
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "Restarting the sound system. This");
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "could take up to a minute, so");
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "please be patient.");
 
 		CL_Snd_Restart_f();
 		update_sound_quality = false;
@@ -2046,13 +2059,18 @@ void JoinServer_MenuDraw(void)
 {
 	M_Banner( "pics/m_banner_join_server" );
 	Menu_Draw( &s_joinserver_menu );
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	if (search_local_games)
 	{
-		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 8 * vid_hudscale->value, "Searching for local servers, this");
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 16 * vid_hudscale->value, "could take up to a minute, so");
-		Draw_String(32 - 136 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value + 24 * vid_hudscale->value, "please be patient.");
+		int y = 120 - 48 * vid_hudscale->value;
+		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), y, 36, 3);
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "Searching for local servers, this");
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "could take up to a minute, so");
+		y += (system_font_ptr->line_height * vid_hudscale->value);
+		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "please be patient.");
 
 		// send out info packets
 		CL_PingServers_f();
@@ -2751,7 +2769,7 @@ void DownloadOptions_MenuInit( void )
 	s_downloadoptions_menu.nitems = 0;
 
 	s_download_title.generic.type = MTYPE_SEPARATOR;
-	s_download_title.generic.name = "^4Download Options";
+	s_download_title.generic.name = "^3Download Options";
 	s_download_title.generic.x    = 48;
 	s_download_title.generic.y	 = y * vid_hudscale->value;
 
@@ -3287,7 +3305,7 @@ qboolean PlayerConfig_MenuInit( void )
 	s_player_gender_box.itemnames = genders;
 
 	s_player_download_action.generic.type = MTYPE_ACTION;
-	s_player_download_action.generic.name	= "^4Download Options";
+	s_player_download_action.generic.name	= "^2Download Options";
 	s_player_download_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_player_download_action.generic.x	= -24 * vid_hudscale->value;
 	s_player_download_action.generic.y	= 210 * vid_hudscale->value;

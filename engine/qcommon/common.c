@@ -1022,20 +1022,6 @@ void COM_AddParm (char *parm)
 }
 
 
-
-
-/// just for debugging
-int	memsearch (byte *start, int count, int search)
-{
-	int		i;
-	
-	for (i=0 ; i<count ; i++)
-		if (start[i] == search)
-			return i;
-	return -1;
-}
-
-
 char *CopyString (char *in)
 {
 	char	*out;
@@ -1044,8 +1030,6 @@ char *CopyString (char *in)
 	strcpy (out, in);
 	return out;
 }
-
-
 
 void Info_Print (char *s)
 {

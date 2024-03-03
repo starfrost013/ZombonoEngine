@@ -2050,3 +2050,36 @@ void SP_func_killbox (edict_t *ent)
 	ent->svflags = SVF_NOCLIENT;
 }
 
+void use_trampoline (edict_t* self, edict_t* other, edict_t* activator)
+{
+	if (self->dmg > 0)
+	{
+		int dflags = 0;
+
+		if ((int)self->spawnflags & 8) dflags = DAMAGE_NO_PROTECTION;
+
+		if ((int)self->spawnflags & 1) // Has Knockback (knockback is off for func_trampoline as it may cause unintended side-effects with movement
+		{
+			T_Damage(other, self, self, self->s.angles, other->s.origin, vec3_origin, self->dmg, self->dmg, dflags, 0);
+		}
+		else
+		{
+			T_Damage(other, self, self, self->s.angles, other->s.origin, vec3_origin, self->dmg, 0, dflags, 0);
+		}
+	}
+
+	other->velocity[2] += self->jump_height;
+}
+
+void SP_func_trampoline(edict_t* ent)
+{
+	ent->classname = "func_trampoline";
+	ent->touch = use_trampoline;
+
+	ent->movetype = MOVETYPE_PUSH;
+	ent->solid = SOLID_BSP;
+	// set model to worldmodel
+	gi.setmodel(ent, ent->model);
+
+	gi.linkentity(ent);
+}

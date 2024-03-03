@@ -55,6 +55,7 @@ spawn_t	spawns[] = {
 	{"func_timer", SP_func_timer},
 	{"func_explosive", SP_func_explosive},
 	{"func_killbox", SP_func_killbox},
+	{"func_trampoline", SP_func_trampoline},
 
 	{"trigger_always", SP_trigger_always},
 	{"trigger_once", SP_trigger_once},
@@ -536,7 +537,7 @@ char *dm_statusbar =
 "if 17 "
   "xv 0 "
   "yb -58 "
-  "string2 \"SPECTATOR MODE\" "
+  "string ^2\"SPECTATOR MODE\"^7 "
 "endif "
 
 // chase camera

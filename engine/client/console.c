@@ -34,27 +34,6 @@ extern	char	key_lines[128][MAXCMDLINE];
 extern	int		edit_line;
 extern	int		key_linepos;
 
-void Draw_String (int x, int y, char *s)
-{
-	while (*s)
-	{
-		re.DrawChar (x, y, *s);
-		x+=8*vid_hudscale->value;
-		s++;
-	}
-}
-
-void Draw_StringAlt (int x, int y, char *s)
-{
-	while (*s)
-	{
-		re.DrawChar (x, y, *s ^ 0x80);
-		x+=8*vid_hudscale->value;
-		s++;
-	}
-}
-
-
 void Key_ClearTyping (void)
 {
 	key_lines[edit_line][1] = 0;	// clear any typing

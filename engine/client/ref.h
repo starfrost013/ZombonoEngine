@@ -169,7 +169,6 @@ typedef struct refexport_s
 	void	(*DrawPic) (int x, int y, char *name);
 	void	(*LoadPic) (char* name);
 	void	(*DrawStretchPic) (int x, int y, int w, int h, char *name);
-	void	(*DrawChar) (int x, int y, int c);
 	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);
 	void	(*DrawFill) (int x, int y, int w, int h, int r, int g, int b, int a);
 	void	(*DrawPicRegion)(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic, float color[4]);

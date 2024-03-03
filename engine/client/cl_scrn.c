@@ -771,12 +771,13 @@ void SizeHUDString (char *string, int *w, int *h)
 	*h = lines * 8 * vid_hudscale->value;
 }
 
-void DrawHUDString (char *string, int x, int y, int centerwidth, int xor)
+void DrawCenteredString (char *string, int x, int y, int centerwidth)
 {
 	int		margin;
 	char	line[1024];
 	int		width;
 	int		i;
+	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	margin = x;
 
@@ -792,16 +793,19 @@ void DrawHUDString (char *string, int x, int y, int centerwidth, int xor)
 			x = margin + ((centerwidth - width*8)*vid_hudscale->value)/2;
 		else
 			x = margin;
-		for (i=0 ; i<width ; i++)
-		{
-			re.DrawChar (x, y, line[i]^xor);
-			x += 8 * vid_hudscale->value;
-		}
+
+		// set string terminator for text engine
+		char orig_end_of_line = line[width];
+		line[width] = '\0';
+
+		Text_Draw(cl_system_font->string, x, y, line);
+
+		line[width] = orig_end_of_line;
 		if (*string)
 		{
 			string++;	// skip the \n
 			x = margin;
-			y += 8 * vid_hudscale->value;
+			y += system_font_ptr->line_height * vid_hudscale->value;
 		}
 	}
 }
@@ -1055,35 +1059,22 @@ void SCR_ExecuteLayoutString (char *s)
 			index = cl.frame.playerstate.stats[index];
 			if (index < 0 || index >= MAX_CONFIGSTRINGS)
 				Com_Error (ERR_DROP, "Bad stat_string index");
-			Draw_String (x, y, cl.configstrings[index]);
+			Text_Draw (cl_system_font->string, x, y, cl.configstrings[index]);
 			continue;
 		}
 
 		if (!strcmp(token, "cstring"))
 		{
 			token = COM_Parse (&s);
-			DrawHUDString (token, x, y, 320, 0);
+			DrawCenteredString (token, x, y, 320);
 			continue;
 		}
 
 		if (!strcmp(token, "string"))
 		{
 			token = COM_Parse (&s);
-			Draw_String (x, y, token);
-			continue;
-		}
-
-		if (!strcmp(token, "cstring2"))
-		{
-			token = COM_Parse (&s);
-			DrawHUDString (token, x, y, 320,0x80);
-			continue;
-		}
-
-		if (!strcmp(token, "string2"))
-		{
-			token = COM_Parse (&s);
-			Draw_StringAlt (x, y, token);
+			//todo: is this terminated properly?
+			Text_Draw (cl_system_font->string, x, y, token);
 			continue;
 		}
 

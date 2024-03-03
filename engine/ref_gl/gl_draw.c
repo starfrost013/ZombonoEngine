@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gl_local.h"
 
-image_t		*draw_chars;
-
 /*
 ===============
 Draw_InitLocal
@@ -32,58 +30,8 @@ Draw_InitLocal
 */
 void Draw_InitLocal (void)
 {
-	// load console characters (don't bilerp characters)
-	draw_chars = GL_FindImage ("pics/conchars.tga", it_pic);
-	GL_Bind( draw_chars->texnum );
 	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-}
-
-
-
-/*
-================
-Draw_Char
-
-Draws one 8*8 graphics character with 0 being transparent.
-It can be clipped to the top of the screen to allow the console to be
-smoothly scrolled off.
-================
-*/
-void Draw_Char (int x, int y, int num)
-{
-	int				row, col;
-	float			frow, fcol, size;
-
-	num &= 255;
-	
-	if ( (num&127) == 32 )
-		return;		// space
-
-	if (y <= -8)
-		return;			// totally off screen
-
-	cvar_t *scale = ri.Cvar_Get("hudscale", "1", 0);
-
-	row = num>>4;
-	col = num&15;
-
-	frow = row*0.0625;
-	fcol = col*0.0625;
-	size = 0.0625;
-
-	GL_Bind (draw_chars->texnum);
-
-	qglBegin (GL_QUADS);
-	qglTexCoord2f (fcol, frow);
-	qglVertex2f (x, y);
-	qglTexCoord2f (fcol + size, frow);
-	qglVertex2f (x+8*scale->value, y);
-	qglTexCoord2f (fcol + size, frow + size);
-	qglVertex2f (x+8*scale->value, y+8*scale->value);
-	qglTexCoord2f (fcol, frow + size);
-	qglVertex2f (x, y+8*scale->value);
-	qglEnd ();
 }
 
 /*

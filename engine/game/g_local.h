@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	GAMENAME	"Zombono"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION GAMENAME " v0.0.4-pre5 " __DATE__
+#define GAMEVERSION GAMENAME " v0.0.4-pre6 " __DATE__
 
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1
@@ -1166,6 +1166,8 @@ struct edict_s
 	int			noise_index2;
 	float		volume;
 	float		attenuation;
+
+	int			jump_height; // for func_trampolin
 
 	// timing variables
 	float		wait;

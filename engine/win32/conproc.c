@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -292,9 +293,9 @@ BOOL WriteText (LPCTSTR szText)
 
 	while (*sz)
 	{
-	// 13 is the code for a carriage return (\n) instead of 10.
-		if (*sz == 10)
-			*sz = 13;
+		// Replace \n with \r for older versions of Windows. (do we even need this anymore? restore if it causes problems)
+		//if (*sz == '\n')
+		//	*sz = '\r';
 
 		upper = toupper(*sz);
 

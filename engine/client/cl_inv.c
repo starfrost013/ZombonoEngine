@@ -36,12 +36,6 @@ void CL_ParseInventory (void)
 		cl.inventory[i] = MSG_ReadShort (&net_message);
 }
 
-void SetStringHighBit (char *s)
-{
-	while (*s)
-		*s++ |= 128;
-}
-
 /*
 ================
 CL_DrawInventory
@@ -112,13 +106,13 @@ void CL_DrawInventory (void)
 
 		Com_sprintf (string, sizeof(string), "%6s %3i %s", bind, cl.inventory[item],
 			cl.configstrings[CS_ITEMS+item] );
-		if (item != selected)
-			SetStringHighBit (string);
-		else	// draw a blinky cursor by the selected item
+
+		if (item == selected)	// draw a blinky cursor by the selected item
 		{
 			if ( (int)(cls.realtime*10) & 1)
-				re.DrawChar (x - 8 * vid_hudscale->value, y * vid_hudscale->value, 15);
+				re.DrawPic(x - 8 * vid_hudscale->value, y * vid_hudscale->value, "dot_01");
 		}
+
 		Text_Draw(cl_system_font->string, x, y, string);
 		y += system_font_ptr->line_height * vid_hudscale->value;
 	}
