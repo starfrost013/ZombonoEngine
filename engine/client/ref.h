@@ -126,9 +126,7 @@ typedef struct refdef_s
 	particle_t	*particles;
 } refdef_t;
 
-
-
-#define	API_VERSION		5
+#define	API_VERSION		6
 
 //
 // these are the functions exported by the refresh module

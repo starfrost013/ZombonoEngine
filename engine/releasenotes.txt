@@ -25,6 +25,11 @@ February XX, 2024
 		* 1 - Applies knockback to the player if damage is enabled (off by default to not interfere with the )
 		* 8 - No Protection, same as a trigger_hurt.
 * The Leaderboard now sorts scores.
+* Removed conchars.tga and the old text system entirely.
+	* Converted everything to use the new text system. If this causes bugs, please report them.
+	* Pulled out all the Quake 2 special characters for sliders, textboxes, etc, and made them their own textures.
+	* Check for bugs in old menus, etc
+		* Removed "cstring2" and "string2" for green centered and regular strings respectively from layoutstrings - use color codes instead.
 
 Version 0.04-pre5
 February 22, 2024
