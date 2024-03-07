@@ -614,7 +614,7 @@ void SP_worldspawn (edict_t *ent)
 	gi.imageindex ("pics/i_help");
 	level.pic_health = gi.imageindex ("pics/i_health");
 	gi.imageindex ("pics/help");
-	gi.imageindex ("pics/field_3");
+	gi.imageindex ("pics/field_3"); 
 
 	if (!st.gravity)
 		gi.cvar_set("sv_gravity", "800");

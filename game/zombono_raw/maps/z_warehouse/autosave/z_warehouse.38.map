@@ -5,6 +5,8 @@
 "classname" "worldspawn"
 "wad" "C:/Users/mario/fitzquake/game/zombonoraw/content/wads/base.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/start.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/metal.wad;C:/Users/mario/fitzquake/game/zombonoraw/content/wads/jr_med.wad"
 "worldtype" "2"
+"_sunlight" ""
+"light" "13"
 // brush 0
 {
 ( -514 448 -32 ) ( -514 -1072 -32 ) ( -514 -1072 -67 ) sfloor4_5 -26.610489 49.791283 0 3.6538446 3.3980937
