@@ -1,7 +1,7 @@
 Zombono
 Release Notes
 Version 0.04-pre6
-February XX, 2024
+March 9, 2024
 
 * Changed menus to use new text system and colorised them.
 * Rewrote credits code to use text system.
@@ -31,6 +31,9 @@ February XX, 2024
 	* Check for bugs in old menus, etc
 		* Removed "cstring2" and "string2" for green centered and regular strings respectively from layoutstrings - use color codes instead.
 * Renamed S_RegisterSexedSound to S_RegisterModelSound, because what kind of name is that *sob*
+* Fixed newlines in text rendering.
+* Added some help text to TeamUI.
+* Changed leaderboard texture.
 
 Version 0.04-pre5
 February 22, 2024

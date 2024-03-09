@@ -409,12 +409,12 @@ void M_Main_Draw (void)
 	strcat( litname, "_sel" );
 	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname );
 
-	M_DrawCursor( xoffset - 25 * vid_hudscale->value, ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
+	M_DrawCursor( xoffset - (25 * vid_hudscale->value), ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
 
 	const char* nav_text = "Use ^5Up^7 and ^5Down^7 arrow keys to navigate";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, nav_text);
 	// bad positioning hack
-	Text_Draw(cl_system_font->string, xoffset - (size_x / 4), ystart + (6 * 40 + 20), nav_text); 
+	Text_Draw(cl_system_font->string, xoffset - (size_x / 4) * vid_hudscale->value, ystart + (6 * 40 + 20) * vid_hudscale->value, nav_text);
 }
 
 

@@ -78,8 +78,8 @@ void UI_HandleEventOnClick(int btn, int x, int y)
 			// TODO: Scaling
 			if (x >= ui_control_ptr->position_x
 				&& y >= ui_control_ptr->position_y
-				&& x <= ui_control_ptr->position_x + ui_control_ptr->size_x
-				&& y <= ui_control_ptr->position_y + ui_control_ptr->size_y
+				&& x <= ui_control_ptr->position_x + (ui_control_ptr->size_x * vid_hudscale->value)
+				&& y <= ui_control_ptr->position_y + (ui_control_ptr->size_y * vid_hudscale->value)
 				&& ui_ptr == current_ui)
 			{
 

@@ -83,6 +83,6 @@ qboolean UI_BamfuslicatorUICreate()
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
 		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 255);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
-	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + 70) * vid_hudscale->value, (viddef.height / 1.25) * vid_hudscale->value);
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), (viddef.height / 1.25));
 	return true; 
 }
