@@ -584,7 +584,7 @@ void S_IssuePlaysound (playsound_t *ps)
 	S_FreePlaysound (ps);
 }
 
-struct sfx_s *S_RegisterSexedSound (entity_state_t *ent, char *base)
+struct sfx_s *S_RegisterModelSound (entity_state_t *ent, char *base)
 {
 	int				n;
 	char			*p;
@@ -665,8 +665,9 @@ void S_StartSound(vec3_t origin, int entnum, int entchannel, sfx_t *sfx, float f
 	if (!sfx)
 		return;
 
+	// * is model-specific sound
 	if (sfx->name[0] == '*')
-		sfx = S_RegisterSexedSound(&cl_entities[entnum].current, sfx->name);
+		sfx = S_RegisterModelSound(&cl_entities[entnum].current, sfx->name);
 
 	// make sure the sound is loaded
 	sc = S_LoadSound (sfx);

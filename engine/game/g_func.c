@@ -2052,6 +2052,11 @@ void SP_func_killbox (edict_t *ent)
 
 void use_trampoline (edict_t* self, edict_t* other, edict_t* activator)
 {
+	// TODO: Temporary SFX
+	gi.sound(other, CHAN_VOICE, gi.soundindex("*jump1.wav"), 1, ATTN_NORM, 0);
+
+	PlayerNoise(other, other->s.origin, PNOISE_SELF);
+
 	if (self->dmg > 0)
 	{
 		int dflags = 0;

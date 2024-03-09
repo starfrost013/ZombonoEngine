@@ -30,6 +30,7 @@ February XX, 2024
 	* Pulled out all the Quake 2 special characters for sliders, textboxes, etc, and made them their own textures.
 	* Check for bugs in old menus, etc
 		* Removed "cstring2" and "string2" for green centered and regular strings respectively from layoutstrings - use color codes instead.
+* Renamed S_RegisterSexedSound to S_RegisterModelSound, because what kind of name is that *sob*
 
 Version 0.04-pre5
 February 22, 2024

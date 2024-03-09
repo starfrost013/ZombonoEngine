@@ -1167,7 +1167,7 @@ struct edict_s
 	float		volume;
 	float		attenuation;
 
-	int			jump_height; // for func_trampolin
+	int			jump_height; // for func_trampoline
 
 	// timing variables
 	float		wait;

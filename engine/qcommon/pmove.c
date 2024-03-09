@@ -702,6 +702,9 @@ void PM_CatagorizePosition (void)
 
 }
 
+#define WATER_VELOCITY		100
+#define SLIME_VELOCITY		80
+#define WATER_VELOCITY_SLOW	50
 
 /*
 =============
@@ -736,11 +739,11 @@ void PM_CheckJump (void)
 			return;
 
 		if (pm->watertype == CONTENTS_WATER)
-			pml.velocity[2] = 100;
+			pml.velocity[2] = WATER_VELOCITY;
 		else if (pm->watertype == CONTENTS_SLIME)
-			pml.velocity[2] = 80;
+			pml.velocity[2] = SLIME_VELOCITY;
 		else
-			pml.velocity[2] = 50;
+			pml.velocity[2] = WATER_VELOCITY_SLOW;
 		return;
 	}
 
