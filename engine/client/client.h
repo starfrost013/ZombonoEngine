@@ -558,7 +558,7 @@ void CL_PredictMovement (void);
 
 #define CONTROLS_PER_UI			256
 #define MAX_UIS					32
-#define MAX_UI_STR_LENGTH		64
+#define MAX_UI_STR_LENGTH		256
 
 // Defined her for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).

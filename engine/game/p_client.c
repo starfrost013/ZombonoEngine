@@ -722,12 +722,11 @@ edict_t *SelectRandomSpawnPoint (char* spawn_class_name)
 	}
 
 	// if we failed, try unasigned
-	if (!count) // !count is NOT working ?!
+	if (!count)
 	{
 		gi.bprintf(PRINT_ALL, "Failed to spawn %s (mode: random), trying unassigned", spawn_class_name);
 		return SelectUnassignedSpawnPoint();
 	}
-
 
 	// is it one of the two closest to other players?
 	if (count <= 2)
@@ -752,8 +751,7 @@ edict_t *SelectRandomSpawnPoint (char* spawn_class_name)
 
 /*
 ================
-SelectFarthestDeathmatchSpawnPoint
-
+SelectFarthestSpawnPoint
 ================
 */
 edict_t *SelectFarthestSpawnPoint (char* spawn_class_name)

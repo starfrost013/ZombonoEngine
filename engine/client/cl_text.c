@@ -226,7 +226,7 @@ void Text_Draw(const char* font, int x, int y, const char* text, ...)
 		if (next_char == '\n'
 			|| next_char == '\v') // uses vertical tabs as well? 
 		{
-			y += font_ptr->line_height * vid_hudscale->value;
+			current_y += font_ptr->line_height * vid_hudscale->value;
 			current_x = initial_x;
 			continue; // skip newlines
 		}

@@ -89,6 +89,8 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 			if (ent->team == winning_team)
 			{
 				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_player");
+
+				
 			}
 			else
 			{
