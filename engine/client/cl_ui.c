@@ -404,7 +404,7 @@ void UI_Draw()
 	local_time = localtime(&raw_time);
 	char		time_str[128] = { 0 };
 #ifdef PLAYTEST
-	strftime(&time, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
+	strftime(&time_str, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #elif _DEBUG
 	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif

@@ -1711,11 +1711,9 @@ void Game_MenuDraw( void )
 #ifdef PLAYTEST
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 	int size_x = 0, size_y = 0;
-	const char* no_playtest_text = "^1This option is not available in playtest builds!";
+	const char* no_playtest_text = "^1This option is not available in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - 92, no_playtest_text_1);
-	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - (92 - system_font_ptr->line_height), no_playtest_text_2);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
 	M_Banner("pics/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
@@ -2376,11 +2374,9 @@ void StartServer_MenuDraw(void)
 #ifdef PLAYTEST
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 	int size_x = 0, size_y = 0;
-	const char* no_playtest_text = "^1Servers cannot be started in playtest builds!";
+	const char* no_playtest_text = "^1Servers cannot be started in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - 92, no_playtest_text_1);
-	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - size_x, viddef.height / 2 - (92 - system_font_ptr->line_height), no_playtest_text_2);
+	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
 	Menu_Draw(&s_startserver_menu);
 #endif
