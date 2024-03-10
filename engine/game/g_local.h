@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_leaderboard		9
 #define svc_leaderboarddraw	10				// hack for tdm mode
 
-#define	svc_stufftext		15
+#define	svc_stufftext		16
 
 //==================================================================
 
@@ -699,9 +699,9 @@ void	G_FreeEdict (edict_t *e);
 void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
 
-void	G_UISend (edict_t *ent, char* ui_name, qboolean enabled);
-void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text);
-void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path);
+void	G_UISend (edict_t *ent, char* ui_name, qboolean enabled, qboolean active, qboolean reliable);
+void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, qboolean reliable);
+void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, qboolean reliable);
 
 int		G_CountClients();
 

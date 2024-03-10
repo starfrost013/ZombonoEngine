@@ -204,13 +204,13 @@ void ChangeWeapon (edict_t *ent)
 		// toggle the UI depending on if we are switching into or out of the bamfuslicator (TODO: HACK!!!!)
 		if (!strcmp(ent->client->newweapon->classname, "weapon_bamfuslicator"))
 		{
-			G_UISend(ent, "BamfuslicatorUI", true);
+			G_UISend(ent, "BamfuslicatorUI", true, false, false);
 			ent->client->pers.weapon->spawn_type = -1; // another hack, settype increments it so it will be set to 0
 			Weapon_Bamfuslicator_SetType(ent);
 		}
-		else if (!strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator"))
+		else if (!strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator")) // switching out
 		{
-			G_UISend(ent, "BamfuslicatorUI", false);
+			G_UISend(ent, "BamfuslicatorUI", false, false, false);
 		}
 	}
 
@@ -1497,13 +1497,13 @@ void Weapon_Bamfuslicator_SetType(edict_t* ent)
 	switch (ent->client->pers.weapon->spawn_type)
 	{
 	case zombie_type_normal:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^2Regular^7");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^2Regular^7", false);
 		break;
 	case zombie_type_fast:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^4On Speed^7");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^4On Speed^7", false);
 		break;
 	case zombie_type_ogre:
-		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^5Ogre^7");
+		G_UISetText(ent, "BamfuslicatorUI", "BamfuslicatorUI_Text", "Zombie Type: ^5Ogre^7", false);
 		break;
 	}
 

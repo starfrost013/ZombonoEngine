@@ -86,3 +86,23 @@ qboolean UI_BamfuslicatorUICreate()
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), (viddef.height / 1.25));
 	return true; 
 }
+
+//
+// GameUI
+//
+
+qboolean UI_GameUICreate()
+{
+	int size_x = 0, size_y = 0;
+
+	UI_SetPassive("GameUI", true);
+
+	const char* temp_text = "1:00";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
+
+	UI_AddBox("GameUI", "GameUI_TextBox", (viddef.width / 2) - (size_x / 2), 10 * vid_hudscale->value, 
+		size_x * vid_hudscale->value, size_y * vid_hudscale->value, 255, 0, 0, 180);
+
+	// text is set by gamecode
+	UI_AddText("GameUI", "GameUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 10 * vid_hudscale->value);
+}

@@ -669,6 +669,9 @@ void UI_LeaderboardUIToggle(int btn);
 // BamfuslicatorUI
 qboolean UI_BamfuslicatorUICreate();
 
+// GameUI
+qboolean UI_GameUICreate();
+
 // UI: Required CVars
 
 cvar_t* vid_hudscale;

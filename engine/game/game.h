@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // game.h -- game dll information visible to server
 
-#define	GAME_API_VERSION	5
+#define	GAME_API_VERSION	6
 
 // edict->svflags
 
@@ -106,6 +106,7 @@ typedef struct game_import_s
 	void	(*bprintf) (int printlevel, char *fmt, ...);
 	void	(*dprintf) (char *fmt, ...);
 	void	(*cprintf) (edict_t *ent, int printlevel, char *fmt, ...);
+	void	(*Text_Draw) (edict_t *ent, const char* font, int x, int y, const char* text, ...);
 	void	(*centerprintf) (edict_t *ent, char *fmt, ...);
 	void	(*sound) (edict_t *ent, int channel, int soundindex, float volume, float attenuation, float timeofs);
 	void	(*positioned_sound) (vec3_t origin, edict_t *ent, int channel, int soundinedex, float volume, float attenuation, float timeofs);

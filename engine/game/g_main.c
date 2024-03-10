@@ -324,12 +324,13 @@ void CheckGamemodeRules (void)
 		return;
 
 	// todo: IMPLEMENT
-	if (gamemode == GAMEMODE_TDM)
+	if (gamemode->value == GAMEMODE_TDM)
 	{
 		CheckTDMRules();
 	}
 }
 
+#define TIME_BUF_LENGTH		16
 void CheckTDMRules()
 {
 	int			i;
@@ -343,6 +344,30 @@ void CheckTDMRules()
 			EndMatch();
 			return;
 		}
+
+		// update every 10 gameticks (1 second) roughly
+		if (level.framenum % 10 == 0)
+		{
+			char text[TIME_BUF_LENGTH] = { 0 };
+
+			int total_seconds = timelimit->value - (int)level.time;
+			// convert remaining time to integer mm:ss
+			int seconds = (int)(total_seconds % 60);
+			int minutes = (int)(total_seconds / 60);
+
+			if (seconds < 10)
+			{
+				snprintf(&text, TIME_BUF_LENGTH, "%d:0%d", minutes, seconds);
+			}
+			else
+			{
+				snprintf(&text, TIME_BUF_LENGTH, "%d:%d", minutes, seconds);
+			}
+
+			// multicast time remaining to each client
+			G_UISetText(NULL, "GameUI", "GameUI_Text", text, false);
+		}
+
 	}
 
 	if (fraglimit->value)

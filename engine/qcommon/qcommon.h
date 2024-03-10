@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "pdjson.h"
 
 // Engine version
-#define ZOMBONO_VERSION "0.0.4-pre6"
+#define ZOMBONO_VERSION "0.0.4"
 
 #define	BASEDIRNAME	"zombono"
 
@@ -181,8 +181,9 @@ PROTOCOL
 // 34 - Vanilla Q2
 // 35 - Zombono start (0.04).
 // 36 - Zombono with larger map bounds
+// 37 - Zombono 0.04 final
 // Then incremented by one for each version.
-#define	PROTOCOL_VERSION	36	
+#define	PROTOCOL_VERSION	37 
 
 //=========================================
 
@@ -218,6 +219,7 @@ enum svc_ops_e
 	svc_uisetimage,				// <ui control name> <image path in pics folder>
 	svc_leaderboard,			// <leaderboard_t struct>
 	svc_leaderboarddraw,		// nothing
+	svc_drawtext,				// <font name> <x> <y> <text>
 
 	// the rest are private to the client and server
 	svc_nop,

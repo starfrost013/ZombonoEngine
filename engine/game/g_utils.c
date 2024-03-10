@@ -636,28 +636,75 @@ ZombonoUI
 ==============================================================================
 */
 
-void G_UISend(edict_t* ent, char* ui_name, qboolean enabled)
+// Sends a UI. ent NULL = multicast
+void G_UISend(edict_t* ent, char* ui_name, qboolean enabled, qboolean active, qboolean reliable)
 {
 	gi.WriteByte(svc_uidraw);
 	gi.WriteString(ui_name);
 	gi.WriteByte(enabled);
-	gi.unicast(ent, true); // reliable as not used regularly
+	gi.WriteByte(active);
+
+	if (ent == NULL)
+	{
+		if (reliable)
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL_R);
+		}
+		else
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL);
+		}
+	}
+	else
+	{
+		gi.unicast(ent, reliable); // reliable as not used regularly
+	}
 }
 
-void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text)
+void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, qboolean reliable)
 {
 	gi.WriteByte(svc_uisettext);
 	gi.WriteString(ui_name);
 	gi.WriteString(control_name);
 	gi.WriteString(text);
-	gi.unicast(ent, true); // reliable as not used regularly
+
+	if (ent == NULL)
+	{
+		if (reliable)
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL_R);
+		}
+		else
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL);
+		}
+	}
+	else
+	{
+		gi.unicast(ent, reliable); // reliable as not used regularly
+	}
 }
 
-void G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path)
+void G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, qboolean reliable)
 {
 	gi.WriteByte(svc_uisetimage);
 	gi.WriteString(ui_name);
 	gi.WriteString(control_name);
 	gi.WriteString(image_path);
-	gi.unicast(ent, true); // reliable as not used regularly
+
+	if (ent == NULL)
+	{
+		if (reliable)
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL_R);
+		}
+		else
+		{
+			gi.multicast(vec3_origin, MULTICAST_ALL);
+		}
+	}
+	else
+	{
+		gi.unicast(ent, reliable); // reliable as not used regularly
+	}
 }

@@ -5785,7 +5785,7 @@
 {
 "classname" "func_train"
 "target" "train_stop01"
-"speed" "200"
+"speed" "300"
 "spawnflags" "1"
 // brush 0
 {

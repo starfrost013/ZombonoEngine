@@ -1064,7 +1064,9 @@ void PutClientInServer (edict_t *ent)
 	client_respawn_t	resp;
 
 	// tell the player to spawn 
-	G_UISend(ent, "TeamUI", true);
+	G_UISend(ent, "GameUI", true, false, true);
+	// HACK: THIS MUST BE THE LAST ONE OTHERWISE IT WILL NOT BE SET AS THE CURRENT UI AND YOU CAN'T SPAWN
+	G_UISend(ent, "TeamUI", true, true, true);
 
 	// every player starts out as unassigned
 	ent->team = team_unassigned;

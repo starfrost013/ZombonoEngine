@@ -104,6 +104,18 @@ void PF_cprintf (edict_t *ent, int level, char *fmt, ...)
 		Com_Printf ("%s", msg);
 }
 
+void PF_Text_Draw(edict_t* ent, const char* font, int x, int y, const char* text, ...)
+{
+	MSG_WriteByte(&sv.multicast, svc_drawtext);
+	MSG_WriteString(&sv.multicast, font);
+	MSG_WriteShort(&sv.multicast, x);
+	MSG_WriteShort(&sv.multicast, y);
+	MSG_WriteString(&sv.multicast, text);
+
+	// text updates probably shouldnt be reliable if they are happening all the time as they are intended to
+	PF_Unicast(ent, false);
+}
+
 
 /*
 ===============
@@ -328,13 +340,13 @@ void SV_InitGameProgs (void)
 	if (ge)
 		SV_ShutdownGameProgs ();
 
-
 	// load a new game dll
 	import.multicast = SV_Multicast;
 	import.unicast = PF_Unicast;
 	import.bprintf = SV_BroadcastPrintf;
 	import.dprintf = PF_dprintf;
 	import.cprintf = PF_cprintf;
+	import.Text_Draw = PF_Text_Draw;
 	import.centerprintf = PF_centerprintf;
 	import.error = PF_error;
 

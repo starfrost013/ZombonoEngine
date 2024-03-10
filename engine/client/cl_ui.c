@@ -53,6 +53,7 @@ qboolean UI_Init()
 	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
 	if (successful) successful = UI_AddUI("LeaderboardUI", UI_LeaderboardUICreate);
 	if (successful) successful = UI_AddUI("BamfuslicatorUI", UI_BamfuslicatorUICreate);
+	if (successful) successful = UI_AddUI("GameUI", UI_GameUICreate);
 	return successful;
 }
 

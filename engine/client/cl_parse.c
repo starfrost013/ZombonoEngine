@@ -36,7 +36,8 @@ char *svc_strings[256] =
 	"svc_uisetimage",
 	"svc_leaderboard",
 	"svc_leaderboarddraw",		// Hack for TDM mode
-
+	"svc_drawtext",
+	
 	"svc_nop",
 	"svc_disconnect",
 	"svc_reconnect",
@@ -649,9 +650,9 @@ void CL_ParseServerMessage (void)
 {
 	int			cmd;
 	char		*s;
-	char		ui_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
-	char		ui_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
-	int			i;
+	char		str_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
+	char		str_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
+	int			i = 0;
 
 //
 // if recording demos, copy the message out
@@ -799,33 +800,44 @@ void CL_ParseServerMessage (void)
 			s = MSG_ReadString(&net_message);
 			// Active can only be changed from UI script
 
+			qboolean enabled = (qboolean)MSG_ReadByte(&net_message);
 			qboolean active = (qboolean)MSG_ReadByte(&net_message);
 
-			UI_SetEnabled(s, active);
+			UI_SetEnabled(s, enabled);
 			UI_SetActive(s, active);
 			break;
 
 		case svc_uisettext:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&ui_tempbuf, s, 64);
+			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&ui_tempbuf2, s, 64);
+			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
 			s = MSG_ReadString(&net_message); // New Text
 
-			UI_SetText(&ui_tempbuf, &ui_tempbuf2, s);
+			UI_SetText(&str_tempbuf, &str_tempbuf2, s);
 
 			break;
 
 		case svc_uisetimage:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&ui_tempbuf, s, 64);
+			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&ui_tempbuf2, s, 64);
+			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
 			s = MSG_ReadString(&net_message); // New image path
 
-			UI_SetImage(&ui_tempbuf, &ui_tempbuf2, s);
+			UI_SetImage(&str_tempbuf, &str_tempbuf2, s);
 
 			break;
+
+		case svc_drawtext:
+			s = MSG_ReadString(&net_message);
+			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
+			int x = MSG_ReadShort(&net_message);
+			int y = MSG_ReadShort(&net_message);
+			s = MSG_ReadString(&net_message);
+			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
+
+			Text_Draw(&str_tempbuf, x, y, &str_tempbuf2);
 		}
 	}
 
