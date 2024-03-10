@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "pdjson.h"
 
 // Engine version
-#define ZOMBONO_VERSION "0.0.5"
+#define ZOMBONO_VERSION "0.0.5-pre1"
 
 #define	BASEDIRNAME	"zombono"
 
