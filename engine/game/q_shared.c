@@ -687,8 +687,8 @@ float	(*_LittleFloat) (float l);
 
 short	BigShort(short l){return _BigShort(l);}
 short	LittleShort(short l) {return _LittleShort(l);}
-short	BigShortUnsigned(short l) { return _BigShort(l); }
-short	LittleShortUnsigned(short l) { return _LittleShort(l); }
+unsigned short	BigShortUnsigned(short l) { return _BigShort(l); }
+unsigned short	LittleShortUnsigned(short l) { return _LittleShort(l); }
 int		BigLong (int l) {return _BigLong(l);}
 int		LittleLong (int l) {return _LittleLong(l);}
 float	BigFloat (float l) {return _BigFloat(l);}
@@ -716,7 +716,7 @@ unsigned short   ShortSwapUnsigned(short l)
 	b1 = l & 255;
 	b2 = (l >> 8) & 255;
 
-	return (b1 << 8) + b2;
+	return ((unsigned short)b1 << 8) + b2;
 }
 
 unsigned short	ShortNoSwapUnsigned(short l)

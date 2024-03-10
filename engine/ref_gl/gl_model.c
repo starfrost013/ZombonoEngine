@@ -744,7 +744,7 @@ Mod_LoadMarksurfaces
 */
 void Mod_LoadMarksurfaces (lump_t *l)
 {	
-	int		i, j, count;
+	unsigned int		i, j, count;
 	short		*in;
 	msurface_t **out;
 	
@@ -761,7 +761,7 @@ void Mod_LoadMarksurfaces (lump_t *l)
 	{
 		j = LittleShortUnsigned(in[i]);
 		if (j < 0 ||  j >= loadmodel->numsurfaces)
-			ri.Sys_Error (ERR_DROP, "Mod_ParseMarksurfaces: bad surface number");
+			ri.Sys_Error (ERR_DROP, "Mod_ParseMarksurfaces: bad surface number %d/%d", j, loadmodel->numsurfaces);
 		out[i] = loadmodel->surfaces + j;
 	}
 }
