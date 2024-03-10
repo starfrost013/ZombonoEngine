@@ -1814,6 +1814,12 @@ void CL_Init (void)
 
 	FS_ExecAutoexec();
 	Cbuf_Execute(); 
+
+#ifdef PLAYTEST
+	// HACK
+	cls.disable_screen = 0;
+	Cbuf_AddText("exec playtest_server.cfg");
+#endif
 }
 
 /*

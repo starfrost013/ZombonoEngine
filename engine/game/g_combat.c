@@ -400,7 +400,6 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		if (!strcmp(targ->classname, "player")
 			&& strcmp(attacker->classname, "player"))
 		{
-
 			if (gamemode->value != GAMEMODE_COOP
 				&& gamemode->value != GAMEMODE_WAVES
 				&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))

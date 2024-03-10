@@ -1424,9 +1424,17 @@ void Qcommon_Init (int argc, char **argv)
 	if (!Cbuf_AddLateCommands ())
 	{	// if the user didn't give any commands, run default action
 		if (!dedicated->value)
-			Cbuf_AddText ("d1\n");
+		{
+			//TEMP
+#ifndef PLAYTEST
+			Cbuf_AddText("d1\n");
+#endif
+		}
 		else
-			Cbuf_AddText ("dedicated_start\n");
+		{
+			Cbuf_AddText("dedicated_start\n");
+		}
+
 		Cbuf_Execute ();
 	}
 	else
@@ -1434,8 +1442,8 @@ void Qcommon_Init (int argc, char **argv)
 		// so drop the loading plaque
 		SCR_EndLoadingPlaque ();
 	}
-
 	Com_Printf ("====== Zombono Initialized ======\n\n");	
+
 }
 
 /*

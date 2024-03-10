@@ -474,6 +474,7 @@ const char *M_Main_Key (int key)
 
 void M_Menu_Main_f (void)
 {
+
 	M_PushMenu (M_Main_Draw, M_Main_Key);
 }
 
