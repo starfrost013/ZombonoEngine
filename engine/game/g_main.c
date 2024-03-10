@@ -330,7 +330,9 @@ void CheckGamemodeRules (void)
 	}
 }
 
-#define TIME_BUF_LENGTH		16
+#define TIME_BUF_LENGTH		20
+#define SCORE_BUF_LENGTH	40
+
 void CheckTDMRules()
 {
 	int			i;
@@ -357,17 +359,28 @@ void CheckTDMRules()
 
 			if (seconds < 10)
 			{
-				snprintf(&text, TIME_BUF_LENGTH, "%d:0%d", minutes, seconds);
+				snprintf(&text, TIME_BUF_LENGTH, "Time: %d:0%d", minutes, seconds);
 			}
 			else
 			{
-				snprintf(&text, TIME_BUF_LENGTH, "%d:%d", minutes, seconds);
+				snprintf(&text, TIME_BUF_LENGTH, "Time: %d:%d", minutes, seconds);
 			}
 
 			// multicast time remaining to each client
-			G_UISetText(NULL, "GameUI", "GameUI_Text", text, false);
+			G_UISetText(NULL, "TimeUI", "TimeUI_Text", text, false);
 		}
 
+	}
+
+	// every second update each team's score
+	if (level.framenum % 10 == 0)
+	{
+		team_scores_t team_scores = G_TDMGetScores();
+		char text[SCORE_BUF_LENGTH] = { 0 };
+
+		snprintf(text, SCORE_BUF_LENGTH, "^cDirectors^0 %d : ^aPlayers^0 %d", team_scores.director_score, team_scores.player_score);
+
+		G_UISetText(NULL, "ScoreUI", "ScoreUI_Text", text, false);
 	}
 
 	if (fraglimit->value)

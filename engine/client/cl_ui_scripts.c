@@ -88,21 +88,45 @@ qboolean UI_BamfuslicatorUICreate()
 }
 
 //
-// GameUI
+// TimeUI
 //
 
-qboolean UI_GameUICreate()
+qboolean UI_TimeUICreate()
 {
 	int size_x = 0, size_y = 0;
 
-	UI_SetPassive("GameUI", true);
+	UI_SetPassive("TimeUI", true);
 
-	const char* temp_text = "1:00";
+	const char* temp_text = "Time: x:xx";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 
-	UI_AddBox("GameUI", "GameUI_TextBox", (viddef.width / 2) - (size_x / 2), 10 * vid_hudscale->value, 
-		size_x * vid_hudscale->value, size_y * vid_hudscale->value, 255, 0, 0, 180);
+	UI_AddBox("TimeUI", "TimeUI_TextBox", (viddef.width / 2) - (size_x / 2) - (36 * vid_hudscale->value), 10 * vid_hudscale->value,
+		size_x * vid_hudscale->value + (36 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("GameUI", "GameUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 10 * vid_hudscale->value);
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (18 * vid_hudscale->value), 10 * vid_hudscale->value);
+
+	return true; 
+}
+
+//
+// ScoreUI
+//
+
+qboolean UI_ScoreUICreate()
+{
+	int size_x = 0, size_y = 0;
+
+	UI_SetPassive("ScoreUI", true);
+
+	const char* temp_text = "Directors 0 : Players 0";
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
+
+	UI_AddBox("ScoreUI", "ScoreUI_TextBox", (viddef.width / 2) - (size_x / 2) - (72 * vid_hudscale->value), 30 * vid_hudscale->value,
+		size_x * vid_hudscale->value + (72t * vid_hudscale->value), size_y * vid_hudscale->value, 255, 255, 255, 180); // add a buffer of 10 pixels for larger numbers
+
+	// text is set by gamecode
+	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (36 * vid_hudscale->value), 30 * vid_hudscale->value);
+
+	return true; 
 }

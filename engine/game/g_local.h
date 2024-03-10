@@ -726,7 +726,15 @@ typedef enum player_team_e
 	team_unassigned = 4,			// Used for non-team gamemodes and players that are joining.
 } player_team;
 
+// A tiny little struct containing both teams' scores.
+typedef struct team_scores_s
+{
+	int director_score;
+	int player_score;
+} team_scores_t;
+
 player_team	G_TDMGetWinner();
+team_scores_t G_TDMGetScores();
 
 //
 // g_combat.c

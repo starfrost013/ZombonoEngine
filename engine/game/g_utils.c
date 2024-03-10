@@ -585,15 +585,12 @@ int G_CountClients()
 	return real_client_count;
 }
 
-//
-// G_TDMGetWinner : Gets the winner in TDM gamemode.
-// 
-// Returns BOTH teams if there is a draw.
-//
-player_team G_TDMGetWinner()
+// G_TDMGetScores: Gets the current scores for both teams in TDM mode.
+team_scores_t G_TDMGetScores()
 {
-	int director_score = 0, player_score = 0;
 	edict_t* client_edict;
+
+	team_scores_t team_scores = { 0 };
 
 	for (int client_num = 0; client_num < game.maxclients; client_num++)
 	{
@@ -604,21 +601,33 @@ player_team G_TDMGetWinner()
 			// add up the scores
 			switch (client_edict->team)
 			{
-				case team_player:
-					player_score += client_edict->client->resp.score;
-					break;
-				case team_director:
-					director_score += client_edict->client->resp.score;
-					break;
+			case team_player:
+				team_scores.player_score += client_edict->client->resp.score;
+				break;
+			case team_director:
+				team_scores.director_score += client_edict->client->resp.score;
+				break;
 			}
 		}
 	}
 
-	if (player_score > director_score)
+	return team_scores;
+}
+
+//
+// G_TDMGetWinner : Gets the winner in TDM gamemode.
+// 
+// Returns BOTH teams if there is a draw.
+//
+player_team G_TDMGetWinner()
+{
+	team_scores_t team_scores = G_TDMGetScores();
+
+	if (team_scores.player_score > team_scores.director_score)
 	{
 		return team_player;
 	}
-	else if (player_score < director_score)
+	else if (team_scores.player_score < team_scores.director_score)
 	{
 		return team_director;
 	}

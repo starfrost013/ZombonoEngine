@@ -669,8 +669,11 @@ void UI_LeaderboardUIToggle(int btn);
 // BamfuslicatorUI
 qboolean UI_BamfuslicatorUICreate();
 
-// GameUI
-qboolean UI_GameUICreate();
+// TimeUI
+qboolean UI_TimeUICreate();
+
+// ScoreUI
+qboolean UI_ScoreUICreate();
 
 // UI: Required CVars
 
