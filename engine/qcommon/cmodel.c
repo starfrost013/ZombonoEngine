@@ -304,9 +304,9 @@ void CMod_LoadLeafs (lump_t *l)
 	{
 		out->contents = LittleLong (in->contents);
 		out->cluster = LittleShort (in->cluster);
-		out->area = LittleShort (in->area);
-		out->firstleafbrush = LittleShort (in->firstleafbrush);
-		out->numleafbrushes = LittleShort (in->numleafbrushes);
+		out->area = LittleShortUnsigned (in->area);
+		out->firstleafbrush = LittleShortUnsigned (in->firstleafbrush);
+		out->numleafbrushes = LittleShortUnsigned (in->numleafbrushes);
 
 		if (out->cluster >= numclusters)
 			numclusters = out->cluster + 1;
@@ -862,7 +862,7 @@ void CM_BoxLeafnums_r (int nodenum)
 		{
 			if (leaf_count >= leaf_maxcount)
 			{
-//				Com_Printf ("CM_BoxLeafnums_r: overflow\n");
+				Com_DPrintf ("CM_BoxLeafnums_r: overflow\n");
 				return;
 			}
 			leaf_list[leaf_count++] = -1 - nodenum;
@@ -871,7 +871,6 @@ void CM_BoxLeafnums_r (int nodenum)
 	
 		node = &map_nodes[nodenum];
 		plane = node->plane;
-//		s = BoxOnPlaneSide (leaf_mins, leaf_maxs, plane);
 		s = BOX_ON_PLANE_SIDE(leaf_mins, leaf_maxs, plane);
 		if (s == 1)
 			nodenum = node->children[0];

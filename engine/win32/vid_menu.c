@@ -213,7 +213,7 @@ void VID_MenuInit( void )
 	if ( !gl_picmip )
 		gl_picmip = Cvar_Get( "gl_picmip", "0", 0 );
 	if ( !gl_mode )
-		gl_mode = Cvar_Get( "gl_mode", "6", 0 );
+		gl_mode = Cvar_Get( "gl_mode", "6", 0, CVAR_ARCHIVE );
 	if ( !gl_finish )
 		gl_finish = Cvar_Get( "gl_finish", "0", CVAR_ARCHIVE );
 

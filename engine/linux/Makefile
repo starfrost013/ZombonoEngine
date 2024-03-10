@@ -5,11 +5,13 @@
 # Nov '97 by Zoid <zoid@idsoftware.com>
 # Jan '19 by Krzysztof Kondrak <krzysztof.kondrak@gmail.com>
 # Dec '23-Jan '24 by starfrost
+#
+# Mar 10, 2024: Remove all sorts of legacy nonsense
 
 # ELF only
 #
 
-VERSION=0.04
+VERSION=0.05
 VERSION_FN=$(VERSION)$(GLIBC)
 RPM_RELEASE=6
 
@@ -27,21 +29,12 @@ ifeq ($(KERNEL_ARCH),x86_64)
 else ifeq ($(KERNEL_ARCH),amd64)
   ARCH=x64
   RPMARCH=i386
-else ifeq ($(KERNEL_ARCH),ppc64le)
-  ARCH=ppc64le
-  RPMARCH=ppc64le
 else ifeq ($(KERNEL_ARCH),armv7l)
   ARCH=armv7l
   RPMARCH=armv7l
 else ifeq ($(KERNEL_ARCH),aarch64)
   ARCH=aarch64
   RPMARCH=aarch64
-else ifeq ($(KERNEL_ARCH),e2k)
-  ARCH=e2k
-  RPMARCH=e2k
-else ifneq (,$(findstring alpha,$(KERNEL_ARCH)))
-  ARCH=axp
-  RPMARCH=alpha
 else
   $(error "Unsupported ARCH: ${KERNEL_ARCH}")
 endif
@@ -89,12 +82,6 @@ XCFLAGS=
 GLLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lvga -lm
 GLXLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm
 
-ifeq ($(ARCH),ppc64le)
-VKLDFLAGS=-L/usr/X11R6/lib -L$(VULKAN_SDK)/lib64 -L/usr/local/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm -lvulkan -lstdc++
-else
-VKLDFLAGS=-L/usr/X11R6/lib -L$(VULKAN_SDK)/lib -L/usr/local/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm -lvulkan -lstdc++
-endif
-
 GLCFLAGS=-I$(MESA_DIR)/include -I/usr/include/glide
 VKCFLAGS=-I$(VULKAN_SDK)/include
 
@@ -131,9 +118,7 @@ TARGETS=$(BUILDDIR)/quake2 \
 	$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) \
 	$(BUILDDIR)/ref_vk.$(SHLIBEXT) \
 	$(BUILDDIR)/ref_glx.$(SHLIBEXT) \
-#	$(BUILDDIR)/ref_soft.$(SHLIBEXT) \
-#	$(BUILDDIR)/ref_softx.$(SHLIBEXT) \
-#	$(BUILDDIR)/ref_gl.$(SHLIBEXT)
+	$(BUILDDIR)/ref_gl.$(SHLIBEXT)
 endif
 
 build_debug:
@@ -143,7 +128,6 @@ build_debug:
 		$(BUILD_DEBUG_DIR)/ded \
 		$(BUILD_DEBUG_DIR)/ref_soft \
 		$(BUILD_DEBUG_DIR)/ref_gl \
-		$(BUILD_DEBUG_DIR)/ref_vk \
 		$(BUILD_DEBUG_DIR)/game
 	$(MAKE) targets BUILDDIR=$(BUILD_DEBUG_DIR) CFLAGS="$(DEBUG_CFLAGS)"
 
@@ -154,7 +138,6 @@ build_release:
 		$(BUILD_RELEASE_DIR)/ded \
 		$(BUILD_RELEASE_DIR)/ref_soft \
 		$(BUILD_RELEASE_DIR)/ref_gl \
-		$(BUILD_RELEASE_DIR)/ref_vk \
 		$(BUILD_RELEASE_DIR)/game 
 	$(MAKE) targets BUILDDIR=$(BUILD_RELEASE_DIR) CFLAGS="$(RELEASE_CFLAGS)"
 
@@ -180,6 +163,7 @@ QUAKE2_OBJS = \
 	$(BUILDDIR)/client/cl_parse.o \
 	$(BUILDDIR)/client/cl_pred.o \
 	$(BUILDDIR)/client/cl_tent.o \
+	$(BUILDDIR)/client/cl_text.o \
 	$(BUILDDIR)/client/cl_scrn.o \
 	$(BUILDDIR)/client/cl_ttf.o \
 	$(BUILDDIR)/client/cl_ui.o \
@@ -268,6 +252,9 @@ $(BUILDDIR)/client/cl_pred.o :    $(CLIENT_DIR)/cl_pred.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_tent.o :    $(CLIENT_DIR)/cl_tent.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_text.o :    $(CLIENT_DIR)/cl_tent.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_ttf.o :    $(CLIENT_DIR)/cl_ttf.c
@@ -988,114 +975,6 @@ rpm-quake2-data: quake2-data.spec
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
 	rm -rf $(TMPDIR)/quake2-data-$(VERSION)
 	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-data-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2VIDEODIR = $(TMPDIR)/quake2-video-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-video: quake2-video.spec
-	touch $(RPMROOT)/SOURCES/quake2-video-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2VIDEODIR)/baseq2
-	-mkdirhier $(QUAKE2VIDEODIR)/baseq2/video
-	cp $(QUAKE2_DIR)/baseq2/video/end.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou1_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou2_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou3_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou4_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou5_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou6_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou7_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/eou8_.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/idlog.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $(QUAKE2_DIR)/baseq2/video/ntro.cin		$(QUAKE2VIDEODIR)/baseq2/video/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-video-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-video-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2XATRIXDIR = $(TMPDIR)/quake2-xatrix-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-xatrix: quake2-xatrix.spec
-	touch $(RPMROOT)/SOURCES/quake2-xatrix-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2XATRIXDIR)/xatrix/docs
-	cp $(QUAKE2_DIR)/xatrix/pak0.pak			$(QUAKE2XATRIXDIR)/xatrix/.
-	cp $(QUAKE2_DIR)/xatrix/docs/license.doc	$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/license.txt	$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/manual.doc		$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/manual.txt		$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/readme.htm		$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/readme.txt		$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/release.htm	$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $(QUAKE2_DIR)/xatrix/docs/release.txt	$(QUAKE2XATRIXDIR)/xatrix/docs/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-xatrix-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-xatrix-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2XATRIXVIDEODIR = $(TMPDIR)/quake2-xatrix-video-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-xatrix-video : quake2-xatrix-video.spec
-	touch $(RPMROOT)/SOURCES/quake2-xatrix-video-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2XATRIXVIDEODIR)/xatrix/video
-	cp $(QUAKE2_DIR)/xatrix/video/idlog.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/logo.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xin.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xout.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xu1.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xu2.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xu3.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $(QUAKE2_DIR)/xatrix/video/xu4.cin		$(QUAKE2XATRIXVIDEODIR)/xatrix/video/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-xatrix-video-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-xatrix-video-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2ROGUEDIR = $(TMPDIR)/quake2-rogue-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-rogue: quake2-rogue.spec
-	touch $(RPMROOT)/SOURCES/quake2-rogue-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2ROGUEDIR)/rogue/docs
-	cp $(QUAKE2_DIR)/rogue/pak0.pak				$(QUAKE2ROGUEDIR)/rogue/.
-	cp $(QUAKE2_DIR)/rogue/docs/license.doc		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $(QUAKE2_DIR)/rogue/docs/license.txt		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $(QUAKE2_DIR)/rogue/docs/readme.htm		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $(QUAKE2_DIR)/rogue/docs/readme.txt		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $(QUAKE2_DIR)/rogue/docs/release.htm		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $(QUAKE2_DIR)/rogue/docs/release.txt		$(QUAKE2ROGUEDIR)/rogue/docs/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-rogue-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-rogue-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2ROGUEVIDEODIR = $(TMPDIR)/quake2-rogue-video-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-rogue-video: quake2-rogue-video.spec
-	touch $(RPMROOT)/SOURCES/quake2-rogue-video-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2ROGUEVIDEODIR)/rogue/video
-	cp $(QUAKE2_DIR)/rogue/video/logo.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/rend.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/reu1_.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/reu2_.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/reu3_.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/reu4_.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $(QUAKE2_DIR)/rogue/video/rintro.cin		$(QUAKE2ROGUEVIDEODIR)/rogue/video/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-rogue-video-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-rogue-video-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
-
-QUAKE2CTFDIR = $(TMPDIR)/quake2-ctf-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-ctf: quake2-ctf.spec
-	touch $(RPMROOT)/SOURCES/quake2-ctf-$(VERSION).tar.gz
-	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2CTFDIR)/ctf/docs
-	cp $(QUAKE2_DIR)/ctf/pak0.pak	$(QUAKE2CTFDIR)/ctf/.
-	cp $(QUAKE2_DIR)/ctf/pak1.pak	$(QUAKE2CTFDIR)/ctf/.
-	cp $(QUAKE2_DIR)/ctf/ctf2.ico	$(QUAKE2CTFDIR)/ctf/.
-	cp $(QUAKE2_DIR)/ctf/readme.txt	$(QUAKE2CTFDIR)/ctf/.
-	cp $(QUAKE2_DIR)/ctf/server.cfg	$(QUAKE2CTFDIR)/ctf/.
-	cp $< $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-ctf-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-ctf-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
 
 TARDIR=$(TMPDIR)/tar
 tar:

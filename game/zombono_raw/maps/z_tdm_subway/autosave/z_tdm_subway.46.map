@@ -5755,12 +5755,12 @@
 }
 // brush 606
 {
-( -208 852 816 ) ( -208 853 816 ) ( -208 852 817 ) architecture/wall_basic_black 0 0 0 1 1
-( -208 852 816 ) ( -208 852 817 ) ( -207 852 816 ) architecture/wall_basic_black 0 0 0 1 1
-( -208 852 816 ) ( -207 852 816 ) ( -208 853 816 ) architecture/wall_basic_black 0 0 0 1 1
-( -204 860 820 ) ( -204 861 820 ) ( -203 860 820 ) architecture/wall_basic_black 0 0 0 1 1
-( -204 860 820 ) ( -203 860 820 ) ( -204 860 821 ) architecture/wall_basic_black 0 0 0 1 1
-( -204 860 820 ) ( -204 860 821 ) ( -204 861 820 ) architecture/wall_basic_black 0 0 0 1 1
+( -210 852 816 ) ( -210 853 816 ) ( -210 852 817 ) architecture/wall_basic_black 0 0 0 1 1
+( -210 852 816 ) ( -210 852 817 ) ( -208 852 816 ) architecture/wall_basic_black 0 0 0 1 1
+( -210 852 816 ) ( -208 852 816 ) ( -210 853 816 ) architecture/wall_basic_black 0 0 0 1 1
+( -202 860 820 ) ( -202 861 820 ) ( -200 860 820 ) architecture/wall_basic_black 0 0 0 1 1
+( -202 860 820 ) ( -200 860 820 ) ( -202 860 821 ) architecture/wall_basic_black 0 0 0 1 1
+( -202 860 820 ) ( -202 860 821 ) ( -202 861 820 ) architecture/wall_basic_black 0 0 0 1 1
 }
 }
 // entity 1
