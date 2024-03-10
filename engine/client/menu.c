@@ -1592,8 +1592,6 @@ static void StartGame( void )
 	// TODO: REMOVE
 	Cvar_SetValue( "gamemode", 0 );
 
-	Cvar_SetValue( "gamerules", 0 );		//PGM
-
 	Cbuf_AddText ("loading ; killserver ; wait ; newgame\n");
 	cls.key_dest = key_game;
 }
@@ -2147,8 +2145,6 @@ void StartServerActionFunc( void *self )
 
 	Cvar_SetValue("gamemode", s_rules_box.curvalue);
 
-	Cvar_SetValue("gamerules", 0);
-
 	spot = NULL;
 
 	if (spot)
@@ -2418,7 +2414,7 @@ DMOPTIONS BOOK MENU
 
 =============================================================================
 */
-static char dmoptions_statusbar[128];
+static char gameoptions_statusbar[128];
 
 static menuframework_t s_gameoptions_menu;
 
@@ -2436,7 +2432,7 @@ static menulist_t	s_armor_box;
 static menulist_t	s_allow_exit_box;
 static menulist_t	s_infinite_ammo_box;
 static menulist_t	s_quad_drop_box;
-
+static menulist_t	s_individual_fraglimit_box;
 
 static void GameFlagCallback( void *self )
 {
@@ -2528,6 +2524,14 @@ static void GameFlagCallback( void *self )
 			flags &= ~GF_ITEM_FRIENDLY_FIRE;
 		goto setvalue;
 	}
+	else if (f == &s_individual_fraglimit_box)
+	{
+		if (f->curvalue)
+			flags |= GF_INDIVIDUAL_FRAGLIMIT;
+		else
+			flags &= ~GF_INDIVIDUAL_FRAGLIMIT;
+		goto setvalue;
+	}
 
 	if ( f )
 	{
@@ -2540,7 +2544,7 @@ static void GameFlagCallback( void *self )
 setvalue:
 	Cvar_SetValue ("gameflags", flags);
 
-	Com_sprintf( dmoptions_statusbar, sizeof( dmoptions_statusbar ), "gameflags = %d", flags );
+	Com_sprintf( gameoptions_statusbar, sizeof( gameoptions_statusbar ), "gameflags = %d", flags );
 
 }
 
@@ -2661,7 +2665,6 @@ void GameOptions_MenuInit( void )
 	s_friendlyfire_box.itemnames = yes_no_names;
 	s_friendlyfire_box.curvalue = ( gameflags & GF_NO_FRIENDLY_FIRE ) == 0;
 
-
 	s_friendlyfire_item_box.generic.type = MTYPE_SPINCONTROL;
 	s_friendlyfire_item_box.generic.x = 0;
 	s_friendlyfire_item_box.generic.y = y += 10 * vid_hudscale->value;
@@ -2669,6 +2672,14 @@ void GameOptions_MenuInit( void )
 	s_friendlyfire_item_box.generic.callback = GameFlagCallback;
 	s_friendlyfire_item_box.itemnames = yes_no_names;
 	s_friendlyfire_item_box.curvalue = (gameflags & GF_ITEM_FRIENDLY_FIRE) != 0;
+
+	s_individual_fraglimit_box.generic.type = MTYPE_SPINCONTROL;
+	s_individual_fraglimit_box.generic.x = 0;
+	s_individual_fraglimit_box.generic.y = y += 10 * vid_hudscale->value;
+	s_individual_fraglimit_box.generic.name = "^5Apply Fraglimit Per Player";
+	s_individual_fraglimit_box.generic.callback = GameFlagCallback;
+	s_individual_fraglimit_box.itemnames = yes_no_names;
+	s_individual_fraglimit_box.curvalue = (gameflags & GF_INDIVIDUAL_FRAGLIMIT) != 0;
 
 	Menu_AddItem( &s_gameoptions_menu, &s_falls_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_weapons_stay_box );
@@ -2684,11 +2695,12 @@ void GameOptions_MenuInit( void )
 	Menu_AddItem( &s_gameoptions_menu, &s_quad_drop_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_item_box);
+	Menu_AddItem (&s_gameoptions_menu, &s_individual_fraglimit_box);
 	Menu_Center( &s_gameoptions_menu );
 
 	// set the original gameflags statusbar
 	GameFlagCallback( 0 );
-	Menu_SetStatusBar( &s_gameoptions_menu, dmoptions_statusbar );
+	Menu_SetStatusBar( &s_gameoptions_menu, gameoptions_statusbar );
 }
 
 void GameOptions_MenuDraw(void)

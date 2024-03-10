@@ -387,16 +387,32 @@ void CheckTDMRules()
 	{
 		for (i = 0; i < maxclients->value; i++)
 		{
-			cl = game.clients + i;
-			if (!g_edicts[i + 1].inuse)
-				continue;
-
-			if (cl->resp.score >= fraglimit->value)
+			if ((int)gameflags->value & GF_INDIVIDUAL_FRAGLIMIT)
 			{
-				gi.bprintf(PRINT_HIGH, "Fraglimit hit!\n");
-				EndMatch();
-				return;
+				cl = game.clients + i;
+				if (!g_edicts[i + 1].inuse)
+					continue;
+
+				if (cl->resp.score >= fraglimit->value)
+				{
+					gi.bprintf(PRINT_HIGH, "Fraglimit hit!\n");
+					EndMatch();
+					return;
+				}
 			}
+			else // if individual fraglimit is off, use the aggregate scores of either team instead
+			{
+				team_scores_t team_scores = G_TDMGetScores();
+
+				if (team_scores.director_score >= fraglimit->value
+					|| team_scores.player_score >= fraglimit->value)
+				{
+					gi.bprintf(PRINT_HIGH, "Fraglimit hit!\n");
+					EndMatch();
+					return;
+				}
+			}
+
 		}
 	}
 }

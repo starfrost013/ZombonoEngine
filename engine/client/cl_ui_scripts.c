@@ -122,11 +122,11 @@ qboolean UI_ScoreUICreate()
 	const char* temp_text = "Directors 0 : Players 0";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 
-	UI_AddBox("ScoreUI", "ScoreUI_TextBox", (viddef.width / 2) - (size_x / 2) - (72 * vid_hudscale->value), 30 * vid_hudscale->value,
-		size_x * vid_hudscale->value + (72t * vid_hudscale->value), size_y * vid_hudscale->value, 255, 255, 255, 180); // add a buffer of 10 pixels for larger numbers
+	UI_AddBox("ScoreUI", "ScoreUI_TextBox", (viddef.width / 2) - (size_x / 2) - (24 * vid_hudscale->value), 30 * vid_hudscale->value,
+		size_x * vid_hudscale->value + (24 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 255, 255, 180); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
-	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (36 * vid_hudscale->value), 30 * vid_hudscale->value);
+	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (12 * vid_hudscale->value), 30 * vid_hudscale->value);
 
 	return true; 
 }

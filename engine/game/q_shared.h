@@ -898,6 +898,7 @@ typedef enum
 #define GF_INFINITE_AMMO		0x00002000	// 8192
 #define GF_QUAD_DROP			0x00004000	// 16384
 #define GF_ITEM_FRIENDLY_FIRE	0x00008000	// 32768
+#define GF_INDIVIDUAL_FRAGLIMIT	0x00010000	// 65536
 
 // Gamemodes
 #define	GAMEMODE_TDM			0		// Team Deathmach
