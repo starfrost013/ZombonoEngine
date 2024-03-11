@@ -142,7 +142,7 @@ targets: $(TARGETS)
 # CLIENT/SERVER
 #############################################################################
 
-zombono_OBJS = \
+ZOMBONO_OBJS = \
 	$(BUILDDIR)/client/cl_cin.o \
 	$(BUILDDIR)/client/cl_ents.o \
 	$(BUILDDIR)/client/cl_font.o \
@@ -203,14 +203,14 @@ zombono_OBJS = \
 	$(BUILDDIR)/client/pmove.o
 
 ifeq ($(ARCH),axp)
-zombono_AS_OBJS =  #blank
+ZOMBONO_AS_OBJS =  #blank
 else
-zombono_AS_OBJS = \
+ZOMBONO_AS_OBJS = \
 	$(BUILDDIR)/client/snd_mixa.o
 endif
 
-$(BUILDDIR)/zombono : $(zombono_OBJS) $(zombono_AS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(zombono_OBJS) $(zombono_AS_OBJS) $(LDFLAGS)
+$(BUILDDIR)/zombono : $(ZOMBONO_OBJS) $(ZOMBONO_AS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(ZOMBONO_OBJS) $(ZOMBONO_AS_OBJS) $(LDFLAGS)
 
 $(BUILDDIR)/client/cl_cin.o :     $(CLIENT_DIR)/cl_cin.c
 	$(DO_CC)
@@ -1002,9 +1002,9 @@ clean-release:
 
 clean2:
 	-rm -f \
-	$(zombono_OBJS) \
+	$(ZOMBONO_OBJS) \
 	$(Q2DED_OBJS) \
-	$(zombono_AS_OBJS) \
+	$(ZOMBONO_AS_OBJS) \
 	$(GAME_OBJS) \
 	$(REF_GL_OBJS) \
 	$(REF_GL_FXMESA_OBJS) \
