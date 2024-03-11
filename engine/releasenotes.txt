@@ -3,7 +3,7 @@ Release Notes
 
 Version 0.05-pre1
 March XX, 2024
-* Made the engine and gamex64 compile on GCC.
+* Made the engine and gamex64 compile on GCC and run on Linux. Still working on the renderer...
 * Changed game files directory from "zombono" to "zombonogame" as some(?) linux filesystems can't have a folder named the same name as a file (zombono binary vs zombono folder)
 
 
