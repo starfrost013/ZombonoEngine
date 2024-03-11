@@ -752,32 +752,32 @@ rpm-zombono-patch: zombono-patch.spec
 	rm -rf $(PATCHDIR)
 	mv $(RPMROOT)/RPMS/$(ARCH)/zombono-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
 
-zombonoDIR = $(TMPDIR)/zombono-$(VERSION_FN)
-zombonoINSTDIR = $(TMPDIR)/zombono-$(VERSION_FN)/$(INSTALLDIR)
+ZOMBONO_DIR = $(TMPDIR)/zombono-$(VERSION_FN)
+ZOMBONO_INSTALL_DIR = $(TMPDIR)/zombono-$(VERSION_FN)/$(INSTALLDIR)
 rpm-zombono: zombono.spec
 	touch $(RPMROOT)/SOURCES/zombono-$(VERSION_FN).tar.gz
 	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(zombonoINSTDIR)
-	cp $(BUILD_RELEASE_DIR)/zombono $(zombonoINSTDIR)/zombono
-	strip $(zombonoINSTDIR)/zombono
-	-mkdir $(zombonoINSTDIR)/baseq2
-	chmod 1777 $(zombonoINSTDIR)/baseq2
-	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(zombonoINSTDIR)/baseq2
-	cp $(BUILD_RELEASE_DIR)/ref_soft.$(SHLIBEXT)  $(zombonoINSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(zombonoINSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(zombonoINSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(zombonoINSTDIR)
-	-mkdirhier $(zombonoDIR)/usr/lib
-	cp $(TDFXGL_DIR)/release$(ARCH)$(GLIBC)/lib3dfxgl.so $(zombonoDIR)/usr/lib/lib3dfxgl.so
-	cp $(MESA_DIR)/lib/libMesaGL.so.2.6 $(zombonoDIR)/usr/lib/libMesaGL.so.2.6
-	cp $(MOUNT_DIR)/linux/README $(zombonoINSTDIR)
-	cp $(MOUNT_DIR)/readme.txt $(zombonoINSTDIR)
-	-mkdir $(zombonoDIR)/etc
-	cp $(MOUNT_DIR)/linux/zombono.conf $(zombonoDIR)/etc/zombono.conf
+	-mkdirhier $(ZOMBONO_INSTALL_DIR)
+	cp $(BUILD_RELEASE_DIR)/zombono $(ZOMBONO_INSTALL_DIR)/zombono
+	strip $(ZOMBONO_INSTALL_DIR)/zombono
+	-mkdir $(ZOMBONO_INSTALL_DIR)/baseq2
+	chmod 1777 $(ZOMBONO_INSTALL_DIR)/baseq2
+	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)/baseq2
+	cp $(BUILD_RELEASE_DIR)/ref_soft.$(SHLIBEXT)  $(ZOMBONO_INSTALL_DIR)
+	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
+	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
+	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
+	-mkdirhier $(ZOMBONO_DIR)/usr/lib
+	cp $(TDFXGL_DIR)/release$(ARCH)$(GLIBC)/lib3dfxgl.so $(ZOMBONO_DIR)/usr/lib/lib3dfxgl.so
+	cp $(MESA_DIR)/lib/libMesaGL.so.2.6 $(ZOMBONO_DIR)/usr/lib/libMesaGL.so.2.6
+	cp $(MOUNT_DIR)/linux/README $(ZOMBONO_INSTALL_DIR)
+	cp $(MOUNT_DIR)/readme.txt $(ZOMBONO_INSTALL_DIR)
+	-mkdir $(ZOMBONO_DIR)/etc
+	cp $(MOUNT_DIR)/linux/zombono.conf $(ZOMBONO_DIR)/etc/zombono.conf
 	cp $(MOUNT_DIR)/linux/zombono.gif $(RPMROOT)/SOURCES/.
 	cp $< $(RPMROOT)/SPECS/.
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(zombonoDIR)
+	rm -rf $(ZOMBONO_DIR)
 	mv $(RPMROOT)/RPMS/$(ARCH)/zombono-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
 
 # rpm-zombono-patch: zombono-patch.spec
