@@ -1,6 +1,5 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
-Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,19 +17,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// input.h -- external (non-keyboard) input devices
-#pragma once
+#include "../ref_gl/gl_local.h"
 
-void IN_Init (void);
+// glimp_null.c : Null GLImp implementation for pure dedicated server
 
-void IN_Shutdown (void);
+void		GLimp_BeginFrame( float camera_separation )
+{
+}
 
-void IN_Commands (void);
-// oportunity for devices to stick commands on the script buffer
+void		GLimp_EndFrame( void )
+{
+}
 
-void IN_Frame (void);
+int 		GLimp_Init( void *hinstance, void *hWnd )
+{
+}
 
-void IN_Move (usercmd_t *cmd);
-// add additional movement on top of the keyboard move cmd
+void		GLimp_Shutdown( void )
+{
+}
 
-void IN_Activate (qboolean active);
+int     	GLimp_SetMode( int *pwidth, int *pheight, int mode, qboolean fullscreen )
+{
+}
+
+void		GLimp_AppActivate( qboolean active )
+{
+}
+
+void		GLimp_EnableLogging( qboolean enable )
+{
+}
+
+void		GLimp_LogNewFrame( void )
+{
+}
+

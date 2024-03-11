@@ -56,7 +56,6 @@ typedef struct
 
 loopback_t	loopbacks[2];
 int			ip_sockets[2];
-int			ipx_sockets[2];
 
 int NET_Socket (char *net_interface, int port);
 char *NET_ErrorString (void);
@@ -120,12 +119,6 @@ qboolean	NET_CompareBaseAdr (netadr_t a, netadr_t b)
 		return false;
 	}
 
-	if (a.type == NA_IPX)
-	{
-		if ((memcmp(a.ipx, b.ipx, 10) == 0))
-			return true;
-		return false;
-	}
     return false;
 }
 
@@ -288,12 +281,10 @@ qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 	if (NET_GetLoopPacket (sock, net_from, net_message))
 		return true;
 
-	for (protocol = 0 ; protocol < 2 ; protocol++)
+	for (protocol = 0 ; protocol < 1 ; protocol++)
 	{
 		if (protocol == 0)
 			net_socket = ip_sockets[sock];
-		else
-			net_socket = ipx_sockets[sock];
 
 		if (!net_socket)
 			continue;
@@ -354,18 +345,6 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 		if (!net_socket)
 			return;
 	}
-	else if (to.type == NA_IPX)
-	{
-		net_socket = ipx_sockets[sock];
-		if (!net_socket)
-			return;
-	}
-	else if (to.type == NA_BROADCAST_IPX)
-	{
-		net_socket = ipx_sockets[sock];
-		if (!net_socket)
-			return;
-	}
 	else
 		Com_Error (ERR_FATAL, "NET_SendPacket: bad address type");
 
@@ -403,15 +382,6 @@ void NET_OpenIP (void)
 		ip_sockets[NS_CLIENT] = NET_Socket (ip->string, PORT_ANY);
 }
 
-/*
-====================
-NET_OpenIPX
-====================
-*/
-void NET_OpenIPX (void)
-{
-}
-
 
 /*
 ====================
@@ -433,17 +403,11 @@ void	NET_Config (qboolean multiplayer)
 				close (ip_sockets[i]);
 				ip_sockets[i] = 0;
 			}
-			if (ipx_sockets[i])
-			{
-				close (ipx_sockets[i]);
-				ipx_sockets[i] = 0;
-			}
 		}
 	}
 	else
 	{	// open sockets
 		NET_OpenIP ();
-		NET_OpenIPX ();
 	}
 }
 

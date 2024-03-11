@@ -33,8 +33,8 @@ qboolean UI_TeamUICreate()
 	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director", (viddef.width / 2) - (256 * vid_hudscale->value), (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
 	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "pics/ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
 
-	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7. Moves slower.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value), 256, 128);
-	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Moves faster.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value), 256, 128);
+	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7. Moves slower.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value));
+	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Moves faster.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value));
 
 	UI_SetEventOnClick("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
 	UI_SetEventOnClick("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);

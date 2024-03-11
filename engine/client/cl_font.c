@@ -280,18 +280,18 @@ qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 
 qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 {
-	enum json_type json_type = JSON_peek(json_stream);
+	enum JSON_type next_type = JSON_peek(json_stream);
 	const char* json_string = { 0 };
 	double		json_number = 0.0;
 
-	while (json_type != JSON_OBJECT_END)
+	while (next_type != JSON_OBJECT_END)
 	{
-		switch (json_type)
+		switch (next_type)
 		{
 		case JSON_STRING:
 			json_string = JSON_get_string(json_stream, NULL);
 
-			if (json_type == JSON_ERROR) return false;
+			if (next_type == JSON_ERROR) return false;
 
 			// we don't need to load most of these
 			// as we make the following assumptions:
@@ -301,17 +301,17 @@ qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 			// - not a monospace font, and x and y information is stored per-glyph, so we don't need to care about spacing (charHeight is used for newlines)
 			if (!strcmp(json_string, "size"))
 			{	
-				json_type = JSON_next(json_stream);
+				next_type = JSON_next(json_stream);
 				font_ptr->size = JSON_get_number(json_stream);
 			}
 			else if (!strcmp(json_string, "charHeight"))
 			{
-				json_type = JSON_next(json_stream);
+				next_type = JSON_next(json_stream);
 				font_ptr->line_height = JSON_get_number(json_stream);
 			}
 			else if (!strcmp(json_string, "face"))
 			{
-				json_type = JSON_next(json_stream);
+				next_type = JSON_next(json_stream);
 				strncpy(font_ptr->name, json_string, MAX_FONT_FILENAME_LEN);
 			}
 
@@ -326,7 +326,7 @@ qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 			break;
 		}
 
-		json_type = JSON_next(json_stream);
+		next_type = JSON_next(json_stream);
 	}
 
 	return true; 
@@ -336,14 +336,14 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 {
 	// for some reason the first object in the array is not returned by JSON_next
 	// todo: possibly PD-Json bug?
-	enum json_type json_type = JSON_OBJECT;
+	enum JSON_type next_type = JSON_OBJECT;
 	const char* json_string = { 0 };
 	double		json_number = 0.0;
 	glyph_t*	current_glyph;
 
-	while (json_type != JSON_ARRAY_END)
+	while (next_type != JSON_ARRAY_END)
 	{
-		switch (json_type)
+		switch (next_type)
 		{
 		case JSON_OBJECT:
 			
@@ -351,9 +351,9 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 
 			// load an individual glyph
 			// for this JSON section, all parsing must be within an object
-			while (json_type != JSON_OBJECT_END)
+			while (next_type != JSON_OBJECT_END)
 			{
-				switch (json_type)
+				switch (next_type)
 				{
 				case JSON_NUMBER:
 					json_number = JSON_get_number(json_stream);
@@ -364,47 +364,47 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 					// we don't bother parsing the width as we use advance (again, not monospaced)
 					if (!strcmp(json_string, "height"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->height = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "width"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->width = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "id"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->char_code = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "x"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->x_start = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "xadvance"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->x_advance = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "xoffset"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->x_offset = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "y"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->y_start = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "yadvance"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->y_advance = JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "yoffset"))
 					{
-						json_type = JSON_next(json_stream);
+						next_type = JSON_next(json_stream);
 						current_glyph->y_offset = JSON_get_number(json_stream);
 					}
 					break;
@@ -413,7 +413,7 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 				
 				}
 
-				json_type = JSON_next(json_stream);
+				next_type = JSON_next(json_stream);
 			}
 
 			if (font_ptr->num_glyphs >= MAX_GLYPHS-1) // -1 for index
@@ -432,7 +432,7 @@ qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 			break;
 		}
 
-		json_type = JSON_next(json_stream);
+		next_type = JSON_next(json_stream);
 	}
 
 	Com_DPrintf("Loaded %d glyphs\n", font_ptr->num_glyphs);

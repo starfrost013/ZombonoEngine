@@ -377,3 +377,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# linux things
+engine/linux/[Dd]ebugx64/
+engine/Linux/[Rr]eleasex64/

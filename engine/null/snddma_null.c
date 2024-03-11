@@ -1,6 +1,5 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
-Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,19 +17,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// input.h -- external (non-keyboard) input devices
-#pragma once
 
-void IN_Init (void);
+// snddma_null.c
+// all other sound mixing is portable
 
-void IN_Shutdown (void);
+#include "../client/client.h"
+#include "../client/snd_loc.h"
 
-void IN_Commands (void);
-// oportunity for devices to stick commands on the script buffer
+qboolean SNDDMA_Init(void)
+{
+	return false;
+}
 
-void IN_Frame (void);
+int	SNDDMA_GetDMAPos(void)
+{
+	return 0;
+}
 
-void IN_Move (usercmd_t *cmd);
-// add additional movement on top of the keyboard move cmd
+void SNDDMA_Shutdown(void)
+{
+}
 
-void IN_Activate (qboolean active);
+void SNDDMA_BeginPainting (void)
+{
+}
+
+void SNDDMA_Submit(void)
+{
+}

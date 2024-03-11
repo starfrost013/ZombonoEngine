@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-typedef void (*Key_Event_fp_t)(int key, qboolean down);
+typedef void (*Key_Event_fp_t)(int key, qboolean down, int x, int y);
 typedef void (*Quit_fp_t)(void);
 
 extern void (*KBD_Update_fp)(void);

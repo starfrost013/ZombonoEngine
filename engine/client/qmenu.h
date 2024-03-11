@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,8 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#ifndef __QMENU_H__
-#define __QMENU_H__
+#pragma once
 
 #define MAXMENUITEMS	64
 
@@ -132,4 +132,3 @@ void	Menu_SetStatusBar( menuframework_t *s, const char *string );
 void	Menu_SlideItem( menuframework_t *s, int dir );
 int		Menu_TallySlots( menuframework_t *menu );
 
-#endif

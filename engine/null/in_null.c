@@ -1,6 +1,5 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
-Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,19 +17,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// input.h -- external (non-keyboard) input devices
-#pragma once
+// in_null.c -- for systems without a mouse
 
-void IN_Init (void);
+#include "../client/client.h"
 
-void IN_Shutdown (void);
+void IN_Init (void)
+{
+}
 
-void IN_Commands (void);
-// oportunity for devices to stick commands on the script buffer
+void IN_Shutdown (void)
+{
+}
 
-void IN_Frame (void);
+void IN_Commands (void)
+{
+}
 
-void IN_Move (usercmd_t *cmd);
-// add additional movement on top of the keyboard move cmd
+void IN_Frame (void)
+{
+}
 
-void IN_Activate (qboolean active);
+void IN_Move (usercmd_t *cmd)
+{
+}
+
+void IN_Activate (qboolean active)
+{
+}
+
+void IN_ActivateMouse (void)
+{
+}
+
+void IN_DeactivateMouse (void)
+{
+}
+

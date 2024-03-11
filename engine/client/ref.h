@@ -21,8 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ref.h: header for exported refresh (rendering) dll
 
-#ifndef __REF_H
-#define __REF_H
+#pragma once
 
 #include "../qcommon/qcommon.h"
 
@@ -222,4 +221,3 @@ typedef struct
 // this is the only function actually exported at the linker level
 typedef	refexport_t	(*GetRefAPI_t) (refimport_t);
 
-#endif // __REF_H

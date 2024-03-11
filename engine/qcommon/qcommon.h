@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#pragma once
 // qcommon.h -- definitions common between client and server, but not game*.dll
 #include "../game/q_shared.h"
 #include "pdjson.h"
@@ -26,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Engine version
 #define ZOMBONO_VERSION "0.0.5-pre1"
 
-#define	BASEDIRNAME	"zombono"
+#define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
 
 #ifdef WIN32
 
@@ -204,7 +205,7 @@ PROTOCOL
 //
 // server to client
 //
-enum svc_ops_e
+typedef enum svc_ops_e
 {
 	svc_bad,
 
@@ -244,7 +245,7 @@ enum svc_ops_e
 //
 // client to server
 //
-enum clc_ops_e
+typedef enum clc_ops_e
 {
 	clc_bad,
 	clc_nop, 		
@@ -461,7 +462,7 @@ CVAR
 /*
 
 cvar_t variables are used to hold scalar or string variables that can be changed or displayed at the console or prog code as well as accessed directly
-in C code.
+in C code.#pragma once
 
 The user can access cvars from the console in three ways:
 r_draworder			prints the current value
@@ -575,7 +576,7 @@ void		NET_Sleep(int msec);
 typedef struct
 {
 	qboolean	fatal_error;
-
+#pragma once
 	netsrc_t	sock;
 
 	int			dropped;			// between last packet and previous
@@ -787,7 +788,7 @@ void Qcommon_Shutdown (void);
 extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
 
 // this is in the client code, but can be used for debugging from server
-void SCR_DebugGraph (float value, int color);
+void SCR_DebugGraph (float value, int r, int g, int b, int a);
 
 
 /*

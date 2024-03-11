@@ -6,8 +6,8 @@
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.5c"; // Version
-const string DEFAULT_GAME_NAME = "zombono"; // Default engine game name folder to use
+const string ASSETBUILD_VERSION = "2.0.6"; // Version
+const string DEFAULT_GAME_NAME = "zombonogame"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
 string outputDirectory = string.Empty; //set later

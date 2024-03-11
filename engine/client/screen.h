@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // screen.h
+#pragma once
 
 void	SCR_Init (void);
 
@@ -28,7 +29,7 @@ void	SCR_CenterPrint (char *str);
 void	SCR_BeginLoadingPlaque (void);
 void	SCR_EndLoadingPlaque (void);
 
-void	SCR_DebugGraph (float value, int color);
+void	SCR_DebugGraph (float value, int r, int g, int b, int a);
 
 void	SCR_TouchPics (void);
 

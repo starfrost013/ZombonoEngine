@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // server.h
 
 
-//define	PARANOID			// speed sapping error checking
+#pragma once
 
 #include "../qcommon/qcommon.h"
 #include "../game/game.h"
@@ -215,7 +215,7 @@ int SV_ImageIndex (char *name);
 
 void SV_WriteClientdataToMessage (client_t *client, sizebuf_t *msg);
 
-void SV_ExecuteUserCommand (char *s);
+void SV_ExecuteUserCommand (char *s, qboolean no_console);
 void SV_InitOperatorCommands (void);
 
 void SV_SendServerinfo (client_t *client);

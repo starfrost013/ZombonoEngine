@@ -31,12 +31,11 @@ typedef struct
 {
 	exptype_t	type;
 	entity_t	ent;
-
-	int			frames;
+	int		frames;
 	float		light;
 	vec3_t		lightcolor;
 	float		start;
-	int			baseframe;
+	int		baseframe;
 } explosion_t;
 
 

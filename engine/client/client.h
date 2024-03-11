@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // client.h -- primary header for client
+#pragma once
 
 //define	PARANOID			// speed sapping error checking
 
@@ -677,7 +678,7 @@ qboolean UI_ScoreUICreate();
 
 // UI: Required CVars
 
-cvar_t* vid_hudscale;
+extern cvar_t* vid_hudscale;
 
 // Leaderboard utility functions
 void UI_LeaderboardUIUpdate();

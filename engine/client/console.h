@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // console
 //
+#pragma once
 
 #define	NUM_CON_CHAT_LINES 9	// Number of lines that will be disabled in chat
 

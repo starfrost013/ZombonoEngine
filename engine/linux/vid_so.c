@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2024      starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -47,7 +48,6 @@ cvar_t		*vid_xpos;			// X coordinate of window position
 cvar_t		*vid_ypos;			// Y coordinate of window position
 cvar_t		*vid_fullscreen;
 cvar_t		*vid_refresh;
-cvar_t		*vid_hudscale;
 cvar_t		*r_customwidth;
 cvar_t		*r_customheight;
 cvar_t		*viewsize;
@@ -61,7 +61,7 @@ qboolean	reflib_active = 0;
 
 /** KEYBOARD **************************************************************/
 
-void Do_Key_Event(int key, qboolean down);
+void Do_Key_Event(int key, qboolean down, int x, int y);
 
 void (*KBD_Update_fp)(void);
 void (*KBD_Init_fp)(Key_Event_fp_t fp);
@@ -317,7 +317,6 @@ qboolean VID_LoadRefresh( char *name )
 	in_state.Key_Event_fp = Do_Key_Event;
 	in_state.Quit_fp = CL_Quit_f;
 	in_state.viewangles = cl.viewangles;
-	in_state.in_strafe_state = &in_strafe.state;
 
 	if ((RW_IN_Init_fp = dlsym(reflib_library, "RW_IN_Init")) == NULL ||
 		(RW_IN_Shutdown_fp = dlsym(reflib_library, "RW_IN_Shutdown")) == NULL ||
@@ -386,17 +385,6 @@ void VID_CheckChanges (void)
 		** refresh has changed
 		*/
 
-		// only allow Vulkan on Linux
-		if(strcmp("vk", vid_ref->string))
-		{
-			Cvar_Set("vid_ref", "vk");
-			vid_ref->modified = false;
-			Com_Printf("Only Vulkan renderer is supported on Linux.\n");
-			// don't restart the renderer if it's already loaded
-			if(reflib_active)
-				break;
-		}
-
 		vid_ref->modified = false;
 		vid_fullscreen->modified = true;
 		cl.refresh_prepped = false;
@@ -405,20 +393,7 @@ void VID_CheckChanges (void)
 		sprintf( name, "ref_%s.so", vid_ref->string );
 		if ( !VID_LoadRefresh( name ) )
 		{
-			if ( strcmp (vid_ref->string, "soft") == 0 ||
-				strcmp (vid_ref->string, "softx") == 0 ) {
-Com_Printf("Refresh failed\n");
-				sw_mode = Cvar_Get( "sw_mode", "0", 0 );
-				if (sw_mode->value != 0) {
-Com_Printf("Trying mode 0\n");
-					Cvar_SetValue("sw_mode", 0);
-					if ( !VID_LoadRefresh( name ) )
-						Com_Error (ERR_FATAL, "Couldn't fall back to software refresh!");
-				} else
-					Com_Error (ERR_FATAL, "Couldn't fall back to software refresh!");
-			}
-
-			Cvar_Set( "vid_ref", "soft" );
+			Com_Error (ERR_FATAL, "Couldn't load renderer: %s", vid_ref->string);
 
 			/*
 			** drop the console if we fail to load a refresh
@@ -445,7 +420,7 @@ VID_Init
 */
 void VID_Init (void)
 {
-	vid_ref = Cvar_Get ("vid_ref", "vk", CVAR_ARCHIVE);
+	vid_ref = Cvar_Get ("vid_ref", "gl", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get ("vid_xpos", "3", CVAR_ARCHIVE);
 	vid_ypos = Cvar_Get ("vid_ypos", "22", CVAR_ARCHIVE);
 	vid_fullscreen = Cvar_Get ("vid_fullscreen", "0", CVAR_ARCHIVE);
@@ -457,9 +432,6 @@ void VID_Init (void)
 
 	/* Add some console commands that we want to handle */
 	Cmd_AddCommand ("vid_restart", VID_Restart_f);
-
-	/* Disable the 3Dfx splash screen */
-	putenv("FX_GLIDE_NO_SPLASH=0");
 		
 	/* Start the graphics mode and load refresh DLL */
 	VID_CheckChanges();
@@ -540,9 +512,9 @@ void IN_Activate (qboolean active)
 {
 }
 
-void Do_Key_Event(int key, qboolean down)
+void Do_Key_Event(int key, qboolean down, int x, int y)
 {
 	if(key < 256)
-		Key_Event(key, down, Sys_Milliseconds());
+		Key_Event(key, down, Sys_Milliseconds(), x, y);
 }
 

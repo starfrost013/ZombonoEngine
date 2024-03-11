@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2018-2019 Krzysztof Kondrak
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,7 +27,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define REF_MESA3D  2
 #define REF_3DFXGL 3
 #define REF_OPENGLX	4
-#define REF_VULKAN	5
 #define REF_MESA3DGLX 6
 
 extern cvar_t *vid_ref;
@@ -64,36 +64,29 @@ MENU INTERACTION
 
 ====================================================================
 */
-#define SOFTWARE_MENU 0
-#define OPENGL_MENU   1
-#define VULKAN_MENU   2
+#define OPENGL_MENU   	0
 
-static menuframework_s  s_software_menu;
-static menuframework_s	s_opengl_menu;
-static menuframework_s  s_vulkan_menu;
-static menuframework_s *s_current_menu;
+#define MENU_COUNT	1
+
+static menuframework_t	s_opengl_menu;
+static menuframework_t *s_current_menu;
 static int				s_current_menu_index;
 
-static menulist_s		s_mode_list[3];
-static menulist_s		s_ref_list[3];
-static menuslider_s		s_tq_slider;
-static menuslider_s		s_tqvk_slider;
-static menuslider_s		s_screensize_slider[3];
-static menuslider_s		s_brightness_slider[3];
-static menulist_s  		s_fs_box[3];
-static menulist_s  		s_stipple_box;
-static menulist_s  		s_paletted_texture_box;
-static menulist_s  		s_windowed_mouse;
-static menulist_s		s_msaa_mode;
-static menulist_s		s_sampleshading;
-static menulist_s		s_aniso_filter;
-static menulist_s		s_texture_filter;
-static menulist_s		s_lmap_texture_filter;
-static menulist_s		s_vsync;
-static menulist_s		s_postprocess;
-static menuaction_s		s_apply_action[3];
-static menuaction_s		s_cancel_action[3];
-static menuaction_s		s_defaults_action[3];
+static menulist_t		s_mode_list[3];
+static menulist_t		s_ref_list[3];
+static menuslider_t		s_tq_slider;
+static menuslider_t		s_screensize_slider[3];
+static menuslider_t		s_brightness_slider[3];
+static menulist_t  		s_fs_box[3];
+static menulist_t  		s_stipple_box;
+static menulist_t  		s_paletted_texture_box;
+static menulist_t  		s_windowed_mouse;
+static menulist_t		s_sampleshading;
+static menulist_t		s_vsync;
+static menulist_t		s_postprocess;
+static menuaction_t		s_apply_action[3];
+static menuaction_t		s_cancel_action[3];
+static menuaction_t		s_defaults_action[3];
 
 static void DriverCallback( void *unused )
 {
@@ -102,47 +95,40 @@ static void DriverCallback( void *unused )
 	s_ref_list[1].curvalue = curr_value;
 	s_ref_list[2].curvalue = curr_value;
 
+	s_current_menu = &s_opengl_menu;
+	s_current_menu_index = 1;
+	
+	/*	
+	restore when we add the gl3.x renderer
 	if ( s_ref_list[s_current_menu_index].curvalue < 2 )
 	{
 		s_current_menu = &s_software_menu;
 		s_current_menu_index = 0;
 	}
-	else if ( s_ref_list[s_current_menu_index].curvalue == 5 )
-	{
-		s_current_menu = &s_vulkan_menu;
-		s_current_menu_index = 2;
-	}
 	else
 	{
-		s_current_menu = &s_opengl_menu;
-		s_current_menu_index = 1;
+
 	}
+	*/
 }
 
 static void ScreenSizeCallback( void *s )
 {
-	menuslider_s *slider = ( menuslider_s * ) s;
+	menuslider_t *slider = ( menuslider_t * ) s;
 
 	Cvar_SetValue( "viewsize", slider->curvalue * 10 );
 }
 
 static void BrightnessCallback( void *s )
 {
-	menuslider_s *slider = ( menuslider_s * ) s;
+	menuslider_t *slider = ( menuslider_t * ) s;
 	int i;
 
-	for ( i = 0; i < 3; i++ )
+	for ( i = 0; i < MENU_COUNT; i++ )
 	{
 		s_brightness_slider[i].curvalue = s_brightness_slider[s_current_menu_index].curvalue;
 	}
 
-	if ( Q_stricmp( vid_ref->string, "soft" ) == 0 ||
-		 Q_stricmp( vid_ref->string, "softx" ) == 0 )
-	{
-		float gamma = ( 0.8 - ( slider->curvalue/10.0 - 0.5 ) ) + 0.5;
-
-		Cvar_SetValue( "vid_gamma", gamma );
-	}
 }
 
 static void ResetDefaults( void *unused )
@@ -158,7 +144,7 @@ static void ApplyChanges( void *unused )
 	/*
 	** make values consistent
 	*/
-	for ( i = 0; i < 3; i++ )
+	for ( i = 0; i < MENU_COUNT; i++ )
 	{
 		s_fs_box[i].curvalue = s_fs_box[s_current_menu_index].curvalue;
 		s_brightness_slider[i].curvalue = s_brightness_slider[s_current_menu_index].curvalue;
@@ -171,61 +157,14 @@ static void ApplyChanges( void *unused )
 	gamma = ( 0.8 - ( s_brightness_slider[s_current_menu_index].curvalue/10.0 - 0.5 ) ) + 0.5;
 
 	Cvar_SetValue( "vid_gamma", gamma );
-	Cvar_SetValue( "sw_stipplealpha", s_stipple_box.curvalue );
 	Cvar_SetValue( "gl_picmip", 3 - s_tq_slider.curvalue );
 	Cvar_SetValue( "vid_fullscreen", s_fs_box[s_current_menu_index].curvalue );
 	Cvar_SetValue( "gl_ext_palettedtexture", s_paletted_texture_box.curvalue );
-	Cvar_SetValue( "sw_mode", s_mode_list[SOFTWARE_MENU].curvalue == 0 ? -1 : s_mode_list[SOFTWARE_MENU].curvalue - 1 );
 	Cvar_SetValue( "gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1 );
-	Cvar_SetValue( "vk_mode", s_mode_list[VULKAN_MENU].curvalue == 0 ? -1 : s_mode_list[VULKAN_MENU].curvalue - 1 );
-	Cvar_SetValue( "vk_msaa", s_msaa_mode.curvalue );
-	Cvar_SetValue( "vk_aniso", s_aniso_filter.curvalue );
-	Cvar_SetValue( "vk_sampleshading", s_sampleshading.curvalue );
-	Cvar_SetValue( "vk_vsync", s_vsync.curvalue );
-	Cvar_SetValue( "vk_postprocess", s_postprocess.curvalue );
-	Cvar_SetValue( "vk_picmip", 3 - s_tqvk_slider.curvalue );
 	Cvar_SetValue( "_windowed_mouse", s_windowed_mouse.curvalue);
-
-	switch ( s_texture_filter.curvalue )
-	{
-	case 0:
-		Cvar_Set( "vk_texturemode", "VK_NEAREST" );
-		break;
-	case 1:
-		Cvar_Set( "vk_texturemode", "VK_LINEAR" );
-		break;
-	case 2:
-		Cvar_Set( "vk_texturemode", "VK_MIPMAP_NEAREST" );
-		break;
-	default:
-		Cvar_Set( "vk_texturemode", "VK_MIPMAP_LINEAR" );
-	}
-
-	switch ( s_lmap_texture_filter.curvalue )
-	{
-	case 0:
-		Cvar_Set( "vk_lmaptexturemode", "VK_NEAREST" );
-		break;
-	case 1:
-		Cvar_Set( "vk_lmaptexturemode", "VK_LINEAR" );
-		break;
-	case 2:
-		Cvar_Set( "vk_lmaptexturemode", "VK_MIPMAP_NEAREST" );
-		break;
-	default:
-		Cvar_Set( "vk_lmaptexturemode", "VK_MIPMAP_LINEAR" );
-	}
 
 	switch ( s_ref_list[s_current_menu_index].curvalue )
 	{
-	case REF_SOFT:
-		Cvar_Set( "vid_ref", "soft" );
-		break;
-
-	case REF_SOFTX11:
-		Cvar_Set( "vid_ref", "softx" );
-		break;
-
 	case REF_MESA3D :
 		Cvar_Set( "vid_ref", "gl" );
 		Cvar_Set( "gl_driver", "libMesaGL.so.2" );
@@ -238,11 +177,6 @@ static void ApplyChanges( void *unused )
 		Cvar_Set( "gl_driver", "libGL.so" );
 		if (gl_driver->modified)
 			vid_ref->modified = true;
-		break;
-
-	case REF_VULKAN :
-		Cvar_Set( "vid_ref", "vk" );
-		Cvar_Set( "vk_driver", "vulkan" );
 		break;
 
 	case REF_MESA3DGLX :
@@ -298,12 +232,9 @@ void VID_MenuInit( void )
 	};
 	static const char *refs[] =
 	{
-		"[software       ]",
-		"[software X11   ]",
 		"[Mesa 3-D 3DFX  ]",
 		"[3DFXGL Miniport]",
 		"[OpenGL glX     ]",
-		"[Vulkan         ]",
 		"[Mesa 3-D glX   ]",
 		0
 	};
@@ -342,59 +273,18 @@ void VID_MenuInit( void )
 		sw_mode = Cvar_Get( "sw_mode", "0", 0 );
 	if ( !gl_ext_palettedtexture )
 		gl_ext_palettedtexture = Cvar_Get( "gl_ext_palettedtexture", "1", CVAR_ARCHIVE );
-	if ( !vk_msaa )
-		vk_msaa = Cvar_Get( "vk_msaa", "0", CVAR_ARCHIVE );
-	if ( !vk_aniso )
-		vk_aniso = Cvar_Get( "vk_aniso", "1", CVAR_ARCHIVE );
-	if ( !vk_sampleshading )
-		vk_sampleshading = Cvar_Get( "vk_sampleshading", "0", CVAR_ARCHIVE );
-	if ( !vk_vsync )
-		vk_vsync = Cvar_Get( "vk_vsync", "0", CVAR_ARCHIVE );
-	if ( !vk_postprocess )
-		vk_postprocess = Cvar_Get( "vk_postprocess", "1", CVAR_ARCHIVE );
-	if ( !vk_texturemode )
-		vk_texturemode = Cvar_Get( "vk_texturemode", "VK_MIPMAP_LINEAR", CVAR_ARCHIVE );
-	if ( !vk_lmaptexturemode )
-		vk_lmaptexturemode = Cvar_Get( "vk_lmaptexturemode", "VK_MIPMAP_LINEAR", CVAR_ARCHIVE );
-	if ( !vk_picmip )
-		vk_picmip = Cvar_Get( "vk_picmip", "0", CVAR_ARCHIVE );
-	if ( !sw_stipplealpha )
-		sw_stipplealpha = Cvar_Get( "sw_stipplealpha", "0", CVAR_ARCHIVE );
 
 	if ( !_windowed_mouse)
 		_windowed_mouse = Cvar_Get( "_windowed_mouse", "0", CVAR_ARCHIVE );
-	if( !vk_mode )
-		vk_mode = Cvar_Get( "vk_mode", "10", 0 );
-	if( !vk_driver )
-		vk_driver = Cvar_Get( "vk_driver", "vulkan", 0 );
 
-	s_mode_list[SOFTWARE_MENU].curvalue = sw_mode->value < 0 ? 0 : sw_mode->value + 1;
 	s_mode_list[OPENGL_MENU].curvalue = gl_mode->value < 0 ? 0 : gl_mode->value + 1;
-	s_mode_list[VULKAN_MENU].curvalue = vk_mode->value < 0 ? 0 : vk_mode->value + 1;
 
 	if ( !scr_viewsize )
 		scr_viewsize = Cvar_Get ("viewsize", "100", CVAR_ARCHIVE);
 
-	s_screensize_slider[SOFTWARE_MENU].curvalue = scr_viewsize->value/10;
 	s_screensize_slider[OPENGL_MENU].curvalue = scr_viewsize->value/10;
-	s_screensize_slider[VULKAN_MENU].curvalue = scr_viewsize->value/10;
 
-	if ( strcmp( vid_ref->string, "soft" ) == 0)
-	{
-		s_current_menu_index = SOFTWARE_MENU;
-		s_ref_list[0].curvalue = s_ref_list[1].curvalue = REF_SOFT;
-	}
-	else if (strcmp( vid_ref->string, "softx" ) == 0 ) 
-	{
-		s_current_menu_index = SOFTWARE_MENU;
-		s_ref_list[0].curvalue = s_ref_list[1].curvalue = REF_SOFTX11;
-	}
-	else if ( strcmp(vid_ref->string, "vk") == 0 )
-	{
-		s_current_menu_index = VULKAN_MENU;
-		s_ref_list[s_current_menu_index].curvalue = REF_VULKAN;
-	}
-	else if ( strcmp( vid_ref->string, "gl" ) == 0 )
+	if ( strcmp( vid_ref->string, "gl" ) == 0 )
 	{
 		s_current_menu_index = OPENGL_MENU;
 		if ( strcmp( gl_driver->string, "lib3dfxgl.so" ) == 0 )
@@ -411,14 +301,10 @@ void VID_MenuInit( void )
 			s_ref_list[s_current_menu_index].curvalue = REF_OPENGLX;
 	}
 
-	s_software_menu.x = viddef.width * 0.50;
-	s_software_menu.nitems = 0;
 	s_opengl_menu.x = viddef.width * 0.50;
 	s_opengl_menu.nitems = 0;
-	s_vulkan_menu.x = viddef.width * 0.50;
-	s_vulkan_menu.nitems = 0;
-
-	for ( i = 0; i < 3; i++ )
+	
+	for ( i = 0; i < MENU_COUNT; i++ ) //
 	{
 		s_ref_list[i].generic.type = MTYPE_SPINCONTROL;
 		s_ref_list[i].generic.name = "driver";
@@ -476,12 +362,6 @@ void VID_MenuInit( void )
 		s_cancel_action[i].generic.callback = CancelChanges;
 	}
 
-	s_stipple_box.generic.type = MTYPE_SPINCONTROL;
-	s_stipple_box.generic.x	= 0;
-	s_stipple_box.generic.y	= 60 * vid_hudscale->value;
-	s_stipple_box.generic.name	= "stipple alpha";
-	s_stipple_box.curvalue = sw_stipplealpha->value;
-	s_stipple_box.itemnames = yesno_names;
 
 	s_windowed_mouse.generic.type = MTYPE_SPINCONTROL;
 	s_windowed_mouse.generic.x  = 0;
@@ -498,67 +378,12 @@ void VID_MenuInit( void )
 	s_tq_slider.maxvalue = 3;
 	s_tq_slider.curvalue = 3-gl_picmip->value;
 
-	s_tqvk_slider.generic.type = MTYPE_SLIDER;
-	s_tqvk_slider.generic.x = 0;
-	s_tqvk_slider.generic.y = 60 * vid_hudscale->value;
-	s_tqvk_slider.generic.name = "texture quality";
-	s_tqvk_slider.minvalue = 0;
-	s_tqvk_slider.maxvalue = 3;
-	s_tqvk_slider.curvalue = 3-vk_picmip->value;
-
 	s_paletted_texture_box.generic.type = MTYPE_SPINCONTROL;
 	s_paletted_texture_box.generic.x	= 0;
 	s_paletted_texture_box.generic.y	= 70 * vid_hudscale->value;
 	s_paletted_texture_box.generic.name	= "8-bit textures";
 	s_paletted_texture_box.itemnames = yesno_names;
 	s_paletted_texture_box.curvalue = gl_ext_palettedtexture->value;
-
-	s_msaa_mode.generic.type = MTYPE_SPINCONTROL;
-	s_msaa_mode.generic.name = "multisampling";
-	s_msaa_mode.generic.x = 0;
-	s_msaa_mode.generic.y = 70 * vid_hudscale->value;
-	s_msaa_mode.itemnames = msaa_modes;
-	s_msaa_mode.curvalue = vk_msaa->value;
-
-	s_sampleshading.generic.type = MTYPE_SPINCONTROL;
-	s_sampleshading.generic.name = "sample shading";
-	s_sampleshading.generic.x = 0;
-	s_sampleshading.generic.y = 80 * vid_hudscale->value;
-	s_sampleshading.itemnames = yesno_names;
-	s_sampleshading.curvalue = vk_sampleshading->value > 0 ? 1 : 0;
-
-	s_aniso_filter.generic.type = MTYPE_SPINCONTROL;
-	s_aniso_filter.generic.name = "anisotropic filtering";
-	s_aniso_filter.generic.x = 0;
-	s_aniso_filter.generic.y = 90 * vid_hudscale->value;
-	s_aniso_filter.itemnames = yesno_names;
-	s_aniso_filter.curvalue = vk_aniso->value > 0 ? 1 : 0;
-
-	s_texture_filter.generic.type = MTYPE_SPINCONTROL;
-	s_texture_filter.generic.name = "texture filtering";
-	s_texture_filter.generic.x = 0;
-	s_texture_filter.generic.y = 100 * vid_hudscale->value;
-	s_texture_filter.itemnames = filter_modes;
-	s_texture_filter.curvalue = 0;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_LINEAR" ) )
-		s_texture_filter.curvalue = 1;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_MIPMAP_NEAREST" ) )
-		s_texture_filter.curvalue = 2;
-	if ( !Q_stricmp( vk_texturemode->string, "VK_MIPMAP_LINEAR" ) )
-		s_texture_filter.curvalue = 3;
-
-	s_lmap_texture_filter.generic.type = MTYPE_SPINCONTROL;
-	s_lmap_texture_filter.generic.name = "lightmap filtering";
-	s_lmap_texture_filter.generic.x = 0;
-	s_lmap_texture_filter.generic.y = 110 * vid_hudscale->value;
-	s_lmap_texture_filter.itemnames = filter_modes;
-	s_lmap_texture_filter.curvalue = 0;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_LINEAR") )
-		s_lmap_texture_filter.curvalue = 1;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_MIPMAP_NEAREST") )
-		s_lmap_texture_filter.curvalue = 2;
-	if ( !Q_stricmp(vk_lmaptexturemode->string, "VK_MIPMAP_LINEAR") )
-		s_lmap_texture_filter.curvalue = 3;
 
 	s_vsync.generic.type = MTYPE_SPINCONTROL;
 	s_vsync.generic.name = "vertical sync";
@@ -574,14 +399,6 @@ void VID_MenuInit( void )
 	s_postprocess.itemnames = yesno_names;
 	s_postprocess.curvalue = vk_postprocess->value > 0 ? 1 : 0;
 
-	Menu_AddItem( &s_software_menu, ( void * ) &s_ref_list[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_mode_list[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_screensize_slider[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_brightness_slider[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_fs_box[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_stipple_box );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_windowed_mouse );
-
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_ref_list[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_mode_list[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_screensize_slider[OPENGL_MENU] );
@@ -590,40 +407,13 @@ void VID_MenuInit( void )
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_tq_slider );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_paletted_texture_box );
 
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_ref_list[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_mode_list[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_screensize_slider[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_brightness_slider[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_fs_box[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_tqvk_slider );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_msaa_mode );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_sampleshading );
-	if (Cvar_Get("vidmenu_aniso", "1", 0)->value)
-		Menu_AddItem( &s_vulkan_menu, ( void * ) &s_aniso_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_texture_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_lmap_texture_filter );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_vsync );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_postprocess );
-
-	Menu_AddItem( &s_software_menu, ( void * ) &s_apply_action[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_defaults_action[SOFTWARE_MENU] );
-	Menu_AddItem( &s_software_menu, ( void * ) &s_cancel_action[SOFTWARE_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_apply_action[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_defaults_action[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_cancel_action[OPENGL_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_apply_action[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_defaults_action[VULKAN_MENU] );
-	Menu_AddItem( &s_vulkan_menu, ( void * ) &s_cancel_action[VULKAN_MENU] );
 
-	Menu_Center( &s_software_menu );
 	Menu_Center( &s_opengl_menu );
-	Menu_Center( &s_vulkan_menu );
 	s_opengl_menu.x -= 8 * vid_hudscale->value;
-	s_software_menu.x -= 8 * vid_hudscale->value;
-	s_vulkan_menu.x -= 8 * vid_hudscale->value;
 	s_opengl_menu.y += 18 * vid_hudscale->value;
-	s_software_menu.y += 18 * vid_hudscale->value;
-	s_vulkan_menu.y += 18 * vid_hudscale->value;
 }
 
 /*
@@ -636,11 +426,8 @@ void VID_MenuDraw (void)
 	int w, h;
 
 	if ( s_current_menu_index == 0 )
-		s_current_menu = &s_software_menu;
-	else if (s_current_menu_index == 2)
-		s_current_menu = &s_vulkan_menu;
-	else
-		s_current_menu = &s_opengl_menu;
+			s_current_menu = &s_opengl_menu;
+	// more for gl3.x renderer
 
 	/*
 	** draw the banner
@@ -666,7 +453,7 @@ VID_MenuKey
 */
 const char *VID_MenuKey( int key )
 {
-	menuframework_s *m = s_current_menu;
+	menuframework_t *m = s_current_menu;
 	static const char *sound = "misc/menu1.wav";
 
 	switch ( key )

@@ -1,7 +1,14 @@
 Zombono
 Release Notes
-Version 0.04-pre6
-March 9, 2024
+
+Version 0.05-pre1
+March XX, 2024
+* Made the engine and gamex64 compile on GCC.
+* Changed game files directory from "zombono" to "zombonogame" as some(?) linux filesystems can't have a folder named the same name as a file (zombono binary vs zombono folder)
+
+
+Version 0.04
+March 10, 2024
 
 * Changed menus to use new text system and colorised them.
 * Rewrote credits code to use text system.

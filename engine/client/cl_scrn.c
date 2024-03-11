@@ -57,7 +57,7 @@ cvar_t		*scr_graphheight;
 cvar_t		*scr_graphscale;
 cvar_t		*scr_graphshift;
 
-extern cvar_t	*vid_hudscale;
+cvar_t	*vid_hudscale;
 extern cvar_t	*vid_ref;
 
 typedef struct
