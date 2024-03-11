@@ -1,5 +1,5 @@
 #
-# Zombono Makefile for Linux 2.0
+# Zombono Makefile for Linux big.number
 # 64-bit version
 #
 # Nov '97 by Zoid <zoid@idsoftware.com>
@@ -42,8 +42,8 @@ endif
 NOARCH=noarch
 
 MOUNT_DIR=..
-VWEP_DIR=/grog/Projects/Quake2/vwep
-QUAKE2_DIR=/grog/Projects/Quake2Master
+VWEP_DIR=/grog/Projects/zombono/vwep
+ZOMBONO_DIR=/grog/Projects/ZombonoMaster
 
 BUILD_DEBUG_DIR=debug$(ARCH)$(GLIBC)
 BUILD_RELEASE_DIR=release$(ARCH)$(GLIBC)
@@ -51,7 +51,6 @@ CLIENT_DIR=$(MOUNT_DIR)/client
 SERVER_DIR=$(MOUNT_DIR)/server
 REF_SOFT_DIR=$(MOUNT_DIR)/ref_soft
 REF_GL_DIR=$(MOUNT_DIR)/ref_gl
-REF_VK_DIR=$(MOUNT_DIR)/ref_vk
 COMMON_DIR=$(MOUNT_DIR)/qcommon
 LINUX_DIR=$(MOUNT_DIR)/linux
 GAME_DIR=$(MOUNT_DIR)/game
@@ -75,16 +74,12 @@ endif
 
 DEBUG_CFLAGS=$(BASE_CFLAGS) -g -D_DEBUG
 LDFLAGS=-L/usr/local/lib -ldl -lm -lasound -lpthread
-SVGALDFLAGS=-lvga -lm
-XLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -lX11 -lXext -lXxf86dga
 XCFLAGS=
 
 GLLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lvga -lm
 GLXLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lXxf86dga -lXxf86vm -lm
 
 GLCFLAGS=-I$(MESA_DIR)/include -I/usr/include/glide
-VKCFLAGS=-I$(VULKAN_SDK)/include
-
 SHLIBEXT=so
 
 SHLIBCFLAGS=-fPIC -std=c99
@@ -98,9 +93,6 @@ DO_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
 DO_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) -o $@ -c $<
 DO_GL_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) $(GLCFLAGS) -o $@ -c $<
 DO_GL_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) $(GLCFLAGS) -o $@ -c $<
-DO_VK_SHLIB_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) $(VKCFLAGS) -o $@ -c $<
-DO_VK_SHLIB_CPP=$(CC) $(CFLAGS) $(SHLIBCPPFLAGS) $(VKCFLAGS) -o $@ -c $<
-DO_VK_SHLIB_O_CC=$(CC) $(CFLAGS) -O $(SHLIBCFLAGS) $(VKCFLAGS) -o $@ -c $<
 DO_AS=$(CC) $(CFLAGS) -DELF -x assembler-with-cpp -o $@ -c $<
 DO_SHLIB_AS=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -DELF -x assembler-with-cpp -o $@ -c $<
 
@@ -113,10 +105,9 @@ TARGETS=$(BUILDDIR)/q2ded \
 	$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) \
 
 else
-TARGETS=$(BUILDDIR)/quake2 \
+TARGETS=$(BUILDDIR)/zombono \
 	$(BUILDDIR)/q2ded \
 	$(BUILDDIR)/baseq2/game$(ARCH).$(SHLIBEXT) \
-	$(BUILDDIR)/ref_vk.$(SHLIBEXT) \
 	$(BUILDDIR)/ref_glx.$(SHLIBEXT) \
 	$(BUILDDIR)/ref_gl.$(SHLIBEXT)
 endif
@@ -151,7 +142,7 @@ targets: $(TARGETS)
 # CLIENT/SERVER
 #############################################################################
 
-QUAKE2_OBJS = \
+zombono_OBJS = \
 	$(BUILDDIR)/client/cl_cin.o \
 	$(BUILDDIR)/client/cl_ents.o \
 	$(BUILDDIR)/client/cl_font.o \
@@ -212,14 +203,14 @@ QUAKE2_OBJS = \
 	$(BUILDDIR)/client/pmove.o
 
 ifeq ($(ARCH),axp)
-QUAKE2_AS_OBJS =  #blank
+zombono_AS_OBJS =  #blank
 else
-QUAKE2_AS_OBJS = \
+zombono_AS_OBJS = \
 	$(BUILDDIR)/client/snd_mixa.o
 endif
 
-$(BUILDDIR)/quake2 : $(QUAKE2_OBJS) $(QUAKE2_AS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(QUAKE2_OBJS) $(QUAKE2_AS_OBJS) $(LDFLAGS)
+$(BUILDDIR)/zombono : $(zombono_OBJS) $(zombono_AS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(zombono_OBJS) $(zombono_AS_OBJS) $(LDFLAGS)
 
 $(BUILDDIR)/client/cl_cin.o :     $(CLIENT_DIR)/cl_cin.c
 	$(DO_CC)
@@ -515,8 +506,10 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/g_utils.o \
 	$(BUILDDIR)/game/g_weapon.o \
 	$(BUILDDIR)/game/m_actor.o \
+	$(BUILDDIR)/game/m_ogre.o \
 	$(BUILDDIR)/game/m_soldier.o \
 	$(BUILDDIR)/game/m_zombie.o \
+	$(BUILDDIR)/game/m_zombie_fast.o \
 	$(BUILDDIR)/game/p_hud.o \
 	$(BUILDDIR)/game/p_trail.o \
 	$(BUILDDIR)/game/p_view.o \
@@ -583,10 +576,16 @@ $(BUILDDIR)/game/g_weapon.o :    $(GAME_DIR)/g_weapon.c
 $(BUILDDIR)/game/m_actor.o :     $(GAME_DIR)/m_actor.c
 	$(DO_SHLIB_CC)
 
+$(BUILDDIR)/game/m_ogre.o :   $(GAME_DIR)/m_ogre.c
+	$(DO_SHLIB_CC)
+
 $(BUILDDIR)/game/m_soldier.o :   $(GAME_DIR)/m_soldier.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/m_soldier.o :   $(GAME_DIR)/m_zombie.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/m_soldier.o :   $(GAME_DIR)/m_zombie_fast.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/p_hud.o :       $(GAME_DIR)/p_hud.c
@@ -627,13 +626,8 @@ REF_GL_OBJS = \
 	$(BUILDDIR)/ref_gl/q_shlinux.o \
 	$(BUILDDIR)/ref_gl/glob.o
 
-# TTimo: taking out Mesa
 REF_GL_FXMESA_OBJS = \
-	$(BUILDDIR)/ref_gl/rw_in_svgalib.o
-
-#REF_GL_FXMESA_OBJS = \
-#	$(BUILDDIR)/ref_gl/gl_fxmesa.o \
-#	$(BUILDDIR)/ref_gl/rw_in_svgalib.o
+	$(BUILDDIR)/ref_gl/gl_fxmesa.o \
 
 REF_GL_GLX_OBJS = \
 	$(BUILDDIR)/ref_gl/gl_glx.o
@@ -680,9 +674,6 @@ $(BUILDDIR)/ref_gl/gl_fxmesa.o :      $(LINUX_DIR)/gl_fxmesa.c
 $(BUILDDIR)/ref_gl/gl_glx.o :      $(LINUX_DIR)/gl_glx.c
 	$(DO_GL_SHLIB_CC)
 
-$(BUILDDIR)/ref_gl/rw_in_svgalib.o :  $(LINUX_DIR)/rw_in_svgalib.c
-	$(DO_GL_SHLIB_CC)
-
 $(BUILDDIR)/ref_gl/q_shared.o :       $(GAME_DIR)/q_shared.c
 	$(DO_SHLIB_CC)
 
@@ -700,7 +691,7 @@ $(BUILDDIR)/ref_gl/glob.o :           $(LINUX_DIR)/glob.c
 RPMROOT=/usr/src/redhat
 RPM = rpm
 RPMFLAGS = -bb
-INSTALLDIR = /usr/local/games/quake2
+INSTALLDIR = /usr/local/games/zombono
 TDFXGL_DIR = /home/zoid/3dfxgl
 TMPDIR = /var/tmp
 
@@ -709,13 +700,13 @@ ifeq ($(ARCH),axp)
 RPMDIR = $(TMPDIR)/q2ded-$(VERSION_FN)
 DESTDIR= $(RPMDIR)/$(INSTALLDIR)
 
-rpm: quake2.axp.spec
+rpm: zombono.axp.spec
 	touch $(RPMROOT)/SOURCES/q2ded-$(VERSION_FN).tar.gz
 	if [ ! -d archives ];then mkdir archives;fi
 	$(MAKE) copyfiles COPYDIR=$(DESTDIR)
-	cp $(MOUNT_DIR)/linux/quake2.gif $(RPMROOT)/SOURCES/.
-	cp quake2.axp.spec $(RPMROOT)/SPECS/.
-	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) quake2.axp.spec
+	cp $(MOUNT_DIR)/linux/zombono.gif $(RPMROOT)/SOURCES/.
+	cp zombono.axp.spec $(RPMROOT)/SPECS/.
+	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) zombono.axp.spec
 	rm -rf $(RPMDIR)
 	mv $(RPMROOT)/RPMS/$(RPMARCH)/q2ded-$(VERSION_FN)-$(RPM_RELEASE).$(RPMARCH).rpm archives/.
 
@@ -735,262 +726,237 @@ copyfiles:
 	chmod 755 $(COPYDIR)/baseq2
 	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/baseq2
 	chmod 755 $(COPYDIR)/baseq2/game$(ARCH).$(SHLIBEXT)
-	-mkdir $(COPYDIR)/ctf
-	chmod 755 $(COPYDIR)/ctf
-	cp $(BUILD_RELEASE_DIR)/ctf/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/ctf
-	chmod 755 $(COPYDIR)/ctf/game$(ARCH).$(SHLIBEXT)
-	-mkdir $(COPYDIR)/xatrix
-	chmod 755 $(COPYDIR)/xatrix
-	cp $(BUILD_RELEASE_DIR)/xatrix/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/xatrix
-	chmod 755 $(COPYDIR)/xatrix/game$(ARCH).$(SHLIBEXT)
-	-mkdir $(COPYDIR)/rogue
-	chmod 755 $(COPYDIR)/rogue
-	cp $(BUILD_RELEASE_DIR)/rogue/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/rogue
-	chmod 755 $(COPYDIR)/rogue/game$(ARCH).$(SHLIBEXT)
-	cp $(MOUNT_DIR)/linux/readme.axp $(COPYDIR)/README
 	cp $(MOUNT_DIR)/readme.txt $(COPYDIR)
 	cp $(MOUNT_DIR)/$(VERSION)_Changes.txt $(COPYDIR)
 
 
-quake2.axp.spec : $(MOUNT_DIR)/linux/quake2.axp.spec.sh Makefile
+zombono.axp.spec : $(MOUNT_DIR)/linux/zombono.axp.spec.sh Makefile
 	sh $< $(VERSION_FN) $(RPM_RELEASE) $(ARCH) $(INSTALLDIR) > $@
 
 else
 
-# rpm-quake2-patch
-rpm:   rpm-quake2 rpm-quake2-data rpm-quake2-video \
-		rpm-quake2-xatrix rpm-quake2-xatrix-video \
-		rpm-quake2-rogue rpm-quake2-rogue-video \
-		rpm-quake2-ctf
+# rpm-zombono-patch
+rpm:   rpm-zombono rpm-zombono-data rpm-zombono-video \
+		rpm-zombono-ctf
 
-PATCHDIR = $(TMPDIR)/quake2-patch-$(VERSION_FN)
-rpm-quake2-patch: quake2-patch.spec
-	touch $(RPMROOT)/SOURCES/quake2-patch-$(VERSION_FN).tar.gz
+PATCHDIR = $(TMPDIR)/zombono-patch-$(VERSION_FN)
+rpm-zombono-patch: zombono-patch.spec
+	touch $(RPMROOT)/SOURCES/zombono-patch-$(VERSION_FN).tar.gz
 	if [ ! -d archives ];then mkdir archives;fi
 	$(MAKE) copyfiles COPYDIR=$(PATCHDIR)/$(INSTALLDIR)
 	-mkdir $(RPMDIR)/etc
-	cp $(MOUNT_DIR)/linux/quake2.conf $(PATCHDIR)/etc/quake2.conf
-	cp $(MOUNT_DIR)/linux/quake2.gif $(RPMROOT)/SOURCES/.
+	cp $(MOUNT_DIR)/linux/zombono.conf $(PATCHDIR)/etc/zombono.conf
+	cp $(MOUNT_DIR)/linux/zombono.gif $(RPMROOT)/SOURCES/.
 	cp $< $(RPMROOT)/SPECS/.
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
 	rm -rf $(PATCHDIR)
-	mv $(RPMROOT)/RPMS/$(ARCH)/quake2-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
+	mv $(RPMROOT)/RPMS/$(ARCH)/zombono-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
 
-QUAKE2DIR = $(TMPDIR)/quake2-$(VERSION_FN)
-QUAKE2INSTDIR = $(TMPDIR)/quake2-$(VERSION_FN)/$(INSTALLDIR)
-rpm-quake2: quake2.spec
-	touch $(RPMROOT)/SOURCES/quake2-$(VERSION_FN).tar.gz
+zombonoDIR = $(TMPDIR)/zombono-$(VERSION_FN)
+zombonoINSTDIR = $(TMPDIR)/zombono-$(VERSION_FN)/$(INSTALLDIR)
+rpm-zombono: zombono.spec
+	touch $(RPMROOT)/SOURCES/zombono-$(VERSION_FN).tar.gz
 	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2INSTDIR)
-	cp $(BUILD_RELEASE_DIR)/quake2 $(QUAKE2INSTDIR)/quake2
-	strip $(QUAKE2INSTDIR)/quake2
-	-mkdir $(QUAKE2INSTDIR)/baseq2
-	chmod 1777 $(QUAKE2INSTDIR)/baseq2
-	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(QUAKE2INSTDIR)/baseq2
-	cp $(BUILD_RELEASE_DIR)/ref_soft.$(SHLIBEXT)  $(QUAKE2INSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(QUAKE2INSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(QUAKE2INSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(QUAKE2INSTDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_vk.$(SHLIBEXT) $(QUAKE2INSTDIR)
-	-mkdir $(QUAKE2INSTDIR)/ctf
-	chmod 1777 $(QUAKE2INSTDIR)/ctf
-	cp $(BUILD_RELEASE_DIR)/ctf/game$(ARCH).$(SHLIBEXT) $(QUAKE2INSTDIR)/ctf
-	-mkdir $(QUAKE2INSTDIR)/xatrix
-	chmod 1777 $(QUAKE2INSTDIR)/xatrix
-	cp $(BUILD_RELEASE_DIR)/xatrix/game$(ARCH).$(SHLIBEXT) $(QUAKE2INSTDIR)/xatrix
-	-mkdir $(QUAKE2INSTDIR)/rogue
-	chmod 1777 $(QUAKE2INSTDIR)/rogue
-	cp $(BUILD_RELEASE_DIR)/rogue/game$(ARCH).$(SHLIBEXT) $(QUAKE2INSTDIR)/rogue
-	-mkdirhier $(QUAKE2DIR)/usr/lib
-	cp $(TDFXGL_DIR)/release$(ARCH)$(GLIBC)/lib3dfxgl.so $(QUAKE2DIR)/usr/lib/lib3dfxgl.so
-	cp $(MESA_DIR)/lib/libMesaGL.so.2.6 $(QUAKE2DIR)/usr/lib/libMesaGL.so.2.6
-	cp $(MOUNT_DIR)/linux/README $(QUAKE2INSTDIR)
-	cp $(MOUNT_DIR)/readme.txt $(QUAKE2INSTDIR)
-	-mkdir $(QUAKE2DIR)/etc
-	cp $(MOUNT_DIR)/linux/quake2.conf $(QUAKE2DIR)/etc/quake2.conf
-	cp $(MOUNT_DIR)/linux/quake2.gif $(RPMROOT)/SOURCES/.
+	-mkdirhier $(zombonoINSTDIR)
+	cp $(BUILD_RELEASE_DIR)/zombono $(zombonoINSTDIR)/zombono
+	strip $(zombonoINSTDIR)/zombono
+	-mkdir $(zombonoINSTDIR)/baseq2
+	chmod 1777 $(zombonoINSTDIR)/baseq2
+	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(zombonoINSTDIR)/baseq2
+	cp $(BUILD_RELEASE_DIR)/ref_soft.$(SHLIBEXT)  $(zombonoINSTDIR)
+	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(zombonoINSTDIR)
+	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(zombonoINSTDIR)
+	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(zombonoINSTDIR)
+	-mkdirhier $(zombonoDIR)/usr/lib
+	cp $(TDFXGL_DIR)/release$(ARCH)$(GLIBC)/lib3dfxgl.so $(zombonoDIR)/usr/lib/lib3dfxgl.so
+	cp $(MESA_DIR)/lib/libMesaGL.so.2.6 $(zombonoDIR)/usr/lib/libMesaGL.so.2.6
+	cp $(MOUNT_DIR)/linux/README $(zombonoINSTDIR)
+	cp $(MOUNT_DIR)/readme.txt $(zombonoINSTDIR)
+	-mkdir $(zombonoDIR)/etc
+	cp $(MOUNT_DIR)/linux/zombono.conf $(zombonoDIR)/etc/zombono.conf
+	cp $(MOUNT_DIR)/linux/zombono.gif $(RPMROOT)/SOURCES/.
 	cp $< $(RPMROOT)/SPECS/.
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(QUAKE2DIR)
-	mv $(RPMROOT)/RPMS/$(ARCH)/quake2-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
+	rm -rf $(zombonoDIR)
+	mv $(RPMROOT)/RPMS/$(ARCH)/zombono-$(VERSION_FN)-$(RPM_RELEASE).$(ARCH).rpm archives/.
 
-# rpm-quake2-patch: quake2-patch.spec
+# rpm-zombono-patch: zombono-patch.spec
 
-QUAKE2DATADIR = $(TMPDIR)/quake2-data-$(VERSION)/$(INSTALLDIR)
-rpm-quake2-data: quake2-data.spec
-	touch $(RPMROOT)/SOURCES/quake2-data-$(VERSION).tar.gz
+zombonoDATADIR = $(TMPDIR)/zombono-data-$(VERSION)/$(INSTALLDIR)
+rpm-zombono-data: zombono-data.spec
+	touch $(RPMROOT)/SOURCES/zombono-data-$(VERSION).tar.gz
 	if [ ! -d archives ];then mkdir archives;fi
-	-mkdirhier $(QUAKE2DATADIR)/baseq2
-	-mkdirhier $(QUAKE2DATADIR)/baseq2/players
-	-mkdirhier $(QUAKE2DATADIR)/baseq2/players/cyborg
-	-mkdirhier $(QUAKE2DATADIR)/baseq2/players/female
-	-mkdirhier $(QUAKE2DATADIR)/baseq2/players/male
-	cp $(QUAKE2_DIR)/baseq2/pak0.pak							 	 $(QUAKE2DATADIR)/baseq2/pak0.pak                         
-	cp $(QUAKE2_DIR)/baseq2/pak1.pak                                 $(QUAKE2DATADIR)/baseq2/pak1.pak                         
-	cp $(QUAKE2_DIR)/baseq2/pak2.pak                                 $(QUAKE2DATADIR)/baseq2/pak2.pak                         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/a_grenades.md2            $(QUAKE2DATADIR)/baseq2/players/cyborg/a_grenades.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_bfg.md2                 $(QUAKE2DATADIR)/baseq2/players/cyborg/w_bfg.md2         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_blaster.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_blaster.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_chainfist.md2           $(QUAKE2DATADIR)/baseq2/players/cyborg/w_chainfist.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_chaingun.md2            $(QUAKE2DATADIR)/baseq2/players/cyborg/w_chaingun.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_disrupt.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_disrupt.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_etfrifle.md2            $(QUAKE2DATADIR)/baseq2/players/cyborg/w_etfrifle.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_glauncher.md2           $(QUAKE2DATADIR)/baseq2/players/cyborg/w_glauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_grapple.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_grapple.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_hyperblaster.md2        $(QUAKE2DATADIR)/baseq2/players/cyborg/w_hyperblaster.md2
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_machinegun.md2          $(QUAKE2DATADIR)/baseq2/players/cyborg/w_machinegun.md2  
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_phalanx.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_phalanx.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_plasma.md2              $(QUAKE2DATADIR)/baseq2/players/cyborg/w_plasma.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_plauncher.md2           $(QUAKE2DATADIR)/baseq2/players/cyborg/w_plauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_railgun.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_railgun.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_ripper.md2              $(QUAKE2DATADIR)/baseq2/players/cyborg/w_ripper.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_rlauncher.md2           $(QUAKE2DATADIR)/baseq2/players/cyborg/w_rlauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_shotgun.md2             $(QUAKE2DATADIR)/baseq2/players/cyborg/w_shotgun.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/w_sshotgun.md2            $(QUAKE2DATADIR)/baseq2/players/cyborg/w_sshotgun.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/female/a_grenades.md2            $(QUAKE2DATADIR)/baseq2/players/female/a_grenades.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_bfg.md2                 $(QUAKE2DATADIR)/baseq2/players/female/w_bfg.md2         
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_blaster.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_blaster.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_chainfist.md2           $(QUAKE2DATADIR)/baseq2/players/female/w_chainfist.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_chaingun.md2            $(QUAKE2DATADIR)/baseq2/players/female/w_chaingun.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_disrupt.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_disrupt.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_etfrifle.md2            $(QUAKE2DATADIR)/baseq2/players/female/w_etfrifle.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_glauncher.md2           $(QUAKE2DATADIR)/baseq2/players/female/w_glauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_grapple.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_grapple.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_hyperblaster.md2        $(QUAKE2DATADIR)/baseq2/players/female/w_hyperblaster.md2
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_machinegun.md2          $(QUAKE2DATADIR)/baseq2/players/female/w_machinegun.md2  
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_phalanx.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_phalanx.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_plasma.md2              $(QUAKE2DATADIR)/baseq2/players/female/w_plasma.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_plauncher.md2           $(QUAKE2DATADIR)/baseq2/players/female/w_plauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_railgun.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_railgun.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_ripper.md2              $(QUAKE2DATADIR)/baseq2/players/female/w_ripper.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_rlauncher.md2           $(QUAKE2DATADIR)/baseq2/players/female/w_rlauncher.md2   
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_shotgun.md2             $(QUAKE2DATADIR)/baseq2/players/female/w_shotgun.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/female/w_sshotgun.md2            $(QUAKE2DATADIR)/baseq2/players/female/w_sshotgun.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/male/a_grenades.md2              $(QUAKE2DATADIR)/baseq2/players/male/a_grenades.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_bfg.md2                   $(QUAKE2DATADIR)/baseq2/players/male/w_bfg.md2           
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_blaster.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_blaster.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_chainfist.md2             $(QUAKE2DATADIR)/baseq2/players/male/w_chainfist.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_chaingun.md2              $(QUAKE2DATADIR)/baseq2/players/male/w_chaingun.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_disrupt.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_disrupt.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_etfrifle.md2              $(QUAKE2DATADIR)/baseq2/players/male/w_etfrifle.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_glauncher.md2             $(QUAKE2DATADIR)/baseq2/players/male/w_glauncher.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_grapple.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_grapple.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_hyperblaster.md2          $(QUAKE2DATADIR)/baseq2/players/male/w_hyperblaster.md2  
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_machinegun.md2            $(QUAKE2DATADIR)/baseq2/players/male/w_machinegun.md2    
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_phalanx.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_phalanx.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_plasma.md2                $(QUAKE2DATADIR)/baseq2/players/male/w_plasma.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_plauncher.md2             $(QUAKE2DATADIR)/baseq2/players/male/w_plauncher.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_railgun.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_railgun.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_ripper.md2                $(QUAKE2DATADIR)/baseq2/players/male/w_ripper.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_rlauncher.md2             $(QUAKE2DATADIR)/baseq2/players/male/w_rlauncher.md2     
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_shotgun.md2               $(QUAKE2DATADIR)/baseq2/players/male/w_shotgun.md2       
-	cp $(QUAKE2_DIR)/baseq2/players/male/w_sshotgun.md2              $(QUAKE2DATADIR)/baseq2/players/male/w_sshotgun.md2      
-	cp $(QUAKE2_DIR)/baseq2/players/female/athena.tga                $(QUAKE2DATADIR)/baseq2/players/female/athena.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/female/athena_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/athena_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/brianna.tga               $(QUAKE2DATADIR)/baseq2/players/female/brianna.tga       
-	cp $(QUAKE2_DIR)/baseq2/players/female/brianna_i.tga             $(QUAKE2DATADIR)/baseq2/players/female/brianna_i.tga     
-	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt.tga                $(QUAKE2DATADIR)/baseq2/players/female/cobalt.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/female/cobalt_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/cobalt_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/ensign.tga                $(QUAKE2DATADIR)/baseq2/players/female/ensign.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/female/ensign_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/ensign_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel.tga               $(QUAKE2DATADIR)/baseq2/players/female/jezebel.tga       
-	cp $(QUAKE2_DIR)/baseq2/players/female/jezebel_i.tga             $(QUAKE2DATADIR)/baseq2/players/female/jezebel_i.tga     
-	cp $(QUAKE2_DIR)/baseq2/players/female/jungle.tga                $(QUAKE2DATADIR)/baseq2/players/female/jungle.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/female/jungle_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/jungle_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/lotus.tga                 $(QUAKE2DATADIR)/baseq2/players/female/lotus.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/female/lotus_i.tga               $(QUAKE2DATADIR)/baseq2/players/female/lotus_i.tga       
-	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto.tga              $(QUAKE2DATADIR)/baseq2/players/female/stiletto.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/stiletto_i.tga            $(QUAKE2DATADIR)/baseq2/players/female/stiletto_i.tga    
-	cp $(QUAKE2_DIR)/baseq2/players/female/tris.md2                  $(QUAKE2DATADIR)/baseq2/players/female/tris.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/female/venus.tga                 $(QUAKE2DATADIR)/baseq2/players/female/venus.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/female/venus_i.tga               $(QUAKE2DATADIR)/baseq2/players/female/venus_i.tga       
-	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo.tga                $(QUAKE2DATADIR)/baseq2/players/female/voodoo.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/female/voodoo_i.tga              $(QUAKE2DATADIR)/baseq2/players/female/voodoo_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/female/weapon.md2                $(QUAKE2DATADIR)/baseq2/players/female/weapon.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/female/weapon.tga                $(QUAKE2DATADIR)/baseq2/players/female/weapon.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/cipher.tga                  $(QUAKE2DATADIR)/baseq2/players/male/cipher.tga          
-	cp $(QUAKE2_DIR)/baseq2/players/male/cipher_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/cipher_i.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/claymore.tga                $(QUAKE2DATADIR)/baseq2/players/male/claymore.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/claymore_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/claymore_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/male/flak.tga                    $(QUAKE2DATADIR)/baseq2/players/male/flak.tga            
-	cp $(QUAKE2_DIR)/baseq2/players/male/flak_i.tga                  $(QUAKE2DATADIR)/baseq2/players/male/flak_i.tga          
-	cp $(QUAKE2_DIR)/baseq2/players/male/grunt.tga                   $(QUAKE2DATADIR)/baseq2/players/male/grunt.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/grunt_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/grunt_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer.tga                $(QUAKE2DATADIR)/baseq2/players/male/howitzer.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/howitzer_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/howitzer_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/male/major.tga                   $(QUAKE2DATADIR)/baseq2/players/male/major.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/major_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/major_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/nightops.tga                $(QUAKE2DATADIR)/baseq2/players/male/nightops.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/nightops_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/nightops_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/male/pointman.tga                $(QUAKE2DATADIR)/baseq2/players/male/pointman.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/pointman_i.tga              $(QUAKE2DATADIR)/baseq2/players/male/pointman_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/male/psycho.tga                  $(QUAKE2DATADIR)/baseq2/players/male/psycho.tga          
-	cp $(QUAKE2_DIR)/baseq2/players/male/psycho_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/psycho_i.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/rampage.tga                 $(QUAKE2DATADIR)/baseq2/players/male/rampage.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/rampage_i.tga               $(QUAKE2DATADIR)/baseq2/players/male/rampage_i.tga       
-	cp $(QUAKE2_DIR)/baseq2/players/male/razor.tga                   $(QUAKE2DATADIR)/baseq2/players/male/razor.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/razor_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/razor_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/recon.tga                   $(QUAKE2DATADIR)/baseq2/players/male/recon.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/recon_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/recon_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/scout.tga                   $(QUAKE2DATADIR)/baseq2/players/male/scout.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/scout_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/scout_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/sniper.tga                  $(QUAKE2DATADIR)/baseq2/players/male/sniper.tga          
-	cp $(QUAKE2_DIR)/baseq2/players/male/sniper_i.tga                $(QUAKE2DATADIR)/baseq2/players/male/sniper_i.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/male/tris.md2                    $(QUAKE2DATADIR)/baseq2/players/male/tris.md2            
-	cp $(QUAKE2_DIR)/baseq2/players/male/viper.tga                   $(QUAKE2DATADIR)/baseq2/players/male/viper.tga           
-	cp $(QUAKE2_DIR)/baseq2/players/male/viper_i.tga                 $(QUAKE2DATADIR)/baseq2/players/male/viper_i.tga         
-	cp $(QUAKE2_DIR)/baseq2/players/male/weapon.md2                  $(QUAKE2DATADIR)/baseq2/players/male/weapon.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/male/weapon.tga                  $(QUAKE2DATADIR)/baseq2/players/male/weapon.tga          
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/bump1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/bump1.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death1.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death1.wav        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death2.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death2.wav        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death3.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death3.wav        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/death4.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/death4.wav        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/drown1.wav                $(QUAKE2DATADIR)/baseq2/players/cyborg/drown1.wav        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/fall1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/fall1.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/fall2.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/fall2.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/gurp1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/gurp1.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/gurp2.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/gurp2.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/jump1.wav                 $(QUAKE2DATADIR)/baseq2/players/cyborg/jump1.wav         
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/oni911_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/oni911_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain100_1.wav             $(QUAKE2DATADIR)/baseq2/players/cyborg/pain100_1.wav     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain100_2.wav             $(QUAKE2DATADIR)/baseq2/players/cyborg/pain100_2.wav     
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain25_1.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain25_1.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain25_2.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain25_2.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain50_1.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain50_1.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain50_2.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain50_2.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain75_1.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain75_1.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/pain75_2.wav              $(QUAKE2DATADIR)/baseq2/players/cyborg/pain75_2.wav      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/ps9000_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/ps9000_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tris.md2                  $(QUAKE2DATADIR)/baseq2/players/cyborg/tris.md2          
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/tyr574_i.tga              $(QUAKE2DATADIR)/baseq2/players/cyborg/tyr574_i.tga      
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.md2                $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.md2        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.tga                $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.tga        
-	cp $(QUAKE2_DIR)/baseq2/players/cyborg/weapon.tga.tga            $(QUAKE2DATADIR)/baseq2/players/cyborg/weapon.tga.tga    
-	cp -r $(QUAKE2_DIR)/docs $(QUAKE2DATADIR)/docs
+	-mkdirhier $(zombonoDATADIR)/baseq2
+	-mkdirhier $(zombonoDATADIR)/baseq2/players
+	-mkdirhier $(zombonoDATADIR)/baseq2/players/cyborg
+	-mkdirhier $(zombonoDATADIR)/baseq2/players/female
+	-mkdirhier $(zombonoDATADIR)/baseq2/players/male
+	cp $(ZOMBONO_DIR)/baseq2/pak0.pak							 	 $(zombonoDATADIR)/baseq2/pak0.pak                         
+	cp $(ZOMBONO_DIR)/baseq2/pak1.pak                                 $(zombonoDATADIR)/baseq2/pak1.pak                         
+	cp $(ZOMBONO_DIR)/baseq2/pak2.pak                                 $(zombonoDATADIR)/baseq2/pak2.pak                         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/a_grenades.md2            $(zombonoDATADIR)/baseq2/players/cyborg/a_grenades.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_bfg.md2                 $(zombonoDATADIR)/baseq2/players/cyborg/w_bfg.md2         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_blaster.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_blaster.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_chainfist.md2           $(zombonoDATADIR)/baseq2/players/cyborg/w_chainfist.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_chaingun.md2            $(zombonoDATADIR)/baseq2/players/cyborg/w_chaingun.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_disrupt.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_disrupt.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_etfrifle.md2            $(zombonoDATADIR)/baseq2/players/cyborg/w_etfrifle.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_glauncher.md2           $(zombonoDATADIR)/baseq2/players/cyborg/w_glauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_grapple.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_grapple.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_hyperblaster.md2        $(zombonoDATADIR)/baseq2/players/cyborg/w_hyperblaster.md2
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_machinegun.md2          $(zombonoDATADIR)/baseq2/players/cyborg/w_machinegun.md2  
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_phalanx.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_phalanx.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_plasma.md2              $(zombonoDATADIR)/baseq2/players/cyborg/w_plasma.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_plauncher.md2           $(zombonoDATADIR)/baseq2/players/cyborg/w_plauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_railgun.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_railgun.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_ripper.md2              $(zombonoDATADIR)/baseq2/players/cyborg/w_ripper.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_rlauncher.md2           $(zombonoDATADIR)/baseq2/players/cyborg/w_rlauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_shotgun.md2             $(zombonoDATADIR)/baseq2/players/cyborg/w_shotgun.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/w_sshotgun.md2            $(zombonoDATADIR)/baseq2/players/cyborg/w_sshotgun.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/female/a_grenades.md2            $(zombonoDATADIR)/baseq2/players/female/a_grenades.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_bfg.md2                 $(zombonoDATADIR)/baseq2/players/female/w_bfg.md2         
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_blaster.md2             $(zombonoDATADIR)/baseq2/players/female/w_blaster.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_chainfist.md2           $(zombonoDATADIR)/baseq2/players/female/w_chainfist.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_chaingun.md2            $(zombonoDATADIR)/baseq2/players/female/w_chaingun.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_disrupt.md2             $(zombonoDATADIR)/baseq2/players/female/w_disrupt.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_etfrifle.md2            $(zombonoDATADIR)/baseq2/players/female/w_etfrifle.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_glauncher.md2           $(zombonoDATADIR)/baseq2/players/female/w_glauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_grapple.md2             $(zombonoDATADIR)/baseq2/players/female/w_grapple.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_hyperblaster.md2        $(zombonoDATADIR)/baseq2/players/female/w_hyperblaster.md2
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_machinegun.md2          $(zombonoDATADIR)/baseq2/players/female/w_machinegun.md2  
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_phalanx.md2             $(zombonoDATADIR)/baseq2/players/female/w_phalanx.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_plasma.md2              $(zombonoDATADIR)/baseq2/players/female/w_plasma.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_plauncher.md2           $(zombonoDATADIR)/baseq2/players/female/w_plauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_railgun.md2             $(zombonoDATADIR)/baseq2/players/female/w_railgun.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_ripper.md2              $(zombonoDATADIR)/baseq2/players/female/w_ripper.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_rlauncher.md2           $(zombonoDATADIR)/baseq2/players/female/w_rlauncher.md2   
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_shotgun.md2             $(zombonoDATADIR)/baseq2/players/female/w_shotgun.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/w_sshotgun.md2            $(zombonoDATADIR)/baseq2/players/female/w_sshotgun.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/male/a_grenades.md2              $(zombonoDATADIR)/baseq2/players/male/a_grenades.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_bfg.md2                   $(zombonoDATADIR)/baseq2/players/male/w_bfg.md2           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_blaster.md2               $(zombonoDATADIR)/baseq2/players/male/w_blaster.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_chainfist.md2             $(zombonoDATADIR)/baseq2/players/male/w_chainfist.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_chaingun.md2              $(zombonoDATADIR)/baseq2/players/male/w_chaingun.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_disrupt.md2               $(zombonoDATADIR)/baseq2/players/male/w_disrupt.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_etfrifle.md2              $(zombonoDATADIR)/baseq2/players/male/w_etfrifle.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_glauncher.md2             $(zombonoDATADIR)/baseq2/players/male/w_glauncher.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_grapple.md2               $(zombonoDATADIR)/baseq2/players/male/w_grapple.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_hyperblaster.md2          $(zombonoDATADIR)/baseq2/players/male/w_hyperblaster.md2  
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_machinegun.md2            $(zombonoDATADIR)/baseq2/players/male/w_machinegun.md2    
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_phalanx.md2               $(zombonoDATADIR)/baseq2/players/male/w_phalanx.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_plasma.md2                $(zombonoDATADIR)/baseq2/players/male/w_plasma.md2        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_plauncher.md2             $(zombonoDATADIR)/baseq2/players/male/w_plauncher.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_railgun.md2               $(zombonoDATADIR)/baseq2/players/male/w_railgun.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_ripper.md2                $(zombonoDATADIR)/baseq2/players/male/w_ripper.md2        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_rlauncher.md2             $(zombonoDATADIR)/baseq2/players/male/w_rlauncher.md2     
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_shotgun.md2               $(zombonoDATADIR)/baseq2/players/male/w_shotgun.md2       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/w_sshotgun.md2              $(zombonoDATADIR)/baseq2/players/male/w_sshotgun.md2      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/athena.tga                $(zombonoDATADIR)/baseq2/players/female/athena.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/athena_i.tga              $(zombonoDATADIR)/baseq2/players/female/athena_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/brianna.tga               $(zombonoDATADIR)/baseq2/players/female/brianna.tga       
+	cp $(ZOMBONO_DIR)/baseq2/players/female/brianna_i.tga             $(zombonoDATADIR)/baseq2/players/female/brianna_i.tga     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/cobalt.tga                $(zombonoDATADIR)/baseq2/players/female/cobalt.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/cobalt_i.tga              $(zombonoDATADIR)/baseq2/players/female/cobalt_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/ensign.tga                $(zombonoDATADIR)/baseq2/players/female/ensign.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/ensign_i.tga              $(zombonoDATADIR)/baseq2/players/female/ensign_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/jezebel.tga               $(zombonoDATADIR)/baseq2/players/female/jezebel.tga       
+	cp $(ZOMBONO_DIR)/baseq2/players/female/jezebel_i.tga             $(zombonoDATADIR)/baseq2/players/female/jezebel_i.tga     
+	cp $(ZOMBONO_DIR)/baseq2/players/female/jungle.tga                $(zombonoDATADIR)/baseq2/players/female/jungle.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/jungle_i.tga              $(zombonoDATADIR)/baseq2/players/female/jungle_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/lotus.tga                 $(zombonoDATADIR)/baseq2/players/female/lotus.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/female/lotus_i.tga               $(zombonoDATADIR)/baseq2/players/female/lotus_i.tga       
+	cp $(ZOMBONO_DIR)/baseq2/players/female/stiletto.tga              $(zombonoDATADIR)/baseq2/players/female/stiletto.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/stiletto_i.tga            $(zombonoDATADIR)/baseq2/players/female/stiletto_i.tga    
+	cp $(ZOMBONO_DIR)/baseq2/players/female/tris.md2                  $(zombonoDATADIR)/baseq2/players/female/tris.md2          
+	cp $(ZOMBONO_DIR)/baseq2/players/female/venus.tga                 $(zombonoDATADIR)/baseq2/players/female/venus.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/female/venus_i.tga               $(zombonoDATADIR)/baseq2/players/female/venus_i.tga       
+	cp $(ZOMBONO_DIR)/baseq2/players/female/voodoo.tga                $(zombonoDATADIR)/baseq2/players/female/voodoo.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/voodoo_i.tga              $(zombonoDATADIR)/baseq2/players/female/voodoo_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/female/weapon.md2                $(zombonoDATADIR)/baseq2/players/female/weapon.md2        
+	cp $(ZOMBONO_DIR)/baseq2/players/female/weapon.tga                $(zombonoDATADIR)/baseq2/players/female/weapon.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/cipher.tga                  $(zombonoDATADIR)/baseq2/players/male/cipher.tga          
+	cp $(ZOMBONO_DIR)/baseq2/players/male/cipher_i.tga                $(zombonoDATADIR)/baseq2/players/male/cipher_i.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/claymore.tga                $(zombonoDATADIR)/baseq2/players/male/claymore.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/claymore_i.tga              $(zombonoDATADIR)/baseq2/players/male/claymore_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/flak.tga                    $(zombonoDATADIR)/baseq2/players/male/flak.tga            
+	cp $(ZOMBONO_DIR)/baseq2/players/male/flak_i.tga                  $(zombonoDATADIR)/baseq2/players/male/flak_i.tga          
+	cp $(ZOMBONO_DIR)/baseq2/players/male/grunt.tga                   $(zombonoDATADIR)/baseq2/players/male/grunt.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/grunt_i.tga                 $(zombonoDATADIR)/baseq2/players/male/grunt_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/howitzer.tga                $(zombonoDATADIR)/baseq2/players/male/howitzer.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/howitzer_i.tga              $(zombonoDATADIR)/baseq2/players/male/howitzer_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/major.tga                   $(zombonoDATADIR)/baseq2/players/male/major.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/major_i.tga                 $(zombonoDATADIR)/baseq2/players/male/major_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/nightops.tga                $(zombonoDATADIR)/baseq2/players/male/nightops.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/nightops_i.tga              $(zombonoDATADIR)/baseq2/players/male/nightops_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/pointman.tga                $(zombonoDATADIR)/baseq2/players/male/pointman.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/pointman_i.tga              $(zombonoDATADIR)/baseq2/players/male/pointman_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/male/psycho.tga                  $(zombonoDATADIR)/baseq2/players/male/psycho.tga          
+	cp $(ZOMBONO_DIR)/baseq2/players/male/psycho_i.tga                $(zombonoDATADIR)/baseq2/players/male/psycho_i.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/rampage.tga                 $(zombonoDATADIR)/baseq2/players/male/rampage.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/rampage_i.tga               $(zombonoDATADIR)/baseq2/players/male/rampage_i.tga       
+	cp $(ZOMBONO_DIR)/baseq2/players/male/razor.tga                   $(zombonoDATADIR)/baseq2/players/male/razor.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/razor_i.tga                 $(zombonoDATADIR)/baseq2/players/male/razor_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/recon.tga                   $(zombonoDATADIR)/baseq2/players/male/recon.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/recon_i.tga                 $(zombonoDATADIR)/baseq2/players/male/recon_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/scout.tga                   $(zombonoDATADIR)/baseq2/players/male/scout.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/scout_i.tga                 $(zombonoDATADIR)/baseq2/players/male/scout_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/sniper.tga                  $(zombonoDATADIR)/baseq2/players/male/sniper.tga          
+	cp $(ZOMBONO_DIR)/baseq2/players/male/sniper_i.tga                $(zombonoDATADIR)/baseq2/players/male/sniper_i.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/male/tris.md2                    $(zombonoDATADIR)/baseq2/players/male/tris.md2            
+	cp $(ZOMBONO_DIR)/baseq2/players/male/viper.tga                   $(zombonoDATADIR)/baseq2/players/male/viper.tga           
+	cp $(ZOMBONO_DIR)/baseq2/players/male/viper_i.tga                 $(zombonoDATADIR)/baseq2/players/male/viper_i.tga         
+	cp $(ZOMBONO_DIR)/baseq2/players/male/weapon.md2                  $(zombonoDATADIR)/baseq2/players/male/weapon.md2          
+	cp $(ZOMBONO_DIR)/baseq2/players/male/weapon.tga                  $(zombonoDATADIR)/baseq2/players/male/weapon.tga          
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/bump1.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/bump1.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/death1.wav                $(zombonoDATADIR)/baseq2/players/cyborg/death1.wav        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/death2.wav                $(zombonoDATADIR)/baseq2/players/cyborg/death2.wav        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/death3.wav                $(zombonoDATADIR)/baseq2/players/cyborg/death3.wav        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/death4.wav                $(zombonoDATADIR)/baseq2/players/cyborg/death4.wav        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/drown1.wav                $(zombonoDATADIR)/baseq2/players/cyborg/drown1.wav        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/fall1.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/fall1.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/fall2.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/fall2.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/gurp1.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/gurp1.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/gurp2.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/gurp2.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/jump1.wav                 $(zombonoDATADIR)/baseq2/players/cyborg/jump1.wav         
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/oni911.tga                $(zombonoDATADIR)/baseq2/players/cyborg/oni911.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/oni911_i.tga              $(zombonoDATADIR)/baseq2/players/cyborg/oni911_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain100_1.wav             $(zombonoDATADIR)/baseq2/players/cyborg/pain100_1.wav     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain100_2.wav             $(zombonoDATADIR)/baseq2/players/cyborg/pain100_2.wav     
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain25_1.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain25_1.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain25_2.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain25_2.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain50_1.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain50_1.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain50_2.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain50_2.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain75_1.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain75_1.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/pain75_2.wav              $(zombonoDATADIR)/baseq2/players/cyborg/pain75_2.wav      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/ps9000.tga                $(zombonoDATADIR)/baseq2/players/cyborg/ps9000.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/ps9000_i.tga              $(zombonoDATADIR)/baseq2/players/cyborg/ps9000_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/tris.md2                  $(zombonoDATADIR)/baseq2/players/cyborg/tris.md2          
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/tyr574.tga                $(zombonoDATADIR)/baseq2/players/cyborg/tyr574.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/tyr574_i.tga              $(zombonoDATADIR)/baseq2/players/cyborg/tyr574_i.tga      
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/weapon.md2                $(zombonoDATADIR)/baseq2/players/cyborg/weapon.md2        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/weapon.tga                $(zombonoDATADIR)/baseq2/players/cyborg/weapon.tga        
+	cp $(ZOMBONO_DIR)/baseq2/players/cyborg/weapon.tga.tga            $(zombonoDATADIR)/baseq2/players/cyborg/weapon.tga.tga    
+	cp -r $(ZOMBONO_DIR)/docs $(zombonoDATADIR)/docs
 	cp $< $(RPMROOT)/SPECS/.
 	cd $(RPMROOT)/SPECS; $(RPM) $(RPMFLAGS) $<
-	rm -rf $(TMPDIR)/quake2-data-$(VERSION)
-	mv $(RPMROOT)/RPMS/$(NOARCH)/quake2-data-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
+	rm -rf $(TMPDIR)/zombono-data-$(VERSION)
+	mv $(RPMROOT)/RPMS/$(NOARCH)/zombono-data-$(VERSION)-$(RPM_RELEASE).$(NOARCH).rpm archives/.
 
 TARDIR=$(TMPDIR)/tar
 tar:
 	if [ ! -d archives ];then mkdir archives;fi
 	$(MAKE) copyfiles COPYDIR=$(TARDIR)
-	cp $(MOUNT_DIR)/linux/quake2.conf $(TARDIR)/quake2.conf
+	cp $(MOUNT_DIR)/linux/zombono.conf $(TARDIR)/zombono.conf
 	cd $(TARDIR); sh $(MOUNT_DIR)/linux/fixperms.sh
-	cd $(TARDIR); tar czvf quake2-$(VERSION_FN)-$(ARCH)-unknown-linux2.0.tar.gz *
+	cd $(TARDIR); tar czvf zombono-$(VERSION_FN)-$(ARCH)-unknown-linux2.0.tar.gz *
 	mv $(TARDIR)/*.tar.gz archives/.
 	rm -rf $(TARDIR)
 
 
 copyfiles:
 	-mkdirhier $(COPYDIR)
-	cp $(BUILD_RELEASE_DIR)/quake2 $(COPYDIR)/quake2
-	strip $(COPYDIR)/quake2
+	cp $(BUILD_RELEASE_DIR)/zombono $(COPYDIR)/zombono
+	strip $(COPYDIR)/zombono
 	-mkdir $(COPYDIR)/baseq2
 #	cp -R $(VWEP_DIR)/baseq2 $(COPYDIR)/.
 #	for x in `find $(COPYDIR)/baseq2 -type d`; do chmod 755 $$x;done
@@ -1001,16 +967,6 @@ copyfiles:
 	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(COPYDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(COPYDIR)
 	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(COPYDIR)
-	cp $(BUILD_RELEASE_DIR)/ref_vk.$(SHLIBEXT) $(COPYDIR)
-#	-mkdir $(COPYDIR)/ctf
-#	chmod 1777 $(COPYDIR)/ctf
-#	cp $(BUILD_RELEASE_DIR)/ctf/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/ctf
-	-mkdir $(COPYDIR)/xatrix
-	chmod 1777 $(COPYDIR)/xatrix
-	cp $(BUILD_RELEASE_DIR)/xatrix/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/xatrix
-	-mkdir $(COPYDIR)/rogue
-	chmod 1777 $(COPYDIR)/rogue
-	cp $(BUILD_RELEASE_DIR)/rogue/game$(ARCH).$(SHLIBEXT) $(COPYDIR)/rogue
 	cp $(TDFXGL_DIR)/release$(ARCH)$(GLIBC)/lib3dfxgl.so $(COPYDIR)
 	cp $(MESA_DIR)/lib/libMesaGL.so.2.6 $(COPYDIR)
 	cd $(COPYDIR); ln -sf libMesaGL.so.2.6 libMesaGL.so.2
@@ -1020,33 +976,14 @@ copyfiles:
 	cp $(MOUNT_DIR)/readme.txt $(COPYDIR)
 	cp $(MOUNT_DIR)/$(VERSION)_Changes.txt $(COPYDIR)
 
-quake2.spec: $(MOUNT_DIR)/linux/quake2.spec.sh
+zombono.spec: $(MOUNT_DIR)/linux/zombono.spec.sh
 	sh $< $(VERSION_FN) $(RPM_RELEASE) $(ARCH) $(INSTALLDIR) > $@
 
-quake2-patch.spec: $(MOUNT_DIR)/linux/quake2-patch.spec.sh
+zombono-patch.spec: $(MOUNT_DIR)/linux/zombono-patch.spec.sh
 	sh $< $(VERSION_FN) $(RPM_RELEASE) $(ARCH) $(INSTALLDIR) > $@
 
-quake2-data.spec: $(MOUNT_DIR)/linux/quake2-data.spec.sh
+zombono-data.spec: $(MOUNT_DIR)/linux/zombono-data.spec.sh
 	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-video.spec: $(MOUNT_DIR)/linux/quake2-video.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-xatrix.spec: $(MOUNT_DIR)/linux/quake2-xatrix.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-xatrix-video.spec: $(MOUNT_DIR)/linux/quake2-xatrix-video.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-rogue.spec: $(MOUNT_DIR)/linux/quake2-rogue.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-rogue-video.spec: $(MOUNT_DIR)/linux/quake2-rogue-video.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
-quake2-ctf.spec: $(MOUNT_DIR)/linux/quake2-ctf.spec.sh
-	sh $< $(VERSION) $(RPM_RELEASE) $(NOARCH) $(INSTALLDIR) > $@
-
 
 endif
 
@@ -1065,11 +1002,10 @@ clean-release:
 
 clean2:
 	-rm -f \
-	$(QUAKE2_OBJS) \
+	$(zombono_OBJS) \
 	$(Q2DED_OBJS) \
-	$(QUAKE2_AS_OBJS) \
+	$(zombono_AS_OBJS) \
 	$(GAME_OBJS) \
 	$(REF_GL_OBJS) \
 	$(REF_GL_FXMESA_OBJS) \
 	$(REF_GL_GLX_OBJS) \
-	$(REF_VK_OBJS)
