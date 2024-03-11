@@ -689,10 +689,12 @@ void Con_DrawConsole (float frac)
 
 		sprintf(dlbar + strlen(dlbar), " %02d%%", cls.downloadpercent);
 
+		int size_x = 0, size_y = 0;
+
 		// draw it
 		y = con.vislines-12*vid_hudscale->value;
-		for (i = 0; i < strlen(dlbar); i++)
-			Text_DrawChar(cl_system_font, ((i+1)<<3)*vid_hudscale->value, y, dlbar[i]);
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, dlbar);
+		Text_Draw(cl_system_font->string, 10, y, dlbar);
 	}
 //ZOID
 

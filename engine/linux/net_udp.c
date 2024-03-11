@@ -280,43 +280,39 @@ qboolean	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 
 	if (NET_GetLoopPacket (sock, net_from, net_message))
 		return true;
-
-	for (protocol = 0 ; protocol < 1 ; protocol++)
+		
+	if (!net_socket)
 	{
-		if (protocol == 0)
-			net_socket = ip_sockets[sock];
-
-		if (!net_socket)
-			continue;
-
-		fromlen = sizeof(from);
-		ret = recvfrom (net_socket, net_message->data, net_message->maxsize
-			, 0, (struct sockaddr *)&from, &fromlen);
-
-		SockadrToNetadr (&from, net_from);
-
-		if (ret == -1)
-		{
-			err = errno;
-
-			if (err == EWOULDBLOCK || err == ECONNREFUSED)
-				continue;
-			Com_Printf ("NET_GetPacket: %s from %s\n", NET_ErrorString(),
-						NET_AdrToString(*net_from));
-			continue;
-		}
-
-		if (ret == net_message->maxsize)
-		{
-			Com_Printf ("Oversize packet from %s\n", NET_AdrToString (*net_from));
-			continue;
-		}
-
-		net_message->cursize = ret;
-		return true;
+		return false;
 	}
 
-	return false;
+	fromlen = sizeof(from);
+	ret = recvfrom (net_socket, net_message->data, net_message->maxsize
+		, 0, (struct sockaddr *)&from, &fromlen);
+
+	SockadrToNetadr (&from, net_from);
+
+	if (ret == -1)
+	{
+		err = errno;
+
+		if (err == EWOULDBLOCK || err == ECONNREFUSED)
+			return false;
+
+		Com_Printf ("NET_GetPacket: %s from %s\n", NET_ErrorString(),
+					NET_AdrToString(*net_from));
+		return false;
+	}
+
+	if (ret == net_message->maxsize)
+	{
+		Com_Printf ("Oversize packet from %s\n", NET_AdrToString (*net_from));
+		return false;
+	}
+
+	net_message->cursize = ret;
+	
+	return true;
 }
 
 //=============================================================================

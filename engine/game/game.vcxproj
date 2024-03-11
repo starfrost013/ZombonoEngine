@@ -98,7 +98,7 @@
     <TargetName>$(ProjectName)x64</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)build\out\zombono</OutDir>
+    <OutDir>$(SolutionDir)build\out\zombonogame</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
