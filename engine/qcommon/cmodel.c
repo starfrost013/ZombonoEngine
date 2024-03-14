@@ -107,7 +107,7 @@ mapsurface_t	nullsurface;
 
 int			floodvalid;
 
-qboolean	portalopen[MAX_MAP_AREAPORTALS];
+bool	portalopen[MAX_MAP_AREAPORTALS];
 
 
 cvar_t		*map_noareas;
@@ -551,7 +551,7 @@ CM_LoadMap
 Loads in the map and all submodels
 ==================
 */
-cmodel_t *CM_LoadMap (char *name, qboolean clientload, unsigned *checksum)
+cmodel_t *CM_LoadMap (char *name, bool clientload, unsigned *checksum)
 {
 	unsigned		*buf;
 	int				i;
@@ -984,7 +984,7 @@ vec3_t	trace_extents;
 
 trace_t	trace_trace;
 int		trace_contents;
-qboolean	trace_ispoint;		// optimized case
+bool	trace_ispoint;		// optimized case
 
 /*
 ================
@@ -1000,7 +1000,7 @@ void CM_ClipBoxToBrush (vec3_t mins, vec3_t maxs, vec3_t p1, vec3_t p2,
 	float		enterfrac, leavefrac;
 	vec3_t		ofs;
 	float		d1, d2;
-	qboolean	getout, startout;
+	bool	getout, startout;
 	float		f;
 	cbrushside_t	*side, *leadside;
 
@@ -1456,7 +1456,7 @@ trace_t		CM_TransformedBoxTrace (vec3_t start, vec3_t end,
 	vec3_t		a;
 	vec3_t		forward, right, up;
 	vec3_t		temp;
-	qboolean	rotated;
+	bool	rotated;
 
 	// subtract origin offset
 	VectorSubtract (start, origin, start_l);
@@ -1648,7 +1648,7 @@ void	FloodAreaConnections (void)
 
 }
 
-void	CM_SetAreaPortalState (int portalnum, qboolean open)
+void	CM_SetAreaPortalState (int portalnum, bool open)
 {
 	if (portalnum > numareaportals)
 		Com_Error (ERR_DROP, "areaportal > numareaportals");
@@ -1657,7 +1657,7 @@ void	CM_SetAreaPortalState (int portalnum, qboolean open)
 	FloodAreaConnections ();
 }
 
-qboolean	CM_AreasConnected (int area1, int area2)
+bool	CM_AreasConnected (int area1, int area2)
 {
 	if (map_noareas->value)
 		return true;
@@ -1743,7 +1743,7 @@ Returns true if any leaf under headnode has a cluster that
 is potentially visible
 =============
 */
-qboolean CM_HeadnodeVisible (int nodenum, byte *visbits)
+bool CM_HeadnodeVisible (int nodenum, byte *visbits)
 {
 	int		leafnum;
 	int		cluster;

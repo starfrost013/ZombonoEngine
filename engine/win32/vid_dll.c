@@ -54,7 +54,7 @@ cvar_t		*viewsize;
 // Global variables used internally by this module
 viddef_t	viddef;				// global video state; used by other modules
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
-qboolean	reflib_active = 0;
+bool	reflib_active = 0;
 
 HWND        cl_hwnd;            // Main window handle for life of program
 
@@ -62,7 +62,7 @@ HWND        cl_hwnd;            // Main window handle for life of program
 
 LONG WINAPI MainWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
-static qboolean s_alttab_disabled;
+static bool s_alttab_disabled;
 
 extern	unsigned	sys_msg_time;
 
@@ -101,7 +101,7 @@ void VID_Printf (int print_level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-	static qboolean	inupdate;
+	static bool	inupdate;
 	
 	va_start (argptr,fmt);
 	vsnprintf (msg,MAXPRINTMSG,fmt,argptr);
@@ -126,7 +126,7 @@ void VID_Error (int err_level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-	static qboolean	inupdate;
+	static bool	inupdate;
 	
 	va_start (argptr,fmt);
 	vsnprintf (msg,MAXPRINTMSG,fmt,argptr);
@@ -170,7 +170,7 @@ int MapKey (int key)
 {
 	int result;
 	int modified = ( key >> 16 ) & 255;
-	qboolean is_extended = false;
+	bool is_extended = false;
 
 	if ( modified > 127)
 		return 0;
@@ -524,7 +524,7 @@ vidmode_t vid_modes[] =
 	{ "Mode 17: 3840x2160", 3840, 2160, 16 },
 };
 
-qboolean VID_GetModeInfo( int *width, int *height, int mode )
+bool VID_GetModeInfo( int *width, int *height, int mode )
 {
 	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
 	{
@@ -602,7 +602,7 @@ void VID_FreeReflib (void)
 VID_LoadRefresh
 ==============
 */
-qboolean VID_LoadRefresh( char *name )
+bool VID_LoadRefresh( char *name )
 {
 	refimport_t	ri;
 	GetRefAPI_t	GetRefAPI;

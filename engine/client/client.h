@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	qboolean		valid;			// cleared if delta parsing was invalid
+	bool		valid;			// cleared if delta parsing was invalid
 	int				serverframe;
 	int				servertime;		// server time the message is valid for (in msec)
 	int				deltaframe;
@@ -92,7 +92,7 @@ typedef struct leaderboard_entry_s
 	common_team	team;			// The player's team
 	int			ping;			// The user's ping
 	int			time;			// Time the player has spent in the game since they joined. 
-	qboolean	is_spectator;	// Is the player a spectator?
+	bool	is_spectator;	// Is the player a spectator?
 	char		map_name[32];	// Map name
 	int			time_remaining;		// Seconds of time left in game.
 } leaderboard_entry_t;
@@ -115,9 +115,9 @@ typedef struct client_state_s
 	int			timedemo_frames;
 	int			timedemo_start;
 
-	qboolean	refresh_prepped;	// false if on new level or new ref dll
-	qboolean	sound_prepped;		// ambient sounds can start
-	qboolean	force_refdef;		// vid has changed, so we can't use a paused refdef
+	bool	refresh_prepped;	// false if on new level or new ref dll
+	bool	sound_prepped;		// ambient sounds can start
+	bool	force_refdef;		// vid has changed, so we can't use a paused refdef
 
 	int			parse_entities;		// index (not anded off) into cl_parse_entities[]
 
@@ -163,7 +163,7 @@ typedef struct client_state_s
 	//
 	// server state information
 	//
-	qboolean	attractloop;		// running the attract loop, any key will menu
+	bool	attractloop;		// running the attract loop, any key will menu
 	int			servercount;		// server identification for prespawns
 	char		gamedir[MAX_QPATH];
 	int			playernum;
@@ -247,8 +247,8 @@ typedef struct
 	int			downloadpercent;
 
 // demo recording info must be here, so it isn't cleared on level change
-	qboolean	demorecording;
-	qboolean	demowaiting;	// don't record until a non-delta message is received
+	bool	demorecording;
+	bool	demowaiting;	// don't record until a non-delta message is received
 	FILE		*demofile;
 } client_static_t;
 
@@ -334,7 +334,7 @@ extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 extern	netadr_t	net_from;
 extern	sizebuf_t	net_message;
 
-qboolean CL_CheckOrDownloadFile (char *filename);
+bool CL_CheckOrDownloadFile (char *filename);
 
 void CL_AddNetgraph (void);
 
@@ -583,8 +583,8 @@ typedef struct ui_control_s
 	int					size_x;								// UI control size (x-component).
 	int					size_y;								// UI control size (y-component).
 	char				name[MAX_UI_STR_LENGTH];			// UI control name (for code)
-	qboolean			visible;							// Is this control visible?
-	qboolean			focused;							// Is this control focused?
+	bool			visible;							// Is this control visible?
+	bool			focused;							// Is this control focused?
 
 	// text
 	char				text[MAX_UI_STR_LENGTH];			// Text UI control: Text to display.
@@ -594,7 +594,7 @@ typedef struct ui_control_s
 	int					value_min;							// Slider UI control: minimum value.
 	int					value_max;							// Slider UI control: maximum value.
 	// checkbox
-	qboolean			checked;							// Checkbox UI control: Is it checked?
+	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
 	vec4_t				color;								// The color of this UI element.
 	// events
@@ -606,41 +606,41 @@ typedef struct ui_s
 {
 	int					num_controls;				// Number of controls in the UI.
 	char				name[MAX_UI_STR_LENGTH];	// UI name.			
-	qboolean(*on_create)();							// UI Create function for client
-	qboolean			enabled;					// True if the UI is currently being drawn.
-	qboolean			active;						// True if the UI is currently interactable.
-	qboolean			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
+	bool(*on_create)();							// UI Create function for client
+	bool			enabled;					// True if the UI is currently being drawn.
+	bool			active;						// True if the UI is currently interactable.
+	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
 	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
 extern ui_t					ui_list[MAX_UIS];			// The list of UIs.
 extern ui_t*				current_ui;					// the current UI being displayed
 extern int					num_uis;					// the current number of UIs
-extern qboolean				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern bool				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
-qboolean UI_Init();
-qboolean UI_AddUI(char* name, qboolean (*on_create)());
+bool UI_Init();
+bool UI_AddUI(char* name, bool (*on_create)());
 
 // UI: Init Controls
-qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);												// Draws text.
-qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);				// Draws an image.
-qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);	// Draws a slider.
-qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked);			// Draws a checkbox.
-qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);		// Draws a regular ole box.
+bool UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);												// Draws text.
+bool UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);				// Draws an image.
+bool UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);	// Draws a slider.
+bool UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, bool checked);			// Draws a checkbox.
+bool UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);		// Draws a regular ole box.
 
 // UI: Toggle
-qboolean UI_SetEnabled(char* name, qboolean enabled);																					// Sets a UI to enabled (visible).
-qboolean UI_SetActive(char* name, qboolean active);																					// Sets a UI to active (tangible).
-qboolean UI_SetPassive(char* name, qboolean passive);
+bool UI_SetEnabled(char* name, bool enabled);																					// Sets a UI to enabled (visible).
+bool UI_SetActive(char* name, bool active);																					// Sets a UI to active (tangible).
+bool UI_SetPassive(char* name, bool passive);
 
 // UI: Update
-qboolean UI_SetText(char* ui_name, char* control_name, char* text);																		// Updates a UI control's text.
-qboolean UI_SetImage(char* ui_name, char* control_name, char* image_path);																// Updates a UI control's image.
+bool UI_SetText(char* ui_name, char* control_name, char* text);																		// Updates a UI control's text.
+bool UI_SetImage(char* ui_name, char* control_name, char* image_path);																// Updates a UI control's image.
 
 // UI: Set Event Handler
-qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));											// Sets a UI's OnClick handler.
-qboolean UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));														// Sets a UI's OnKeyDown handler.
+bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));											// Sets a UI's OnClick handler.
+bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));														// Sets a UI's OnKeyDown handler.
 
 // UI: Event Handling
 void UI_HandleEventOnClick(int btn, int x, int y);																						// Handles click events.
@@ -659,22 +659,22 @@ void UI_Reset();																														// INTERNAL, resets all UI states 
 
 // UI: Create Scripts
 // TeamUI
-qboolean UI_TeamUICreate();
+bool UI_TeamUICreate();
 void UI_TeamUISetDirectorTeam(int btn, int x, int y);
 void UI_TeamUISetPlayerTeam(int btn, int x, int y);
 
 // LeaderboardUI
-qboolean UI_LeaderboardUICreate();
+bool UI_LeaderboardUICreate();
 void UI_LeaderboardUIToggle(int btn);
 
 // BamfuslicatorUI
-qboolean UI_BamfuslicatorUICreate();
+bool UI_BamfuslicatorUICreate();
 
 // TimeUI
-qboolean UI_TimeUICreate();
+bool UI_TimeUICreate();
 
 // ScoreUI
-qboolean UI_ScoreUICreate();
+bool UI_ScoreUICreate();
 
 // UI: Required CVars
 
@@ -740,7 +740,7 @@ extern font_t			fonts[MAX_FONTS];			// Global object containing all loaded fonts
 extern cvar_t*			cl_system_font;				// The font used for the console.	
 extern int				num_fonts;					// The number of loaded fonts.
 
-qboolean Font_Init();								// Initialises the font subsystem.
+bool Font_Init();								// Initialises the font subsystem.
 font_t* Font_GetByName(const char* name);			// Returns a pointer to the font with name name, or NULL.
 glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a glyph with char code glyph, or NULL if it does not exist.
 
@@ -751,5 +751,5 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 
 void Text_Draw(const char* font, int x, int y, const char* text, ...);					// Draws text using font font.
 void Text_DrawChar(const char* font, int x, int y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
-qboolean Text_GetSize(const char* font, int *size_x, int *size_y, const char* text, ...);	// Gets the size of the text text.#
-qboolean Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+bool Text_GetSize(const char* font, int *size_x, int *size_y, const char* text, ...);	// Gets the size of the text text.#
+bool Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.

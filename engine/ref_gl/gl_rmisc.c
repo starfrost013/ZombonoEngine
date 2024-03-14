@@ -137,7 +137,7 @@ void GL_ScreenShot_f (void)
 		char tempbuf[128];
 
 		int n = 2;
-		qboolean exists = true;
+		bool exists = true;
 
 		while (exists)
 		{

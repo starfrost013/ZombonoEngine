@@ -9,7 +9,6 @@ March XX, 2024
 
 Version 0.04
 March 10, 2024
-
 * Changed menus to use new text system and colorised them.
 * Rewrote credits code to use text system.
 * New UI system uses modern text engine.

@@ -74,7 +74,7 @@ Returns true if the file exists, otherwise it attempts
 to start a download from the server.
 ===============
 */
-qboolean	CL_CheckOrDownloadFile (char *filename)
+bool	CL_CheckOrDownloadFile (char *filename)
 {
 	FILE *fp;
 	char	name[MAX_OSPATH];
@@ -800,8 +800,8 @@ void CL_ParseServerMessage (void)
 			s = MSG_ReadString(&net_message);
 			// Active can only be changed from UI script
 
-			qboolean enabled = (qboolean)MSG_ReadByte(&net_message);
-			qboolean active = (qboolean)MSG_ReadByte(&net_message);
+			bool enabled = (bool)MSG_ReadByte(&net_message);
+			bool active = (bool)MSG_ReadByte(&net_message);
 
 			UI_SetEnabled(s, enabled);
 			UI_SetActive(s, active);

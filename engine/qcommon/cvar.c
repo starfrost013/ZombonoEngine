@@ -28,7 +28,7 @@ cvar_t	*cvar_vars;
 Cvar_InfoValidate
 ============
 */
-static qboolean Cvar_InfoValidate (char *s)
+static bool Cvar_InfoValidate (char *s)
 {
 	if (strstr (s, "\\"))
 		return false;
@@ -176,7 +176,7 @@ cvar_t *Cvar_Get (char *var_name, char *var_value, int flags)
 Cvar_Set2
 ============
 */
-cvar_t *Cvar_Set2 (char *var_name, char *value, qboolean force)
+cvar_t *Cvar_Set2 (char *var_name, char *value, bool force)
 {
 	cvar_t	*var;
 
@@ -360,7 +360,7 @@ Cvar_Command
 Handles variable inspection and changing from the console
 ============
 */
-qboolean Cvar_Command (void)
+bool Cvar_Command (void)
 {
 	cvar_t			*v;
 
@@ -482,7 +482,7 @@ void Cvar_List_f (void)
 }
 
 
-qboolean userinfo_modified;
+bool userinfo_modified;
 
 
 char	*Cvar_BitInfo (int bit)

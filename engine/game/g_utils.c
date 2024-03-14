@@ -544,7 +544,7 @@ Kills all entities that would touch the proposed new positioning
 of ent.  Ent should be unlinked before calling this!
 =================
 */
-qboolean KillBox (edict_t *ent)
+bool KillBox (edict_t *ent)
 {
 	trace_t		tr;
 
@@ -646,7 +646,7 @@ ZombonoUI
 */
 
 // Sends a UI. ent NULL = multicast
-void G_UISend(edict_t* ent, char* ui_name, qboolean enabled, qboolean active, qboolean reliable)
+void G_UISend(edict_t* ent, char* ui_name, bool enabled, bool active, bool reliable)
 {
 	gi.WriteByte(svc_uidraw);
 	gi.WriteString(ui_name);
@@ -670,7 +670,7 @@ void G_UISend(edict_t* ent, char* ui_name, qboolean enabled, qboolean active, qb
 	}
 }
 
-void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, qboolean reliable)
+void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, bool reliable)
 {
 	gi.WriteByte(svc_uisettext);
 	gi.WriteString(ui_name);
@@ -694,7 +694,7 @@ void G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, qb
 	}
 }
 
-void G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, qboolean reliable)
+void G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, bool reliable)
 {
 	gi.WriteByte(svc_uisetimage);
 	gi.WriteString(ui_name);

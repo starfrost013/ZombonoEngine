@@ -266,7 +266,7 @@ ed should be a properly initialized empty edict.
 */
 char *ED_ParseEdict (char *data, edict_t *ent)
 {
-	qboolean	init;
+	bool	init;
 	char		keyname[256];
 	char		*com_token;
 
@@ -423,7 +423,7 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 		// remove things (except the world) from different skill levels or gamemodes
 		if (ent != g_edicts)
 		{
-			qboolean killEntity = false;
+			bool killEntity = false;
 
 			if (gamemode->value == 0
 				&& ent->spawnflags & SPAWNFLAG_NOT_TDM) killEntity = true;

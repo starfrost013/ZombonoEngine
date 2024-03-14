@@ -47,10 +47,10 @@ static ma_decoder decoder;
 static ma_device device;
 static int loopcounter;
 static int playTrack = 0;
-static qboolean enabled = true;
-static qboolean paused = false;
-static qboolean playLooping = false;
-static qboolean trackFinished = false;
+static bool enabled = true;
+static bool paused = false;
+static bool playLooping = false;
+static bool trackFinished = false;
 
 static cvar_t *cd_volume;
 static cvar_t *cd_loopcount;
@@ -224,7 +224,7 @@ static ma_result LoadTrack(const char *gamedir, int track)
 	return result;
 }
 
-void Miniaudio_Play(int track, qboolean looping)
+void Miniaudio_Play(int track, bool looping)
 {
 	ma_result result;
 	ma_device_config deviceConfig;

@@ -36,13 +36,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MINIMUM_WIN_MEMORY	0x0a00000
 #define MAXIMUM_WIN_MEMORY	0x1000000
 
-//#define DEMO
-
-qboolean s_win95;
+bool		is_win95;
 
 int			starttime;
-int			ActiveApp;
-qboolean	Minimized;
+bool		ActiveApp;
+bool		Minimized;
 
 static HANDLE		hinput, houtput;
 
@@ -141,7 +139,7 @@ Sys_ScanForCD
 char *Sys_ScanForCD (void)
 {
 	static char	cddir[MAX_OSPATH];
-	static qboolean	done;
+	static bool	done;
 #ifndef DEMO
 	char		drive[4];
 	FILE		*f;

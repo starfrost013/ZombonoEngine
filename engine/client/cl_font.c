@@ -31,11 +31,11 @@ int				num_fonts;						// The number of loaded fonts.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
-qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN]);
-qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
-qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
+bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN]);
+bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
+bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 
-qboolean Font_Init()
+bool Font_Init()
 {
 	FILE*	font_list_stream;
 	char	file_name_list[MAX_FONT_FILENAME_LEN] = { 0 };
@@ -151,7 +151,7 @@ qboolean Font_Init()
 	return true; 
 }
 
-qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
+bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 {
 	Com_DPrintf("Loading font %s\n", file_name);
 
@@ -278,7 +278,7 @@ qboolean Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 	return true; 
 }
 
-qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
+bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 {
 	enum JSON_type next_type = JSON_peek(json_stream);
 	const char* json_string = { 0 };
@@ -332,7 +332,7 @@ qboolean Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 	return true; 
 }
 
-qboolean Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
+bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 {
 	// for some reason the first object in the array is not returned by JSON_next
 	// todo: possibly PD-Json bug?

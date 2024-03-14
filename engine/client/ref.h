@@ -136,7 +136,7 @@ typedef struct refexport_s
 	int		api_version;
 
 	// called when the library is loaded
-	qboolean	(*Init) ( void *hinstance, void *wndproc );
+	bool	(*Init) ( void *hinstance, void *wndproc );
 
 	// called before the library is unloaded
 	void	(*Shutdown) (void);
@@ -177,7 +177,7 @@ typedef struct refexport_s
 	void	(*EndFrame) (void);
 	void	(*EndWorldRenderpass) (void); // finish world rendering, apply postprocess and switch to UI render pass
 
-	void	(*AppActivate)( qboolean activate );
+	void	(*AppActivate)( bool activate );
 
 } refexport_t;
 
@@ -212,7 +212,7 @@ typedef struct
 	cvar_t	*(*Cvar_Set)( char *name, char *value );
 	void	 (*Cvar_SetValue)( char *name, float value );
 
-	qboolean	(*Vid_GetModeInfo)( int *width, int *height, int mode );
+	bool	(*Vid_GetModeInfo)( int *width, int *height, int mode );
 	void		(*Vid_MenuInit)( void );
 	void		(*Vid_NewWindow)( int width, int height );
 } refimport_t;

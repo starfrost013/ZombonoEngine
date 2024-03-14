@@ -120,14 +120,14 @@ typedef struct menuseparator_s
 	menucommon_t generic;
 } menuseparator_t;
 
-qboolean Field_Key( menufield_t *field, int key );
+bool Field_Key( menufield_t *field, int key );
 
 void	Menu_AddItem( menuframework_t *menu, void *item );
 void	Menu_AdjustCursor( menuframework_t *menu, int dir );
 void	Menu_Center( menuframework_t *menu );
 void	Menu_Draw( menuframework_t *menu );
 void	*Menu_ItemAtCursor( menuframework_t *m );
-qboolean Menu_SelectItem( menuframework_t *s );
+bool Menu_SelectItem( menuframework_t *s );
 void	Menu_SetStatusBar( menuframework_t *s, const char *string );
 void	Menu_SlideItem( menuframework_t *s, int dir );
 int		Menu_TallySlots( menuframework_t *menu );

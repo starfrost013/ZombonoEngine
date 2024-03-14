@@ -475,7 +475,7 @@ ucmd_t ucmds[] =
 SV_ExecuteUserCommand
 ==================
 */
-void SV_ExecuteUserCommand (char *s, qboolean no_console)
+void SV_ExecuteUserCommand (char *s, bool no_console)
 {
 	ucmd_t	*u;
 	
@@ -550,7 +550,7 @@ void SV_ExecuteClientMessage (client_t *cl)
 	int		stringCmdCount;
 	int		checksum, calculatedChecksum;
 	int		checksumIndex;
-	qboolean	move_issued;
+	bool	move_issued;
 	int		lastframe;
 
 	sv_client = cl;

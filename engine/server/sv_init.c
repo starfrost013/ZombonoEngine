@@ -32,7 +32,7 @@ const char* master_alternative = "iswearimnotanazi.bjornhocke.com"; // temp
 SV_FindIndex
 ================
 */
-int SV_FindIndex (char *name, int start, int max, qboolean create)
+int SV_FindIndex (char *name, int start, int max, bool create)
 {
 	int		i;
 	
@@ -169,7 +169,7 @@ clients along with it.
 
 ================
 */
-void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate, qboolean attractloop, qboolean loadgame)
+void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate, bool attractloop, bool loadgame)
 {
 	int			i;
 	unsigned	checksum;
@@ -379,7 +379,7 @@ command from the console or game dll
 Map can also be a .tga or .dm2 file
 ======================
 */
-void SV_Map (qboolean attractloop, char *levelstring, qboolean loadgame)
+void SV_Map (bool attractloop, char *levelstring, bool loadgame)
 {
 	char	level[MAX_QPATH];
 	char	*ch;

@@ -253,7 +253,7 @@ typedef struct gitem_armor_s
 typedef struct gitem_s
 {
 	char		*classname;	// spawning name
-	qboolean	(*pickup)(struct edict_s *ent, struct edict_s *other);
+	bool	(*pickup)(struct edict_s *ent, struct edict_s *other);
 	void		(*use)(struct edict_s *ent, struct gitem_s *item);
 	void		(*drop)(struct edict_s *ent, struct gitem_s *item);
 	void		(*weaponthink)(struct edict_s *ent);
@@ -313,7 +313,7 @@ typedef struct game_locals_s
 	// items
 	int			num_items;
 
-	qboolean	autosaved;
+	bool	autosaved;
 } game_locals_t;
 
 
@@ -452,7 +452,7 @@ typedef struct monsterinfo_s
 	void		(*attack)(edict_t *self);
 	void		(*melee)(edict_t *self);
 	void		(*sight)(edict_t *self, edict_t *other);
-	qboolean	(*checkattack)(edict_t *self);
+	bool	(*checkattack)(edict_t *self);
 
 	float		pausetime;
 	float		attack_finished;
@@ -678,13 +678,13 @@ void Think_Weapon (edict_t *ent);
 int ArmorIndex (edict_t *ent);
 int PowerArmorType (edict_t *ent);
 gitem_t	*GetItemByIndex (int index);
-qboolean Add_Ammo (edict_t *ent, gitem_t *item, int count);
+bool Add_Ammo (edict_t *ent, gitem_t *item, int count);
 void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
 
 //
 // g_utils.c
 //
-qboolean	KillBox (edict_t *ent);
+bool	KillBox (edict_t *ent);
 void	G_ProjectSource (vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
 edict_t *G_Find (edict_t *from, int fieldofs, char *match);
 edict_t *findradius (edict_t *from, vec3_t org, float rad);
@@ -699,9 +699,9 @@ void	G_FreeEdict (edict_t *e);
 void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
 
-void	G_UISend (edict_t *ent, char* ui_name, qboolean enabled, qboolean active, qboolean reliable);
-void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, qboolean reliable);
-void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, qboolean reliable);
+void	G_UISend (edict_t *ent, char* ui_name, bool enabled, bool active, bool reliable);
+void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, bool reliable);
+void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, bool reliable);
 
 int		G_CountClients();
 
@@ -739,7 +739,7 @@ team_scores_t G_TDMGetScores();
 //
 // g_combat.c
 //
-qboolean CanDamage (edict_t *targ, edict_t *inflictor);
+bool CanDamage (edict_t *targ, edict_t *inflictor);
 void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
 void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod);
 
@@ -782,7 +782,7 @@ void flymonster_start (edict_t *self);
 void AttackFinished (edict_t *self, float time);
 void monster_death_use (edict_t *self);
 void M_CatagorizePosition (edict_t *ent);
-qboolean M_CheckAttack (edict_t *self);
+bool M_CheckAttack (edict_t *self);
 void M_FlyCheck (edict_t *self);
 void M_CheckGround (edict_t *ent);
 
@@ -808,20 +808,20 @@ void ai_charge (edict_t *self, float dist);
 int range (edict_t *self, edict_t *other);
 
 void FoundTarget (edict_t *self);
-qboolean infront (edict_t *self, edict_t *other);
-qboolean visible (edict_t *self, edict_t *other);
-qboolean FacingIdeal(edict_t *self);
+bool infront (edict_t *self, edict_t *other);
+bool visible (edict_t *self, edict_t *other);
+bool FacingIdeal(edict_t *self);
 
 //
 // g_weapon.c
 //
 void ThrowDebris (edict_t *self, char *modelname, float speed, vec3_t origin);
-qboolean fire_hit (edict_t *self, vec3_t aim, int damage, int kick);
+bool fire_hit (edict_t *self, vec3_t aim, int damage, int kick);
 void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int mod);
 void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int count, int mod);
-void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, qboolean hyper);
+void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, bool hyper);
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
-void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, qboolean held);
+void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, bool held);
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
@@ -857,7 +857,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 // g_svcmds.c
 //
 void	ServerCommand (void);
-qboolean SV_FilterPacket (char *from);
+bool SV_FilterPacket (char *from);
 
 //
 // p_view.c
@@ -881,8 +881,8 @@ void PlayerNoise(edict_t *who, vec3_t where, int type);
 //
 // m_move.c
 //
-qboolean M_CheckBottom (edict_t *ent);
-qboolean M_walkmove (edict_t *ent, float yaw, float dist);
+bool M_CheckBottom (edict_t *ent);
+bool M_walkmove (edict_t *ent, float yaw, float dist);
 void M_MoveToGoal (edict_t *ent, float dist);
 void M_ChangeYaw (edict_t *ent);
 
@@ -923,7 +923,7 @@ typedef struct client_persistant_s
 	char		netname[16];
 	int			hand;
 
-	qboolean	connected;			// a loadgame will leave valid entities that
+	bool	connected;			// a loadgame will leave valid entities that
 									// just don't have a connection yet
 
 	// values saved and restored from edicts when changing levels
@@ -951,7 +951,7 @@ typedef struct client_persistant_s
 	int			game_helpchanged;
 	int			helpchanged;
 
-	qboolean	spectator;			// client is a spectator
+	bool	spectator;			// client is a spectator
 } client_persistant_t;
 
 // client data that stays across respawns
@@ -963,7 +963,7 @@ typedef struct client_respawn_t
 	int			score_monsters;		// Monster score
 	vec3_t		cmd_angles;			// angles sent over in the last command
 
-	qboolean	spectator;			// client is a spectator
+	bool	spectator;			// client is a spectator
 } client_respawn_t;
 
 // this structure is cleared on each PutClientInServer(),
@@ -979,9 +979,9 @@ typedef struct gclient_s
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 
-	qboolean	showinventory;		// set layout stat
-	qboolean	showhelp;
-	qboolean	showhelpicon;
+	bool	showinventory;		// set layout stat
+	bool	showhelp;
+	bool	showhelpicon;
 
 	int			ammo_index;
 
@@ -989,7 +989,7 @@ typedef struct gclient_s
 	int			oldbuttons;
 	int			latched_buttons;
 
-	qboolean	weapon_thunk;
+	bool	weapon_thunk;
 
 	gitem_t*	newweapon;
 
@@ -1025,8 +1025,8 @@ typedef struct gclient_s
 	// animation vars
 	int			anim_end;
 	int			anim_priority;
-	qboolean	anim_duck;
-	qboolean	anim_run;
+	bool	anim_duck;
+	bool	anim_run;
 
 	// powerup timers
 	float		quad_framenum;
@@ -1034,7 +1034,7 @@ typedef struct gclient_s
 	float		breather_framenum;
 	float		enviro_framenum;
 
-	qboolean	grenade_blew_up;
+	bool	grenade_blew_up;
 	float		grenade_time;
 	int			silencer_shots;
 	int			weapon_sound;
@@ -1048,7 +1048,7 @@ typedef struct gclient_s
 	float		respawn_time;		// can respawn when time > this
 
 	edict_t		*chase_target;		// player we are chasing
-	qboolean	update_chase;		// need to update chase info? 
+	bool	update_chase;		// need to update chase info? 
 } gclient_t;
 
 struct edict_s
@@ -1058,7 +1058,7 @@ struct edict_s
 									// the server expects the first part
 									// of gclient_s to be a player_state_t
 									// but the rest of it is opaque
-	qboolean	inuse;
+	bool	inuse;
 	int			linkcount;
 
 	// FIXME: move these fields to a server private sv_entity_t
@@ -1144,7 +1144,7 @@ struct edict_s
 	int			max_health;
 	int			gib_health;
 	int			deadflag;
-	qboolean	show_hostile;
+	bool	show_hostile;
 
 	float		powerarmor_time;
 

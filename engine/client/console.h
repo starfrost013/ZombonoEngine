@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define		CON_TEXTSIZE	131072
 typedef struct console_s
 {
-	qboolean	initialized;
+	bool	initialized;
 
 	char	text[CON_TEXTSIZE];
 	int		current;		// line where next message will be printed

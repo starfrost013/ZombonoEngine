@@ -26,14 +26,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // see client.h for explanations on what these are 
 int			num_uis;																					
 ui_t		ui_list[MAX_UIS];
-qboolean	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
+bool	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
-qboolean		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls.
+bool		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls.
 
 // Draw methods
 void			UI_DrawText(ui_control_t* text);															// Draws a text control.
@@ -42,12 +42,12 @@ void			UI_DrawSlider(ui_control_t* slider);														// Draws a slider contr
 void			UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
 void			UI_DrawBox(ui_control_t* box);
 
-qboolean UI_Init()
+bool UI_Init()
 {
 	// they are not statically initalised here because UI gets reinit'd on vidmode change so we need to wipe everything clean
 	memset(&ui_list, 0x00, sizeof(ui_t) * num_uis); // only clear the uis that actually exist
 	num_uis = 0;
-	qboolean successful;
+	bool successful;
 
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
@@ -58,7 +58,7 @@ qboolean UI_Init()
 	return successful;
 }
 
-qboolean UI_AddUI(char* name, qboolean(*on_create)())
+bool UI_AddUI(char* name, bool(*on_create)())
 {
 	Com_DPrintf("Creating UI: %s\n", name);
 	current_ui = &ui_list[num_uis];
@@ -137,7 +137,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 	return NULL;
 }
 
-qboolean UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y, int size_x, int size_y)
+bool UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y, int size_x, int size_y)
 {
 	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
@@ -158,7 +158,7 @@ qboolean UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y,
 	return true;
 }
 
-qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y)
+bool UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -184,7 +184,7 @@ qboolean UI_AddText(char* ui_name, char* name, char* text, int position_x, int p
 	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
 }
 
-qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
+bool UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -210,7 +210,7 @@ qboolean UI_AddImage(char* ui_name, char* name, char* image_path, int position_x
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
+bool UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -229,7 +229,7 @@ qboolean UI_AddSlider(char* ui_name, char* name, int position_x, int position_y,
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, qboolean checked)
+bool UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, bool checked)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -247,7 +247,7 @@ qboolean UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
+bool UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -269,7 +269,7 @@ qboolean UI_AddBox(char* ui_name, char* name, int position_x, int position_y, in
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-qboolean UI_SetEnabled(char* ui_name, qboolean enabled)
+bool UI_SetEnabled(char* ui_name, bool enabled)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -284,7 +284,7 @@ qboolean UI_SetEnabled(char* ui_name, qboolean enabled)
 	return false;
 }
 
-qboolean UI_SetActive(char* ui_name, qboolean active)
+bool UI_SetActive(char* ui_name, bool active)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -308,7 +308,7 @@ qboolean UI_SetActive(char* ui_name, qboolean active)
 }
 
 // set UI ui_name passivity to passive
-qboolean UI_SetPassive(char* ui_name, qboolean passive)
+bool UI_SetPassive(char* ui_name, bool passive)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -321,7 +321,7 @@ qboolean UI_SetPassive(char* ui_name, qboolean passive)
 	return false;
 }
 
-qboolean UI_SetText(char* ui_name, char* name, char* text)
+bool UI_SetText(char* ui_name, char* name, char* text)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
@@ -342,7 +342,7 @@ qboolean UI_SetText(char* ui_name, char* name, char* text)
 	return true; 
 }
 
-qboolean UI_SetImage(char* ui_name, char* name, char* image_path)
+bool UI_SetImage(char* ui_name, char* name, char* image_path)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 

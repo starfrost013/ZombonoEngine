@@ -70,7 +70,7 @@ void Action_Draw( menuaction_t *a )
 		a->generic.ownerdraw( a );
 }
 
-qboolean Field_DoEnter( menufield_t *f )
+bool Field_DoEnter( menufield_t *f )
 {
 	if ( f->generic.callback )
 	{
@@ -129,7 +129,7 @@ void Field_Draw( menufield_t *f )
 	}
 }
 
-qboolean Field_Key( menufield_t *f, int key )
+bool Field_Key( menufield_t *f, int key )
 {
 	extern int keydown[];
 
@@ -445,7 +445,7 @@ void *Menu_ItemAtCursor( menuframework_t *m )
 	return m->items[m->cursor];
 }
 
-qboolean Menu_SelectItem( menuframework_t *s )
+bool Menu_SelectItem( menuframework_t *s )
 {
 	menucommon_t *item = ( menucommon_t * ) Menu_ItemAtCursor( s );
 

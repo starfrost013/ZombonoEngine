@@ -31,7 +31,7 @@ static unsigned char gammatable[256];
 
 cvar_t		*intensity;
 
-qboolean GL_Upload32 (unsigned *data, int width, int height,  qboolean mipmap);
+bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap);
 
 int		gl_solid_format = 3;
 int		gl_alpha_format = 4;
@@ -42,7 +42,7 @@ int		gl_tex_alpha_format = 4;
 int		gl_filter_min = GL_LINEAR_MIPMAP_NEAREST;
 int		gl_filter_max = GL_LINEAR;
 
-void GL_EnableMultitexture( qboolean enable )
+void GL_EnableMultitexture( bool enable )
 {
 	if ( !qglSelectTextureSGIS && !qglActiveTextureARB )
 		return;
@@ -582,7 +582,7 @@ Scale up the pixel values in a texture to increase the
 lighting range
 ================
 */
-void GL_LightScaleTexture (unsigned *in, int inwidth, int inheight, qboolean only_gamma )
+void GL_LightScaleTexture (unsigned *in, int inwidth, int inheight, bool only_gamma )
 {
 	if ( only_gamma )
 	{
@@ -651,9 +651,9 @@ Returns has_alpha
 ===============
 */
 int		upload_width, upload_height;
-qboolean uploaded_paletted;
+bool uploaded_paletted;
 
-qboolean GL_Upload32 (unsigned *data, int width, int height,  qboolean mipmap)
+bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap)
 {
 	int			samples;
 	unsigned	scaled[256*256];

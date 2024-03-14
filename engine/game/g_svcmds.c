@@ -68,7 +68,7 @@ int			numipfilters;
 StringToFilter
 =================
 */
-static qboolean StringToFilter (char *s, ipfilter_t *f)
+static bool StringToFilter (char *s, ipfilter_t *f)
 {
 	char	num[128];
 	int		i, j;
@@ -115,7 +115,7 @@ static qboolean StringToFilter (char *s, ipfilter_t *f)
 SV_FilterPacket
 =================
 */
-qboolean SV_FilterPacket (char *from)
+bool SV_FilterPacket (char *from)
 {
 	int		i;
 	unsigned	in;

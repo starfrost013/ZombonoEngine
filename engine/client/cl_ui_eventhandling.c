@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_ui_eventhandling.c : Split UI Event Handling from UI Code (December 27, 2023)
 #include "client.h"
 
-qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y))
+bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y))
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
@@ -42,7 +42,7 @@ qboolean UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int
 	return true;
 }
 
-qboolean UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn))
+bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn))
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 

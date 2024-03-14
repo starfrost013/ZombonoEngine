@@ -114,7 +114,7 @@ void Cmd_Give_f (edict_t *ent)
 	gitem_t		*it;
 	int			index;
 	int			i;
-	qboolean	give_all;
+	bool	give_all;
 	edict_t		*it_ent;
 
 	if (!sv_cheats->value)
@@ -763,7 +763,7 @@ void Cmd_SetTeam_f(edict_t* ent, player_team team)
 Cmd_Say_f
 ==================
 */
-void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
+void Cmd_Say_f (edict_t *ent, bool team, bool arg0)
 {
 	int		i, j;
 	edict_t	*other;
@@ -890,7 +890,7 @@ void ClientCommand (edict_t *ent)
 
 	cmd = gi.argv(0);
 
-	qboolean valid_command = false;
+	bool valid_command = false;
 
 	if (!Q_stricmp (cmd, "players"))
 	{

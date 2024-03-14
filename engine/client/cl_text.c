@@ -51,7 +51,7 @@ color_code_t color_codes[] =
 
 // cl_text.c : Modern Font Draw (February 18, 2024)
 
-qboolean Text_GetSizeChar(const char* font, int* x, int* y, char text)
+bool Text_GetSizeChar(const char* font, int* x, int* y, char text)
 {
 	// munge it for the fucking console which uses a 128kb buffer
 	char	new_string[2] = { 0 };
@@ -60,7 +60,7 @@ qboolean Text_GetSizeChar(const char* font, int* x, int* y, char text)
 	return Text_GetSize(font, x, y, &new_string);
 }
 
-qboolean Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
+bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 {
 	font_t* font_ptr = Font_GetByName(font);
 

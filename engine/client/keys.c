@@ -38,11 +38,11 @@ int		history_line=0;
 
 int		key_waiting;
 char	*keybindings[256];
-qboolean	consolekeys[256];	// if true, can't be rebound while in console
-qboolean	menubound[256];	// if true, can't be rebound while in menu
+bool	consolekeys[256];	// if true, can't be rebound while in console
+bool	menubound[256];	// if true, can't be rebound while in menu
 int		keyshift[256];		// key to map to if shift held down in console
 int		key_repeats[256];	// if > 1, it is autorepeating
-qboolean	keydown[256];
+bool	keydown[256];
 
 typedef struct
 {
@@ -390,7 +390,7 @@ void Key_Console (int key)
 
 //============================================================================
 
-qboolean	chat_team;
+bool	chat_team;
 char		chat_buffer[MAXCMDLINE];
 int			chat_bufferlen = 0;
 
@@ -743,7 +743,7 @@ Called by the system between frames for both key up and key down events
 Should NOT be called during an interrupt!
 ===================
 */
-void Key_Event (int key, qboolean down, unsigned time, int x, int y)
+void Key_Event (int key, bool down, unsigned time, int x, int y)
 {
 	char	*kb;
 	char	cmd[1024];

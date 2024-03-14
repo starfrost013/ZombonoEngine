@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // TeamUI
 // 
 
-qboolean UI_TeamUICreate()
+bool UI_TeamUICreate()
 {
 	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - (48 * vid_hudscale->value), (viddef.height / 2) - (80 * vid_hudscale->value));
 	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director", (viddef.width / 2) - (256 * vid_hudscale->value), (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
@@ -71,7 +71,7 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 // BamfuslicatorUI
 //
 
-qboolean UI_BamfuslicatorUICreate()
+bool UI_BamfuslicatorUICreate()
 {
 	int size_x = 0, size_y = 0;
 	UI_SetPassive("BamfuslicatorUI", true);
@@ -91,7 +91,7 @@ qboolean UI_BamfuslicatorUICreate()
 // TimeUI
 //
 
-qboolean UI_TimeUICreate()
+bool UI_TimeUICreate()
 {
 	int size_x = 0, size_y = 0;
 
@@ -113,7 +113,7 @@ qboolean UI_TimeUICreate()
 // ScoreUI
 //
 
-qboolean UI_ScoreUICreate()
+bool UI_ScoreUICreate()
 {
 	int size_x = 0, size_y = 0;
 
