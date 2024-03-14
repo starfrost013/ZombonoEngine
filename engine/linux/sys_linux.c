@@ -50,7 +50,7 @@ cvar_t *nostdout;
 unsigned	sys_frame_time;
 
 uid_t saved_euid;
-qboolean stdin_active = true;
+bool stdin_active = true;
 
 // =======================================================================
 // General routines
@@ -343,9 +343,9 @@ void Sys_CopyProtect(void)
 	struct mntent *ent;
 	char path[MAX_OSPATH];
 	struct stat st;
-	qboolean found_cd = false;
+	bool found_cd = false;
 
-	static qboolean checked = false;
+	static bool checked = false;
 
 	if (checked)
 		return;

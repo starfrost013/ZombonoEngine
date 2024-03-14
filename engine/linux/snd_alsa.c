@@ -53,7 +53,7 @@ cvar_t *snddevice;
 
 static int tryrates[] = { 44100, 22051, 11025, 8000 };
 */
-qboolean SNDDMA_Init (void)
+bool SNDDMA_Init (void)
 {
   int confirm;
   int latency;

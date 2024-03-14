@@ -47,7 +47,7 @@ cvar_t *nostdout;
 unsigned	sys_frame_time;
 
 uid_t saved_euid;
-qboolean stdin_active = true;
+bool stdin_active = true;
 
 // =======================================================================
 // General routines

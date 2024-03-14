@@ -35,7 +35,7 @@ static unsigned int  submissionChunk;
 static unsigned int  maxMixedSamples;
 static short       *s_mixedSamples;
 static int          s_chunkCount;		// number of chunks submitted
-static qboolean     s_isRunning;
+static bool     s_isRunning;
 
 static AudioDeviceID outputDeviceID;
 static AudioDeviceIOProcID outputDeviceProcID;
@@ -137,7 +137,7 @@ void S_MakeTestPattern( void ) {
 SNDDMA_Init
 ===============
 */
-qboolean SNDDMA_Init(void)
+bool SNDDMA_Init(void)
 {
     cvar_t *bufferSize;
     cvar_t *chunkSize;

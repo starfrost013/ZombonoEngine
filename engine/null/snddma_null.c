@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../client/client.h"
 #include "../client/snd_loc.h"
 
-qboolean SNDDMA_Init(void)
+bool SNDDMA_Init(void)
 {
 	return false;
 }

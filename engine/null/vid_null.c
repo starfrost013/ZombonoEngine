@@ -96,7 +96,7 @@ vidmode_t vid_modes[] =
 };
 #define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
 
-qboolean VID_GetModeInfo( int *width, int *height, int mode )
+bool VID_GetModeInfo( int *width, int *height, int mode )
 {
     if ( mode < 0 || mode >= VID_NUM_MODES )
         return false;

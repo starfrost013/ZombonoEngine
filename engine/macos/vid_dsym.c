@@ -51,13 +51,13 @@ cvar_t		*viewsize;
 // Global variables used internally by this module
 viddef_t	viddef;				// global video state; used by other modules
 void		*reflib_library;		// Handle to refresh DLL 
-qboolean	reflib_active = 0;
+bool	reflib_active = 0;
 
 #define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
 
 /** KEYBOARD **************************************************************/
 
-void Do_Key_Event(int key, qboolean down);
+void Do_Key_Event(int key, bool down);
 
 void (*KBD_Update_fp)(void);
 void (*KBD_Init_fp)(Key_Event_fp_t fp);
@@ -69,7 +69,7 @@ in_state_t in_state;
 
 void (*RW_IN_Init_fp)(in_state_t *in_state_p);
 void (*RW_IN_Shutdown_fp)(void);
-void (*RW_IN_Activate_fp)(qboolean active);
+void (*RW_IN_Activate_fp)(bool active);
 void (*RW_IN_Commands_fp)(void);
 void (*RW_IN_Move_fp)(usercmd_t *cmd);
 void (*RW_IN_Frame_fp)(void);
@@ -158,7 +158,7 @@ vidmode_t vid_modes[] =
 	{ "Mode 15: 3840x2160", 3840, 2160, 15 },
 };
 
-qboolean VID_GetModeInfo( int *width, int *height, int mode )
+bool VID_GetModeInfo( int *width, int *height, int mode )
 {
 	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
 	{
@@ -227,7 +227,7 @@ void VID_FreeReflib (void)
 VID_LoadRefresh
 ==============
 */
-qboolean VID_LoadRefresh( char *name )
+bool VID_LoadRefresh( char *name )
 {
 	refimport_t	ri;
 	GetRefAPI_t	GetRefAPI;
@@ -510,11 +510,11 @@ void IN_Frame (void)
 		RW_IN_Frame_fp();
 }
 
-void IN_Activate (qboolean active)
+void IN_Activate (bool active)
 {
 }
 
-void Do_Key_Event(int key, qboolean down)
+void Do_Key_Event(int key, bool down)
 {
 	if(key < 256)
 		Key_Event(key, down, Sys_Milliseconds());

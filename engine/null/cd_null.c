@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../client/client.h"
 
 // cd_null.c : Null CDAudio implementation for pure dedicated server
-qboolean CDAudio_Play(int track, qboolean looping)
+bool CDAudio_Play(int track, bool looping)
 {
 	return false;
 }

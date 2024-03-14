@@ -252,7 +252,7 @@ void CocoaHandleEvents()
 	@autoreleasepool {
 		if(window == nil) return;
 
-		qboolean dowarp = false;
+		bool dowarp = false;
 		int mwx, mwy;
 
 		if(vid_fullscreen->value)
@@ -323,10 +323,10 @@ void CocoaHandleEvents()
 					if(in_state && in_state->Key_Event_fp)
 					{
 						int keyCode = translateKey(pEvent);
-						qboolean ctrlDown = keyCode == K_CTRL && ([pEvent modifierFlags] & NSEventModifierFlagControl);
-						qboolean shiftDown = keyCode == K_SHIFT && ([pEvent modifierFlags] & NSEventModifierFlagShift);
-						qboolean altDown = keyCode == K_ALT && ([pEvent modifierFlags] & NSEventModifierFlagOption);
-						qboolean cmdDown = keyCode == K_CMD && ([pEvent modifierFlags] & NSEventModifierFlagCommand);
+						bool ctrlDown = keyCode == K_CTRL && ([pEvent modifierFlags] & NSEventModifierFlagControl);
+						bool shiftDown = keyCode == K_SHIFT && ([pEvent modifierFlags] & NSEventModifierFlagShift);
+						bool altDown = keyCode == K_ALT && ([pEvent modifierFlags] & NSEventModifierFlagOption);
+						bool cmdDown = keyCode == K_CMD && ([pEvent modifierFlags] & NSEventModifierFlagCommand);
 						in_state->Key_Event_fp(keyCode, ctrlDown || shiftDown || altDown || cmdDown);
 					}
 					break;
@@ -349,7 +349,7 @@ void CocoaHandleEvents()
 }
 
 // create Cocoa window
-void CocoaCreateWindow(int x, int y, int *w, int *h, qboolean fullscreen)
+void CocoaCreateWindow(int x, int y, int *w, int *h, bool fullscreen)
 {
 	@autoreleasepool {
 		if(window != nil)

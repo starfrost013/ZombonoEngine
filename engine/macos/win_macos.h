@@ -7,7 +7,7 @@
 // MacOS window creation, destruction and event handling.
 
 void CocoaHandleEvents(void);
-void CocoaCreateWindow(int x, int y, int *w, int *h, qboolean fullscreen);
+void CocoaCreateWindow(int x, int y, int *w, int *h, bool fullscreen);
 void CocoaDestroyWindow(void);
 const void *CocoaAddMetalView(void);
 #endif

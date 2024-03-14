@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /*****************************************************************************/
 
-static qboolean			doShm;
+static bool			doShm;
 static Display			*dpy;
 static Colormap			x_cmap;
 static Window			win;
@@ -68,10 +68,10 @@ static int win_x, win_y;
 static int				x_shmeventtype;
 //static XShmSegmentInfo	x_shminfo;
 
-static qboolean			oktodraw = false;
-static qboolean			ignorefirst = false;
-static qboolean			exposureflag = false;
-static qboolean			X11_active = false;
+static bool			oktodraw = false;
+static bool			ignorefirst = false;
+static bool			exposureflag = false;
+static bool			X11_active = false;
 
 int XShmQueryExtension(Display *);
 int XShmGetEventBase(Display *);
@@ -241,14 +241,14 @@ void st3_fixup( XImage *framebuf, int x, int y, int width, int height)
 
 // this is inside the renderer shared lib, so these are called from vid_so
 
-static qboolean	mouse_avail;
+static bool	mouse_avail;
 static int		mouse_buttonstate;
 static int		mouse_oldbuttonstate;
 static int		old_mouse_x, old_mouse_y;
 static int		mouse_x, mouse_y;
 
-static qboolean mouse_active = false;
-static qboolean dgamouse = false;
+static bool mouse_active = false;
+static bool dgamouse = false;
 
 static cvar_t	*m_filter;
 static cvar_t	*in_mouse;
@@ -257,7 +257,7 @@ static cvar_t	*in_dgamouse;
 static cvar_t	*vid_xpos;			// X coordinate of window position
 static cvar_t	*vid_ypos;			// Y coordinate of window position
 
-static qboolean	mlooking;
+static bool	mlooking;
 
 // state struct passed in Init
 static in_state_t	*in_state;
@@ -496,7 +496,7 @@ void RW_IN_Frame (void)
 {
 }
 
-void RW_IN_Activate(qboolean active)
+void RW_IN_Activate(bool active)
 {
 	if (active)
 		IN_ActivateMouse();
@@ -741,7 +741,7 @@ void HandleEvents(void)
 {
 	XEvent event;
 	int b;
-	qboolean dowarp = false;
+	bool dowarp = false;
 	int mwx = vid.width/2;
 	int mwy = vid.height/2;
    
