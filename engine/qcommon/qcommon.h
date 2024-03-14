@@ -37,10 +37,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define BUILDSTRING "Windows DEBUG"
 #endif
 
-#ifdef _M_IX86
-#define	CPUSTRING	"x86"
-#elif defined _M_X64
+#ifdef _M_X64
 #define CPUSTRING	"x64"
+#elif _M_ARM64 // TEMP
+#define CPUSTRING	"ARM64"
 #endif
 
 #elif defined __linux__
@@ -51,9 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define BUILDSTRING "Linux DEBUG"
 #endif
 
-#ifdef __i386__
-#define CPUSTRING "i386"
-#elif defined __LP64__
+#if defined __LP64__
 #define CPUSTRING	"x64"
 #else
 #define CPUSTRING "Unknown"

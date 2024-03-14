@@ -31,8 +31,6 @@ short	*snd_out;
 
 void S_WriteLinearBlastStereo16 (void);
 
-#if !(defined __linux__ && defined __i386__)
-
 void S_WriteLinearBlastStereo16 (void)
 {
 	int		i;
@@ -57,8 +55,6 @@ void S_WriteLinearBlastStereo16 (void)
 			snd_out[i+1] = val;
 	}
 }
-#endif
-
 
 void S_TransferStereo16 (unsigned long *pbuf, int endtime)
 {
@@ -92,7 +88,6 @@ void S_TransferStereo16 (unsigned long *pbuf, int endtime)
 /*
 ===================
 S_TransferPaintBuffer
-
 ===================
 */
 void S_TransferPaintBuffer(int endtime)

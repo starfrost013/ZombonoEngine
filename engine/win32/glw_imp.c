@@ -320,41 +320,6 @@ void GLimp_Shutdown( void )
 */
 int GLimp_Init( void *hinstance, void *wndproc )
 {
-#define OSR2_BUILD_NUMBER 1111
-
-	OSVERSIONINFO	vinfo;
-
-	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
-
-	glw_state.allowdisplaydepthchange = false;
-
-	if ( GetVersionEx( &vinfo) )
-	{
-		if ( vinfo.dwMajorVersion > 4 )
-		{
-			glw_state.allowdisplaydepthchange = true;
-		}
-		else if ( vinfo.dwMajorVersion == 4 )
-		{
-			if ( vinfo.dwPlatformId == VER_PLATFORM_WIN32_NT )
-			{
-				glw_state.allowdisplaydepthchange = true;
-			}
-			else if ( vinfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS )
-			{
-				if ( LOWORD( vinfo.dwBuildNumber ) >= OSR2_BUILD_NUMBER )
-				{
-					glw_state.allowdisplaydepthchange = true;
-				}
-			}
-		}
-	}
-	else
-	{
-		ri.Con_Printf( PRINT_ALL, "GLimp_Init() - GetVersionEx failed\n" );
-		return false;
-	}
-
 	glw_state.hInstance = ( HINSTANCE ) hinstance;
 	glw_state.wndproc = wndproc;
 
@@ -371,7 +336,7 @@ bool GLimp_InitGL (void)
 		PFD_SUPPORT_OPENGL |			// support OpenGL
 		PFD_DOUBLEBUFFER,				// double buffered
 		PFD_TYPE_RGBA,					// RGBA type
-		24,								// 24-bit color depth
+		32,								// 32-bit color depth
 		0, 0, 0, 0, 0, 0,				// color bits ignored
 		0,								// no alpha buffer
 		0,								// shift bit ignored
@@ -388,7 +353,6 @@ bool GLimp_InitGL (void)
 	cvar_t *stereo;
 
 	stereo = ri.Cvar_Get( "cl_stereo", "0", 0 );
-
 
 	/*
 	** set PFD_STEREO if necessary
@@ -493,11 +457,6 @@ void GLimp_BeginFrame( float camera_separation )
 {
 	if ( gl_bitdepth->modified )
 	{
-		if ( gl_bitdepth->value != 0 && !glw_state.allowdisplaydepthchange )
-		{
-			ri.Cvar_SetValue( "gl_bitdepth", 0 );
-			ri.Con_Printf( PRINT_ALL, "gl_bitdepth requires Win95 OSR2.x or WinNT 4.x\n" );
-		}
 		gl_bitdepth->modified = false;
 	}
 

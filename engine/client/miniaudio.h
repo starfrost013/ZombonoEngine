@@ -5578,8 +5578,6 @@ IMPLEMENTATION
 /* Architecture Detection */
 #if defined(__x86_64__) || defined(_M_X64)
 #define MA_X64
-#elif defined(__i386) || defined(_M_IX86)
-#define MA_X86
 #elif defined(__arm__) || defined(_M_ARM)
 #define MA_ARM
 #endif
@@ -5590,7 +5588,7 @@ IMPLEMENTATION
 #endif
 
 /* Intrinsics Support */
-#if defined(MA_X64) || defined(MA_X86)
+#if defined(MA_X64)
     #if defined(_MSC_VER) && !defined(__clang__)
         /* MSVC. */
         #if _MSC_VER >= 1400 && !defined(MA_NO_SSE2)   /* 2005 */
@@ -5669,7 +5667,7 @@ IMPLEMENTATION
     #pragma warning(disable:4752)   /* found Intel(R) Advanced Vector Extensions; consider using /arch:AVX */
 #endif
 
-#if defined(MA_X64) || defined(MA_X86)
+#if defined(MA_X64)
     #if defined(_MSC_VER) && !defined(__clang__)
         #if _MSC_VER >= 1400
             #include <intrin.h>
@@ -5736,19 +5734,8 @@ IMPLEMENTATION
 static MA_INLINE ma_bool32 ma_has_sse2(void)
 {
 #if defined(MA_SUPPORT_SSE2)
-    #if (defined(MA_X64) || defined(MA_X86)) && !defined(MA_NO_SSE2)
-        #if defined(MA_X64)
-            return MA_TRUE;    /* 64-bit targets always support SSE2. */
-        #elif (defined(_M_IX86_FP) && _M_IX86_FP == 2) || defined(__SSE2__)
-            return MA_TRUE;    /* If the compiler is allowed to freely generate SSE2 code we can assume support. */
-        #else
-            #if defined(MA_NO_CPUID)
-                return MA_FALSE;
-            #else
-                int info[4];
-                ma_cpuid(info, 1);
-                return (info[3] & (1 << 26)) != 0;
-            #endif
+    #if defined(MA_X64)
+		return MA_TRUE;    /* 64-bit targets always support SSE2. */
         #endif
     #else
         return MA_FALSE;       /* SSE2 is only supported on x86 and x64 architectures. */
@@ -5758,45 +5745,10 @@ static MA_INLINE ma_bool32 ma_has_sse2(void)
 #endif
 }
 
-#if 0
-static MA_INLINE ma_bool32 ma_has_avx()
-{
-#if defined(MA_SUPPORT_AVX)
-    #if (defined(MA_X64) || defined(MA_X86)) && !defined(MA_NO_AVX)
-        #if defined(_AVX_) || defined(__AVX__)
-            return MA_TRUE;    /* If the compiler is allowed to freely generate AVX code we can assume support. */
-        #else
-            /* AVX requires both CPU and OS support. */
-            #if defined(MA_NO_CPUID) || defined(MA_NO_XGETBV)
-                return MA_FALSE;
-            #else
-                int info[4];
-                ma_cpuid(info, 1);
-                if (((info[2] & (1 << 27)) != 0) && ((info[2] & (1 << 28)) != 0)) {
-                    ma_uint64 xrc = ma_xgetbv(0);
-                    if ((xrc & 0x06) == 0x06) {
-                        return MA_TRUE;
-                    } else {
-                        return MA_FALSE;
-                    }
-                } else {
-                    return MA_FALSE;
-                }
-            #endif
-        #endif
-    #else
-        return MA_FALSE;       /* AVX is only supported on x86 and x64 architectures. */
-    #endif
-#else
-    return MA_FALSE;           /* No compiler support. */
-#endif
-}
-#endif
-
 static MA_INLINE ma_bool32 ma_has_avx2(void)
 {
 #if defined(MA_SUPPORT_AVX2)
-    #if (defined(MA_X64) || defined(MA_X86)) && !defined(MA_NO_AVX2)
+    #if defined(MA_X64)
         #if defined(_AVX2_) || defined(__AVX2__)
             return MA_TRUE;    /* If the compiler is allowed to freely generate AVX2 code we can assume support. */
         #else
@@ -5901,7 +5853,7 @@ static MA_INLINE ma_bool32 ma_has_neon(void)
 
 static MA_INLINE ma_bool32 ma_is_little_endian(void)
 {
-#if defined(MA_X86) || defined(MA_X64)
+#if defined(MA_X64)
     return MA_TRUE;
 #else
     int n = 1;
@@ -42352,7 +42304,7 @@ MA_API ma_uint64 ma_noise_read_pcm_frames(ma_noise* pNoise, void* pFramesOut, ma
     #pragma warning(pop)
 #endif
 
-#endif  /* MINIAUDIO_IMPLEMENTATION */
+ /* MINIAUDIO_IMPLEMENTATION */
 
 /*
 MAJOR CHANGES IN VERSION 0.9

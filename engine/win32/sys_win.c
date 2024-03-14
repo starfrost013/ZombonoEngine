@@ -33,11 +33,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <conio.h>
 #include "../win32/conproc.h"
 
-#define MINIMUM_WIN_MEMORY	0x0a00000
-#define MAXIMUM_WIN_MEMORY	0x1000000
-
-bool		is_win95;
-
 int			starttime;
 bool		ActiveApp;
 bool		Minimized;
@@ -53,7 +48,6 @@ static HANDLE		qwclsemaphore;
 #define	MAX_NUM_ARGVS	128
 int			argc;
 char		*argv[MAX_NUM_ARGVS];
-
 
 /*
 ===============================================================================
@@ -140,7 +134,7 @@ char *Sys_ScanForCD (void)
 {
 	static char	cddir[MAX_OSPATH];
 	static bool	done;
-#ifndef DEMO
+
 	char		drive[4];
 	FILE		*f;
 	char		test[MAX_QPATH];
@@ -158,6 +152,7 @@ char *Sys_ScanForCD (void)
 
 	done = true;
 
+	//TODO; rewrite this
 	// scan the drives
 	for (drive[0] = 'c' ; drive[0] <= 'z' ; drive[0]++)
 	{
@@ -172,7 +167,6 @@ char *Sys_ScanForCD (void)
 				return cddir;
 		}
 	}
-#endif
 
 	cddir[0] = 0;
 	
@@ -658,12 +652,6 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 			time = newtime - oldtime;
 		} while (time < 1);
 
-// MSDN: "On the x64 architecture, changing the floating point precision is not supported. 
-// If the precision control mask is used on that platform, an assertion and the invalid parameter handler is invoked, 
-// as described in Parameter Validation."
-#ifdef _M_IX86
-		_controlfp( _PC_24, _MCW_PC );
-#endif
 		if (ActiveApp || dedicated->value)
 			Qcommon_Frame(time);
 
