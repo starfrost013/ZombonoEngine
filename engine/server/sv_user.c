@@ -85,8 +85,8 @@ void SV_New_f (void)
 
 	// send the serverdata
 	MSG_WriteByte (&sv_client->netchan.message, svc_serverdata);
-	MSG_WriteLong (&sv_client->netchan.message, PROTOCOL_VERSION);
-	MSG_WriteLong (&sv_client->netchan.message, svs.spawncount);
+	MSG_WriteInt (&sv_client->netchan.message, PROTOCOL_VERSION);
+	MSG_WriteInt (&sv_client->netchan.message, svs.spawncount);
 	MSG_WriteByte (&sv_client->netchan.message, sv.attractloop);
 	MSG_WriteString (&sv_client->netchan.message, gamedir);
 

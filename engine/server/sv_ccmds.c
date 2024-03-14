@@ -944,8 +944,8 @@ void SV_ServerRecord_f (void)
 	//
 	// send the serverdata
 	MSG_WriteByte (&buf, svc_serverdata);
-	MSG_WriteLong (&buf, PROTOCOL_VERSION);
-	MSG_WriteLong (&buf, svs.spawncount);
+	MSG_WriteInt (&buf, PROTOCOL_VERSION);
+	MSG_WriteInt (&buf, svs.spawncount);
 	// 2 means server demo
 	MSG_WriteByte (&buf, 2);	// demos are always attract loops
 	MSG_WriteString (&buf, Cvar_VariableString ("gamedir"));

@@ -301,7 +301,7 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	for (i=0 ; i<MAX_STATS ; i++)
 		if (ps->stats[i] != ops->stats[i])
 			statbits |= 1<<i;
-	MSG_WriteLong (msg, statbits);
+	MSG_WriteInt (msg, statbits);
 	for (i=0 ; i<MAX_STATS ; i++)
 		if (statbits & (1<<i) )
 			MSG_WriteShort (msg, ps->stats[i]);
@@ -340,8 +340,8 @@ void SV_WriteFrameToClient (client_t *client, sizebuf_t *msg)
 	}
 
 	MSG_WriteByte (msg, svc_frame);
-	MSG_WriteLong (msg, sv.framenum);
-	MSG_WriteLong (msg, lastframe);	// what we are delta'ing from
+	MSG_WriteInt (msg, sv.framenum);
+	MSG_WriteInt (msg, lastframe);	// what we are delta'ing from
 
 	// send over the areabits
 	MSG_WriteByte (msg, frame->areabytes);
@@ -586,7 +586,7 @@ void SV_RecordDemoMessage (void)
 
 	// write a frame message that doesn't contain a player_state_t
 	MSG_WriteByte (&buf, svc_frame);
-	MSG_WriteLong (&buf, sv.framenum);
+	MSG_WriteInt (&buf, sv.framenum);
 
 	MSG_WriteByte (&buf, svc_packetentities);
 

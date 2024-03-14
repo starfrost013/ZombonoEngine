@@ -328,7 +328,7 @@ void MSG_WriteShort (sizebuf_t *sb, int c)
 	buf[1] = c>>8;
 }
 
-void MSG_WriteLong (sizebuf_t *sb, int c)
+void MSG_WriteInt (sizebuf_t *sb, int c)
 {
 	byte	*buf;
 	
@@ -625,7 +625,7 @@ void MSG_WriteDeltaEntity (entity_state_t *from, entity_state_t *to, sizebuf_t *
 		MSG_WriteShort (msg, to->frame);
 
 	if ((bits & U_SKIN8) && (bits & U_SKIN16))		//used for laser colors
-		MSG_WriteLong (msg, to->skinnum);
+		MSG_WriteInt (msg, to->skinnum);
 	else if (bits & U_SKIN8)
 		MSG_WriteByte (msg, to->skinnum);
 	else if (bits & U_SKIN16)
@@ -633,14 +633,14 @@ void MSG_WriteDeltaEntity (entity_state_t *from, entity_state_t *to, sizebuf_t *
 
 
 	if ( (bits & (U_EFFECTS8|U_EFFECTS16)) == (U_EFFECTS8|U_EFFECTS16) )
-		MSG_WriteLong (msg, to->effects);
+		MSG_WriteInt (msg, to->effects);
 	else if (bits & U_EFFECTS8)
 		MSG_WriteByte (msg, to->effects);
 	else if (bits & U_EFFECTS16)
 		MSG_WriteShort (msg, to->effects);
 
 	if ( (bits & (U_RENDERFX8|U_RENDERFX16)) == (U_RENDERFX8|U_RENDERFX16) )
-		MSG_WriteLong (msg, to->renderfx);
+		MSG_WriteInt (msg, to->renderfx);
 	else if (bits & U_RENDERFX8)
 		MSG_WriteByte (msg, to->renderfx);
 	else if (bits & U_RENDERFX16)

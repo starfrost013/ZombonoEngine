@@ -113,7 +113,7 @@ void Netchan_OutOfBand (int net_socket, netadr_t adr, int length, byte *data)
 // write the packet header
 	SZ_Init (&send, send_buf, sizeof(send_buf));
 	
-	MSG_WriteLong (&send, -1);	// -1 sequence means out of band
+	MSG_WriteInt (&send, -1);	// -1 sequence means out of band
 	SZ_Write (&send, data, length);
 
 // send the datagram
@@ -244,8 +244,8 @@ void Netchan_Transmit (netchan_t *chan, int length, byte *data)
 	chan->outgoing_sequence++;
 	chan->last_sent = curtime;
 
-	MSG_WriteLong (&send, w1);
-	MSG_WriteLong (&send, w2);
+	MSG_WriteInt (&send, w1);
+	MSG_WriteInt (&send, w2);
 
 	// send the qport if we are a client
 	if (chan->sock == NS_CLIENT)

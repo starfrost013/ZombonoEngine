@@ -216,8 +216,8 @@ void CL_Record_f (void)
 
 	// send the serverdata
 	MSG_WriteByte (&buf, svc_serverdata);
-	MSG_WriteLong (&buf, PROTOCOL_VERSION);
-	MSG_WriteLong (&buf, 0x10000 + cl.servercount);
+	MSG_WriteInt (&buf, PROTOCOL_VERSION);
+	MSG_WriteInt (&buf, 0x10000 + cl.servercount);
 	MSG_WriteByte (&buf, 1);	// demos are always attract loops
 	MSG_WriteString (&buf, cl.gamedir);
 	MSG_WriteShort (&buf, cl.playernum);

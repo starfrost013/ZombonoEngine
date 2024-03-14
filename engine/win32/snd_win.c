@@ -831,7 +831,6 @@ void SNDDMA_Shutdown(void)
 	FreeSound ();
 }
 
-
 /*
 ===========
 S_Activate
