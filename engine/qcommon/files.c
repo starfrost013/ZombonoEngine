@@ -356,10 +356,10 @@ pack_t *FS_LoadPackFile (char *packfile)
 		return NULL;
 
 	fread (&header, 1, sizeof(header), packhandle);
-	if (LittleLong(header.ident) != IDPAKHEADER)
+	if (LittleInt(header.ident) != IDPAKHEADER)
 		Com_Error (ERR_FATAL, "%s is not a packfile", packfile);
-	header.dirofs = LittleLong (header.dirofs);
-	header.dirlen = LittleLong (header.dirlen);
+	header.dirofs = LittleInt (header.dirofs);
+	header.dirlen = LittleInt (header.dirlen);
 
 	numpackfiles = header.dirlen / sizeof(dpackfile_t);
 
@@ -382,8 +382,8 @@ pack_t *FS_LoadPackFile (char *packfile)
 	for (i=0 ; i<numpackfiles ; i++)
 	{
 		strcpy (newfiles[i].name, info[i].name);
-		newfiles[i].filepos = LittleLong(info[i].filepos);
-		newfiles[i].filelen = LittleLong(info[i].filelen);
+		newfiles[i].filepos = LittleInt(info[i].filepos);
+		newfiles[i].filelen = LittleInt(info[i].filelen);
 	}
 
 	pack = Z_Malloc (sizeof (pack_t));

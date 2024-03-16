@@ -122,7 +122,7 @@ void CL_WriteDemoMessage (void)
 
 	// the first eight bytes are just packet sequencing stuff
 	len = net_message.cursize-8;
-	swlen = LittleLong(len);
+	swlen = LittleInt(len);
 	fwrite (&swlen, 4, 1, cls.demofile);
 	fwrite (net_message.data+8,	len, 1, cls.demofile);
 }
@@ -231,7 +231,7 @@ void CL_Record_f (void)
 		{
 			if (buf.cursize + strlen (cl.configstrings[i]) + 32 > buf.maxsize)
 			{	// write it out
-				len = LittleLong (buf.cursize);
+				len = LittleInt (buf.cursize);
 				fwrite (&len, 4, 1, cls.demofile);
 				fwrite (buf.data, buf.cursize, 1, cls.demofile);
 				buf.cursize = 0;
@@ -254,7 +254,7 @@ void CL_Record_f (void)
 
 		if (buf.cursize + 64 > buf.maxsize)
 		{	// write it out
-			len = LittleLong (buf.cursize);
+			len = LittleInt (buf.cursize);
 			fwrite (&len, 4, 1, cls.demofile);
 			fwrite (buf.data, buf.cursize, 1, cls.demofile);
 			buf.cursize = 0;
@@ -269,7 +269,7 @@ void CL_Record_f (void)
 
 	// write it to the demo file
 
-	len = LittleLong (buf.cursize);
+	len = LittleInt (buf.cursize);
 	fwrite (&len, 4, 1, cls.demofile);
 	fwrite (buf.data, buf.cursize, 1, cls.demofile);
 
@@ -1158,7 +1158,7 @@ void CL_RequestNextDownload (void)
 						precache_check++;
 						continue; // couldn't load it
 					}
-					if (LittleLong(*(unsigned *)precache_model) != IDALIASHEADER) {
+					if (LittleInt(*(unsigned *)precache_model) != IDALIASHEADER) {
 						// not an alias model
 						FS_FreeFile(precache_model);
 						precache_model = 0;
@@ -1167,7 +1167,7 @@ void CL_RequestNextDownload (void)
 						continue;
 					}
 					pheader = (dmdl_t *)precache_model;
-					if (LittleLong (pheader->version) != ALIAS_VERSION) {
+					if (LittleInt (pheader->version) != ALIAS_VERSION) {
 						precache_check++;
 						precache_model_skin = 0;
 						continue; // couldn't load it
@@ -1176,9 +1176,9 @@ void CL_RequestNextDownload (void)
 
 				pheader = (dmdl_t *)precache_model;
 
-				while (precache_model_skin - 1 < LittleLong(pheader->num_skins)) {
+				while (precache_model_skin - 1 < LittleInt(pheader->num_skins)) {
 					if (!CL_CheckOrDownloadFile((char *)precache_model +
-						LittleLong(pheader->ofs_skins) + 
+						LittleInt(pheader->ofs_skins) + 
 						(precache_model_skin - 1)*MAX_SKINNAME)) {
 						precache_model_skin++;
 						return; // started a download

@@ -349,7 +349,7 @@ void MSG_WriteFloat (sizebuf_t *sb, float f)
 	
 	
 	dat.f = f;
-	dat.l = LittleLong (dat.l);
+	dat.l = LittleInt (dat.l);
 	
 	SZ_Write (sb, &dat.l, 4);
 }
@@ -766,7 +766,7 @@ float MSG_ReadFloat (sizebuf_t *msg_read)
 	}
 	msg_read->readcount += 4;
 	
-	dat.l = LittleLong (dat.l);
+	dat.l = LittleInt (dat.l);
 
 	return dat.f;	
 }

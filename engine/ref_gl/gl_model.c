@@ -242,7 +242,7 @@ model_t *Mod_ForName (char *name, bool crash)
 
 	// call the apropriate loader
 	
-	switch (LittleLong(*(unsigned *)buf))
+	switch (LittleInt(*(unsigned *)buf))
 	{
 	case IDALIASHEADER:
 		loadmodel->extradata = Hunk_Begin (MAX_MD2_ALLOC);
@@ -254,7 +254,7 @@ model_t *Mod_ForName (char *name, bool crash)
 		Mod_LoadSpriteModel (mod, buf);
 		break;
 	
-	case IDBSPHEADER:
+	case ZBSP_HEADER:
 		loadmodel->extradata = Hunk_Begin (MAX_BSP_ALLOC);
 		Mod_LoadBrushModel (mod, buf);
 		break;
@@ -316,11 +316,11 @@ void Mod_LoadVisibility (lump_t *l)
 	loadmodel->vis = Hunk_Alloc ( l->filelen);	
 	memcpy (loadmodel->vis, mod_base + l->fileofs, l->filelen);
 
-	loadmodel->vis->numclusters = LittleLong (loadmodel->vis->numclusters);
+	loadmodel->vis->numclusters = LittleInt (loadmodel->vis->numclusters);
 	for (i=0 ; i<loadmodel->vis->numclusters ; i++)
 	{
-		loadmodel->vis->bitofs[i][0] = LittleLong (loadmodel->vis->bitofs[i][0]);
-		loadmodel->vis->bitofs[i][1] = LittleLong (loadmodel->vis->bitofs[i][1]);
+		loadmodel->vis->bitofs[i][0] = LittleInt (loadmodel->vis->bitofs[i][0]);
+		loadmodel->vis->bitofs[i][1] = LittleInt (loadmodel->vis->bitofs[i][1]);
 	}
 }
 
@@ -401,9 +401,9 @@ void Mod_LoadSubmodels (lump_t *l)
 			out->origin[j] = LittleFloat (in->origin[j]);
 		}
 		out->radius = RadiusFromBounds (out->mins, out->maxs);
-		out->headnode = LittleLong (in->headnode);
-		out->firstface = LittleLong (in->firstface);
-		out->numfaces = LittleLong (in->numfaces);
+		out->headnode = LittleInt (in->headnode);
+		out->firstface = LittleInt (in->firstface);
+		out->numfaces = LittleInt (in->numfaces);
 	}
 }
 
@@ -429,8 +429,8 @@ void Mod_LoadEdges (lump_t *l)
 
 	for ( i=0 ; i<count ; i++, in++, out++)
 	{
-		out->v[0] = (unsigned short)LittleShort(in->v[0]);
-		out->v[1] = (unsigned short)LittleShort(in->v[1]);
+		out->v[0] = LittleIntUnsigned(in->v[0]);
+		out->v[1] = LittleIntUnsigned(in->v[1]);
 	}
 }
 
@@ -464,8 +464,8 @@ void Mod_LoadTexinfo (lump_t *l)
 			out->vecs[1][j] = LittleFloat (in->vecs[1][j]);
 		}
 
-		out->flags = LittleLong (in->flags);
-		next = LittleLong (in->nexttexinfo);
+		out->flags = LittleInt (in->flags);
+		next = LittleInt (in->nexttexinfo);
 		if (next > 0)
 			out->next = loadmodel->texinfo + next;
 		else
@@ -578,19 +578,19 @@ void Mod_LoadFaces (lump_t *l)
 
 	for ( surfnum=0 ; surfnum<count ; surfnum++, in++, out++)
 	{
-		out->firstedge = LittleLong(in->firstedge);
-		out->numedges = LittleShort(in->numedges);		
+		out->firstedge = LittleInt(in->firstedge);
+		out->numedges = LittleInt(in->numedges);		
 		out->flags = 0;
 		out->polys = NULL;
 
-		planenum = LittleShort(in->planenum);
-		side = LittleShort(in->side);
+		planenum = LittleIntUnsigned(in->planenum);
+		side = LittleIntUnsigned(in->side);
 		if (side)
 			out->flags |= SURF_PLANEBACK;			
 
 		out->plane = loadmodel->planes + planenum;
 
-		ti = LittleShort (in->texinfo);
+		ti = LittleInt (in->texinfo);
 		if (ti < 0 || ti >= loadmodel->numtexinfo)
 			ri.Sys_Error (ERR_DROP, "MOD_LoadBrushModel: bad texinfo number");
 		out->texinfo = loadmodel->texinfo + ti;
@@ -601,7 +601,7 @@ void Mod_LoadFaces (lump_t *l)
 
 		for (i=0 ; i<MAXLIGHTMAPS ; i++)
 			out->styles[i] = in->styles[i];
-		i = LittleLong(in->lightofs);
+		i = LittleInt(in->lightofs);
 		if (i == -1)
 			out->samples = NULL;
 		else
@@ -671,20 +671,20 @@ void Mod_LoadNodes (lump_t *l)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
-			out->minmaxs[j] = LittleShort (in->mins[j]);
-			out->minmaxs[3+j] = LittleShort (in->maxs[j]);
+			out->minmaxs[j] = LittleFloat (in->mins[j]);
+			out->minmaxs[3+j] = LittleFloat (in->maxs[j]);
 		}
 	
-		p = LittleLong(in->planenum);
+		p = LittleInt(in->planenum);
 		out->plane = loadmodel->planes + p;
 
-		out->firstsurface = LittleShort (in->firstface);
-		out->numsurfaces = LittleShort (in->numfaces);
+		out->firstsurface = LittleIntUnsigned (in->firstface);
+		out->numsurfaces = LittleIntUnsigned (in->numfaces);
 		out->contents = -1;	// differentiate from leafs
 
 		for (j=0 ; j<2 ; j++)
 		{
-			p = LittleLong (in->children[j]);
+			p = LittleInt (in->children[j]);
 			if (p >= 0)
 				out->children[j] = loadmodel->nodes + p;
 			else
@@ -720,19 +720,19 @@ void Mod_LoadLeafs (lump_t *l)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
-			out->minmaxs[j] = LittleShort (in->mins[j]);
-			out->minmaxs[3+j] = LittleShort (in->maxs[j]);
+			out->minmaxs[j] = LittleFloat (in->mins[j]);
+			out->minmaxs[3+j] = LittleFloat (in->maxs[j]);
 		}
 
-		p = LittleLong(in->contents);
+		p = LittleInt(in->contents);
 		out->contents = p;
 
-		out->cluster = LittleShort(in->cluster);
-		out->area = LittleShort(in->area);
+		out->cluster = LittleInt(in->cluster);
+		out->area = LittleInt(in->area);
 
 		out->firstmarksurface = loadmodel->marksurfaces +
-			LittleShortUnsigned(in->firstleafface);
-		out->nummarksurfaces = LittleShortUnsigned(in->numleaffaces);
+			LittleIntUnsigned(in->firstleafface);
+		out->nummarksurfaces = LittleIntUnsigned(in->numleaffaces);
 
 	}	
 }
@@ -745,7 +745,7 @@ Mod_LoadMarksurfaces
 void Mod_LoadMarksurfaces (lump_t *l)
 {	
 	unsigned int		i, j, count;
-	short		*in;
+	int		*in;
 	msurface_t **out;
 	
 	in = (void *)(mod_base + l->fileofs);
@@ -759,7 +759,7 @@ void Mod_LoadMarksurfaces (lump_t *l)
 
 	for ( i=0 ; i<count ; i++)
 	{
-		j = LittleShortUnsigned(in[i]);
+		j = LittleIntUnsigned(in[i]);
 		if (j < 0 ||  j >= loadmodel->numsurfaces)
 			ri.Sys_Error (ERR_DROP, "Mod_ParseMarksurfaces: bad surface number %d/%d", j, loadmodel->numsurfaces);
 		out[i] = loadmodel->surfaces + j;
@@ -790,7 +790,7 @@ void Mod_LoadSurfedges (lump_t *l)
 	loadmodel->numsurfedges = count;
 
 	for ( i=0 ; i<count ; i++)
-		out[i] = LittleLong (in[i]);
+		out[i] = LittleInt (in[i]);
 }
 
 
@@ -827,7 +827,7 @@ void Mod_LoadPlanes (lump_t *l)
 		}
 
 		out->dist = LittleFloat (in->dist);
-		out->type = LittleLong (in->type);
+		out->type = LittleInt (in->type);
 		out->signbits = bits;
 	}
 }
@@ -849,7 +849,7 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 
 	header = (dheader_t *)buffer;
 
-	i = LittleLong (header->version);
+	i = LittleInt (header->version);
 	if (i != BSPVERSION)
 		ri.Sys_Error (ERR_DROP, "Mod_LoadBrushModel: %s has wrong version number (%i should be %i)", mod->name, i, BSPVERSION);
 
@@ -857,7 +857,7 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 	mod_base = (byte *)header;
 
 	for (i=0 ; i<sizeof(dheader_t)/4 ; i++)
-		((int *)header)[i] = LittleLong ( ((int *)header)[i]);
+		((int *)header)[i] = LittleInt ( ((int *)header)[i]);
 
 // load into heap
 	
@@ -929,16 +929,16 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 
 	pinmodel = (dmdl_t *)buffer;
 
-	version = LittleLong (pinmodel->version);
+	version = LittleInt (pinmodel->version);
 	if (version != ALIAS_VERSION)
 		ri.Sys_Error (ERR_DROP, "%s has wrong version number (%i should be %i)",
 				 mod->name, version, ALIAS_VERSION);
 
-	pheader = Hunk_Alloc (LittleLong(pinmodel->ofs_end));
+	pheader = Hunk_Alloc (LittleInt(pinmodel->ofs_end));
 	
 	// byte swap the header fields and sanity check
 	for (i=0 ; i<sizeof(dmdl_t)/4 ; i++)
-		((int *)pheader)[i] = LittleLong (((int *)buffer)[i]);
+		((int *)pheader)[i] = LittleInt (((int *)buffer)[i]);
 
 	if (pheader->skinheight > MAX_LBM_HEIGHT)
 		ri.Sys_Error (ERR_DROP, "model %s has a skin taller than %d", mod->name,
@@ -1016,7 +1016,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 	pincmd = (int *) ((byte *)pinmodel + pheader->ofs_glcmds);
 	poutcmd = (int *) ((byte *)pheader + pheader->ofs_glcmds);
 	for (i=0 ; i<pheader->num_glcmds ; i++)
-		poutcmd[i] = LittleLong (pincmd[i]);
+		poutcmd[i] = LittleInt (pincmd[i]);
 
 
 	// register all skins
@@ -1057,9 +1057,9 @@ void Mod_LoadSpriteModel (model_t *mod, void *buffer)
 	sprin = (dsprite_t *)buffer;
 	sprout = Hunk_Alloc (modfilelen);
 
-	sprout->ident = LittleLong (sprin->ident);
-	sprout->version = LittleLong (sprin->version);
-	sprout->numframes = LittleLong (sprin->numframes);
+	sprout->ident = LittleInt (sprin->ident);
+	sprout->version = LittleInt (sprin->version);
+	sprout->numframes = LittleInt (sprin->numframes);
 
 	if (sprout->version != SPRITE_VERSION)
 		ri.Sys_Error (ERR_DROP, "%s has wrong version number (%i should be %i)",
@@ -1072,10 +1072,10 @@ void Mod_LoadSpriteModel (model_t *mod, void *buffer)
 	// byte swap everything
 	for (i=0 ; i<sprout->numframes ; i++)
 	{
-		sprout->frames[i].width = LittleLong (sprin->frames[i].width);
-		sprout->frames[i].height = LittleLong (sprin->frames[i].height);
-		sprout->frames[i].origin_x = LittleLong (sprin->frames[i].origin_x);
-		sprout->frames[i].origin_y = LittleLong (sprin->frames[i].origin_y);
+		sprout->frames[i].width = LittleInt (sprin->frames[i].width);
+		sprout->frames[i].height = LittleInt (sprin->frames[i].height);
+		sprout->frames[i].origin_x = LittleInt (sprin->frames[i].origin_x);
+		sprout->frames[i].origin_y = LittleInt (sprin->frames[i].origin_y);
 		memcpy (sprout->frames[i].name, sprin->frames[i].name, MAX_SKINNAME);
 		mod->skins[i] = GL_FindImage (sprout->frames[i].name,
 			it_sprite);

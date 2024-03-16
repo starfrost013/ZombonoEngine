@@ -243,6 +243,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -339,6 +340,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -373,6 +375,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>

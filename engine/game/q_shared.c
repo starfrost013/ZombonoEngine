@@ -387,7 +387,6 @@ dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
 	return sides;
 }
 
-
 void ClearBounds (vec3_t mins, vec3_t maxs)
 {
 	mins[0] = mins[1] = mins[2] = 99999;
@@ -680,17 +679,21 @@ short	(*_BigShort) (short l);
 short	(*_LittleShort) (short l);
 unsigned short	(*_BigShortUnsigned) (short l);
 unsigned short	(*_LittleShortUnsigned) (short l);
-int		(*_BigLong) (int l);
-int		(*_LittleLong) (int l);
+int		(*_BigInt) (int l);
+int		(*_LittleInt) (int l);
+unsigned int		(*_BigIntUnsigned) (int l);
+unsigned int		(*_LittleIntUnsigned) (int l);
 float	(*_BigFloat) (float l);
 float	(*_LittleFloat) (float l);
 
 short	BigShort(short l){return _BigShort(l);}
 short	LittleShort(short l) {return _LittleShort(l);}
-unsigned short	BigShortUnsigned(short l) { return _BigShort(l); }
-unsigned short	LittleShortUnsigned(short l) { return _LittleShort(l); }
-int		BigLong (int l) {return _BigLong(l);}
-int		LittleLong (int l) {return _LittleLong(l);}
+unsigned short	BigShortUnsigned(short l) { return _BigShortUnsigned(l); }
+unsigned short	LittleShortUnsigned(short l) { return _LittleShortUnsigned(l); }
+int		BigInt (int l) {return _BigInt(l);}
+int		LittleInt (int l) {return _LittleInt(l);}
+unsigned int		BigIntUnsigned (int l) { return _BigIntUnsigned(l); }
+unsigned int		LittleIntUnsigned(int l) { return _LittleIntUnsigned(l); }
 float	BigFloat (float l) {return _BigFloat(l);}
 float	LittleFloat (float l) {return _LittleFloat(l);}
 
@@ -724,7 +727,7 @@ unsigned short	ShortNoSwapUnsigned(short l)
 	return l;
 }
 
-int    LongSwap (int l)
+int    IntSwap (int l)
 {
 	byte    b1,b2,b3,b4;
 
@@ -736,7 +739,24 @@ int    LongSwap (int l)
 	return ((int)b1<<24) + ((int)b2<<16) + ((int)b3<<8) + b4;
 }
 
-int	LongNoSwap (int l)
+unsigned int	IntNoSwap (int l)
+{
+	return l;
+}
+
+unsigned int    IntSwapUnsigned(int l)
+{
+	byte    b1, b2, b3, b4;
+
+	b1 = l & 255;
+	b2 = (l >> 8) & 255;
+	b3 = (l >> 16) & 255;
+	b4 = (l >> 24) & 255;
+
+	return ((unsigned int)b1 << 24) + ((unsigned int)b2 << 16) + ((unsigned int)b3 << 8) + b4;
+}
+
+unsigned int	IntNoSwapUnsigned(int l)
 {
 	return l;
 }
@@ -780,8 +800,10 @@ void Swap_Init (void)
 		_LittleShort = ShortNoSwap;
 		_BigShortUnsigned = ShortSwapUnsigned;
 		_LittleShortUnsigned = ShortNoSwapUnsigned;
-		_BigLong = LongSwap;
-		_LittleLong = LongNoSwap;
+		_BigInt = IntSwap;
+		_LittleInt = IntNoSwap;
+		_BigIntUnsigned = IntSwapUnsigned;
+		_LittleIntUnsigned = IntNoSwapUnsigned;
 		_BigFloat = FloatSwap;
 		_LittleFloat = FloatNoSwap;
 	}
@@ -792,8 +814,8 @@ void Swap_Init (void)
 		_LittleShort = ShortSwap;
 		_BigShortUnsigned = ShortNoSwapUnsigned;
 		_LittleShortUnsigned = ShortSwapUnsigned;
-		_BigLong = LongNoSwap;
-		_LittleLong = LongSwap;
+		_BigInt = IntNoSwap;
+		_LittleInt = IntSwap;
 		_BigFloat = FloatNoSwap;
 		_LittleFloat = FloatSwap;
 	}
