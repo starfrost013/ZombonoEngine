@@ -17,7 +17,7 @@ RPM_RELEASE=6
 
 ifneq (,$(findstring libc6,$(shell if [ -e /lib/libc.so.6* ];then echo libc6;fi)))
 GLIBC=-glibc
-elsef
+else
 GLIBC=
 endif
 
@@ -57,8 +57,6 @@ GAME_DIR=$(MOUNT_DIR)/game
 NULL_DIR=$(MOUNT_DIR)/null
 
 MESA_DIR=/usr/local/src/Mesa-2.6
-
-EGCS=/usr/local/egcs-1.1.2/bin/gcc
 
 CC=gcc
 BASE_CFLAGS=-I/usr/local/include -I../../client -I../../game -I../../qcommon -I../../ref_gl -I../../server -Dstricmp=strcasecmp -D_GNU_SOURCE -Wno-format-truncation -Wno-unused-result -Wno-format-overflow
@@ -192,8 +190,8 @@ ZOMBONO_OBJS = \
 	$(BUILDDIR)/client/q_shared.o \
 	$(BUILDDIR)/client/pmove.o
 	
-$(BUILDDIR)/zombono : $(ZOMBONO_OBJS) $(ZOMBONO_AS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(ZOMBONO_OBJS) $(ZOMBONO_AS_OBJS) $(LDFLAGS)
+$(BUILDDIR)/zombono : $(ZOMBONO_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(ZOMBONO_OBJS) $(LDFLAGS)
 
 $(BUILDDIR)/qcommon/pdjson.o :    $(COMMON_DIR)/pdjson.c
 	$(DO_CC)
@@ -985,7 +983,6 @@ clean2:
 	-rm -f \
 	$(ZOMBONO_OBJS) \
 	$(ZombonoDedicatedServer_OBJS) \
-	$(ZOMBONO_AS_OBJS) \
 	$(GAME_OBJS) \
 	$(REF_GL_OBJS) \
 	$(REF_GL_FXMESA_OBJS) \
