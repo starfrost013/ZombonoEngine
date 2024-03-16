@@ -5,6 +5,7 @@
 "classname" "worldspawn"
 "_tb_textures" "textures;textures/e1u1;textures/e1u2;textures/e1u3;textures/e1u4;textures/e2u1;textures/e2u2;textures/e2u3;textures/e3u1;textures/e3u2;textures/e3u3;textures/architecture;textures/blockout;textures/signage;textures/tech"
 "height" "258"
+"mapversion" "220"
 // brush 0
 {
 ( -408 -544 216 ) ( -408 -544 226.25 ) ( -408 -544.25 216 ) architecture/labrats_wall_07c [ 0 1.7777777777777775 0 0 ] [ 0 0 -1 0 ] 0 0.5 2
