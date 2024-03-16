@@ -5,7 +5,17 @@ Version 0.05-pre1
 March XX, 2024
 * Made the engine and gamex64 compile on GCC and run on Linux. Still working on the renderer...
 * Changed game files directory from "zombono" to "zombonogame" as some(?) linux filesystems can't have a folder named the same name as a file (zombono binary vs zombono folder)
-
+* Removed qboolean and made the engine use stdbool.
+* Moved from ericw-tools to a custom fork of q2tools-220, "zbsp" (Zombono BSP Compiler) for compiling maps.
+	* This appears to be faster, but means lighting will need to be changed around as the new BSP compiler compiles maps slower
+* Changed the map format from standard Quake 2 BSP38 to a modified Qbism BSP called "ZBSP"
+	* ZBSPv1 changes on top of QBISM (see ZBSPv1.txt for full list of changes):
+		* Magic: QBSP -> ZBSP
+		* Changed texture length limit from 32 to 80
+		* Changed pak filesize limit from 56 to 256
+		* Removed LUMP_POP as it was 1 byte and useless (and a quake 1 left over)
+	* Converted all maps
+		* Blockout only ones don't have lighting
 
 Version 0.04
 March 10, 2024
