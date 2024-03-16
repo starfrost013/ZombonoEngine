@@ -2,7 +2,7 @@
   "profiles": {
     "assetbuild": {
       "commandName": "Project",
-      "commandLineArgs": "zombono Release"
+      "commandLineArgs": "zombonogame"
     }
   }
 }
