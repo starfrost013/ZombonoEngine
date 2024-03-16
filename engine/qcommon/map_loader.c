@@ -1510,8 +1510,6 @@ trace_t		CM_TransformedBoxTrace (vec3_t start, vec3_t end,
 #pragma optimize( "", on )
 #endif
 
-
-
 /*
 ===============================================================================
 

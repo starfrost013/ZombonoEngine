@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "qgl.h"
 
-#define	REF_VERSION	"GL 0.01"
+#define	REF_VERSION	"Zombono Legacy OpenGL 1.x"
 
 // up / down
 #define	PITCH	0
@@ -61,7 +61,7 @@ typedef struct
 #endif
 
 extern	viddef_t	vid;
-
+extern  int			modfilelen; // for gl_sprite.c
 
 /*
 

@@ -161,7 +161,7 @@ ZOMBONO_OBJS = \
 	$(BUILDDIR)/client/m_flash.o \
 	\
 	$(BUILDDIR)/qcommon/cmd.o \
-	$(BUILDDIR)/qcommon/cmodel.o \
+	$(BUILDDIR)/qcommon/map_loader.o \
 	\
 	$(BUILDDIR)/qcommon/crc.o \
 	$(BUILDDIR)/qcommon/cvar.o \
@@ -202,7 +202,7 @@ $(BUILDDIR)/qcommon/common.o :     $(COMMON_DIR)/common.c
 $(BUILDDIR)/qcommon/cmd.o :        $(COMMON_DIR)/cmd.c
 	$(DO_CC)
 
-$(BUILDDIR)/qcommon/cmodel.o :     $(COMMON_DIR)/cmodel.c
+$(BUILDDIR)/qcommon/map_loader.o :     $(COMMON_DIR)/map_loader.c
 	$(DO_CC)
 
 
@@ -363,7 +363,7 @@ $(BUILDDIR)/client/net_udp.o :    $(LINUX_DIR)/net_udp.c
 ZombonoDedicatedServer_OBJS = \
 	\
 	$(BUILDDIR)/ded/cmd.o \
-	$(BUILDDIR)/ded/cmodel.o \
+	$(BUILDDIR)/ded/map_loader.o \
 	$(BUILDDIR)/ded/common.o \
 	$(BUILDDIR)/ded/crc.o \
 	$(BUILDDIR)/ded/cvar.o \
@@ -397,7 +397,7 @@ $(BUILDDIR)/ZombonoDedicatedServer : $(ZombonoDedicatedServer_OBJS)
 $(BUILDDIR)/ded/cmd.o :        $(COMMON_DIR)/cmd.c
 	$(DO_DED_CC)
 
-$(BUILDDIR)/ded/cmodel.o :     $(COMMON_DIR)/cmodel.c
+$(BUILDDIR)/ded/map_loader.o :     $(COMMON_DIR)/map_loader.c
 	$(DO_DED_CC)
 
 $(BUILDDIR)/ded/common.o :     $(COMMON_DIR)/common.c
@@ -600,6 +600,7 @@ REF_GL_OBJS = \
 	$(BUILDDIR)/ref_gl/gl_rmain.o \
 	$(BUILDDIR)/ref_gl/gl_rmisc.o \
 	$(BUILDDIR)/ref_gl/gl_rsurf.o \
+	$(BUILDDIR)/ref_gl/gl_sprite.o \
 	$(BUILDDIR)/ref_gl/gl_warp.o \
 	\
 	$(BUILDDIR)/ref_gl/qgl_linux.o \
@@ -641,6 +642,9 @@ $(BUILDDIR)/ref_gl/gl_rmisc.o :       $(REF_GL_DIR)/gl_rmisc.c
 	$(DO_GL_SHLIB_CC)
 
 $(BUILDDIR)/ref_gl/gl_rsurf.o :       $(REF_GL_DIR)/gl_rsurf.c
+	$(DO_GL_SHLIB_CC)
+
+$(BUILDDIR)/ref_gl/gl_sprite.o :        $(REF_GL_DIR)/gl_sprite.c
 	$(DO_GL_SHLIB_CC)
 
 $(BUILDDIR)/ref_gl/gl_warp.o :        $(REF_GL_DIR)/gl_warp.c
@@ -709,10 +713,6 @@ copyfiles:
 	chmod 755 $(COPYDIR)/zombonogame/game$(ARCH).$(SHLIBEXT)
 	cp $(MOUNT_DIR)/readme.txt $(COPYDIR)
 	cp $(MOUNT_DIR)/$(VERSION)_Changes.txt $(COPYDIR)
-
-
-zombono.axp.spec : $(MOUNT_DIR)/linux/zombono.axp.spec.sh Makefile
-	sh $< $(VERSION_FN) $(RPM_RELEASE) $(ARCH) $(INSTALLDIR) > $@
 
 else
 

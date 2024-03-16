@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// r_main.c
+// gl_rmain.c
 #include "gl_local.h"
 #include <ctype.h>
 
@@ -165,91 +165,6 @@ void R_RotateForEntity (entity_t *e)
     qglRotatef (e->angles[1],  0, 0, 1);
     qglRotatef (-e->angles[0],  0, 1, 0);
     qglRotatef (-e->angles[2],  1, 0, 0);
-}
-
-/*
-=============================================================
-
-  SPRITE MODELS
-
-=============================================================
-*/
-
-
-/*
-=================
-R_DrawSpriteModel
-
-=================
-*/
-void R_DrawSpriteModel (entity_t *e)
-{
-	float alpha = 1.0F;
-	vec3_t	point;
-	dsprframe_t	*frame;
-	float		*up, *right;
-	dsprite_t		*psprite;
-
-	// don't even bother culling, because it's just a single
-	// polygon without a surface cache
-
-	psprite = (dsprite_t *)currentmodel->extradata;
-	e->frame %= psprite->numframes;
-
-	frame = &psprite->frames[e->frame];
-
-	// normal sprite
-	up = vup;
-	right = vright;
-
-	if ( e->flags & RF_TRANSLUCENT )
-		alpha = e->alpha;
-
-	if ( alpha != 1.0F )
-		qglEnable( GL_BLEND );
-
-	qglColor4f( 1, 1, 1, alpha );
-
-    GL_Bind(currentmodel->skins[e->frame]->texnum);
-
-	GL_TexEnv( GL_MODULATE );
-
-	if ( alpha == 1.0 )
-		qglEnable (GL_ALPHA_TEST);
-	else
-		qglDisable( GL_ALPHA_TEST );
-
-	qglBegin (GL_QUADS);
-
-	qglTexCoord2f (0, 1);
-	VectorMA (e->origin, -frame->origin_y, up, point);
-	VectorMA (point, -frame->origin_x, right, point);
-	qglVertex3fv (point);
-
-	qglTexCoord2f (0, 0);
-	VectorMA (e->origin, frame->height - frame->origin_y, up, point);
-	VectorMA (point, -frame->origin_x, right, point);
-	qglVertex3fv (point);
-
-	qglTexCoord2f (1, 0);
-	VectorMA (e->origin, frame->height - frame->origin_y, up, point);
-	VectorMA (point, frame->width - frame->origin_x, right, point);
-	qglVertex3fv (point);
-
-	qglTexCoord2f (1, 1);
-	VectorMA (e->origin, -frame->origin_y, up, point);
-	VectorMA (point, frame->width - frame->origin_x, right, point);
-	qglVertex3fv (point);
-	
-	qglEnd ();
-
-	qglDisable (GL_ALPHA_TEST);
-	GL_TexEnv( GL_REPLACE );
-
-	if ( alpha != 1.0F )
-		qglDisable( GL_BLEND );
-
-	qglColor4f( 1, 1, 1, 1 );
 }
 
 //==================================================================================

@@ -81,7 +81,7 @@
     <ClCompile Include="qcommon\cmd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qcommon\cmodel.c">
+    <ClCompile Include="qcommon\map_loader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qcommon\common.c">

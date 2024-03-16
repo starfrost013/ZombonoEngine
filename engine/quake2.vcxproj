@@ -55,7 +55,7 @@
     <ClCompile Include="game\m_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="qcommon\cmd.c" />
-    <ClCompile Include="qcommon\cmodel.c" />
+    <ClCompile Include="qcommon\map_loader.c" />
     <ClCompile Include="qcommon\common.c" />
     <ClCompile Include="qcommon\crc.c" />
     <ClCompile Include="qcommon\cvar.c" />
