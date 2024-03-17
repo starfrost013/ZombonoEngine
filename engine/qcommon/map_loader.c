@@ -551,13 +551,13 @@ CM_LoadMap
 Loads in the map and all submodels
 ==================
 */
-cmodel_t *CM_LoadMap (char *name, bool clientload, unsigned *checksum)
+cmodel_t *CM_LoadMap (char *name, bool clientload, uint32_t *checksum)
 {
-	unsigned		*buf;
-	int32_t 			i;
+	uint32_t		*buf;
+	int32_t 		i;
 	dheader_t		header;
-	int32_t 			length;
-	static unsigned	last_checksum;
+	int32_t 		length;
+	static uint32_t	last_checksum;
 
 	map_noareas = Cvar_Get ("map_noareas", "0", 0);
 

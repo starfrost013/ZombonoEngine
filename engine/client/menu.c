@@ -3022,7 +3022,7 @@ static bool PlayerConfig_ScanDirectories( void )
 	char *path = NULL;
 	int32_t i;
 
-	extern char **FS_ListFiles( char *, int32_t *, unsigned, unsigned );
+	extern char **FS_ListFiles( char *, int32_t *, uint32_t, uint32_t);
 
 	s_numplayermodels = 0;
 

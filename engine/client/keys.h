@@ -143,7 +143,7 @@ extern char chat_buffer[];
 extern	int32_t chat_bufferlen;
 extern	bool	chat_team;
 
-void Key_Event (int32_t key, bool down, unsigned time, int32_t x, int32_t y);
+void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int32_t keynum, char *binding);

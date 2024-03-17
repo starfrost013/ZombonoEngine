@@ -47,26 +47,26 @@ typedef struct
 {
 	server_state_t	state;			// precache commands are only valid during load
 
-	bool	attractloop;		// running cinematics and demos for the local system only
-	bool	loadgame;			// client begins should reuse existing entity
+	bool			attractloop;		// running cinematics and demos for the local system only
+	bool			loadgame;			// client begins should reuse existing entity
 
-	unsigned	time;				// always sv.framenum * 100 msec
+	uint32_t		time;				// always sv.framenum * 100 msec
 	int32_t 		framenum;
 
-	char		name[MAX_QPATH];			// map name, or cinematic name
-	struct cmodel_s		*models[MAX_MODELS];
+	char			name[MAX_QPATH];			// map name, or cinematic name
+	struct cmodel_s	*models[MAX_MODELS];
 
-	char		configstrings[MAX_CONFIGSTRINGS][MAX_QPATH];
+	char			configstrings[MAX_CONFIGSTRINGS][MAX_QPATH];
 	entity_state_t	baselines[MAX_EDICTS];
 
 	// the multicast buffer is used to send a message to a set of clients
 	// it is only used to marshall data until SV_Multicast is called
-	sizebuf_t	multicast;
-	uint8_t		multicast_buf[MAX_MSGLEN];
+	sizebuf_t		multicast;
+	uint8_t			multicast_buf[MAX_MSGLEN];
 
 	// demo server information
-	FILE		*demofile;
-	bool	timedemo;		// don't time sync
+	FILE			*demofile;
+	bool			timedemo;		// don't time sync
 } server_t;
 
 #define EDICT_NUM(n) ((edict_t *)((uint8_t *)ge->edicts + ge->edict_size*(n)))

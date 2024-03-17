@@ -185,7 +185,7 @@ static int32_t init_string(JSON_stream *json)
     return 0;
 }
 
-static int32_t encode_utf8(JSON_stream *json, unsigned long c)
+static int32_t encode_utf8(JSON_stream *json, uint64_t c)
 {
     if (c < 0x80UL) {
         return pushchar(json, c);
@@ -526,7 +526,7 @@ static int
 read_digits(JSON_stream *json)
 {
     int32_t c;
-    unsigned nread = 0;
+	uint32_t nread = 0;
     while (is_digit(c = json->source.peek(&json->source))) {
         if (pushchar(json, json->source.get(&json->source)) != 0)
             return -1;

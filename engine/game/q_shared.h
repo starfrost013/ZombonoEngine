@@ -255,8 +255,8 @@ int32_t 	Hunk_End (void);
 /*
 ** pass in an attribute mask of things you wish to REJECT
 */
-char	*Sys_FindFirst (char *path, unsigned musthave, unsigned canthave );
-char	*Sys_FindNext ( unsigned musthave, unsigned canthave );
+char	*Sys_FindFirst (char *path, uint32_t musthave, uint32_t canthave );
+char	*Sys_FindNext (uint32_t musthave, uint32_t canthave );
 void	Sys_FindClose (void);
 
 

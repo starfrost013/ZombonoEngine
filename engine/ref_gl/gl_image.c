@@ -31,7 +31,7 @@ static uint8_t gammatable[256];
 
 cvar_t		*intensity;
 
-bool GL_Upload32 (unsigned *data, int32_t width, int32_t height,  bool mipmap);
+bool GL_Upload32 (uint32_t *data, int32_t width, int32_t height,  bool mipmap);
 
 int		gl_solid_format = 3;
 int		gl_alpha_format = 4;
@@ -532,12 +532,12 @@ void LoadTGA (char *name, uint8_t **pic, int32_t *width, int32_t *height)
 GL_ResampleTexture
 ================
 */
-void GL_ResampleTexture (unsigned *in, int32_t inwidth, int32_t inheight, unsigned *out,  int32_t outwidth, int32_t outheight)
+void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32_t *out,  int32_t outwidth, int32_t outheight)
 {
-	int		i, j;
-	unsigned	*inrow, *inrow2;
-	unsigned	frac, fracstep;
-	unsigned	p1[1024], p2[1024];
+	int			i, j;
+	uint32_t	*inrow, *inrow2;
+	uint32_t	frac, fracstep;
+	uint32_t	p1[1024], p2[1024];
 	uint8_t		*pix1, *pix2, *pix3, *pix4;
 
 	fracstep = inwidth*0x10000/outwidth;
@@ -582,7 +582,7 @@ Scale up the pixel values in a texture to increase the
 lighting range
 ================
 */
-void GL_LightScaleTexture (unsigned *in, int32_t inwidth, int32_t inheight, bool only_gamma )
+void GL_LightScaleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, bool only_gamma )
 {
 	if ( only_gamma )
 	{
@@ -653,7 +653,7 @@ Returns has_alpha
 int		upload_width, upload_height;
 bool uploaded_paletted;
 
-bool GL_Upload32 (unsigned *data, int32_t width, int32_t height,  bool mipmap)
+bool GL_Upload32 (uint32_t *data, int32_t width, int32_t height,  bool mipmap)
 {
 	int			samples;
 	unsigned	scaled[256*256];
@@ -810,7 +810,7 @@ image_t *GL_LoadPic (char *name, uint8_t *pic, int32_t width, int32_t height, im
 
 	image->texnum = TEXNUM_IMAGES + (image - gltextures);
 	GL_Bind(image->texnum);
-	image->has_alpha = GL_Upload32((unsigned*)pic, width, height, (image->type != it_pic && image->type != it_sky));
+	image->has_alpha = GL_Upload32((uint32_t*)pic, width, height, (image->type != it_pic && image->type != it_sky));
 	image->upload_width = upload_width;		// after power of 2 and scales
 	image->upload_height = upload_height;
 	image->paletted = uploaded_paletted;

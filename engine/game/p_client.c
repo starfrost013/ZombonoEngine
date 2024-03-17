@@ -1438,7 +1438,7 @@ trace_t	PM_trace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 		return gi.trace (start, mins, maxs, end, pm_passent, MASK_DEADSOLID);
 }
 
-unsigned CheckBlock (void *b, int32_t c)
+uint32_t CheckBlock (void *b, int32_t c)
 {
 	int	v,i;
 	v = 0;
@@ -1446,9 +1446,10 @@ unsigned CheckBlock (void *b, int32_t c)
 		v+= ((uint8_t *)b)[i];
 	return v;
 }
+
 void PrintPmove (pmove_t *pm)
 {
-	unsigned	c1, c2;
+	uint32_t	c1, c2;
 
 	c1 = CheckBlock (&pm->s, sizeof(pm->s));
 	c2 = CheckBlock (&pm->cmd, sizeof(pm->cmd));

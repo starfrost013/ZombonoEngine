@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gl_local.h"
 #include <ctype.h>
 
-static vec3_t	modelorg;		// relative to viewpoint
+static vec3_t	modelorg;		// relative to 
 
 msurface_t	*r_alpha_surfaces;
 
@@ -38,19 +38,19 @@ msurface_t	*r_alpha_surfaces;
 
 #define	MAX_LIGHTMAPS	256
 
-int		c_visible_lightmaps;
-int		c_visible_textures;
+int32_t		c_visible_lightmaps;
+int32_t		c_visible_textures;
 
 #define GL_LIGHTMAP_FORMAT GL_RGBA
 
 typedef struct
 {
 	int32_t internal_format;
-	int	current_lightmap_texture;
+	int32_t	current_lightmap_texture;
 
 	msurface_t	*lightmap_surfaces[MAX_LIGHTMAPS];
 
-	int			allocated[BLOCK_WIDTH];
+	int32_t			allocated[BLOCK_WIDTH];
 
 	// the lightmap texture data needs to be kept in
 	// main memory so texsubimage can update properly
@@ -59,9 +59,8 @@ typedef struct
 
 static gllightmapstate_t gl_lms;
 
-
-static void		LM_InitBlock( void );
-static void		LM_UploadBlock( bool dynamic );
+static void	LM_InitBlock( void );
+static void	LM_UploadBlock( bool dynamic );
 static bool	LM_AllocBlock (int32_t w, int32_t h, int32_t *x, int32_t *y);
 
 extern void R_SetCacheState( msurface_t *surf );
@@ -84,7 +83,7 @@ Returns the proper texture for a given time and base texture
 */
 image_t *R_TextureAnimation (mtexinfo_t *tex)
 {
-	int		c;
+	int32_t		c;
 
 	if (!tex->next)
 		return tex->image;
@@ -106,7 +105,7 @@ DrawGLPoly
 */
 void DrawGLPoly (glpoly_t *p)
 {
-	int		i;
+	int32_t		i;
 	float	*v;
 
 	qglBegin (GL_POLYGON);
@@ -128,7 +127,7 @@ DrawGLFlowingPoly -- version of DrawGLPoly that handles scrolling texture
 */
 void DrawGLFlowingPoly (msurface_t *fa)
 {
-	int		i;
+	int32_t		i;
 	float	*v;
 	glpoly_t *p;
 	float	scroll;
@@ -156,7 +155,7 @@ void DrawGLFlowingPoly (msurface_t *fa)
 */
 void R_DrawTriangleOutlines (void)
 {
-	int			i, j;
+	int32_t			i, j;
 	glpoly_t	*p;
 
 	if (!gl_showtris->value)
@@ -237,11 +236,11 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 ** R_BlendLightMaps
 **
 ** This routine takes all the given light mapped surfaces in the world and
-** blends them into the framebuffer.
+** blends them int32_to the framebuffer.
 */
 void R_BlendLightmaps (void)
 {
-	int			i;
+	int32_t			i;
 	msurface_t	*surf, *newdrawsurf = 0;
 
 	// don't bother if we're set to fullbright
@@ -309,7 +308,7 @@ void R_BlendLightmaps (void)
 
 		for ( surf = gl_lms.lightmap_surfaces[0]; surf != 0; surf = surf->lightmapchain )
 		{
-			int		smax, tmax;
+			int32_t		smax, tmax;
 			uint8_t	*base;
 
 			smax = (surf->extents[0]>>4)+1;
@@ -384,7 +383,7 @@ R_RenderBrushPoly
 */
 void R_RenderBrushPoly (msurface_t *fa)
 {
-	int			maps;
+	int32_t			maps;
 	image_t		*image;
 	bool is_dynamic = false;
 
@@ -449,8 +448,8 @@ dynamic:
 	{
 		if ( ( fa->styles[maps] >= 32 || fa->styles[maps] == 0 ) && ( fa->dlightframe != r_framecount ) )
 		{
-			unsigned	temp[34*34];
-			int			smax, tmax;
+			uint32_t	temp[34*34];
+			int32_t		smax, tmax;
 
 			smax = (fa->extents[0]>>4)+1;
 			tmax = (fa->extents[1]>>4)+1;
@@ -495,7 +494,7 @@ of alpha_surfaces will draw back to front, giving proper ordering.
 void R_DrawAlphaSurfaces (void)
 {
 	msurface_t	*s;
-	float		intens;
+	float		inverse_intensity;
 
 	//
 	// go back to the world matrix
@@ -507,18 +506,18 @@ void R_DrawAlphaSurfaces (void)
 
 	// the textures are prescaled up for a better lighting range,
 	// so scale it back down
-	intens = gl_state.inverse_intensity;
+	inverse_intensity = gl_state.inverse_intensity;
 
 	for (s=r_alpha_surfaces ; s ; s=s->texturechain)
 	{
 		GL_Bind(s->texinfo->image->texnum);
 		c_brush_polys++;
 		if (s->texinfo->flags & SURF_TRANS33)
-			qglColor4f (intens,intens,intens,0.33);
+			qglColor4f (inverse_intensity,inverse_intensity,inverse_intensity,0.33);
 		else if (s->texinfo->flags & SURF_TRANS66)
-			qglColor4f (intens,intens,intens,0.66);
+			qglColor4f (inverse_intensity,inverse_intensity,inverse_intensity,0.66);
 		else
-			qglColor4f (intens,intens,intens,1);
+			qglColor4f (inverse_intensity,inverse_intensity,inverse_intensity,1);
 		if (s->flags & SURF_DRAWTURB)
 			EmitWaterPolys (s);
 		else if(s->texinfo->flags & SURF_FLOWING)			// PGM	9/16/98
@@ -541,7 +540,7 @@ DrawTextureChains
 */
 void DrawTextureChains (void)
 {
-	int		i;
+	int32_t		i;
 	msurface_t	*s;
 	image_t		*image;
 
@@ -609,8 +608,8 @@ void DrawTextureChains (void)
 
 static void GL_RenderLightmappedPoly( msurface_t *surf )
 {
-	int		i, nv = surf->polys->numverts;
-	int		map;
+	int32_t		i, nv = surf->polys->numverts;
+	int32_t		map;
 	float	*v;
 	image_t *image = R_TextureAnimation( surf->texinfo );
 	bool is_dynamic = false;
@@ -638,8 +637,8 @@ dynamic:
 
 	if ( is_dynamic )
 	{
-		unsigned	temp[DYNAMIC_LIGHT_WIDTH*DYNAMIC_LIGHT_HEIGHT];
-		int			smax, tmax;
+		uint32_t		temp[DYNAMIC_LIGHT_WIDTH*DYNAMIC_LIGHT_HEIGHT];
+		int32_t			smax, tmax;
 
 		if ( ( surf->styles[map] >= 32 || surf->styles[map] == 0 ) && ( surf->dlightframe != r_framecount ) )
 		{
@@ -786,7 +785,7 @@ R_DrawInlineBModel
 */
 void R_DrawInlineBModel (void)
 {
-	int			i, k;
+	int32_t			i, k;
 	cplane_t	*pplane;
 	float		dot;
 	msurface_t	*psurf;
@@ -864,7 +863,7 @@ R_DrawBrushModel
 void R_DrawBrushModel (entity_t *e)
 {
 	vec3_t		mins, maxs;
-	int			i;
+	int32_t			i;
 	bool	rotated;
 
 	if (currentmodel->nummodelsurfaces == 0)
@@ -942,7 +941,7 @@ R_RecursiveWorldNode
 */
 void R_RecursiveWorldNode (mnode_t *node)
 {
-	int			c, side, sidebit;
+	int32_t			c, side, sidebit;
 	cplane_t	*plane;
 	msurface_t	*surf, **mark;
 	mleaf_t		*pleaf;
@@ -985,7 +984,7 @@ void R_RecursiveWorldNode (mnode_t *node)
 		return;
 	}
 
-// node is just a decision point, so go down the apropriate sides
+// node is just a decision point32_t, so go down the apropriate sides
 
 // find which side of the node we are on
 	plane = node->plane;
@@ -1139,9 +1138,9 @@ void R_MarkLeaves (void)
 	uint8_t* vis;
 	byte	fatvis[MAX_MAP_LEAFS/8];
 	mnode_t	*node;
-	int		i, c;
+	int32_t		i, c;
 	mleaf_t	*leaf;
-	int		cluster;
+	int32_t		cluster;
 
 	if (r_oldviewcluster == r_viewcluster && r_oldviewcluster2 == r_viewcluster2 && !r_novis->value && r_viewcluster != -1)
 		return;
@@ -1263,8 +1262,8 @@ static void LM_UploadBlock( bool dynamic )
 // returns a texture number and the position inside it
 static bool LM_AllocBlock (int32_t w, int32_t h, int32_t *x, int32_t *y)
 {
-	int		i, j;
-	int		best, best2;
+	int32_t		i, j;
+	int32_t		best, best2;
 
 	// still not ENTIRELY sure what's going on with this bug (lightmap texture being too big causes texture corruption), but this prevents it from getting too big
 	// bit HACKey (it fucks up the lightmap)
@@ -1312,9 +1311,9 @@ GL_BuildPolygonFromSurface
 */
 void GL_BuildPolygonFromSurface(msurface_t *fa)
 {
-	int			i, lindex, lnumverts;
+	int32_t			i, lindex, lnumverts;
 	medge_t		*pedges, *r_pedge;
-	int			vertpage;
+	int32_t			vertpage;
 	float		*vec;
 	float		s, t;
 	glpoly_t	*poly;
@@ -1391,7 +1390,7 @@ GL_CreateSurfaceLightmap
 */
 void GL_CreateSurfaceLightmap (msurface_t *surf)
 {
-	int		smax, tmax;
+	int32_t		smax, tmax;
 	uint8_t* base;
 
 	if (surf->flags & (SURF_DRAWSKY|SURF_DRAWTURB))
@@ -1421,7 +1420,7 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 	R_BuildLightMap (surf, base, BLOCK_WIDTH*LIGHTMAP_BYTES);
 }
 
-unsigned*		dummy[BLOCK_HEIGHT * BLOCK_WIDTH];
+uint32_t*		dummy[BLOCK_HEIGHT * BLOCK_WIDTH];
 
 /*
 ==================
@@ -1432,7 +1431,7 @@ GL_BeginBuildingLightmaps
 void GL_BeginBuildingLightmaps (model_t *m)
 {
 	static lightstyle_t	lightstyles[MAX_LIGHTSTYLES];
-	int				i;
+	int32_t				i;
 	memset( gl_lms.allocated, 0, sizeof(gl_lms.allocated) );
 
 	r_framecount = 1;		// no dlightcache

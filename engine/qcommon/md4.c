@@ -36,8 +36,7 @@ static uint32_t B, BB;
 static uint32_t C, CC;
 static uint32_t D, DD;
 
-static void
-DoMD4()
+static void DoMD4()
 {
 	AA = A;
 	BB = B;
@@ -209,11 +208,10 @@ PerformMD4(const uint8_t *buf, int32_t length, uint8_t *digest)
 	}
 }
 
-unsigned
-Com_BlockChecksum(void *buffer, int32_t length)
+uint32_t Com_BlockChecksum(void *buffer, int32_t length)
 {
 	uint32_t digest[4];
-	unsigned val;
+	uint32_t val;
 
 	PerformMD4((uint8_t *)buffer, length, (uint8_t *)digest);
 

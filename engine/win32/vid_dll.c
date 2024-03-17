@@ -64,7 +64,7 @@ LONG WINAPI MainWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 static bool s_alttab_disabled;
 
-extern	unsigned	sys_msg_time;
+extern	uint32_t	sys_msg_time;
 
 static void WIN_DisableAltTab( void )
 {

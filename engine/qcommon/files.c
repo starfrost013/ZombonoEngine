@@ -349,7 +349,7 @@ pack_t *FS_LoadPackFile (char *packfile)
 	pack_t			*pack;
 	FILE			*packhandle;
 	dpackfile_t		info[MAX_FILES_IN_PACK];
-	unsigned		checksum;
+	uint32_t		checksum;
 
 	packhandle = fopen(packfile, "rb");
 	if (!packhandle)

@@ -56,7 +56,7 @@ void S_WriteLinearBlastStereo16 (void)
 	}
 }
 
-void S_TransferStereo16 (unsigned long *pbuf, int32_t endtime)
+void S_TransferStereo16 (uint64_t *pbuf, int32_t endtime)
 {
 	int32_t 	lpos;
 	int32_t 	lpaintedtime;

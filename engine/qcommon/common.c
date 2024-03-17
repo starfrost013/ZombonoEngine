@@ -1262,7 +1262,7 @@ COM_BlockSequenceCRCByte
 For proxy protecting
 ====================
 */
-uint8_t	COM_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequence)
+uint8_t	Com_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequence)
 {
 	int32_t 	n;
 	uint8_t* p;

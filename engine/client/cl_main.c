@@ -1115,7 +1115,7 @@ static const char *env_suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 
 void CL_RequestNextDownload (void)
 {
-	unsigned	map_checksum;		// for detecting cheater maps
+	uint32_t	map_checksum;		// for detecting cheater maps
 	char fn[MAX_OSPATH];
 	dmdl_t *pheader;
 
@@ -1158,7 +1158,7 @@ void CL_RequestNextDownload (void)
 						precache_check++;
 						continue; // couldn't load it
 					}
-					if (LittleInt(*(unsigned *)precache_model) != IDALIASHEADER) {
+					if (LittleInt(*(uint32_t *)precache_model) != IDALIASHEADER) {
 						// not an alias model
 						FS_FreeFile(precache_model);
 						precache_model = 0;
@@ -1379,8 +1379,9 @@ void CL_Precache_f (void)
 {
 	//Yet another hack to let old demos work
 	//the old precache sequence
-	if (Cmd_Argc() < 2) {
-		unsigned	map_checksum;		// for detecting cheater maps
+	if (Cmd_Argc() < 2)
+	{
+		uint32_t	map_checksum;		// for detecting cheater maps
 
 		CM_LoadMap (cl.configstrings[CS_MODELS+1], true, &map_checksum);
 		CL_RegisterSounds ();

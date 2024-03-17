@@ -1196,7 +1196,7 @@ void R_EndWorldRenderpass ( void )
 R_SetPalette
 =============
 */
-unsigned r_rawpalette[256];
+uint32_t r_rawpalette[256];
 
 /*
 ** R_DrawBeam

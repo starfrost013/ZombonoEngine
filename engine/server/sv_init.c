@@ -172,7 +172,7 @@ clients along with it.
 void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate, bool attractloop, bool loadgame)
 {
 	int32_t 		i;
-	unsigned	checksum;
+	uint32_t		checksum;
 
 	if (attractloop)
 		Cvar_Set ("paused", "0");

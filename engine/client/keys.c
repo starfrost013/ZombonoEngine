@@ -743,7 +743,7 @@ Called by the system between frames for both key up and key down events
 Should NOT be called during an interrupt!
 ===================
 */
-void Key_Event (int32_t key, bool down, unsigned time, int32_t x, int32_t y)
+void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 {
 	char	*kb;
 	char	cmd[1024];

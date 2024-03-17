@@ -56,7 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define __VIDDEF_T
 typedef struct
 {
-	unsigned		width, height;			// coordinates from main game
+	uint32_t		width, height;			// coordinates from main game
 } viddef_t;
 #endif
 
@@ -302,7 +302,7 @@ void	Draw_FadeScreen (void);
 
 void	R_BeginFrame( float camera_separation );
 
-void GL_ResampleTexture (unsigned *in, int32_t inwidth, int32_t inheight, unsigned *out,  int32_t outwidth, int32_t outheight);
+void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32_t *out,  int32_t outwidth, int32_t outheight);
 
 struct image_s *R_RegisterSkin (char *name);
 

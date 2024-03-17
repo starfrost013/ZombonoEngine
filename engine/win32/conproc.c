@@ -46,7 +46,7 @@ HANDLE	heventParentSend;
 HANDLE	hStdout;
 HANDLE	hStdin;
 
-unsigned _stdcall RequestProc (void *arg);
+uint32_t _stdcall RequestProc (void *arg);
 LPVOID GetMappedBuffer (HANDLE hfileBuffer);
 void ReleaseMappedBuffer (LPVOID pBuffer);
 BOOL GetScreenBufferLines (int32_t *piLines);
@@ -85,7 +85,7 @@ int32_t CCheckParm (char *parm)
 
 void InitConProc (int32_t argc, char **argv)
 {
-	unsigned	threadAddr;
+	uint32_t	threadAddr;
 	HANDLE		hFile;
 	HANDLE		heventParent;
 	HANDLE		heventChild;
@@ -159,7 +159,7 @@ void DeinitConProc (void)
 }
 
 
-unsigned _stdcall RequestProc (void *arg)
+uint32_t _stdcall RequestProc (void *arg)
 {
 	int32_t 	*pBuffer;
 	DWORD	dwRet;

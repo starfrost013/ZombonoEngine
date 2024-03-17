@@ -39,8 +39,8 @@ bool		Minimized;
 
 static HANDLE		hinput, houtput;
 
-unsigned	sys_msg_time;
-unsigned	sys_frame_time;
+uint32_t	sys_msg_time;
+uint32_t	sys_frame_time;
 
 
 static HANDLE		qwclsemaphore;

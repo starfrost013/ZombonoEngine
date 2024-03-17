@@ -44,9 +44,9 @@ Returns the entity number and the header bits
 =================
 */
 int32_t bitcounts[32];	/// just for protocol profiling
-int32_t CL_ParseEntityBits (unsigned *bits)
+int32_t CL_ParseEntityBits (uint32_t *bits)
 {
-	unsigned	b, total;
+	uint32_t		b, total;
 	int32_t 		i;
 	int32_t 		number;
 
@@ -1209,7 +1209,7 @@ void CL_CalcViewValues (void)
 	// calculate the origin
 	if ((cl_predict->value) && !(cl.frame.playerstate.pmove.pm_flags & PMF_NO_PREDICTION))
 	{	// use predicted values
-		unsigned	delta;
+		uint32_t	delta;
 
 		backlerp = 1.0 - lerp;
 		for (i=0 ; i<3 ; i++)

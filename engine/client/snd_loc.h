@@ -59,7 +59,7 @@ typedef struct playsound_s
 	int32_t 		entchannel;
 	bool	fixed_origin;	// use origin field instead of entnum's origin
 	vec3_t		origin;
-	unsigned	begin;			// begin on this sample
+	uint32_t	begin;			// begin on this sample
 } playsound_t;
 
 typedef struct

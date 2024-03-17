@@ -177,7 +177,7 @@ Loads in a model for the given name
 model_t *Mod_ForName (char *name, bool crash)
 {
 	model_t	*mod;
-	unsigned *buf;
+	uint32_t *buf;
 	int		i;
 	
 	if (!name[0])
@@ -242,7 +242,7 @@ model_t *Mod_ForName (char *name, bool crash)
 
 	// call the apropriate loader
 	
-	switch (LittleInt(*(unsigned *)buf))
+	switch (LittleInt(*(uint32_t *)buf))
 	{
 	case IDALIASHEADER:
 		loadmodel->extradata = Hunk_Begin (MAX_MD2_ALLOC);

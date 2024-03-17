@@ -24,9 +24,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 cvar_t	*cl_nodelta;
 
-extern	unsigned	sys_frame_time;
-unsigned	frame_msec;
-unsigned	old_sys_frame_time;
+extern	uint32_t	sys_frame_time;
+uint32_t	frame_msec;
+uint32_t	old_sys_frame_time;
 
 /*
 ===============================================================================
@@ -47,7 +47,7 @@ state bit 1 is edge triggered on the up to down transition
 state bit 2 is edge triggered on the down to up transition
 
 
-Key_Event (int32_t key, bool down, unsigned time);
+Key_Event (int32_t key, bool down, uint32_t time);
 
   +mlook src time
 
@@ -523,7 +523,7 @@ void CL_SendCmd (void)
 	MSG_WriteDeltaUsercmd (&buf, oldcmd, cmd);
 
 	// calculate a checksum over the move commands
-	buf.data[checksumIndex] = COM_BlockSequenceCRCByte(
+	buf.data[checksumIndex] = Com_BlockSequenceCRCByte(
 		buf.data + checksumIndex + 1, buf.cursize - checksumIndex - 1,
 		cls.netchan.outgoing_sequence);
 

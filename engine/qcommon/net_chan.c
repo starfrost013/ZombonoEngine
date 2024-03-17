@@ -213,7 +213,7 @@ void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data)
 	sizebuf_t	send;
 	uint8_t		send_buf[MAX_MSGLEN];
 	bool	send_reliable;
-	unsigned	w1, w2;
+	uint32_t	w1, w2;
 
 // check for message overflow
 	if (chan->message.overflowed)
@@ -295,8 +295,8 @@ modifies net_message so that it points to the packet payload
 */
 bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
 {
-	unsigned	sequence, sequence_ack;
-	unsigned	reliable_ack, reliable_message;
+	uint32_t	sequence, sequence_ack;
+	uint32_t	reliable_ack, reliable_message;
 	int32_t 		qport;
 
 // get sequence numbers		

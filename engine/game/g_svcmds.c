@@ -54,8 +54,8 @@ If 0, then only addresses matching the list will be allowed.  This lets you easi
 
 typedef struct
 {
-	unsigned	mask;
-	unsigned	compare;
+	uint32_t	mask;
+	uint32_t	compare;
 } ipfilter_t;
 
 #define	MAX_IPFILTERS	1024
@@ -104,8 +104,8 @@ static bool StringToFilter (char *s, ipfilter_t *f)
 		s++;
 	}
 	
-	f->mask = *(unsigned *)m;
-	f->compare = *(unsigned *)b;
+	f->mask = *(uint32_t *)m;
+	f->compare = *(uint32_t *)b;
 	
 	return true;
 }
@@ -118,7 +118,7 @@ SV_FilterPacket
 bool SV_FilterPacket (char *from)
 {
 	int			i;
-	unsigned	in;
+	uint32_t	in;
 	uint8_t		m[4];
 	char *p;
 
@@ -135,7 +135,7 @@ bool SV_FilterPacket (char *from)
 		i++, p++;
 	}
 	
-	in = *(unsigned *)m;
+	in = *(uint32_t *)m;
 
 	for (i=0 ; i<numipfilters ; i++)
 		if ( (in & ipfilters[i].mask) == ipfilters[i].compare)
@@ -258,7 +258,7 @@ void SVCmd_WriteIP_f (void)
 
 	for (i=0 ; i<numipfilters ; i++)
 	{
-		*(unsigned *)b = ipfilters[i].compare;
+		*(uint32_t *)b = ipfilters[i].compare;
 		fprintf (f, "sv addip %i.%i.%i.%i\n", b[0], b[1], b[2], b[3]);
 	}
 	

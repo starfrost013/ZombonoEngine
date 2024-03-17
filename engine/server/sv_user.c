@@ -616,7 +616,7 @@ void SV_ExecuteClientMessage (client_t *cl)
 			}
 
 			// if the checksum fails, ignore the rest of the packet
-			calculatedChecksum = COM_BlockSequenceCRCByte (
+			calculatedChecksum = Com_BlockSequenceCRCByte (
 				net_message.data + checksumIndex + 1,
 				net_message.readcount - checksumIndex - 1,
 				cl->netchan.incoming_sequence);

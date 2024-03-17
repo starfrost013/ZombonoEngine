@@ -134,7 +134,7 @@ char	findbase[MAX_OSPATH];
 char	findpath[MAX_OSPATH];
 intptr_t	findhandle;
 
-static bool CompareAttributes( unsigned found, unsigned musthave, unsigned canthave )
+static bool CompareAttributes(uint32_t found, uint32_t musthave, uint32_t canthave)
 {
 	if ( ( found & _A_RDONLY ) && ( canthave & SFF_RDONLY ) )
 		return false;
@@ -161,7 +161,7 @@ static bool CompareAttributes( unsigned found, unsigned musthave, unsigned canth
 	return true;
 }
 
-char *Sys_FindFirst (char *path, unsigned musthave, unsigned canthave )
+char *Sys_FindFirst (char *path, uint32_t musthave, uint32_t canthave)
 {
 	struct _finddata_t findinfo;
 
@@ -179,7 +179,7 @@ char *Sys_FindFirst (char *path, unsigned musthave, unsigned canthave )
 	return findpath;
 }
 
-char *Sys_FindNext ( unsigned musthave, unsigned canthave )
+char *Sys_FindNext (uint32_t musthave, uint32_t canthave)
 {
 	struct _finddata_t findinfo;
 

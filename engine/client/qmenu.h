@@ -69,7 +69,7 @@ typedef struct menucommon_s
 	menuframework_t *parent;
 	int32_t cursor_offset;
 	int32_t localdata[4];
-	unsigned flags;
+	uint32_t flags;
 
 	const char *statusbar;
 
