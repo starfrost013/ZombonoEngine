@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 
-void SelectNextItem (edict_t *ent, int itflags)
+void SelectNextItem (edict_t *ent, int32_t itflags)
 {
 	gclient_t	*cl;
 	int			i, index;
@@ -54,7 +54,7 @@ void SelectNextItem (edict_t *ent, int itflags)
 	cl->pers.selected_item = -1;
 }
 
-void SelectPrevItem (edict_t *ent, int itflags)
+void SelectPrevItem (edict_t *ent, int32_t itflags)
 {
 	gclient_t	*cl;
 	int			i, index;
@@ -625,12 +625,12 @@ void Cmd_PutAway_f (edict_t *ent)
 }
 
 
-int PlayerSort (void const *a, void const *b)
+int32_t PlayerSort (void const *a, void const *b)
 {
 	int		anum, bnum;
 
-	anum = *(int *)a;
-	bnum = *(int *)b;
+	anum = *(int32_t *)a;
+	bnum = *(int32_t *)b;
 
 	anum = game.clients[anum].ps.stats[STAT_FRAGS];
 	bnum = game.clients[bnum].ps.stats[STAT_FRAGS];
@@ -666,7 +666,7 @@ void Cmd_Players_f (edict_t *ent)
 	// sort by frags
 	qsort (index, count, sizeof(index[0]), PlayerSort);
 
-	// print information
+	// print32_t information
 	large[0] = 0;
 
 	for (i = 0 ; i < count ; i++)
@@ -675,7 +675,7 @@ void Cmd_Players_f (edict_t *ent)
 			game.clients[index[i]].ps.stats[STAT_FRAGS],
 			game.clients[index[i]].pers.netname);
 		if (strlen (small) + strlen(large) > sizeof(large) - 100 )
-		{	// can't print all of them in one packet
+		{	// can't print32_t all of them in one packet
 			strcat (large, "...\n");
 			break;
 		}
@@ -808,7 +808,7 @@ void Cmd_Say_f (edict_t *ent, bool team, bool arg0)
 
         if (level.time < cl->flood_locktill) {
 			gi.cprintf(ent, PRINT_HIGH, "You can't talk for %d more seconds\n",
-				(int)(cl->flood_locktill - level.time));
+				(int32_t)(cl->flood_locktill - level.time));
             return;
         }
         i = cl->flood_whenhead - flood_msgs->value + 1;
@@ -818,7 +818,7 @@ void Cmd_Say_f (edict_t *ent, bool team, bool arg0)
 			level.time - cl->flood_when[i] < flood_persecond->value) {
 			cl->flood_locktill = level.time + flood_waitdelay->value;
 			gi.cprintf(ent, PRINT_CHAT, "Flood protection:  You can't talk for %d seconds.\n",
-				(int)flood_waitdelay->value);
+				(int32_t)flood_waitdelay->value);
             return;
         }
 		cl->flood_whenhead = (cl->flood_whenhead + 1) %
@@ -847,7 +847,7 @@ void Cmd_Say_f (edict_t *ent, bool team, bool arg0)
 
 void Cmd_PlayerList_f(edict_t *ent)
 {
-	int i;
+	int32_t i;
 	char st[80];
 	char text[1400];
 	edict_t *e2;

@@ -38,10 +38,10 @@ Writes a delta update of an entity_state_t list to the message.
 void SV_EmitPacketEntities (client_frame_t *from, client_frame_t *to, sizebuf_t *msg)
 {
 	entity_state_t	*oldent = NULL, *newent = NULL;
-	int		oldindex, newindex;
-	int		oldnum, newnum;
-	int		from_num_entities;
-	int		bits;
+	int32_t 	oldindex, newindex;
+	int32_t 	oldnum, newnum;
+	int32_t 	from_num_entities;
+	int32_t 	bits;
 
 	MSG_WriteByte (msg, svc_packetentities);
 
@@ -122,11 +122,11 @@ SV_WritePlayerstateToClient
 */
 void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, sizebuf_t *msg)
 {
-	int				i;
-	int				pflags;
+	int32_t 			i;
+	int32_t 			pflags;
 	player_state_t	*ps, *ops;
 	player_state_t	dummy;
-	int				statbits;
+	int32_t 			statbits;
 
 	ps = &to->ps;
 	if (!from)
@@ -316,7 +316,7 @@ SV_WriteFrameToClient
 void SV_WriteFrameToClient (client_t *client, sizebuf_t *msg)
 {
 	client_frame_t		*frame, *oldframe;
-	int					lastframe;
+	int32_t 				lastframe;
 
 //Com_Printf ("%i -> %i\n", client->lastframe, sv.framenum);
 	// this is the frame we are creating
@@ -363,7 +363,7 @@ Build a client frame structure
 =============================================================================
 */
 
-byte		fatpvs[65536/8];	// 32767 is MAX_MAP_LEAFS
+uint8_t		fatpvs[65536/8];	// 32767 is MAX_MAP_LEAFS
 
 /*
 ============
@@ -375,10 +375,10 @@ so we can't use a single PVS point
 */
 void SV_FatPVS (vec3_t org)
 {
-	int		leafs[64];
-	int		i, j, count;
-	int		longs;
-	byte	*src;
+	int32_t 	leafs[64];
+	int32_t 	i, j, count;
+	int32_t 	longs;
+	uint8_t	*src;
 	vec3_t	mins, maxs;
 
 	for (i=0 ; i<3 ; i++)
@@ -422,18 +422,18 @@ copies off the playerstat and areabits.
 */
 void SV_BuildClientFrame (client_t *client)
 {
-	int		e, i;
+	int32_t 	e, i;
 	vec3_t	org;
 	edict_t	*ent;
 	edict_t	*clent;
 	client_frame_t	*frame;
 	entity_state_t	*state;
-	int		l;
-	int		clientarea, clientcluster;
-	int		leafnum;
-	int		c_fullsend;
-	byte	*clientphs;
-	byte	*bitvector;
+	int32_t 	l;
+	int32_t 	clientarea, clientcluster;
+	int32_t 	leafnum;
+	int32_t 	c_fullsend;
+	uint8_t	*clientphs;
+	uint8_t	*bitvector;
 
 	clent = client->edict;
 	if (!clent->client)
@@ -571,12 +571,12 @@ Used for recording footage for merged or assembled demos
 */
 void SV_RecordDemoMessage (void)
 {
-	int			e;
+	int32_t 		e;
 	edict_t		*ent;
 	entity_state_t	nostate;
 	sizebuf_t	buf;
-	byte		buf_data[32768];
-	int			len;
+	uint8_t		buf_data[32768];
+	int32_t 		len;
 
 	if (!svs.demofile)
 		return;

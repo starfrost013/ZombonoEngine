@@ -29,11 +29,11 @@ static void  Menu_DrawStatusBar( const char *string );
 static void	 Menulist_DoEnter( menulist_t *l );
 static void	 MenuList_Draw( menulist_t *l );
 static void	 Separator_Draw( menuseparator_t *s );
-static void	 Slider_DoSlide( menuslider_t *s, int dir );
+static void	 Slider_DoSlide( menuslider_t *s, int32_t dir );
 static void	 Slider_Draw( menuslider_t *s );
 static void	 SpinControl_DoEnter( menulist_t *s );
 static void	 SpinControl_Draw( menulist_t *s );
-static void	 SpinControl_DoSlide( menulist_t *s, int dir );
+static void	 SpinControl_DoSlide( menulist_t *s, int32_t dir );
 
 #define RCOLUMN_OFFSET  16 * vid_hudscale->value
 #define LCOLUMN_OFFSET -16 * vid_hudscale->value
@@ -54,7 +54,7 @@ void Action_DoEnter( menuaction_t *a )
 void Action_Draw( menuaction_t *a )
 {
 	// emulate r2l 
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 
 	if ( a->generic.flags & QMF_LEFT_JUSTIFY )
 	{
@@ -82,9 +82,9 @@ bool Field_DoEnter( menufield_t *f )
 
 void Field_Draw( menufield_t *f )
 {
-	int i;
-	int name_size_x = 0, name_size_y = 0;
-	int text_size_x = 0, text_size_y = 0;
+	int32_t i;
+	int32_t name_size_x = 0, name_size_y = 0;
+	int32_t text_size_x = 0, text_size_y = 0;
 	char tempbuffer[128]="";
 
 	if (f->generic.name)
@@ -112,14 +112,14 @@ void Field_Draw( menufield_t *f )
 
 	if ( Menu_ItemAtCursor( f->generic.parent ) == f )
 	{
-		int offset;
+		int32_t offset;
 
 		if ( f->visible_offset )
 			offset = f->visible_length;
 		else
 			offset = f->cursor;
 
-		if ( ( ( int ) ( Sys_Milliseconds() / 250 ) ) & 1 )
+		if ( ( ( int32_t ) ( Sys_Milliseconds() / 250 ) ) & 1 )
 		{
 			// 8x8 is cursor size
 			re.DrawPic(f->generic.x + f->generic.parent->x + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
@@ -129,9 +129,9 @@ void Field_Draw( menufield_t *f )
 	}
 }
 
-bool Field_Key( menufield_t *f, int key )
+bool Field_Key( menufield_t *f, int32_t key )
 {
-	extern int keydown[];
+	extern int32_t keydown[];
 
 	switch ( key )
 	{
@@ -202,7 +202,7 @@ bool Field_Key( menufield_t *f, int key )
 			strtok( cbd, "\n\r\b" );
 
 			strncpy( f->buffer, cbd, f->length - 1 );
-			f->cursor = (int)strlen( f->buffer );
+			f->cursor = (int32_t)strlen( f->buffer );
 			f->visible_offset = f->cursor - f->visible_length;
 			if ( f->visible_offset < 0 )
 				f->visible_offset = 0;
@@ -282,7 +282,7 @@ void Menu_AddItem( menuframework_t *menu, void *item )
 ** to adjust the menu's cursor so that it's at the next available
 ** slot.
 */
-void Menu_AdjustCursor( menuframework_t *m, int dir )
+void Menu_AdjustCursor( menuframework_t *m, int32_t dir )
 {
 	menucommon_t *citem;
 
@@ -332,7 +332,7 @@ void Menu_AdjustCursor( menuframework_t *m, int dir )
 
 void Menu_Center( menuframework_t *menu )
 {
-	int height;
+	int32_t height;
 
 	height = ( ( menucommon_t * ) menu->items[menu->nitems-1])->y;
 	height += 10;
@@ -342,7 +342,7 @@ void Menu_Center( menuframework_t *menu )
 
 void Menu_Draw( menuframework_t *menu )
 {
-	int i;
+	int32_t i;
 	menucommon_t *item;
 
 	/*
@@ -385,7 +385,7 @@ void Menu_Draw( menuframework_t *menu )
 	}
 	else if ( item && item->type != MTYPE_FIELD )
 	{
-		if (((int)(Sys_Milliseconds() / 250) & 1))
+		if (((int32_t)(Sys_Milliseconds() / 250) & 1))
 		{
 			if (item->flags & QMF_LEFT_JUSTIFY)
 			{
@@ -417,15 +417,15 @@ void Menu_Draw( menuframework_t *menu )
 
 void Menu_DrawStatusBar( const char *string )
 {
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	if ( string )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, string);
-		int l = (int)strlen( string );
-		int maxcol = VID_WIDTH / (8*vid_hudscale->value);
-		int col = maxcol / 2 - l / 2;
+		int32_t l = (int32_t)strlen( string );
+		int32_t maxcol = VID_WIDTH / (8*vid_hudscale->value);
+		int32_t col = maxcol / 2 - l / 2;
 
 		re.DrawFill( 0, (VID_HEIGHT-system_font_ptr->line_height)*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
 
@@ -468,7 +468,7 @@ void Menu_SetStatusBar( menuframework_t *m, const char *string )
 	m->statusbar = string;
 }
 
-void Menu_SlideItem( menuframework_t *s, int dir )
+void Menu_SlideItem( menuframework_t *s, int32_t dir )
 {
 	menucommon_t *item = ( menucommon_t * ) Menu_ItemAtCursor( s );
 
@@ -486,16 +486,16 @@ void Menu_SlideItem( menuframework_t *s, int dir )
 	}
 }
 
-int Menu_TallySlots( menuframework_t *menu )
+int32_t Menu_TallySlots( menuframework_t *menu )
 {
-	int i;
-	int total = 0;
+	int32_t i;
+	int32_t total = 0;
 
 	for ( i = 0; i < menu->nitems; i++ )
 	{
 		if ( ( ( menucommon_t * ) menu->items[i] )->type == MTYPE_LIST )
 		{
-			int nitems = 0;
+			int32_t nitems = 0;
 			const char **n = ( ( menulist_t * ) menu->items[i] )->itemnames;
 
 			while (*n)
@@ -514,7 +514,7 @@ int Menu_TallySlots( menuframework_t *menu )
 
 void Menulist_DoEnter( menulist_t *l )
 {
-	int start;
+	int32_t start;
 
 	start = l->generic.y / 10 + 1;
 
@@ -527,8 +527,8 @@ void Menulist_DoEnter( menulist_t *l )
 void MenuList_Draw( menulist_t *l )
 {
 	const char **n;
-	int y = 0;
-	int size_x = 0, size_y = 0;
+	int32_t y = 0;
+	int32_t size_x = 0, size_y = 0;
 
 	Text_Draw(cl_system_font->string, l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name);
 
@@ -547,7 +547,7 @@ void MenuList_Draw( menulist_t *l )
 
 void Separator_Draw( menuseparator_t *s )
 {
-	int size_x = 0, size_y = 0; // emulate original code R2L drawing
+	int32_t size_x = 0, size_y = 0; // emulate original code R2L drawing
 
 	if (s->generic.name)
 	{
@@ -557,7 +557,7 @@ void Separator_Draw( menuseparator_t *s )
 
 }
 
-void Slider_DoSlide( menuslider_t *s, int dir )
+void Slider_DoSlide( menuslider_t *s, int32_t dir )
 {
 	s->curvalue += dir;
 
@@ -574,8 +574,8 @@ void Slider_DoSlide( menuslider_t *s, int dir )
 
 void Slider_Draw( menuslider_t *s )
 {
-	int	i;
-	int size_x = 0, size_y = 0; // emulate original code R2L drawing
+	int32_t i;
+	int32_t size_x = 0, size_y = 0; // emulate original code R2L drawing
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, s->generic.name);
 	Text_Draw(cl_system_font->string, s->generic.x + s->generic.parent->x + LCOLUMN_OFFSET - size_x,
@@ -592,7 +592,7 @@ void Slider_Draw( menuslider_t *s )
 	for ( i = 0; i < SLIDER_RANGE; i++ )
 		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "pics/slider_02");
 	re.DrawPic( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, "pics/slider_03");
-	re.DrawPic( ( int ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, "pics/slider_value");
+	re.DrawPic( ( int32_t ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, "pics/slider_value");
 }
 
 void SpinControl_DoEnter( menulist_t *s )
@@ -605,7 +605,7 @@ void SpinControl_DoEnter( menulist_t *s )
 		s->generic.callback( s );
 }
 
-void SpinControl_DoSlide( menulist_t *s, int dir )
+void SpinControl_DoSlide( menulist_t *s, int32_t dir )
 {
 	s->curvalue += dir;
 
@@ -621,7 +621,7 @@ void SpinControl_DoSlide( menulist_t *s, int dir )
 void SpinControl_Draw( menulist_t *s )
 {
 	char buffer[100];
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	if ( s->generic.name )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, s->generic.name);

@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // conproc.c -- support for qhost
 #include <stdio.h>
+#include <stdint.h>
 #include <process.h>
 #include <windows.h>
 #include "conproc.h"
@@ -48,14 +49,14 @@ HANDLE	hStdin;
 unsigned _stdcall RequestProc (void *arg);
 LPVOID GetMappedBuffer (HANDLE hfileBuffer);
 void ReleaseMappedBuffer (LPVOID pBuffer);
-BOOL GetScreenBufferLines (int *piLines);
-BOOL SetScreenBufferLines (int iLines);
-BOOL ReadText (LPTSTR pszText, int iBeginLine, int iEndLine);
+BOOL GetScreenBufferLines (int32_t *piLines);
+BOOL SetScreenBufferLines (int32_t iLines);
+BOOL ReadText (LPTSTR pszText, int32_t iBeginLine, int32_t iEndLine);
 BOOL WriteText (LPCTSTR szText);
-int CharToCode (char c);
-BOOL SetConsoleCXCY(HANDLE hStdout, int cx, int cy);
+int32_t CharToCode (char c);
+BOOL SetConsoleCXCY(HANDLE hStdout, int32_t cx, int32_t cy);
 
-int		ccom_argc;
+int32_t 	ccom_argc;
 char	**ccom_argv;
 
 /*
@@ -66,9 +67,9 @@ Returns the position (1 to argc-1) in the program's argument list
 where the given parameter apears, or 0 if not present
 ================
 */
-int CCheckParm (char *parm)
+int32_t CCheckParm (char *parm)
 {
-	int             i;
+	int32_t             i;
 	
 	for (i=1 ; i<ccom_argc ; i++)
 	{
@@ -82,13 +83,13 @@ int CCheckParm (char *parm)
 }
 
 
-void InitConProc (int argc, char **argv)
+void InitConProc (int32_t argc, char **argv)
 {
 	unsigned	threadAddr;
 	HANDLE		hFile;
 	HANDLE		heventParent;
 	HANDLE		heventChild;
-	int			t;
+	int32_t 		t;
 
 	ccom_argc = argc;
 	ccom_argv = argv;
@@ -160,10 +161,10 @@ void DeinitConProc (void)
 
 unsigned _stdcall RequestProc (void *arg)
 {
-	int		*pBuffer;
+	int32_t 	*pBuffer;
 	DWORD	dwRet;
 	HANDLE	heventWait[2];
-	int		iBeginLine, iEndLine;
+	int32_t 	iBeginLine, iEndLine;
 	
 	heventWait[0] = heventParentSend;
 	heventWait[1] = heventDone;
@@ -176,7 +177,7 @@ unsigned _stdcall RequestProc (void *arg)
 		if (dwRet == WAIT_OBJECT_0 + 1)	
 			break;
 
-		pBuffer = (int *) GetMappedBuffer (hfileBuffer);
+		pBuffer = (int32_t *) GetMappedBuffer (hfileBuffer);
 		
 	// hfileBuffer is invalid.  Just leave.
 		if (!pBuffer)
@@ -238,7 +239,7 @@ void ReleaseMappedBuffer (LPVOID pBuffer)
 }
 
 
-BOOL GetScreenBufferLines (int *piLines)
+BOOL GetScreenBufferLines (int32_t *piLines)
 {
 	CONSOLE_SCREEN_BUFFER_INFO	info;							  
 	BOOL						bRet;
@@ -252,14 +253,14 @@ BOOL GetScreenBufferLines (int *piLines)
 }
 
 
-BOOL SetScreenBufferLines (int iLines)
+BOOL SetScreenBufferLines (int32_t iLines)
 {
 
 	return SetConsoleCXCY (hStdout, 80, iLines);
 }
 
 
-BOOL ReadText (LPTSTR pszText, int iBeginLine, int iEndLine)
+BOOL ReadText (LPTSTR pszText, int32_t iBeginLine, int32_t iEndLine)
 {
 	COORD	coord;
 	DWORD	dwRead;
@@ -329,7 +330,7 @@ BOOL WriteText (LPCTSTR szText)
 }
 
 
-int CharToCode (char c)
+int32_t CharToCode (char c)
 {
 	char upper;
 		
@@ -354,7 +355,7 @@ int CharToCode (char c)
 }
 
 
-BOOL SetConsoleCXCY(HANDLE hStdout, int cx, int cy)
+BOOL SetConsoleCXCY(HANDLE hStdout, int32_t cx, int32_t cy)
 {
 	CONSOLE_SCREEN_BUFFER_INFO	info;
 	COORD						coordMax;

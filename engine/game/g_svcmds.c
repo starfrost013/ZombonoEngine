@@ -72,8 +72,8 @@ static bool StringToFilter (char *s, ipfilter_t *f)
 {
 	char	num[128];
 	int		i, j;
-	byte	b[4];
-	byte	m[4];
+	uint8_t	b[4];
+	uint8_t	m[4];
 	
 	for (i=0 ; i<4 ; i++)
 	{
@@ -117,9 +117,9 @@ SV_FilterPacket
 */
 bool SV_FilterPacket (char *from)
 {
-	int		i;
+	int			i;
 	unsigned	in;
-	byte m[4];
+	uint8_t		m[4];
 	char *p;
 
 	i = 0;
@@ -139,9 +139,9 @@ bool SV_FilterPacket (char *from)
 
 	for (i=0 ; i<numipfilters ; i++)
 		if ( (in & ipfilters[i].mask) == ipfilters[i].compare)
-			return (int)filterban->value;
+			return (int32_t)filterban->value;
 
-	return (int)!filterban->value;
+	return (int32_t)!filterban->value;
 }
 
 
@@ -215,12 +215,12 @@ SV_ListIP_f
 void SVCmd_ListIP_f (void)
 {
 	int		i;
-	byte	b[4];
+	uint8_t	b[4];
 
 	gi.cprintf (NULL, PRINT_HIGH, "Filter list:\n");
 	for (i=0 ; i<numipfilters ; i++)
 	{
-		*(unsigned *)b = ipfilters[i].compare;
+		*(uint32_t *)b = ipfilters[i].compare;
 		gi.cprintf (NULL, PRINT_HIGH, "%3i.%3i.%3i.%3i\n", b[0], b[1], b[2], b[3]);
 	}
 }
@@ -234,7 +234,7 @@ void SVCmd_WriteIP_f (void)
 {
 	FILE	*f;
 	char	name[MAX_OSPATH];
-	byte	b[4];
+	uint8_t	b[4];
 	int		i;
 	cvar_t	*game;
 
@@ -254,7 +254,7 @@ void SVCmd_WriteIP_f (void)
 		return;
 	}
 	
-	fprintf(f, "set filterban %d\n", (int)filterban->value);
+	fprintf(f, "set filterban %d\n", (int32_t)filterban->value);
 
 	for (i=0 ; i<numipfilters ; i++)
 	{

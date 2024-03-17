@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "glw_win.h"
 #include "winquake.h"
 
-static bool GLimp_SwitchFullscreen( int width, int height );
+static bool GLimp_SwitchFullscreen( int32_t width, int32_t height );
 bool GLimp_InitGL (void);
 
 glwstate_t glw_state;
@@ -61,7 +61,7 @@ static bool VerifyDriver( void )
 */
 #define	WINDOW_CLASS_NAME	"Zombono"
 
-bool VID_CreateWindow( int width, int height, bool fullscreen )
+bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen )
 {
 	WNDCLASS		wc;
 	RECT			r;
@@ -182,9 +182,9 @@ bool VID_CreateWindow( int width, int height, bool fullscreen )
 /*
 ** GLimp_SetMode
 */
-rserr_t GLimp_SetMode( int *pwidth, int *pheight, int mode, bool fullscreen )
+rserr_t GLimp_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
 {
-	int width, height;
+	int32_t width, height;
 	const char *win_fs[] = { "W", "FS" };
 
 	ri.Con_Printf( PRINT_ALL, "Initializing OpenGL display\n");
@@ -212,12 +212,12 @@ rserr_t GLimp_SetMode( int *pwidth, int *pheight, int mode, bool fullscreen )
 
 		if ( gl_bitdepth->value != 0 )
 		{
-			ri.Con_Printf( PRINT_ALL, "...using gl_bitdepth of %d\n", ( int ) gl_bitdepth->value );
+			ri.Con_Printf( PRINT_ALL, "...using gl_bitdepth of %d\n", ( int32_t ) gl_bitdepth->value );
 		}
 		else
 		{
 			HDC hdc = GetDC( NULL );
-			int bitspixel = GetDeviceCaps( hdc, BITSPIXEL );
+			int32_t bitspixel = GetDeviceCaps( hdc, BITSPIXEL );
 
 			ri.Con_Printf( PRINT_ALL, "...using desktop display depth of %d\n", bitspixel );
 
@@ -318,7 +318,7 @@ void GLimp_Shutdown( void )
 ** of OpenGL.  Under Win32 this means dealing with the pixelformats and
 ** doing the wgl interface stuff.
 */
-int GLimp_Init( void *hinstance, void *wndproc )
+int32_t GLimp_Init( void *hinstance, void *wndproc )
 {
 	glw_state.hInstance = ( HINSTANCE ) hinstance;
 	glw_state.wndproc = wndproc;
@@ -349,7 +349,7 @@ bool GLimp_InitGL (void)
 		0,								// reserved
 		0, 0, 0							// layer masks ignored
     };
-    int  pixelformat;
+    int32_t  pixelformat;
 	cvar_t *stereo;
 
 	stereo = ri.Cvar_Get( "cl_stereo", "0", 0 );
@@ -429,9 +429,9 @@ bool GLimp_InitGL (void)
 	}
 
 	/*
-	** print out PFD specifics 
+	** print32_t out PFD specifics 
 	*/
-	ri.Con_Printf( PRINT_ALL, "GL PFD: color(%d-bits) Z(%d-bit)\n", ( int ) pfd.cColorBits, ( int ) pfd.cDepthBits );
+	ri.Con_Printf( PRINT_ALL, "GL PFD: color(%d-bits) Z(%d-bit)\n", ( int32_t ) pfd.cColorBits, ( int32_t ) pfd.cDepthBits );
 
 	return true;
 

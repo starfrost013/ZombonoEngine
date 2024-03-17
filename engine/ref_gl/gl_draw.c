@@ -60,7 +60,7 @@ image_t	*Draw_FindPic (char *name)
 Draw_GetPicSize
 =============
 */
-void Draw_GetPicSize (int *w, int *h, char *pic)
+void Draw_GetPicSize (int32_t *w, int32_t *h, char *pic)
 {
 	image_t *gl;
 
@@ -82,7 +82,7 @@ void Draw_GetPicSize (int *w, int *h, char *pic)
 Draw_StretchPic
 =============
 */
-void Draw_StretchPic (int x, int y, int w, int h, char *pic)
+void Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 {
 	image_t *gl;
 
@@ -112,7 +112,7 @@ void Draw_StretchPic (int x, int y, int w, int h, char *pic)
 Draw_Pic
 =============
 */
-void Draw_Pic (int x, int y, char *pic)
+void Draw_Pic (int32_t x, int32_t y, char *pic)
 {
 	image_t *gl;
 	cvar_t *scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -144,7 +144,7 @@ void Draw_Pic (int x, int y, char *pic)
 Draw_PicRegion
 ================
 */
-void Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char *pic, float color[4])
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, float color[4])
 {
 	image_t* gl;
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -216,7 +216,7 @@ This repeats a 64*64 tile graphic to fill the screen around a sized down
 refresh window.
 =============
 */
-void Draw_TileClear (int x, int y, int w, int h, char *pic)
+void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 {
 	image_t	*image;
 
@@ -250,7 +250,7 @@ Fills a box of pixels with a single color
 WHY DOES THE ALPHA NOT WORK???
 =============
 */
-void Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a)
+void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	union color_u
 	{

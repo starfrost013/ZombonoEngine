@@ -47,7 +47,7 @@ state bit 1 is edge triggered on the up to down transition
 state bit 2 is edge triggered on the down to up transition
 
 
-Key_Event (int key, bool down, unsigned time);
+Key_Event (int32_t key, bool down, unsigned time);
 
   +mlook src time
 
@@ -61,12 +61,12 @@ kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
 kbutton_t	in_speed, in_use, in_attack1, in_attack2;
 kbutton_t	in_up, in_down;
 
-int			in_impulse;
+int32_t 		in_impulse;
 
 
 void KeyDown (kbutton_t *b)
 {
-	int		k;
+	int32_t 	k;
 	char	*c;
 	
 	c = Cmd_Argv(1);
@@ -102,9 +102,9 @@ void KeyDown (kbutton_t *b)
 
 void KeyUp (kbutton_t *b)
 {
-	int		k;
+	int32_t 	k;
 	char	*c;
-	unsigned	uptime;
+	uint32_t	uptime;
 
 	c = Cmd_Argv(1);
 	if (c[0])
@@ -186,7 +186,7 @@ Returns the fraction of the frame that the key was down
 float CL_KeyState (kbutton_t *key)
 {
 	float		val;
-	int			msec;
+	int32_t 		msec;
 
 	key->state &= 1;		// clear impulses
 
@@ -286,7 +286,7 @@ void CL_BaseMove (usercmd_t *cmd)
 //
 // adjust for speed key / running
 //
-	if ( (in_speed.state & 1) ^ (int)(cl_run->value) )
+	if ( (in_speed.state & 1) ^ (int32_t)(cl_run->value) )
 	{
 		cmd->forwardmove *= 2;
 		cmd->sidemove *= 2;
@@ -322,8 +322,8 @@ CL_FinishMove
 */
 void CL_FinishMove (usercmd_t *cmd)
 {
-	int		ms;
-	int		i;
+	int32_t 	ms;
+	int32_t 	i;
 
 //
 // figure button bits
@@ -357,7 +357,7 @@ void CL_FinishMove (usercmd_t *cmd)
 	in_impulse = 0;
 
 // send the ambient light level at the player's current position
-	cmd->lightlevel = (byte)cl_lightlevel->value;
+	cmd->lightlevel = (uint8_t)cl_lightlevel->value;
 }
 
 /*
@@ -451,11 +451,11 @@ CL_SendCmd
 void CL_SendCmd (void)
 {
 	sizebuf_t	buf;
-	byte		data[128];
-	int			i;
+	uint8_t		data[128];
+	int32_t 		i;
 	usercmd_t	*cmd, *oldcmd;
 	usercmd_t	nullcmd;
-	int			checksumIndex;
+	int32_t 		checksumIndex;
 
 	memset( &buf, 0, sizeof(buf) );
 

@@ -33,7 +33,7 @@ Sends the contents of the mutlicast buffer to a single client
 */
 void PF_Unicast (edict_t *ent, bool reliable)
 {
-	int		p;
+	int32_t 	p;
 	client_t	*client;
 
 	if (!ent)
@@ -58,7 +58,7 @@ void PF_Unicast (edict_t *ent, bool reliable)
 ===============
 PF_dprintf
 
-Debug print to server console
+Debug print32_t to server console
 ===============
 */
 void PF_dprintf (char *fmt, ...)
@@ -78,14 +78,14 @@ void PF_dprintf (char *fmt, ...)
 ===============
 PF_cprintf
 
-Print to a single client
+Print32_t to a single client
 ===============
 */
-void PF_cprintf (edict_t *ent, int level, char *fmt, ...)
+void PF_cprintf (edict_t *ent, int32_t level, char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
-	int			n = 0;
+	int32_t 		n = 0;
 
 	if (ent)
 	{
@@ -104,7 +104,7 @@ void PF_cprintf (edict_t *ent, int level, char *fmt, ...)
 		Com_Printf ("%s", msg);
 }
 
-void PF_Text_Draw(edict_t* ent, const char* font, int x, int y, const char* text, ...)
+void PF_Text_Draw(edict_t* ent, const char* font, int32_t x, int32_t y, const char* text, ...)
 {
 	MSG_WriteByte(&sv.multicast, svc_drawtext);
 	MSG_WriteString(&sv.multicast, font);
@@ -121,14 +121,14 @@ void PF_Text_Draw(edict_t* ent, const char* font, int x, int y, const char* text
 ===============
 PF_centerprintf
 
-centerprint to a single client
+centerprint32_t to a single client
 ===============
 */
 void PF_centerprintf (edict_t *ent, char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
-	int			n;
+	int32_t 		n;
 	
 	n = NUM_FOR_EDICT(ent);
 	if (n < 1 || n > maxclients->value)
@@ -173,7 +173,7 @@ Also sets mins and maxs for inline bmodels
 */
 void PF_setmodel (edict_t *ent, char *name)
 {
-	int		i;
+	int32_t 	i;
 	cmodel_t	*mod;
 
 	if (!name)
@@ -201,7 +201,7 @@ PF_Configstring
 
 ===============
 */
-void PF_Configstring (int index, char *val)
+void PF_Configstring (int32_t index, char *val)
 {
 	if (index < 0 || index >= MAX_CONFIGSTRINGS)
 		Com_Error (ERR_DROP, "configstring: bad index %i\n", index);
@@ -225,10 +225,10 @@ void PF_Configstring (int index, char *val)
 
 
 
-void PF_WriteChar (int c) {MSG_WriteChar (&sv.multicast, c);}
-void PF_WriteByte (int c) {MSG_WriteByte (&sv.multicast, c);}
-void PF_WriteShort (int c) {MSG_WriteShort (&sv.multicast, c);}
-void PF_WriteLong (int c) {MSG_WriteInt (&sv.multicast, c);}
+void PF_WriteChar (int32_t c) {MSG_WriteChar (&sv.multicast, c);}
+void PF_WriteByte (int32_t c) {MSG_WriteByte (&sv.multicast, c);}
+void PF_WriteShort (int32_t c) {MSG_WriteShort (&sv.multicast, c);}
+void PF_WriteLong (int32_t c) {MSG_WriteInt (&sv.multicast, c);}
 void PF_WriteFloat (float f) {MSG_WriteFloat (&sv.multicast, f);}
 void PF_WriteString (char *s) {MSG_WriteString (&sv.multicast, s);}
 void PF_WritePos (vec3_t pos) {MSG_WritePos (&sv.multicast, pos);}
@@ -245,10 +245,10 @@ Also checks portalareas so that doors block sight
 */
 bool PF_inPVS (vec3_t p1, vec3_t p2)
 {
-	int		leafnum;
-	int		cluster;
-	int		area1, area2;
-	byte	*mask;
+	int32_t 	leafnum;
+	int32_t 	cluster;
+	int32_t 	area1, area2;
+	uint8_t	*mask;
 
 	leafnum = CM_PointLeafnum (p1);
 	cluster = CM_LeafCluster (leafnum);
@@ -275,10 +275,10 @@ Also checks portalareas so that doors block sound
 */
 bool PF_inPHS (vec3_t p1, vec3_t p2)
 {
-	int		leafnum;
-	int		cluster;
-	int		area1, area2;
-	byte	*mask;
+	int32_t 	leafnum;
+	int32_t 	cluster;
+	int32_t 	area1, area2;
+	uint8_t	*mask;
 
 	leafnum = CM_PointLeafnum (p1);
 	cluster = CM_LeafCluster (leafnum);
@@ -296,7 +296,7 @@ bool PF_inPHS (vec3_t p1, vec3_t p2)
 	return true;
 }
 
-void PF_StartSound (edict_t *entity, int channel, int sound_num, float volume,
+void PF_StartSound (edict_t *entity, int32_t channel, int32_t sound_num, float volume,
     float attenuation, float timeofs)
 {
 	if (!entity)
@@ -330,7 +330,7 @@ SV_InitGameProgs
 Init the game subsystem for a new map
 ===============
 */
-void SCR_DebugGraph (float value, int r, int g, int b, int a);
+void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
 void SV_InitGameProgs (void)
 {

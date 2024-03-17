@@ -45,8 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 static ma_decoder decoder;
 static ma_device device;
-static int loopcounter;
-static int playTrack = 0;
+static int32_t loopcounter;
+static int32_t playTrack = 0;
 static bool enabled = true;
 static bool paused = false;
 static bool playLooping = false;
@@ -208,10 +208,10 @@ void Miniaudio_Init(void)
 	Cmd_AddCommand("miniaudio", Miniaudio_f);
 }
 
-static ma_result LoadTrack(const char *gamedir, int track)
+static ma_result LoadTrack(const char *gamedir, int32_t track)
 {
 	ma_result result;
-	int trackExtIdx = 0;
+	int32_t trackExtIdx = 0;
 	static char *trackExts[] = { "ogg", "flac", "mp3", "wav" };
 
 	do
@@ -224,7 +224,7 @@ static ma_result LoadTrack(const char *gamedir, int track)
 	return result;
 }
 
-void Miniaudio_Play(int track, bool looping)
+void Miniaudio_Play(int32_t track, bool looping)
 {
 	ma_result result;
 	ma_device_config deviceConfig;
@@ -327,7 +327,7 @@ void Miniaudio_Update(void)
 		else
 		{
 			enabled = true;
-			int track = atoi(cl.configstrings[CS_CDTRACK]);
+			int32_t track = atoi(cl.configstrings[CS_CDTRACK]);
 			if (!paused || playTrack != track)
 			{
 				if ((playTrack == 0 && !playLooping) || (playTrack > 0 && playTrack != track))

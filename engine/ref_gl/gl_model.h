@@ -68,8 +68,8 @@ typedef struct
 // !!! if this is changed, it must be changed in asm_draw.h too !!!
 typedef struct
 {
-	unsigned int	v[2];
-	unsigned int	cachededgeoffset;
+	uint32_t	v[2];
+	uint32_t	cachededgeoffset;
 } medge_t;
 
 typedef struct mtexinfo_s
@@ -119,9 +119,9 @@ typedef struct msurface_s
 	int			dlightbits;
 
 	int			lightmaptexturenum;
-	byte		styles[MAXLIGHTMAPS];
+	uint8_t		styles[MAXLIGHTMAPS];
 	float		cached_light[MAXLIGHTMAPS];	// values currently used in lightmap
-	byte		*samples;		// [numstyles*surfsize]
+	uint8_t		*samples;		// [numstyles*surfsize]
 } msurface_t;
 
 typedef struct mnode_s
@@ -138,8 +138,8 @@ typedef struct mnode_s
 	cplane_t	*plane;
 	struct mnode_s	*children[2];	
 
-	unsigned int		firstsurface;
-	unsigned int		numsurfaces;
+	uint32_t		firstsurface;
+	uint32_t		numsurfaces;
 } mnode_t;
 
 
@@ -233,7 +233,7 @@ typedef struct model_s
 
 	dvis_t		*vis;
 
-	byte		*lightdata;
+	uint8_t		*lightdata;
 
 	// for alias models and skins
 	image_t		*skins[MAX_MD2SKINS];
@@ -248,12 +248,12 @@ void	Mod_Init (void);
 void	Mod_ClearAll (void);
 model_t *Mod_ForName (char *name, bool crash);
 mleaf_t *Mod_PointInLeaf (float *p, model_t *model);
-byte	*Mod_ClusterPVS (int cluster, model_t *model);
+uint8_t	*Mod_ClusterPVS (int32_t cluster, model_t *model);
 
 void	Mod_Modellist_f (void);
 
-void	*Hunk_Begin (int maxsize);
-void	*Hunk_Alloc (int size);
+void	*Hunk_Begin (int32_t maxsize);
+void	*Hunk_Alloc (int32_t size);
 int		Hunk_End (void);
 void	Hunk_Free (void *base);
 

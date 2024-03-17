@@ -292,7 +292,7 @@ returns the range catagorization of an entity reletive to self
 3	only triggered by damage
 =============
 */
-int range (edict_t *self, edict_t *other)
+int32_t range (edict_t *self, edict_t *other)
 {
 	vec3_t	v;
 	float	len;
@@ -519,7 +519,7 @@ bool FindTarget (edict_t *self)
 
 	// if item and zombie friendly fire is off, 
 	if (self->team == client->team
-		&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
+		&& !((int32_t)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
 	{
 		return false;
 	}

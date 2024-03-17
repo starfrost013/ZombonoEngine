@@ -58,7 +58,7 @@ char *svc_strings[256] =
 
 //=============================================================================
 
-void CL_DownloadFileName(char *dest, int destlen, char *fn)
+void CL_DownloadFileName(char *dest, int32_t destlen, char *fn)
 {
 	if (strncmp(fn, "players", 7) == 0)
 		Com_sprintf (dest, destlen, "%s/%s", BASEDIRNAME, fn);
@@ -107,7 +107,7 @@ bool	CL_CheckOrDownloadFile (char *filename)
 
 	fp = fopen (name, "r+b");
 	if (fp) { // it exists
-		int len;
+		int32_t len;
 		fseek(fp, 0, SEEK_END);
 		len = ftell(fp);
 
@@ -183,7 +183,7 @@ CL_RegisterSounds
 */
 void CL_RegisterSounds (void)
 {
-	int		i;
+	int32_t 	i;
 
 	S_BeginRegistration ();
 	CL_RegisterTEntSounds ();
@@ -207,9 +207,9 @@ A download message has been received from the server
 */
 void CL_ParseDownload (void)
 {
-	int		size, percent;
+	int32_t 	size, percent;
 	char	name[MAX_OSPATH];
-	int		r;
+	int32_t 	r;
 
 	// read the data
 	size = MSG_ReadShort (&net_message);
@@ -253,7 +253,7 @@ void CL_ParseDownload (void)
 		cls.downloadpercent = percent;
 
 		MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-		SZ_Print (&cls.netchan.message, "nextdl");
+		SZ_Print32_t (&cls.netchan.message, "nextdl");
 	}
 	else
 	{
@@ -298,7 +298,7 @@ void CL_ParseServerData (void)
 {
 	extern cvar_t	*fs_gamedirvar;
 	char	*str;
-	int		i;
+	int32_t 	i;
 	
 	Com_DPrintf ("Serverdata packet received.\n");
 //
@@ -348,8 +348,8 @@ CL_ParseBaseline
 void CL_ParseBaseline (void)
 {
 	entity_state_t	*es;
-	int				bits;
-	int				newnum;
+	int32_t 			bits;
+	int32_t 			newnum;
 	entity_state_t	nullstate;
 
 	memset (&nullstate, 0, sizeof(nullstate));
@@ -368,7 +368,7 @@ CL_LoadClientinfo
 */
 void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 {
-	int i;
+	int32_t i;
 	char		*t;
 	char		model_name[MAX_QPATH];
 	char		skin_name[MAX_QPATH];
@@ -487,7 +487,7 @@ CL_ParseClientinfo
 Load the skin, icon, and model for a client
 ================
 */
-void CL_ParseClientinfo (int player)
+void CL_ParseClientinfo (int32_t player)
 {
 	char			*s;
 	clientinfo_t	*ci;
@@ -507,7 +507,7 @@ CL_ParseConfigString
 */
 void CL_ParseConfigString (void)
 {
-	int		i;
+	int32_t 	i;
 	char	*s;
 	char	olds[MAX_QPATH];
 
@@ -529,7 +529,7 @@ void CL_ParseConfigString (void)
 	{
 		if (cl.refresh_prepped)
 		{
-			int track = atoi(cl.configstrings[CS_CDTRACK]);
+			int32_t track = atoi(cl.configstrings[CS_CDTRACK]);
 			Miniaudio_Play(track, true);
 		}
 	}
@@ -579,11 +579,11 @@ void CL_ParseStartSoundPacket(void)
 {
     vec3_t  pos_v;
 	float	*pos;
-    int 	channel, ent;
-    int 	sound_num;
+    int32_t 	channel, ent;
+    int32_t 	sound_num;
     float 	volume;
     float 	attenuation;  
-	int		flags;
+	int32_t 	flags;
 	float	ofs;
 
 	flags = MSG_ReadByte (&net_message);
@@ -648,11 +648,11 @@ CL_ParseServerMessage
 */
 void CL_ParseServerMessage (void)
 {
-	int			cmd;
+	int32_t 		cmd;
 	char		*s;
 	char		str_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
 	char		str_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
-	int			i = 0;
+	int32_t 		i = 0;
 
 //
 // if recording demos, copy the message out
@@ -727,7 +727,7 @@ void CL_ParseServerMessage (void)
 			break;
 			
 		case svc_centerprint:
-			SCR_CenterPrint (MSG_ReadString (&net_message));
+			SCR_CenterPrint32_t (MSG_ReadString (&net_message));
 			break;
 			
 		case svc_stufftext:
@@ -832,8 +832,8 @@ void CL_ParseServerMessage (void)
 		case svc_drawtext:
 			s = MSG_ReadString(&net_message);
 			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
-			int x = MSG_ReadShort(&net_message);
-			int y = MSG_ReadShort(&net_message);
+			int32_t x = MSG_ReadShort(&net_message);
+			int32_t y = MSG_ReadShort(&net_message);
 			s = MSG_ReadString(&net_message);
 			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
 

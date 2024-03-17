@@ -29,7 +29,7 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer);
 void Mod_LoadAliasModel (model_t *mod, void *buffer);
 model_t *Mod_LoadModel (model_t *mod, bool crash);
 
-byte	mod_novis[MAX_MAP_LEAFS/8];
+uint8_t	mod_novis[MAX_MAP_LEAFS/8];
 
 #define	MAX_MOD_KNOWN	512
 model_t	mod_known[MAX_MOD_KNOWN];
@@ -76,11 +76,11 @@ mleaf_t *Mod_PointInLeaf (vec3_t p, model_t *model)
 Mod_DecompressVis
 ===================
 */
-byte *Mod_DecompressVis (byte *in, model_t *model)
+uint8_t *Mod_DecompressVis (uint8_t *in, model_t *model)
 {
 	static byte	decompressed[MAX_MAP_LEAFS/8];
 	int		c;
-	byte	*out;
+	uint8_t* out;
 	int		row;
 
 	row = (model->vis->numclusters+7)>>3;	
@@ -121,11 +121,11 @@ byte *Mod_DecompressVis (byte *in, model_t *model)
 Mod_ClusterPVS
 ==============
 */
-byte *Mod_ClusterPVS (int cluster, model_t *model)
+uint8_t *Mod_ClusterPVS (int32_t cluster, model_t *model)
 {
 	if (cluster == -1 || !model->vis)
 		return mod_novis;
-	return Mod_DecompressVis ( (byte *)model->vis + model->vis->bitofs[cluster][DVIS_PVS],
+	return Mod_DecompressVis ( (uint8_t *)model->vis + model->vis->bitofs[cluster][DVIS_PVS],
 		model);
 }
 
@@ -279,7 +279,7 @@ model_t *Mod_ForName (char *name, bool crash)
 ===============================================================================
 */
 
-byte	*mod_base;
+uint8_t* mod_base;
 
 
 /*
@@ -416,7 +416,7 @@ void Mod_LoadEdges (lump_t *l)
 {
 	dedge_t *in;
 	medge_t *out;
-	int 	i, count;
+	int32_t 	i, count;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -443,7 +443,7 @@ void Mod_LoadTexinfo (lump_t *l)
 {
 	texinfo_t *in;
 	mtexinfo_t *out, *step;
-	int 	i, j, count;
+	int32_t 	i, j, count;
 	char	name[MAX_QPATH];
 	int		next;
 
@@ -744,7 +744,7 @@ Mod_LoadMarksurfaces
 */
 void Mod_LoadMarksurfaces (lump_t *l)
 {	
-	unsigned int		i, j, count;
+	uint32_t		i, j, count;
 	int		*in;
 	msurface_t **out;
 	
@@ -854,10 +854,10 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 		ri.Sys_Error (ERR_DROP, "Mod_LoadBrushModel: %s has wrong version number (%i should be %i)", mod->name, i, BSPVERSION);
 
 // swap all the lumps
-	mod_base = (byte *)header;
+	mod_base = (uint8_t *)header;
 
 	for (i=0 ; i<sizeof(dheader_t)/4 ; i++)
-		((int *)header)[i] = LittleInt ( ((int *)header)[i]);
+		((int32_t *)header)[i] = LittleInt ( ((int32_t *)header)[i]);
 
 // load into heap
 	

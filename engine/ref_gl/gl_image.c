@@ -27,11 +27,11 @@ int			numgltextures;
 int			base_textureid;		// gltextures[i] = base_textureid+i
 
 static byte			 intensitytable[256];
-static unsigned char gammatable[256];
+static uint8_t gammatable[256];
 
 cvar_t		*intensity;
 
-bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap);
+bool GL_Upload32 (unsigned *data, int32_t width, int32_t height,  bool mipmap);
 
 int		gl_solid_format = 3;
 int		gl_alpha_format = 4;
@@ -65,7 +65,7 @@ void GL_EnableMultitexture( bool enable )
 
 void GL_SelectTexture( GLenum texture )
 {
-	int tmu;
+	int32_t tmu;
 
 	if ( !qglSelectTextureSGIS && !qglActiveTextureARB )
 		return;
@@ -99,7 +99,7 @@ void GL_SelectTexture( GLenum texture )
 
 void GL_TexEnv( GLenum mode )
 {
-	static int lastmodes[2] = { -1, -1 };
+	static int32_t lastmodes[2] = { -1, -1 };
 
 	if ( mode != lastmodes[gl_state.currenttmu] )
 	{
@@ -108,7 +108,7 @@ void GL_TexEnv( GLenum mode )
 	}
 }
 
-void GL_Bind (int texnum)
+void GL_Bind (int32_t texnum)
 {
 	if ( gl_state.currenttextures[gl_state.currenttmu] == texnum)
 		return;
@@ -116,7 +116,7 @@ void GL_Bind (int texnum)
 	qglBindTexture (GL_TEXTURE_2D, texnum);
 }
 
-void GL_MBind( GLenum target, int texnum )
+void GL_MBind( GLenum target, int32_t texnum )
 {
 	GL_SelectTexture( target );
 	if ( target == gl_texture0 )
@@ -152,7 +152,7 @@ glmode_t modes[] = {
 typedef struct
 {
 	char *name;
-	int mode;
+	int32_t mode;
 } gltmode_t;
 
 gltmode_t gl_alpha_modes[] = {
@@ -320,11 +320,11 @@ TARGA LOADING
 */
 
 typedef struct _TargaHeader {
-	unsigned char 	id_length, colormap_type, image_type;
-	unsigned short	colormap_index, colormap_length;
-	unsigned char	colormap_size;
-	unsigned short	x_origin, y_origin, width, height;
-	unsigned char	pixel_size, attributes;
+	uint8_t 	id_length, colormap_type, image_type;
+	uint16_t	colormap_index, colormap_length;
+	uint8_t	colormap_size;
+	uint16_t	x_origin, y_origin, width, height;
+	uint8_t	pixel_size, attributes;
 } TargaHeader;
 
 
@@ -333,17 +333,17 @@ typedef struct _TargaHeader {
 LoadTGA
 =============
 */
-void LoadTGA (char *name, byte **pic, int *width, int *height)
+void LoadTGA (char *name, uint8_t **pic, int32_t *width, int32_t *height)
 {
-	int		columns, rows, numPixels;
-	byte	*pixbuf;
-	int		row, column;
-	byte	*buf_p;
-	byte	*buffer;
-	int		length;
-	TargaHeader		targa_header;
-	byte			*targa_rgba;
-	byte tmp[2];
+	int			columns, rows, numPixels;
+	uint8_t*	pixbuf;
+	int			row, column;
+	uint8_t*	buf_p;
+	uint8_t*	buffer;
+	int			length;
+	TargaHeader	targa_header;
+	uint8_t*	targa_rgba;
+	uint8_t tmp[2];
 
 	*pic = NULL;
 
@@ -375,20 +375,20 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 	
 	tmp[0] = buf_p[0];
 	tmp[1] = buf_p[1];
-	targa_header.colormap_index = LittleShort ( *((short *)tmp) );
+	targa_header.colormap_index = LittleShort ( *((int16_t *)tmp) );
 	buf_p+=2;
 	tmp[0] = buf_p[0];
 	tmp[1] = buf_p[1];
-	targa_header.colormap_length = LittleShort ( *((short *)tmp) );
+	targa_header.colormap_length = LittleShort ( *((int16_t *)tmp) );
 	buf_p+=2;
 	targa_header.colormap_size = *buf_p++;
-	targa_header.x_origin = LittleShort ( *((short *)buf_p) );
+	targa_header.x_origin = LittleShort ( *((int16_t *)buf_p) );
 	buf_p+=2;
-	targa_header.y_origin = LittleShort ( *((short *)buf_p) );
+	targa_header.y_origin = LittleShort ( *((int16_t *)buf_p) );
 	buf_p+=2;
-	targa_header.width = LittleShort ( *((short *)buf_p) );
+	targa_header.width = LittleShort ( *((int16_t *)buf_p) );
 	buf_p+=2;
-	targa_header.height = LittleShort ( *((short *)buf_p) );
+	targa_header.height = LittleShort ( *((int16_t *)buf_p) );
 	buf_p+=2;
 	targa_header.pixel_size = *buf_p++;
 	targa_header.attributes = *buf_p++;
@@ -420,7 +420,7 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 		for(row=rows-1; row>=0; row--) {
 			pixbuf = targa_rgba + row*columns*4;
 			for(column=0; column<columns; column++) {
-				unsigned char red,green,blue,alphabyte;
+				uint8_t red,green,blue,alphabyte;
 				switch (targa_header.pixel_size) {
 					case 24:
 							
@@ -447,7 +447,7 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 		}
 	}
 	else if (targa_header.image_type==10) {   // Runlength encoded RGB images
-		unsigned char red,green,blue,alphabyte,packetHeader,packetSize,j;
+		uint8_t red,green,blue,alphabyte,packetHeader,packetSize,j;
 		for(row=rows-1; row>=0; row--) {
 			pixbuf = targa_rgba + row*columns*4;
 			for(column=0; column<columns; ) {
@@ -532,13 +532,13 @@ void LoadTGA (char *name, byte **pic, int *width, int *height)
 GL_ResampleTexture
 ================
 */
-void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,  int outwidth, int outheight)
+void GL_ResampleTexture (unsigned *in, int32_t inwidth, int32_t inheight, unsigned *out,  int32_t outwidth, int32_t outheight)
 {
 	int		i, j;
 	unsigned	*inrow, *inrow2;
 	unsigned	frac, fracstep;
 	unsigned	p1[1024], p2[1024];
-	byte		*pix1, *pix2, *pix3, *pix4;
+	uint8_t		*pix1, *pix2, *pix3, *pix4;
 
 	fracstep = inwidth*0x10000/outwidth;
 
@@ -557,19 +557,19 @@ void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,
 
 	for (i=0 ; i<outheight ; i++, out += outwidth)
 	{
-		inrow = in + inwidth*(int)((i+0.25)*inheight/outheight);
-		inrow2 = in + inwidth*(int)((i+0.75)*inheight/outheight);
+		inrow = in + inwidth*(int32_t)((i+0.25)*inheight/outheight);
+		inrow2 = in + inwidth*(int32_t)((i+0.75)*inheight/outheight);
 		frac = fracstep >> 1;
 		for (j=0 ; j<outwidth ; j++)
 		{
-			pix1 = (byte *)inrow + p1[j];
-			pix2 = (byte *)inrow + p2[j];
-			pix3 = (byte *)inrow2 + p1[j];
-			pix4 = (byte *)inrow2 + p2[j];
-			((byte *)(out+j))[0] = (pix1[0] + pix2[0] + pix3[0] + pix4[0])>>2;
-			((byte *)(out+j))[1] = (pix1[1] + pix2[1] + pix3[1] + pix4[1])>>2;
-			((byte *)(out+j))[2] = (pix1[2] + pix2[2] + pix3[2] + pix4[2])>>2;
-			((byte *)(out+j))[3] = (pix1[3] + pix2[3] + pix3[3] + pix4[3])>>2;
+			pix1 = (uint8_t *)inrow + p1[j];
+			pix2 = (uint8_t *)inrow + p2[j];
+			pix3 = (uint8_t *)inrow2 + p1[j];
+			pix4 = (uint8_t *)inrow2 + p2[j];
+			((uint8_t *)(out+j))[0] = (pix1[0] + pix2[0] + pix3[0] + pix4[0])>>2;
+			((uint8_t *)(out+j))[1] = (pix1[1] + pix2[1] + pix3[1] + pix4[1])>>2;
+			((uint8_t *)(out+j))[2] = (pix1[2] + pix2[2] + pix3[2] + pix4[2])>>2;
+			((uint8_t *)(out+j))[3] = (pix1[3] + pix2[3] + pix3[3] + pix4[3])>>2;
 		}
 	}
 }
@@ -582,14 +582,14 @@ Scale up the pixel values in a texture to increase the
 lighting range
 ================
 */
-void GL_LightScaleTexture (unsigned *in, int inwidth, int inheight, bool only_gamma )
+void GL_LightScaleTexture (unsigned *in, int32_t inwidth, int32_t inheight, bool only_gamma )
 {
 	if ( only_gamma )
 	{
 		int		i, c;
-		byte	*p;
+		uint8_t* p;
 
-		p = (byte *)in;
+		p = (uint8_t *)in;
 
 		c = inwidth*inheight;
 		for (i=0 ; i<c ; i++, p+=4)
@@ -602,9 +602,9 @@ void GL_LightScaleTexture (unsigned *in, int inwidth, int inheight, bool only_ga
 	else
 	{
 		int		i, c;
-		byte	*p;
+		uint8_t* p;
 
-		p = (byte *)in;
+		p = (uint8_t *)in;
 
 		c = inwidth*inheight;
 		for (i=0 ; i<c ; i++, p+=4)
@@ -623,10 +623,10 @@ GL_MipMap
 Operates in place, quartering the size of the texture
 ================
 */
-void GL_MipMap (byte *in, int width, int height)
+void GL_MipMap (uint8_t *in, int32_t width, int32_t height)
 {
 	int		i, j;
-	byte	*out;
+	uint8_t* out;
 
 	width <<=2;
 	height >>= 1;
@@ -653,14 +653,14 @@ Returns has_alpha
 int		upload_width, upload_height;
 bool uploaded_paletted;
 
-bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap)
+bool GL_Upload32 (unsigned *data, int32_t width, int32_t height,  bool mipmap)
 {
 	int			samples;
 	unsigned	scaled[256*256];
 	int			scaled_width, scaled_height;
 	int			i, c;
-	byte		*scan;
-	int comp;
+	uint8_t		*scan;
+	int32_t comp;
 
 	uploaded_paletted = false;
 
@@ -676,8 +676,8 @@ bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap)
 	// let people sample down the world textures for speed
 	if (mipmap)
 	{
-		scaled_width >>= (int)gl_picmip->value;
-		scaled_height >>= (int)gl_picmip->value;
+		scaled_width >>= (int32_t)gl_picmip->value;
+		scaled_height >>= (int32_t)gl_picmip->value;
 	}
 
 	// don't ever bother with >256 textures
@@ -699,7 +699,7 @@ bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap)
 
 	// scan the texture for any non-255 alpha
 	c = width*height;
-	scan = ((byte *)data) + 3;
+	scan = ((uint8_t *)data) + 3;
 	samples = gl_solid_format;
 	for (i=0 ; i<c ; i++, scan += 4)
 	{
@@ -745,7 +745,7 @@ bool GL_Upload32 (unsigned *data, int width, int height,  bool mipmap)
 		miplevel = 0;
 		while (scaled_width > 1 || scaled_height > 1)
 		{
-			GL_MipMap ((byte *)scaled, scaled_width, scaled_height);
+			GL_MipMap ((uint8_t *)scaled, scaled_width, scaled_height);
 			scaled_width >>= 1;
 			scaled_height >>= 1;
 			if (scaled_width < 1)
@@ -780,7 +780,7 @@ GL_LoadPic
 This is also used as an entry point for the generated r_notexture
 ================
 */
-image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t type)
+image_t *GL_LoadPic (char *name, uint8_t *pic, int32_t width, int32_t height, imagetype_t type)
 {
 	image_t		*image;
 	int			i;
@@ -832,12 +832,12 @@ image_t	*GL_FindImage (char *name, imagetype_t type)
 {
 	image_t	*image;
 	int		i, len;
-	byte	*pic, *palette;
+	uint8_t* pic, *palette;
 	int		width, height;
 
 	if (!name)
 		return NULL;	//	ri.Sys_Error (ERR_DROP, "GL_FindImage: NULL name");
-	len = (int)strlen(name);
+	len = (int32_t)strlen(name);
 	if (len<5)
 		return NULL;	//	ri.Sys_Error (ERR_DROP, "GL_FindImage: bad name: %s", name);
 	

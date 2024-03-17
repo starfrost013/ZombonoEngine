@@ -80,7 +80,7 @@ push(JSON_stream *json, enum JSON_type type)
 }
 
 static enum JSON_type
-pop(JSON_stream *json, int c, enum JSON_type expected)
+pop(JSON_stream *json, int32_t c, enum JSON_type expected)
 {
     if (json->stack == NULL || json->stack[json->stack_top].type != expected) {
         JSON_error(json, "unexpected byte '%c'", c);
@@ -90,7 +90,7 @@ pop(JSON_stream *json, int c, enum JSON_type expected)
     return expected == JSON_ARRAY ? JSON_ARRAY_END : JSON_OBJECT_END;
 }
 
-static int buffer_peek(struct JSON_source *source)
+static int32_t buffer_peek(struct JSON_source *source)
 {
     if (source->position < source->source.buffer.length)
         return source->source.buffer.buffer[source->position];
@@ -98,22 +98,22 @@ static int buffer_peek(struct JSON_source *source)
         return EOF;
 }
 
-static int buffer_get(struct JSON_source *source)
+static int32_t buffer_get(struct JSON_source *source)
 {
-    int c = source->peek(source);
+    int32_t c = source->peek(source);
     source->position++;
     return c;
 }
 
-static int stream_get(struct JSON_source *source)
+static int32_t stream_get(struct JSON_source *source)
 {
     source->position++;
     return fgetc(source->source.stream.stream);
 }
 
-static int stream_peek(struct JSON_source *source)
+static int32_t stream_peek(struct JSON_source *source)
 {
-    int c = fgetc(source->source.stream.stream);
+    int32_t c = fgetc(source->source.stream.stream);
     ungetc(c, source->source.stream.stream);
     return c;
 }
@@ -143,7 +143,7 @@ static void init(JSON_stream *json)
 static enum JSON_type
 is_match(JSON_stream *json, const char *pattern, enum JSON_type type)
 {
-    int c;
+    int32_t c;
     for (const char *p = pattern; *p; p++) {
         if (*p != (c = json->source.get(&json->source))) {
             JSON_error(json, "expected '%c' instead of byte '%c'", *p, c);
@@ -153,7 +153,7 @@ is_match(JSON_stream *json, const char *pattern, enum JSON_type type)
     return type;
 }
 
-static int pushchar(JSON_stream *json, int c)
+static int32_t pushchar(JSON_stream *json, int32_t c)
 {
     if (json->data.string_fill == json->data.string_size) {
         size_t size = json->data.string_size * 2;
@@ -170,7 +170,7 @@ static int pushchar(JSON_stream *json, int c)
     return 0;
 }
 
-static int init_string(JSON_stream *json)
+static int32_t init_string(JSON_stream *json)
 {
     json->data.string_fill = 0;
     if (json->data.string == NULL) {
@@ -185,7 +185,7 @@ static int init_string(JSON_stream *json)
     return 0;
 }
 
-static int encode_utf8(JSON_stream *json, unsigned long c)
+static int32_t encode_utf8(JSON_stream *json, unsigned long c)
 {
     if (c < 0x80UL) {
         return pushchar(json, c);
@@ -211,7 +211,7 @@ static int encode_utf8(JSON_stream *json, unsigned long c)
     }
 }
 
-static int hexchar(int c)
+static int32_t hexchar(int32_t c)
 {
     switch (c) {
     case '0': return 0;
@@ -245,11 +245,11 @@ static long
 read_unicode_cp(JSON_stream *json)
 {
     long cp = 0;
-    int shift = 12;
+    int32_t shift = 12;
 
     for (size_t i = 0; i < 4; i++) {
-        int c = json->source.get(&json->source);
-        int hc;
+        int32_t c = json->source.get(&json->source);
+        int32_t hc;
 
         if (c == EOF) {
             JSON_error(json, "%s", "unterminated string literal in Unicode");
@@ -267,7 +267,7 @@ read_unicode_cp(JSON_stream *json)
     return cp;
 }
 
-static int read_unicode(JSON_stream *json)
+static int32_t read_unicode(JSON_stream *json)
 {
     long cp, h, l;
 
@@ -281,7 +281,7 @@ static int read_unicode(JSON_stream *json)
          */
         h = cp;
 
-        int c = json->source.get(&json->source);
+        int32_t c = json->source.get(&json->source);
         if (c == EOF) {
             JSON_error(json, "%s", "unterminated string literal in Unicode");
             return -1;
@@ -323,7 +323,7 @@ static int read_unicode(JSON_stream *json)
 static int
 read_escaped(JSON_stream *json)
 {
-    int c = json->source.get(&json->source);
+    int32_t c = json->source.get(&json->source);
     if (c == EOF) {
         JSON_error(json, "%s", "unterminated string literal in escape");
         return -1;
@@ -356,7 +356,7 @@ read_escaped(JSON_stream *json)
 }
 
 static int
-char_needs_escaping(int c)
+char_needs_escaping(int32_t c)
 {
     if ((c >= 0) && (c < 0x20 || c == 0x22 || c == 0x5c)) {
         return 1;
@@ -368,7 +368,7 @@ char_needs_escaping(int c)
 static int
 utf8_seq_length(char byte)
 {
-    unsigned char u = (unsigned char) byte;
+    uint8_t u = (uint8_t) byte;
     if (u < 0x80) return 1;
 
     if (0x80 <= u && u <= 0xBF)
@@ -406,12 +406,12 @@ utf8_seq_length(char byte)
 }
 
 static int
-is_legal_utf8(const unsigned char *bytes, int length)
+is_legal_utf8(const uint8_t *bytes, int32_t length)
 {
     if (0 == bytes || 0 == length) return 0;
 
-    unsigned char a;
-    const unsigned char* srcptr = bytes + length;
+    uint8_t a;
+    const uint8_t* srcptr = bytes + length;
     switch (length)
     {
     default:
@@ -451,9 +451,9 @@ is_legal_utf8(const unsigned char *bytes, int length)
 }
 
 static int
-read_utf8(JSON_stream* json, int next_char)
+read_utf8(JSON_stream* json, int32_t next_char)
 {
-    int count = utf8_seq_length(next_char);
+    int32_t count = utf8_seq_length(next_char);
     if (!count)
     {
         JSON_error(json, "%s", "invalid UTF-8 character");
@@ -462,13 +462,13 @@ read_utf8(JSON_stream* json, int next_char)
 
     char buffer[4];
     buffer[0] = next_char;
-    int i;
+    int32_t i;
     for (i = 1; i < count; ++i)
     {
         buffer[i] = json->source.get(&json->source);;
     }
 
-    if (!is_legal_utf8((unsigned char*) buffer, count))
+    if (!is_legal_utf8((uint8_t*) buffer, count))
     {
         JSON_error(json, "%s", "invalid UTF-8 text");
         return -1;
@@ -488,7 +488,7 @@ read_string(JSON_stream *json)
     if (init_string(json) != 0)
         return JSON_ERROR;
     while (1) {
-        int c = json->source.get(&json->source);
+        int32_t c = json->source.get(&json->source);
         if (c == EOF) {
             JSON_error(json, "%s", "unterminated string literal");
             return JSON_ERROR;
@@ -500,7 +500,7 @@ read_string(JSON_stream *json)
         } else if (c == '\\') {
             if (read_escaped(json) != 0)
                 return JSON_ERROR;
-        } else if ((unsigned) c >= 0x80) {
+        } else if ((uint32_t) c >= 0x80) {
             if (read_utf8(json, c) != 0)
                 return JSON_ERROR;
         } else {
@@ -517,7 +517,7 @@ read_string(JSON_stream *json)
 }
 
 static int
-is_digit(int c)
+is_digit(int32_t c)
 {
     return c >= 48 /*0*/ && c <= 57 /*9*/;
 }
@@ -525,7 +525,7 @@ is_digit(int c)
 static int
 read_digits(JSON_stream *json)
 {
-    int c;
+    int32_t c;
     unsigned nread = 0;
     while (is_digit(c = json->source.peek(&json->source))) {
         if (pushchar(json, json->source.get(&json->source)) != 0)
@@ -543,7 +543,7 @@ read_digits(JSON_stream *json)
 }
 
 static enum JSON_type
-read_number(JSON_stream *json, int c)
+read_number(JSON_stream *json, int32_t c)
 {
     if (pushchar(json, c) != 0)
         return JSON_ERROR;
@@ -605,7 +605,7 @@ read_number(JSON_stream *json, int c)
 }
 
 bool
-JSON_isspace(int c)
+JSON_isspace(int32_t c)
 {
     switch (c) {
     case 0x09:
@@ -619,9 +619,9 @@ JSON_isspace(int c)
 }
 
 /* Returns the next non-whitespace character in the stream. */
-static int next(JSON_stream *json)
+static int32_t next(JSON_stream *json)
 {
-   int c;
+   int32_t c;
    while (JSON_isspace(c = json->source.get(&json->source)))
        if (c == '\n')
            json->lineno++;
@@ -629,7 +629,7 @@ static int next(JSON_stream *json)
 }
 
 static enum JSON_type
-read_value(JSON_stream *json, int c)
+read_value(JSON_stream *json, int32_t c)
 {
     json->ntokens++;
     switch (c) {
@@ -695,7 +695,7 @@ enum JSON_type JSON_next(JSON_stream *json)
          * remaining whitespaces ignored as leading when we parse the next
          * value. */
         if (!(json->flags & JSON_FLAG_STREAMING)) {
-            int c;
+            int32_t c;
 
             do {
                 c = json->source.peek(&json->source);
@@ -712,7 +712,7 @@ enum JSON_type JSON_next(JSON_stream *json)
 
         return JSON_DONE;
     }
-    int c = next(json);
+    int32_t c = next(json);
     if (json->stack_top == (size_t)-1) {
         if (c == EOF && (json->flags & JSON_FLAG_STREAMING))
             return JSON_DONE;
@@ -890,15 +890,15 @@ enum JSON_type JSON_get_context(JSON_stream *json, size_t *count)
     return json->stack[json->stack_top].type;
 }
 
-int JSON_source_get(JSON_stream *json)
+int32_t JSON_source_get(JSON_stream *json)
 {
-    int c = json->source.get(&json->source);
+    int32_t c = json->source.get(&json->source);
     if (c == '\n')
         json->lineno++;
     return c;
 }
 
-int JSON_source_peek(JSON_stream *json)
+int32_t JSON_source_peek(JSON_stream *json)
 {
     return json->source.peek(&json->source);
 }
@@ -925,12 +925,12 @@ void JSON_open_stream(JSON_stream *json, FILE * stream)
     json->source.source.stream.stream = stream;
 }
 
-static int user_get(struct JSON_source *json)
+static int32_t user_get(struct JSON_source *json)
 {
     return json->source.user.get(json->source.user.ptr);
 }
 
-static int user_peek(struct JSON_source *json)
+static int32_t user_peek(struct JSON_source *json)
 {
     return json->source.user.peek(json->source.user.ptr);
 }

@@ -34,7 +34,7 @@ msurface_t	*warpface;
 #define	SUBDIVIDE_SIZE	64
 //#define	SUBDIVIDE_SIZE	1024
 
-void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
+void BoundPoly (int32_t numverts, float *verts, vec3_t mins, vec3_t maxs)
 {
 	int		i, j;
 	float	*v;
@@ -52,7 +52,7 @@ void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
 		}
 }
 
-void SubdividePolygon (int numverts, float *verts)
+void SubdividePolygon (int32_t numverts, float *verts)
 {
 	int		i, j, k;
 	vec3_t	mins, maxs;
@@ -215,7 +215,7 @@ void EmitWaterPolys (msurface_t *fa)
 	float		rdt = r_newrefdef.time;
 
 	if (fa->texinfo->flags & SURF_FLOWING)
-		scroll = -64 * ( (r_newrefdef.time*0.5) - (int)(r_newrefdef.time*0.5) );
+		scroll = -64 * ( (r_newrefdef.time*0.5) - (int32_t)(r_newrefdef.time*0.5) );
 	else
 		scroll = 0;
 	for (bp=fa->polys ; bp ; bp=bp->next)
@@ -228,11 +228,11 @@ void EmitWaterPolys (msurface_t *fa)
 			os = v[3];
 			ot = v[4];
 
-			s = os + r_turbsin[(int)((ot*0.125+r_newrefdef.time) * TURBSCALE) & 255];
+			s = os + r_turbsin[(int32_t)((ot*0.125+r_newrefdef.time) * TURBSCALE) & 255];
 			s += scroll;
 			s *= (1.0/64);
 
-			t = ot + r_turbsin[(int)((os*0.125+rdt) * TURBSCALE) & 255];
+			t = ot + r_turbsin[(int32_t)((os*0.125+rdt) * TURBSCALE) & 255];
 			t *= (1.0/64);
 
 			qglTexCoord2f (s, t);
@@ -291,7 +291,7 @@ int	vec_to_st[6][3] =
 float	skymins[2][6], skymaxs[2][6];
 float	sky_min, sky_max;
 
-void DrawSkyPolygon (int nump, vec3_t vecs)
+void DrawSkyPolygon (int32_t nump, vec3_t vecs)
 {
 	int		i,j;
 	vec3_t	v, av;
@@ -366,7 +366,7 @@ void DrawSkyPolygon (int nump, vec3_t vecs)
 
 #define	ON_EPSILON		0.1			// point on plane side epsilon
 #define	MAX_CLIP_VERTS	64
-void ClipSkyPolygon (int nump, vec3_t vecs, int stage)
+void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 {
 	float	*norm;
 	float	*v;
@@ -497,7 +497,7 @@ void R_ClearSkyBox (void)
 }
 
 
-void MakeSkyVec (float s, float t, int axis)
+void MakeSkyVec (float s, float t, int32_t axis)
 {
 	vec3_t		v, b;
 	int			j, k;

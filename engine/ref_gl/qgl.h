@@ -48,7 +48,7 @@ extern  GLboolean ( APIENTRY * qglAreTexturesResident )(GLsizei n, const GLuint 
 extern  void ( APIENTRY * qglArrayElement )(GLint i);
 extern  void ( APIENTRY * qglBegin )(GLenum mode);
 extern  void ( APIENTRY * qglBindTexture )(GLenum target, GLuint texture);
-extern  void ( APIENTRY * qglBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap);
+extern  void ( APIENTRY * qglBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLbyte *bitmap);
 extern  void ( APIENTRY * qglBlendFunc )(GLenum sfactor, GLenum dfactor);
 extern  void ( APIENTRY * qglCallList )(GLuint list);
 extern  void ( APIENTRY * qglCallLists )(GLsizei n, GLenum type, const GLvoid *lists);
@@ -70,7 +70,7 @@ extern  void ( APIENTRY * qglColor3iv )(const GLint *v);
 extern  void ( APIENTRY * qglColor3s )(GLshort red, GLshort green, GLshort blue);
 extern  void ( APIENTRY * qglColor3sv )(const GLshort *v);
 extern  void ( APIENTRY * qglColor3ub )(GLubyte red, GLubyte green, GLubyte blue);
-extern  void ( APIENTRY * qglColor3ubv )(const GLubyte *v);
+extern  void ( APIENTRY * qglColor3ubv )(const GLbyte *v);
 extern  void ( APIENTRY * qglColor3ui )(GLuint red, GLuint green, GLuint blue);
 extern  void ( APIENTRY * qglColor3uiv )(const GLuint *v);
 extern  void ( APIENTRY * qglColor3us )(GLushort red, GLushort green, GLushort blue);
@@ -86,7 +86,7 @@ extern  void ( APIENTRY * qglColor4iv )(const GLint *v);
 extern  void ( APIENTRY * qglColor4s )(GLshort red, GLshort green, GLshort blue, GLshort alpha);
 extern  void ( APIENTRY * qglColor4sv )(const GLshort *v);
 extern  void ( APIENTRY * qglColor4ub )(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
-extern  void ( APIENTRY * qglColor4ubv )(const GLubyte *v);
+extern  void ( APIENTRY * qglColor4ubv )(const GLbyte *v);
 extern  void ( APIENTRY * qglColor4ui )(GLuint red, GLuint green, GLuint blue, GLuint alpha);
 extern  void ( APIENTRY * qglColor4uiv )(const GLuint *v);
 extern  void ( APIENTRY * qglColor4us )(GLushort red, GLushort green, GLushort blue, GLushort alpha);
@@ -158,8 +158,8 @@ extern  void ( APIENTRY * qglGetPixelMapfv )(GLenum map, GLfloat *values);
 extern  void ( APIENTRY * qglGetPixelMapuiv )(GLenum map, GLuint *values);
 extern  void ( APIENTRY * qglGetPixelMapusv )(GLenum map, GLushort *values);
 extern  void ( APIENTRY * qglGetPointerv )(GLenum pname, GLvoid* *params);
-extern  void ( APIENTRY * qglGetPolygonStipple )(GLubyte *mask);
-extern  const GLubyte * ( APIENTRY * qglGetString )(GLenum name);
+extern  void ( APIENTRY * qglGetPolygonStipple )(GLbyte *mask);
+extern  const GLbyte * ( APIENTRY * qglGetString )(GLenum name);
 extern  void ( APIENTRY * qglGetTexEnvfv )(GLenum target, GLenum pname, GLfloat *params);
 extern  void ( APIENTRY * qglGetTexEnviv )(GLenum target, GLenum pname, GLint *params);
 extern  void ( APIENTRY * qglGetTexGendv )(GLenum coord, GLenum pname, GLdouble *params);
@@ -182,7 +182,7 @@ extern  void ( APIENTRY * qglIndexiv )(const GLint *c);
 extern  void ( APIENTRY * qglIndexs )(GLshort c);
 extern  void ( APIENTRY * qglIndexsv )(const GLshort *c);
 extern  void ( APIENTRY * qglIndexub )(GLubyte c);
-extern  void ( APIENTRY * qglIndexubv )(const GLubyte *c);
+extern  void ( APIENTRY * qglIndexubv )(const GLbyte *c);
 extern  void ( APIENTRY * qglInitNames )(void);
 extern  void ( APIENTRY * qglInterleavedArrays )(GLenum format, GLsizei stride, const GLvoid *pointer);
 extern  GLboolean ( APIENTRY * qglIsEnabled )(GLenum cap);
@@ -244,7 +244,7 @@ extern  void ( APIENTRY * qglPixelZoom )(GLfloat xfactor, GLfloat yfactor);
 extern  void ( APIENTRY * qglPointSize )(GLfloat size);
 extern  void ( APIENTRY * qglPolygonMode )(GLenum face, GLenum mode);
 extern  void ( APIENTRY * qglPolygonOffset )(GLfloat factor, GLfloat units);
-extern  void ( APIENTRY * qglPolygonStipple )(const GLubyte *mask);
+extern  void ( APIENTRY * qglPolygonStipple )(const GLbyte *mask);
 extern  void ( APIENTRY * qglPopAttrib )(void);
 extern  void ( APIENTRY * qglPopClientAttrib )(void);
 extern  void ( APIENTRY * qglPopMatrix )(void);
@@ -382,7 +382,7 @@ extern  void ( APIENTRY * qglViewport )(GLint x, GLint y, GLsizei width, GLsizei
 extern	void ( APIENTRY * qglPointParameterfEXT)( GLenum param, GLfloat value );
 extern	void ( APIENTRY * qglPointParameterfvEXT)( GLenum param, const GLfloat *value );
 
-extern	void ( APIENTRY * qglLockArraysEXT) (int , int);
+extern	void ( APIENTRY * qglLockArraysEXT) (int32_t , int);
 extern	void ( APIENTRY * qglUnlockArraysEXT) (void);
 
 extern	void ( APIENTRY * qglMTexCoord2fSGIS)( GLenum, GLfloat, GLfloat );
@@ -393,9 +393,9 @@ extern	void ( APIENTRY * qglClientActiveTextureARB)( GLenum );
 
 #ifdef _WIN32
 
-extern  int   ( WINAPI * qwglChoosePixelFormat )(HDC, CONST PIXELFORMATDESCRIPTOR *);
-extern  int   ( WINAPI * qwglDescribePixelFormat) (HDC, int, UINT, LPPIXELFORMATDESCRIPTOR);
-extern  int   ( WINAPI * qwglGetPixelFormat)(HDC);
+extern  int32_t   ( WINAPI * qwglChoosePixelFormat )(HDC, CONST PIXELFORMATDESCRIPTOR *);
+extern  int32_t   ( WINAPI * qwglDescribePixelFormat) (HDC, int, UINT, LPPIXELFORMATDESCRIPTOR);
+extern  int32_t   ( WINAPI * qwglGetPixelFormat)(HDC);
 extern  BOOL  ( WINAPI * qwglSetPixelFormat)(HDC, int, CONST PIXELFORMATDESCRIPTOR *);
 extern  BOOL  ( WINAPI * qwglSwapBuffers)(HDC);
 
@@ -415,17 +415,17 @@ extern BOOL  ( WINAPI * qwglUseFontOutlines)(HDC, DWORD, DWORD, DWORD, FLOAT,
 
 extern BOOL ( WINAPI * qwglDescribeLayerPlane)(HDC, int, int, UINT,
                                             LPLAYERPLANEDESCRIPTOR);
-extern int  ( WINAPI * qwglSetLayerPaletteEntries)(HDC, int, int, int,
+extern int32_t  ( WINAPI * qwglSetLayerPaletteEntries)(HDC, int, int, int,
                                                 CONST COLORREF *);
-extern int  ( WINAPI * qwglGetLayerPaletteEntries)(HDC, int, int, int,
+extern int32_t  ( WINAPI * qwglGetLayerPaletteEntries)(HDC, int, int, int,
                                                 COLORREF *);
 extern BOOL ( WINAPI * qwglRealizeLayerPalette)(HDC, int, BOOL);
 extern BOOL ( WINAPI * qwglSwapLayerBuffers)(HDC, UINT);
 
-extern BOOL ( WINAPI * qwglSwapIntervalEXT)( int interval );
+extern BOOL ( WINAPI * qwglSwapIntervalEXT)( int32_t interval );
 
-extern BOOL ( WINAPI * qwglGetDeviceGammaRampEXT ) ( unsigned char *pRed, unsigned char *pGreen, unsigned char *pBlue );
-extern BOOL ( WINAPI * qwglSetDeviceGammaRampEXT ) ( const unsigned char *pRed, const unsigned char *pGreen, const unsigned char *pBlue );
+extern BOOL ( WINAPI * qwglGetDeviceGammaRampEXT ) ( uint8_t *pRed, uint8_t *pGreen, uint8_t *pBlue );
+extern BOOL ( WINAPI * qwglSetDeviceGammaRampEXT ) ( const uint8_t *pRed, const uint8_t *pGreen, const uint8_t *pBlue );
 
 #endif
 
@@ -435,7 +435,7 @@ extern BOOL ( WINAPI * qwglSetDeviceGammaRampEXT ) ( const unsigned char *pRed, 
 extern void *qwglGetProcAddress(char *symbol);
 
 //GLX Functions
-extern XVisualInfo * (*qglXChooseVisual)( Display *dpy, int screen, int *attribList );
+extern XVisualInfo * (*qglXChooseVisual)( Display *dpy, int32_t screen, int32_t *attribList );
 extern GLXContext (*qglXCreateContext)( Display *dpy, XVisualInfo *vis, GLXContext shareList, Bool direct );
 extern void (*qglXDestroyContext)( Display *dpy, GLXContext ctx );
 extern Bool (*qglXMakeCurrent)( Display *dpy, GLXDrawable drawable, GLXContext ctx);
@@ -463,6 +463,6 @@ extern void (*qglXSwapBuffers)( Display *dpy, GLXDrawable drawable );
 #define GL_TEXTURE0_ARB						0x84C0
 #define GL_TEXTURE1_ARB						0x84C1
 
-extern int gl_texture0, gl_texture1;
+extern int32_t gl_texture0, gl_texture1;
 
 #endif

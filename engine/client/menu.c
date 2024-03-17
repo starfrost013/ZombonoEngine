@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t *vid_hudscale;
 
-static int	m_main_cursor;
+static int32_t m_main_cursor;
 
 static bool update_sound_quality = false;
 static bool search_local_games = false;
@@ -62,7 +62,7 @@ bool	m_entersound;		// play after drawing a frame, so caching
 								// won't disrupt the sound
 
 void	(*m_drawfunc) (void);
-const char *(*m_keyfunc) (int key);
+const char *(*m_keyfunc) (int32_t key);
 
 //=============================================================================
 /* Support Routines */
@@ -73,23 +73,23 @@ const char *(*m_keyfunc) (int key);
 typedef struct
 {
 	void	(*draw) (void);
-	const char *(*key) (int k);
+	const char *(*key) (int32_t k);
 } menulayer_t;
 
 menulayer_t	m_layers[MAX_MENU_DEPTH];
-int		m_menudepth;
+int32_t 	m_menudepth;
 
 static void M_Banner( char *name )
 {
-	int w, h;
+	int32_t w, h;
 
 	re.DrawGetPicSize (&w, &h, name );
 	re.DrawPic( viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, name );
 }
 
-void M_PushMenu ( void (*draw) (void), const char *(*key) (int k) )
+void M_PushMenu ( void (*draw) (void), const char *(*key) (int32_t k) )
 {
-	int		i;
+	int32_t 	i;
 
 	if (Cvar_VariableValue ("maxclients") == 1 
 		&& Com_ServerState ())
@@ -146,7 +146,7 @@ void M_PopMenu (void)
 }
 
 
-const char *Default_MenuKey( menuframework_t *m, int key )
+const char *Default_MenuKey( menuframework_t *m, int32_t key )
 {
 	const char *sound = NULL;
 	menucommon_t *item;
@@ -275,7 +275,7 @@ cx and cy are in 320*240 coordinates, and will be centered on
 higher res screens.
 ================
 */
-void Menu_DrawCenteredImage (int cx, int cy, char* image)
+void Menu_DrawCenteredImage (int32_t cx, int32_t cy, char* image)
 {
 	re.DrawPic ( cx + ((viddef.width - 320)>>1) * vid_hudscale->value, cy + ((viddef.height - 240)>>1) * vid_hudscale->value, image);
 }
@@ -289,14 +289,14 @@ x,y.  The pic will extend to the left of x,
 and both above and below y.
 =============
 */
-void M_DrawCursor( int x, int y, int f )
+void M_DrawCursor( int32_t x, int32_t y, int32_t f )
 {
 	char	cursorname[80];
 	static bool cached;
 
 	if ( !cached )
 	{
-		int i;
+		int32_t i;
 
 		for ( i = 0; i < NUM_CURSOR_FRAMES; i++ )
 		{
@@ -312,10 +312,10 @@ void M_DrawCursor( int x, int y, int f )
 }
 
 // uses 320*240 coords
-void Menu_DrawTextBox (int x, int y, int width, int lines)
+void Menu_DrawTextBox (int32_t x, int32_t y, int32_t width, int32_t lines)
 {
-	int		cx, cy;
-	int		n;
+	int32_t 	cx, cy;
+	int32_t 	n;
 
 	// draw left side
 	cx = x;
@@ -368,13 +368,13 @@ MAIN MENU
 
 void M_Main_Draw (void)
 {
-	int i;
-	int w, h;
-	int ystart;
-	int	xoffset;
-	int size_x = 0, size_y = 0;
-	int widest = -1;
-	int totalheight = 0;
+	int32_t i;
+	int32_t w, h;
+	int32_t ystart;
+	int32_t xoffset;
+	int32_t size_x = 0, size_y = 0;
+	int32_t widest = -1;
+	int32_t totalheight = 0;
 	char litname[80];
 
 	// menu options name
@@ -409,7 +409,7 @@ void M_Main_Draw (void)
 	strcat( litname, "_sel" );
 	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname );
 
-	M_DrawCursor( xoffset - (25 * vid_hudscale->value), ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
+	M_DrawCursor( xoffset - (25 * vid_hudscale->value), ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int32_t)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
 
 	const char* nav_text = "Use ^5Up^7 and ^5Down^7 arrow keys to navigate";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, nav_text);
@@ -418,7 +418,7 @@ void M_Main_Draw (void)
 }
 
 
-const char *M_Main_Key (int key)
+const char *M_Main_Key (int32_t key)
 {
 	const char *sound = menu_move_sound;
 
@@ -565,7 +565,7 @@ void Multiplayer_MenuInit( void )
 	Menu_Center( &s_multiplayer_menu );
 }
 
-const char *Multiplayer_MenuKey( int key )
+const char *Multiplayer_MenuKey( int32_t key )
 {
 	return Default_MenuKey( &s_multiplayer_menu, key );
 }
@@ -615,8 +615,8 @@ char *bindnames[][2] =
 { 0, 0 }
 };
 
-int				keys_cursor;
-static int		bind_grab;
+int32_t 			keys_cursor;
+static int32_t 	bind_grab;
 
 static menuframework_t	s_keys_menu;
 static menuaction_t		s_keys_attack_action;
@@ -648,11 +648,11 @@ static menuaction_t		s_keys_help_computer_action;
 
 static void M_UnbindCommand (char *command)
 {
-	int		j;
-	int		l;
+	int32_t 	j;
+	int32_t 	l;
 	char	*b;
 
-	l = (int)strlen(command);
+	l = (int32_t)strlen(command);
 
 	for (j=0 ; j<256 ; j++)
 	{
@@ -664,15 +664,15 @@ static void M_UnbindCommand (char *command)
 	}
 }
 
-static void M_FindKeysForCommand (char *command, int *twokeys)
+static void M_FindKeysForCommand (char *command, int32_t *twokeys)
 {
-	int		count;
-	int		j;
-	int		l;
+	int32_t 	count;
+	int32_t 	j;
+	int32_t 	l;
 	char	*b;
 
 	twokeys[0] = twokeys[1] = -1;
-	l = (int)strlen(command);
+	l = (int32_t)strlen(command);
 	count = 0;
 
 	for (j=0 ; j<256 ; j++)
@@ -698,7 +698,7 @@ static void KeyCursorDrawFunc( menuframework_t *menu )
 	}
 	else
 	{
-		if ((int)(Sys_Milliseconds() / 250) & 1)
+		if ((int32_t)(Sys_Milliseconds() / 250) & 1)
 		{
 			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "pics/menu_cursor_on");
 		}
@@ -709,9 +709,9 @@ static void KeyCursorDrawFunc( menuframework_t *menu )
 
 static void DrawKeyBindingFunc( void *self )
 {
-	int keys[2];
+	int32_t keys[2];
 	menuaction_t *a = ( menuaction_t * ) self;
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	M_FindKeysForCommand( bindnames[a->generic.localdata[0]][0], keys);
 		
 	if (keys[0] == -1)
@@ -739,7 +739,7 @@ static void DrawKeyBindingFunc( void *self )
 static void KeyBindingFunc( void *self )
 {
 	menuaction_t *a = ( menuaction_t * ) self;
-	int keys[2];
+	int32_t keys[2];
 
 	M_FindKeysForCommand( bindnames[a->generic.localdata[0]][0], keys );
 
@@ -753,8 +753,8 @@ static void KeyBindingFunc( void *self )
 
 static void Keys_MenuInit( void )
 {
-	int y = 0;
-	int i = 0;
+	int32_t y = 0;
+	int32_t i = 0;
 
 	s_keys_menu.x = viddef.width * 0.50;
 	s_keys_menu.nitems = 0;
@@ -998,7 +998,7 @@ static void Keys_MenuDraw (void)
 	Menu_Draw( &s_keys_menu );
 }
 
-static const char *Keys_MenuKey( int key )
+static const char *Keys_MenuKey( int32_t key )
 {
 	menuaction_t *item = ( menuaction_t * ) Menu_ItemAtCursor( &s_keys_menu );
 
@@ -1385,7 +1385,7 @@ void Options_MenuDraw (void)
 
 	if (update_sound_quality)
 	{
-		int y = 120 - 48 * vid_hudscale->value;
+		int32_t y = 120 - 48 * vid_hudscale->value;
 
 		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), 120 - 48 * vid_hudscale->value, 36, 3);
 		y += (system_font_ptr->line_height * vid_hudscale->value);
@@ -1400,7 +1400,7 @@ void Options_MenuDraw (void)
 	}
 }
 
-const char *Options_MenuKey( int key )
+const char *Options_MenuKey( int32_t key )
 {
 	return Default_MenuKey( &s_options_menu, key );
 }
@@ -1432,7 +1432,7 @@ END GAME MENU
 
 =============================================================================
 */
-static int credits_start_time;
+static int32_t credits_start_time;
 static const char **credits;
 static char *creditsIndex[256];
 static char *creditsBuffer;
@@ -1482,7 +1482,7 @@ static const char *creditstext[] =
 
 void M_Credits_MenuDraw( void )
 {
-	int i, y;
+	int32_t i, y;
 
 	/*
 	** draw the credits
@@ -1490,13 +1490,13 @@ void M_Credits_MenuDraw( void )
 	for ( i = 0, y = viddef.height - ( ( cls.realtime - credits_start_time ) / 40.0F ); 
 		credits[i] && y < viddef.height * vid_hudscale->value ; y += 10 * vid_hudscale->value, i++ )
 	{
-		int bold = false;
+		int32_t bold = false;
 
 		if ( y <= -8 * vid_hudscale->value )
 			continue;
 
-		int x;
-		int size_x = 0, size_y = 0;
+		int32_t x;
+		int32_t size_x = 0, size_y = 0;
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, credits[i]);
 		x = (viddef.width / 2) - (size_x / 2); //(viddef.width - strlen(credits[i]) * 8 * vid_hudscale->value * 8 * vid_hudscale->value) / 2 * 8 * vid_hudscale->value;
@@ -1507,7 +1507,7 @@ void M_Credits_MenuDraw( void )
 		credits_start_time = cls.realtime;
 }
 
-const char *M_Credits_Key( int key )
+const char *M_Credits_Key( int32_t key )
 {
 	switch (key)
 	{
@@ -1524,8 +1524,8 @@ const char *M_Credits_Key( int key )
 
 void M_Menu_Credits_f( void )
 {
-	int		n;
-	int		count;
+	int32_t 	n;
+	int32_t 	count;
 	char	*p;
 
 	creditsBuffer = NULL;
@@ -1572,7 +1572,7 @@ GAME MENU
 =============================================================================
 */
 
-static int		m_game_cursor;
+static int32_t 	m_game_cursor;
 
 static menuframework_t	s_game_menu;
 static menuaction_t		s_easy_game_action;
@@ -1709,7 +1709,7 @@ void Game_MenuDraw( void )
 {
 #ifdef PLAYTEST
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	const char* no_playtest_text = "^1This option is not available in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
 	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
@@ -1720,7 +1720,7 @@ void Game_MenuDraw( void )
 #endif
 }
 
-const char *Game_MenuKey( int key )
+const char *Game_MenuKey( int32_t key )
 {
 #ifdef PLAYTEST
 	M_PopMenu();
@@ -1756,7 +1756,7 @@ bool	m_savevalid[MAX_SAVEGAMES];
 
 void Create_Savestrings (void)
 {
-	int		i;
+	int32_t 	i;
 	FILE	*f;
 	char	name[MAX_OSPATH];
 
@@ -1789,7 +1789,7 @@ void LoadGameCallback( void *self )
 
 void LoadGame_MenuInit( void )
 {
-	int i;
+	int32_t i;
 
 	s_loadgame_menu.x = viddef.width / 2 - 120 * vid_hudscale->value;
 	s_loadgame_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
@@ -1822,7 +1822,7 @@ void LoadGame_MenuDraw( void )
 	Menu_Draw( &s_loadgame_menu );
 }
 
-const char *LoadGame_MenuKey( int key )
+const char *LoadGame_MenuKey( int32_t key )
 {
 	if ( key == K_ESCAPE || key == K_ENTER )
 	{
@@ -1867,7 +1867,7 @@ void SaveGame_MenuDraw( void )
 
 void SaveGame_MenuInit( void )
 {
-	int i;
+	int32_t i;
 
 	s_savegame_menu.x = viddef.width / 2 - 120 * vid_hudscale->value;
 	s_savegame_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
@@ -1892,7 +1892,7 @@ void SaveGame_MenuInit( void )
 	}
 }
 
-const char *SaveGame_MenuKey( int key )
+const char *SaveGame_MenuKey( int32_t key )
 {
 	if ( key == K_ENTER || key == K_ESCAPE )
 	{
@@ -1929,7 +1929,7 @@ static menuaction_t		s_joinserver_search_action;
 static menuaction_t		s_joinserver_address_book_action;
 static menuaction_t		s_joinserver_server_actions[MAX_LOCAL_SERVERS];
 
-int		m_num_servers;
+int32_t 	m_num_servers;
 #define	NO_SERVER_STRING	"<no server>"
 
 // user readable information
@@ -1940,7 +1940,7 @@ static netadr_t local_server_netadr[MAX_LOCAL_SERVERS];
 
 void M_AddToServerList (netadr_t adr, char *info)
 {
-	int		i;
+	int32_t 	i;
 
 	if (m_num_servers == MAX_LOCAL_SERVERS)
 		return;
@@ -1961,7 +1961,7 @@ void M_AddToServerList (netadr_t adr, char *info)
 void JoinServerFunc( void *self )
 {
 	char	buffer[128];
-	int		index;
+	int32_t 	index;
 
 	index = ( menuaction_t * ) self - s_joinserver_server_actions;
 
@@ -1987,7 +1987,7 @@ void NullCursorDraw( void *self )
 
 void SearchLocalGames( void )
 {
-	int		i;
+	int32_t 	i;
 
 	m_num_servers = 0;
 	for (i=0 ; i<MAX_LOCAL_SERVERS ; i++)
@@ -2003,7 +2003,7 @@ void SearchLocalGamesFunc( void *self )
 
 void JoinServer_MenuInit( void )
 {
-	int i;
+	int32_t i;
 
 	s_joinserver_menu.x = viddef.width * 0.50 - 120 * vid_hudscale->value;
 	s_joinserver_menu.nitems = 0;
@@ -2060,7 +2060,7 @@ void JoinServer_MenuDraw(void)
 
 	if (search_local_games)
 	{
-		int y = 120 - 48 * vid_hudscale->value;
+		int32_t y = 120 - 48 * vid_hudscale->value;
 		Menu_DrawTextBox(8 - 152 * (vid_hudscale->value - 1.f), y, 36, 3);
 		y += (system_font_ptr->line_height * vid_hudscale->value);
 		Text_Draw(cl_system_font->string, 32 - 136 * (vid_hudscale->value - 1.f), y, "Searching for local servers, this");
@@ -2076,7 +2076,7 @@ void JoinServer_MenuDraw(void)
 }
 
 
-const char *JoinServer_MenuKey( int key )
+const char *JoinServer_MenuKey( int32_t key )
 {
 	return Default_MenuKey( &s_joinserver_menu, key );
 }
@@ -2097,7 +2097,7 @@ START SERVER MENU
 */
 static menuframework_t s_startserver_menu;
 static char **mapnames;
-static int	  nummaps;
+static int32_t   nummaps;
 
 static menuaction_t	s_startserver_start_action;
 static menuaction_t	s_startserver_dmoptions_action;
@@ -2128,9 +2128,9 @@ void RulesChangeFunc ( void *self )
 void StartServerActionFunc( void *self )
 {
 	char	startmap[1024];
-	int		timelimit;
-	int		fraglimit;
-	int		maxclients;
+	int32_t 	timelimit;
+	int32_t 	fraglimit;
+	int32_t 	maxclients;
 	char	*spot;
 
 	strcpy( startmap, strchr( mapnames[s_startmap_list.curvalue], '\n' ) + 1 );
@@ -2163,7 +2163,7 @@ void StartServerActionFunc( void *self )
 
 	if (mapnames)
 	{
-		int i;
+		int32_t i;
 
 		for (i = 0; i < nummaps; i++)
 			free(mapnames[i]);
@@ -2191,8 +2191,8 @@ void StartServer_MenuInit( void )
 	char *buffer;
 	char  mapsname[1024];
 	char *s;
-	int length;
-	int i;
+	int32_t length;
+	int32_t i;
 	FILE *fp;
 
 	/*
@@ -2240,10 +2240,10 @@ void StartServer_MenuInit( void )
 		char  shortname[MAX_TOKEN_CHARS];
 		char  longname[MAX_TOKEN_CHARS];
 		char  scratch[200];
-		int		j, l;
+		int32_t 	j, l;
 
 		strcpy( shortname, COM_Parse( &s ) );
-		l = (int)strlen(shortname);
+		l = (int32_t)strlen(shortname);
 		for (j=0 ; j<l ; j++)
 			shortname[j] = toupper(shortname[j]);
 		strcpy( longname, COM_Parse( &s ) );
@@ -2370,7 +2370,7 @@ void StartServer_MenuDraw(void)
 {
 #ifdef PLAYTEST
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	const char* no_playtest_text = "^1Servers cannot be started in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
 	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
@@ -2379,7 +2379,7 @@ void StartServer_MenuDraw(void)
 #endif
 }
 
-const char *StartServer_MenuKey( int key )
+const char *StartServer_MenuKey( int32_t key )
 {
 #ifdef PLAYTEST
 	M_PopMenu();
@@ -2388,7 +2388,7 @@ const char *StartServer_MenuKey( int key )
 	{
 		if (mapnames)
 		{
-			int i;
+			int32_t i;
 
 			for (i = 0; i < nummaps; i++)
 				free(mapnames[i]);
@@ -2438,8 +2438,8 @@ static menulist_t	s_individual_fraglimit_box;
 static void GameFlagCallback( void *self )
 {
 	menulist_t *f = ( menulist_t * ) self;
-	int flags;
-	int bit = 0;
+	int32_t flags;
+	int32_t bit = 0;
 
 	flags = Cvar_VariableValue( "gameflags" );
 
@@ -2556,8 +2556,8 @@ void GameOptions_MenuInit( void )
 		"^1No", "^2Yes", 0
 	};
 
-	int gameflags = Cvar_VariableValue( "gameflags" );
-	int y = 0;
+	int32_t gameflags = Cvar_VariableValue( "gameflags" );
+	int32_t y = 0;
 
 	s_gameoptions_menu.x = viddef.width * 0.50;
 	s_gameoptions_menu.nitems = 0;
@@ -2709,7 +2709,7 @@ void GameOptions_MenuDraw(void)
 	Menu_Draw( &s_gameoptions_menu );
 }
 
-const char *GameOptions_MenuKey( int key )
+const char *GameOptions_MenuKey( int32_t key )
 {
 	return Default_MenuKey( &s_gameoptions_menu, key );
 }
@@ -2772,7 +2772,7 @@ void DownloadOptions_MenuInit( void )
 	{
 		"^1No", "^2Yes", 0
 	};
-	int y = 0;
+	int32_t y = 0;
 
 	s_downloadoptions_menu.x = viddef.width * 0.50;
 	s_downloadoptions_menu.nitems = 0;
@@ -2841,7 +2841,7 @@ void DownloadOptions_MenuDraw(void)
 	Menu_Draw( &s_downloadoptions_menu );
 }
 
-const char *DownloadOptions_MenuKey( int key )
+const char *DownloadOptions_MenuKey( int32_t key )
 {
 	return Default_MenuKey( &s_downloadoptions_menu, key );
 }
@@ -2865,7 +2865,7 @@ static menufield_t		s_addressbook_fields[NUM_ADDRESSBOOK_ENTRIES];
 
 void AddressBook_MenuInit( void )
 {
-	int i;
+	int32_t i;
 
 	s_addressbook_menu.x = viddef.width / 2 - 142 * vid_hudscale->value;
 	s_addressbook_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
@@ -2896,11 +2896,11 @@ void AddressBook_MenuInit( void )
 	}
 }
 
-const char *AddressBook_MenuKey( int key )
+const char *AddressBook_MenuKey( int32_t key )
 {
 	if ( key == K_ESCAPE )
 	{
-		int index;
+		int32_t index;
 		char buffer[20];
 
 		for ( index = 0; index < NUM_ADDRESSBOOK_ENTRIES; index++ )
@@ -2948,7 +2948,7 @@ static menuaction_t		s_player_download_action;
 
 typedef struct
 {
-	int		nskins;
+	int32_t 	nskins;
 	char	**skindisplaynames;
 	char	displayname[MAX_DISPLAYNAME];
 	char	directory[MAX_QPATH];
@@ -2956,7 +2956,7 @@ typedef struct
 
 static playermodelinfo_s s_pmi[MAX_PLAYERMODELS];
 static char *s_pmnames[MAX_PLAYERMODELS];
-static int s_numplayermodels;
+static int32_t s_numplayermodels;
 
 
 void DownloadOptionsFunc( void *self )
@@ -2980,9 +2980,9 @@ static void ModelCallback( void *unused )
 	s_player_skin_box.curvalue = 0;
 }
 
-static void FreeFileList( char **list, int n )
+static void FreeFileList( char **list, int32_t n )
 {
-	int i;
+	int32_t i;
 
 	for ( i = 0; i < n; i++ )
 	{
@@ -2995,9 +2995,9 @@ static void FreeFileList( char **list, int n )
 	free( list );
 }
 
-static bool IconOfSkinExists( char *skin, char **tgafiles, int ntgafiles )
+static bool IconOfSkinExists( char *skin, char **tgafiles, int32_t ntgafiles )
 {
-	int i;
+	int32_t i;
 	char scratch[1024];
 
 	strcpy( scratch, skin );
@@ -3017,12 +3017,12 @@ static bool PlayerConfig_ScanDirectories( void )
 {
 	char findname[1024];
 	char scratch[1024];
-	int ndirs = 0, npms = 0;
+	int32_t ndirs = 0, npms = 0;
 	char **dirnames;
 	char *path = NULL;
-	int i;
+	int32_t i;
 
-	extern char **FS_ListFiles( char *, int *, unsigned, unsigned );
+	extern char **FS_ListFiles( char *, int32_t *, unsigned, unsigned );
 
 	s_numplayermodels = 0;
 
@@ -3050,12 +3050,12 @@ static bool PlayerConfig_ScanDirectories( void )
 
 	for ( i = 0; i < npms; i++ )
 	{
-		int k, s;
+		int32_t k, s;
 		char *a, *b, *c;
 		char **tganames;
 		char **skinnames;
-		int ntgafiles;
-		int nskins = 0;
+		int32_t ntgafiles;
+		int32_t nskins = 0;
 
 		if ( dirnames[i] == 0 )
 			continue;
@@ -3133,7 +3133,7 @@ static bool PlayerConfig_ScanDirectories( void )
 		s_pmi[s_numplayermodels].nskins = nskins;
 		s_pmi[s_numplayermodels].skindisplaynames = skinnames;
 
-		// make short name for the model
+		// make int16_t name for the model
 		a = strrchr( dirnames[i], '/' );
 		b = strrchr( dirnames[i], '\\' );
 
@@ -3155,7 +3155,7 @@ static bool PlayerConfig_ScanDirectories( void )
     return true;
 }
 
-static int pmicmpfnc( const void *_a, const void *_b )
+static int32_t pmicmpfnc( const void *_a, const void *_b )
 {
 	const playermodelinfo_s *a = ( const playermodelinfo_s * ) _a;
 	const playermodelinfo_s *b = ( const playermodelinfo_s * ) _b;
@@ -3184,10 +3184,10 @@ bool PlayerConfig_MenuInit( void )
 	extern cvar_t *skin;
 	char currentdirectory[1024];
 	char currentskin[1024];
-	int i = 0;
+	int32_t i = 0;
 
-	int currentdirectoryindex = 0;
-	int currentskinindex = 0;
+	int32_t currentdirectoryindex = 0;
+	int32_t currentskinindex = 0;
 
 	cvar_t *hand = Cvar_Get( "hand", "0", CVAR_USERINFO | CVAR_ARCHIVE );
 
@@ -3228,7 +3228,7 @@ bool PlayerConfig_MenuInit( void )
 		s_pmnames[i] = s_pmi[i].displayname;
 		if ( Q_stricmp( s_pmi[i].directory, currentdirectory ) == 0 )
 		{
-			int j;
+			int32_t j;
 
 			currentdirectoryindex = i;
 
@@ -3255,7 +3255,7 @@ bool PlayerConfig_MenuInit( void )
 	s_player_name_field.length	= 20;
 	s_player_name_field.visible_length = 20;
 	strcpy( s_player_name_field.buffer, name->string );
-	s_player_name_field.cursor = (int)strlen( name->string );
+	s_player_name_field.cursor = (int32_t)strlen( name->string );
 
 	s_player_model_title.generic.type = MTYPE_SEPARATOR;
 	s_player_model_title.generic.name = "^5Model";
@@ -3356,7 +3356,7 @@ void PlayerConfig_MenuDraw( void )
 
 	if ( s_pmi[s_player_model_box.curvalue].skindisplaynames )
 	{
-		static int yaw;
+		static int32_t yaw;
 		entity_t entity;
 
 		memset( &entity, 0, sizeof( entity ) );
@@ -3397,9 +3397,9 @@ void PlayerConfig_MenuDraw( void )
 	}
 }
 
-const char *PlayerConfig_MenuKey (int key)
+const char *PlayerConfig_MenuKey (int32_t key)
 {
-	int i;
+	int32_t i;
 
 	if ( key == K_ESCAPE )
 	{
@@ -3415,7 +3415,7 @@ const char *PlayerConfig_MenuKey (int key)
 
 		for ( i = 0; i < s_numplayermodels; i++ )
 		{
-			int j;
+			int32_t j;
 
 			for ( j = 0; j < s_pmi[i].nskins; j++ )
 			{
@@ -3452,7 +3452,7 @@ QUIT MENU
 =======================================================================
 */
 
-const char *M_Quit_Key (int key)
+const char *M_Quit_Key (int32_t key)
 {
 	switch (key)
 	{
@@ -3479,7 +3479,7 @@ const char *M_Quit_Key (int key)
 
 void M_Quit_Draw (void)
 {
-	int		w, h;
+	int32_t 	w, h;
 
 	re.DrawGetPicSize (&w, &h, "pics/quit");
 	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "pics/quit");
@@ -3533,7 +3533,7 @@ void M_Draw (void)
 	if (cls.key_dest != key_menu)
 		return;
 
-	// repaint everything next frame
+	// repaint32_t everything next frame
 	SCR_DirtyScreen ();
 
 	// dim everything behind it down
@@ -3561,7 +3561,7 @@ void M_Draw (void)
 M_Keydown
 =================
 */
-void M_Keydown (int key)
+void M_Keydown (int32_t key)
 {
 	const char *s;
 

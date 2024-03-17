@@ -108,7 +108,7 @@ DYNAMIC LIGHTS
 R_MarkLights
 =============
 */
-void R_MarkLights (dlight_t *light, int bit, mnode_t *node)
+void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node)
 {
 	cplane_t	*splitplane;
 	float		dist;
@@ -182,7 +182,7 @@ vec3_t			pointcolor;
 cplane_t		*lightplane;		// used as shadow plane
 vec3_t			lightspot;
 
-int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
+int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
 {
 	float		front, back, frac;
 	int			side;
@@ -192,7 +192,7 @@ int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 	int			s, t, ds, dt;
 	int			i;
 	mtexinfo_t	*tex;
-	byte		*lightmap;
+	uint8_t		*lightmap;
 	int			maps;
 	int			r;
 
@@ -208,7 +208,7 @@ int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 	side = front < 0;
 	
 	if ( (back < 0) == side)
-		return RecursiveLightPoint (node->children[side], start, end);
+		return RecursiveLightPoint32_t (node->children[side], start, end);
 	
 	frac = front / (front-back);
 	mid[0] = start[0] + (end[0] - start[0])*frac;
@@ -216,7 +216,7 @@ int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 	mid[2] = start[2] + (end[2] - start[2])*frac;
 	
 // go down front side	
-	r = RecursiveLightPoint (node->children[side], start, mid);
+	r = RecursiveLightPoint32_t (node->children[side], start, mid);
 	if (r >= 0)
 		return r;		// hit something
 		
@@ -280,7 +280,7 @@ int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 	}
 
 // go down back side
-	return RecursiveLightPoint (node->children[!side], mid, end);
+	return RecursiveLightPoint32_t (node->children[!side], mid, end);
 }
 
 /*
@@ -288,7 +288,7 @@ int RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 R_LightPoint
 ===============
 */
-void R_LightPoint (vec3_t p, vec3_t color)
+void R_LightPoint32_t (vec3_t p, vec3_t color)
 {
 	vec3_t		end;
 	float		r;
@@ -308,7 +308,7 @@ void R_LightPoint (vec3_t p, vec3_t color)
 	end[1] = p[1];
 	end[2] = p[2] - 2048;
 	
-	r = RecursiveLightPoint (r_worldmodel->nodes, p, end);
+	r = RecursiveLightPoint32_t (r_worldmodel->nodes, p, end);
 	
 	if (r == -1)
 	{
@@ -429,7 +429,7 @@ void R_AddDynamicLights (msurface_t *surf)
 */
 void R_SetCacheState( msurface_t *surf )
 {
-	int maps;
+	int32_t maps;
 
 	for (maps = 0 ; maps < MAXLIGHTMAPS && surf->styles[maps] != 255 ;
 		 maps++)
@@ -445,12 +445,12 @@ R_BuildLightMap
 Combine and scale multiple lightmaps into the floating format in blocklights
 ===============
 */
-void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
+void R_BuildLightMap (msurface_t *surf, uint8_t *dest, int32_t stride)
 {
 	int			smax, tmax;
 	int			r, g, b, a, max;
 	int			i, j, size;
-	byte		*lightmap;
+	uint8_t		*lightmap;
 	float		scale[4];
 	int			nummaps;
 	float		*bl;
@@ -468,7 +468,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 // set to full bright if no light data
 	if (!surf->samples)
 	{
-		int maps;
+		int32_t maps;
 
 		for (i=0 ; i<size*3 ; i++)
 			s_blocklights[i] = 255;
@@ -490,7 +490,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	// add all the lightmaps
 	if ( nummaps == 1 )
 	{
-		int maps;
+		int32_t maps;
 
 		for (maps = 0 ; maps < MAXLIGHTMAPS && surf->styles[maps] != 255 ;
 			 maps++)
@@ -525,7 +525,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	}
 	else
 	{
-		int maps;
+		int32_t maps;
 
 		memset( s_blocklights, 0, sizeof( s_blocklights[0] ) * size * 3 );
 

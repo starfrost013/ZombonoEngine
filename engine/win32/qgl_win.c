@@ -31,9 +31,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../ref_gl/gl_local.h"
 #include "glw_win.h"
 
-int   ( WINAPI * qwglChoosePixelFormat )(HDC, CONST PIXELFORMATDESCRIPTOR *);
-int   ( WINAPI * qwglDescribePixelFormat) (HDC, int, UINT, LPPIXELFORMATDESCRIPTOR);
-int   ( WINAPI * qwglGetPixelFormat)(HDC);
+int32_t   ( WINAPI * qwglChoosePixelFormat )(HDC, CONST PIXELFORMATDESCRIPTOR *);
+int32_t   ( WINAPI * qwglDescribePixelFormat) (HDC, int, UINT, LPPIXELFORMATDESCRIPTOR);
+int32_t   ( WINAPI * qwglGetPixelFormat)(HDC);
 BOOL  ( WINAPI * qwglSetPixelFormat)(HDC, int, CONST PIXELFORMATDESCRIPTOR *);
 BOOL  ( WINAPI * qwglSwapBuffers)(HDC);
 
@@ -53,9 +53,9 @@ BOOL  ( WINAPI * qwglUseFontOutlines)(HDC, DWORD, DWORD, DWORD, FLOAT,
 
 BOOL ( WINAPI * qwglDescribeLayerPlane)(HDC, int, int, UINT,
                                             LPLAYERPLANEDESCRIPTOR);
-int  ( WINAPI * qwglSetLayerPaletteEntries)(HDC, int, int, int,
+int32_t  ( WINAPI * qwglSetLayerPaletteEntries)(HDC, int, int, int,
                                                 CONST COLORREF *);
-int  ( WINAPI * qwglGetLayerPaletteEntries)(HDC, int, int, int,
+int32_t  ( WINAPI * qwglGetLayerPaletteEntries)(HDC, int, int, int,
                                                 COLORREF *);
 BOOL ( WINAPI * qwglRealizeLayerPalette)(HDC, int, BOOL);
 BOOL ( WINAPI * qwglSwapLayerBuffers)(HDC, UINT);
@@ -66,7 +66,7 @@ GLboolean ( APIENTRY * qglAreTexturesResident )(GLsizei n, const GLuint *texture
 void ( APIENTRY * qglArrayElement )(GLint i);
 void ( APIENTRY * qglBegin )(GLenum mode);
 void ( APIENTRY * qglBindTexture )(GLenum target, GLuint texture);
-void ( APIENTRY * qglBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap);
+void ( APIENTRY * qglBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLbyte *bitmap);
 void ( APIENTRY * qglBlendFunc )(GLenum sfactor, GLenum dfactor);
 void ( APIENTRY * qglCallList )(GLuint list);
 void ( APIENTRY * qglCallLists )(GLsizei n, GLenum type, const GLvoid *lists);
@@ -88,7 +88,7 @@ void ( APIENTRY * qglColor3iv )(const GLint *v);
 void ( APIENTRY * qglColor3s )(GLshort red, GLshort green, GLshort blue);
 void ( APIENTRY * qglColor3sv )(const GLshort *v);
 void ( APIENTRY * qglColor3ub )(GLubyte red, GLubyte green, GLubyte blue);
-void ( APIENTRY * qglColor3ubv )(const GLubyte *v);
+void ( APIENTRY * qglColor3ubv )(const GLbyte *v);
 void ( APIENTRY * qglColor3ui )(GLuint red, GLuint green, GLuint blue);
 void ( APIENTRY * qglColor3uiv )(const GLuint *v);
 void ( APIENTRY * qglColor3us )(GLushort red, GLushort green, GLushort blue);
@@ -104,7 +104,7 @@ void ( APIENTRY * qglColor4iv )(const GLint *v);
 void ( APIENTRY * qglColor4s )(GLshort red, GLshort green, GLshort blue, GLshort alpha);
 void ( APIENTRY * qglColor4sv )(const GLshort *v);
 void ( APIENTRY * qglColor4ub )(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
-void ( APIENTRY * qglColor4ubv )(const GLubyte *v);
+void ( APIENTRY * qglColor4ubv )(const GLbyte *v);
 void ( APIENTRY * qglColor4ui )(GLuint red, GLuint green, GLuint blue, GLuint alpha);
 void ( APIENTRY * qglColor4uiv )(const GLuint *v);
 void ( APIENTRY * qglColor4us )(GLushort red, GLushort green, GLushort blue, GLushort alpha);
@@ -176,8 +176,8 @@ void ( APIENTRY * qglGetPixelMapfv )(GLenum map, GLfloat *values);
 void ( APIENTRY * qglGetPixelMapuiv )(GLenum map, GLuint *values);
 void ( APIENTRY * qglGetPixelMapusv )(GLenum map, GLushort *values);
 void ( APIENTRY * qglGetPointerv )(GLenum pname, GLvoid* *params);
-void ( APIENTRY * qglGetPolygonStipple )(GLubyte *mask);
-const GLubyte * ( APIENTRY * qglGetString )(GLenum name);
+void ( APIENTRY * qglGetPolygonStipple )(GLbyte *mask);
+const GLbyte * ( APIENTRY * qglGetString )(GLenum name);
 void ( APIENTRY * qglGetTexEnvfv )(GLenum target, GLenum pname, GLfloat *params);
 void ( APIENTRY * qglGetTexEnviv )(GLenum target, GLenum pname, GLint *params);
 void ( APIENTRY * qglGetTexGendv )(GLenum coord, GLenum pname, GLdouble *params);
@@ -200,7 +200,7 @@ void ( APIENTRY * qglIndexiv )(const GLint *c);
 void ( APIENTRY * qglIndexs )(GLshort c);
 void ( APIENTRY * qglIndexsv )(const GLshort *c);
 void ( APIENTRY * qglIndexub )(GLubyte c);
-void ( APIENTRY * qglIndexubv )(const GLubyte *c);
+void ( APIENTRY * qglIndexubv )(const GLbyte *c);
 void ( APIENTRY * qglInitNames )(void);
 void ( APIENTRY * qglInterleavedArrays )(GLenum format, GLsizei stride, const GLvoid *pointer);
 GLboolean ( APIENTRY * qglIsEnabled )(GLenum cap);
@@ -262,7 +262,7 @@ void ( APIENTRY * qglPixelZoom )(GLfloat xfactor, GLfloat yfactor);
 void ( APIENTRY * qglPointSize )(GLfloat size);
 void ( APIENTRY * qglPolygonMode )(GLenum face, GLenum mode);
 void ( APIENTRY * qglPolygonOffset )(GLfloat factor, GLfloat units);
-void ( APIENTRY * qglPolygonStipple )(const GLubyte *mask);
+void ( APIENTRY * qglPolygonStipple )(const GLbyte *mask);
 void ( APIENTRY * qglPopAttrib )(void);
 void ( APIENTRY * qglPopClientAttrib )(void);
 void ( APIENTRY * qglPopMatrix )(void);
@@ -400,9 +400,9 @@ void ( APIENTRY * qglViewport )(GLint x, GLint y, GLsizei width, GLsizei height)
 void ( APIENTRY * qglLockArraysEXT)( int, int);
 void ( APIENTRY * qglUnlockArraysEXT) ( void );
 
-BOOL ( WINAPI * qwglSwapIntervalEXT)( int interval );
-BOOL ( WINAPI * qwglGetDeviceGammaRampEXT)( unsigned char *, unsigned char *, unsigned char * );
-BOOL ( WINAPI * qwglSetDeviceGammaRampEXT)( const unsigned char *, const unsigned char *, const unsigned char * );
+BOOL ( WINAPI * qwglSwapIntervalEXT)( int32_t interval );
+BOOL ( WINAPI * qwglGetDeviceGammaRampEXT)( uint8_t *, uint8_t *, uint8_t * );
+BOOL ( WINAPI * qwglSetDeviceGammaRampEXT)( const uint8_t *, const uint8_t *, const uint8_t * );
 void ( APIENTRY * qglPointParameterfEXT)( GLenum param, GLfloat value );
 void ( APIENTRY * qglPointParameterfvEXT)( GLenum param, const GLfloat *value );
 void ( APIENTRY * qglSelectTextureSGIS)( GLenum );
@@ -416,7 +416,7 @@ GLboolean ( APIENTRY * dllAreTexturesResident )(GLsizei n, const GLuint *texture
 static void ( APIENTRY * dllArrayElement )(GLint i);
 static void ( APIENTRY * dllBegin )(GLenum mode);
 static void ( APIENTRY * dllBindTexture )(GLenum target, GLuint texture);
-static void ( APIENTRY * dllBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap);
+static void ( APIENTRY * dllBitmap )(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLbyte *bitmap);
 static void ( APIENTRY * dllBlendFunc )(GLenum sfactor, GLenum dfactor);
 static void ( APIENTRY * dllCallList )(GLuint list);
 static void ( APIENTRY * dllCallLists )(GLsizei n, GLenum type, const GLvoid *lists);
@@ -438,7 +438,7 @@ static void ( APIENTRY * dllColor3iv )(const GLint *v);
 static void ( APIENTRY * dllColor3s )(GLshort red, GLshort green, GLshort blue);
 static void ( APIENTRY * dllColor3sv )(const GLshort *v);
 static void ( APIENTRY * dllColor3ub )(GLubyte red, GLubyte green, GLubyte blue);
-static void ( APIENTRY * dllColor3ubv )(const GLubyte *v);
+static void ( APIENTRY * dllColor3ubv )(const GLbyte *v);
 static void ( APIENTRY * dllColor3ui )(GLuint red, GLuint green, GLuint blue);
 static void ( APIENTRY * dllColor3uiv )(const GLuint *v);
 static void ( APIENTRY * dllColor3us )(GLushort red, GLushort green, GLushort blue);
@@ -454,7 +454,7 @@ static void ( APIENTRY * dllColor4iv )(const GLint *v);
 static void ( APIENTRY * dllColor4s )(GLshort red, GLshort green, GLshort blue, GLshort alpha);
 static void ( APIENTRY * dllColor4sv )(const GLshort *v);
 static void ( APIENTRY * dllColor4ub )(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
-static void ( APIENTRY * dllColor4ubv )(const GLubyte *v);
+static void ( APIENTRY * dllColor4ubv )(const GLbyte *v);
 static void ( APIENTRY * dllColor4ui )(GLuint red, GLuint green, GLuint blue, GLuint alpha);
 static void ( APIENTRY * dllColor4uiv )(const GLuint *v);
 static void ( APIENTRY * dllColor4us )(GLushort red, GLushort green, GLushort blue, GLushort alpha);
@@ -526,8 +526,8 @@ static void ( APIENTRY * dllGetPixelMapfv )(GLenum map, GLfloat *values);
 static void ( APIENTRY * dllGetPixelMapuiv )(GLenum map, GLuint *values);
 static void ( APIENTRY * dllGetPixelMapusv )(GLenum map, GLushort *values);
 static void ( APIENTRY * dllGetPointerv )(GLenum pname, GLvoid* *params);
-static void ( APIENTRY * dllGetPolygonStipple )(GLubyte *mask);
-const GLubyte * ( APIENTRY * dllGetString )(GLenum name);
+static void ( APIENTRY * dllGetPolygonStipple )(GLbyte *mask);
+const GLbyte * ( APIENTRY * dllGetString )(GLenum name);
 static void ( APIENTRY * dllGetTexEnvfv )(GLenum target, GLenum pname, GLfloat *params);
 static void ( APIENTRY * dllGetTexEnviv )(GLenum target, GLenum pname, GLint *params);
 static void ( APIENTRY * dllGetTexGendv )(GLenum coord, GLenum pname, GLdouble *params);
@@ -550,7 +550,7 @@ static void ( APIENTRY * dllIndexiv )(const GLint *c);
 static void ( APIENTRY * dllIndexs )(GLshort c);
 static void ( APIENTRY * dllIndexsv )(const GLshort *c);
 static void ( APIENTRY * dllIndexub )(GLubyte c);
-static void ( APIENTRY * dllIndexubv )(const GLubyte *c);
+static void ( APIENTRY * dllIndexubv )(const GLbyte *c);
 static void ( APIENTRY * dllInitNames )(void);
 static void ( APIENTRY * dllInterleavedArrays )(GLenum format, GLsizei stride, const GLvoid *pointer);
 GLboolean ( APIENTRY * dllIsEnabled )(GLenum cap);
@@ -612,7 +612,7 @@ static void ( APIENTRY * dllPixelZoom )(GLfloat xfactor, GLfloat yfactor);
 static void ( APIENTRY * dllPointSize )(GLfloat size);
 static void ( APIENTRY * dllPolygonMode )(GLenum face, GLenum mode);
 static void ( APIENTRY * dllPolygonOffset )(GLfloat factor, GLfloat units);
-static void ( APIENTRY * dllPolygonStipple )(const GLubyte *mask);
+static void ( APIENTRY * dllPolygonStipple )(const GLbyte *mask);
 static void ( APIENTRY * dllPopAttrib )(void);
 static void ( APIENTRY * dllPopClientAttrib )(void);
 static void ( APIENTRY * dllPopMatrix )(void);
@@ -783,7 +783,7 @@ static void APIENTRY logBindTexture(GLenum target, GLuint texture)
 	dllBindTexture( target, texture );
 }
 
-static void APIENTRY logBitmap(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap)
+static void APIENTRY logBitmap(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLbyte *bitmap)
 {
 	fprintf( glw_state.log_fp, "glBitmap\n" );
 	dllBitmap( width, height, xorig, yorig, xmove, ymove, bitmap );
@@ -915,7 +915,7 @@ static void APIENTRY logColor3ub(GLubyte red, GLubyte green, GLubyte blue)
 	dllColor3ub( red, green, blue );
 }
 
-static void APIENTRY logColor3ubv(const GLubyte *v)
+static void APIENTRY logColor3ubv(const GLbyte *v)
 {
 	fprintf( glw_state.log_fp, "glColor3ubv\n" );
 	dllColor3ubv( v );
@@ -1004,7 +1004,7 @@ static void APIENTRY logColor4ub(GLubyte red, GLubyte green, GLubyte blue, GLuby
 	SIG( "glColor4b" );
 	dllColor4b( red, green, blue, alpha );
 }
-static void APIENTRY logColor4ubv(const GLubyte *v)
+static void APIENTRY logColor4ubv(const GLbyte *v)
 {
 	SIG( "glColor4ubv" );
 	dllColor4ubv( v );
@@ -1423,13 +1423,13 @@ static void APIENTRY logGetPointerv(GLenum pname, GLvoid* *params)
 	dllGetPointerv( pname, params );
 }
 
-static void APIENTRY logGetPolygonStipple(GLubyte *mask)
+static void APIENTRY logGetPolygonStipple(GLbyte *mask)
 {
 	SIG( "glGetPolygonStipple" );
 	dllGetPolygonStipple( mask );
 }
 
-static const GLubyte * APIENTRY logGetString(GLenum name)
+static const GLbyte * APIENTRY logGetString(GLenum name)
 {
 	SIG( "glGetString" );
 	return dllGetString( name );
@@ -1566,7 +1566,7 @@ static void APIENTRY logIndexub(GLubyte c)
 	dllIndexub( c );
 }
 
-static void APIENTRY logIndexubv(const GLubyte *c)
+static void APIENTRY logIndexubv(const GLbyte *c)
 {
 	SIG( "glIndexubv" );
 	dllIndexubv( c );
@@ -1924,7 +1924,7 @@ static void APIENTRY logPolygonOffset(GLfloat factor, GLfloat units)
 	SIG( "glPolygonOffset" );
 	dllPolygonOffset( factor, units );
 }
-static void APIENTRY logPolygonStipple(const GLubyte *mask )
+static void APIENTRY logPolygonStipple(const GLbyte *mask )
 {
 	SIG( "glPolygonStipple" );
 	dllPolygonStipple( mask );
@@ -3558,7 +3558,7 @@ void GLimp_EnableLogging( bool enable )
 		qglGetTexLevelParameteriv    = 	logGetTexLevelParameteriv    ;
 		qglGetTexParameterfv         = 	logGetTexParameterfv         ;
 		qglGetTexParameteriv         = 	logGetTexParameteriv         ;
-		qglHint                      = 	logHint                      ;
+		qglHint						 = 	logHint                      ;
 		qglIndexMask                 = 	logIndexMask                 ;
 		qglIndexPointer              = 	logIndexPointer              ;
 		qglIndexd                    = 	logIndexd                    ;

@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern	struct model_s	*cl_mod_powerscreen;
 
 //PGM
-int	vidref_val;
+int32_t vidref_val;
 //PGM
 
 /*
@@ -43,12 +43,12 @@ CL_ParseEntityBits
 Returns the entity number and the header bits
 =================
 */
-int	bitcounts[32];	/// just for protocol profiling
-int CL_ParseEntityBits (unsigned *bits)
+int32_t bitcounts[32];	/// just for protocol profiling
+int32_t CL_ParseEntityBits (unsigned *bits)
 {
 	unsigned	b, total;
-	int			i;
-	int			number;
+	int32_t 		i;
+	int32_t 		number;
 
 	total = MSG_ReadByte (&net_message);
 	if (total & U_MOREBITS1)
@@ -89,7 +89,7 @@ CL_ParseDelta
 Can go from either a baseline or a previous packet_entity
 ==================
 */
-void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int number, int bits)
+void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int32_t number, int32_t bits)
 {
 	// set everything to the state we are delta'ing from
 	*to = *from;
@@ -169,7 +169,7 @@ Parses deltas from the given base and adds the resulting entity
 to the current frame
 ==================
 */
-void CL_DeltaEntity (frame_t *frame, int newnum, entity_state_t *old, int bits)
+void CL_DeltaEntity (frame_t *frame, int32_t newnum, entity_state_t *old, int32_t bits)
 {
 	centity_t	*ent;
 	entity_state_t	*state;
@@ -232,10 +232,10 @@ rest of the data stream.
 */
 void CL_ParsePacketEntities (frame_t *oldframe, frame_t *newframe)
 {
-	int			newnum;
-	int			bits;
+	int32_t 		newnum;
+	int32_t 		bits;
 	entity_state_t	*oldstate = NULL;
-	int			oldindex, oldnum;
+	int32_t 		oldindex, oldnum;
 
 	newframe->parse_entities = cl.parse_entities;
 	newframe->num_entities = 0;
@@ -359,10 +359,10 @@ CL_ParsePlayerstate
 */
 void CL_ParsePlayerstate (frame_t *oldframe, frame_t *newframe)
 {
-	int			flags;
+	int32_t 		flags;
 	player_state_t	*state;
-	int			i;
-	int			statbits;
+	int32_t 		i;
+	int32_t 		statbits;
 
 	state = &newframe->playerstate;
 
@@ -484,7 +484,7 @@ CL_FireEntityEvents
 void CL_FireEntityEvents (frame_t *frame)
 {
 	entity_state_t		*s1;
-	int					pnum, num;
+	int32_t 				pnum, num;
 
 	for (pnum = 0 ; pnum<frame->num_entities ; pnum++)
 	{
@@ -507,8 +507,8 @@ CL_ParseFrame
 */
 void CL_ParseFrame (void)
 {
-	int			cmd;
-	int			len;
+	int32_t 		cmd;
+	int32_t 		len;
 	frame_t		*old;
 
 	memset (&cl.frame, 0, sizeof(cl.frame));
@@ -611,7 +611,7 @@ INTERPOLATE BETWEEN FRAMES TO GET RENDERING PARMS
 
 struct model_s *S_RegisterSexedModel (entity_state_t *ent, char *base)
 {
-	int				n;
+	int32_t 			n;
 	char			*p;
 	struct model_s	*mdl;
 	char			model[MAX_QPATH];
@@ -669,12 +669,12 @@ void CL_AddPacketEntities (frame_t *frame)
 	entity_t			ent;
 	entity_state_t		*s1;
 	float				autorotate;
-	int					i;
-	int					pnum;
+	int32_t 			i;
+	int32_t 			pnum;
 	centity_t			*cent;
-	int					autoanim;
+	int32_t 			autoanim;
 	clientinfo_t		*ci;
-	unsigned int		effects, renderfx;
+	uint32_t			effects, renderfx;
 
 	// bonus items rotate at a fixed rate
 	autorotate = anglemod(cl.time/10);
@@ -1020,7 +1020,7 @@ void CL_AddPacketEntities (frame_t *frame)
 			}
 			else if (effects & EF_BFG)
 			{
-				static int bfg_lightramp[6] = {300, 400, 600, 300, 150, 75};
+				static int32_t bfg_lightramp[6] = {300, 400, 600, 300, 150, 75};
 
 				if (effects & EF_ANIM_ALLFAST)
 				{
@@ -1129,7 +1129,7 @@ CL_AddViewWeapon
 void CL_AddViewWeapon (player_state_t *ps, player_state_t *ops)
 {
 	entity_t	gun;		// view model
-	int			i;
+	int32_t 		i;
 
 	// allow the gun to be completely removed
 	if (!cl_gun->value)
@@ -1183,7 +1183,7 @@ Sets cl.refdef view values
 */
 void CL_CalcViewValues (void)
 {
-	int			i;
+	int32_t 		i;
 	float		lerp, backlerp;
 	centity_t	*ent;
 	frame_t		*oldframe;
@@ -1316,7 +1316,7 @@ CL_GetEntitySoundOrigin
 Called to get the sound spatialization origin
 ===============
 */
-void CL_GetEntitySoundOrigin (int ent, vec3_t org)
+void CL_GetEntitySoundOrigin (int32_t ent, vec3_t org)
 {
 	centity_t	*old;
 

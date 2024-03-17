@@ -31,11 +31,11 @@ typedef struct
 {
 	exptype_t	type;
 	entity_t	ent;
-	int		frames;
+	int32_t 	frames;
 	float		light;
 	vec3_t		lightcolor;
 	float		start;
-	int		baseframe;
+	int32_t 	baseframe;
 } explosion_t;
 
 
@@ -47,10 +47,10 @@ explosion_t	cl_explosions[MAX_EXPLOSIONS];
 #define	MAX_BEAMS	32
 typedef struct
 {
-	int		entity;
-	int		dest_entity;
+	int32_t 	entity;
+	int32_t 	dest_entity;
 	struct model_s	*model;
-	int		endtime;
+	int32_t 	endtime;
 	vec3_t	offset;
 	vec3_t	start, end;
 } beam_t;
@@ -63,7 +63,7 @@ beam_t		cl_playerbeams[MAX_BEAMS];
 typedef struct
 {
 	entity_t	ent;
-	int			endtime;
+	int32_t 		endtime;
 } laser_t;
 laser_t		cl_lasers[MAX_LASERS];
 
@@ -112,7 +112,7 @@ CL_RegisterTEntSounds
 */
 void CL_RegisterTEntSounds (void)
 {
-	int		i;
+	int32_t 	i;
 	char	name[MAX_QPATH];
 
 	cl_sfx_ric1 = S_RegisterSound ("world/ric1.wav");
@@ -198,9 +198,9 @@ CL_AllocExplosion
 */
 explosion_t *CL_AllocExplosion (void)
 {
-	int		i;
-	int		time;
-	int		index;
+	int32_t 	i;
+	int32_t 	time;
+	int32_t 	index;
 	
 	for (i=0 ; i<MAX_EXPLOSIONS ; i++)
 	{
@@ -255,12 +255,12 @@ void CL_SmokeAndFlash(vec3_t origin)
 CL_ParseBeam
 =================
 */
-int CL_ParseBeam (struct model_s *model)
+int32_t CL_ParseBeam (struct model_s *model)
 {
-	int		ent;
+	int32_t 	ent;
 	vec3_t	start, end;
 	beam_t	*b;
-	int		i;
+	int32_t 	i;
 	
 	ent = MSG_ReadShort (&net_message);
 	
@@ -303,12 +303,12 @@ int CL_ParseBeam (struct model_s *model)
 CL_ParseBeam2
 =================
 */
-int CL_ParseBeam2 (struct model_s *model)
+int32_t CL_ParseBeam2 (struct model_s *model)
 {
-	int		ent;
+	int32_t 	ent;
 	vec3_t	start, end, offset;
 	beam_t	*b;
-	int		i;
+	int32_t 	i;
 	
 	ent = MSG_ReadShort (&net_message);
 	
@@ -357,12 +357,12 @@ CL_ParsePlayerBeam
   - adds to the cl_playerbeam array instead of the cl_beams array
 =================
 */
-int CL_ParsePlayerBeam (struct model_s *model)
+int32_t CL_ParsePlayerBeam (struct model_s *model)
 {
-	int		ent;
+	int32_t 	ent;
 	vec3_t	start, end, offset;
 	beam_t	*b;
-	int		i;
+	int32_t 	i;
 	
 	ent = MSG_ReadShort (&net_message);
 	
@@ -414,12 +414,12 @@ int CL_ParsePlayerBeam (struct model_s *model)
 CL_ParseLightning
 =================
 */
-int CL_ParseLightning (struct model_s *model)
+int32_t CL_ParseLightning (struct model_s *model)
 {
-	int		srcEnt, destEnt;
+	int32_t 	srcEnt, destEnt;
 	vec3_t	start, end;
 	beam_t	*b;
-	int		i;
+	int32_t 	i;
 	
 	srcEnt = MSG_ReadShort (&net_message);
 	destEnt = MSG_ReadShort (&net_message);
@@ -467,12 +467,12 @@ int CL_ParseLightning (struct model_s *model)
 CL_ParseLaser
 =================
 */
-void CL_ParseLaser (int colors)
+void CL_ParseLaser (int32_t colors)
 {
 	vec3_t	start;
 	vec3_t	end;
 	laser_t	*l;
-	int		i;
+	int32_t 	i;
 
 	MSG_ReadPos (&net_message, start);
 	MSG_ReadPos (&net_message, end);
@@ -511,14 +511,14 @@ static vec4_t splash_color[] = {
 
 void CL_ParseTEnt (void)
 {
-	int		type;
+	int32_t 	type;
 	vec3_t	pos, pos2, dir;
 	explosion_t	*ex;
-	int		cnt;
+	int32_t 	cnt;
 	vec4_t	color;
-	int		r;
-	int		ent;
-	int		magnitude;
+	int32_t 	r;
+	int32_t 	ent;
+	int32_t 	magnitude;
 
 	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
 	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
@@ -853,7 +853,7 @@ CL_AddBeams
 */
 void CL_AddBeams (void)
 {
-	int			i,j;
+	int32_t 		i,j;
 	beam_t		*b;
 	vec3_t		dist, org;
 	float		d;
@@ -947,7 +947,7 @@ CL_AddPlayerBeams
 */
 void CL_AddPlayerBeams (void)
 {
-	int			i,j;
+	int32_t 		i,j;
 	beam_t		*b;
 	vec3_t		dist, org;
 	float		d;
@@ -955,7 +955,7 @@ void CL_AddPlayerBeams (void)
 	float		yaw, pitch;
 	float		forward;
 	float		len, steps;
-	int			framenum = 0;
+	int32_t 		framenum = 0;
 	float		model_length;
 	
 	float		hand_multiplier;
@@ -1078,10 +1078,10 @@ CL_AddExplosions
 void CL_AddExplosions (void)
 {
 	entity_t	*ent;
-	int			i;
+	int32_t 		i;
 	explosion_t	*ex;
 	float		frac;
-	int			f;
+	int32_t 		f;
 
 	memset (&ent, 0, sizeof(ent));
 
@@ -1184,7 +1184,7 @@ CL_AddLasers
 void CL_AddLasers (void)
 {
 	laser_t		*l;
-	int			i;
+	int32_t 		i;
 
 	for (i=0, l=cl_lasers ; i< MAX_LASERS ; i++, l++)
 	{

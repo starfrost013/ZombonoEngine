@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_ui_eventhandling.c : Split UI Event Handling from UI Code (December 27, 2023)
 #include "client.h"
 
-bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y))
+bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y))
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
@@ -42,7 +42,7 @@ bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, 
 	return true;
 }
 
-bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn))
+bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn))
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
 
@@ -62,15 +62,15 @@ bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn))
 	return true;
 }
 
-void UI_HandleEventOnClick(int btn, int x, int y)
+void UI_HandleEventOnClick(int32_t btn, int32_t x, int32_t y)
 {
 	if (current_ui == NULL) return;
 
-	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
@@ -100,13 +100,13 @@ void UI_HandleEventOnClick(int btn, int x, int y)
 
 }
 
-void UI_HandleEventOnKeyDown(int btn)
+void UI_HandleEventOnKeyDown(int32_t btn)
 {
-	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 

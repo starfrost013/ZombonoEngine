@@ -42,7 +42,7 @@ float		scr_conlines;		// 0.0 to 1.0 lines of console to display
 
 bool	scr_initialized;		// ready to draw
 
-int			scr_draw_loading;
+int32_t 		scr_draw_loading;
 
 vrect_t		scr_vrect;		// position of render window on screen
 
@@ -62,13 +62,13 @@ extern cvar_t	*vid_ref;
 
 typedef struct
 {
-	int		x1, y1, x2, y2;
+	int32_t 	x1, y1, x2, y2;
 } dirty_t;
 
 dirty_t		scr_dirty, scr_old_dirty[2];
 
 char		crosshair_pic[MAX_QPATH];
-int			crosshair_width, crosshair_height;
+int32_t 		crosshair_width, crosshair_height;
 
 void SCR_TimeRefresh_f (void);
 void SCR_Loading_f (void);
@@ -91,9 +91,9 @@ A new packet was just parsed
 */
 void CL_AddNetgraph (void)
 {
-	int		i;
-	int		in;
-	int		ping;
+	int32_t 	i;
+	int32_t 	in;
+	int32_t 	ping;
 
 	// if using the debuggraph for something else, don't
 	// add the net lines
@@ -122,7 +122,7 @@ typedef struct
 	vec_t   color[4];
 } graphsamp_t;
 
-static	int			current;
+static	int32_t 		current;
 static	graphsamp_t	values[1024];
 
 /*
@@ -130,7 +130,7 @@ static	graphsamp_t	values[1024];
 SCR_DebugGraph
 ==============
 */
-void SCR_DebugGraph (float value, int r, int g, int b, int a)
+void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	values[current & 1023].value = value;
 	values[current & 1023].color[0] = r;
@@ -147,7 +147,7 @@ SCR_DrawDebugGraph
 */
 void SCR_DrawDebugGraph (void)
 {
-	int		a, x, y, w, i, h;
+	int32_t 	a, x, y, w, i, h;
 	float	v;
 	vec_t	color[4];
 
@@ -168,8 +168,8 @@ void SCR_DrawDebugGraph (void)
 		v = v*scr_graphscale->value + scr_graphshift->value;
 		
 		if (v < 0)
-			v += scr_graphheight->value * (1+(int)(-v/scr_graphheight->value));
-		h = (int)v % (int)scr_graphheight->value;
+			v += scr_graphheight->value * (1+(int32_t)(-v/scr_graphheight->value));
+		h = (int32_t)v % (int32_t)scr_graphheight->value;
 		re.DrawFill (x+w-1-a, y - h, 1,	h, values[i].color[0], values[i].color[1], values[i].color[2], values[i].color[3]);
 	}
 }
@@ -185,8 +185,8 @@ CENTER PRINTING
 char		scr_centerstring[1024];
 float		scr_centertime_start;	// for slow victory printing
 float		scr_centertime_off;
-int			scr_center_lines;
-int			scr_erase_center;
+int32_t 		scr_center_lines;
+int32_t 		scr_erase_center;
 
 /*
 ==============
@@ -196,11 +196,11 @@ Called for important messages that should stay in the center of the screen
 for a few moments
 ==============
 */
-void SCR_CenterPrint (char *str)
+void SCR_CenterPrint32_t (char *str)
 {
 	char	*s;
 	char	line[64];
-	int		i, j, l;
+	int32_t 	i, j, l;
 
 	strncpy (scr_centerstring, str, sizeof(scr_centerstring)-1);
 	scr_centertime_off = scr_centertime->value;
@@ -254,11 +254,11 @@ void SCR_CenterPrint (char *str)
 void SCR_DrawCenterString (void)
 {
 	char	*start;
-	int		l;
-	int		j;
-	int		x, y;
-	int		remaining;
-	int		size_x = 0, size_y = 0;
+	int32_t 	l;
+	int32_t 	j;
+	int32_t 	x, y;
+	int32_t 	remaining;
+	int32_t 	size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 // the finale prints the characters one at a time
 	remaining = 9999;
@@ -288,13 +288,13 @@ void SCR_DrawCenterString (void)
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
 		x = (viddef.width - size_x*vid_hudscale->value)/2;
-		SCR_AddDirtyPoint (x, y);
+		SCR_AddDirtyPoint32_t (x, y);
 		Text_Draw(cl_system_font->string, x, y, start);
 
 		// restore original character
 		start[l] = temp;
 
-		SCR_AddDirtyPoint (x, y+system_font_ptr->line_height*vid_hudscale->value);
+		SCR_AddDirtyPoint32_t (x, y+system_font_ptr->line_height*vid_hudscale->value);
 			
 		y += system_font_ptr->line_height*vid_hudscale->value;
 
@@ -328,7 +328,7 @@ Sets scr_vrect, the coordinates of the rendered window
 */
 static void SCR_CalcVrect (void)
 {
-	int		size;
+	int32_t 	size;
 
 	// bound viewsize
 	if (scr_viewsize->value < 40)
@@ -461,7 +461,7 @@ SCR_DrawPause
 */
 void SCR_DrawPause (void)
 {
-	int		w, h;
+	int32_t 	w, h;
 
 	if (!scr_showpause->value)		// turn off for screenshots
 		return;
@@ -480,7 +480,7 @@ SCR_DrawLoading
 */
 void SCR_DrawLoading (void)
 {
-	int		w, h;
+	int32_t 	w, h;
 		
 	if (!scr_draw_loading)
 		return;
@@ -610,7 +610,7 @@ void SCR_Loading_f (void)
 SCR_TimeRefresh_f
 ================
 */
-int entitycmpfnc( const entity_t *a, const entity_t *b )
+int32_t entitycmpfnc( const entity_t *a, const entity_t *b )
 {
 	/*
 	** all other models are sorted by model then skin
@@ -627,8 +627,8 @@ int entitycmpfnc( const entity_t *a, const entity_t *b )
 
 void SCR_TimeRefresh_f (void)
 {
-	int		i;
-	int		start, stop;
+	int32_t 	i;
+	int32_t 	start, stop;
 	float	time;
 
 	if ( cls.state != ca_active )
@@ -668,7 +668,7 @@ void SCR_TimeRefresh_f (void)
 SCR_AddDirtyPoint
 =================
 */
-void SCR_AddDirtyPoint (int x, int y)
+void SCR_AddDirtyPoint32_t (int32_t x, int32_t y)
 {
 	if (x < scr_dirty.x1)
 		scr_dirty.x1 = x;
@@ -682,8 +682,8 @@ void SCR_AddDirtyPoint (int x, int y)
 
 void SCR_DirtyScreen (void)
 {
-	SCR_AddDirtyPoint (0, 0);
-	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
+	SCR_AddDirtyPoint32_t (0, 0);
+	SCR_AddDirtyPoint32_t (viddef.width-1, viddef.height-1);
 }
 
 /*
@@ -743,9 +743,9 @@ SizeHUDString
 Allow embedded \n in the string
 ================
 */
-void SizeHUDString (char *string, int *w, int *h)
+void SizeHUDString (char *string, int32_t *w, int32_t *h)
 {
-	int		lines, width, current;
+	int32_t 	lines, width, current;
 
 	lines = 1;
 	width = 0;
@@ -771,12 +771,12 @@ void SizeHUDString (char *string, int *w, int *h)
 	*h = lines * 8 * vid_hudscale->value;
 }
 
-void DrawCenteredString (char *string, int x, int y, int centerwidth)
+void DrawCenteredString (char *string, int32_t x, int32_t y, int32_t centerwidth)
 {
-	int		margin;
+	int32_t 	margin;
 	char	line[1024];
-	int		width;
-	int		i;
+	int32_t 	width;
+	int32_t 	i;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	margin = x;
@@ -816,11 +816,11 @@ void DrawCenteredString (char *string, int x, int y, int centerwidth)
 SCR_DrawField
 ==============
 */
-void SCR_DrawField (int x, int y, int color, int width, int value)
+void SCR_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t value)
 {
 	char	num[16], *ptr;
-	int		l;
-	int		frame;
+	int32_t 	l;
+	int32_t 	frame;
 
 	if (width < 1)
 		return;
@@ -829,11 +829,11 @@ void SCR_DrawField (int x, int y, int color, int width, int value)
 	if (width > 5)
 		width = 5;
 
-	SCR_AddDirtyPoint (x, y);
-	SCR_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
+	SCR_AddDirtyPoint32_t (x, y);
+	SCR_AddDirtyPoint32_t (x+width*CHAR_WIDTH+2, y+23);
 
 	Com_sprintf (num, sizeof(num), "%i", value);
-	l = (int)strlen(num);
+	l = (int32_t)strlen(num);
 	if (l > width)
 		l = width;
 	x += 2 + CHAR_WIDTH*(width - l);
@@ -863,7 +863,7 @@ Allows rendering code to cache all needed sbar graphics
 */
 void SCR_TouchPics (void)
 {
-	int		i, j;
+	int32_t 	i, j;
 
 	for (i=0 ; i<2 ; i++)
 		for (j=0 ; j<11 ; j++)
@@ -876,14 +876,14 @@ void SCR_TouchPics (void)
 		if (crosshair->value > 3 || crosshair->value < 0)
 			crosshair->value = 3;
 
-		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "pics/ch%i", (int)(crosshair->value));
+		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "pics/ch%i", (int32_t)(crosshair->value));
 		re.DrawGetPicSize (&crosshair_width, &crosshair_height, crosshair_pic);
 
 		// remove scaling - it will be applied during draw with proper screen centering
 		if (scale->value > 1)
 		{
-			crosshair_width /= (int)scale->value;
-			crosshair_height /= (int)scale->value;
+			crosshair_width /= (int32_t)scale->value;
+			crosshair_height /= (int32_t)scale->value;
 		}
 
 		if (!crosshair_width)
@@ -899,11 +899,11 @@ SCR_ExecuteLayoutString
 */
 void SCR_ExecuteLayoutString (char *s)
 {
-	int		x, y;
-	int		value;
+	int32_t 	x, y;
+	int32_t 	value;
 	char	*token;
-	int		width;
-	int		index;
+	int32_t 	width;
+	int32_t 	index;
 	clientinfo_t	*ci;
 
 	if (cls.state != ca_active || !cl.refresh_prepped)
@@ -965,8 +965,8 @@ void SCR_ExecuteLayoutString (char *s)
 				Com_Error (ERR_DROP, "Pic >= MAX_IMAGES");
 			if (cl.configstrings[CS_IMAGES+value])
 			{
-				SCR_AddDirtyPoint (x, y);
-				SCR_AddDirtyPoint (x+23, y+23);
+				SCR_AddDirtyPoint32_t (x, y);
+				SCR_AddDirtyPoint32_t (x+23, y+23);
 				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value]);
 			}
 			continue;
@@ -975,8 +975,8 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "picn"))
 		{	// draw a pic from a name
 			token = COM_Parse (&s);
-			SCR_AddDirtyPoint (x, y);
-			SCR_AddDirtyPoint (x+23, y+23);
+			SCR_AddDirtyPoint32_t (x, y);
+			SCR_AddDirtyPoint32_t (x+23, y+23);
 			re.DrawPic (x, y, token);
 			continue;
 		}
@@ -993,7 +993,7 @@ void SCR_ExecuteLayoutString (char *s)
 
 		if (!strcmp(token, "hnum"))
 		{	// health number
-			int		color;
+			int32_t 	color;
 
 			width = 3;
 			value = cl.frame.playerstate.stats[STAT_HEALTH];
@@ -1013,7 +1013,7 @@ void SCR_ExecuteLayoutString (char *s)
 
 		if (!strcmp(token, "anum"))
 		{	// ammo number
-			int		color;
+			int32_t 	color;
 
 			width = 3;
 			value = cl.frame.playerstate.stats[STAT_AMMO];
@@ -1033,7 +1033,7 @@ void SCR_ExecuteLayoutString (char *s)
 
 		if (!strcmp(token, "rnum"))
 		{	// armor number
-			int		color;
+			int32_t 	color;
 
 			width = 3;
 			value = cl.frame.playerstate.stats[STAT_ARMOR];
@@ -1136,8 +1136,8 @@ text to the screen.
 */
 void SCR_UpdateScreen (void)
 {
-	int numframes;
-	int i;
+	int32_t numframes;
+	int32_t i;
 	float separation[2] = { 0, 0 };
 
 	// if the screen is disabled (loading plaque is up, or vid mode changing)
@@ -1190,7 +1190,7 @@ void SCR_UpdateScreen (void)
 
 		if (scr_draw_loading == 2)
 		{	//  loading plaque over black screen
-			int		w, h;
+			int32_t 	w, h;
 
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;

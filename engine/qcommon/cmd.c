@@ -37,7 +37,7 @@ cmdalias_t	*cmd_alias;
 bool	cmd_wait;
 
 #define	ALIAS_LOOP_COUNT	16
-int		alias_count;		// for detecting runaway loops
+int32_t 	alias_count;		// for detecting runaway loops
 
 
 //=============================================================================
@@ -66,9 +66,9 @@ void Cmd_Wait_f (void)
 */
 
 sizebuf_t	cmd_text;
-byte		cmd_text_buf[8192];
+uint8_t		cmd_text_buf[8192];
 
-byte		defer_text_buf[8192];
+uint8_t		defer_text_buf[8192];
 
 /*
 ============
@@ -89,16 +89,16 @@ Adds command text at the end of the buffer
 */
 void Cbuf_AddText (char *text)
 {
-	int		l;
+	int32_t 	l;
 	
-	l = (int)strlen (text);
+	l = (int32_t)strlen (text);
 
 	if (cmd_text.cursize + l >= cmd_text.maxsize)
 	{
 		Com_Printf ("Cbuf_AddText: overflow\n");
 		return;
 	}
-	SZ_Write (&cmd_text, text, (int)strlen (text));
+	SZ_Write (&cmd_text, text, (int32_t)strlen (text));
 }
 
 
@@ -114,7 +114,7 @@ FIXME: actually change the command buffer to do less copying
 void Cbuf_InsertText (char *text)
 {
 	char	*temp;
-	int		templen;
+	int32_t 	templen;
 
 // copy off any commands still remaining in the exec buffer
 	templen = cmd_text.cursize;
@@ -168,7 +168,7 @@ void Cbuf_InsertFromDefer (void)
 Cbuf_ExecuteText
 ============
 */
-void Cbuf_ExecuteText (int exec_when, char *text)
+void Cbuf_ExecuteText (int32_t exec_when, char *text)
 {
 	switch (exec_when)
 	{
@@ -193,10 +193,10 @@ Cbuf_Execute
 */
 void Cbuf_Execute (void)
 {
-	int		i;
+	int32_t 	i;
 	char	*text;
 	char	line[1024];
-	int		quotes;
+	int32_t 	quotes;
 
 	alias_count = 0;		// don't allow infinite alias loops
 
@@ -262,7 +262,7 @@ Other commands are added late, after all initialization is complete.
 */
 void Cbuf_AddEarlyCommands (bool clear)
 {
-	int		i;
+	int32_t 	i;
 	char	*s;
 
 	for (i=0 ; i<COM_Argc() ; i++)
@@ -295,10 +295,10 @@ will keep the demoloop from immediately starting
 */
 bool Cbuf_AddLateCommands (void)
 {
-	int		i, j;
-	int		s;
+	int32_t 	i, j;
+	int32_t 	s;
 	char	*text, *build, c;
-	int		argc;
+	int32_t 	argc;
 	bool	ret;
 
 // build the combined string to parse from
@@ -306,7 +306,7 @@ bool Cbuf_AddLateCommands (void)
 	argc = COM_Argc();
 	for (i=1 ; i<argc ; i++)
 	{
-		s += (int)strlen (COM_Argv(i)) + 1;
+		s += (int32_t)strlen (COM_Argv(i)) + 1;
 	}
 	if (!s)
 		return false;
@@ -371,7 +371,7 @@ Cmd_Exec_f
 void Cmd_Exec_f (void)
 {
 	char	*f, *f2;
-	int		len;
+	int32_t 	len;
 
 	if (Cmd_Argc () != 2)
 	{
@@ -408,7 +408,7 @@ Just prints the rest of the line to the console
 */
 void Cmd_Echo_f (void)
 {
-	int		i;
+	int32_t 	i;
 	
 	for (i=1 ; i<Cmd_Argc() ; i++)
 		Com_Printf ("%s ",Cmd_Argv(i));
@@ -426,7 +426,7 @@ void Cmd_Alias_f (void)
 {
 	cmdalias_t	*a;
 	char		cmd[1024];
-	int			i, c;
+	int32_t 		i, c;
 	char		*s;
 
 	if (Cmd_Argc() == 1)
@@ -492,7 +492,7 @@ typedef struct cmd_function_s
 } cmd_function_t;
 
 
-static	int			cmd_argc;
+static	int32_t 		cmd_argc;
 static	char		*cmd_argv[MAX_STRING_TOKENS];
 static	char		*cmd_null_string = "";
 static	char		cmd_args[MAX_STRING_CHARS];
@@ -504,7 +504,7 @@ static	cmd_function_t	*cmd_functions;		// possible commands to execute
 Cmd_Argc
 ============
 */
-int		Cmd_Argc (void)
+int32_t 	Cmd_Argc (void)
 {
 	return cmd_argc;
 }
@@ -514,9 +514,9 @@ int		Cmd_Argc (void)
 Cmd_Argv
 ============
 */
-char	*Cmd_Argv (int arg)
+char	*Cmd_Argv (int32_t arg)
 {
-	if ( (unsigned)arg >= cmd_argc )
+	if ( (uint32_t)arg >= cmd_argc )
 		return cmd_null_string;
 	return cmd_argv[arg];	
 }
@@ -541,7 +541,7 @@ Cmd_MacroExpandString
 */
 char *Cmd_MacroExpandString (char *text)
 {
-	int		i, j, count, len;
+	int32_t 	i, j, count, len;
 	bool	inquote;
 	char	*scan;
 	static	char	expanded[MAX_STRING_CHARS];
@@ -551,7 +551,7 @@ char *Cmd_MacroExpandString (char *text)
 	inquote = false;
 	scan = text;
 
-	len = (int)strlen (scan);
+	len = (int32_t)strlen (scan);
 	if (len >= MAX_STRING_CHARS)
 	{
 		Com_Printf ("Line exceeded %i chars, discarded.\n", MAX_STRING_CHARS);
@@ -576,7 +576,7 @@ char *Cmd_MacroExpandString (char *text)
 	
 		token = Cvar_VariableString (token);
 
-		j = (int)strlen(token);
+		j = (int32_t)strlen(token);
 		len += j;
 		if (len >= MAX_STRING_CHARS)
 		{
@@ -619,7 +619,7 @@ $Cvars will be expanded unless they are in a quoted token
 */
 void Cmd_TokenizeString (char *text, bool macroExpand)
 {
-	int		i;
+	int32_t 	i;
 	char	*com_token;
 
 // clear the args from the last string
@@ -655,12 +655,12 @@ void Cmd_TokenizeString (char *text, bool macroExpand)
 		// set cmd_args to everything after the first arg
 		if (cmd_argc == 1)
 		{
-			int		l;
+			int32_t 	l;
 
 			strcpy (cmd_args, text);
 
 			// strip off any trailing whitespace
-			l = (int)strlen(cmd_args) - 1;
+			l = (int32_t)strlen(cmd_args) - 1;
 			for ( ; l >= 0 ; l--)
 				if (cmd_args[l] <= ' ')
 					cmd_args[l] = 0;
@@ -674,7 +674,7 @@ void Cmd_TokenizeString (char *text, bool macroExpand)
 
 		if (cmd_argc < MAX_STRING_TOKENS)
 		{
-			cmd_argv[cmd_argc] = Z_Malloc ((int)strlen(com_token)+1);
+			cmd_argv[cmd_argc] = Z_Malloc ((int32_t)strlen(com_token)+1);
 			strcpy (cmd_argv[cmd_argc], com_token);
 			cmd_argc++;
 		}
@@ -772,10 +772,10 @@ Cmd_CompleteCommand
 char *Cmd_CompleteCommand (char *partial)
 {
 	cmd_function_t	*cmd;
-	int				len;
+	int32_t 			len;
 	cmdalias_t		*a;
 	
-	len = (int)strlen(partial);
+	len = (int32_t)strlen(partial);
 	
 	if (!len)
 		return NULL;
@@ -865,7 +865,7 @@ Cmd_List_f
 void Cmd_List_f (void)
 {
 	cmd_function_t	*cmd;
-	int				i;
+	int32_t 			i;
 
 	i = 0;
 	for (cmd=cmd_functions ; cmd ; cmd=cmd->next, i++)

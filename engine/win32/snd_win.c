@@ -43,9 +43,9 @@ static bool	snd_firsttime = true, snd_isdirect, snd_iswave;
 static bool	primary_format_set;
 
 // starts at 0 for disabled
-static int	snd_buffer_count = 0;
-static int	sample16;
-static int	snd_sent, snd_completed;
+static int32_t snd_buffer_count = 0;
+static int32_t sample16;
+static int32_t snd_sent, snd_completed;
 
 /* 
  * Global variables. Must be visible to window-procedure function 
@@ -77,7 +77,7 @@ bool SNDDMA_InitWav (void);
 
 void FreeSound( void );
 
-static const char *DSoundError( int error )
+static const char *DSoundError( int32_t error )
 {
 	switch ( error )
 	{
@@ -235,7 +235,7 @@ static bool DS_CreateBuffers( void )
 	dma.samples = gSndBufSize/(dma.samplebits/8);
 	dma.samplepos = 0;
 	dma.submission_chunk = 1;
-	dma.buffer = (unsigned char *) lpData;
+	dma.buffer = (uint8_t *) lpData;
 	sample16 = (dma.samplebits/8) - 1;
 
 	return true;
@@ -279,7 +279,7 @@ FreeSound
 */
 void FreeSound (void)
 {
-	int		i;
+	int32_t 	i;
 
 	Com_DPrintf( "Shutting down sound system\n" );
 
@@ -444,7 +444,7 @@ Crappy windows multimedia base
 bool SNDDMA_InitWav (void)
 {
 	WAVEFORMATEX  format; 
-	int				i;
+	int32_t 			i;
 	HRESULT			hr;
 
 	Com_Printf( "Initializing wave sound\n" );
@@ -574,7 +574,7 @@ bool SNDDMA_InitWav (void)
 	dma.samples = gSndBufSize/(dma.samplebits/8);
 	dma.samplepos = 0;
 	dma.submission_chunk = 512;
-	dma.buffer = (unsigned char *) lpData;
+	dma.buffer = (uint8_t *) lpData;
 	sample16 = (dma.samplebits/8) - 1;
 
 	wav_init = true;
@@ -671,10 +671,10 @@ inside the recirculating dma buffer, so the mixing code will know
 how many sample are required to fill it up.
 ===============
 */
-int SNDDMA_GetDMAPos(void)
+int32_t SNDDMA_GetDMAPos(void)
 {
 	MMTIME	mmtime;
-	int		s;
+	int32_t 	s;
 	DWORD	dwWrite;
 
 	if (dsound_init) 
@@ -706,7 +706,7 @@ Makes sure dma.buffer is valid
 DWORD	locksize;
 void SNDDMA_BeginPainting (void)
 {
-	int		reps;
+	int32_t 	reps;
 	DWORD	dwSize2;
 	DWORD	*pbuf, *pbuf2;
 	HRESULT	hresult;
@@ -747,7 +747,7 @@ void SNDDMA_BeginPainting (void)
 		if (++reps > 2)
 			return;
 	}
-	dma.buffer = (unsigned char *)pbuf;
+	dma.buffer = (uint8_t *)pbuf;
 }
 
 /*
@@ -761,7 +761,7 @@ Also unlocks the dsound buffer
 void SNDDMA_Submit(void)
 {
 	LPWAVEHDR	h;
-	int			wResult;
+	int32_t 		wResult;
 
 	if (!dma.buffer)
 		return;

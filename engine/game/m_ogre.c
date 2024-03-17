@@ -263,7 +263,7 @@ mframe_t ogre_frames_pain4[] =
 };
 mmove_t ogre_move_pain4 = { FRAME_paind1, FRAME_paind13, ogre_frames_pain4, ogre_run };
 
-void ogre_pain(edict_t* self, edict_t* other, float kick, int damage)
+void ogre_pain(edict_t* self, edict_t* other, float kick, int32_t damage)
 {
 	float	r;
 	int		n;
@@ -641,7 +641,7 @@ mframe_t ogre_frames_death2[] =
 // maybe i will add ogre_move_death3 with a lot of attacks but maybe this is bad in multiplayer so i will remove it!!!!
 mmove_t ogre_move_death2 = { FRAME_paine1, FRAME_paine12, ogre_frames_death2, ogre_dead };
 
-void ogre_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void ogre_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int32_t damage, vec3_t point)
 {
 	int		n;
 

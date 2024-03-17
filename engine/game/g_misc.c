@@ -54,7 +54,7 @@ void SP_func_areaportal (edict_t *ent)
 Misc functions
 =================
 */
-void VelocityForDamage (int damage, vec3_t v)
+void VelocityForDamage (int32_t damage, vec3_t v)
 {
 	v[0] = 100.0 * crandom();
 	v[1] = 100.0 * crandom();
@@ -126,12 +126,12 @@ void gib_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf
 	}
 }
 
-void gib_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void gib_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	G_FreeEdict (self);
 }
 
-void ThrowGib (edict_t *self, char *gibname, int damage, int type)
+void ThrowGib (edict_t *self, char *gibname, int32_t damage, int32_t type)
 {
 	edict_t *gib;
 	vec3_t	vd;
@@ -179,7 +179,7 @@ void ThrowGib (edict_t *self, char *gibname, int damage, int type)
 	gi.linkentity (gib);
 }
 
-void ThrowHead (edict_t *self, char *gibname, int damage, int type)
+void ThrowHead (edict_t *self, char *gibname, int32_t damage, int32_t type)
 {
 	vec3_t	vd;
 	float	vscale;
@@ -225,7 +225,7 @@ void ThrowHead (edict_t *self, char *gibname, int damage, int type)
 }
 
 
-void ThrowClientHead (edict_t *self, int damage)
+void ThrowClientHead (edict_t *self, int32_t damage)
 {
 	vec3_t	vd;
 	char	*gibname;
@@ -277,7 +277,7 @@ void ThrowClientHead (edict_t *self, int damage)
 debris
 =================
 */
-void debris_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void debris_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	G_FreeEdict (self);
 }
@@ -745,7 +745,7 @@ mass defaults to 75.  This determines how much debris is emitted when
 it explodes.  You get one large chunk per 100 of mass (up to 8) and
 one small chunk per 25 of mass (up to 16).  So 800 gives the most.
 */
-void func_explosive_explode (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void func_explosive_explode (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	vec3_t	origin;
 	vec3_t	chunkorigin;
@@ -960,7 +960,7 @@ void barrel_explode (edict_t *self)
 		BecomeExplosion1 (self);
 }
 
-void barrel_delay (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void barrel_delay (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	self->takedamage = DAMAGE_NO;
 	self->nextthink = level.time + 2 * FRAMETIME;
@@ -1071,7 +1071,7 @@ void SP_misc_banner (edict_t *ent)
 /*QUAKED misc_deadsoldier (1 .5 0) (-16 -16 0) (16 16 16) ON_BACK ON_STOMACH BACK_DECAP FETAL_POS SIT_DECAP IMPALED
 This is the dead player model. Comes in 6 exciting different poses!
 */
-void misc_deadsoldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void misc_deadsoldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	int		n;
 
@@ -1255,7 +1255,7 @@ void target_string_use (edict_t *self, edict_t *other, edict_t *activator)
 	int		n, l;
 	char	c;
 
-	l = (int)strlen(self->message);
+	l = (int32_t)strlen(self->message);
 	for (e = self->teammaster; e; e = e->teamchain)
 	{
 		if (!e->count)
@@ -1538,7 +1538,7 @@ void SP_misc_teleporter (edict_t *ent)
 }
 
 /*QUAKED misc_teleporter_dest (1 0 0) (-32 -32 -24) (32 32 -16)
-Point teleporters at these.
+Point32_t teleporters at these.
 */
 void SP_misc_teleporter_dest (edict_t *ent)
 {

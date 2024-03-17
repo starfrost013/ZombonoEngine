@@ -97,7 +97,7 @@ DLL GLUE
 */
 
 #define	MAXPRINTMSG	8192
-void VID_Printf (int print_level, char *fmt, ...)
+void VID_Printf (int32_t print_level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
@@ -122,7 +122,7 @@ void VID_Printf (int print_level, char *fmt, ...)
 	}
 }
 
-void VID_Error (int err_level, char *fmt, ...)
+void VID_Error (int32_t err_level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
@@ -137,7 +137,7 @@ void VID_Error (int err_level, char *fmt, ...)
 
 //==========================================================================
 
-byte        scantokey[128] = 
+uint8_t        scantokey[128] =
 					{ 
 //  0           1       2       3       4       5       6       7 
 //  8           9       A       B       C       D       E       F 
@@ -166,10 +166,10 @@ MapKey
 Map from windows to quake keynums
 =======
 */
-int MapKey (int key)
+int32_t MapKey (int32_t key)
 {
-	int result;
-	int modified = ( key >> 16 ) & 255;
+	int32_t result;
+	int32_t modified = ( key >> 16 ) & 255;
 	bool is_extended = false;
 
 	if ( modified > 127)
@@ -276,7 +276,7 @@ LONG WINAPI MainWndProc (
 
 	if ( uMsg == MSH_MOUSEWHEEL )
 	{
-		if ( ( ( int ) wParam ) > 0 )
+		if ( ( ( int32_t ) wParam ) > 0 )
 		{
 			Key_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
 			Key_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
@@ -296,7 +296,7 @@ LONG WINAPI MainWndProc (
 		** this chunk of code theoretically only works under NT4 and Win98
 		** since this message doesn't exist under Win95
 		*/
-		if ( ( short ) HIWORD( wParam ) > 0 )
+		if ( ( int16_t ) HIWORD( wParam ) > 0 )
 		{
 			Key_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
 			Key_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
@@ -328,7 +328,7 @@ LONG WINAPI MainWndProc (
 
 	case WM_ACTIVATE:
 		{
-			int	fActive, fMinimized;
+			int32_t fActive, fMinimized;
 
 			// KJB: Watch this for problems in fullscreen modes with Alt-tabbing.
 			fActive = LOWORD(wParam);
@@ -371,14 +371,14 @@ LONG WINAPI MainWndProc (
 
 	case WM_MOVE:
 		{
-			int		xPos, yPos;
+			int32_t 	xPos, yPos;
 			RECT r;
-			int		style;
+			int32_t 	style;
 
 			if (!vid_fullscreen->value)
 			{
-				xPos = (short) LOWORD(lParam);    // horizontal position 
-				yPos = (short) HIWORD(lParam);    // vertical position 
+				xPos = (int16_t) LOWORD(lParam);    // horizontal position 
+				yPos = (int16_t) HIWORD(lParam);    // vertical position 
 
 				r.left   = 0;
 				r.top    = 0;
@@ -412,7 +412,7 @@ LONG WINAPI MainWndProc (
 	case WM_XBUTTONUP:
 	case WM_MOUSEMOVE:
 		{
-			int	temp;
+			int32_t temp;
 
 			temp = 0;
 
@@ -498,8 +498,8 @@ void VID_Front_f( void )
 typedef struct vidmode_s
 {
 	const char *description;
-	int         width, height;
-	int         mode;
+	int32_t         width, height;
+	int32_t         mode;
 } vidmode_t;
 
 vidmode_t vid_modes[] =
@@ -524,7 +524,7 @@ vidmode_t vid_modes[] =
 	{ "Mode 17: 3840x2160", 3840, 2160, 16 },
 };
 
-bool VID_GetModeInfo( int *width, int *height, int mode )
+bool VID_GetModeInfo( int32_t *width, int32_t *height, int32_t mode )
 {
 	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
 	{
@@ -545,11 +545,11 @@ bool VID_GetModeInfo( int *width, int *height, int mode )
 /*
 ** VID_UpdateWindowPosAndSize
 */
-void VID_UpdateWindowPosAndSize( int x, int y )
+void VID_UpdateWindowPosAndSize( int32_t x, int32_t y )
 {
 	RECT r;
-	int		style;
-	int		w, h;
+	int32_t 	style;
+	int32_t 	w, h;
 
 	r.left   = 0;
 	r.top    = 0;
@@ -568,7 +568,7 @@ void VID_UpdateWindowPosAndSize( int x, int y )
 /*
 ** VID_NewWindow
 */
-void VID_NewWindow ( int width, int height)
+void VID_NewWindow ( int32_t width, int32_t height)
 {
 	viddef.width  = width;
 	viddef.height = height;
@@ -578,8 +578,8 @@ void VID_NewWindow ( int width, int height)
 	char hudscale[4];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	int wscale = viddef.width / 800;
-	int hscale = viddef.height / 480;
+	int32_t wscale = viddef.width / 800;
+	int32_t hscale = viddef.height / 480;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;

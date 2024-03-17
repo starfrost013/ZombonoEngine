@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // development tools for weapons
 //
-int			gun_frame;
+int32_t 		gun_frame;
 struct model_s	*gun_model;
 
 //=============
@@ -42,19 +42,19 @@ cvar_t		*cl_stats;
 extern	cvar_t	*vid_hudscale;
 extern	cvar_t	*viewsize;
 
-int			r_numdlights;
+int32_t 		r_numdlights;
 dlight_t	r_dlights[MAX_DLIGHTS];
 
-int			r_numentities;
+int32_t 		r_numentities;
 entity_t	r_entities[MAX_ENTITIES];
 
-int			r_numparticles;
+int32_t 		r_numparticles;
 particle_t	r_particles[MAX_PARTICLES];
 
 lightstyle_t	r_lightstyles[MAX_LIGHTSTYLES];
 
 char cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
-int num_cl_weaponmodels;
+int32_t num_cl_weaponmodels;
 
 /*
 ====================
@@ -89,7 +89,7 @@ V_AddParticle
 
 =====================
 */
-void V_AddParticle (vec3_t org, int color, float alpha)
+void V_AddParticle (vec3_t org, int32_t color, float alpha)
 {
 	particle_t	*p;
 
@@ -128,7 +128,7 @@ V_AddLightStyle
 
 =====================
 */
-void V_AddLightStyle (int style, float r, float g, float b)
+void V_AddLightStyle (int32_t style, float r, float g, float b)
 {
 	lightstyle_t	*ls;
 
@@ -152,7 +152,7 @@ If cl_testparticles is set, create 4096 particles in the view
 void V_TestParticles (void)
 {
 	particle_t	*p;
-	int			i, j;
+	int32_t 		i, j;
 	float		d, r, u;
 
 	r_numparticles = MAX_PARTICLES;
@@ -181,7 +181,7 @@ If cl_testentities is set, create 32 player models
 */
 void V_TestEntities (void)
 {
-	int			i, j;
+	int32_t 		i, j;
 	float		f, r;
 	entity_t	*ent;
 
@@ -213,7 +213,7 @@ If cl_testlights is set, create 32 lights models
 */
 void V_TestLights (void)
 {
-	int			i, j;
+	int32_t 		i, j;
 	float		f, r;
 	dlight_t	*dl;
 
@@ -249,7 +249,7 @@ Call before entering a new level, or after changing dlls
 void CL_PrepRefresh (void)
 {
 	char		mapname[32];
-	int			i;
+	int32_t 		i;
 	char		name[MAX_QPATH];
 	float		rotate;
 	vec3_t		axis;
@@ -257,8 +257,8 @@ void CL_PrepRefresh (void)
 	if (!cl.configstrings[CS_MODELS+1][0])
 		return;		// no map loaded
 
-	SCR_AddDirtyPoint (0, 0);
-	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
+	SCR_AddDirtyPoint32_t (0, 0);
+	SCR_AddDirtyPoint32_t (viddef.width-1, viddef.height-1);
 
 	// let the render dll load the map
 	strcpy (mapname, cl.configstrings[CS_MODELS+1] + 5);	// skip "maps/"
@@ -354,7 +354,7 @@ void CL_PrepRefresh (void)
 	cl.force_refdef = true;	// make sure we have a valid refdef
 
 	// start the cd track
-	int track = atoi(cl.configstrings[CS_CDTRACK]);
+	int32_t track = atoi(cl.configstrings[CS_CDTRACK]);
 	Miniaudio_Play(track, true);
 }
 
@@ -434,8 +434,8 @@ void SCR_DrawCrosshair (void)
 
 	cvar_t *scale = Cvar_Get("hudscale", "1", 0);
 
-	re.DrawPic (scr_vrect.x + ((scr_vrect.width - (int)scale->value * crosshair_width) >> 1)
-	, scr_vrect.y + ((scr_vrect.height - (int)scale->value * crosshair_height) >> 1), crosshair_pic);
+	re.DrawPic (scr_vrect.x + ((scr_vrect.width - (int32_t)scale->value * crosshair_width) >> 1)
+	, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic);
 }
 
 /*
@@ -446,7 +446,7 @@ V_RenderView
 */
 void V_RenderView( float stereo_separation )
 {
-	extern int entitycmpfnc( const entity_t *, const entity_t * );
+	extern int32_t entitycmpfnc( const entity_t *, const entity_t * );
 
 	if (cls.state != ca_active)
 	{
@@ -542,7 +542,7 @@ void V_RenderView( float stereo_separation )
 		cl.refdef.rdflags = cl.frame.playerstate.rdflags;
 
 		// sort entities for better cache locality
-        qsort( cl.refdef.entities, cl.refdef.num_entities, sizeof( cl.refdef.entities[0] ), (int (*)(const void *, const void *))entitycmpfnc );
+        qsort( cl.refdef.entities, cl.refdef.num_entities, sizeof( cl.refdef.entities[0] ), (int32_t (*)(const void *, const void *))entitycmpfnc );
 	}
 
 	re.RenderFrame (&cl.refdef);
@@ -552,8 +552,8 @@ void V_RenderView( float stereo_separation )
 		fprintf( log_stats_file, "%i,%i,%i,",r_numentities, r_numdlights, r_numparticles);
 
 
-	SCR_AddDirtyPoint (scr_vrect.x, scr_vrect.y);
-	SCR_AddDirtyPoint (scr_vrect.x+scr_vrect.width-1,
+	SCR_AddDirtyPoint32_t (scr_vrect.x, scr_vrect.y);
+	SCR_AddDirtyPoint32_t (scr_vrect.x+scr_vrect.width-1,
 		scr_vrect.y+scr_vrect.height-1);
 
 	SCR_DrawCrosshair ();
@@ -567,9 +567,9 @@ V_Viewpos_f
 */
 void V_Viewpos_f (void)
 {
-	Com_Printf ("(%i %i %i) : %i\n", (int)cl.refdef.vieworg[0],
-		(int)cl.refdef.vieworg[1], (int)cl.refdef.vieworg[2], 
-		(int)cl.refdef.viewangles[YAW]);
+	Com_Printf ("(%i %i %i) : %i\n", (int32_t)cl.refdef.vieworg[0],
+		(int32_t)cl.refdef.vieworg[1], (int32_t)cl.refdef.vieworg[2], 
+		(int32_t)cl.refdef.viewangles[YAW]);
 }
 
 /*

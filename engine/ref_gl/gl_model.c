@@ -80,8 +80,8 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 	//
 	// load base s and t vertices (not used in gl version)
 	//
-	pinst = (dstvert_t*)((byte*)pinmodel + pheader->ofs_st);
-	poutst = (dstvert_t*)((byte*)pheader + pheader->ofs_st);
+	pinst = (dstvert_t*)((uint8_t*)pinmodel + pheader->ofs_st);
+	poutst = (dstvert_t*)((uint8_t*)pheader + pheader->ofs_st);
 
 	for (i = 0; i < pheader->num_st; i++)
 	{
@@ -92,8 +92,8 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 	//
 	// load triangle lists
 	//
-	pintri = (dtriangle_t*)((byte*)pinmodel + pheader->ofs_tris);
-	pouttri = (dtriangle_t*)((byte*)pheader + pheader->ofs_tris);
+	pintri = (dtriangle_t*)((uint8_t*)pinmodel + pheader->ofs_tris);
+	pouttri = (dtriangle_t*)((uint8_t*)pheader + pheader->ofs_tris);
 
 	for (i = 0; i < pheader->num_tris; i++)
 	{
@@ -109,9 +109,9 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 	//
 	for (i = 0; i < pheader->num_frames; i++)
 	{
-		pinframe = (daliasframe_t*)((byte*)pinmodel
+		pinframe = (daliasframe_t*)((uint8_t *)pinmodel
 			+ pheader->ofs_frames + i * pheader->framesize);
-		poutframe = (daliasframe_t*)((byte*)pheader
+		poutframe = (daliasframe_t*)((uint8_t*)pheader
 			+ pheader->ofs_frames + i * pheader->framesize);
 
 		memcpy(poutframe->name, pinframe->name, sizeof(poutframe->name));
@@ -131,8 +131,8 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 	//
 	// load the glcmds
 	//
-	pincmd = (int*)((byte*)pinmodel + pheader->ofs_glcmds);
-	poutcmd = (int*)((byte*)pheader + pheader->ofs_glcmds);
+	pincmd = (int*)((uint8_t *)pinmodel + pheader->ofs_glcmds);
+	poutcmd = (int*)((uint8_t *)pheader + pheader->ofs_glcmds);
 	for (i = 0; i < pheader->num_glcmds; i++)
 		poutcmd[i] = LittleInt(pincmd[i]);
 
@@ -176,9 +176,9 @@ float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
 
 float	*shadedots = r_avertexnormal_dots[0];
 
-void GL_LerpVerts( int nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t *verts, float *lerp, float move[3], float frontv[3], float backv[3] )
+void GL_LerpVerts( int32_t nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t *verts, float *lerp, float move[3], float frontv[3], float backv[3] )
 {
-	int i;
+	int32_t i;
 
 	//PMM -- added RF_SHELL_DOUBLE, RF_SHELL_HALF_DAM
 	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
@@ -227,15 +227,15 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 	int		index_xyz;
 	float	*lerp;
 
-	frame = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames 
+	frame = (daliasframe_t *)((uint8_t *)paliashdr + paliashdr->ofs_frames
 		+ currententity->frame * paliashdr->framesize);
 	verts = v = frame->verts;
 
-	oldframe = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames 
+	oldframe = (daliasframe_t *)((uint8_t *)paliashdr + paliashdr->ofs_frames
 		+ currententity->oldframe * paliashdr->framesize);
 	ov = oldframe->verts;
 
-	order = (int *)((byte *)paliashdr + paliashdr->ofs_glcmds);
+	order = (int32_t *)((uint8_t *)paliashdr + paliashdr->ofs_glcmds);
 
 //	glTranslatef (frame->translate[0], frame->translate[1], frame->translate[2]);
 //	glScalef (frame->scale[0], frame->scale[1], frame->scale[2]);
@@ -427,7 +427,7 @@ GL_DrawAliasShadow
 */
 extern	vec3_t			lightspot;
 
-void GL_DrawAliasShadow (dmdl_t *paliashdr, int posenum)
+void GL_DrawAliasShadow (dmdl_t *paliashdr, int32_t posenum)
 {
 	dtrivertx_t	*verts;
 	int		*order;
@@ -438,13 +438,13 @@ void GL_DrawAliasShadow (dmdl_t *paliashdr, int posenum)
 
 	lheight = currententity->origin[2] - lightspot[2];
 
-	frame = (daliasframe_t *)((byte *)paliashdr + paliashdr->ofs_frames 
+	frame = (daliasframe_t *)((uint8_t *)paliashdr + paliashdr->ofs_frames
 		+ currententity->frame * paliashdr->framesize);
 	verts = frame->verts;
 
 	height = 0;
 
-	order = (int *)((byte *)paliashdr + paliashdr->ofs_glcmds);
+	order = (int32_t *)((uint8_t *)paliashdr + paliashdr->ofs_glcmds);
 
 	height = -lheight + 1.0;
 
@@ -494,7 +494,7 @@ void GL_DrawAliasShadow (dmdl_t *paliashdr, int posenum)
 */
 static bool R_CullAliasModel( vec3_t bbox[8], entity_t *e )
 {
-	int i;
+	int32_t i;
 	vec3_t		mins, maxs;
 	dmdl_t		*paliashdr;
 	vec3_t		vectors[3];
@@ -517,11 +517,11 @@ static bool R_CullAliasModel( vec3_t bbox[8], entity_t *e )
 		e->oldframe = 0;
 	}
 
-	pframe = ( daliasframe_t * ) ( ( byte * ) paliashdr + 
+	pframe = ( daliasframe_t * ) ( ( uint8_t * ) paliashdr + 
 		                              paliashdr->ofs_frames +
 									  e->frame * paliashdr->framesize);
 
-	poldframe = ( daliasframe_t * ) ( ( byte * ) paliashdr + 
+	poldframe = ( daliasframe_t * ) ( ( uint8_t * ) paliashdr + 
 		                              paliashdr->ofs_frames +
 									  e->oldframe * paliashdr->framesize);
 
@@ -604,11 +604,11 @@ static bool R_CullAliasModel( vec3_t bbox[8], entity_t *e )
 	}
 
 	{
-		int p, f, aggregatemask = ~0;
+		int32_t p, f, aggregatemask = ~0;
 
 		for ( p = 0; p < 8; p++ )
 		{
-			int mask = 0;
+			int32_t mask = 0;
 
 			for ( f = 0; f < 4; f++ )
 			{
@@ -694,7 +694,7 @@ void R_DrawAliasModel (entity_t *e)
 	}
 	else
 	{
-		R_LightPoint (currententity->origin, shadelight);
+		R_LightPoint32_t (currententity->origin, shadelight);
 
 		// player lighting hack for communication back to server
 		// big hack!
@@ -748,7 +748,7 @@ void R_DrawAliasModel (entity_t *e)
 		}
 	}
 
-	shadedots = r_avertexnormal_dots[((int)(currententity->angles[1] * (SHADEDOT_QUANT / 360.0))) & (SHADEDOT_QUANT - 1)];
+	shadedots = r_avertexnormal_dots[((int32_t)(currententity->angles[1] * (SHADEDOT_QUANT / 360.0))) & (SHADEDOT_QUANT - 1)];
 	
 	an = currententity->angles[1]/180*M_PI;
 	shadevector[0] = cos(-an);

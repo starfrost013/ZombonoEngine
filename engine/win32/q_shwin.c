@@ -30,15 +30,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //===============================================================================
 
-int		hunkcount;
+int32_t 	hunkcount;
 
-byte	*membase;
-int		hunkmaxsize;
-int		cursize;
+uint8_t *membase;
+int32_t 	hunkmaxsize;
+int32_t 	cursize;
 
 #define	VIRTUAL_ALLOC
 
-void *Hunk_Begin (int maxsize)
+void *Hunk_Begin (int32_t maxsize)
 {
 	// reserve a huge chunk of memory, but don't commit any yet
 	cursize = 0;
@@ -54,7 +54,7 @@ void *Hunk_Begin (int maxsize)
 	return (void *)membase;
 }
 
-void *Hunk_Alloc (int size)
+void *Hunk_Alloc (int32_t size)
 {
 	void	*buf;
 
@@ -78,7 +78,7 @@ void *Hunk_Alloc (int size)
 	return (void *)(membase+cursize-size);
 }
 
-int Hunk_End (void)
+int32_t Hunk_End (void)
 {
 	// free the remaining unused virtual memory
 
@@ -107,10 +107,10 @@ void Hunk_Free (void *base)
 Sys_Milliseconds
 ================
 */
-int	curtime;
-int Sys_Milliseconds (void)
+int32_t curtime;
+int32_t Sys_Milliseconds (void)
 {
-	static int		base;
+	static int32_t 	base;
 	static bool	initialized = false;
 
 	if (!initialized)

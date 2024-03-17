@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 
-static bool	is_quad;
-static byte		is_silenced;
+static bool		is_quad;
+static uint8_t is_silenced;
 
 void weapon_grenade_fire (edict_t *ent, bool held);
 
@@ -69,7 +69,7 @@ Monsters that don't directly see the player can move
 to a noise in hopes of seeing the player from there. 
 ===============
 */
-void PlayerNoise(edict_t *who, vec3_t where, int type)
+void PlayerNoise(edict_t *who, vec3_t where, int32_t type)
 {
 	edict_t		*noise;
 
@@ -133,7 +133,7 @@ bool Pickup_Weapon (edict_t *ent, edict_t *other)
 
 	index = ITEM_INDEX(ent->item);
 
-	if ( ( ((int)(gameflags->value) & GF_WEAPONS_STAY)) 
+	if ( ( ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)) 
 		&& other->client->pers.inventory[index])
 	{
 		if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM) ) )
@@ -153,14 +153,14 @@ bool Pickup_Weapon (edict_t *ent, edict_t *other)
 	{
 		// give them some ammo with it
 		ammo = FindItem (ent->item->ammo);
-		if ( (int)gameflags->value & GF_INFINITE_AMMO )
+		if ( (int32_t)gameflags->value & GF_INFINITE_AMMO )
 			Add_Ammo (other, ammo, 1000);
 		else
 			Add_Ammo (other, ammo, ammo->quantity);
 
 		if (! (ent->spawnflags & DROPPED_PLAYER_ITEM) )
 		{
-			if ((int)(gameflags->value) & GF_WEAPONS_STAY)
+			if ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)
 				ent->flags |= FL_RESPAWN;
 			else
 				SetRespawn(ent, 30);
@@ -186,7 +186,7 @@ current
 */
 void ChangeWeapon (edict_t *ent)
 {
-	int i;
+	int32_t i;
 
 	if (ent->client->grenade_time)
 	{
@@ -378,7 +378,7 @@ void Drop_Weapon (edict_t *ent, gitem_t *item)
 {
 	int		index;
 
-	if ((int)(gameflags->value) & GF_WEAPONS_STAY)
+	if ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)
 		return;
 
 	index = ITEM_INDEX(item);
@@ -405,8 +405,8 @@ A generic function to handle the basics of weapon thinking
 #define FRAME_IDLE_FIRST		(FRAME_FIRE_LAST + 1)
 #define FRAME_DEACTIVATE_FIRST	(FRAME_IDLE_LAST + 1)
 
-void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_DEACTIVATE_LAST, 
-	int *pause_frames, int *fire_frames, void (*fire_primary)(edict_t *ent), void(*fire_secondary)(edict_t *ent))
+void Weapon_Generic (edict_t *ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIRE_LAST, int32_t FRAME_IDLE_LAST, int32_t FRAME_DEACTIVATE_LAST, 
+	int32_t *pause_frames, int32_t *fire_frames, void (*fire_primary)(edict_t *ent), void(*fire_secondary)(edict_t *ent))
 {
 	int			n;
 	bool	no_ammo = false;
@@ -639,7 +639,7 @@ void weapon_grenade_fire (edict_t *ent, bool held)
 	speed = GRENADE_MINSPEED + (GRENADE_TIMER - timer) * ((GRENADE_MAXSPEED - GRENADE_MINSPEED) / GRENADE_TIMER);
 	fire_grenade2 (ent, start, forward, damage, speed, timer, radius, held);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
@@ -819,7 +819,7 @@ void weapon_grenadelauncher_fire (edict_t *ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -849,7 +849,7 @@ void Weapon_RocketLauncher_Fire (edict_t *ent)
 	float	damage_radius;
 	int		radius_damage;
 
-	damage = 100 + (int)(random() * 20.0);
+	damage = 100 + (int32_t)(random() * 20.0);
 	radius_damage = 120;
 	damage_radius = 120;
 	if (is_quad)
@@ -877,7 +877,7 @@ void Weapon_RocketLauncher_Fire (edict_t *ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -898,7 +898,7 @@ BLASTER / HYPERBLASTER
 ======================================================================
 */
 
-void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, bool hyper, int effect)
+void Blaster_Fire (edict_t *ent, vec3_t g_offset, int32_t damage, bool hyper, int32_t effect)
 {
 	vec3_t	forward, right;
 	vec3_t	start;
@@ -987,7 +987,7 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 			damage = 15;
 
 			Blaster_Fire (ent, offset, damage, true, effect);
-			if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+			if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 				ent->client->pers.inventory[ent->client->ammo_index]--;
 
 			ent->client->anim_priority = ANIM_ATTACK;
@@ -1094,18 +1094,18 @@ void Machinegun_Fire (edict_t *ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->anim_priority = ANIM_ATTACK;
 	if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
 	{
-		ent->s.frame = FRAME_crattak1 - (int) (random()+0.25);
+		ent->s.frame = FRAME_crattak1 - (int32_t) (random()+0.25);
 		ent->client->anim_end = FRAME_crattak9;
 	}
 	else
 	{
-		ent->s.frame = FRAME_attack1 - (int) (random()+0.25);
+		ent->s.frame = FRAME_attack1 - (int32_t) (random()+0.25);
 		ent->client->anim_end = FRAME_attack8;
 	}
 }
@@ -1230,7 +1230,7 @@ void Chaingun_Fire (edict_t *ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index] -= shots;
 }
 
@@ -1290,7 +1290,7 @@ void weapon_shotgun_fire (edict_t *ent)
 	ent->client->ps.gunframe++;
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -1344,7 +1344,7 @@ void weapon_supershotgun_fire (edict_t *ent)
 	ent->client->ps.gunframe++;
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index] -= 2;
 }
 
@@ -1399,7 +1399,7 @@ void weapon_railgun_fire (edict_t *ent)
 	ent->client->ps.gunframe++;
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -1472,7 +1472,7 @@ void weapon_bfg_fire (edict_t *ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if (! ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		ent->client->pers.inventory[ent->client->ammo_index] -= 50;
 }
 
@@ -1515,8 +1515,8 @@ void Weapon_Bamfuslicator_Fire(edict_t* ent)
 {
 	//todo: audio
 	vec3_t offset, start, forward, right;
-	int zombie_min_distance = 32;
-	int zombie_max_distance = 2048;
+	int32_t zombie_min_distance = 32;
+	int32_t zombie_max_distance = 2048;
 
 	// only fire forward
 	AngleVectors(ent->client->v_angle, forward, right, NULL);

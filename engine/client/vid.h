@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct vrect_s
 {
-	int				x,y,width,height;
+	int32_t 			x,y,width,height;
 } vrect_t;
 
 typedef struct
@@ -39,4 +39,4 @@ void	VID_CheckChanges (void);
 
 void	VID_MenuInit( void );
 void	VID_MenuDraw( void );
-const char *VID_MenuKey( int );
+const char *VID_MenuKey( int32_t );

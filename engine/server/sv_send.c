@@ -31,11 +31,11 @@ Com_Printf redirection
 
 char sv_outputbuf[SV_OUTPUTBUF_LENGTH];
 
-void SV_FlushRedirect (int sv_redirected, char *outputbuf)
+void SV_FlushRedirect (int32_t sv_redirected, char *outputbuf)
 {
 	if (sv_redirected == RD_PACKET)
 	{
-		Netchan_OutOfBandPrint (NS_SERVER, net_from, "print\n%s", outputbuf);
+		Netchan_OutOfBandPrint32_t (NS_SERVER, net_from, "print\n%s", outputbuf);
 	}
 	else if (sv_redirected == RD_CLIENT)
 	{
@@ -62,7 +62,7 @@ SV_ClientPrintf
 Sends text across to be displayed if the level passes
 =================
 */
-void SV_ClientPrintf (client_t *cl, int level, char *fmt, ...)
+void SV_ClientPrintf (client_t *cl, int32_t level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		string[1024];
@@ -86,12 +86,12 @@ SV_BroadcastPrintf
 Sends text to all active clients
 =================
 */
-void SV_BroadcastPrintf (int level, char *fmt, ...)
+void SV_BroadcastPrintf (int32_t level, char *fmt, ...)
 {
 	va_list		argptr;
 	char		string[2048];
 	client_t	*cl;
-	int			i;
+	int32_t 		i;
 
 	va_start (argptr,fmt);
 	vsnprintf (string,2048,fmt,argptr);
@@ -101,7 +101,7 @@ void SV_BroadcastPrintf (int level, char *fmt, ...)
 	if (dedicated->value)
 	{
 		char	copy[1024];
-		int		i;
+		int32_t 	i;
 		
 		// mask off high bits
 		for (i=0 ; i<1023 && string[i] ; i++)
@@ -161,11 +161,11 @@ MULTICAST_PHS	send to clients potentially hearable from org
 void SV_Multicast (vec3_t origin, multicast_t to)
 {
 	client_t	*client;
-	byte		*mask;
-	int			leafnum, cluster;
-	int			j;
+	uint8_t		*mask;
+	int32_t 		leafnum, cluster;
+	int32_t 		j;
 	bool	reliable;
-	int			area1, area2;
+	int32_t 		area1, area2;
 
 	reliable = false;
 
@@ -269,14 +269,14 @@ If origin is NULL, the origin is determined from the entity origin
 or the midpoint of the entity box for bmodels.
 ==================
 */  
-void SV_StartSound (vec3_t origin, edict_t *entity, int channel,
-					int soundindex, float volume,
+void SV_StartSound (vec3_t origin, edict_t *entity, int32_t channel,
+					int32_t soundindex, float volume,
 					float attenuation, float timeofs)
 {       
-	int			sendchan;
-    int			flags;
-    int			i;
-	int			ent;
+	int32_t 		sendchan;
+    int32_t 		flags;
+    int32_t 		i;
+	int32_t 		ent;
 	vec3_t		origin_v;
 	bool	use_phs;
 
@@ -394,7 +394,7 @@ SV_SendClientDatagram
 */
 bool SV_SendClientDatagram (client_t *client)
 {
-	byte		msg_buf[MAX_MSGLEN];
+	uint8_t		msg_buf[MAX_MSGLEN];
 	sizebuf_t	msg;
 
 	SV_BuildClientFrame (client);
@@ -454,10 +454,10 @@ SV_SendClientMessages
 */
 void SV_SendClientMessages (void)
 {
-	int			i;
+	int32_t 		i;
 	client_t	*c;
-	int			msglen;
-	byte		msgbuf[MAX_MSGLEN];
+	int32_t 		msglen;
+	uint8_t		msgbuf[MAX_MSGLEN];
 	size_t		r;
 
 	msglen = 0;

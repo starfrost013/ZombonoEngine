@@ -258,7 +258,7 @@ backends). The `config.playback.format` member sets the sample format which can 
     | ma_format_s16 | 16-bit signed integer                  | [-32768, 32767]           |
     | ma_format_s24 | 24-bit signed integer (tightly packed) | [-8388608, 8388607]       |
     | ma_format_s32 | 32-bit signed integer                  | [-2147483648, 2147483647] |
-    | ma_format_u8  | 8-bit unsigned integer                 | [0, 255]                  |
+    | ma_format_u8  | 8-bit integer                 | [0, 255]                  |
     |---------------|----------------------------------------|---------------------------|
 
 The `config.playback.channels` member sets the number of channels to use with the device. The channel count cannot exceed MA_MAX_CHANNELS. The
@@ -343,7 +343,7 @@ backends and enumerating devices. The example below shows how to enumerate devic
         // Error.
     }
 
-    // Loop over each device info and do something with it. Here we just print the name with their index. You may want to give the user the
+    // Loop over each device info and do something with it. Here we just prma_int32 the name with their index. You may want to give the user the
     // opportunity to choose which device they'd prefer.
     for (ma_uint32 iDevice = 0; iDevice < playbackDeviceCount; iDevice += 1) {
         printf("%d - %s\n", iDevice, pPlaybackDeviceInfos[iDevice].name);
@@ -376,7 +376,7 @@ user-defined data and some backend-specific configurations.
 
 Once the context has been initialized you can enumerate devices. In the example above we use the simpler `ma_context_get_devices()`, however you can also use a
 callback for handling devices by using `ma_context_enumerate_devices()`. When using `ma_context_get_devices()` you provide a pointer to a pointer that will,
-upon output, be set to a pointer to a buffer containing a list of `ma_device_info` structures. You also provide a pointer to an unsigned integer that will
+upon output, be set to a pointer to a buffer containing a list of `ma_device_info` structures. You also provide a pointer to an integer that will
 receive the number of items in the returned buffer. Do not free the returned buffers as their memory is managed internally by miniaudio.
 
 The `ma_device_info` structure contains an `id` member which is the ID you pass to the device config. It also contains the name of the device which is useful
@@ -553,7 +553,7 @@ Throughout miniaudio you will see references to different sample formats:
     | ma_format_s16 | 16-bit signed integer                  | [-32768, 32767]           |
     | ma_format_s24 | 24-bit signed integer (tightly packed) | [-8388608, 8388607]       |
     | ma_format_s32 | 32-bit signed integer                  | [-2147483648, 2147483647] |
-    | ma_format_u8  | 8-bit unsigned integer                 | [0, 255]                  |
+    | ma_format_u8  | 8-bit integer                 | [0, 255]                  |
     |---------------|----------------------------------------|---------------------------|
 
 All formats are native-endian.
@@ -1462,7 +1462,7 @@ extern "C" {
 #if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(push)
     #pragma warning(disable:4201)   /* nonstandard extension used: nameless struct/union */
-    #pragma warning(disable:4214)   /* nonstandard extension used: bit field types other than int */
+    #pragma warning(disable:4214)   /* nonstandard extension used: bit field types other than ma_int32 */
     #pragma warning(disable:4324)   /* structure was padded due to alignment specifier */
 #else
     #pragma GCC diagnostic push
@@ -1584,7 +1584,7 @@ typedef ma_uint16 wchar_t;
 #if defined(SIZE_MAX)
     #define MA_SIZE_MAX    SIZE_MAX
 #else
-    #define MA_SIZE_MAX    0xFFFFFFFF  /* When SIZE_MAX is not defined by the standard library just default to the maximum 32-bit unsigned integer. */
+    #define MA_SIZE_MAX    0xFFFFFFFF  /* When SIZE_MAX is not defined by the standard library just default to the maximum 32-bit integer. */
 #endif
 
 
@@ -1712,7 +1712,7 @@ typedef ma_uint8 ma_channel;
 #define MA_CHANNEL_POSITION_COUNT                      (MA_CHANNEL_AUX_31 + 1)
 
 
-typedef int ma_result;
+typedef ma_int32 ma_result;
 #define MA_SUCCESS                                      0
 #define MA_ERROR                                       -1   /* A generic error. */
 #define MA_INVALID_ARGS                                -2
@@ -2313,7 +2313,7 @@ typedef struct
     } linear;
     struct
     {
-        int quality;    /* 0 to 10. Defaults to 3. */
+        ma_int32 quality;    /* 0 to 10. Defaults to 3. */
     } speex;
 } ma_resampler_config;
 
@@ -2480,7 +2480,7 @@ typedef struct
         } linear;
         struct
         {
-            int quality;
+            ma_int32 quality;
         } speex;
     } resampling;
 } ma_data_converter_config;
@@ -2901,7 +2901,7 @@ typedef struct
             pthread_t thread;
         } posix;
 #endif
-        int _unused;
+        ma_int32 _unused;
     };
 } ma_thread;
 
@@ -2923,7 +2923,7 @@ typedef struct
             pthread_mutex_t mutex;
         } posix;
 #endif
-        int _unused;
+        ma_int32 _unused;
     };
 } ma_mutex;
 
@@ -2947,7 +2947,7 @@ typedef struct
             ma_uint32 value;
         } posix;
 #endif
-        int _unused;
+        ma_int32 _unused;
     };
 } ma_event;
 
@@ -2969,7 +2969,7 @@ typedef struct
             sem_t semaphore;
         } posix;
 #endif
-        int _unused;
+        ma_int32 _unused;
     };
 } ma_semaphore;
 
@@ -3121,15 +3121,15 @@ typedef union
     /*UINT_PTR*/ ma_uint32 winmm;   /* When creating a device, WinMM expects a Win32 UINT_PTR for device identification. In practice it's actually just a UINT. */
     char alsa[256];                 /* ALSA uses a name string for identification. */
     char pulse[256];                /* PulseAudio uses a name string for identification. */
-    int jack;                       /* JACK always uses default devices. */
+    ma_int32 jack;                       /* JACK always uses default devices. */
     char coreaudio[256];            /* Core Audio uses a string for identification. */
     char sndio[256];                /* "snd/0", etc. */
     char audio4[256];               /* "/dev/audio", etc. */
     char oss[64];                   /* "dev/dsp0", etc. "dev/dsp" for the default device. */
     ma_int32 aaudio;                /* AAudio uses a 32-bit integer for identification. */
-    ma_uint32 opensl;               /* OpenSL|ES uses a 32-bit unsigned integer for identification. */
+    ma_uint32 opensl;               /* OpenSL|ES uses a 32-bit integer for identification. */
     char webaudio[32];              /* Web Audio always uses default devices for now, but if this changes it'll be a GUID. */
-    int nullbackend;                /* The null backend uses an integer for device IDs. */
+    ma_int32 nullbackend;                /* The null backend uses an integer for device IDs. */
 } ma_device_id;
 
 typedef struct
@@ -3181,7 +3181,7 @@ typedef struct
         } linear;
         struct
         {
-            int quality;
+            ma_int32 quality;
         } speex;
     } resampling;
     struct
@@ -3302,7 +3302,7 @@ struct ma_context
 #ifdef MA_SUPPORT_WASAPI
         struct
         {
-            int _unused;
+            ma_int32 _unused;
         } wasapi;
 #endif
 #ifdef MA_SUPPORT_DSOUND
@@ -3537,14 +3537,14 @@ struct ma_context
 #ifdef MA_SUPPORT_AUDIO4
         struct
         {
-            int _unused;
+            ma_int32 _unused;
         } audio4;
 #endif
 #ifdef MA_SUPPORT_OSS
         struct
         {
-            int versionMajor;
-            int versionMinor;
+            ma_int32 versionMajor;
+            ma_int32 versionMinor;
         } oss;
 #endif
 #ifdef MA_SUPPORT_AAUDIO
@@ -3581,19 +3581,19 @@ struct ma_context
 #ifdef MA_SUPPORT_OPENSL
         struct
         {
-            int _unused;
+            ma_int32 _unused;
         } opensl;
 #endif
 #ifdef MA_SUPPORT_WEBAUDIO
         struct
         {
-            int _unused;
+            ma_int32 _unused;
         } webaudio;
 #endif
 #ifdef MA_SUPPORT_NULL
         struct
         {
-            int _unused;
+            ma_int32 _unused;
         } null_backend;
 #endif
     };
@@ -3642,7 +3642,7 @@ struct ma_context
             ma_proc pthread_attr_setschedparam;
         } posix;
 #endif
-        int _unused;
+        ma_int32 _unused;
     };
 };
 
@@ -3677,7 +3677,7 @@ struct ma_device
         } linear;
         struct
         {
-            int quality;
+            ma_int32 quality;
         } speex;
     } resampling;
     struct
@@ -3847,15 +3847,15 @@ struct ma_device
 #ifdef MA_SUPPORT_AUDIO4
         struct
         {
-            int fdPlayback;
-            int fdCapture;
+            ma_int32 fdPlayback;
+            ma_int32 fdCapture;
         } audio4;
 #endif
 #ifdef MA_SUPPORT_OSS
         struct
         {
-            int fdPlayback;
-            int fdCapture;
+            ma_int32 fdPlayback;
+            ma_int32 fdCapture;
         } oss;
 #endif
 #ifdef MA_SUPPORT_AAUDIO
@@ -3889,8 +3889,8 @@ struct ma_device
 #ifdef MA_SUPPORT_WEBAUDIO
         struct
         {
-            int indexPlayback;              /* We use a factory on the JavaScript side to manage devices and use an index for JS/C interop. */
-            int indexCapture;
+            ma_int32 indexPlayback;              /* We use a factory on the JavaScript side to manage devices and use an index for JS/C interop. */
+            ma_int32 indexCapture;
             ma_pcm_rb duplexRB;             /* In external capture format. */
         } webaudio;
 #endif
@@ -4253,13 +4253,13 @@ ppPlaybackDeviceInfos (out)
     A pointer to a pointer that will receive the address of a buffer containing the list of `ma_device_info` structures for playback devices.
 
 pPlaybackDeviceCount (out)
-    A pointer to an unsigned integer that will receive the number of playback devices.
+    A pointer to an integer that will receive the number of playback devices.
 
 ppCaptureDeviceInfos (out)
     A pointer to a pointer that will receive the address of a buffer containing the list of `ma_device_info` structures for capture devices.
 
 pCaptureDeviceCount (out)
-    A pointer to an unsigned integer that will receive the number of capture devices.
+    A pointer to an integer that will receive the number of capture devices.
 
 
 Return Value
@@ -4431,7 +4431,7 @@ The frequency at which data is delivered to and from a device depends on the siz
 or milliseconds, whichever is more convenient. Generally speaking, the smaller the period, the lower the latency at the expense of higher CPU usage and
 increased risk of glitching due to the more frequent and granular data deliver intervals. The size of a period will depend on your requirements, but
 miniaudio's defaults should work fine for most scenarios. If you're building a game you should leave this fairly small, whereas if you're building a simple
-media player you can make it larger. Note that the period size you request is actually just a hint - miniaudio will tell the backend what you want, but the
+media player you can make it larger. Note that the period size you request is actually just a hma_int32 - miniaudio will tell the backend what you want, but the
 backend is ultimately responsible for what it gives you. You cannot assume you will get exactly what you ask for.
 
 When delivering data to and from a device you need to make sure it's in the correct format which you can set through the device configuration. You just set the
@@ -4497,10 +4497,10 @@ then be set directly on the structure. Below are the members of the `ma_device_c
 
     periods
         The number of periods making up the device's entire buffer. The total buffer size is `periodSizeInFrames` or `periodSizeInMilliseconds` multiplied by
-        this value. This is just a hint as backends will be the ones who ultimately decide how your periods will be configured.
+        this value. This is just a hma_int32 as backends will be the ones who ultimately decide how your periods will be configured.
 
     performanceProfile
-        A hint to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
+        A hma_int32 to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
         `ma_performance_profile_conservative`. This mainly affects the size of default buffers and can usually be left at it's default value.
 
     noPreZeroedOutputBuffer
@@ -5247,7 +5247,7 @@ you do your own synchronization.
 typedef struct ma_decoder ma_decoder;
 
 typedef size_t    (* ma_decoder_read_proc)                    (ma_decoder* pDecoder, void* pBufferOut, size_t bytesToRead);     /* Returns the number of bytes read. */
-typedef ma_bool32 (* ma_decoder_seek_proc)                    (ma_decoder* pDecoder, int byteOffset, ma_seek_origin origin);
+typedef ma_bool32 (* ma_decoder_seek_proc)                    (ma_decoder* pDecoder, ma_int32 byteOffset, ma_seek_origin origin);
 typedef ma_uint64 (* ma_decoder_read_pcm_frames_proc)         (ma_decoder* pDecoder, void* pFramesOut, ma_uint64 frameCount);   /* Returns the number of frames read. Output data is in internal format. */
 typedef ma_result (* ma_decoder_seek_to_pcm_frame_proc)       (ma_decoder* pDecoder, ma_uint64 frameIndex);
 typedef ma_result (* ma_decoder_uninit_proc)                  (ma_decoder* pDecoder);
@@ -5270,7 +5270,7 @@ typedef struct
         } linear;
         struct
         {
-            int quality;
+            ma_int32 quality;
         } speex;
     } resampling;
     ma_allocation_callbacks allocationCallbacks;
@@ -5387,7 +5387,7 @@ Encoders do not perform any format conversion for you. If your target format doe
 typedef struct ma_encoder ma_encoder;
 
 typedef size_t    (* ma_encoder_write_proc)           (ma_encoder* pEncoder, const void* pBufferIn, size_t bytesToWrite);     /* Returns the number of bytes written. */
-typedef ma_bool32 (* ma_encoder_seek_proc)            (ma_encoder* pEncoder, int byteOffset, ma_seek_origin origin);
+typedef ma_bool32 (* ma_encoder_seek_proc)            (ma_encoder* pEncoder, ma_int32 byteOffset, ma_seek_origin origin);
 typedef ma_result (* ma_encoder_init_proc)            (ma_encoder* pEncoder);
 typedef void      (* ma_encoder_uninit_proc)          (ma_encoder* pEncoder);
 typedef ma_uint64 (* ma_encoder_write_pcm_frames_proc)(ma_encoder* pEncoder, const void* pFramesIn, ma_uint64 frameCount);
@@ -5671,7 +5671,7 @@ IMPLEMENTATION
     #if defined(_MSC_VER) && !defined(__clang__)
         #if _MSC_VER >= 1400
             #include <intrin.h>
-            static MA_INLINE void ma_cpuid(int info[4], int fid)
+            static MA_INLINE void ma_cpuid(ma_int32 info[4], ma_int32 fid)
             {
                 __cpuid(info, fid);
             }
@@ -5680,7 +5680,7 @@ IMPLEMENTATION
         #endif
 
         #if _MSC_VER >= 1600 && (defined(_MSC_FULL_VER) && _MSC_FULL_VER >= 160040219)
-            static MA_INLINE unsigned __int64 ma_xgetbv(int reg)
+            static MA_INLINE unsigned __int64 ma_xgetbv(ma_int32 reg)
             {
                 return _xgetbv(reg);
             }
@@ -5688,7 +5688,7 @@ IMPLEMENTATION
             #define MA_NO_XGETBV
         #endif
     #elif (defined(__GNUC__) || defined(__clang__)) && !defined(MA_ANDROID)
-        static MA_INLINE void ma_cpuid(int info[4], int fid)
+        static MA_INLINE void ma_cpuid(ma_int32 info[4], ma_int32 fid)
         {
             /*
             It looks like the -fPIC option uses the ebx register which GCC complains about. We can work around this by just using a different register, the
@@ -5711,10 +5711,10 @@ IMPLEMENTATION
             #endif
         }
 
-        static MA_INLINE ma_uint64 ma_xgetbv(int reg)
+        static MA_INLINE ma_uint64 ma_xgetbv(ma_int32 reg)
         {
-            unsigned int hi;
-            unsigned int lo;
+            ma_uint32 hi;
+            ma_uint32 lo;
 
             __asm__ __volatile__ (
                 "xgetbv" : "=a"(lo), "=d"(hi) : "c"(reg)
@@ -5756,8 +5756,8 @@ static MA_INLINE ma_bool32 ma_has_avx2(void)
             #if defined(MA_NO_CPUID) || defined(MA_NO_XGETBV)
                 return MA_FALSE;
             #else
-                int info1[4];
-                int info7[4];
+                ma_int32 info1[4];
+                ma_int32 info7[4];
                 ma_cpuid(info1, 1);
                 ma_cpuid(info7, 7);
                 if (((info1[2] & (1 << 27)) != 0) && ((info7[1] & (1 << 5)) != 0)) {
@@ -5791,8 +5791,8 @@ static MA_INLINE ma_bool32 ma_has_avx512f(void)
             #if defined(MA_NO_CPUID) || defined(MA_NO_XGETBV)
                 return MA_FALSE;
             #else
-                int info1[4];
-                int info7[4];
+                ma_int32 info1[4];
+                ma_int32 info7[4];
                 ma_cpuid(info1, 1);
                 ma_cpuid(info7, 7);
                 if (((info1[2] & (1 << 27)) != 0) && ((info7[1] & (1 << 16)) != 0)) {
@@ -5856,7 +5856,7 @@ static MA_INLINE ma_bool32 ma_is_little_endian(void)
 #if defined(MA_X64)
     return MA_TRUE;
 #else
-    int n = 1;
+    ma_int32 n = 1;
     return (*(char*)&n) == 1;
 #endif
 }
@@ -6093,7 +6093,7 @@ Return Values:
 
 Not using symbolic constants for errors because I want to avoid #including errno.h
 */
-MA_API int ma_strcpy_s(char* dst, size_t dstSizeInBytes, const char* src)
+MA_API ma_int32 ma_strcpy_s(char* dst, size_t dstSizeInBytes, const char* src)
 {
     size_t i;
 
@@ -6121,7 +6121,7 @@ MA_API int ma_strcpy_s(char* dst, size_t dstSizeInBytes, const char* src)
     return 34;
 }
 
-MA_API int ma_strncpy_s(char* dst, size_t dstSizeInBytes, const char* src, size_t count)
+MA_API ma_int32 ma_strncpy_s(char* dst, size_t dstSizeInBytes, const char* src, size_t count)
 {
     size_t maxcount;
     size_t i;
@@ -6155,7 +6155,7 @@ MA_API int ma_strncpy_s(char* dst, size_t dstSizeInBytes, const char* src, size_
     return 34;
 }
 
-MA_API int ma_strcat_s(char* dst, size_t dstSizeInBytes, const char* src)
+MA_API ma_int32 ma_strcat_s(char* dst, size_t dstSizeInBytes, const char* src)
 {
     char* dstorig;
 
@@ -6197,7 +6197,7 @@ MA_API int ma_strcat_s(char* dst, size_t dstSizeInBytes, const char* src)
     return 0;
 }
 
-MA_API int ma_strncat_s(char* dst, size_t dstSizeInBytes, const char* src, size_t count)
+MA_API ma_int32 ma_strncat_s(char* dst, size_t dstSizeInBytes, const char* src, size_t count)
 {
     char* dstorig;
 
@@ -6243,10 +6243,10 @@ MA_API int ma_strncat_s(char* dst, size_t dstSizeInBytes, const char* src, size_
     return 0;
 }
 
-MA_API int ma_itoa_s(int value, char* dst, size_t dstSizeInBytes, int radix)
+MA_API ma_int32 ma_itoa_s(ma_int32 value, char* dst, size_t dstSizeInBytes, ma_int32 radix)
 {
-    int sign;
-    unsigned int valueU;
+    ma_int32 sign;
+    ma_uint32 valueU;
     char* dstEnd;
 
     if (dst == NULL || dstSizeInBytes == 0) {
@@ -6268,7 +6268,7 @@ MA_API int ma_itoa_s(int value, char* dst, size_t dstSizeInBytes, int radix)
     dstEnd = dst;
     do
     {
-        int remainder = valueU % radix;
+        ma_int32 remainder = valueU % radix;
         if (remainder > 9) {
             *dstEnd = (char)((remainder - 10) + 'a');
         } else {
@@ -6312,7 +6312,7 @@ MA_API int ma_itoa_s(int value, char* dst, size_t dstSizeInBytes, int radix)
     return 0;
 }
 
-MA_API int ma_strcmp(const char* str1, const char* str2)
+MA_API ma_int32 ma_strcmp(const char* str1, const char* str2)
 {
     if (str1 == str2) return  0;
 
@@ -6332,12 +6332,12 @@ MA_API int ma_strcmp(const char* str1, const char* str2)
         str2 += 1;
     }
 
-    return ((unsigned char*)str1)[0] - ((unsigned char*)str2)[0];
+    return ((ma_uint8*)str1)[0] - ((ma_uint8*)str2)[0];
 }
 
-MA_API int ma_strappend(char* dst, size_t dstSize, const char* srcA, const char* srcB)
+MA_API ma_int32 ma_strappend(char* dst, size_t dstSize, const char* srcA, const char* srcB)
 {
-    int result;
+    ma_int32 result;
 
     result = ma_strncpy_s(dst, dstSize, srcA, (size_t)-1);
     if (result != 0) {
@@ -6367,7 +6367,7 @@ MA_API char* ma_copy_string(const char* src, const ma_allocation_callbacks* pAll
 
 
 #include <errno.h>
-static ma_result ma_result_from_errno(int e)
+static ma_result ma_result_from_errno(ma_int32 e)
 {
     switch (e)
     {
@@ -6955,7 +6955,7 @@ static MA_INLINE void ma_zero_memory_64(void* dst, ma_uint64 sizeInBytes)
 
 
 /* Thanks to good old Bit Twiddling Hacks for this one: http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2 */
-static MA_INLINE unsigned int ma_next_power_of_2(unsigned int x)
+static MA_INLINE ma_uint32 ma_next_power_of_2(ma_uint32 x)
 {
     x--;
     x |= x >> 1;
@@ -6968,15 +6968,15 @@ static MA_INLINE unsigned int ma_next_power_of_2(unsigned int x)
     return x;
 }
 
-static MA_INLINE unsigned int ma_prev_power_of_2(unsigned int x)
+static MA_INLINE ma_uint32 ma_prev_power_of_2(ma_uint32 x)
 {
     return ma_next_power_of_2(x) >> 1;
 }
 
-static MA_INLINE unsigned int ma_round_to_power_of_2(unsigned int x)
+static MA_INLINE ma_uint32 ma_round_to_power_of_2(ma_uint32 x)
 {
-    unsigned int prev = ma_prev_power_of_2(x);
-    unsigned int next = ma_next_power_of_2(x);
+    ma_uint32 prev = ma_prev_power_of_2(x);
+    ma_uint32 next = ma_next_power_of_2(x);
     if ((next - x) > (x - prev)) {
         return prev;
     } else {
@@ -6984,9 +6984,9 @@ static MA_INLINE unsigned int ma_round_to_power_of_2(unsigned int x)
     }
 }
 
-static MA_INLINE unsigned int ma_count_set_bits(unsigned int x)
+static MA_INLINE ma_uint32 ma_count_set_bits(ma_uint32 x)
 {
-    unsigned int count = 0;
+    ma_uint32 count = 0;
     while (x != 0) {
         if (x & 1) {
             count += 1;
@@ -7769,7 +7769,7 @@ typedef void    (WINAPI * MA_PFN_CoUninitialize)(void);
 typedef HRESULT (WINAPI * MA_PFN_CoCreateInstance)(REFCLSID rclsid, LPUNKNOWN pUnkOuter, DWORD dwClsContext, REFIID riid, LPVOID *ppv);
 typedef void    (WINAPI * MA_PFN_CoTaskMemFree)(LPVOID pv);
 typedef HRESULT (WINAPI * MA_PFN_PropVariantClear)(PROPVARIANT *pvar);
-typedef int     (WINAPI * MA_PFN_StringFromGUID2)(const GUID* const rguid, LPOLESTR lpsz, int cchMax);
+typedef ma_int32     (WINAPI * MA_PFN_StringFromGUID2)(const GUID* const rguid, LPOLESTR lpsz, ma_int32 cchMax);
 
 typedef HWND (WINAPI * MA_PFN_GetForegroundWindow)(void);
 typedef HWND (WINAPI * MA_PFN_GetDesktopWindow)(void);
@@ -7839,12 +7839,12 @@ We need to emulate _vscprintf() for the VC6 build. This can be more efficient, b
 logging function, I'm happy to keep this simple. In the VC6 build we can implement this in terms of _vsnprintf().
 */
 #if defined(_MSC_VER) && _MSC_VER < 1900
-int ma_vscprintf(const char* format, va_list args)
+ma_int32 ma_vscprintf(const char* format, va_list args)
 {
 #if _MSC_VER > 1200
     return _vscprintf(format, args);
 #else
-    int result;
+    ma_int32 result;
     char* pTempBuffer = NULL;
     size_t tempBufferCap = 1024;
 
@@ -7896,7 +7896,7 @@ static void ma_post_log_messagev(ma_context* pContext, ma_device* pDevice, ma_ui
         a fixed sized stack allocated buffer.
         */
     #if defined(_MSC_VER) && _MSC_VER >= 1200   /* 1200 = VC6 */
-        int formattedLen;
+        ma_int32 formattedLen;
         va_list args2;
 
     #if _MSC_VER >= 1800
@@ -8185,7 +8185,7 @@ Threading
 
 *******************************************************************************/
 #ifdef MA_WIN32
-static int ma_thread_priority_to_win32(ma_thread_priority priority)
+static ma_int32 ma_thread_priority_to_win32(ma_thread_priority priority)
 {
     switch (priority) {
         case ma_thread_priority_idle:     return THREAD_PRIORITY_IDLE;
@@ -8278,7 +8278,7 @@ static ma_bool32 ma_event_signal__win32(ma_event* pEvent)
 }
 
 
-static ma_result ma_semaphore_init__win32(ma_context* pContext, int initialValue, ma_semaphore* pSemaphore)
+static ma_result ma_semaphore_init__win32(ma_context* pContext, ma_int32 initialValue, ma_semaphore* pSemaphore)
 {
     (void)pContext;
 
@@ -8310,32 +8310,32 @@ static ma_bool32 ma_semaphore_release__win32(ma_semaphore* pSemaphore)
 #ifdef MA_POSIX
 #include <sched.h>
 
-typedef int (* ma_pthread_create_proc)(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
-typedef int (* ma_pthread_join_proc)(pthread_t thread, void **retval);
-typedef int (* ma_pthread_mutex_init_proc)(pthread_mutex_t *__mutex, const pthread_mutexattr_t *__mutexattr);
-typedef int (* ma_pthread_mutex_destroy_proc)(pthread_mutex_t *__mutex);
-typedef int (* ma_pthread_mutex_lock_proc)(pthread_mutex_t *__mutex);
-typedef int (* ma_pthread_mutex_unlock_proc)(pthread_mutex_t *__mutex);
-typedef int (* ma_pthread_cond_init_proc)(pthread_cond_t *__restrict __cond, const pthread_condattr_t *__restrict __cond_attr);
-typedef int (* ma_pthread_cond_destroy_proc)(pthread_cond_t *__cond);
-typedef int (* ma_pthread_cond_signal_proc)(pthread_cond_t *__cond);
-typedef int (* ma_pthread_cond_wait_proc)(pthread_cond_t *__restrict __cond, pthread_mutex_t *__restrict __mutex);
-typedef int (* ma_pthread_attr_init_proc)(pthread_attr_t *attr);
-typedef int (* ma_pthread_attr_destroy_proc)(pthread_attr_t *attr);
-typedef int (* ma_pthread_attr_setschedpolicy_proc)(pthread_attr_t *attr, int policy);
-typedef int (* ma_pthread_attr_getschedparam_proc)(const pthread_attr_t *attr, struct sched_param *param);
-typedef int (* ma_pthread_attr_setschedparam_proc)(pthread_attr_t *attr, const struct sched_param *param);
+typedef ma_int32 (* ma_pthread_create_proc)(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
+typedef ma_int32 (* ma_pthread_join_proc)(pthread_t thread, void **retval);
+typedef ma_int32 (* ma_pthread_mutex_init_proc)(pthread_mutex_t *__mutex, const pthread_mutexattr_t *__mutexattr);
+typedef ma_int32 (* ma_pthread_mutex_destroy_proc)(pthread_mutex_t *__mutex);
+typedef ma_int32 (* ma_pthread_mutex_lock_proc)(pthread_mutex_t *__mutex);
+typedef ma_int32 (* ma_pthread_mutex_unlock_proc)(pthread_mutex_t *__mutex);
+typedef ma_int32 (* ma_pthread_cond_init_proc)(pthread_cond_t *__restrict __cond, const pthread_condattr_t *__restrict __cond_attr);
+typedef ma_int32 (* ma_pthread_cond_destroy_proc)(pthread_cond_t *__cond);
+typedef ma_int32 (* ma_pthread_cond_signal_proc)(pthread_cond_t *__cond);
+typedef ma_int32 (* ma_pthread_cond_wait_proc)(pthread_cond_t *__restrict __cond, pthread_mutex_t *__restrict __mutex);
+typedef ma_int32 (* ma_pthread_attr_init_proc)(pthread_attr_t *attr);
+typedef ma_int32 (* ma_pthread_attr_destroy_proc)(pthread_attr_t *attr);
+typedef ma_int32 (* ma_pthread_attr_setschedpolicy_proc)(pthread_attr_t *attr, ma_int32 policy);
+typedef ma_int32 (* ma_pthread_attr_getschedparam_proc)(const pthread_attr_t *attr, struct sched_param *param);
+typedef ma_int32 (* ma_pthread_attr_setschedparam_proc)(pthread_attr_t *attr, const struct sched_param *param);
 
 static ma_result ma_thread_create__posix(ma_context* pContext, ma_thread* pThread, ma_thread_entry_proc entryProc, void* pData)
 {
-    int result;
+    ma_int32 result;
     pthread_attr_t* pAttr = NULL;
 
 #if !defined(__EMSCRIPTEN__)
     /* Try setting the thread priority. It's not critical if anything fails here. */
     pthread_attr_t attr;
     if (((ma_pthread_attr_init_proc)pContext->posix.pthread_attr_init)(&attr) == 0) {
-        int scheduler = -1;
+        ma_int32 scheduler = -1;
         if (pContext->threadPriority == ma_thread_priority_idle) {
 #ifdef SCHED_IDLE
             if (((ma_pthread_attr_setschedpolicy_proc)pContext->posix.pthread_attr_setschedpolicy)(&attr, SCHED_IDLE) == 0) {
@@ -8355,9 +8355,9 @@ static ma_result ma_thread_create__posix(ma_context* pContext, ma_thread* pThrea
         }
 
         if (scheduler != -1) {
-            int priorityMin = sched_get_priority_min(scheduler);
-            int priorityMax = sched_get_priority_max(scheduler);
-            int priorityStep = (priorityMax - priorityMin) / 7;  /* 7 = number of priorities supported by miniaudio. */
+            ma_int32 priorityMin = sched_get_priority_min(scheduler);
+            ma_int32 priorityMax = sched_get_priority_max(scheduler);
+            ma_int32 priorityStep = (priorityMax - priorityMin) / 7;  /* 7 = number of priorities supported by miniaudio. */
 
             struct sched_param sched;
             if (((ma_pthread_attr_getschedparam_proc)pContext->posix.pthread_attr_getschedparam)(&attr, &sched) == 0) {
@@ -8366,7 +8366,7 @@ static ma_result ma_thread_create__posix(ma_context* pContext, ma_thread* pThrea
                 } else if (pContext->threadPriority == ma_thread_priority_realtime) {
                     sched.sched_priority = priorityMax;
                 } else {
-                    sched.sched_priority += ((int)pContext->threadPriority + 5) * priorityStep;  /* +5 because the lowest priority is -5. */
+                    sched.sched_priority += ((ma_int32)pContext->threadPriority + 5) * priorityStep;  /* +5 because the lowest priority is -5. */
                     if (sched.sched_priority < priorityMin) {
                         sched.sched_priority = priorityMin;
                     }
@@ -8423,7 +8423,7 @@ static void ma_sleep__posix(ma_uint32 milliseconds)
 
 static ma_result ma_mutex_init__posix(ma_context* pContext, ma_mutex* pMutex)
 {
-    int result = ((ma_pthread_mutex_init_proc)pContext->posix.pthread_mutex_init)(&pMutex->posix.mutex, NULL);
+    ma_int32 result = ((ma_pthread_mutex_init_proc)pContext->posix.pthread_mutex_init)(&pMutex->posix.mutex, NULL);
     if (result != 0) {
         return ma_result_from_errno(result);
     }
@@ -8449,7 +8449,7 @@ static void ma_mutex_unlock__posix(ma_mutex* pMutex)
 
 static ma_result ma_event_init__posix(ma_context* pContext, ma_event* pEvent)
 {
-    int result;
+    ma_int32 result;
 
     result = ((ma_pthread_mutex_init_proc)pContext->posix.pthread_mutex_init)(&pEvent->posix.mutex, NULL);
     if (result != 0) {
@@ -8499,7 +8499,7 @@ static ma_bool32 ma_event_signal__posix(ma_event* pEvent)
 }
 
 
-static ma_result ma_semaphore_init__posix(ma_context* pContext, int initialValue, ma_semaphore* pSemaphore)
+static ma_result ma_semaphore_init__posix(ma_context* pContext, ma_int32 initialValue, ma_semaphore* pSemaphore)
 {
     (void)pContext;
 
@@ -8509,7 +8509,7 @@ static ma_result ma_semaphore_init__posix(ma_context* pContext, int initialValue
     (void)pSemaphore;
     return MA_INVALID_OPERATION;
 #else
-    if (sem_init(&pSemaphore->posix.semaphore, 0, (unsigned int)initialValue) == 0) {
+    if (sem_init(&pSemaphore->posix.semaphore, 0, (ma_uint32)initialValue) == 0) {
         return ma_result_from_errno(errno);
     }
 #endif
@@ -8694,7 +8694,7 @@ MA_API ma_bool32 ma_event_signal(ma_event* pEvent)
 }
 
 
-MA_API ma_result ma_semaphore_init(ma_context* pContext, int initialValue, ma_semaphore* pSemaphore)
+MA_API ma_result ma_semaphore_init(ma_context* pContext, ma_int32 initialValue, ma_semaphore* pSemaphore)
 {
     if (pContext == NULL || pSemaphore == NULL) {
         return MA_INVALID_ARGS;
@@ -10755,7 +10755,7 @@ typedef struct
     ULONG   (STDMETHODCALLTYPE * Release)       (ma_IAudioRenderClient* pThis);
 
     /* IAudioRenderClient */
-    HRESULT (STDMETHODCALLTYPE * GetBuffer)    (ma_IAudioRenderClient* pThis, ma_uint32 numFramesRequested, BYTE** ppData);
+    HRESULT (STDMETHODCALLTYPE * GetBuffer)    (ma_IAudioRenderClient* pThis, ma_uint32 numFramesRequested, ma_uint8** ppData);
     HRESULT (STDMETHODCALLTYPE * ReleaseBuffer)(ma_IAudioRenderClient* pThis, ma_uint32 numFramesWritten, DWORD dwFlags);
 } ma_IAudioRenderClientVtbl;
 struct ma_IAudioRenderClient
@@ -10765,7 +10765,7 @@ struct ma_IAudioRenderClient
 static MA_INLINE HRESULT ma_IAudioRenderClient_QueryInterface(ma_IAudioRenderClient* pThis, const IID* const riid, void** ppObject)   { return pThis->lpVtbl->QueryInterface(pThis, riid, ppObject); }
 static MA_INLINE ULONG   ma_IAudioRenderClient_AddRef(ma_IAudioRenderClient* pThis)                                                   { return pThis->lpVtbl->AddRef(pThis); }
 static MA_INLINE ULONG   ma_IAudioRenderClient_Release(ma_IAudioRenderClient* pThis)                                                  { return pThis->lpVtbl->Release(pThis); }
-static MA_INLINE HRESULT ma_IAudioRenderClient_GetBuffer(ma_IAudioRenderClient* pThis, ma_uint32 numFramesRequested, BYTE** ppData)   { return pThis->lpVtbl->GetBuffer(pThis, numFramesRequested, ppData); }
+static MA_INLINE HRESULT ma_IAudioRenderClient_GetBuffer(ma_IAudioRenderClient* pThis, ma_uint32 numFramesRequested, ma_uint8** ppData)   { return pThis->lpVtbl->GetBuffer(pThis, numFramesRequested, ppData); }
 static MA_INLINE HRESULT ma_IAudioRenderClient_ReleaseBuffer(ma_IAudioRenderClient* pThis, ma_uint32 numFramesWritten, DWORD dwFlags) { return pThis->lpVtbl->ReleaseBuffer(pThis, numFramesWritten, dwFlags); }
 
 
@@ -10778,7 +10778,7 @@ typedef struct
     ULONG   (STDMETHODCALLTYPE * Release)       (ma_IAudioCaptureClient* pThis);
 
     /* IAudioRenderClient */
-    HRESULT (STDMETHODCALLTYPE * GetBuffer)        (ma_IAudioCaptureClient* pThis, BYTE** ppData, ma_uint32* pNumFramesToRead, DWORD* pFlags, ma_uint64* pDevicePosition, ma_uint64* pQPCPosition);
+    HRESULT (STDMETHODCALLTYPE * GetBuffer)        (ma_IAudioCaptureClient* pThis, ma_uint8** ppData, ma_uint32* pNumFramesToRead, DWORD* pFlags, ma_uint64* pDevicePosition, ma_uint64* pQPCPosition);
     HRESULT (STDMETHODCALLTYPE * ReleaseBuffer)    (ma_IAudioCaptureClient* pThis, ma_uint32 numFramesRead);
     HRESULT (STDMETHODCALLTYPE * GetNextPacketSize)(ma_IAudioCaptureClient* pThis, ma_uint32* pNumFramesInNextPacket);
 } ma_IAudioCaptureClientVtbl;
@@ -10789,7 +10789,7 @@ struct ma_IAudioCaptureClient
 static MA_INLINE HRESULT ma_IAudioCaptureClient_QueryInterface(ma_IAudioCaptureClient* pThis, const IID* const riid, void** ppObject) { return pThis->lpVtbl->QueryInterface(pThis, riid, ppObject); }
 static MA_INLINE ULONG   ma_IAudioCaptureClient_AddRef(ma_IAudioCaptureClient* pThis)                                                 { return pThis->lpVtbl->AddRef(pThis); }
 static MA_INLINE ULONG   ma_IAudioCaptureClient_Release(ma_IAudioCaptureClient* pThis)                                                { return pThis->lpVtbl->Release(pThis); }
-static MA_INLINE HRESULT ma_IAudioCaptureClient_GetBuffer(ma_IAudioCaptureClient* pThis, BYTE** ppData, ma_uint32* pNumFramesToRead, DWORD* pFlags, ma_uint64* pDevicePosition, ma_uint64* pQPCPosition) { return pThis->lpVtbl->GetBuffer(pThis, ppData, pNumFramesToRead, pFlags, pDevicePosition, pQPCPosition); }
+static MA_INLINE HRESULT ma_IAudioCaptureClient_GetBuffer(ma_IAudioCaptureClient* pThis, ma_uint8** ppData, ma_uint32* pNumFramesToRead, DWORD* pFlags, ma_uint64* pDevicePosition, ma_uint64* pQPCPosition) { return pThis->lpVtbl->GetBuffer(pThis, ppData, pNumFramesToRead, pFlags, pDevicePosition, pQPCPosition); }
 static MA_INLINE HRESULT ma_IAudioCaptureClient_ReleaseBuffer(ma_IAudioCaptureClient* pThis, ma_uint32 numFramesRead)                 { return pThis->lpVtbl->ReleaseBuffer(pThis, numFramesRead); }
 static MA_INLINE HRESULT ma_IAudioCaptureClient_GetNextPacketSize(ma_IAudioCaptureClient* pThis, ma_uint32* pNumFramesInNextPacket)   { return pThis->lpVtbl->GetNextPacketSize(pThis, pNumFramesInNextPacket); }
 
@@ -10927,7 +10927,7 @@ static ULONG STDMETHODCALLTYPE ma_IMMNotificationClient_Release(ma_IMMNotificati
 static HRESULT STDMETHODCALLTYPE ma_IMMNotificationClient_OnDeviceStateChanged(ma_IMMNotificationClient* pThis, LPCWSTR pDeviceID, DWORD dwNewState)
 {
 #ifdef MA_DEBUG_OUTPUT
-    printf("IMMNotificationClient_OnDeviceStateChanged(pDeviceID=%S, dwNewState=%u)\n", (pDeviceID != NULL) ? pDeviceID : L"(NULL)", (unsigned int)dwNewState);
+    printf("IMMNotificationClient_OnDeviceStateChanged(pDeviceID=%S, dwNewState=%u)\n", (pDeviceID != NULL) ? pDeviceID : L"(NULL)", (ma_uint32)dwNewState);
 #endif
 
     (void)pThis;
@@ -12537,8 +12537,8 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
     ma_uint32 mappedDeviceBufferSizeInFramesPlayback = 0;
     ma_uint32 mappedDeviceBufferFramesRemainingCapture = 0;
     ma_uint32 mappedDeviceBufferFramesRemainingPlayback = 0;
-    BYTE* pMappedDeviceBufferCapture = NULL;
-    BYTE* pMappedDeviceBufferPlayback = NULL;
+    ma_uint8* pMappedDeviceBufferCapture = NULL;
+    ma_uint8* pMappedDeviceBufferPlayback = NULL;
     ma_uint32 bpfCaptureDevice = ma_get_bytes_per_frame(pDevice->capture.internalFormat, pDevice->capture.internalChannels);
     ma_uint32 bpfPlaybackDevice = ma_get_bytes_per_frame(pDevice->playback.internalFormat, pDevice->playback.internalChannels);
     ma_uint32 bpfCaptureClient = ma_get_bytes_per_frame(pDevice->capture.format, pDevice->capture.channels);
@@ -12669,7 +12669,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
 
                         /* Getting here means there's data available for writing to the output device. */
                         mappedDeviceBufferSizeInFramesCapture = ma_min(framesAvailableCapture, periodSizeInFramesCapture);
-                        hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (BYTE**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
+                        hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (ma_uint8**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
                         if (FAILED(hr)) {
                             ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[WASAPI] Failed to retrieve internal buffer from capture device in preparation for writing to the device.", ma_result_from_HRESULT(hr));
                             exitLoop = MA_TRUE;
@@ -12704,7 +12704,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                                     
                                     if (framesAvailableCapture > 0) {
                                         mappedDeviceBufferSizeInFramesCapture = ma_min(framesAvailableCapture, periodSizeInFramesCapture);
-                                        hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (BYTE**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
+                                        hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (ma_uint8**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
                                         if (FAILED(hr)) {
                                             ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[WASAPI] Failed to retrieve internal buffer from capture device in preparation for writing to the device.", ma_result_from_HRESULT(hr));
                                             exitLoop = MA_TRUE;
@@ -12733,8 +12733,8 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
 
                     /* At this point we should have both input and output data available. We now need to convert the data and post it to the client. */
                     for (;;) {
-                        BYTE* pRunningDeviceBufferCapture;
-                        BYTE* pRunningDeviceBufferPlayback;
+                        ma_uint8* pRunningDeviceBufferCapture;
+                        ma_uint8* pRunningDeviceBufferPlayback;
                         ma_uint32 framesToProcess;
                         ma_uint32 framesProcessed;
 
@@ -12920,7 +12920,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
 
                 /* Map the data buffer in preparation for sending to the client. */
                 mappedDeviceBufferSizeInFramesCapture = framesAvailableCapture;
-                hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (BYTE**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
+                hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (ma_uint8**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
                 if (FAILED(hr)) {
                     ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[WASAPI] Failed to retrieve internal buffer from capture device in preparation for writing to the device.", ma_result_from_HRESULT(hr));
                     exitLoop = MA_TRUE;
@@ -12954,7 +12954,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                                     
                             if (framesAvailableCapture > 0) {
                                 mappedDeviceBufferSizeInFramesCapture = ma_min(framesAvailableCapture, periodSizeInFramesCapture);
-                                hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (BYTE**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
+                                hr = ma_IAudioCaptureClient_GetBuffer((ma_IAudioCaptureClient*)pDevice->wasapi.pCaptureClient, (ma_uint8**)&pMappedDeviceBufferCapture, &mappedDeviceBufferSizeInFramesCapture, &flagsCapture, NULL, NULL);
                                 if (FAILED(hr)) {
                                     ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[WASAPI] Failed to retrieve internal buffer from capture device in preparation for writing to the device.", ma_result_from_HRESULT(hr));
                                     exitLoop = MA_TRUE;
@@ -13085,7 +13085,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
 
         /*
         The buffer needs to be drained before stopping the device. Not doing this will result in the last few frames not getting output to
-        the speakers. This is a problem for very short sounds because it'll result in a significant portion of it not getting played.
+        the speakers. This is a problem for very int16_t sounds because it'll result in a significant portion of it not getting played.
         */
         if (pDevice->wasapi.isStartedPlayback) {
             if (pDevice->playback.shareMode == ma_share_mode_exclusive) {
@@ -16254,9 +16254,9 @@ typedef snd_pcm_chmap_t                         ma_snd_pcm_chmap_t;
 #include <errno.h>  /* For EPIPE, etc. */
 typedef unsigned long                           ma_snd_pcm_uframes_t;
 typedef long                                    ma_snd_pcm_sframes_t;
-typedef int                                     ma_snd_pcm_stream_t;
-typedef int                                     ma_snd_pcm_format_t;
-typedef int                                     ma_snd_pcm_access_t;
+typedef ma_int32                                     ma_snd_pcm_stream_t;
+typedef ma_int32                                     ma_snd_pcm_format_t;
+typedef ma_int32                                     ma_snd_pcm_access_t;
 typedef struct ma_snd_pcm_t                     ma_snd_pcm_t;
 typedef struct ma_snd_pcm_hw_params_t           ma_snd_pcm_hw_params_t;
 typedef struct ma_snd_pcm_sw_params_t           ma_snd_pcm_sw_params_t;
@@ -16265,13 +16265,13 @@ typedef struct ma_snd_pcm_info_t                ma_snd_pcm_info_t;
 typedef struct
 {
     void* addr;
-    unsigned int first;
-    unsigned int step;
+    ma_uint32 first;
+    ma_uint32 step;
 } ma_snd_pcm_channel_area_t;
 typedef struct
 {
-    unsigned int channels;
-    unsigned int pos[1];
+    ma_uint32 channels;
+    ma_uint32 pos[1];
 } ma_snd_pcm_chmap_t;
 
 /* snd_pcm_state_t */
@@ -16359,61 +16359,61 @@ typedef struct
 #define MA_SND_PCM_NO_AUTO_FORMAT              0x00040000
 #endif
 
-typedef int                  (* ma_snd_pcm_open_proc)                          (ma_snd_pcm_t **pcm, const char *name, ma_snd_pcm_stream_t stream, int mode);
-typedef int                  (* ma_snd_pcm_close_proc)                         (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_pcm_open_proc)                          (ma_snd_pcm_t **pcm, const char *name, ma_snd_pcm_stream_t stream, ma_int32 mode);
+typedef ma_int32                  (* ma_snd_pcm_close_proc)                         (ma_snd_pcm_t *pcm);
 typedef size_t               (* ma_snd_pcm_hw_params_sizeof_proc)              (void);
-typedef int                  (* ma_snd_pcm_hw_params_any_proc)                 (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params);
-typedef int                  (* ma_snd_pcm_hw_params_set_format_proc)          (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t val);
-typedef int                  (* ma_snd_pcm_hw_params_set_format_first_proc)    (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t *format);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_any_proc)                 (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_format_proc)          (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_format_first_proc)    (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t *format);
 typedef void                 (* ma_snd_pcm_hw_params_get_format_mask_proc)     (ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_mask_t *mask);
-typedef int                  (* ma_snd_pcm_hw_params_set_channels_near_proc)   (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, unsigned int *val);
-typedef int                  (* ma_snd_pcm_hw_params_set_rate_resample_proc)   (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, unsigned int val);
-typedef int                  (* ma_snd_pcm_hw_params_set_rate_near_proc)       (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, unsigned int *val, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_set_buffer_size_near_proc)(ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_uframes_t *val);
-typedef int                  (* ma_snd_pcm_hw_params_set_periods_near_proc)    (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, unsigned int *val, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_set_access_proc)          (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_access_t _access);
-typedef int                  (* ma_snd_pcm_hw_params_get_format_proc)          (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t *format);
-typedef int                  (* ma_snd_pcm_hw_params_get_channels_proc)        (const ma_snd_pcm_hw_params_t *params, unsigned int *val);
-typedef int                  (* ma_snd_pcm_hw_params_get_channels_min_proc)    (const ma_snd_pcm_hw_params_t *params, unsigned int *val);
-typedef int                  (* ma_snd_pcm_hw_params_get_channels_max_proc)    (const ma_snd_pcm_hw_params_t *params, unsigned int *val);
-typedef int                  (* ma_snd_pcm_hw_params_get_rate_proc)            (const ma_snd_pcm_hw_params_t *params, unsigned int *rate, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_get_rate_min_proc)        (const ma_snd_pcm_hw_params_t *params, unsigned int *rate, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_get_rate_max_proc)        (const ma_snd_pcm_hw_params_t *params, unsigned int *rate, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_get_buffer_size_proc)     (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_uframes_t *val);
-typedef int                  (* ma_snd_pcm_hw_params_get_periods_proc)         (const ma_snd_pcm_hw_params_t *params, unsigned int *val, int *dir);
-typedef int                  (* ma_snd_pcm_hw_params_get_access_proc)          (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_access_t *_access);
-typedef int                  (* ma_snd_pcm_hw_params_proc)                     (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_channels_near_proc)   (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_uint32 *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_rate_resample_proc)   (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_uint32 val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_rate_near_proc)       (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_uint32 *val, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_buffer_size_near_proc)(ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_uframes_t *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_periods_near_proc)    (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_uint32 *val, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_set_access_proc)          (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params, ma_snd_pcm_access_t _access);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_format_proc)          (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_format_t *format);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_channels_proc)        (const ma_snd_pcm_hw_params_t *params, ma_uint32 *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_channels_min_proc)    (const ma_snd_pcm_hw_params_t *params, ma_uint32 *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_channels_max_proc)    (const ma_snd_pcm_hw_params_t *params, ma_uint32 *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_rate_proc)            (const ma_snd_pcm_hw_params_t *params, ma_uint32 *rate, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_rate_min_proc)        (const ma_snd_pcm_hw_params_t *params, ma_uint32 *rate, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_rate_max_proc)        (const ma_snd_pcm_hw_params_t *params, ma_uint32 *rate, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_buffer_size_proc)     (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_uframes_t *val);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_periods_proc)         (const ma_snd_pcm_hw_params_t *params, ma_uint32 *val, ma_int32 *dir);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_get_access_proc)          (const ma_snd_pcm_hw_params_t *params, ma_snd_pcm_access_t *_access);
+typedef ma_int32                  (* ma_snd_pcm_hw_params_proc)                     (ma_snd_pcm_t *pcm, ma_snd_pcm_hw_params_t *params);
 typedef size_t               (* ma_snd_pcm_sw_params_sizeof_proc)              (void);
-typedef int                  (* ma_snd_pcm_sw_params_current_proc)             (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params);
-typedef int                  (* ma_snd_pcm_sw_params_get_boundary_proc)        (ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t* val);
-typedef int                  (* ma_snd_pcm_sw_params_set_avail_min_proc)       (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
-typedef int                  (* ma_snd_pcm_sw_params_set_start_threshold_proc) (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
-typedef int                  (* ma_snd_pcm_sw_params_set_stop_threshold_proc)  (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
-typedef int                  (* ma_snd_pcm_sw_params_proc)                     (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_current_proc)             (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_get_boundary_proc)        (ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t* val);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_set_avail_min_proc)       (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_set_start_threshold_proc) (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_set_stop_threshold_proc)  (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params, ma_snd_pcm_uframes_t val);
+typedef ma_int32                  (* ma_snd_pcm_sw_params_proc)                     (ma_snd_pcm_t *pcm, ma_snd_pcm_sw_params_t *params);
 typedef size_t               (* ma_snd_pcm_format_mask_sizeof_proc)            (void);
-typedef int                  (* ma_snd_pcm_format_mask_test_proc)              (const ma_snd_pcm_format_mask_t *mask, ma_snd_pcm_format_t val);
+typedef ma_int32                  (* ma_snd_pcm_format_mask_test_proc)              (const ma_snd_pcm_format_mask_t *mask, ma_snd_pcm_format_t val);
 typedef ma_snd_pcm_chmap_t * (* ma_snd_pcm_get_chmap_proc)                     (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_state_proc)                         (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_prepare_proc)                       (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_start_proc)                         (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_drop_proc)                          (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_drain_proc)                         (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_device_name_hint_proc)                  (int card, const char *iface, void ***hints);
+typedef ma_int32                  (* ma_snd_pcm_state_proc)                         (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_pcm_prepare_proc)                       (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_pcm_start_proc)                         (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_pcm_drop_proc)                          (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_pcm_drain_proc)                         (ma_snd_pcm_t *pcm);
+typedef ma_int32                  (* ma_snd_device_name_hint_proc)                  (ma_int32 card, const char *iface, void ***hints);
 typedef char *               (* ma_snd_device_name_get_hint_proc)              (const void *hint, const char *id);
-typedef int                  (* ma_snd_card_get_index_proc)                    (const char *name);
-typedef int                  (* ma_snd_device_name_free_hint_proc)             (void **hints);
-typedef int                  (* ma_snd_pcm_mmap_begin_proc)                    (ma_snd_pcm_t *pcm, const ma_snd_pcm_channel_area_t **areas, ma_snd_pcm_uframes_t *offset, ma_snd_pcm_uframes_t *frames);
+typedef ma_int32                  (* ma_snd_card_get_index_proc)                    (const char *name);
+typedef ma_int32                  (* ma_snd_device_name_free_hint_proc)             (void **hints);
+typedef ma_int32                  (* ma_snd_pcm_mmap_begin_proc)                    (ma_snd_pcm_t *pcm, const ma_snd_pcm_channel_area_t **areas, ma_snd_pcm_uframes_t *offset, ma_snd_pcm_uframes_t *frames);
 typedef ma_snd_pcm_sframes_t (* ma_snd_pcm_mmap_commit_proc)                   (ma_snd_pcm_t *pcm, ma_snd_pcm_uframes_t offset, ma_snd_pcm_uframes_t frames);
-typedef int                  (* ma_snd_pcm_recover_proc)                       (ma_snd_pcm_t *pcm, int err, int silent);
+typedef ma_int32                  (* ma_snd_pcm_recover_proc)                       (ma_snd_pcm_t *pcm, ma_int32 err, ma_int32 silent);
 typedef ma_snd_pcm_sframes_t (* ma_snd_pcm_readi_proc)                         (ma_snd_pcm_t *pcm, void *buffer, ma_snd_pcm_uframes_t size);
 typedef ma_snd_pcm_sframes_t (* ma_snd_pcm_writei_proc)                        (ma_snd_pcm_t *pcm, const void *buffer, ma_snd_pcm_uframes_t size);
 typedef ma_snd_pcm_sframes_t (* ma_snd_pcm_avail_proc)                         (ma_snd_pcm_t *pcm);
 typedef ma_snd_pcm_sframes_t (* ma_snd_pcm_avail_update_proc)                  (ma_snd_pcm_t *pcm);
-typedef int                  (* ma_snd_pcm_wait_proc)                          (ma_snd_pcm_t *pcm, int timeout);
-typedef int                  (* ma_snd_pcm_info_proc)                          (ma_snd_pcm_t *pcm, ma_snd_pcm_info_t* info);
+typedef ma_int32                  (* ma_snd_pcm_wait_proc)                          (ma_snd_pcm_t *pcm, ma_int32 timeout);
+typedef ma_int32                  (* ma_snd_pcm_info_proc)                          (ma_snd_pcm_t *pcm, ma_snd_pcm_info_t* info);
 typedef size_t               (* ma_snd_pcm_info_sizeof_proc)                   (void);
 typedef const char*          (* ma_snd_pcm_info_get_name_proc)                 (const ma_snd_pcm_info_t* info);
-typedef int                  (* ma_snd_config_update_free_global_proc)         (void);
+typedef ma_int32                  (* ma_snd_config_update_free_global_proc)         (void);
 
 /* This array specifies each of the common devices that can be used for both playback and capture. */
 static const char* g_maCommonDeviceNamesALSA[] = {
@@ -16514,7 +16514,7 @@ static ma_format ma_format_from_alsa(ma_snd_pcm_format_t formatALSA)
     }
 }
 
-static ma_channel ma_convert_alsa_channel_position_to_ma_channel(unsigned int alsaChannelPos)
+static ma_channel ma_convert_alsa_channel_position_to_ma_channel(ma_uint32 alsaChannelPos)
 {
     switch (alsaChannelPos)
     {
@@ -16599,7 +16599,7 @@ static ma_bool32 ma_is_device_blacklisted__alsa(ma_device_type deviceType, const
 
 static const char* ma_find_char(const char* str, char c, int* index)
 {
-    int i = 0;
+    ma_int32 i = 0;
     for (;;) {
         if (str[i] == '\0') {
             if (index) *index = -1;
@@ -16623,9 +16623,9 @@ static ma_bool32 ma_is_device_name_in_hw_format__alsa(const char* hwid)
 {
     /* This function is just checking whether or not hwid is in "hw:%d,%d" format. */
 
-    int commaPos;
+    ma_int32 commaPos;
     const char* dev;
-    int i;
+    ma_int32 i;
 
     if (hwid == NULL) {
         return MA_FALSE;
@@ -16663,15 +16663,15 @@ static ma_bool32 ma_is_device_name_in_hw_format__alsa(const char* hwid)
     return MA_TRUE;
 }
 
-static int ma_convert_device_name_to_hw_format__alsa(ma_context* pContext, char* dst, size_t dstSize, const char* src)  /* Returns 0 on success, non-0 on error. */
+static ma_int32 ma_convert_device_name_to_hw_format__alsa(ma_context* pContext, char* dst, size_t dstSize, const char* src)  /* Returns 0 on success, non-0 on error. */
 {
     /* src should look something like this: "hw:CARD=I82801AAICH,DEV=0" */
 
-    int colonPos;
-    int commaPos;
+    ma_int32 colonPos;
+    ma_int32 commaPos;
     char card[256];
     const char* dev;
-    int cardIndex;
+    ma_int32 cardIndex;
 
     if (dst == NULL) {
         return -1;
@@ -16743,7 +16743,7 @@ static ma_bool32 ma_does_id_exist_in_list__alsa(ma_device_id* pUniqueIDs, ma_uin
 }
 
 
-static ma_result ma_context_open_pcm__alsa(ma_context* pContext, ma_share_mode shareMode, ma_device_type deviceType, const ma_device_id* pDeviceID, int openMode, ma_snd_pcm_t** ppPCM)
+static ma_result ma_context_open_pcm__alsa(ma_context* pContext, ma_share_mode shareMode, ma_device_type deviceType, const ma_device_id* pDeviceID, ma_int32 openMode, ma_snd_pcm_t** ppPCM)
 {
     ma_snd_pcm_t* pPCM;
     ma_snd_pcm_stream_t stream;
@@ -16817,7 +16817,7 @@ static ma_result ma_context_open_pcm__alsa(ma_context* pContext, ma_share_mode s
 
         /* May end up needing to make small adjustments to the ID, so make a copy. */
         ma_device_id deviceID = *pDeviceID;
-        int resultALSA = -ENODEV;
+        ma_int32 resultALSA = -ENODEV;
 
         if (deviceID.alsa[0] != ':') {
             /* The ID is not in ":0,0" format. Use the ID exactly as-is. */
@@ -16873,7 +16873,7 @@ static ma_bool32 ma_context_is_device_id_equal__alsa(ma_context* pContext, const
 
 static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enum_devices_callback_proc callback, void* pUserData)
 {
-    int resultALSA;
+    ma_int32 resultALSA;
     ma_bool32 cbResult = MA_TRUE;
     char** ppDeviceHints;
     ma_device_id* pUniqueIDs = NULL;
@@ -16891,8 +16891,8 @@ static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enu
         return ma_result_from_errno(-resultALSA);
     }
 
-    ppNextDeviceHint = ppDeviceHints;
-    while (*ppNextDeviceHint != NULL) {
+    ppNextDeviceHma_int32 = ppDeviceHints;
+    while (*ppNextDeviceHma_int32 != NULL) {
         char* NAME = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "NAME");
         char* DESC = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "DESC");
         char* IOID = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "IOID");
@@ -16964,7 +16964,7 @@ static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enu
         being put into parentheses. In simplified mode I'm just stripping the second line entirely.
         */
         if (DESC != NULL) {
-            int lfPos;
+            ma_int32 lfPos;
             const char* line2 = ma_find_char(DESC, '\n', &lfPos);
             if (line2 != NULL) {
                 line2 += 1; /* Skip past the new-line character. */
@@ -17015,7 +17015,7 @@ static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enu
         free(NAME);
         free(DESC);
         free(IOID);
-        ppNextDeviceHint += 1;
+        ppNextDeviceHma_int32 += 1;
 
         /* We need to stop enumeration if the callback returned false. */
         if (stopEnumeration) {
@@ -17064,11 +17064,11 @@ static ma_result ma_context_get_device_info__alsa(ma_context* pContext, ma_devic
 {
     ma_context_get_device_info_enum_callback_data__alsa data;
     ma_result result;
-    int resultALSA;
+    ma_int32 resultALSA;
     ma_snd_pcm_t* pPCM;
     ma_snd_pcm_hw_params_t* pHWParams;
     ma_snd_pcm_format_mask_t* pFormatMask;
-    int sampleRateDir = 0;
+    ma_int32 sampleRateDir = 0;
 
     MA_ASSERT(pContext != NULL);
 
@@ -17186,7 +17186,7 @@ static ma_uint32 ma_device__wait_for_frames__alsa(ma_device* pDevice, ma_bool32*
 
         if (framesAvailable < periodSizeInFrames) {
             /* Less than a whole period is available so keep waiting. */
-            int waitResult = ((ma_snd_pcm_wait_proc)pDevice->pContext->alsa.snd_pcm_wait)((ma_snd_pcm_t*)pDevice->alsa.pPCM, -1);
+            ma_int32 waitResult = ((ma_snd_pcm_wait_proc)pDevice->pContext->alsa.snd_pcm_wait)((ma_snd_pcm_t*)pDevice->alsa.pPCM, -1);
             if (waitResult < 0) {
                 if (waitResult == -EPIPE) {
                     if (((ma_snd_pcm_recover_proc)pDevice->pContext->alsa.snd_pcm_recover)((ma_snd_pcm_t*)pDevice->alsa.pPCM, waitResult, MA_TRUE) < 0) {
@@ -17238,7 +17238,7 @@ static ma_bool32 ma_device_read_from_client_and_write__alsa(ma_device* pDevice)
         ma_snd_pcm_uframes_t mappedOffset;
         ma_snd_pcm_uframes_t mappedFrames = framesAvailable;
         while (framesAvailable > 0) {
-            int result = ((ma_snd_pcm_mmap_begin_proc)pDevice->pContext->alsa.snd_pcm_mmap_begin)((ma_snd_pcm_t*)pDevice->alsa.pPCM, &pAreas, &mappedOffset, &mappedFrames);
+            ma_int32 result = ((ma_snd_pcm_mmap_begin_proc)pDevice->pContext->alsa.snd_pcm_mmap_begin)((ma_snd_pcm_t*)pDevice->alsa.pPCM, &pAreas, &mappedOffset, &mappedFrames);
             if (result < 0) {
                 return MA_FALSE;
             }
@@ -17294,13 +17294,13 @@ static ma_bool32 ma_device_read_from_client_and_write__alsa(ma_device* pDevice)
 
                     framesWritten = ((ma_snd_pcm_writei_proc)pDevice->pContext->alsa.snd_pcm_writei)((ma_snd_pcm_t*)pDevice->alsa.pPCM, pDevice->alsa.pIntermediaryBuffer, framesAvailable);
                     if (framesWritten < 0) {
-                        ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to write data to the internal device.", ma_result_from_errno((int)-framesWritten));
+                        ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to write data to the internal device.", ma_result_from_errno((ma_int32)-framesWritten));
                         return MA_FALSE;
                     }
 
                     break;  /* Success. */
                 } else {
-                    ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] snd_pcm_writei() failed when writing initial data.", ma_result_from_errno((int)-framesWritten));
+                    ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] snd_pcm_writei() failed when writing initial data.", ma_result_from_errno((ma_int32)-framesWritten));
                     return MA_FALSE;
                 }
             } else {
@@ -17336,7 +17336,7 @@ static ma_bool32 ma_device_read_and_send_to_client__alsa(ma_device* pDevice)
         ma_snd_pcm_uframes_t mappedOffset;
         ma_snd_pcm_uframes_t mappedFrames = framesAvailable;
         while (framesAvailable > 0) {
-            int result = ((ma_snd_pcm_mmap_begin_proc)pDevice->pContext->alsa.snd_pcm_mmap_begin)((ma_snd_pcm_t*)pDevice->alsa.pPCM, &pAreas, &mappedOffset, &mappedFrames);
+            ma_int32 result = ((ma_snd_pcm_mmap_begin_proc)pDevice->pContext->alsa.snd_pcm_mmap_begin)((ma_snd_pcm_t*)pDevice->alsa.pPCM, &pAreas, &mappedOffset, &mappedFrames);
             if (result < 0) {
                 return MA_FALSE;
             }
@@ -17386,7 +17386,7 @@ static ma_bool32 ma_device_read_and_send_to_client__alsa(ma_device* pDevice)
 
                     framesRead = ((ma_snd_pcm_readi_proc)pDevice->pContext->alsa.snd_pcm_readi)((ma_snd_pcm_t*)pDevice->alsa.pPCM, pDevice->alsa.pIntermediaryBuffer, framesAvailable);
                     if (framesRead < 0) {
-                        ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to read data from the internal device.", ma_result_from_errno((int)-framesRead));
+                        ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to read data from the internal device.", ma_result_from_errno((ma_int32)-framesRead));
                         return MA_FALSE;
                     }
 
@@ -17427,7 +17427,7 @@ static void ma_device_uninit__alsa(ma_device* pDevice)
 static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_device_config* pConfig, ma_device_type deviceType, ma_device* pDevice)
 {
     ma_result result;
-    int resultALSA;
+    ma_int32 resultALSA;
     ma_snd_pcm_t* pPCM;
     ma_bool32 isUsingMMap;
     ma_snd_pcm_format_t formatALSA;
@@ -17439,7 +17439,7 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
     ma_channel internalChannelMap[MA_MAX_CHANNELS];
     ma_uint32 internalPeriodSizeInFrames;
     ma_uint32 internalPeriods;
-    int openMode;
+    ma_int32 openMode;
     ma_snd_pcm_hw_params_t* pHWParams;
     ma_snd_pcm_sw_params_t* pSWParams;
     ma_snd_pcm_uframes_t bufferBoundary;
@@ -17492,8 +17492,8 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
                         return MA_NO_BACKEND;
                     }
 
-                    ppNextDeviceHint = ppDeviceHints;
-                    while (*ppNextDeviceHint != NULL) {
+                    ppNextDeviceHma_int32 = ppDeviceHints;
+                    while (*ppNextDeviceHma_int32 != NULL) {
                         char* NAME = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "NAME");
                         char* DESC = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "DESC");
                         char* IOID = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "IOID");
@@ -17510,7 +17510,7 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
                         free(NAME);
                         free(DESC);
                         free(IOID);
-                        ppNextDeviceHint += 1;
+                        ppNextDeviceHma_int32 += 1;
 
                         if (foundDevice) {
                             break;
@@ -17640,7 +17640,7 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
 
     /* Channels. */
     {
-        unsigned int channels = (deviceType == ma_device_type_capture) ? pConfig->capture.channels : pConfig->playback.channels;
+        ma_uint32 channels = (deviceType == ma_device_type_capture) ? pConfig->capture.channels : pConfig->playback.channels;
         resultALSA = ((ma_snd_pcm_hw_params_set_channels_near_proc)pContext->alsa.snd_pcm_hw_params_set_channels_near)(pPCM, pHWParams, &channels);
         if (resultALSA < 0) {
             ma__free_from_callbacks(pHWParams, &pContext->allocationCallbacks);
@@ -17652,7 +17652,7 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
 
     /* Sample Rate */
     {
-        unsigned int sampleRate;
+        ma_uint32 sampleRate;
 
         /*
         It appears there's either a bug in ALSA, a bug in some drivers, or I'm doing something silly; but having resampling enabled causes
@@ -17922,17 +17922,17 @@ static ma_result ma_device_read__alsa(ma_device* pDevice, void* pFramesOut, ma_u
                 /* Overrun. Recover and try again. If this fails we need to return an error. */
                 resultALSA = ((ma_snd_pcm_recover_proc)pDevice->pContext->alsa.snd_pcm_recover)((ma_snd_pcm_t*)pDevice->alsa.pPCMCapture, resultALSA, MA_TRUE);
                 if (resultALSA < 0) {
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to recover device after overrun.", ma_result_from_errno((int)-resultALSA));
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to recover device after overrun.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
 
                 resultALSA = ((ma_snd_pcm_start_proc)pDevice->pContext->alsa.snd_pcm_start)((ma_snd_pcm_t*)pDevice->alsa.pPCMCapture);
                 if (resultALSA < 0) {
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to start device after underrun.", ma_result_from_errno((int)-resultALSA));
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to start device after underrun.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
 
                 resultALSA = ((ma_snd_pcm_readi_proc)pDevice->pContext->alsa.snd_pcm_readi)((ma_snd_pcm_t*)pDevice->alsa.pPCMCapture, pFramesOut, frameCount);
                 if (resultALSA < 0) {
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to read data from the internal device.", ma_result_from_errno((int)-resultALSA));
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to read data from the internal device.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
             }
         }
@@ -17971,8 +17971,8 @@ static ma_result ma_device_write__alsa(ma_device* pDevice, const void* pFrames, 
 
                 /* Underrun. Recover and try again. If this fails we need to return an error. */
                 resultALSA = ((ma_snd_pcm_recover_proc)pDevice->pContext->alsa.snd_pcm_recover)((ma_snd_pcm_t*)pDevice->alsa.pPCMPlayback, resultALSA, MA_TRUE);
-                if (resultALSA < 0) { /* MA_TRUE=silent (don't print anything on error). */
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to recover device after underrun.", ma_result_from_errno((int)-resultALSA));
+                if (resultALSA < 0) { /* MA_TRUE=silent (don't prma_int32 anything on error). */
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to recover device after underrun.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
 
                 /*
@@ -17984,12 +17984,12 @@ static ma_result ma_device_write__alsa(ma_device* pDevice, const void* pFrames, 
                 */
                 resultALSA = ((ma_snd_pcm_start_proc)pDevice->pContext->alsa.snd_pcm_start)((ma_snd_pcm_t*)pDevice->alsa.pPCMPlayback);
                 if (resultALSA < 0) {
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to start device after underrun.", ma_result_from_errno((int)-resultALSA));
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to start device after underrun.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
 
                 resultALSA = ((ma_snd_pcm_writei_proc)pDevice->pContext->alsa.snd_pcm_writei)((ma_snd_pcm_t*)pDevice->alsa.pPCMPlayback, pFrames, frameCount);
                 if (resultALSA < 0) {
-                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to write data to device after underrun.", ma_result_from_errno((int)-resultALSA));
+                    return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[ALSA] Failed to write data to device after underrun.", ma_result_from_errno((ma_int32)-resultALSA));
                 }
             }
         }
@@ -18005,7 +18005,7 @@ static ma_result ma_device_write__alsa(ma_device* pDevice, const void* pFrames, 
 static ma_result ma_device_main_loop__alsa(ma_device* pDevice)
 {
     ma_result result = MA_SUCCESS;
-    int resultALSA;
+    ma_int32 resultALSA;
     ma_bool32 exitLoop = MA_FALSE;
 
     MA_ASSERT(pDevice != NULL);
@@ -18295,10 +18295,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     pContext->alsa.snd_pcm_start                          = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_start");
     pContext->alsa.snd_pcm_drop                           = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_drop");
     pContext->alsa.snd_pcm_drain                          = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_drain");
-    pContext->alsa.snd_device_name_hint                   = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_hint");
-    pContext->alsa.snd_device_name_get_hint               = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_get_hint");
+    pContext->alsa.snd_device_name_hma_int32                   = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_hint");
+    pContext->alsa.snd_device_name_get_hma_int32               = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_get_hint");
     pContext->alsa.snd_card_get_index                     = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_card_get_index");
-    pContext->alsa.snd_device_name_free_hint              = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_free_hint");
+    pContext->alsa.snd_device_name_free_hma_int32              = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_free_hint");
     pContext->alsa.snd_pcm_mmap_begin                     = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_mmap_begin");
     pContext->alsa.snd_pcm_mmap_commit                    = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_mmap_commit");
     pContext->alsa.snd_pcm_recover                        = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_recover");
@@ -18352,10 +18352,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     ma_snd_pcm_start_proc                          _snd_pcm_start                          = snd_pcm_start;
     ma_snd_pcm_drop_proc                           _snd_pcm_drop                           = snd_pcm_drop;
     ma_snd_pcm_drain_proc                          _snd_pcm_drain                          = snd_pcm_drain;
-    ma_snd_device_name_hint_proc                   _snd_device_name_hint                   = snd_device_name_hint;
-    ma_snd_device_name_get_hint_proc               _snd_device_name_get_hint               = snd_device_name_get_hint;
+    ma_snd_device_name_hint_proc                   _snd_device_name_hma_int32                   = snd_device_name_hint;
+    ma_snd_device_name_get_hint_proc               _snd_device_name_get_hma_int32               = snd_device_name_get_hint;
     ma_snd_card_get_index_proc                     _snd_card_get_index                     = snd_card_get_index;
-    ma_snd_device_name_free_hint_proc              _snd_device_name_free_hint              = snd_device_name_free_hint;
+    ma_snd_device_name_free_hint_proc              _snd_device_name_free_hma_int32              = snd_device_name_free_hint;
     ma_snd_pcm_mmap_begin_proc                     _snd_pcm_mmap_begin                     = snd_pcm_mmap_begin;
     ma_snd_pcm_mmap_commit_proc                    _snd_pcm_mmap_commit                    = snd_pcm_mmap_commit;
     ma_snd_pcm_recover_proc                        _snd_pcm_recover                        = snd_pcm_recover;
@@ -18406,10 +18406,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     pContext->alsa.snd_pcm_start                          = (ma_proc)_snd_pcm_start;
     pContext->alsa.snd_pcm_drop                           = (ma_proc)_snd_pcm_drop;
     pContext->alsa.snd_pcm_drain                          = (ma_proc)_snd_pcm_drain;
-    pContext->alsa.snd_device_name_hint                   = (ma_proc)_snd_device_name_hint;
-    pContext->alsa.snd_device_name_get_hint               = (ma_proc)_snd_device_name_get_hint;
+    pContext->alsa.snd_device_name_hma_int32                   = (ma_proc)_snd_device_name_hint;
+    pContext->alsa.snd_device_name_get_hma_int32               = (ma_proc)_snd_device_name_get_hint;
     pContext->alsa.snd_card_get_index                     = (ma_proc)_snd_card_get_index;
-    pContext->alsa.snd_device_name_free_hint              = (ma_proc)_snd_device_name_free_hint;
+    pContext->alsa.snd_device_name_free_hma_int32              = (ma_proc)_snd_device_name_free_hint;
     pContext->alsa.snd_pcm_mmap_begin                     = (ma_proc)_snd_pcm_mmap_begin;
     pContext->alsa.snd_pcm_mmap_commit                    = (ma_proc)_snd_pcm_mmap_commit;
     pContext->alsa.snd_pcm_recover                        = (ma_proc)_snd_pcm_recover;
@@ -18670,12 +18670,12 @@ typedef pa_free_cb_t ma_pa_free_cb_t;
 #define MA_PA_CHANNELS_MAX                             32
 #define MA_PA_RATE_MAX                                 384000
 
-typedef int ma_pa_context_flags_t;
+typedef ma_int32 ma_pa_context_flags_t;
 #define MA_PA_CONTEXT_NOFLAGS                          0x00000000
 #define MA_PA_CONTEXT_NOAUTOSPAWN                      0x00000001
 #define MA_PA_CONTEXT_NOFAIL                           0x00000002
 
-typedef int ma_pa_stream_flags_t;
+typedef ma_int32 ma_pa_stream_flags_t;
 #define MA_PA_STREAM_NOFLAGS                           0x00000000
 #define MA_PA_STREAM_START_CORKED                      0x00000001
 #define MA_PA_STREAM_INTERPOLATE_TIMING                0x00000002
@@ -18698,7 +18698,7 @@ typedef int ma_pa_stream_flags_t;
 #define MA_PA_STREAM_RELATIVE_VOLUME                   0x00040000
 #define MA_PA_STREAM_PASSTHROUGH                       0x00080000
 
-typedef int ma_pa_sink_flags_t;
+typedef ma_int32 ma_pa_sink_flags_t;
 #define MA_PA_SINK_NOFLAGS                             0x00000000
 #define MA_PA_SINK_HW_VOLUME_CTRL                      0x00000001
 #define MA_PA_SINK_LATENCY                             0x00000002
@@ -18710,7 +18710,7 @@ typedef int ma_pa_sink_flags_t;
 #define MA_PA_SINK_DYNAMIC_LATENCY                     0x00000080
 #define MA_PA_SINK_SET_FORMATS                         0x00000100
 
-typedef int ma_pa_source_flags_t;
+typedef ma_int32 ma_pa_source_flags_t;
 #define MA_PA_SOURCE_NOFLAGS                           0x00000000
 #define MA_PA_SOURCE_HW_VOLUME_CTRL                    0x00000001
 #define MA_PA_SOURCE_LATENCY                           0x00000002
@@ -18721,7 +18721,7 @@ typedef int ma_pa_source_flags_t;
 #define MA_PA_SOURCE_DYNAMIC_LATENCY                   0x00000040
 #define MA_PA_SOURCE_FLAT_VOLUME                       0x00000080
 
-typedef int ma_pa_context_state_t;
+typedef ma_int32 ma_pa_context_state_t;
 #define MA_PA_CONTEXT_UNCONNECTED                      0
 #define MA_PA_CONTEXT_CONNECTING                       1
 #define MA_PA_CONTEXT_AUTHORIZING                      2
@@ -18730,37 +18730,37 @@ typedef int ma_pa_context_state_t;
 #define MA_PA_CONTEXT_FAILED                           5
 #define MA_PA_CONTEXT_TERMINATED                       6
 
-typedef int ma_pa_stream_state_t;
+typedef ma_int32 ma_pa_stream_state_t;
 #define MA_PA_STREAM_UNCONNECTED                       0
 #define MA_PA_STREAM_CREATING                          1
 #define MA_PA_STREAM_READY                             2
 #define MA_PA_STREAM_FAILED                            3
 #define MA_PA_STREAM_TERMINATED                        4
 
-typedef int ma_pa_operation_state_t;
+typedef ma_int32 ma_pa_operation_state_t;
 #define MA_PA_OPERATION_RUNNING                        0
 #define MA_PA_OPERATION_DONE                           1
 #define MA_PA_OPERATION_CANCELLED                      2
 
-typedef int ma_pa_sink_state_t;
+typedef ma_int32 ma_pa_sink_state_t;
 #define MA_PA_SINK_INVALID_STATE                       -1
 #define MA_PA_SINK_RUNNING                             0
 #define MA_PA_SINK_IDLE                                1
 #define MA_PA_SINK_SUSPENDED                           2
 
-typedef int ma_pa_source_state_t;
+typedef ma_int32 ma_pa_source_state_t;
 #define MA_PA_SOURCE_INVALID_STATE                     -1
 #define MA_PA_SOURCE_RUNNING                           0
 #define MA_PA_SOURCE_IDLE                              1
 #define MA_PA_SOURCE_SUSPENDED                         2
 
-typedef int ma_pa_seek_mode_t;
+typedef ma_int32 ma_pa_seek_mode_t;
 #define MA_PA_SEEK_RELATIVE                            0
 #define MA_PA_SEEK_ABSOLUTE                            1
 #define MA_PA_SEEK_RELATIVE_ON_READ                    2
 #define MA_PA_SEEK_RELATIVE_END                        3
 
-typedef int ma_pa_channel_position_t;
+typedef ma_int32 ma_pa_channel_position_t;
 #define MA_PA_CHANNEL_POSITION_INVALID                 -1
 #define MA_PA_CHANNEL_POSITION_MONO                    0
 #define MA_PA_CHANNEL_POSITION_FRONT_LEFT              1
@@ -18818,7 +18818,7 @@ typedef int ma_pa_channel_position_t;
 #define MA_PA_CHANNEL_POSITION_CENTER                  MA_PA_CHANNEL_POSITION_FRONT_CENTER
 #define MA_PA_CHANNEL_POSITION_SUBWOOFER               MA_PA_CHANNEL_POSITION_LFE
 
-typedef int ma_pa_channel_map_def_t;
+typedef ma_int32 ma_pa_channel_map_def_t;
 #define MA_PA_CHANNEL_MAP_AIFF                         0
 #define MA_PA_CHANNEL_MAP_ALSA                         1
 #define MA_PA_CHANNEL_MAP_AUX                          2
@@ -18826,7 +18826,7 @@ typedef int ma_pa_channel_map_def_t;
 #define MA_PA_CHANNEL_MAP_OSS                          4
 #define MA_PA_CHANNEL_MAP_DEFAULT                      MA_PA_CHANNEL_MAP_AIFF
 
-typedef int ma_pa_sample_format_t;
+typedef ma_int32 ma_pa_sample_format_t;
 #define MA_PA_SAMPLE_INVALID                           -1
 #define MA_PA_SAMPLE_U8                                0
 #define MA_PA_SAMPLE_ALAW                              1
@@ -18886,7 +18886,7 @@ typedef struct
     ma_pa_channel_map channel_map;
     ma_uint32 owner_module;
     ma_pa_cvolume volume;
-    int mute;
+    ma_int32 mute;
     ma_uint32 monitor_source;
     const char* monitor_source_name;
     ma_uint64 latency;
@@ -18914,7 +18914,7 @@ typedef struct
     ma_pa_channel_map channel_map;
     ma_uint32 owner_module;
     ma_pa_cvolume volume;
-    int mute;
+    ma_int32 mute;
     ma_uint32 monitor_of_sink;
     const char *monitor_of_sink_name;
     ma_uint64 latency;
@@ -18934,9 +18934,9 @@ typedef struct
 } ma_pa_source_info;
 
 typedef void (* ma_pa_context_notify_cb_t)(ma_pa_context* c, void* userdata);
-typedef void (* ma_pa_sink_info_cb_t)     (ma_pa_context* c, const ma_pa_sink_info* i, int eol, void* userdata);
-typedef void (* ma_pa_source_info_cb_t)   (ma_pa_context* c, const ma_pa_source_info* i, int eol, void* userdata);
-typedef void (* ma_pa_stream_success_cb_t)(ma_pa_stream* s, int success, void* userdata);
+typedef void (* ma_pa_sink_info_cb_t)     (ma_pa_context* c, const ma_pa_sink_info* i, ma_int32 eol, void* userdata);
+typedef void (* ma_pa_source_info_cb_t)   (ma_pa_context* c, const ma_pa_source_info* i, ma_int32 eol, void* userdata);
+typedef void (* ma_pa_stream_success_cb_t)(ma_pa_stream* s, ma_int32 success, void* userdata);
 typedef void (* ma_pa_stream_request_cb_t)(ma_pa_stream* s, size_t nbytes, void* userdata);
 typedef void (* ma_pa_free_cb_t)          (void* p);
 #endif
@@ -18945,11 +18945,11 @@ typedef void (* ma_pa_free_cb_t)          (void* p);
 typedef ma_pa_mainloop*          (* ma_pa_mainloop_new_proc)                   (void);
 typedef void                     (* ma_pa_mainloop_free_proc)                  (ma_pa_mainloop* m);
 typedef ma_pa_mainloop_api*      (* ma_pa_mainloop_get_api_proc)               (ma_pa_mainloop* m);
-typedef int                      (* ma_pa_mainloop_iterate_proc)               (ma_pa_mainloop* m, int block, int* retval);
+typedef ma_int32                      (* ma_pa_mainloop_iterate_proc)               (ma_pa_mainloop* m, ma_int32 block, int* retval);
 typedef void                     (* ma_pa_mainloop_wakeup_proc)                (ma_pa_mainloop* m);
 typedef ma_pa_context*           (* ma_pa_context_new_proc)                    (ma_pa_mainloop_api* mainloop, const char* name);
 typedef void                     (* ma_pa_context_unref_proc)                  (ma_pa_context* c);
-typedef int                      (* ma_pa_context_connect_proc)                (ma_pa_context* c, const char* server, ma_pa_context_flags_t flags, const ma_pa_spawn_api* api);
+typedef ma_int32                      (* ma_pa_context_connect_proc)                (ma_pa_context* c, const char* server, ma_pa_context_flags_t flags, const ma_pa_spawn_api* api);
 typedef void                     (* ma_pa_context_disconnect_proc)             (ma_pa_context* c);
 typedef void                     (* ma_pa_context_set_state_callback_proc)     (ma_pa_context* c, ma_pa_context_notify_cb_t cb, void* userdata);
 typedef ma_pa_context_state_t    (* ma_pa_context_get_state_proc)              (ma_pa_context* c);
@@ -18960,13 +18960,13 @@ typedef ma_pa_operation*         (* ma_pa_context_get_source_info_by_name_proc)(
 typedef void                     (* ma_pa_operation_unref_proc)                (ma_pa_operation* o);
 typedef ma_pa_operation_state_t  (* ma_pa_operation_get_state_proc)            (ma_pa_operation* o);
 typedef ma_pa_channel_map*       (* ma_pa_channel_map_init_extend_proc)        (ma_pa_channel_map* m, unsigned channels, ma_pa_channel_map_def_t def);
-typedef int                      (* ma_pa_channel_map_valid_proc)              (const ma_pa_channel_map* m);
-typedef int                      (* ma_pa_channel_map_compatible_proc)         (const ma_pa_channel_map* m, const ma_pa_sample_spec* ss);
+typedef ma_int32                      (* ma_pa_channel_map_valid_proc)              (const ma_pa_channel_map* m);
+typedef ma_int32                      (* ma_pa_channel_map_compatible_proc)         (const ma_pa_channel_map* m, const ma_pa_sample_spec* ss);
 typedef ma_pa_stream*            (* ma_pa_stream_new_proc)                     (ma_pa_context* c, const char* name, const ma_pa_sample_spec* ss, const ma_pa_channel_map* map);
 typedef void                     (* ma_pa_stream_unref_proc)                   (ma_pa_stream* s);
-typedef int                      (* ma_pa_stream_connect_playback_proc)        (ma_pa_stream* s, const char* dev, const ma_pa_buffer_attr* attr, ma_pa_stream_flags_t flags, const ma_pa_cvolume* volume, ma_pa_stream* sync_stream);
-typedef int                      (* ma_pa_stream_connect_record_proc)          (ma_pa_stream* s, const char* dev, const ma_pa_buffer_attr* attr, ma_pa_stream_flags_t flags);
-typedef int                      (* ma_pa_stream_disconnect_proc)              (ma_pa_stream* s);
+typedef ma_int32                      (* ma_pa_stream_connect_playback_proc)        (ma_pa_stream* s, const char* dev, const ma_pa_buffer_attr* attr, ma_pa_stream_flags_t flags, const ma_pa_cvolume* volume, ma_pa_stream* sync_stream);
+typedef ma_int32                      (* ma_pa_stream_connect_record_proc)          (ma_pa_stream* s, const char* dev, const ma_pa_buffer_attr* attr, ma_pa_stream_flags_t flags);
+typedef ma_int32                      (* ma_pa_stream_disconnect_proc)              (ma_pa_stream* s);
 typedef ma_pa_stream_state_t     (* ma_pa_stream_get_state_proc)               (ma_pa_stream* s);
 typedef const ma_pa_sample_spec* (* ma_pa_stream_get_sample_spec_proc)         (ma_pa_stream* s);
 typedef const ma_pa_channel_map* (* ma_pa_stream_get_channel_map_proc)         (ma_pa_stream* s);
@@ -18977,13 +18977,13 @@ typedef void                     (* ma_pa_stream_set_write_callback_proc)      (
 typedef void                     (* ma_pa_stream_set_read_callback_proc)       (ma_pa_stream* s, ma_pa_stream_request_cb_t cb, void* userdata);
 typedef ma_pa_operation*         (* ma_pa_stream_flush_proc)                   (ma_pa_stream* s, ma_pa_stream_success_cb_t cb, void* userdata);
 typedef ma_pa_operation*         (* ma_pa_stream_drain_proc)                   (ma_pa_stream* s, ma_pa_stream_success_cb_t cb, void* userdata);
-typedef int                      (* ma_pa_stream_is_corked_proc)               (ma_pa_stream* s);
-typedef ma_pa_operation*         (* ma_pa_stream_cork_proc)                    (ma_pa_stream* s, int b, ma_pa_stream_success_cb_t cb, void* userdata);
+typedef ma_int32                      (* ma_pa_stream_is_corked_proc)               (ma_pa_stream* s);
+typedef ma_pa_operation*         (* ma_pa_stream_cork_proc)                    (ma_pa_stream* s, ma_int32 b, ma_pa_stream_success_cb_t cb, void* userdata);
 typedef ma_pa_operation*         (* ma_pa_stream_trigger_proc)                 (ma_pa_stream* s, ma_pa_stream_success_cb_t cb, void* userdata);
-typedef int                      (* ma_pa_stream_begin_write_proc)             (ma_pa_stream* s, void** data, size_t* nbytes);
-typedef int                      (* ma_pa_stream_write_proc)                   (ma_pa_stream* s, const void* data, size_t nbytes, ma_pa_free_cb_t free_cb, int64_t offset, ma_pa_seek_mode_t seek);
-typedef int                      (* ma_pa_stream_peek_proc)                    (ma_pa_stream* s, const void** data, size_t* nbytes);
-typedef int                      (* ma_pa_stream_drop_proc)                    (ma_pa_stream* s);
+typedef ma_int32                      (* ma_pa_stream_begin_write_proc)             (ma_pa_stream* s, void** data, size_t* nbytes);
+typedef ma_int32                      (* ma_pa_stream_write_proc)                   (ma_pa_stream* s, const void* data, size_t nbytes, ma_pa_free_cb_t free_cb, int64_t offset, ma_pa_seek_mode_t seek);
+typedef ma_int32                      (* ma_pa_stream_peek_proc)                    (ma_pa_stream* s, const void** data, size_t* nbytes);
+typedef ma_int32                      (* ma_pa_stream_drop_proc)                    (ma_pa_stream* s);
 typedef size_t                   (* ma_pa_stream_writable_size_proc)           (ma_pa_stream* s);
 typedef size_t                   (* ma_pa_stream_readable_size_proc)           (ma_pa_stream* s);
 
@@ -18994,7 +18994,7 @@ typedef struct
     ma_device_info* pInfo;
 } ma_pulse_device_enum_data;
 
-static ma_result ma_result_from_pulse(int result)
+static ma_result ma_result_from_pulse(ma_int32 result)
 {
     switch (result) {
         case MA_PA_OK:           return MA_SUCCESS;
@@ -19171,7 +19171,7 @@ static ma_result ma_wait_for_operation__pulse(ma_context* pContext, ma_pa_mainlo
     MA_ASSERT(pOP != NULL);
 
     while (((ma_pa_operation_get_state_proc)pContext->pulse.pa_operation_get_state)(pOP) == MA_PA_OPERATION_RUNNING) {
-        int error = ((ma_pa_mainloop_iterate_proc)pContext->pulse.pa_mainloop_iterate)(pMainLoop, 1, NULL);
+        ma_int32 error = ((ma_pa_mainloop_iterate_proc)pContext->pulse.pa_mainloop_iterate)(pMainLoop, 1, NULL);
         if (error < 0) {
             return ma_result_from_pulse(error);
         }
@@ -19208,7 +19208,7 @@ typedef struct
     ma_bool32 isTerminated;
 } ma_context_enumerate_devices_callback_data__pulse;
 
-static void ma_context_enumerate_devices_sink_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_sink_info* pSinkInfo, int endOfList, void* pUserData)
+static void ma_context_enumerate_devices_sink_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_sink_info* pSinkInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_context_enumerate_devices_callback_data__pulse* pData = (ma_context_enumerate_devices_callback_data__pulse*)pUserData;
     ma_device_info deviceInfo;
@@ -19236,7 +19236,7 @@ static void ma_context_enumerate_devices_sink_callback__pulse(ma_pa_context* pPu
     (void)pPulseContext; /* Unused. */
 }
 
-static void ma_context_enumerate_devices_source_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_source_info* pSinkInfo, int endOfList, void* pUserData)
+static void ma_context_enumerate_devices_source_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_source_info* pSinkInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_context_enumerate_devices_callback_data__pulse* pData = (ma_context_enumerate_devices_callback_data__pulse*)pUserData;
     ma_device_info deviceInfo;
@@ -19272,7 +19272,7 @@ static ma_result ma_context_enumerate_devices__pulse(ma_context* pContext, ma_en
     ma_pa_mainloop* pMainLoop;
     ma_pa_mainloop_api* pAPI;
     ma_pa_context* pPulseContext;
-    int error;
+    ma_int32 error;
 
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(callback != NULL);
@@ -19377,7 +19377,7 @@ typedef struct
     ma_bool32 foundDevice;
 } ma_context_get_device_info_callback_data__pulse;
 
-static void ma_context_get_device_info_sink_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, int endOfList, void* pUserData)
+static void ma_context_get_device_info_sink_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_context_get_device_info_callback_data__pulse* pData = (ma_context_get_device_info_callback_data__pulse*)pUserData;
 
@@ -19406,7 +19406,7 @@ static void ma_context_get_device_info_sink_callback__pulse(ma_pa_context* pPuls
     (void)pPulseContext; /* Unused. */
 }
 
-static void ma_context_get_device_info_source_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, int endOfList, void* pUserData)
+static void ma_context_get_device_info_source_callback__pulse(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_context_get_device_info_callback_data__pulse* pData = (ma_context_get_device_info_callback_data__pulse*)pUserData;
 
@@ -19443,7 +19443,7 @@ static ma_result ma_context_get_device_info__pulse(ma_context* pContext, ma_devi
     ma_pa_mainloop* pMainLoop;
     ma_pa_mainloop_api* pAPI;
     ma_pa_context* pPulseContext;
-    int error;
+    ma_int32 error;
 
     MA_ASSERT(pContext != NULL);
 
@@ -19546,7 +19546,7 @@ static void ma_pulse_device_state_callback(ma_pa_context* pPulseContext, void* p
     pDevice->pulse.pulseContextState = ((ma_pa_context_get_state_proc)pContext->pulse.pa_context_get_state)(pPulseContext);
 }
 
-void ma_device_sink_info_callback(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, int endOfList, void* pUserData)
+void ma_device_sink_info_callback(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_pa_sink_info* pInfoOut;
 
@@ -19562,7 +19562,7 @@ void ma_device_sink_info_callback(ma_pa_context* pPulseContext, const ma_pa_sink
     (void)pPulseContext; /* Unused. */
 }
 
-static void ma_device_source_info_callback(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, int endOfList, void* pUserData)
+static void ma_device_source_info_callback(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_pa_source_info* pInfoOut;
 
@@ -19578,7 +19578,7 @@ static void ma_device_source_info_callback(ma_pa_context* pPulseContext, const m
     (void)pPulseContext; /* Unused. */
 }
 
-static void ma_device_sink_name_callback(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, int endOfList, void* pUserData)
+static void ma_device_sink_name_callback(ma_pa_context* pPulseContext, const ma_pa_sink_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_device* pDevice;
 
@@ -19594,7 +19594,7 @@ static void ma_device_sink_name_callback(ma_pa_context* pPulseContext, const ma_
     (void)pPulseContext; /* Unused. */
 }
 
-static void ma_device_source_name_callback(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, int endOfList, void* pUserData)
+static void ma_device_source_name_callback(ma_pa_context* pPulseContext, const ma_pa_source_info* pInfo, ma_int32 endOfList, void* pUserData)
 {
     ma_device* pDevice;
 
@@ -19647,7 +19647,7 @@ static ma_pa_buffer_attr ma_device__pa_buffer_attr_new(ma_uint32 periodSizeInFra
 
 static ma_pa_stream* ma_device__pa_stream_new__pulse(ma_device* pDevice, const char* pStreamName, const ma_pa_sample_spec* ss, const ma_pa_channel_map* cmap)
 {
-    static int g_StreamCounter = 0;
+    static ma_int32 g_StreamCounter = 0;
     char actualStreamName[256];
 
     if (pStreamName != NULL) {
@@ -19664,7 +19664,7 @@ static ma_pa_stream* ma_device__pa_stream_new__pulse(ma_device* pDevice, const c
 static ma_result ma_device_init__pulse(ma_context* pContext, const ma_device_config* pConfig, ma_device* pDevice)
 {
     ma_result result = MA_SUCCESS;
-    int error = 0;
+    ma_int32 error = 0;
     const char* devPlayback = NULL;
     const char* devCapture  = NULL;
     ma_uint32 periodSizeInMilliseconds;
@@ -19975,7 +19975,7 @@ on_error0:
 }
 
 
-static void ma_pulse_operation_complete_callback(ma_pa_stream* pStream, int success, void* pUserData)
+static void ma_pulse_operation_complete_callback(ma_pa_stream* pStream, ma_int32 success, void* pUserData)
 {
     ma_bool32* pIsSuccessful = (ma_bool32*)pUserData;
     MA_ASSERT(pIsSuccessful != NULL);
@@ -19985,7 +19985,7 @@ static void ma_pulse_operation_complete_callback(ma_pa_stream* pStream, int succ
     (void)pStream; /* Unused. */
 }
 
-static ma_result ma_device__cork_stream__pulse(ma_device* pDevice, ma_device_type deviceType, int cork)
+static ma_result ma_device__cork_stream__pulse(ma_device* pDevice, ma_device_type deviceType, ma_int32 cork)
 {
     ma_context* pContext = pDevice->pContext;
     ma_bool32 wasSuccessful;
@@ -20097,7 +20097,7 @@ static ma_result ma_device_write__pulse(ma_device* pDevice, const void* pPCMFram
         if (pDevice->pulse.mappedBufferFramesCapacityPlayback > 0 && pDevice->pulse.mappedBufferFramesRemainingPlayback == 0) {
             size_t nbytes = pDevice->pulse.mappedBufferFramesCapacityPlayback * ma_get_bytes_per_frame(pDevice->playback.internalFormat, pDevice->playback.internalChannels);
 
-            int error = ((ma_pa_stream_write_proc)pDevice->pContext->pulse.pa_stream_write)((ma_pa_stream*)pDevice->pulse.pStreamPlayback, pDevice->pulse.pMappedBufferPlayback, nbytes, NULL, 0, MA_PA_SEEK_RELATIVE);
+            ma_int32 error = ((ma_pa_stream_write_proc)pDevice->pContext->pulse.pa_stream_write)((ma_pa_stream*)pDevice->pulse.pStreamPlayback, pDevice->pulse.pMappedBufferPlayback, nbytes, NULL, 0, MA_PA_SEEK_RELATIVE);
             if (error < 0) {
                 return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[PulseAudio] Failed to write data to the PulseAudio stream.", ma_result_from_pulse(error));
             }
@@ -20126,7 +20126,7 @@ static ma_result ma_device_write__pulse(ma_device* pDevice, const void* pPCMFram
                 if (writableSizeInBytes > 0) {
                     /* Data is avaialable. */
                     size_t bytesToMap = writableSizeInBytes;
-                    int error = ((ma_pa_stream_begin_write_proc)pDevice->pContext->pulse.pa_stream_begin_write)((ma_pa_stream*)pDevice->pulse.pStreamPlayback, &pDevice->pulse.pMappedBufferPlayback, &bytesToMap);
+                    ma_int32 error = ((ma_pa_stream_begin_write_proc)pDevice->pContext->pulse.pa_stream_begin_write)((ma_pa_stream*)pDevice->pulse.pStreamPlayback, &pDevice->pulse.pMappedBufferPlayback, &bytesToMap);
                     if (error < 0) {
                         return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[PulseAudio] Failed to map write buffer.", ma_result_from_pulse(error));
                     }
@@ -20137,7 +20137,7 @@ static ma_result ma_device_write__pulse(ma_device* pDevice, const void* pPCMFram
                     break;
                 } else {
                     /* No data available. Need to wait for more. */
-                    int error = ((ma_pa_mainloop_iterate_proc)pDevice->pContext->pulse.pa_mainloop_iterate)((ma_pa_mainloop*)pDevice->pulse.pMainLoop, 1, NULL);
+                    ma_int32 error = ((ma_pa_mainloop_iterate_proc)pDevice->pContext->pulse.pa_mainloop_iterate)((ma_pa_mainloop*)pDevice->pulse.pMainLoop, 1, NULL);
                     if (error < 0) {
                         return ma_result_from_pulse(error);
                     }
@@ -20209,7 +20209,7 @@ static ma_result ma_device_read__pulse(ma_device* pDevice, void* pPCMFrames, ma_
         mapping another chunk. If this fails we need to wait for data to become available.
         */
         if (pDevice->pulse.mappedBufferFramesCapacityCapture > 0 && pDevice->pulse.mappedBufferFramesRemainingCapture == 0) {
-            int error;
+            ma_int32 error;
 
         #if defined(MA_DEBUG_OUTPUT)
             printf("[PulseAudio] ma_device_read__pulse: Call pa_stream_drop()\n");
@@ -20232,7 +20232,7 @@ static ma_result ma_device_read__pulse(ma_device* pDevice, void* pPCMFrames, ma_
 
         /* Getting here means we need to map a new buffer. If we don't have enough data we wait for more. */
         for (;;) {
-            int error;
+            ma_int32 error;
             size_t bytesMapped;
 
             if (ma_device__get_state(pDevice) != MA_STATE_STARTED) {
@@ -20686,7 +20686,7 @@ static ma_result ma_context_init__pulse(const ma_context_config* pConfig, ma_con
         ma_pa_mainloop* pMainLoop;
         ma_pa_mainloop_api* pAPI;
         ma_pa_context* pPulseContext;
-        int error;
+        ma_int32 error;
 
         pMainLoop = ((ma_pa_mainloop_new_proc)pContext->pulse.pa_mainloop_new)();
         if (pMainLoop == NULL) {
@@ -20768,12 +20768,12 @@ typedef JackShutdownCallback        ma_JackShutdownCallback;
 #define ma_JackPortIsPhysical       JackPortIsPhysical
 #else
 typedef ma_uint32               ma_jack_nframes_t;
-typedef int                     ma_jack_options_t;
-typedef int                     ma_jack_status_t;
+typedef ma_int32                     ma_jack_options_t;
+typedef ma_int32                     ma_jack_status_t;
 typedef struct ma_jack_client_t ma_jack_client_t;
 typedef struct ma_jack_port_t   ma_jack_port_t;
-typedef int  (* ma_JackProcessCallback)   (ma_jack_nframes_t nframes, void* arg);
-typedef int  (* ma_JackBufferSizeCallback)(ma_jack_nframes_t nframes, void* arg);
+typedef ma_int32  (* ma_JackProcessCallback)   (ma_jack_nframes_t nframes, void* arg);
+typedef ma_int32  (* ma_JackBufferSizeCallback)(ma_jack_nframes_t nframes, void* arg);
 typedef void (* ma_JackShutdownCallback)  (void* arg);
 #define MA_JACK_DEFAULT_AUDIO_TYPE "32 bit float mono audio"
 #define ma_JackNoStartServer       1
@@ -20783,17 +20783,17 @@ typedef void (* ma_JackShutdownCallback)  (void* arg);
 #endif
 
 typedef ma_jack_client_t* (* ma_jack_client_open_proc)             (const char* client_name, ma_jack_options_t options, ma_jack_status_t* status, ...);
-typedef int               (* ma_jack_client_close_proc)            (ma_jack_client_t* client);
-typedef int               (* ma_jack_client_name_size_proc)        (void);
-typedef int               (* ma_jack_set_process_callback_proc)    (ma_jack_client_t* client, ma_JackProcessCallback process_callback, void* arg);
-typedef int               (* ma_jack_set_buffer_size_callback_proc)(ma_jack_client_t* client, ma_JackBufferSizeCallback bufsize_callback, void* arg);
+typedef ma_int32               (* ma_jack_client_close_proc)            (ma_jack_client_t* client);
+typedef ma_int32               (* ma_jack_client_name_size_proc)        (void);
+typedef ma_int32               (* ma_jack_set_process_callback_proc)    (ma_jack_client_t* client, ma_JackProcessCallback process_callback, void* arg);
+typedef ma_int32               (* ma_jack_set_buffer_size_callback_proc)(ma_jack_client_t* client, ma_JackBufferSizeCallback bufsize_callback, void* arg);
 typedef void              (* ma_jack_on_shutdown_proc)             (ma_jack_client_t* client, ma_JackShutdownCallback function, void* arg);
 typedef ma_jack_nframes_t (* ma_jack_get_sample_rate_proc)         (ma_jack_client_t* client);
 typedef ma_jack_nframes_t (* ma_jack_get_buffer_size_proc)         (ma_jack_client_t* client);
 typedef const char**      (* ma_jack_get_ports_proc)               (ma_jack_client_t* client, const char* port_name_pattern, const char* type_name_pattern, unsigned long flags);
-typedef int               (* ma_jack_activate_proc)                (ma_jack_client_t* client);
-typedef int               (* ma_jack_deactivate_proc)              (ma_jack_client_t* client);
-typedef int               (* ma_jack_connect_proc)                 (ma_jack_client_t* client, const char* source_port, const char* destination_port);
+typedef ma_int32               (* ma_jack_activate_proc)                (ma_jack_client_t* client);
+typedef ma_int32               (* ma_jack_deactivate_proc)              (ma_jack_client_t* client);
+typedef ma_int32               (* ma_jack_connect_proc)                 (ma_jack_client_t* client, const char* source_port, const char* destination_port);
 typedef ma_jack_port_t*   (* ma_jack_port_register_proc)           (ma_jack_client_t* client, const char* port_name, const char* port_type, unsigned long flags, unsigned long buffer_size);
 typedef const char*       (* ma_jack_port_name_proc)               (const ma_jack_port_t* port);
 typedef void*             (* ma_jack_port_get_buffer_proc)         (ma_jack_port_t* port, ma_jack_nframes_t nframes);
@@ -20958,7 +20958,7 @@ static void ma_device__jack_shutdown_callback(void* pUserData)
     ma_device_stop(pDevice);
 }
 
-static int ma_device__jack_buffer_size_callback(ma_jack_nframes_t frameCount, void* pUserData)
+static ma_int32 ma_device__jack_buffer_size_callback(ma_jack_nframes_t frameCount, void* pUserData)
 {
     ma_device* pDevice = (ma_device*)pUserData;
     MA_ASSERT(pDevice != NULL);
@@ -20992,7 +20992,7 @@ static int ma_device__jack_buffer_size_callback(ma_jack_nframes_t frameCount, vo
     return 0;
 }
 
-static int ma_device__jack_process_callback(ma_jack_nframes_t frameCount, void* pUserData)
+static ma_int32 ma_device__jack_process_callback(ma_jack_nframes_t frameCount, void* pUserData)
 {
     ma_device* pDevice;
     ma_context* pContext;
@@ -21116,7 +21116,7 @@ static ma_result ma_device_init__jack(ma_context* pContext, const ma_device_conf
         while (ppPorts[pDevice->capture.internalChannels] != NULL) {
             char name[64];
             ma_strcpy_s(name, sizeof(name), "capture");
-            ma_itoa_s((int)pDevice->capture.internalChannels, name+7, sizeof(name)-7, 10); /* 7 = length of "capture" */
+            ma_itoa_s((ma_int32)pDevice->capture.internalChannels, name+7, sizeof(name)-7, 10); /* 7 = length of "capture" */
 
             pDevice->jack.pPortsCapture[pDevice->capture.internalChannels] = ((ma_jack_port_register_proc)pContext->jack.jack_port_register)((ma_jack_client_t*)pDevice->jack.pClient, name, MA_JACK_DEFAULT_AUDIO_TYPE, ma_JackPortIsInput, 0);
             if (pDevice->jack.pPortsCapture[pDevice->capture.internalChannels] == NULL) {
@@ -21156,7 +21156,7 @@ static ma_result ma_device_init__jack(ma_context* pContext, const ma_device_conf
         while (ppPorts[pDevice->playback.internalChannels] != NULL) {
             char name[64];
             ma_strcpy_s(name, sizeof(name), "playback");
-            ma_itoa_s((int)pDevice->playback.internalChannels, name+8, sizeof(name)-8, 10); /* 8 = length of "playback" */
+            ma_itoa_s((ma_int32)pDevice->playback.internalChannels, name+8, sizeof(name)-8, 10); /* 8 = length of "playback" */
 
             pDevice->jack.pPortsPlayback[pDevice->playback.internalChannels] = ((ma_jack_port_register_proc)pContext->jack.jack_port_register)((ma_jack_client_t*)pDevice->jack.pClient, name, MA_JACK_DEFAULT_AUDIO_TYPE, ma_JackPortIsOutput, 0);
             if (pDevice->jack.pPortsPlayback[pDevice->playback.internalChannels] == NULL) {
@@ -21207,7 +21207,7 @@ static ma_result ma_device_init__jack(ma_context* pContext, const ma_device_conf
 static ma_result ma_device_start__jack(ma_device* pDevice)
 {
     ma_context* pContext = pDevice->pContext;
-    int resultJACK;
+    ma_int32 resultJACK;
     size_t i;
 
     resultJACK = ((ma_jack_activate_proc)pContext->jack.jack_activate)((ma_jack_client_t*)pDevice->jack.pClient);
@@ -24406,60 +24406,60 @@ struct ma_sio_hdl; /* <-- Opaque */
 
 struct ma_sio_par
 {
-    unsigned int bits;
-    unsigned int bps;
-    unsigned int sig;
-    unsigned int le;
-    unsigned int msb;
-    unsigned int rchan;
-    unsigned int pchan;
-    unsigned int rate;
-    unsigned int bufsz;
-    unsigned int xrun;
-    unsigned int round;
-    unsigned int appbufsz;
-    int __pad[3];
-    unsigned int __magic;
+    ma_uint32 bits;
+    ma_uint32 bps;
+    ma_uint32 sig;
+    ma_uint32 le;
+    ma_uint32 msb;
+    ma_uint32 rchan;
+    ma_uint32 pchan;
+    ma_uint32 rate;
+    ma_uint32 bufsz;
+    ma_uint32 xrun;
+    ma_uint32 round;
+    ma_uint32 appbufsz;
+    ma_int32 __pad[3];
+    ma_uint32 __magic;
 };
 
 struct ma_sio_enc
 {
-    unsigned int bits;
-    unsigned int bps;
-    unsigned int sig;
-    unsigned int le;
-    unsigned int msb;
+    ma_uint32 bits;
+    ma_uint32 bps;
+    ma_uint32 sig;
+    ma_uint32 le;
+    ma_uint32 msb;
 };
 
 struct ma_sio_conf
 {
-    unsigned int enc;
-    unsigned int rchan;
-    unsigned int pchan;
-    unsigned int rate;
+    ma_uint32 enc;
+    ma_uint32 rchan;
+    ma_uint32 pchan;
+    ma_uint32 rate;
 };
 
 struct ma_sio_cap
 {
     struct ma_sio_enc enc[MA_SIO_NENC];
-    unsigned int rchan[MA_SIO_NCHAN];
-    unsigned int pchan[MA_SIO_NCHAN];
-    unsigned int rate[MA_SIO_NRATE];
-    int __pad[7];
-    unsigned int nconf;
+    ma_uint32 rchan[MA_SIO_NCHAN];
+    ma_uint32 pchan[MA_SIO_NCHAN];
+    ma_uint32 rate[MA_SIO_NRATE];
+    ma_int32 __pad[7];
+    ma_uint32 nconf;
     struct ma_sio_conf confs[MA_SIO_NCONF];
 };
 
-typedef struct ma_sio_hdl* (* ma_sio_open_proc)   (const char*, unsigned int, int);
+typedef struct ma_sio_hdl* (* ma_sio_open_proc)   (const char*, ma_uint32, int);
 typedef void               (* ma_sio_close_proc)  (struct ma_sio_hdl*);
-typedef int                (* ma_sio_setpar_proc) (struct ma_sio_hdl*, struct ma_sio_par*);
-typedef int                (* ma_sio_getpar_proc) (struct ma_sio_hdl*, struct ma_sio_par*);
-typedef int                (* ma_sio_getcap_proc) (struct ma_sio_hdl*, struct ma_sio_cap*);
+typedef ma_int32                (* ma_sio_setpar_proc) (struct ma_sio_hdl*, struct ma_sio_par*);
+typedef ma_int32                (* ma_sio_getpar_proc) (struct ma_sio_hdl*, struct ma_sio_par*);
+typedef ma_int32                (* ma_sio_getcap_proc) (struct ma_sio_hdl*, struct ma_sio_cap*);
 typedef size_t             (* ma_sio_write_proc)  (struct ma_sio_hdl*, const void*, size_t);
 typedef size_t             (* ma_sio_read_proc)   (struct ma_sio_hdl*, void*, size_t);
-typedef int                (* ma_sio_start_proc)  (struct ma_sio_hdl*);
-typedef int                (* ma_sio_stop_proc)   (struct ma_sio_hdl*);
-typedef int                (* ma_sio_initpar_proc)(struct ma_sio_par*);
+typedef ma_int32                (* ma_sio_start_proc)  (struct ma_sio_hdl*);
+typedef ma_int32                (* ma_sio_stop_proc)   (struct ma_sio_hdl*);
+typedef ma_int32                (* ma_sio_initpar_proc)(struct ma_sio_par*);
 
 static ma_uint32 ma_get_standard_sample_rate_priority_index__sndio(ma_uint32 sampleRate)   /* Lower = higher priority */
 {
@@ -24473,7 +24473,7 @@ static ma_uint32 ma_get_standard_sample_rate_priority_index__sndio(ma_uint32 sam
     return (ma_uint32)-1;
 }
 
-static ma_format ma_format_from_sio_enc__sndio(unsigned int bits, unsigned int bps, unsigned int sig, unsigned int le, unsigned int msb)
+static ma_format ma_format_from_sio_enc__sndio(ma_uint32 bits, ma_uint32 bps, ma_uint32 sig, ma_uint32 le, ma_uint32 msb)
 {
     /* We only support native-endian right now. */
     if ((ma_is_little_endian() && le == 0) || (ma_is_big_endian() && le == 1)) {
@@ -24502,19 +24502,19 @@ static ma_format ma_format_from_sio_enc__sndio(unsigned int bits, unsigned int b
 static ma_format ma_find_best_format_from_sio_cap__sndio(struct ma_sio_cap* caps)
 {
     ma_format bestFormat;
-    unsigned int iConfig;
+    ma_uint32 iConfig;
 
     MA_ASSERT(caps != NULL);
     
     bestFormat = ma_format_unknown;
     for (iConfig = 0; iConfig < caps->nconf; iConfig += 1) {
-        unsigned int iEncoding;
+        ma_uint32 iEncoding;
         for (iEncoding = 0; iEncoding < MA_SIO_NENC; iEncoding += 1) {
-            unsigned int bits;
-            unsigned int bps;
-            unsigned int sig;
-            unsigned int le;
-            unsigned int msb;
+            ma_uint32 bits;
+            ma_uint32 bps;
+            ma_uint32 sig;
+            ma_uint32 le;
+            ma_uint32 msb;
             ma_format format;
 
             if ((caps->confs[iConfig].enc & (1UL << iEncoding)) == 0) {
@@ -24547,7 +24547,7 @@ static ma_format ma_find_best_format_from_sio_cap__sndio(struct ma_sio_cap* caps
 static ma_uint32 ma_find_best_channels_from_sio_cap__sndio(struct ma_sio_cap* caps, ma_device_type deviceType, ma_format requiredFormat)
 {
     ma_uint32 maxChannels;
-    unsigned int iConfig;
+    ma_uint32 iConfig;
 
     MA_ASSERT(caps != NULL);
     MA_ASSERT(requiredFormat != ma_format_unknown);
@@ -24556,14 +24556,14 @@ static ma_uint32 ma_find_best_channels_from_sio_cap__sndio(struct ma_sio_cap* ca
     maxChannels = 0;
     for (iConfig = 0; iConfig < caps->nconf; iConfig += 1) {
         /* The encoding should be of requiredFormat. */
-        unsigned int iEncoding;
+        ma_uint32 iEncoding;
         for (iEncoding = 0; iEncoding < MA_SIO_NENC; iEncoding += 1) {
-            unsigned int iChannel;
-            unsigned int bits;
-            unsigned int bps;
-            unsigned int sig;
-            unsigned int le;
-            unsigned int msb;
+            ma_uint32 iChannel;
+            ma_uint32 bits;
+            ma_uint32 bps;
+            ma_uint32 sig;
+            ma_uint32 le;
+            ma_uint32 msb;
             ma_format format;
 
             if ((caps->confs[iConfig].enc & (1UL << iEncoding)) == 0) {
@@ -24582,8 +24582,8 @@ static ma_uint32 ma_find_best_channels_from_sio_cap__sndio(struct ma_sio_cap* ca
             
             /* Getting here means the format is supported. Iterate over each channel count and grab the biggest one. */
             for (iChannel = 0; iChannel < MA_SIO_NCHAN; iChannel += 1) {
-                unsigned int chan = 0;
-                unsigned int channels;
+                ma_uint32 chan = 0;
+                ma_uint32 channels;
 
                 if (deviceType == ma_device_type_playback) {
                     chan = caps->confs[iConfig].pchan;
@@ -24615,7 +24615,7 @@ static ma_uint32 ma_find_best_sample_rate_from_sio_cap__sndio(struct ma_sio_cap*
 {
     ma_uint32 firstSampleRate;
     ma_uint32 bestSampleRate;
-    unsigned int iConfig;
+    ma_uint32 iConfig;
 
     MA_ASSERT(caps != NULL);
     MA_ASSERT(requiredFormat != ma_format_unknown);
@@ -24627,14 +24627,14 @@ static ma_uint32 ma_find_best_sample_rate_from_sio_cap__sndio(struct ma_sio_cap*
 
     for (iConfig = 0; iConfig < caps->nconf; iConfig += 1) {
         /* The encoding should be of requiredFormat. */
-        unsigned int iEncoding;
+        ma_uint32 iEncoding;
         for (iEncoding = 0; iEncoding < MA_SIO_NENC; iEncoding += 1) {
-            unsigned int iChannel;
-            unsigned int bits;
-            unsigned int bps;
-            unsigned int sig;
-            unsigned int le;
-            unsigned int msb;
+            ma_uint32 iChannel;
+            ma_uint32 bits;
+            ma_uint32 bps;
+            ma_uint32 sig;
+            ma_uint32 le;
+            ma_uint32 msb;
             ma_format format;
 
             if ((caps->confs[iConfig].enc & (1UL << iEncoding)) == 0) {
@@ -24653,9 +24653,9 @@ static ma_uint32 ma_find_best_sample_rate_from_sio_cap__sndio(struct ma_sio_cap*
             
             /* Getting here means the format is supported. Iterate over each channel count and grab the biggest one. */
             for (iChannel = 0; iChannel < MA_SIO_NCHAN; iChannel += 1) {
-                unsigned int chan = 0;
-                unsigned int channels;
-                unsigned int iRate;
+                ma_uint32 chan = 0;
+                ma_uint32 channels;
+                ma_uint32 iRate;
 
                 if (deviceType == ma_device_type_playback) {
                     chan = caps->confs[iConfig].pchan;
@@ -24769,7 +24769,7 @@ static ma_result ma_context_get_device_info__sndio(ma_context* pContext, ma_devi
     char devid[256];
     struct ma_sio_hdl* handle;
     struct ma_sio_cap caps;
-    unsigned int iConfig;
+    ma_uint32 iConfig;
 
     MA_ASSERT(pContext != NULL);
     (void)shareMode;
@@ -24797,16 +24797,16 @@ static ma_result ma_context_get_device_info__sndio(ma_context* pContext, ma_devi
         The main thing we care about is that the encoding is supported by miniaudio. If it is, we want to give
         preference to some formats over others.
         */
-        unsigned int iEncoding;
-        unsigned int iChannel;
-        unsigned int iRate;
+        ma_uint32 iEncoding;
+        ma_uint32 iChannel;
+        ma_uint32 iRate;
 
         for (iEncoding = 0; iEncoding < MA_SIO_NENC; iEncoding += 1) {
-            unsigned int bits;
-            unsigned int bps;
-            unsigned int sig;
-            unsigned int le;
-            unsigned int msb;
+            ma_uint32 bits;
+            ma_uint32 bps;
+            ma_uint32 sig;
+            ma_uint32 le;
+            ma_uint32 msb;
             ma_format format;
             ma_bool32 formatExists = MA_FALSE;
             ma_uint32 iExistingFormat;
@@ -24840,8 +24840,8 @@ static ma_result ma_context_get_device_info__sndio(ma_context* pContext, ma_devi
         
         /* Channels. */
         for (iChannel = 0; iChannel < MA_SIO_NCHAN; iChannel += 1) {
-            unsigned int chan = 0;
-            unsigned int channels;
+            ma_uint32 chan = 0;
+            ma_uint32 channels;
 
             if (deviceType == ma_device_type_playback) {
                 chan = caps.confs[iConfig].pchan;
@@ -24870,7 +24870,7 @@ static ma_result ma_context_get_device_info__sndio(ma_context* pContext, ma_devi
         /* Sample rates. */
         for (iRate = 0; iRate < MA_SIO_NRATE; iRate += 1) {
             if ((caps.confs[iConfig].rate & (1UL << iRate)) != 0) {
-                unsigned int rate = caps.rate[iRate];
+                ma_uint32 rate = caps.rate[iRate];
                 if (pDeviceInfo->minSampleRate > rate) {
                     pDeviceInfo->minSampleRate = rate;
                 }
@@ -24902,7 +24902,7 @@ static ma_result ma_device_init_handle__sndio(ma_context* pContext, const ma_dev
 {
     const char* pDeviceName;
     ma_ptr handle;
-    int openFlags = 0;
+    ma_int32 openFlags = 0;
     struct ma_sio_cap caps;
     struct ma_sio_par par;
     ma_device_id* pDeviceID;
@@ -25136,7 +25136,7 @@ static ma_result ma_device_stop__sndio(ma_device* pDevice)
 
 static ma_result ma_device_write__sndio(ma_device* pDevice, const void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesWritten)
 {
-    int result;
+    ma_int32 result;
 
     if (pFramesWritten != NULL) {
         *pFramesWritten = 0;
@@ -25156,7 +25156,7 @@ static ma_result ma_device_write__sndio(ma_device* pDevice, const void* pPCMFram
 
 static ma_result ma_device_read__sndio(ma_device* pDevice, void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesRead)
 {
-    int result;
+    ma_int32 result;
 
     if (pFramesRead != NULL) {
         *pFramesRead = 0;
@@ -25434,7 +25434,7 @@ audio(4) Backend
     #endif
 #endif
 
-static void ma_construct_device_id__audio4(char* id, size_t idSize, const char* base, int deviceIndex)
+static void ma_construct_device_id__audio4(char* id, size_t idSize, const char* base, ma_int32 deviceIndex)
 {
     size_t baseLen;
 
@@ -25492,7 +25492,7 @@ static ma_bool32 ma_context_is_device_id_equal__audio4(ma_context* pContext, con
 }
 
 #if !defined(MA_AUDIO4_USE_NEW_API)    /* Old API */
-static ma_format ma_format_from_encoding__audio4(unsigned int encoding, unsigned int precision)
+static ma_format ma_format_from_encoding__audio4(ma_uint32 encoding, ma_uint32 precision)
 {
     if (precision == 8 && (encoding == AUDIO_ENCODING_ULINEAR || encoding == AUDIO_ENCODING_ULINEAR || encoding == AUDIO_ENCODING_ULINEAR_LE || encoding == AUDIO_ENCODING_ULINEAR_BE)) {
         return ma_format_u8;
@@ -25519,7 +25519,7 @@ static ma_format ma_format_from_encoding__audio4(unsigned int encoding, unsigned
     return ma_format_unknown;  /* Encoding not supported. */
 }
 
-static void ma_encoding_from_format__audio4(ma_format format, unsigned int* pEncoding, unsigned int* pPrecision)
+static void ma_encoding_from_format__audio4(ma_format format, ma_uint32* pEncoding, ma_uint32* pPrecision)
 {
     MA_ASSERT(format     != ma_format_unknown);
     MA_ASSERT(pEncoding  != NULL);
@@ -25580,11 +25580,11 @@ static ma_format ma_format_from_swpar__audio4(struct audio_swpar* par)
 }
 #endif
 
-static ma_result ma_context_get_device_info_from_fd__audio4(ma_context* pContext, ma_device_type deviceType, int fd, ma_device_info* pInfoOut)
+static ma_result ma_context_get_device_info_from_fd__audio4(ma_context* pContext, ma_device_type deviceType, ma_int32 fd, ma_device_info* pInfoOut)
 {
     audio_device_t fdDevice;
 #if !defined(MA_AUDIO4_USE_NEW_API)
-    int counter = 0;
+    ma_int32 counter = 0;
     audio_info_t fdInfo;
 #else
     struct audio_swpar fdPar;
@@ -25668,9 +25668,9 @@ static ma_result ma_context_get_device_info_from_fd__audio4(ma_context* pContext
 
 static ma_result ma_context_enumerate_devices__audio4(ma_context* pContext, ma_enum_devices_callback_proc callback, void* pUserData)
 {
-    const int maxDevices = 64;
+    const ma_int32 maxDevices = 64;
     char devpath[256];
-    int iDevice;
+    ma_int32 iDevice;
 
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(callback != NULL);
@@ -25681,7 +25681,7 @@ static ma_result ma_context_enumerate_devices__audio4(ma_context* pContext, ma_e
     */
     for (iDevice = 0; iDevice < maxDevices; ++iDevice) {
         struct stat st;
-        int fd;
+        ma_int32 fd;
         ma_bool32 isTerminating = MA_FALSE;
 
         ma_strcpy_s(devpath, sizeof(devpath), "/dev/audioctl");
@@ -25735,8 +25735,8 @@ static ma_result ma_context_enumerate_devices__audio4(ma_context* pContext, ma_e
 
 static ma_result ma_context_get_device_info__audio4(ma_context* pContext, ma_device_type deviceType, const ma_device_id* pDeviceID, ma_share_mode shareMode, ma_device_info* pDeviceInfo)
 {
-    int fd = -1;
-    int deviceIndex = -1;
+    ma_int32 fd = -1;
+    ma_int32 deviceIndex = -1;
     char ctlid[256];
     ma_result result;
 
@@ -25796,8 +25796,8 @@ static ma_result ma_device_init_fd__audio4(ma_context* pContext, const ma_device
         "/dev/audio",
         "/dev/audio0"
     };
-    int fd;
-    int fdFlags = 0;
+    ma_int32 fd;
+    ma_int32 fdFlags = 0;
 #if !defined(MA_AUDIO4_USE_NEW_API)    /* Old API */
     audio_info_t fdInfo;
 #else
@@ -26062,7 +26062,7 @@ static ma_result ma_device_start__audio4(ma_device* pDevice)
 }
 #endif
 
-static ma_result ma_device_stop_fd__audio4(ma_device* pDevice, int fd)
+static ma_result ma_device_stop_fd__audio4(ma_device* pDevice, ma_int32 fd)
 {
     if (fd == -1) {
         return MA_INVALID_ARGS;
@@ -26114,7 +26114,7 @@ static ma_result ma_device_stop__audio4(ma_device* pDevice)
 
 static ma_result ma_device_write__audio4(ma_device* pDevice, const void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesWritten)
 {
-    int result;
+    ma_int32 result;
 
     if (pFramesWritten != NULL) {
         *pFramesWritten = 0;
@@ -26134,7 +26134,7 @@ static ma_result ma_device_write__audio4(ma_device* pDevice, const void* pPCMFra
 
 static ma_result ma_device_read__audio4(ma_device* pDevice, void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesRead)
 {
-    int result;
+    ma_int32 result;
 
     if (pFramesRead != NULL) {
         *pFramesRead = 0;
@@ -26362,10 +26362,10 @@ OSS Backend
 #define SNDCTL_DSP_HALT SNDCTL_DSP_RESET
 #endif
 
-static int ma_open_temp_device__oss()
+static ma_int32 ma_open_temp_device__oss()
 {
     /* The OSS sample code uses "/dev/mixer" as the device for getting system properties so I'm going to do the same. */
-    int fd = open("/dev/mixer", O_RDONLY, 0);
+    ma_int32 fd = open("/dev/mixer", O_RDONLY, 0);
     if (fd >= 0) {
         return fd;
     }
@@ -26376,7 +26376,7 @@ static int ma_open_temp_device__oss()
 static ma_result ma_context_open_device__oss(ma_context* pContext, ma_device_type deviceType, const ma_device_id* pDeviceID, ma_share_mode shareMode, int* pfd)
 {
     const char* deviceName;
-    int flags;
+    ma_int32 flags;
 
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(pfd != NULL);
@@ -26419,9 +26419,9 @@ static ma_bool32 ma_context_is_device_id_equal__oss(ma_context* pContext, const 
 
 static ma_result ma_context_enumerate_devices__oss(ma_context* pContext, ma_enum_devices_callback_proc callback, void* pUserData)
 {
-    int fd;
+    ma_int32 fd;
     oss_sysinfo si;
-    int result;
+    ma_int32 result;
 
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(callback != NULL);
@@ -26433,7 +26433,7 @@ static ma_result ma_context_enumerate_devices__oss(ma_context* pContext, ma_enum
 
     result = ioctl(fd, SNDCTL_SYSINFO, &si);
     if (result != -1) {
-        int iAudioDevice;
+        ma_int32 iAudioDevice;
         for (iAudioDevice = 0; iAudioDevice < si.numaudios; ++iAudioDevice) {
             oss_audioinfo ai;
             ai.dev = iAudioDevice;
@@ -26485,9 +26485,9 @@ static ma_result ma_context_enumerate_devices__oss(ma_context* pContext, ma_enum
 static ma_result ma_context_get_device_info__oss(ma_context* pContext, ma_device_type deviceType, const ma_device_id* pDeviceID, ma_share_mode shareMode, ma_device_info* pDeviceInfo)
 {
     ma_bool32 foundDevice;
-    int fdTemp;
+    ma_int32 fdTemp;
     oss_sysinfo si;
-    int result;
+    ma_int32 result;
 
     MA_ASSERT(pContext != NULL);
     (void)shareMode;
@@ -26514,7 +26514,7 @@ static ma_result ma_context_get_device_info__oss(ma_context* pContext, ma_device
 
     result = ioctl(fdTemp, SNDCTL_SYSINFO, &si);
     if (result != -1) {
-        int iAudioDevice;
+        ma_int32 iAudioDevice;
         for (iAudioDevice = 0; iAudioDevice < si.numaudios; ++iAudioDevice) {
             oss_audioinfo ai;
             ai.dev = iAudioDevice;
@@ -26524,7 +26524,7 @@ static ma_result ma_context_get_device_info__oss(ma_context* pContext, ma_device
                     /* It has the same name, so now just confirm the type. */
                     if ((deviceType == ma_device_type_playback && ((ai.caps & PCM_CAP_OUTPUT) != 0)) ||
                         (deviceType == ma_device_type_capture  && ((ai.caps & PCM_CAP_INPUT)  != 0))) {
-                        unsigned int formatMask;
+                        ma_uint32 formatMask;
 
                         /* ID */
                         ma_strncpy_s(pDeviceInfo->id.oss, sizeof(pDeviceInfo->id.oss), ai.devnode, (size_t)-1);
@@ -26596,9 +26596,9 @@ static void ma_device_uninit__oss(ma_device* pDevice)
     }
 }
 
-static int ma_format_to_oss(ma_format format)
+static ma_int32 ma_format_to_oss(ma_format format)
 {
-    int ossFormat = AFMT_U8;
+    ma_int32 ossFormat = AFMT_U8;
     switch (format) {
         case ma_format_s16: ossFormat = (ma_is_little_endian()) ? AFMT_S16_LE : AFMT_S16_BE; break;
         case ma_format_s24: ossFormat = (ma_is_little_endian()) ? AFMT_S32_LE : AFMT_S32_BE; break;
@@ -26611,7 +26611,7 @@ static int ma_format_to_oss(ma_format format)
     return ossFormat;
 }
 
-static ma_format ma_format_from_oss(int ossFormat)
+static ma_format ma_format_from_oss(ma_int32 ossFormat)
 {
     if (ossFormat == AFMT_U8) {
         return ma_format_u8;
@@ -26637,14 +26637,14 @@ static ma_format ma_format_from_oss(int ossFormat)
 static ma_result ma_device_init_fd__oss(ma_context* pContext, const ma_device_config* pConfig, ma_device_type deviceType, ma_device* pDevice)
 {
     ma_result result;
-    int ossResult;
-    int fd;
+    ma_int32 ossResult;
+    ma_int32 fd;
     const ma_device_id* pDeviceID = NULL;
     ma_share_mode shareMode;
-    int ossFormat;
-    int ossChannels;
-    int ossSampleRate;
-    int ossFragment;
+    ma_int32 ossFormat;
+    ma_int32 ossChannels;
+    ma_int32 ossSampleRate;
+    ma_int32 ossFragment;
 
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(pConfig != NULL);
@@ -26657,14 +26657,14 @@ static ma_result ma_device_init_fd__oss(ma_context* pContext, const ma_device_co
         pDeviceID     = pConfig->capture.pDeviceID;
         shareMode     = pConfig->capture.shareMode;
         ossFormat     = ma_format_to_oss(pConfig->capture.format);
-        ossChannels   = (int)pConfig->capture.channels;
-        ossSampleRate = (int)pConfig->sampleRate;
+        ossChannels   = (ma_int32)pConfig->capture.channels;
+        ossSampleRate = (ma_int32)pConfig->sampleRate;
     } else {
         pDeviceID     = pConfig->playback.pDeviceID;
         shareMode     = pConfig->playback.shareMode;
         ossFormat     = ma_format_to_oss(pConfig->playback.format);
-        ossChannels   = (int)pConfig->playback.channels;
-        ossSampleRate = (int)pConfig->sampleRate;
+        ossChannels   = (ma_int32)pConfig->playback.channels;
+        ossSampleRate = (ma_int32)pConfig->sampleRate;
     }
 
     result = ma_context_open_device__oss(pContext, deviceType, pDeviceID, shareMode, &fd);
@@ -26730,7 +26730,7 @@ static ma_result ma_device_init_fd__oss(ma_context* pContext, const ma_device_co
             ossFragmentSizePower += 1;
         }
 
-        ossFragment = (int)((pConfig->periods << 16) | ossFragmentSizePower);
+        ossFragment = (ma_int32)((pConfig->periods << 16) | ossFragmentSizePower);
         ossResult = ioctl(fd, SNDCTL_DSP_SETFRAGMENT, &ossFragment);
         if (ossResult == -1) {
             close(fd);
@@ -26815,14 +26815,14 @@ static ma_result ma_device_stop__oss(ma_device* pDevice)
     */
 
     if (pDevice->type == ma_device_type_capture || pDevice->type == ma_device_type_duplex) {
-        int result = ioctl(pDevice->oss.fdCapture, SNDCTL_DSP_HALT, 0);
+        ma_int32 result = ioctl(pDevice->oss.fdCapture, SNDCTL_DSP_HALT, 0);
         if (result == -1) {
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OSS] Failed to stop device. SNDCTL_DSP_HALT failed.", ma_result_from_errno(errno));
         }
     }
 
     if (pDevice->type == ma_device_type_playback || pDevice->type == ma_device_type_duplex) {
-        int result = ioctl(pDevice->oss.fdPlayback, SNDCTL_DSP_HALT, 0);
+        ma_int32 result = ioctl(pDevice->oss.fdPlayback, SNDCTL_DSP_HALT, 0);
         if (result == -1) {
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OSS] Failed to stop device. SNDCTL_DSP_HALT failed.", ma_result_from_errno(errno));
         }
@@ -26833,7 +26833,7 @@ static ma_result ma_device_stop__oss(ma_device* pDevice)
 
 static ma_result ma_device_write__oss(ma_device* pDevice, const void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesWritten)
 {
-    int resultOSS;
+    ma_int32 resultOSS;
 
     if (pFramesWritten != NULL) {
         *pFramesWritten = 0;
@@ -26853,7 +26853,7 @@ static ma_result ma_device_write__oss(ma_device* pDevice, const void* pPCMFrames
 
 static ma_result ma_device_read__oss(ma_device* pDevice, void* pPCMFrames, ma_uint32 frameCount, ma_uint32* pFramesRead)
 {
-    int resultOSS;
+    ma_int32 resultOSS;
 
     if (pFramesRead != NULL) {
         *pFramesRead = 0;
@@ -27047,9 +27047,9 @@ static ma_result ma_context_uninit__oss(ma_context* pContext)
 
 static ma_result ma_context_init__oss(const ma_context_config* pConfig, ma_context* pContext)
 {
-    int fd;
-    int ossVersion;
-    int result;
+    ma_int32 fd;
+    ma_int32 ossVersion;
+    ma_int32 result;
 
     MA_ASSERT(pContext != NULL);
 
@@ -27098,13 +27098,13 @@ AAudio Backend
 
 #define MA_AAUDIO_UNSPECIFIED 0
 
-typedef int32_t ma_aaudio_result_t;
-typedef int32_t ma_aaudio_direction_t;
-typedef int32_t ma_aaudio_sharing_mode_t;
-typedef int32_t ma_aaudio_format_t;
-typedef int32_t ma_aaudio_stream_state_t;
-typedef int32_t ma_aaudio_performance_mode_t;
-typedef int32_t ma_aaudio_data_callback_result_t;
+typedef ma_int32 ma_aaudio_result_t;
+typedef ma_int32 ma_aaudio_direction_t;
+typedef ma_int32 ma_aaudio_sharing_mode_t;
+typedef ma_int32 ma_aaudio_format_t;
+typedef ma_int32 ma_aaudio_stream_state_t;
+typedef ma_int32 ma_aaudio_performance_mode_t;
+typedef ma_int32 ma_aaudio_data_callback_result_t;
 
 /* Result codes. miniaudio only cares about the success code. */
 #define MA_AAUDIO_OK                               0
@@ -27150,19 +27150,19 @@ typedef int32_t ma_aaudio_data_callback_result_t;
 typedef struct ma_AAudioStreamBuilder_t* ma_AAudioStreamBuilder;
 typedef struct ma_AAudioStream_t*        ma_AAudioStream;
 
-typedef ma_aaudio_data_callback_result_t (* ma_AAudioStream_dataCallback) (ma_AAudioStream* pStream, void* pUserData, void* pAudioData, int32_t numFrames);
+typedef ma_aaudio_data_callback_result_t (* ma_AAudioStream_dataCallback) (ma_AAudioStream* pStream, void* pUserData, void* pAudioData, ma_int32 numFrames);
 typedef void                             (* ma_AAudioStream_errorCallback)(ma_AAudioStream *pStream, void *pUserData, ma_aaudio_result_t error);
 
 typedef ma_aaudio_result_t       (* MA_PFN_AAudio_createStreamBuilder)                   (ma_AAudioStreamBuilder** ppBuilder);
 typedef ma_aaudio_result_t       (* MA_PFN_AAudioStreamBuilder_delete)                   (ma_AAudioStreamBuilder* pBuilder);
-typedef void                     (* MA_PFN_AAudioStreamBuilder_setDeviceId)              (ma_AAudioStreamBuilder* pBuilder, int32_t deviceId);
+typedef void                     (* MA_PFN_AAudioStreamBuilder_setDeviceId)              (ma_AAudioStreamBuilder* pBuilder, ma_int32 deviceId);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setDirection)             (ma_AAudioStreamBuilder* pBuilder, ma_aaudio_direction_t direction);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setSharingMode)           (ma_AAudioStreamBuilder* pBuilder, ma_aaudio_sharing_mode_t sharingMode);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setFormat)                (ma_AAudioStreamBuilder* pBuilder, ma_aaudio_format_t format);
-typedef void                     (* MA_PFN_AAudioStreamBuilder_setChannelCount)          (ma_AAudioStreamBuilder* pBuilder, int32_t channelCount);
-typedef void                     (* MA_PFN_AAudioStreamBuilder_setSampleRate)            (ma_AAudioStreamBuilder* pBuilder, int32_t sampleRate);
-typedef void                     (* MA_PFN_AAudioStreamBuilder_setBufferCapacityInFrames)(ma_AAudioStreamBuilder* pBuilder, int32_t numFrames);
-typedef void                     (* MA_PFN_AAudioStreamBuilder_setFramesPerDataCallback) (ma_AAudioStreamBuilder* pBuilder, int32_t numFrames);
+typedef void                     (* MA_PFN_AAudioStreamBuilder_setChannelCount)          (ma_AAudioStreamBuilder* pBuilder, ma_int32 channelCount);
+typedef void                     (* MA_PFN_AAudioStreamBuilder_setSampleRate)            (ma_AAudioStreamBuilder* pBuilder, ma_int32 sampleRate);
+typedef void                     (* MA_PFN_AAudioStreamBuilder_setBufferCapacityInFrames)(ma_AAudioStreamBuilder* pBuilder, ma_int32 numFrames);
+typedef void                     (* MA_PFN_AAudioStreamBuilder_setFramesPerDataCallback) (ma_AAudioStreamBuilder* pBuilder, ma_int32 numFrames);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setDataCallback)          (ma_AAudioStreamBuilder* pBuilder, ma_AAudioStream_dataCallback callback, void* pUserData);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setErrorCallback)         (ma_AAudioStreamBuilder* pBuilder, ma_AAudioStream_errorCallback callback, void* pUserData);
 typedef void                     (* MA_PFN_AAudioStreamBuilder_setPerformanceMode)       (ma_AAudioStreamBuilder* pBuilder, ma_aaudio_performance_mode_t mode);
@@ -27171,11 +27171,11 @@ typedef ma_aaudio_result_t       (* MA_PFN_AAudioStream_close)                  
 typedef ma_aaudio_stream_state_t (* MA_PFN_AAudioStream_getState)                        (ma_AAudioStream* pStream);
 typedef ma_aaudio_result_t       (* MA_PFN_AAudioStream_waitForStateChange)              (ma_AAudioStream* pStream, ma_aaudio_stream_state_t inputState, ma_aaudio_stream_state_t* pNextState, int64_t timeoutInNanoseconds);
 typedef ma_aaudio_format_t       (* MA_PFN_AAudioStream_getFormat)                       (ma_AAudioStream* pStream);
-typedef int32_t                  (* MA_PFN_AAudioStream_getChannelCount)                 (ma_AAudioStream* pStream);
-typedef int32_t                  (* MA_PFN_AAudioStream_getSampleRate)                   (ma_AAudioStream* pStream);
-typedef int32_t                  (* MA_PFN_AAudioStream_getBufferCapacityInFrames)       (ma_AAudioStream* pStream);
-typedef int32_t                  (* MA_PFN_AAudioStream_getFramesPerDataCallback)        (ma_AAudioStream* pStream);
-typedef int32_t                  (* MA_PFN_AAudioStream_getFramesPerBurst)               (ma_AAudioStream* pStream);
+typedef ma_int32                  (* MA_PFN_AAudioStream_getChannelCount)                 (ma_AAudioStream* pStream);
+typedef ma_int32                  (* MA_PFN_AAudioStream_getSampleRate)                   (ma_AAudioStream* pStream);
+typedef ma_int32                  (* MA_PFN_AAudioStream_getBufferCapacityInFrames)       (ma_AAudioStream* pStream);
+typedef ma_int32                  (* MA_PFN_AAudioStream_getFramesPerDataCallback)        (ma_AAudioStream* pStream);
+typedef ma_int32                  (* MA_PFN_AAudioStream_getFramesPerBurst)               (ma_AAudioStream* pStream);
 typedef ma_aaudio_result_t       (* MA_PFN_AAudioStream_requestStart)                    (ma_AAudioStream* pStream);
 typedef ma_aaudio_result_t       (* MA_PFN_AAudioStream_requestStop)                     (ma_AAudioStream* pStream);
 
@@ -27212,7 +27212,7 @@ static void ma_stream_error_callback__aaudio(ma_AAudioStream* pStream, void* pUs
     }
 }
 
-static ma_aaudio_data_callback_result_t ma_stream_data_callback_capture__aaudio(ma_AAudioStream* pStream, void* pUserData, void* pAudioData, int32_t frameCount)
+static ma_aaudio_data_callback_result_t ma_stream_data_callback_capture__aaudio(ma_AAudioStream* pStream, void* pUserData, void* pAudioData, ma_int32 frameCount)
 {
     ma_device* pDevice = (ma_device*)pUserData;
     MA_ASSERT(pDevice != NULL);
@@ -27227,7 +27227,7 @@ static ma_aaudio_data_callback_result_t ma_stream_data_callback_capture__aaudio(
     return MA_AAUDIO_CALLBACK_RESULT_CONTINUE;
 }
 
-static ma_aaudio_data_callback_result_t ma_stream_data_callback_playback__aaudio(ma_AAudioStream* pStream, void* pUserData, void* pAudioData, int32_t frameCount)
+static ma_aaudio_data_callback_result_t ma_stream_data_callback_playback__aaudio(ma_AAudioStream* pStream, void* pUserData, void* pAudioData, ma_int32 frameCount)
 {
     ma_device* pDevice = (ma_device*)pUserData;
     MA_ASSERT(pDevice != NULL);
@@ -27485,8 +27485,8 @@ static ma_result ma_device_init__aaudio(ma_context* pContext, const ma_device_co
 
     /* We first need to try opening the stream. */
     if (pConfig->deviceType == ma_device_type_capture || pConfig->deviceType == ma_device_type_duplex) {
-        int32_t bufferCapacityInFrames;
-        int32_t framesPerDataCallback;
+        ma_int32 bufferCapacityInFrames;
+        ma_int32 framesPerDataCallback;
 
         result = ma_open_stream__aaudio(pContext, ma_device_type_capture, pConfig->capture.pDeviceID, pConfig->capture.shareMode, pConfig, pDevice, (ma_AAudioStream**)&pDevice->aaudio.pStreamCapture);
         if (result != MA_SUCCESS) {
@@ -27511,8 +27511,8 @@ static ma_result ma_device_init__aaudio(ma_context* pContext, const ma_device_co
     }
 
     if (pConfig->deviceType == ma_device_type_playback || pConfig->deviceType == ma_device_type_duplex) {
-        int32_t bufferCapacityInFrames;
-        int32_t framesPerDataCallback;
+        ma_int32 bufferCapacityInFrames;
+        ma_int32 framesPerDataCallback;
 
         result = ma_open_stream__aaudio(pContext, ma_device_type_playback, pConfig->playback.pDeviceID, pConfig->playback.shareMode, pConfig, pDevice, (ma_AAudioStream**)&pDevice->aaudio.pStreamPlayback);
         if (result != MA_SUCCESS) {
@@ -28347,11 +28347,11 @@ static ma_result ma_SLDataFormat_PCM_init__opensl(ma_format format, ma_uint32 ch
 
 static ma_result ma_deconstruct_SLDataFormat_PCM__opensl(ma_SLDataFormat_PCM* pDataFormat, ma_format* pFormat, ma_uint32* pChannels, ma_uint32* pSampleRate, ma_channel* pChannelMap)
 {
-    ma_bool32 isFloatingPoint = MA_FALSE;
+    ma_bool32 isFloatingPoma_int32 = MA_FALSE;
 #if defined(MA_ANDROID) && __ANDROID_API__ >= 21
     if (pDataFormat->formatType == SL_ANDROID_DATAFORMAT_PCM_EX) {
         MA_ASSERT(pDataFormat->representation == SL_ANDROID_PCM_REPRESENTATION_FLOAT);
-        isFloatingPoint = MA_TRUE;
+        isFloatingPoma_int32 = MA_TRUE;
     }
 #endif
     if (isFloatingPoint) {
@@ -28836,7 +28836,7 @@ static ma_bool32 ma_is_capture_supported__webaudio()
 #ifdef __cplusplus
 extern "C" {
 #endif
-void EMSCRIPTEN_KEEPALIVE ma_device_process_pcm_frames_capture__webaudio(ma_device* pDevice, int frameCount, float* pFrames)
+void EMSCRIPTEN_KEEPALIVE ma_device_process_pcm_frames_capture__webaudio(ma_device* pDevice, ma_int32 frameCount, float* pFrames)
 {
     if (pDevice->type == ma_device_type_duplex) {
         ma_device__handle_duplex_callback_capture(pDevice, (ma_uint32)frameCount, pFrames, &pDevice->webaudio.duplexRB);
@@ -28845,7 +28845,7 @@ void EMSCRIPTEN_KEEPALIVE ma_device_process_pcm_frames_capture__webaudio(ma_devi
     }
 }
 
-void EMSCRIPTEN_KEEPALIVE ma_device_process_pcm_frames_playback__webaudio(ma_device* pDevice, int frameCount, float* pFrames)
+void EMSCRIPTEN_KEEPALIVE ma_device_process_pcm_frames_playback__webaudio(ma_device* pDevice, ma_int32 frameCount, float* pFrames)
 {
     if (pDevice->type == ma_device_type_duplex) {
         ma_device__handle_duplex_callback_playback(pDevice, (ma_uint32)frameCount, pFrames, &pDevice->webaudio.duplexRB);
@@ -28952,7 +28952,7 @@ static ma_result ma_context_get_device_info__webaudio(ma_context* pContext, ma_d
 }
 
 
-static void ma_device_uninit_by_index__webaudio(ma_device* pDevice, ma_device_type deviceType, int deviceIndex)
+static void ma_device_uninit_by_index__webaudio(ma_device* pDevice, ma_device_type deviceType, ma_int32 deviceIndex)
 {
     MA_ASSERT(pDevice != NULL);
 
@@ -29009,7 +29009,7 @@ static void ma_device_uninit__webaudio(ma_device* pDevice)
 
 static ma_result ma_device_init_by_type__webaudio(ma_context* pContext, const ma_device_config* pConfig, ma_device_type deviceType, ma_device* pDevice)
 {
-    int deviceIndex;
+    ma_int32 deviceIndex;
     ma_uint32 internalPeriodSizeInFrames;
 
     MA_ASSERT(pContext   != NULL);
@@ -29345,7 +29345,7 @@ static ma_result ma_context_uninit__webaudio(ma_context* pContext)
 
 static ma_result ma_context_init__webaudio(const ma_context_config* pConfig, ma_context* pContext)
 {
-    int resultFromJS;
+    ma_int32 resultFromJS;
 
     MA_ASSERT(pContext != NULL);
 
@@ -33327,7 +33327,7 @@ MA_API ma_uint64 ma_linear_resampler_get_output_latency(ma_linear_resampler* pRe
 #if defined(ma_speex_resampler_h)
 #define MA_HAS_SPEEX_RESAMPLER
 
-static ma_result ma_result_from_speex_err(int err)
+static ma_result ma_result_from_speex_err(ma_int32 err)
 {
     switch (err)
     {
@@ -33401,7 +33401,7 @@ MA_API ma_result ma_resampler_init(const ma_resampler_config* pConfig, ma_resamp
         case ma_resample_algorithm_speex:
         {
         #if defined(MA_HAS_SPEEX_RESAMPLER)
-            int speexErr;
+            ma_int32 speexErr;
             pResampler->state.speex.pSpeexResamplerState = speex_resampler_init(pConfig->channels, pConfig->sampleRateIn, pConfig->sampleRateOut, pConfig->speex.quality, &speexErr);
             if (pResampler->state.speex.pSpeexResamplerState == NULL) {
                 return ma_result_from_speex_err(speexErr);
@@ -33443,12 +33443,12 @@ static ma_result ma_resampler_process_pcm_frames__read__linear(ma_resampler* pRe
 #if defined(MA_HAS_SPEEX_RESAMPLER)
 static ma_result ma_resampler_process_pcm_frames__read__speex(ma_resampler* pResampler, const void* pFramesIn, ma_uint64* pFrameCountIn, void* pFramesOut, ma_uint64* pFrameCountOut)
 {
-    int speexErr;
+    ma_int32 speexErr;
     ma_uint64 frameCountOut;
     ma_uint64 frameCountIn;
     ma_uint64 framesProcessedOut;
     ma_uint64 framesProcessedIn;
-    unsigned int framesPerIteration = UINT_MAX;
+    ma_uint32 framesPerIteration = UINT_MAX;
 
     MA_ASSERT(pResampler     != NULL);
     MA_ASSERT(pFramesOut     != NULL);
@@ -33457,7 +33457,7 @@ static ma_result ma_resampler_process_pcm_frames__read__speex(ma_resampler* pRes
 
     /*
     Reading from the Speex resampler requires a bit of dancing around for a few reasons. The first thing is that it's frame counts
-    are in unsigned int's whereas ours is in ma_uint64. We therefore need to run the conversion in a loop. The other, more complicated
+    are in ma_uint32's whereas ours is in ma_uint64. We therefore need to run the conversion in a loop. The other, more complicated
     problem, is that we need to keep track of the input time, similar to what we do with the linear resampler. The reason we need to
     do this is for ma_resampler_get_required_input_frame_count() and ma_resampler_get_expected_output_frame_count().
     */
@@ -33467,19 +33467,19 @@ static ma_result ma_resampler_process_pcm_frames__read__speex(ma_resampler* pRes
     framesProcessedIn  = 0;
 
     while (framesProcessedOut < frameCountOut && framesProcessedIn < frameCountIn) {
-        unsigned int frameCountInThisIteration;
-        unsigned int frameCountOutThisIteration;
+        ma_uint32 frameCountInThisIteration;
+        ma_uint32 frameCountOutThisIteration;
         const void* pFramesInThisIteration;
         void* pFramesOutThisIteration;
 
         frameCountInThisIteration = framesPerIteration;
         if ((ma_uint64)frameCountInThisIteration > (frameCountIn - framesProcessedIn)) {
-            frameCountInThisIteration = (unsigned int)(frameCountIn - framesProcessedIn);
+            frameCountInThisIteration = (ma_uint32)(frameCountIn - framesProcessedIn);
         }
 
         frameCountOutThisIteration = framesPerIteration;
         if ((ma_uint64)frameCountOutThisIteration > (frameCountOut - framesProcessedOut)) {
-            frameCountOutThisIteration = (unsigned int)(frameCountOut - framesProcessedOut);
+            frameCountOutThisIteration = (ma_uint32)(frameCountOut - framesProcessedOut);
         }
 
         pFramesInThisIteration  = ma_offset_ptr(pFramesIn,  framesProcessedIn  * ma_get_bytes_per_frame(pResampler->config.format, pResampler->config.channels));
@@ -33765,7 +33765,7 @@ MA_API ma_uint64 ma_resampler_get_required_input_frame_count(ma_resampler* pResa
         {
         #if defined(MA_HAS_SPEEX_RESAMPLER)
             ma_uint64 count;
-            int speexErr = ma_speex_resampler_get_required_input_frame_count((SpeexResamplerState*)pResampler->state.speex.pSpeexResamplerState, outputFrameCount, &count);
+            ma_int32 speexErr = ma_speex_resampler_get_required_input_frame_count((SpeexResamplerState*)pResampler->state.speex.pSpeexResamplerState, outputFrameCount, &count);
             if (speexErr != RESAMPLER_ERR_SUCCESS) {
                 return 0;
             }
@@ -33805,7 +33805,7 @@ MA_API ma_uint64 ma_resampler_get_expected_output_frame_count(ma_resampler* pRes
         {
         #if defined(MA_HAS_SPEEX_RESAMPLER)
             ma_uint64 count;
-            int speexErr = ma_speex_resampler_get_expected_output_frame_count((SpeexResamplerState*)pResampler->state.speex.pSpeexResamplerState, inputFrameCount, &count);
+            ma_int32 speexErr = ma_speex_resampler_get_expected_output_frame_count((SpeexResamplerState*)pResampler->state.speex.pSpeexResamplerState, inputFrameCount, &count);
             if (speexErr != RESAMPLER_ERR_SUCCESS) {
                 return 0;
             }
@@ -34019,7 +34019,7 @@ static ma_int32 ma_channel_converter_float_to_fp(float x)
 
 static ma_bool32 ma_is_spatial_channel_position(ma_channel channelPosition)
 {
-    int i;
+    ma_int32 i;
 
     if (channelPosition == MA_CHANNEL_NONE || channelPosition == MA_CHANNEL_MONO || channelPosition == MA_CHANNEL_LFE) {
         return MA_FALSE;
@@ -39336,7 +39336,7 @@ MA_API const char* ma_get_format_name(ma_format format)
     switch (format)
     {
         case ma_format_unknown: return "Unknown";
-        case ma_format_u8:      return "8-bit Unsigned Integer";
+        case ma_format_u8:      return "8-bit integer";
         case ma_format_s16:     return "16-bit Signed Integer";
         case ma_format_s24:     return "24-bit Signed Integer (Tightly Packed)";
         case ma_format_s32:     return "32-bit Signed Integer";
@@ -39388,7 +39388,7 @@ static size_t ma_decoder_read_bytes(ma_decoder* pDecoder, void* pBufferOut, size
     return bytesRead;
 }
 
-static ma_bool32 ma_decoder_seek_bytes(ma_decoder* pDecoder, int byteOffset, ma_seek_origin origin)
+static ma_bool32 ma_decoder_seek_bytes(ma_decoder* pDecoder, ma_int32 byteOffset, ma_seek_origin origin)
 {
     ma_bool32 wasSuccessful;
 
@@ -39496,7 +39496,7 @@ static size_t ma_decoder_internal_on_read__wav(void* pUserData, void* pBufferOut
     return ma_decoder_read_bytes(pDecoder, pBufferOut, bytesToRead);
 }
 
-static drwav_bool32 ma_decoder_internal_on_seek__wav(void* pUserData, int offset, drwav_seek_origin origin)
+static drwav_bool32 ma_decoder_internal_on_seek__wav(void* pUserData, ma_int32 offset, drwav_seek_origin origin)
 {
     ma_decoder* pDecoder = (ma_decoder*)pUserData;
     MA_ASSERT(pDecoder != NULL);
@@ -39639,7 +39639,7 @@ static size_t ma_decoder_internal_on_read__flac(void* pUserData, void* pBufferOu
     return ma_decoder_read_bytes(pDecoder, pBufferOut, bytesToRead);
 }
 
-static drflac_bool32 ma_decoder_internal_on_seek__flac(void* pUserData, int offset, drflac_seek_origin origin)
+static drflac_bool32 ma_decoder_internal_on_seek__flac(void* pUserData, ma_int32 offset, drflac_seek_origin origin)
 {
     ma_decoder* pDecoder = (ma_decoder*)pUserData;
     MA_ASSERT(pDecoder != NULL);
@@ -39794,15 +39794,15 @@ static ma_uint64 ma_vorbis_decoder_read_pcm_frames(ma_vorbis_decoder* pVorbis, m
         /* We've run out of cached frames, so decode the next packet and continue iteration. */
         do
         {
-            int samplesRead;
-            int consumedDataSize;
+            ma_int32 samplesRead;
+            ma_int32 consumedDataSize;
 
             if (pVorbis->dataSize > INT_MAX) {
                 break;  /* Too big. */
             }
 
             samplesRead = 0;
-            consumedDataSize = stb_vorbis_decode_frame_pushdata(pVorbis->pInternalVorbis, pVorbis->pData, (int)pVorbis->dataSize, NULL, (float***)&pVorbis->ppPacketData, &samplesRead);
+            consumedDataSize = stb_vorbis_decode_frame_pushdata(pVorbis->pInternalVorbis, pVorbis->pData, (ma_int32)pVorbis->dataSize, NULL, (float***)&pVorbis->ppPacketData, &samplesRead);
             if (consumedDataSize != 0) {
                 size_t leftoverDataSize = (pVorbis->dataSize - (size_t)consumedDataSize);
                 size_t i;
@@ -39946,8 +39946,8 @@ static ma_result ma_decoder_init_vorbis__internal(const ma_decoder_config* pConf
         /* Allocate memory for a new chunk. */
         ma_uint8* pNewData;
         size_t bytesRead;
-        int vorbisError = 0;
-        int consumedDataSize = 0;
+        ma_int32 vorbisError = 0;
+        ma_int32 consumedDataSize = 0;
         size_t oldCapacity = dataCapacity;
 
         dataCapacity += MA_VORBIS_DATA_CHUNK_SIZE;
@@ -39970,7 +39970,7 @@ static ma_result ma_decoder_init_vorbis__internal(const ma_decoder_config* pConf
             return MA_ERROR;   /* Too big. */
         }
 
-        pInternalVorbis = stb_vorbis_open_pushdata(pData, (int)dataSize, &consumedDataSize, &vorbisError, NULL);
+        pInternalVorbis = stb_vorbis_open_pushdata(pData, (ma_int32)dataSize, &consumedDataSize, &vorbisError, NULL);
         if (pInternalVorbis != NULL) {
             /*
             If we get here it means we were able to open the stb_vorbis decoder. There may be some leftover bytes in our buffer, so
@@ -40046,7 +40046,7 @@ static size_t ma_decoder_internal_on_read__mp3(void* pUserData, void* pBufferOut
     return ma_decoder_read_bytes(pDecoder, pBufferOut, bytesToRead);
 }
 
-static drmp3_bool32 ma_decoder_internal_on_seek__mp3(void* pUserData, int offset, drmp3_seek_origin origin)
+static drmp3_bool32 ma_decoder_internal_on_seek__mp3(void* pUserData, ma_int32 offset, drmp3_seek_origin origin)
 {
     ma_decoder* pDecoder = (ma_decoder*)pUserData;
     MA_ASSERT(pDecoder != NULL);
@@ -40197,11 +40197,11 @@ static ma_result ma_decoder_internal_on_seek_to_pcm_frame__raw(ma_decoder* pDeco
         return MA_ERROR;
     }
 
-    /* The callback uses a 32 bit integer whereas we use a 64 bit unsigned integer. We just need to continuously seek until we're at the correct position. */
+    /* The callback uses a 32 bit integer whereas we use a 64 bit integer. We just need to continuously seek until we're at the correct position. */
     totalBytesToSeek = frameIndex * ma_get_bytes_per_frame(pDecoder->internalFormat, pDecoder->internalChannels);
     if (totalBytesToSeek < 0x7FFFFFFF) {
         /* Simple case. */
-        result = ma_decoder_seek_bytes(pDecoder, (int)(frameIndex * ma_get_bytes_per_frame(pDecoder->internalFormat, pDecoder->internalChannels)), ma_seek_origin_start);
+        result = ma_decoder_seek_bytes(pDecoder, (ma_int32)(frameIndex * ma_get_bytes_per_frame(pDecoder->internalFormat, pDecoder->internalChannels)), ma_seek_origin_start);
     } else {
         /* Complex case. Start by doing a seek relative to the start. Then keep looping using offset seeking. */
         result = ma_decoder_seek_bytes(pDecoder, 0x7FFFFFFF, ma_seek_origin_start);
@@ -40214,7 +40214,7 @@ static ma_result ma_decoder_internal_on_seek_to_pcm_frame__raw(ma_decoder* pDeco
                     bytesToSeekThisIteration = 0x7FFFFFFF;
                 }
 
-                result = ma_decoder_seek_bytes(pDecoder, (int)bytesToSeekThisIteration, ma_seek_origin_current);
+                result = ma_decoder_seek_bytes(pDecoder, (ma_int32)bytesToSeekThisIteration, ma_seek_origin_current);
                 if (result != MA_TRUE) {
                     break;
                 }
@@ -40522,16 +40522,16 @@ static size_t ma_decoder__on_read_memory(ma_decoder* pDecoder, void* pBufferOut,
     return bytesToRead;
 }
 
-static ma_bool32 ma_decoder__on_seek_memory(ma_decoder* pDecoder, int byteOffset, ma_seek_origin origin)
+static ma_bool32 ma_decoder__on_seek_memory(ma_decoder* pDecoder, ma_int32 byteOffset, ma_seek_origin origin)
 {
     if (origin == ma_seek_origin_current) {
         if (byteOffset > 0) {
             if (pDecoder->memory.currentReadPos + byteOffset > pDecoder->memory.dataSize) {
-                byteOffset = (int)(pDecoder->memory.dataSize - pDecoder->memory.currentReadPos);  /* Trying to seek too far forward. */
+                byteOffset = (ma_int32)(pDecoder->memory.dataSize - pDecoder->memory.currentReadPos);  /* Trying to seek too far forward. */
             }
         } else {
             if (pDecoder->memory.currentReadPos < (size_t)-byteOffset) {
-                byteOffset = -(int)pDecoder->memory.currentReadPos;  /* Trying to seek too far backwards. */
+                byteOffset = -(ma_int32)pDecoder->memory.currentReadPos;  /* Trying to seek too far backwards. */
             }
         }
 
@@ -40871,7 +40871,7 @@ static size_t ma_decoder__on_read_stdio(ma_decoder* pDecoder, void* pBufferOut, 
     return fread(pBufferOut, 1, bytesToRead, (FILE*)pDecoder->pUserData);
 }
 
-static ma_bool32 ma_decoder__on_seek_stdio(ma_decoder* pDecoder, int byteOffset, ma_seek_origin origin)
+static ma_bool32 ma_decoder__on_seek_stdio(ma_decoder* pDecoder, ma_int32 byteOffset, ma_seek_origin origin)
 {
     return fseek((FILE*)pDecoder->pUserData, byteOffset, (origin == ma_seek_origin_current) ? SEEK_CUR : SEEK_SET) == 0;
 }
@@ -41370,7 +41370,7 @@ static size_t ma_encoder__internal_on_write_wav(void* pUserData, const void* pDa
     return pEncoder->onWrite(pEncoder, pData, bytesToWrite);
 }
 
-static drwav_bool32 ma_encoder__internal_on_seek_wav(void* pUserData, int offset, drwav_seek_origin origin)
+static drwav_bool32 ma_encoder__internal_on_seek_wav(void* pUserData, ma_int32 offset, drwav_seek_origin origin)
 {
     ma_encoder* pEncoder = (ma_encoder*)pUserData;
     MA_ASSERT(pEncoder != NULL);
@@ -41532,7 +41532,7 @@ MA_API size_t ma_encoder__on_write_stdio(ma_encoder* pEncoder, const void* pBuff
     return fwrite(pBufferIn, 1, bytesToWrite, (FILE*)pEncoder->pFile);
 }
 
-MA_API ma_bool32 ma_encoder__on_seek_stdio(ma_encoder* pEncoder, int byteOffset, ma_seek_origin origin)
+MA_API ma_bool32 ma_encoder__on_seek_stdio(ma_encoder* pEncoder, ma_int32 byteOffset, ma_seek_origin origin)
 {
     return fseek((FILE*)pEncoder->pFile, byteOffset, (origin == ma_seek_origin_current) ? SEEK_CUR : SEEK_SET) == 0;
 }
@@ -42078,9 +42078,9 @@ static MA_INLINE ma_uint64 ma_noise_read_pcm_frames__white(ma_noise* pNoise, voi
 }
 
 
-static MA_INLINE unsigned int ma_tzcnt32(unsigned int x)
+static MA_INLINE ma_uint32 ma_tzcnt32(ma_uint32 x)
 {
-    unsigned int n;
+    ma_uint32 n;
 
     /* Special case for odd numbers since they should happen about half the time. */
     if (x & 0x1)  {
@@ -42111,7 +42111,7 @@ static MA_INLINE float ma_noise_f32_pink(ma_noise* pNoise, ma_uint32 iChannel)
     double result;
     double binPrev;
     double binNext;
-    unsigned int ibin;
+    ma_uint32 ibin;
 
     ibin = ma_tzcnt32(pNoise->state.pink.counter[iChannel]) & (ma_countof(pNoise->state.pink.bin[0]) - 1);
 
@@ -42314,7 +42314,7 @@ detail about the major changes I would like to apologize. I know it's annoying d
 it's best to get these changes out of the way now while the library is still relatively young and unknown.
 
 There's been a lot of refactoring with this release so there's a good chance a few bugs have been introduced. I apologize in
-advance for this. You may want to hold off on upgrading for the short term if you're worried. If mini_al v0.8.14 works for
+advance for this. You may want to hold off on upgrading for the int16_t term if you're worried. If mini_al v0.8.14 works for
 you, and you don't need full-duplex support, you can avoid upgrading (though you won't be getting future bug fixes).
 
 

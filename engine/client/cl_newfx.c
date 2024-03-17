@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cparticle_t	*active_particles, *free_particles;
 extern cparticle_t	particles[MAX_PARTICLES];
-extern int			cl_numparticles;
+extern int32_t 		cl_numparticles;
 extern cvar_t		*vid_ref;
 
 extern void MakeNormalVectors (vec3_t forward, vec3_t right, vec3_t up);
@@ -74,7 +74,7 @@ void vectoangles2 (vec3_t value1, vec3_t angles)
 
 //=============
 //=============
-void CL_Flashlight (int ent, vec3_t pos)
+void CL_Flashlight (int32_t ent, vec3_t pos)
 {
 	cdlight_t	*dl;
 
@@ -93,7 +93,7 @@ void CL_Flashlight (int ent, vec3_t pos)
 CL_ColorFlash - flash of light
 ======
 */
-void CL_ColorFlash (vec3_t pos, int ent, int intensity, float r, float g, float b)
+void CL_ColorFlash (vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b)
 {
 	cdlight_t	*dl;
 
@@ -118,11 +118,11 @@ void CL_DebugTrail (vec3_t start, vec3_t end)
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-//	int			j;
+//	int32_t 		j;
 	cparticle_t	*p;
 	float		dec;
 	vec3_t		right, up;
-//	int			i;
+//	int32_t 		i;
 //	float		d, c, s;
 //	vec3_t		dir;
 
@@ -175,12 +175,12 @@ void CL_DebugTrail (vec3_t start, vec3_t end)
 CL_SmokeTrail
 ===============
 */
-void CL_SmokeTrail (vec3_t start, vec3_t end, vec4_t colorStart, vec4_t colorRun, int spacing)
+void CL_SmokeTrail (vec3_t start, vec3_t end, vec4_t colorStart, vec4_t colorRun, int32_t spacing)
 {
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int			j;
+	int32_t 		j;
 	cparticle_t	*p;
 
 	VectorCopy (start, move);
@@ -207,7 +207,7 @@ void CL_SmokeTrail (vec3_t start, vec3_t end, vec4_t colorStart, vec4_t colorRun
 		p->alpha = 1.0;
 		p->alphavel = -1.0 / (1+frand()*0.5);
 		//todo: this changes how colorRun actually works
-		int runR = colorRun[0], runG = colorRun[1], runB = colorRun[2];
+		int32_t runR = colorRun[0], runG = colorRun[1], runB = colorRun[2];
 		p->color[0] = colorStart[0] + (rand() % runR);
 		p->color[1] = colorStart[1] + (rand() % runG);
 		p->color[2] = colorStart[2] + (rand() % runB);
@@ -230,7 +230,7 @@ void CL_ForceWall (vec3_t start, vec3_t end, vec4_t color)
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int			j;
+	int32_t 		j;
 	cparticle_t	*p;
 
 	VectorCopy (start, move);
@@ -276,8 +276,8 @@ void CL_ForceWall (vec3_t start, vec3_t end, vec4_t color)
 
 void CL_FlameEffects (centity_t *ent, vec3_t origin)
 {
-	int			n, count;
-	int			j;
+	int32_t 		n, count;
+	int32_t 		j;
 	cparticle_t	*p;
 
 	count = rand() & 0xF;
@@ -348,9 +348,9 @@ void CL_FlameEffects (centity_t *ent, vec3_t origin)
 CL_GenericParticleEffect
 ===============
 */
-void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int count, vec4_t run, int dirspread, float alphavel)
+void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel)
 {
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 	float		d;
 
@@ -390,12 +390,12 @@ CL_BubbleTrail2 (lets you control the # of bubbles by setting the distance betwe
 
 ===============
 */
-void CL_BubbleTrail2 (vec3_t start, vec3_t end, int dist)
+void CL_BubbleTrail2 (vec3_t start, vec3_t end, int32_t dist)
 {
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 	float		dec;
 
@@ -446,9 +446,9 @@ CL_ParticleSteamEffect
 Puffs with velocity along direction, with some randomness thrown in
 ===============
 */
-void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int count, int magnitude)
+void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
 {
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 	float		d;
 	vec3_t		r, u;
@@ -504,9 +504,9 @@ void CL_TrackerTrail (vec3_t start, vec3_t end, vec4_t color)
 	vec3_t		vec;
 	vec3_t		forward,right,up,angle_dir;
 	float		len;
-	int			j;
+	int32_t 		j;
 	cparticle_t	*p;
-	int			dec;
+	int32_t 		dec;
 	float		dist;
 
 	VectorCopy (start, move);
@@ -554,7 +554,7 @@ void CL_TrackerTrail (vec3_t start, vec3_t end, vec4_t color)
 void CL_Tracker_Shell(vec3_t origin)
 {
 	vec3_t			dir;
-	int				i;
+	int32_t 			i;
 	cparticle_t		*p;
 
 	for(i=0;i<300;i++)
@@ -589,7 +589,7 @@ void CL_Tracker_Shell(vec3_t origin)
 void CL_MonsterPlasma_Shell(vec3_t origin)
 {
 	vec3_t			dir;
-	int				i;
+	int32_t 			i;
 	cparticle_t		*p;
 
 	for(i=0;i<40;i++)
@@ -633,7 +633,7 @@ void CL_WidowSplash (vec3_t org)
 		{ 152, 160, 123, 255 } 
 	};
 
-	int			i;
+	int32_t 		i;
 	cparticle_t	*p;
 	vec3_t		dir;
 
@@ -669,7 +669,7 @@ void CL_WidowSplash (vec3_t org)
 void CL_Tracker_Explode(vec3_t	origin)
 {
 	vec3_t			dir, backdir;
-	int				i;
+	int32_t 			i;
 	cparticle_t		*p;
 
 	for(i=0;i<300;i++)
@@ -714,9 +714,9 @@ void CL_TagTrail (vec3_t start, vec3_t end, vec4_t color)
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int			j;
+	int32_t 		j;
 	cparticle_t	*p;
-	int			dec;
+	int32_t 		dec;
 
 	VectorCopy (start, move);
 	VectorSubtract (end, start, vec);
@@ -761,7 +761,7 @@ CL_ColorExplosionParticles
 */
 void CL_ColorExplosionParticles (vec3_t org, vec4_t color, vec4_t run)
 {
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 
 	for (i=0 ; i<128 ; i++)
@@ -775,7 +775,7 @@ void CL_ColorExplosionParticles (vec3_t org, vec4_t color, vec4_t run)
 
 		p->time = cl.time;
 		// alpha 255 per original implementation, may change
-		int runR = run[0], runG = run[1], runB = run[2];
+		int32_t runR = run[0], runG = run[1], runB = run[2];
 		p->color[0] = color[0] + (rand() % runR);
 		p->color[1] = color[1] + (rand() % runG);
 		p->color[2] = color[2] + (rand() % runB);
@@ -800,9 +800,9 @@ void CL_ColorExplosionParticles (vec3_t org, vec4_t color, vec4_t run)
 CL_ParticleSmokeEffect - like the steam effect, but unaffected by gravity
 ===============
 */
-void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int count, int magnitude)
+void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
 {
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 	float		d;
 	vec3_t		r, u;
@@ -851,10 +851,10 @@ Wall impact puffs (Green)
 */
 void CL_BlasterParticles2 (vec3_t org, vec3_t dir, vec4_t color)
 {
-	int			i, j;
+	int32_t 		i, j;
 	cparticle_t	*p;
 	float		d;
-	int			count;
+	int32_t 		count;
 
 	count = 40;
 	for (i=0 ; i<count ; i++)
@@ -899,9 +899,9 @@ void CL_BlasterTrail2 (vec3_t start, vec3_t end)
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int			j;
+	int32_t 		j;
 	cparticle_t	*p;
-	int			dec;
+	int32_t 		dec;
 
 	VectorCopy (start, move);
 	VectorSubtract (end, start, vec);

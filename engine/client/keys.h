@@ -136,17 +136,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define K_MWHEELUP		240
 
 extern char		*keybindings[256];
-extern	int		key_repeats[256];
+extern	int32_t 	key_repeats[256];
 
-extern	int	anykeydown;
+extern	int32_t anykeydown;
 extern char chat_buffer[];
-extern	int chat_bufferlen;
+extern	int32_t chat_bufferlen;
 extern	bool	chat_team;
 
-void Key_Event (int key, bool down, unsigned time, int x, int y);
+void Key_Event (int32_t key, bool down, unsigned time, int32_t x, int32_t y);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);
-void Key_SetBinding (int keynum, char *binding);
+void Key_SetBinding (int32_t keynum, char *binding);
 void Key_ClearStates (void);
-int Key_GetKey (void);
+int32_t Key_GetKey (void);
 

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 R_InitParticleTexture
 ==================
 */
-byte	dottexture[8][8] =
+uint8_t	dottexture[8][8] =
 {
 	{0,0,0,0,0,0,0,0},
 	{0,0,1,1,0,0,0,0},
@@ -39,10 +39,10 @@ byte	dottexture[8][8] =
 	{0,0,0,0,0,0,0,0},
 };
 
-void R_InitParticleTexture (void)
+uint8_t R_InitParticleTexture (void)
 {
 	int		x,y;
-	byte	data[8][8][4];
+	uint8_t	data[8][8][4];
 
 	//
 	// particle texture
@@ -57,7 +57,7 @@ void R_InitParticleTexture (void)
 			data[y][x][3] = dottexture[x][y]*255;
 		}
 	}
-	r_particletexture = GL_LoadPic ("***particle***", (byte *)data, 8, 8, it_sprite);
+	r_particletexture = GL_LoadPic ("***particle***", (uint8_t *)data, 8, 8, it_sprite);
 
 	//
 	// also use this for bad textures, but without alpha
@@ -72,7 +72,7 @@ void R_InitParticleTexture (void)
 			data[y][x][3] = 255;
 		}
 	}
-	r_notexture = GL_LoadPic ("***r_notexture***", (byte *)data, 8, 8, it_wall);
+	r_notexture = GL_LoadPic ("***r_notexture***", (uint8_t* )data, 8, 8, it_wall);
 }
 
 
@@ -85,11 +85,11 @@ void R_InitParticleTexture (void)
 */ 
 
 typedef struct _TargaHeader {
-	unsigned char 	id_length, colormap_type, image_type;
-	unsigned short	colormap_index, colormap_length;
-	unsigned char	colormap_size;
-	unsigned short	x_origin, y_origin, width, height;
-	unsigned char	pixel_size, attributes;
+	uint8_t 	id_length, colormap_type, image_type;
+	uint16_t	colormap_index, colormap_length;
+	uint8_t	colormap_size;
+	uint16_t	x_origin, y_origin, width, height;
+	uint8_t	pixel_size, attributes;
 } TargaHeader;
 
 /* 
@@ -99,7 +99,7 @@ GL_ScreenShot_f
 */  
 void GL_ScreenShot_f (void) 
 {
-	byte		*buffer;
+	uint8_t		*buffer;
 	char		picname[MAX_OSPATH] = { 0 };
 	char		checkname[MAX_OSPATH] = { 0 };
 	int			i, c, temp;
@@ -136,7 +136,7 @@ void GL_ScreenShot_f (void)
 		// this is so we don't endlessly add our concatenated date and time over and over again
 		char tempbuf[128];
 
-		int n = 2;
+		int32_t n = 2;
 		bool exists = true;
 
 		while (exists)

@@ -59,7 +59,7 @@ typedef struct gclient_s gclient_t;
 struct gclient_s
 {
 	player_state_t	ps;		// communicated by server to clients
-	int				ping;
+	int32_t 			ping;
 	// the game dll can add anything it wants after
 	// this point in the structure
 };
@@ -70,23 +70,23 @@ struct edict_s
 	entity_state_t	s;
 	struct gclient_s	*client;
 	bool	inuse;
-	int			linkcount;
+	int32_t 		linkcount;
 
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
-	int			num_clusters;		// if -1, use headnode instead
-	int			clusternums[MAX_ENT_CLUSTERS];
-	int			headnode;			// unused if num_clusters != -1
-	int			areanum, areanum2;
+	int32_t 		num_clusters;		// if -1, use headnode instead
+	int32_t 		clusternums[MAX_ENT_CLUSTERS];
+	int32_t 		headnode;			// unused if num_clusters != -1
+	int32_t 		areanum, areanum2;
 
 	//================================
 
-	int			svflags;			// SVF_NOCLIENT, SVF_DEADMONSTER, SVF_MONSTER, etc
+	int32_t 		svflags;			// SVF_NOCLIENT, SVF_DEADMONSTER, SVF_MONSTER, etc
 	vec3_t		mins, maxs;
 	vec3_t		absmin, absmax, size;
 	solid_t		solid;
-	int			clipmask;
+	int32_t 		clipmask;
 	edict_t		*owner;
 
 	// the game dll can add anything it wants after
@@ -103,52 +103,52 @@ struct edict_s
 typedef struct game_import_s
 {
 	// special messages
-	void	(*bprintf) (int printlevel, char *fmt, ...);
+	void	(*bprintf) (int32_t printlevel, char *fmt, ...);
 	void	(*dprintf) (char *fmt, ...);
-	void	(*cprintf) (edict_t *ent, int printlevel, char *fmt, ...);
-	void	(*Text_Draw) (edict_t *ent, const char* font, int x, int y, const char* text, ...);
+	void	(*cprintf) (edict_t *ent, int32_t printlevel, char *fmt, ...);
+	void	(*Text_Draw) (edict_t *ent, const char* font, int32_t x, int32_t y, const char* text, ...);
 	void	(*centerprintf) (edict_t *ent, char *fmt, ...);
-	void	(*sound) (edict_t *ent, int channel, int soundindex, float volume, float attenuation, float timeofs);
-	void	(*positioned_sound) (vec3_t origin, edict_t *ent, int channel, int soundinedex, float volume, float attenuation, float timeofs);
+	void	(*sound) (edict_t *ent, int32_t channel, int32_t soundindex, float volume, float attenuation, float timeofs);
+	void	(*positioned_sound) (vec3_t origin, edict_t *ent, int32_t channel, int32_t soundinedex, float volume, float attenuation, float timeofs);
 
 	// config strings hold all the index strings, the lightstyles,
 	// and misc data like the sky definition and cdtrack.
 	// All of the current configstrings are sent to clients when
 	// they connect, and changes are sent to all connected clients.
-	void	(*configstring) (int num, char *string);
+	void	(*configstring) (int32_t num, char *string);
 
 	void	(*error) (char *fmt, ...);
 
 	// the *index functions create configstrings and some internal server state
-	int		(*modelindex) (char *name);
-	int		(*soundindex) (char *name);
-	int		(*imageindex) (char *name);
+	int32_t 	(*modelindex) (char *name);
+	int32_t 	(*soundindex) (char *name);
+	int32_t 	(*imageindex) (char *name);
 
 	void	(*setmodel) (edict_t *ent, char *name);
 
 	// collision detection
-	trace_t	(*trace) (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t *passent, int contentmask);
-	int		(*pointcontents) (vec3_t point);
+	trace_t	(*trace) (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t *passent, int32_t contentmask);
+	int32_t 	(*pointcontents) (vec3_t point);
 	bool	(*inPVS) (vec3_t p1, vec3_t p2);
 	bool	(*inPHS) (vec3_t p1, vec3_t p2);
-	void		(*SetAreaPortalState) (int portalnum, bool open);
-	bool	(*AreasConnected) (int area1, int area2);
+	void		(*SetAreaPortalState) (int32_t portalnum, bool open);
+	bool	(*AreasConnected) (int32_t area1, int32_t area2);
 
 	// an entity will never be sent to a client or used for collision
 	// if it is not passed to linkentity.  If the size, position, or
 	// solidity changes, it must be relinked.
 	void	(*linkentity) (edict_t *ent);
 	void	(*unlinkentity) (edict_t *ent);		// call before removing an interactive edict
-	int		(*BoxEdicts) (vec3_t mins, vec3_t maxs, edict_t **list,	int maxcount, int areatype);
+	int32_t 	(*BoxEdicts) (vec3_t mins, vec3_t maxs, edict_t **list,	int32_t maxcount, int32_t areatype);
 	void	(*Pmove) (pmove_t *pmove);		// player movement code common with client prediction
 
 	// network messaging
 	void	(*multicast) (vec3_t origin, multicast_t to);
 	void	(*unicast) (edict_t *ent, bool reliable);
-	void	(*WriteChar) (int c);
-	void	(*WriteByte) (int c);
-	void	(*WriteShort) (int c);
-	void	(*WriteLong) (int c);
+	void	(*WriteChar) (int32_t c);
+	void	(*WriteByte) (int32_t c);
+	void	(*WriteShort) (int32_t c);
+	void	(*WriteLong) (int32_t c);
 	void	(*WriteFloat) (float f);
 	void	(*WriteString) (char *s);
 	void	(*WritePosition) (vec3_t pos);	// some fractional bits
@@ -156,25 +156,25 @@ typedef struct game_import_s
 	void	(*WriteAngle) (float f);
 
 	// managed memory allocation
-	void	*(*TagMalloc) (int size, int tag);
+	void	*(*TagMalloc) (int32_t size, int32_t tag);
 	void	(*TagFree) (void *block);
-	void	(*FreeTags) (int tag);
+	void	(*FreeTags) (int32_t tag);
 
 	// console variable interaction
-	cvar_t	*(*cvar) (char *var_name, char *value, int flags);
+	cvar_t	*(*cvar) (char *var_name, char *value, int32_t flags);
 	cvar_t	*(*cvar_set) (char *var_name, char *value);
 	cvar_t	*(*cvar_forceset) (char *var_name, char *value);
 
 	// ClientCommand and ServerCommand parameter access
-	int		(*argc) (void);
-	char	*(*argv) (int n);
+	int32_t 	(*argc) (void);
+	char	*(*argv) (int32_t n);
 	char	*(*args) (void);	// concatenation of all argv >= 1
 
 	// add commands to the server console as if they were typed in
 	// for map changing, etc
 	void	(*AddCommandString) (char *text);
 
-	void	(*DebugGraph) (float value, int color);
+	void	(*DebugGraph) (float value, int32_t color);
 } game_import_t;
 
 //
@@ -182,7 +182,7 @@ typedef struct game_import_s
 //
 typedef struct
 {
-	int			apiversion;
+	int32_t 		apiversion;
 
 	// the init function will only be called when a game starts,
 	// not each time a level is loaded.  Persistant data for clients
@@ -230,9 +230,9 @@ typedef struct
 	// 
 	// The size will be fixed when ge->Init() is called
 	struct edict_s	*edicts;
-	int			edict_size;
-	int			num_edicts;		// current number, <= max_edicts
-	int			max_edicts;
+	int32_t 		edict_size;
+	int32_t 		num_edicts;		// current number, <= max_edicts
+	int32_t 		max_edicts;
 } game_export_t;
 
 game_export_t *Sys_GetGameApi (game_import_t *import);

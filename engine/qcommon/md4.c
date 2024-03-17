@@ -102,13 +102,13 @@ DoMD4()
 }
 
 static void
-PerformMD4(const unsigned char *buf, int length, unsigned char *digest)
+PerformMD4(const uint8_t *buf, int32_t length, uint8_t *digest)
 {
-	int len = length / 64; /* number of full blocks */
-	int rem = length % 64; /* number of left over bytes */
+	int32_t len = length / 64; /* number of full blocks */
+	int32_t rem = length % 64; /* number of left over bytes */
 
-	int i, j;
-	const unsigned char *ptr = buf;
+	int32_t i, j;
+	const uint8_t *ptr = buf;
 
 	/* initialize the MD buffer */
 	A = 0x67452301;
@@ -210,12 +210,12 @@ PerformMD4(const unsigned char *buf, int length, unsigned char *digest)
 }
 
 unsigned
-Com_BlockChecksum(void *buffer, int length)
+Com_BlockChecksum(void *buffer, int32_t length)
 {
 	uint32_t digest[4];
 	unsigned val;
 
-	PerformMD4((unsigned char *)buffer, length, (unsigned char *)digest);
+	PerformMD4((uint8_t *)buffer, length, (uint8_t *)digest);
 
 	val = digest[0] ^ digest[1] ^ digest[2] ^ digest[3];
 

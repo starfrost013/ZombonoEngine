@@ -42,7 +42,7 @@ bool UI_LeaderboardUICreate()
 	return true;
 }
 
-void UI_LeaderboardUIToggle(int btn)
+void UI_LeaderboardUIToggle(int32_t btn)
 {
 	if (btn == K_TAB)
 	{
@@ -62,10 +62,10 @@ void UI_LeaderboardUIToggle(int btn)
 
 void UI_LeaderboardUIUpdate()
 {
-	int x, y;
+	int32_t x, y;
 	char text[TEXT_BUF_LENGTH];
 	// for team score TODO: we do this twice in different places
-	int director_score = 0, player_score = 0;
+	int32_t director_score = 0, player_score = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	// stupid hack
@@ -78,7 +78,7 @@ void UI_LeaderboardUIUpdate()
 	y = (viddef.height / 2) - (108 * vid_hudscale->value);
 
 	// update all the data here so we don't need to clear it
-	for (int client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
+	for (int32_t client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
 	{
 		// reset x
 		x = (viddef.width / 2) - (304 * vid_hudscale->value);
@@ -110,8 +110,8 @@ void UI_LeaderboardUIUpdate()
 		x += (8 * 10) * vid_hudscale->value;
 
 		//team
-		int box_size_x = 8 * 11 * vid_hudscale->value; // a bit of padding
-		int box_size_y = (system_font_ptr->line_height - 1) * vid_hudscale->value; // -1 because it looks weird with noen
+		int32_t box_size_x = 8 * 11 * vid_hudscale->value; // a bit of padding
+		int32_t box_size_y = (system_font_ptr->line_height - 1) * vid_hudscale->value; // -1 because it looks weird with noen
 
 		if (leaderboard_entry.team == common_team_director)
 		{
@@ -172,7 +172,7 @@ void UI_LeaderboardUIUpdate()
 
 			y += system_font_ptr->line_height * vid_hudscale->value;
 
-			int seconds = leaderboard_entry.time_remaining % 60;
+			int32_t seconds = leaderboard_entry.time_remaining % 60;
 
 			if (seconds < 10)
 			{
@@ -201,7 +201,7 @@ void UI_LeaderboardUIUpdate()
 	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
 	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
 
-	int box_size_large = (8 * 14) * vid_hudscale->value;
+	int32_t box_size_large = (8 * 14) * vid_hudscale->value;
 
 	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, system_font_ptr->line_height - 1, 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);

@@ -78,7 +78,7 @@ cvar_t		*qport;
 
 netadr_t	net_from;
 sizebuf_t	net_message;
-byte		net_message_buffer[MAX_MSGLEN];
+uint8_t		net_message_buffer[MAX_MSGLEN];
 
 /*
 ===============
@@ -88,7 +88,7 @@ Netchan_Init
 */
 void Netchan_Init (void)
 {
-	int		port;
+	int32_t 	port;
 
 	// pick a port value that should be nice and random
 	port = Sys_Milliseconds() & 0xffff;
@@ -105,10 +105,10 @@ Netchan_OutOfBand
 Sends an out-of-band datagram
 ================
 */
-void Netchan_OutOfBand (int net_socket, netadr_t adr, int length, byte *data)
+void Netchan_OutOfBand (int32_t net_socket, netadr_t adr, int32_t length, uint8_t *data)
 {
 	sizebuf_t	send;
-	byte		send_buf[MAX_MSGLEN];
+	uint8_t		send_buf[MAX_MSGLEN];
 
 // write the packet header
 	SZ_Init (&send, send_buf, sizeof(send_buf));
@@ -127,7 +127,7 @@ Netchan_OutOfBandPrint
 Sends a text message in an out-of-band datagram
 ================
 */
-void Netchan_OutOfBandPrint (int net_socket, netadr_t adr, char *format, ...)
+void Netchan_OutOfBandPrint32_t (int32_t net_socket, netadr_t adr, char *format, ...)
 {
 	va_list		argptr;
 	static char		string[MAX_MSGLEN - 4];
@@ -136,7 +136,7 @@ void Netchan_OutOfBandPrint (int net_socket, netadr_t adr, char *format, ...)
 	vsnprintf (string,MAX_MSGLEN-4,format,argptr);
 	va_end (argptr);
 
-	Netchan_OutOfBand (net_socket, adr, (int)strlen(string), (byte *)string);
+	Netchan_OutOfBand (net_socket, adr, (int32_t)strlen(string), (uint8_t *)string);
 }
 
 
@@ -147,7 +147,7 @@ Netchan_Setup
 called to open a channel to a remote system
 ==============
 */
-void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int qport)
+void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int32_t qport)
 {
 	memset (chan, 0, sizeof(*chan));
 	
@@ -208,10 +208,10 @@ transmition / retransmition of the reliable messages.
 A 0 length will still generate a packet and deal with the reliable messages.
 ================
 */
-void Netchan_Transmit (netchan_t *chan, int length, byte *data)
+void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data)
 {
 	sizebuf_t	send;
-	byte		send_buf[MAX_MSGLEN];
+	uint8_t		send_buf[MAX_MSGLEN];
 	bool	send_reliable;
 	unsigned	w1, w2;
 
@@ -297,7 +297,7 @@ bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
 {
 	unsigned	sequence, sequence_ack;
 	unsigned	reliable_ack, reliable_message;
-	int			qport;
+	int32_t 		qport;
 
 // get sequence numbers		
 	MSG_BeginReading (msg);

@@ -256,7 +256,7 @@ void use_target_changelevel (edict_t *self, edict_t *other, edict_t *activator)
 		return;		// already activated
 
 	// if noexit, do a ton of damage to other
-	if (!( (int)gameflags->value & GF_ALLOW_EXIT) && other != world)
+	if (!( (int32_t)gameflags->value & GF_ALLOW_EXIT) && other != world)
 	{
 		T_Damage (other, self, self, vec3_origin, other->s.origin, vec3_origin, 10 * other->max_health, 1000, 0, MOD_EXIT);
 		return;
@@ -390,7 +390,7 @@ speed	default is 1000
 
 void use_target_blaster (edict_t *self, edict_t *other, edict_t *activator)
 {
-	int effect;
+	int32_t effect;
 
 	if (self->spawnflags & 2)
 		effect = 0;

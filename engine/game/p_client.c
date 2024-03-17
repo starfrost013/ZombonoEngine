@@ -65,7 +65,7 @@ void SP_info_player_intermission(void)
 //=======================================================================
 
 
-void player_pain (edict_t *self, edict_t *other, float kick, int damage)
+void player_pain (edict_t *self, edict_t *other, float kick, int32_t damage)
 {
 	// player pain is handled at the end of the frame in P_DamageFeedback
 }
@@ -119,7 +119,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 	char		*message2;
 	bool	ff;
 
-	if ((!(int)(gameflags->value) & GF_NO_FRIENDLY_FIRE) && attacker->client)
+	if ((!(int32_t)(gameflags->value) & GF_NO_FRIENDLY_FIRE) && attacker->client)
 		meansOfDeath |= MOD_FRIENDLY_FIRE;
 
 	ff = meansOfDeath & MOD_FRIENDLY_FIRE;
@@ -328,7 +328,7 @@ void TossClientWeapon (edict_t *self)
 	if (item && (strcmp (item->pickup_name, "Blaster") == 0))
 		item = NULL;
 
-	if (!((int)(gameflags->value) & GF_QUAD_DROP))
+	if (!((int32_t)(gameflags->value) & GF_QUAD_DROP))
 		quad = false;
 	else
 		quad = (self->client->quad_framenum > (level.framenum + 10));
@@ -402,7 +402,7 @@ void LookAtKiller (edict_t *self, edict_t *inflictor, edict_t *attacker)
 player_die
 ==================
 */
-void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	int		n;
 
@@ -456,7 +456,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 	{	// normal death
 		if (!self->deadflag)
 		{
-			static int i;
+			static int32_t i;
 
 			i = (i+1)%3;
 			// start a death animation
@@ -802,7 +802,7 @@ edict_t *SelectFarthestSpawnPoint (char* spawn_class_name)
 // figure out if the other modes use this
 edict_t* SelectTeamSpawnPoint(edict_t *player)
 {
-	if ((int)gamemode->value != 0)
+	if ((int32_t)gamemode->value != 0)
 	{
 		gi.bprintf(PRINT_ALL, "Can't currently spawn for non-TDM gamemodes");
 
@@ -831,7 +831,7 @@ edict_t* SelectTeamSpawnPoint(edict_t *player)
 			return SelectUnassignedSpawnPoint();
 		}
 
-		if ((int)(gameflags->value) & GF_SPAWN_FARTHEST)
+		if ((int32_t)(gameflags->value) & GF_SPAWN_FARTHEST)
 		{
 			return SelectFarthestSpawnPoint(spawn_class_name);
 		}
@@ -892,7 +892,7 @@ void InitBodyQue (void)
 	}
 }
 
-void body_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void body_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	int	n;
 
@@ -912,7 +912,7 @@ void CopyToBodyQue (edict_t *ent)
 	edict_t		*body;
 
 	// grab a body que and cycle to the next one
-	body = &g_edicts[(int)maxclients->value + level.body_que + 1];
+	body = &g_edicts[(int32_t)maxclients->value + level.body_que + 1];
 	level.body_que = (level.body_que + 1) % BODY_QUEUE_SIZE;
 
 	// FIXME: send an effect on the removed body
@@ -967,7 +967,7 @@ void respawn (edict_t *self)
  */
 void spectator_respawn (edict_t *ent)
 {
-	int i, numspec;
+	int32_t i, numspec;
 
 	// if the user wants to become a spectator, make sure he doesn't
 	// exceed max_spectators
@@ -1337,7 +1337,7 @@ bool ClientConnect (edict_t *ent, char *userinfo)
 	// check for a spectator
 	value = Info_ValueForKey (userinfo, "spectator");
 	if ( *value && strcmp(value, "0")) {
-		int i, numspec;
+		int32_t i, numspec;
 
 		if (*spectator_password->string && 
 			strcmp(spectator_password->string, "none") && 
@@ -1438,12 +1438,12 @@ trace_t	PM_trace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 		return gi.trace (start, mins, maxs, end, pm_passent, MASK_DEADSOLID);
 }
 
-unsigned CheckBlock (void *b, int c)
+unsigned CheckBlock (void *b, int32_t c)
 {
 	int	v,i;
 	v = 0;
 	for (i=0 ; i<c ; i++)
-		v+= ((byte *)b)[i];
+		v+= ((uint8_t *)b)[i];
 	return v;
 }
 void PrintPmove (pmove_t *pm)
@@ -1702,7 +1702,7 @@ void ClientBeginServerFrame (edict_t *ent)
 			buttonMask = BUTTON_ATTACK1;
 
 			if ( ( client->latched_buttons & buttonMask ) ||
-				(((int)gameflags->value & GF_FORCE_RESPAWN) ) )
+				(((int32_t)gameflags->value & GF_FORCE_RESPAWN) ) )
 			{
 				respawn(ent);
 				client->latched_buttons = 0;

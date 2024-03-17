@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 font_t			fonts[MAX_FONTS] = { 0 };
 cvar_t*			cl_system_font;
-int				num_fonts;						// The number of loaded fonts.
+int32_t 			num_fonts;						// The number of loaded fonts.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
@@ -89,7 +89,7 @@ bool Font_Init()
 	{
 		file_location = token - file;
 
-		int n = 0; // initialise length variable
+		int32_t n = 0; // initialise length variable
 
 		// if its not a comment por newline, parse the filename
 		// otherwise go to next line
@@ -187,7 +187,7 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 
 	// start the real parsing
 	// two JSON_DONES means EOF
-	int					done_count = 0;
+	int32_t 				done_count = 0;
 	bool				running = true; 
 	const char*			json_string = { 0 };
 	font_json_section	json_section_current = font_json_config;
@@ -440,7 +440,7 @@ bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 
 font_t* Font_GetByName(const char* name)
 {
-	for (int font_num = 0; font_num < num_fonts; font_num++)
+	for (int32_t font_num = 0; font_num < num_fonts; font_num++)
 	{
 		font_t* fnt_ptr = &fonts[font_num];
 
@@ -463,7 +463,7 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph)
 		return NULL;
 	}
 
-	for (int glyph_num = 0; glyph_num < font->num_glyphs; glyph_num++)
+	for (int32_t glyph_num = 0; glyph_num < font->num_glyphs; glyph_num++)
 	{
 		glyph_t* candidate_glyph = &font->glyphs[glyph_num];
 

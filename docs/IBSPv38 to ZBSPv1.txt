@@ -1,0 +1,50 @@
+BSP format changes from Q2 IBSPv38 to Zombono ZBSPv1 for later documentation:
+
+most of these (not all) from QBISM Q2 QBSPv38
+
+magic: IBSP -> ZBSP
+format version number: 38 -> 1 (incremented with changes)
+
+total lump count 19 -> 18
+	remove LUMP_POP
+	LUMP_AREAS 17 -> 16
+	LUMP_AREAPORTALS 18 -> 17
+	HEADER_LUMPS total 19 -> 18
+
+texinfo_t:
+	texture: char[32] -> char[80] (see old QPATH)
+
+dnode_t:
+	mins: short -> float
+	maxs: short -> float
+	firstsurface: uint16_t -> uint32_t
+	firstnumsurfaces: uint16_t -> uint32_t
+
+dedge_t:
+	v: uint16_t[2] -> uint32_t[2]
+
+dface_t:
+	planenum: short -> uint32_t
+	side: short -> int32_t
+	numedges: short -> int32_t
+	texinfo: short -> int32_t
+	mins: short[3] -> float[3]
+	maxs: short[3] -> float[3]
+
+dleaf_t:
+	cluster: short -> int32_t
+	area: short -> int32_t
+	firstleafface: uint16_t -> uint32_t
+	numleaffaces: uint16_t -> uint32_t
+	firstleafbrush: uint16_t -> uint32_t
+	numleafbrushes: uint16_t -> uint32_t
+
+dbrushside_t:
+	planenum: uint16_t -> uint32_t
+	texinfo: short -> uint32_t
+	
+dpackfile_t:
+	name: char[56] -> char[256]
+
+lighting:
+	- 4x res

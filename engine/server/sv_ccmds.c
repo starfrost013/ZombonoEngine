@@ -39,7 +39,7 @@ Specify a list of master servers
 */
 void SV_SetMaster_f (void)
 {
-	int		i, slot;
+	int32_t 	i, slot;
 
 	// only dedicated servers send heartbeats
 	if (!dedicated->value)
@@ -72,7 +72,7 @@ void SV_SetMaster_f (void)
 
 		Com_Printf ("Sending a ping.\n");
 
-		Netchan_OutOfBandPrint (NS_SERVER, master_adr[slot], "ping");
+		Netchan_OutOfBandPrint32_t (NS_SERVER, master_adr[slot], "ping");
 
 		slot++;
 	}
@@ -92,8 +92,8 @@ Sets sv_client and sv_player to the player with idnum Cmd_Argv(1)
 bool SV_SetPlayer (void)
 {
 	client_t	*cl;
-	int			i;
-	int			idnum;
+	int32_t 		i;
+	int32_t 		idnum;
 	char		*s;
 
 	if (Cmd_Argc() < 2)
@@ -194,7 +194,7 @@ void CopyFile (char *src, char *dst)
 {
 	FILE	*f1, *f2;
 	size_t	l;
-	byte	buffer[65536];
+	uint8_t	buffer[65536];
 
 	Com_DPrintf ("CopyFile (%s, %s)\n", src, dst);
 
@@ -229,7 +229,7 @@ SV_CopySaveGame
 void SV_CopySaveGame (char *src, char *dst)
 {
 	char	name[MAX_OSPATH], name2[MAX_OSPATH];
-	int		l, len;
+	int32_t 	l, len;
 	char	*found;
 
 	Com_DPrintf("SV_CopySaveGame(%s, %s)\n", src, dst);
@@ -247,7 +247,7 @@ void SV_CopySaveGame (char *src, char *dst)
 	CopyFile (name, name2);
 
 	Com_sprintf (name, sizeof(name), "%s/save/%s/", FS_Gamedir(), src);
-	len = (int)strlen(name);
+	len = (int32_t)strlen(name);
 	Com_sprintf (name, sizeof(name), "%s/save/%s/*.sav", FS_Gamedir(), src);
 	found = Sys_FindFirst(name, 0, 0 );
 	while (found)
@@ -258,9 +258,9 @@ void SV_CopySaveGame (char *src, char *dst)
 		CopyFile (name, name2);
 
 		// change sav to sv2
-		l = (int)strlen(name);
+		l = (int32_t)strlen(name);
 		strcpy (name+l-3, "sv2");
-		l = (int)strlen(name2);
+		l = (int32_t)strlen(name2);
 		strcpy (name2+l-3, "sv2");
 		CopyFile (name, name2);
 
@@ -489,7 +489,7 @@ goes to map jail.bsp.
 void SV_GameMap_f (void)
 {
 	char		*map;
-	int			i;
+	int32_t 		i;
 	client_t	*cl;
 	bool	*savedInuse;
 
@@ -732,7 +732,7 @@ void SV_Kick_f (void)
 		return;
 
 	SV_BroadcastPrintf (PRINT_HIGH, "%s was kicked\n", sv_client->name);
-	// print directly, because the dropped client won't get the
+	// print32_t directly, because the dropped client won't get the
 	// SV_BroadcastPrintf message
 	SV_ClientPrintf (sv_client, PRINT_HIGH, "You were kicked from the game\n");
 	SV_DropClient (sv_client);
@@ -747,10 +747,10 @@ SV_Status_f
 */
 void SV_Status_f (void)
 {
-	int			i, j, l;
+	int32_t 		i, j, l;
 	client_t	*cl;
 	char		*s;
-	int			ping;
+	int32_t 		ping;
 	if (!svs.clients)
 	{
 		Com_Printf ("No server running.\n");
@@ -778,7 +778,7 @@ void SV_Status_f (void)
 		}
 
 		Com_Printf ("%s", cl->name);
-		l = 16 - (int)strlen(cl->name);
+		l = 16 - (int32_t)strlen(cl->name);
 		for (j=0 ; j<l ; j++)
 			Com_Printf (" ");
 
@@ -786,7 +786,7 @@ void SV_Status_f (void)
 
 		s = NET_AdrToString ( cl->netchan.remote_address);
 		Com_Printf ("%s", s);
-		l = 22 - (int)strlen(s);
+		l = 22 - (int32_t)strlen(s);
 		for (j=0 ; j<l ; j++)
 			Com_Printf (" ");
 		
@@ -805,7 +805,7 @@ SV_ConSay_f
 void SV_ConSay_f(void)
 {
 	client_t *client;
-	int		j;
+	int32_t 	j;
 	char	*p;
 	char	text[1024];
 
@@ -853,7 +853,7 @@ SV_Serverinfo_f
 void SV_Serverinfo_f (void)
 {
 	Com_Printf ("Server info settings:\n");
-	Info_Print (Cvar_Serverinfo());
+	Info_Print32_t (Cvar_Serverinfo());
 }
 
 
@@ -877,7 +877,7 @@ void SV_DumpUser_f (void)
 
 	Com_Printf ("userinfo\n");
 	Com_Printf ("--------\n");
-	Info_Print (sv_client->userinfo);
+	Info_Print32_t (sv_client->userinfo);
 
 }
 
@@ -895,8 +895,8 @@ void SV_ServerRecord_f (void)
 	char	name[MAX_OSPATH];
 	char	buf_data[32768];
 	sizebuf_t	buf;
-	int		len;
-	int		i;
+	int32_t 	len;
+	int32_t 	i;
 
 	if (Cmd_Argc() != 2)
 	{

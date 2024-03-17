@@ -119,7 +119,7 @@ typedef enum
 
 #include "gl_model.h"
 
-void GL_BeginRendering (int *x, int *y, int *width, int *height);
+void GL_BeginRendering (int32_t *x, int32_t *y, int32_t *width, int32_t *height);
 void GL_EndRendering (void);
 
 void GL_SetDefaultState( void );
@@ -247,13 +247,13 @@ extern	int		c_visible_textures;
 
 extern	float	r_world_matrix[16];
 
-void GL_Bind (int texnum);
-void GL_MBind( GLenum target, int texnum );
+void GL_Bind (int32_t texnum);
+void GL_MBind( GLenum target, int32_t texnum );
 void GL_TexEnv( GLenum value );
 void GL_EnableMultitexture( bool enable );
 void GL_SelectTexture( GLenum );
 
-void R_LightPoint (vec3_t p, vec3_t color);
+void R_LightPoint32_t (vec3_t p, vec3_t color);
 void R_PushDlights (void);
 
 //====================================================================
@@ -286,27 +286,27 @@ void EmitWaterPolys (msurface_t *fa);
 void R_AddSkySurface (msurface_t *fa);
 void R_ClearSkyBox (void);
 void R_DrawSkyBox (void);
-void R_MarkLights (dlight_t *light, int bit, mnode_t *node);
+void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node);
 
 void COM_StripExtension (char *in, char *out);
 
 // Mostly exports here.
-void	Draw_GetPicSize (int *w, int *h, char *name);
+void	Draw_GetPicSize (int32_t *w, int32_t *h, char *name);
 void	Load_Pic(char *name); // load but don't draw a pic.
-void	Draw_Pic(int x, int y, char *name);
-void	Draw_PicRegion(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic, float color[4]);
-void	Draw_StretchPic (int x, int y, int w, int h, char *name);
-void	Draw_TileClear (int x, int y, int w, int h, char *name);
-void	Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a);
+void	Draw_Pic(int32_t x, int32_t y, char *name);
+void	Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
+void	Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+void	Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+void	Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
 void	Draw_FadeScreen (void);
 
 void	R_BeginFrame( float camera_separation );
 
-void GL_ResampleTexture (unsigned *in, int inwidth, int inheight, unsigned *out,  int outwidth, int outheight);
+void GL_ResampleTexture (unsigned *in, int32_t inwidth, int32_t inheight, unsigned *out,  int32_t outwidth, int32_t outheight);
 
 struct image_s *R_RegisterSkin (char *name);
 
-image_t *GL_LoadPic (char *name, byte *pic, int width, int height, imagetype_t type);
+image_t *GL_LoadPic (char *name, uint8_t *pic, int32_t width, int32_t height, imagetype_t type);
 image_t	*GL_FindImage (char *name, imagetype_t type);
 void	GL_TextureMode( char *string );
 void	GL_ImageList_f (void);
@@ -328,7 +328,7 @@ void GL_TextureSolidMode( char *string );
 
 typedef struct glconfig_s
 {
-	int         renderer;
+	int32_t         renderer;
 	const char *renderer_string;
 	const char *vendor_string;
 	const char *version_string;
@@ -342,21 +342,19 @@ typedef struct glstate_s
 	float inverse_intensity;
 	bool fullscreen;
 
-	int     prev_mode;
+	int32_t     prev_mode;
 
-	unsigned char *d_16to8table;
-
-	int lightmap_textures;
+	int32_t lightmap_textures;
 
 	int	currenttextures[2];
-	int currenttmu;
+	int32_t currenttmu;
 
 	float camera_separation;
 	bool stereo_enabled;
 
-	unsigned char originalRedGammaTable[256];
-	unsigned char originalGreenGammaTable[256];
-	unsigned char originalBlueGammaTable[256];
+	uint8_t originalRedGammaTable[256];
+	uint8_t originalGreenGammaTable[256];
+	uint8_t originalBlueGammaTable[256];
 } glstate_t;
 
 extern glconfig_t  gl_config;
@@ -382,9 +380,9 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 
 void		GLimp_BeginFrame( float camera_separation );
 void		GLimp_EndFrame( void );
-int 		GLimp_Init( void *hinstance, void *hWnd );
+int32_t 		GLimp_Init( void *hinstance, void *hWnd );
 void		GLimp_Shutdown( void );
-int     	GLimp_SetMode( int *pwidth, int *pheight, int mode, bool fullscreen );
+int32_t     	GLimp_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
 void		GLimp_AppActivate( bool active );
 void		GLimp_EnableLogging( bool enable );
 void		GLimp_LogNewFrame( void );

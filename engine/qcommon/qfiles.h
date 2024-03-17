@@ -38,14 +38,14 @@ The .pak files are just a linear collapse of a directory tree
 typedef struct
 {
 	char	name[MAX_PAKFILE];
-	int		filepos, filelen;
+	int32_t 	filepos, filelen;
 } dpackfile_t;
 
 typedef struct
 {
-	int		ident;		// == IDPAKHEADER
-	int		dirofs;
-	int		dirlen;
+	int32_t 	ident;		// == IDPAKHEADER
+	int32_t 	dirofs;
+	int32_t 	dirlen;
 } dpackheader_t;
 
 #define	MAX_FILES_IN_PACK	4096
@@ -80,8 +80,8 @@ typedef struct dtriangle_s
 
 typedef struct dtrivertx_s
 {
-	byte	v[3];			// scaled byte to fit in frame mins/maxs
-	byte	lightnormalindex;
+	uint8_t	v[3];			// scaled byte to fit in frame mins/maxs
+	uint8_t	lightnormalindex;
 } dtrivertx_t;
 
 #define DTRIVERTX_V0   0
@@ -110,26 +110,26 @@ typedef struct daliasframe_s
 
 typedef struct dmdl_s
 {
-	int			ident;
-	int			version;
+	int32_t 		ident;
+	int32_t 		version;
 
-	int			skinwidth;
-	int			skinheight;
-	int			framesize;		// byte size of each frame
+	int32_t 		skinwidth;
+	int32_t 		skinheight;
+	int32_t 		framesize;		// byte size of each frame
 
-	int			num_skins;
-	int			num_xyz;
-	int			num_st;			// greater than num_xyz for seams
-	int			num_tris;
-	int			num_glcmds;		// dwords in strip/fan command list
-	int			num_frames;
+	int32_t 		num_skins;
+	int32_t 		num_xyz;
+	int32_t 		num_st;			// greater than num_xyz for seams
+	int32_t 		num_tris;
+	int32_t 		num_glcmds;		// dwords in strip/fan command list
+	int32_t 		num_frames;
 
-	int			ofs_skins;		// each skin is a MAX_SKINNAME string
-	int			ofs_st;			// byte offset from start for stverts
-	int			ofs_tris;		// offset for dtriangles
-	int			ofs_frames;		// offset for first frame
-	int			ofs_glcmds;	
-	int			ofs_end;		// end of file
+	int32_t 		ofs_skins;		// each skin is a MAX_SKINNAME string
+	int32_t 		ofs_st;			// byte offset from start for stverts
+	int32_t 		ofs_tris;		// offset for dtriangles
+	int32_t 		ofs_frames;		// offset for first frame
+	int32_t 		ofs_glcmds;	
+	int32_t 		ofs_end;		// end of file
 
 } dmdl_t;
 
@@ -147,16 +147,16 @@ typedef struct dmdl_s
 
 typedef struct dsprframe_s
 {
-	int		width, height;
-	int		origin_x, origin_y;		// raster coordinates inside pic
+	int32_t 	width, height;
+	int32_t 	origin_x, origin_y;		// raster coordinates inside pic
 	char	name[MAX_SKINNAME];		// name of tga file
 } dsprframe_t;
 
 typedef struct dsprite_s
 {
-	int			ident;
-	int			version;
-	int			numframes;
+	int32_t 		ident;
+	int32_t 		version;
+	int32_t 		numframes;
 	dsprframe_t	frames[1];			// variable sized
 } dsprite_t;
 
@@ -182,7 +182,7 @@ typedef struct dsprite_s
 
 // upper design bounds
 // leaffaces, leafbrushes, planes, and verts are still bounded by
-// 16 bit short limits
+// 16 bit int16_t limits
 
 // Zombono BSP limits
 #define MAX_MAP_AREAS           256
@@ -218,7 +218,7 @@ typedef struct dsprite_s
 
 typedef struct lump_s
 {
-	int		fileofs, filelen;
+	int32_t 	fileofs, filelen;
 } lump_t;
 
 #define	LUMP_ENTITIES		0
@@ -243,8 +243,8 @@ typedef struct lump_s
 
 typedef struct dheader_s
 {
-	int			ident;
-	int			version;	
+	int32_t 		ident;
+	int32_t 		version;	
 	lump_t		lumps[HEADER_LUMPS];
 } dheader_t;
 
@@ -252,8 +252,8 @@ typedef struct dmodel_s
 {
 	float		mins[3], maxs[3];
 	float		origin[3];		// for sounds or lights
-	int			headnode;
-	int			firstface, numfaces;	// submodels just draw faces
+	int32_t 		headnode;
+	int32_t 		firstface, numfaces;	// submodels just draw faces
 										// without walking the bsp tree
 } dmodel_t;
 
@@ -279,7 +279,7 @@ typedef struct dplane_s
 {
 	float	normal[3];
 	float	dist;
-	int		type;		// PLANE_X - PLANE_ANYZ ?remove? trivial to regenerate
+	int32_t 	type;		// PLANE_X - PLANE_ANYZ ?remove? trivial to regenerate
 } dplane_t;
 
 
@@ -335,12 +335,12 @@ typedef struct dplane_s
 
 typedef struct dnode_s
 {
-	int				planenum;
-	int				children[2];	// negative numbers are -(leafs+1), not nodes
+	int32_t 			planenum;
+	int32_t 			children[2];	// negative numbers are -(leafs+1), not nodes
 	float			mins[3];		// for frustom culling
 	float			maxs[3];
-	unsigned int	firstface;
-	unsigned int	numfaces;	// counting both sides
+	uint32_t	firstface;
+	uint32_t	numfaces;	// counting both sides
 } dnode_t;
 
 #define TEXTURE_LENGTH			80
@@ -348,62 +348,62 @@ typedef struct dnode_s
 typedef struct texinfo_s
 {
 	float		vecs[2][4];					// [s/t][xyz offset]
-	int			flags;						// miptex flags + overrides
-	int			value;						// light emission, etc
+	int32_t 		flags;						// miptex flags + overrides
+	int32_t 		value;						// light emission, etc
 	char		texture[TEXTURE_LENGTH];	// texture name (textures/*.tga)
-	int			nexttexinfo;				// for animations, -1 = end of chain
+	int32_t 		nexttexinfo;				// for animations, -1 = end of chain
 } texinfo_t;
 
 // note that edge 0 is never used, because negative edge nums are used for
 // counterclockwise use of the edge in a face
 typedef struct dedge_s
 {
-	unsigned int	v[2];		// vertex numbers
+	uint32_t	v[2];		// vertex numbers
 } dedge_t;
 
 #define	MAXLIGHTMAPS	4
 typedef struct dface_s
 {
-	unsigned int	planenum;
-	int				side;
+	uint32_t	planenum;
+	int32_t 			side;
 
-	int				firstedge;		// we must support > 64k edges
-	int				numedges;	
-	int				texinfo;
+	int32_t 			firstedge;		// we must support > 64k edges
+	int32_t 			numedges;	
+	int32_t 			texinfo;
 
 // lighting info
-	byte			styles[MAXLIGHTMAPS];
-	int				lightofs;		// start of [numstyles*surfsize] samples
+	uint8_t			styles[MAXLIGHTMAPS];
+	int32_t 			lightofs;		// start of [numstyles*surfsize] samples
 } dface_t;
 
 typedef struct dleaf_s
 {
-	int				contents;			// OR of all brushes (not needed?)
+	int32_t 			contents;			// OR of all brushes (not needed?)
 
-	int				cluster;
-	int				area;
+	int32_t 			cluster;
+	int32_t 			area;
 
 	float			mins[3];			// for frustum culling
 	float			maxs[3];
 
-	unsigned int	firstleafface;
-	unsigned int	numleaffaces;
+	uint32_t	firstleafface;
+	uint32_t	numleaffaces;
 
-	unsigned int	firstleafbrush;
-	unsigned int	numleafbrushes;
+	uint32_t	firstleafbrush;
+	uint32_t	numleafbrushes;
 } dleaf_t;
 
 typedef struct dbrushside_s
 {
-	unsigned int	planenum;		// facing out of the leaf
-	int	texinfo;
+	uint32_t	planenum;		// facing out of the leaf
+	int32_t texinfo;
 } dbrushside_t;
 
 typedef struct dbrush_s
 {
-	int			firstside;
-	int			numsides;
-	int			contents;
+	int32_t 		firstside;
+	int32_t 		numsides;
+	int32_t 		contents;
 } dbrush_t;
 
 #define	ANGLE_UP	-1
@@ -417,8 +417,8 @@ typedef struct dbrush_s
 #define	DVIS_PHS	1
 typedef struct dvis_s
 {
-	int			numclusters;
-	int			bitofs[8][2];	// bitofs[numclusters][2]
+	int32_t 		numclusters;
+	int32_t 		bitofs[8][2];	// bitofs[numclusters][2]
 } dvis_t;
 
 // each area has a list of portals that lead into other areas
@@ -426,12 +426,12 @@ typedef struct dvis_s
 // hearable even if the vis info says that it should be
 typedef struct dareaportal_s
 {
-	int		portalnum;
-	int		otherarea;
+	int32_t 	portalnum;
+	int32_t 	otherarea;
 } dareaportal_t;
 
 typedef struct darea_s
 {
-	int		numareaportals;
-	int		firstareaportal;
+	int32_t 	numareaportals;
+	int32_t 	firstareaportal;
 } darea_t;

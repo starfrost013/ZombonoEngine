@@ -60,7 +60,7 @@ bool Text_GetSizeChar(const char* font, int* x, int* y, char text)
 	return Text_GetSize(font, x, y, &new_string);
 }
 
-bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
+bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ...)
 {
 	font_t* font_ptr = Font_GetByName(font);
 
@@ -77,7 +77,7 @@ bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 		}
 	}
 
-	int string_length = strlen(text);
+	int32_t string_length = strlen(text);
 
 	if (string_length == 0)
 	{
@@ -87,12 +87,12 @@ bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 		return false;
 	}
 
-	int longest_line_x = 0;
+	int32_t longest_line_x = 0;
 
-	int size_x = 0;
-	int size_y = font_ptr->line_height; // assume 1 line
+	int32_t size_x = 0;
+	int32_t size_y = font_ptr->line_height; // assume 1 line
 
-	for (int char_num = 0; char_num < string_length; char_num++)
+	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
 		char next_char = text[char_num];
 
@@ -128,7 +128,7 @@ bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
 			// don't do anything (will draw the invalid color code) if 
 			bool done = false;
-			for (int color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
+			for (int32_t color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
 			{
 				color_code_t current_color_code = color_codes[color_code_num];
 
@@ -174,7 +174,7 @@ bool Text_GetSize(const char* font, int *x, int *y, const char* text, ...)
 	return true;
 }
 
-void Text_DrawChar(const char* font, int x, int y, char text)
+void Text_DrawChar(const char* font, int32_t x, int32_t y, char text)
 {
 	// munge it for the fucking console which uses a 128kb buffer
 	char	new_string[2] = { 0 };
@@ -183,7 +183,7 @@ void Text_DrawChar(const char* font, int x, int y, char text)
 	Text_Draw(font, x, y, &new_string);
 }
 
-void Text_Draw(const char* font, int x, int y, const char* text, ...)
+void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 {
 	// TODO: VARARGS
 
@@ -202,7 +202,7 @@ void Text_Draw(const char* font, int x, int y, const char* text, ...)
 		}
 	}
 
-	int string_length = strlen(text);
+	int32_t string_length = strlen(text);
 
 	if (string_length == 0)
 	{
@@ -210,15 +210,15 @@ void Text_Draw(const char* font, int x, int y, const char* text, ...)
 		return; 
 	}
 	
-	int initial_x = x;
+	int32_t initial_x = x;
 
-	int current_x = x;
-	int current_y = y;
+	int32_t current_x = x;
+	int32_t current_y = y;
 
 	// default is white
 	float color[4] = { 255, 255, 255, 255 };
 
-	for (int char_num = 0; char_num < string_length; char_num++)
+	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
 		char next_char = text[char_num];
 
@@ -252,7 +252,7 @@ void Text_Draw(const char* font, int x, int y, const char* text, ...)
 			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
 			// don't do anything (will draw the invalid color code) if 
 			bool done = false;
-			for (int color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
+			for (int32_t color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
 			{
 				color_code_t current_color_code = color_codes[color_code_num];
 				if (!strncmp(text + char_num, color_codes[color_code_num].name, 2))
@@ -289,8 +289,8 @@ void Text_Draw(const char* font, int x, int y, const char* text, ...)
 		}
 
 		// handle offset
-		int draw_x = current_x + glyph->x_offset * vid_hudscale->value;
-		int draw_y = current_y + glyph->y_offset * vid_hudscale->value;
+		int32_t draw_x = current_x + glyph->x_offset * vid_hudscale->value;
+		int32_t draw_y = current_y + glyph->y_offset * vid_hudscale->value;
 
 		// convert to a file path that drawpicregion in the fonts folder
 		char final_name[MAX_FONT_FILENAME_LEN] = { 0 };

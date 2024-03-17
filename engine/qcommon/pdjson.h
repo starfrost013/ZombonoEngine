@@ -12,6 +12,7 @@ extern "C" {
 // 1800 = Visual Studio 2013, when they FINALLY added C99 support
 #if (defined(_MSC_VER) && _MSC_VER >= 1800) || defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
     #include <stdbool.h>
+
 #else
     #ifndef bool
         #define bool int
@@ -22,6 +23,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include <stdio.h>
+#include <stdint.h>
 
 enum JSON_type {
     JSON_ERROR = 1, JSON_DONE,
@@ -35,7 +37,7 @@ struct JSON_allocator {
     void (*free)(void *);
 };
 
-typedef int (*JSON_user_io)(void *user);
+typedef int32_t (*JSON_user_io)(void *user);
 
 typedef struct JSON_stream JSON_stream;
 typedef struct JSON_allocator JSON_allocator;
@@ -64,15 +66,15 @@ size_t JSON_get_depth(JSON_stream *json);
 enum JSON_type JSON_get_context(JSON_stream *json, size_t *count);
 const char *JSON_get_error(JSON_stream *json);
 
-int JSON_source_get(JSON_stream *json);
-int JSON_source_peek(JSON_stream *json);
-bool JSON_isspace(int c);
+int32_t JSON_source_get(JSON_stream *json);
+int32_t JSON_source_peek(JSON_stream *json);
+bool JSON_isspace(int32_t c);
 
 /* internal */
 
 struct JSON_source {
-    int (*get)(struct JSON_source *);
-    int (*peek)(struct JSON_source *);
+    int32_t (*get)(struct JSON_source *);
+    int32_t (*peek)(struct JSON_source *);
     size_t position;
     union {
         struct {
@@ -97,7 +99,7 @@ struct JSON_stream {
     size_t stack_top;
     size_t stack_size;
     enum JSON_type next;
-    unsigned flags;
+    uint32_t flags;
 
     struct {
         char *string;

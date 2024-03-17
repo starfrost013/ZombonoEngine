@@ -33,7 +33,7 @@ viddef_t	vid;
 
 refimport_t	ri;
 
-int gl_texture0, gl_texture1;
+int32_t gl_texture0, gl_texture1;
 
 model_t		*r_worldmodel;
 
@@ -182,7 +182,7 @@ void R_DrawNullModel (void)
 	if ( currententity->flags & RF_FULLBRIGHT )
 		shadelight[0] = shadelight[1] = shadelight[2] = 1.0F;
 	else
-		R_LightPoint (currententity->origin, shadelight);
+		R_LightPoint32_t (currententity->origin, shadelight);
 
     qglPushMatrix ();
 	R_RotateForEntity (currententity);
@@ -306,8 +306,8 @@ R_DrawParticles
 */
 void R_DrawParticles (void)
 {
-	int i;
-	unsigned char color[4];
+	int32_t i;
+	uint8_t color[4];
 	const particle_t* p;
 
 	qglDepthMask(GL_FALSE);
@@ -376,7 +376,7 @@ void R_PolyBlend (void)
 
 //=======================================================================
 
-int SignbitsForPlane (cplane_t *out)
+int32_t SignbitsForPlane (cplane_t *out)
 {
 	int	bits, j;
 
@@ -422,7 +422,7 @@ R_SetupFrame
 */
 void R_SetupFrame (void)
 {
-	int i;
+	int32_t i;
 	mleaf_t	*leaf;
 
 	r_framecount++;
@@ -574,7 +574,7 @@ void R_Clear (void)
 {
 	if (gl_ztrick->value)
 	{
-		static int trickframe;
+		static int32_t trickframe;
 
 		if (gl_clear->value)
 			qglClear (GL_COLOR_BUFFER_BIT);
@@ -713,7 +713,7 @@ void R_SetLightLevel (void)
 
 	// save off light value for server to look at (BIG HACK!)
 
-	R_LightPoint (r_newrefdef.vieworg, shadelight);
+	R_LightPoint32_t (r_newrefdef.vieworg, shadelight);
 
 	// pick the greatest component, which should be the same
 	// as the mono value returned by software
@@ -962,7 +962,7 @@ bool R_Init( void *hinstance, void *hWnd )
 #ifdef _WIN32
 	if ( strstr( gl_config.extensions_string, "WGL_EXT_swap_control" ) )
 	{
-		qwglSwapIntervalEXT = ( BOOL (WINAPI *)(int)) qwglGetProcAddress( "wglSwapIntervalEXT" );
+		qwglSwapIntervalEXT = ( BOOL (WINAPI *)(int32_t)) qwglGetProcAddress( "wglSwapIntervalEXT" );
 		ri.Con_Printf( PRINT_ALL, "...enabling WGL_EXT_swap_control\n" );
 	}
 	else
@@ -1286,9 +1286,9 @@ void	R_RenderFrame (refdef_t *fd);
 
 struct image_s	*Draw_FindPic (char *name);
 
-void	Draw_Pic (int x, int y, char *name);
-void	Draw_TileClear (int x, int y, int w, int h, char *name);
-void	Draw_Fill (int x, int y, int w, int h, int r, int g, int b, int a);
+void	Draw_Pic (int32_t x, int32_t y, char *name);
+void	Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+void	Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
 void	Draw_FadeScreen (void);
 
 /*

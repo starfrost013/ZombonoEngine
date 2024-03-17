@@ -52,7 +52,7 @@ MENU INTERACTION
 
 static menuframework_t	s_opengl_menu;
 static menuframework_t *s_current_menu;
-static int				s_current_menu_index;
+static int32_t 			s_current_menu_index;
 
 static menulist_t		s_mode_list[NUM_REF_MENUS];
 static menulist_t		s_ref_list[NUM_REF_MENUS];
@@ -67,7 +67,7 @@ static menuaction_t		s_defaults_action[3];
 
 static void DriverCallback( void *unused )
 {
-	int curr_value = s_ref_list[s_current_menu_index].curvalue;
+	int32_t curr_value = s_ref_list[s_current_menu_index].curvalue;
 
 	s_ref_list[0].curvalue = curr_value;
 
@@ -86,7 +86,7 @@ static void ScreenSizeCallback( void *s )
 static void BrightnessCallback( void *s )
 {
 	menuslider_t *slider = ( menuslider_t * ) s;
-	int i;
+	int32_t i;
 
 	for ( i = 0; i < 3; i++ )
 	{
@@ -102,7 +102,7 @@ static void ResetDefaults( void *unused )
 static void ApplyChanges( void *unused )
 {
 	float gamma;
-	int i;
+	int32_t i;
 
 	/*
 	** make values consistent
@@ -206,7 +206,7 @@ void VID_MenuInit( void )
 		"mipmap linear",
 		0
 	};
-	int i;
+	int32_t i;
 
 	if ( !gl_driver )
 		gl_driver = Cvar_Get( "gl_driver", "opengl32", 0 );
@@ -334,7 +334,7 @@ VID_MenuDraw
 */
 void VID_MenuDraw (void)
 {
-	int w, h;
+	int32_t w, h;
 
 	s_current_menu = &s_opengl_menu;
 
@@ -360,7 +360,7 @@ void VID_MenuDraw (void)
 VID_MenuKey
 ================
 */
-const char *VID_MenuKey( int key )
+const char *VID_MenuKey( int32_t key )
 {
 	menuframework_t *m = s_current_menu;
 	static const char *sound = "misc/menu1.wav";

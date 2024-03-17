@@ -41,7 +41,7 @@ bool UI_TeamUICreate()
 	return true; 
 }
 
-void UI_TeamUISetDirectorTeam(int btn, int x, int y)
+void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 {
 	if (current_ui == NULL) return;
 	if (strncmp(current_ui->name, "TeamUI", 6)) return;
@@ -52,7 +52,7 @@ void UI_TeamUISetDirectorTeam(int btn, int x, int y)
 	MSG_WriteString(&cls.netchan.message, "setteam 1");
 }
 
-void UI_TeamUISetPlayerTeam(int btn, int x, int y)
+void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 {
 	if (current_ui == NULL) return;
 	if (strncmp(current_ui->name, "TeamUI", 6)) return;
@@ -73,13 +73,13 @@ void UI_TeamUISetPlayerTeam(int btn, int x, int y)
 
 bool UI_BamfuslicatorUICreate()
 {
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	UI_SetPassive("BamfuslicatorUI", true);
 	// we only care about precise Y size here
 	// as all the text actually being drawn is smaller than the temp text, this positions it in the middle
 	const char* temp_text = "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****"; 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
-	int x = (viddef.width / 2) - (120 * vid_hudscale->value);
+	int32_t x = (viddef.width / 2) - (120 * vid_hudscale->value);
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
 		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 255);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
@@ -93,7 +93,7 @@ bool UI_BamfuslicatorUICreate()
 
 bool UI_TimeUICreate()
 {
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 
 	UI_SetPassive("TimeUI", true);
 
@@ -115,7 +115,7 @@ bool UI_TimeUICreate()
 
 bool UI_ScoreUICreate()
 {
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 
 	UI_SetPassive("ScoreUI", true);
 

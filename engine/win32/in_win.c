@@ -84,7 +84,7 @@ cvar_t	*joy_upsensitivity;
 bool	joy_avail, joy_advancedinit, joy_haspov;
 DWORD		joy_oldbuttonstate, joy_oldpovstate;
 
-int			joy_id;
+int32_t 		joy_id;
 DWORD		joy_flags;
 DWORD		joy_numbuttons;
 
@@ -117,21 +117,21 @@ if (!freelook->value && lookspring->value)
 		IN_CenterView ();
 }
 
-int			mouse_buttons;
-int			mouse_oldbuttonstate;
+int32_t 		mouse_buttons;
+int32_t 		mouse_oldbuttonstate;
 POINT		current_pos;
-int			mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
+int32_t 		mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
 
-int			old_x, old_y;
+int32_t 		old_x, old_y;
 
 bool	mouseactive;	// false when not focus app
 
 bool	restore_spi;
 bool	mouseinitialized;
-int		originalmouseparms[3], newmouseparms[3] = {0, 0, 0}; // explicitly disable mouse acceleration
+int32_t 	originalmouseparms[3], newmouseparms[3] = {0, 0, 0}; // explicitly disable mouse acceleration
 bool	mouseparmsvalid;
 
-int			window_center_x, window_center_y;
+int32_t 		window_center_x, window_center_y;
 RECT		window_rect;
 
 
@@ -144,7 +144,7 @@ Called when the window gains focus or changes in some way
 */
 void IN_ActivateMouse (void)
 {
-	int		width, height;
+	int32_t 	width, height;
 
 	if (!mouseinitialized)
 		return;
@@ -231,9 +231,9 @@ void IN_StartupMouse (void)
 IN_MouseEvent
 ===========
 */
-void IN_MouseEvent (int mstate, int x, int y)
+void IN_MouseEvent (int32_t mstate, int32_t x, int32_t y)
 {
-	int		i;
+	int32_t 	i;
 
 	if (!mouseinitialized)
 		return;
@@ -268,7 +268,7 @@ IN_MouseMove
 */
 void IN_MouseMove (usercmd_t *cmd)
 {
-	int		mx, my;
+	int32_t 	mx, my;
 
 	if (!mouseactive)
 		return;
@@ -480,7 +480,7 @@ IN_StartupJoystick
 */  
 void IN_StartupJoystick (void) 
 { 
-	int			numdevs;
+	int32_t 		numdevs;
 	JOYCAPS		jc;
 	MMRESULT	mmr;
 	cvar_t		*cv;
@@ -549,7 +549,7 @@ void IN_StartupJoystick (void)
 RawValuePointer
 ===========
 */
-PDWORD RawValuePointer (int axis)
+PDWORD RawValuePointer (int32_t axis)
 {
 	switch (axis)
 	{
@@ -581,7 +581,7 @@ void Joy_AdvancedUpdate_f (void)
 
 	// called once by IN_ReadJoystick and by user whenever an update is needed
 	// cvars are now available
-	int	i;
+	int32_t i;
 	DWORD dwTemp;
 
 	// initialize all the maps
@@ -650,7 +650,7 @@ IN_Commands
 */
 void IN_Commands (void)
 {
-	int		i, key_index;
+	int32_t 	i, key_index;
 	DWORD	buttonstate, povstate;
 
 	if (!joy_avail)
@@ -750,7 +750,7 @@ void IN_JoyMove (usercmd_t *cmd)
 {
 	float	speed, aspeed;
 	float	fAxisValue;
-	int		i;
+	int32_t 	i;
 
 	// complete initialization if first time in
 	// this is needed as cvars are not available at initialization time
@@ -772,7 +772,7 @@ void IN_JoyMove (usercmd_t *cmd)
 		return;
 	}
 
-	if ( (in_speed.state & 1) ^ (int)cl_run->value)
+	if ( (in_speed.state & 1) ^ (int32_t)cl_run->value)
 		speed = 2;
 	else
 		speed = 1;

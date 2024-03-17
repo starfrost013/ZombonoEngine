@@ -59,7 +59,7 @@ This will be sent on the initial connection and upon each server load.
 void SV_New_f (void)
 {
 	char		*gamedir;
-	int			playernum;
+	int32_t 		playernum;
 	edict_t		*ent;
 
 	Com_DPrintf ("New() from %s\n", sv_client->name);
@@ -124,7 +124,7 @@ SV_Configstrings_f
 */
 void SV_Configstrings_f (void)
 {
-	int			start;
+	int32_t 		start;
 
 	Com_DPrintf ("Configstrings() from %s\n", sv_client->name);
 
@@ -179,7 +179,7 @@ SV_Baselines_f
 */
 void SV_Baselines_f (void)
 {
-	int		start;
+	int32_t 	start;
 	entity_state_t	nullstate;
 	entity_state_t	*base;
 
@@ -265,9 +265,9 @@ SV_NextDownload_f
 */
 void SV_NextDownload_f (void)
 {
-	int		r;
-	int		percent;
-	int		size;
+	int32_t 	r;
+	int32_t 	percent;
+	int32_t 	size;
 
 	if (!sv_client->download)
 		return;
@@ -308,8 +308,8 @@ void SV_BeginDownload_f(void)
 	extern	cvar_t *allow_download_models;
 	extern	cvar_t *allow_download_sounds;
 	extern	cvar_t *allow_download_maps;
-	extern	int		file_from_pak; // ZOID did file come from pak?
-	int offset = 0;
+	extern	int32_t 	file_from_pak; // ZOID did file come from pak?
+	int32_t offset = 0;
 
 	name = Cmd_Argv(1);
 
@@ -399,7 +399,7 @@ Dumps the serverinfo info string
 */
 void SV_ShowServerinfo_f (void)
 {
-	Info_Print (Cvar_Serverinfo());
+	Info_Print32_t (Cvar_Serverinfo());
 }
 
 
@@ -541,17 +541,17 @@ The current net_message is parsed for the given client
 */
 void SV_ExecuteClientMessage (client_t *cl)
 {
-	int		c;
+	int32_t 	c;
 	char	*s;
 
 	usercmd_t	nullcmd;
 	usercmd_t	oldest, oldcmd, newcmd;
-	int		net_drop;
-	int		stringCmdCount;
-	int		checksum, calculatedChecksum;
-	int		checksumIndex;
+	int32_t 	net_drop;
+	int32_t 	stringCmdCount;
+	int32_t 	checksum, calculatedChecksum;
+	int32_t 	checksumIndex;
 	bool	move_issued;
-	int		lastframe;
+	int32_t 	lastframe;
 
 	sv_client = cl;
 	sv_player = sv_client->edict;

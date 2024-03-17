@@ -47,14 +47,14 @@ QUAKE FILESYSTEM
 typedef struct
 {
 	char	name[MAX_QPATH];
-	int		filepos, filelen;
+	int32_t 	filepos, filelen;
 } packfile_t;
 
 typedef struct pack_s
 {
 	char	filename[MAX_OSPATH];
 	FILE	*handle;
-	int		numfiles;
+	int32_t 	numfiles;
 	packfile_t	*files;
 } pack_t;
 
@@ -67,7 +67,7 @@ typedef struct filelink_s
 {
 	struct filelink_s	*next;
 	char	*from;
-	int		fromlength;
+	int32_t 	fromlength;
 	char	*to;
 } filelink_t;
 
@@ -99,10 +99,10 @@ The "game directory" is the first tree on the search path and directory that all
 FS_filelength
 ================
 */
-int FS_filelength (FILE *f)
+int32_t FS_filelength (FILE *f)
 {
-	int		pos;
-	int		end;
+	int32_t 	pos;
+	int32_t 	end;
 
 	pos = ftell (f);
 	fseek (f, 0, SEEK_END);
@@ -158,15 +158,15 @@ Used for streaming data out of either a pak file or
 a seperate file.
 ===========
 */
-int file_from_pak = 0;
+int32_t file_from_pak = 0;
 
 
-int FS_FOpenFile (char *filename, FILE **file)
+int32_t FS_FOpenFile (char *filename, FILE **file)
 {
 	searchpath_t	*search;
 	char			netpath[MAX_OSPATH];
 	pack_t			*pak;
-	int				i;
+	int32_t 			i;
 	filelink_t		*link;
 
 	file_from_pak = 0;
@@ -246,14 +246,14 @@ Properly handles partial reads
 =================
 */
 #define	MAX_READ	0x10000		// read in blocks of 64k
-void FS_Read (void *buffer, int len, FILE *f)
+void FS_Read (void *buffer, int32_t len, FILE *f)
 {
-	int		block, remaining;
-	int		read;
-	byte	*buf;
-	int		tries;
+	int32_t 	block, remaining;
+	int32_t 	read;
+	uint8_t* buf;
+	int32_t 	tries;
 
-	buf = (byte *)buffer;
+	buf = (uint8_t *)buffer;
 
 	// read in chunks for progress bar
 	remaining = len;
@@ -263,7 +263,7 @@ void FS_Read (void *buffer, int len, FILE *f)
 		block = remaining;
 		if (block > MAX_READ)
 			block = MAX_READ;
-		read = (int)fread (buf, 1, block, f);
+		read = (int32_t)fread (buf, 1, block, f);
 		if (read == 0)
 		{
 			Com_Error (ERR_FATAL, "FS_Read: 0 bytes read");
@@ -286,11 +286,11 @@ Filename are reletive to the quake search path
 a null buffer will just return the file length without loading
 ============
 */
-int FS_LoadFile (char *path, void **buffer)
+int32_t FS_LoadFile (char *path, void **buffer)
 {
 	FILE	*h;
-	byte	*buf;
-	int		len;
+	uint8_t* buf;
+	int32_t 	len;
 
 	buf = NULL;	// quiet compiler warning
 
@@ -343,9 +343,9 @@ of the list so they override previous pack files.
 pack_t *FS_LoadPackFile (char *packfile)
 {
 	dpackheader_t	header;
-	int				i;
+	int32_t 			i;
 	packfile_t		*newfiles;
-	int				numpackfiles;
+	int32_t 			numpackfiles;
 	pack_t			*pack;
 	FILE			*packhandle;
 	dpackfile_t		info[MAX_FILES_IN_PACK];
@@ -407,7 +407,7 @@ then loads and adds pak1.pak pak2.pak ...
 */
 void FS_AddGameDirectory (char *dir)
 {
-	int				i;
+	int32_t 			i;
 	searchpath_t	*search;
 	pack_t			*pak;
 	char			pakfile[MAX_OSPATH];
@@ -575,17 +575,17 @@ void FS_Link_f (void)
 	l->next = fs_links;
 	fs_links = l;
 	l->from = CopyString(Cmd_Argv(1));
-	l->fromlength = (int)strlen(l->from);
+	l->fromlength = (int32_t)strlen(l->from);
 	l->to = CopyString(Cmd_Argv(2));
 }
 
 /*
 ** FS_ListFiles
 */
-char **FS_ListFiles( char *findname, int *numfiles, unsigned musthave, unsigned canthave )
+char **FS_ListFiles( char *findname, int32_t *numfiles, unsigned musthave, unsigned canthave )
 {
 	char *s;
-	int nfiles = 0;
+	int32_t nfiles = 0;
 	char **list = 0;
 
 	s = Sys_FindFirst( findname, musthave, canthave );
@@ -634,7 +634,7 @@ void FS_Dir_f( void )
 	char	findname[1024];
 	char	wildcard[1024] = "*.*";
 	char	**dirnames;
-	int		ndirs;
+	int32_t 	ndirs;
 
 	if ( Cmd_Argc() != 1 )
 	{
@@ -658,7 +658,7 @@ void FS_Dir_f( void )
 
 		if ( ( dirnames = FS_ListFiles( findname, &ndirs, 0, 0 ) ) != 0 )
 		{
-			int i;
+			int32_t i;
 
 			for ( i = 0; i < ndirs-1; i++ )
 			{

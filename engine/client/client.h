@@ -44,13 +44,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 typedef struct
 {
 	bool		valid;			// cleared if delta parsing was invalid
-	int				serverframe;
-	int				servertime;		// server time the message is valid for (in msec)
-	int				deltaframe;
-	byte			areabits[MAX_MAP_AREAS/8];		// portalarea visibility bits
+	int32_t 			serverframe;
+	int32_t 			servertime;		// server time the message is valid for (in msec)
+	int32_t 			deltaframe;
+	uint8_t			areabits[MAX_MAP_AREAS/8];		// portalarea visibility bits
 	player_state_t	playerstate;
-	int				num_entities;
-	int				parse_entities;	// non-masked index into cl_parse_entities array
+	int32_t 			num_entities;
+	int32_t 			parse_entities;	// non-masked index into cl_parse_entities array
 } frame_t;
 
 typedef struct
@@ -59,12 +59,12 @@ typedef struct
 	entity_state_t	current;
 	entity_state_t	prev;			// will always be valid, but might just be a copy of current
 
-	int			serverframe;		// if not current, this ent isn't in the frame
+	int32_t 		serverframe;		// if not current, this ent isn't in the frame
 
-	int			trailcount;			// for diminishing grenade trails
+	int32_t 		trailcount;			// for diminishing grenade trails
 	vec3_t		lerp_origin;		// for trails (variable hz)
 
-	int			fly_stoptime;
+	int32_t 		fly_stoptime;
 } centity_t;
 
 #define MAX_CLIENTWEAPONMODELS		20		// PGM -- upped from 16 to fit the chainfist vwep
@@ -81,26 +81,26 @@ typedef struct
 } clientinfo_t;
 
 extern char cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
-extern int num_cl_weaponmodels;
+extern int32_t num_cl_weaponmodels;
 
 #define	CMD_BACKUP		64	// allow a lot of command backups for very fast systems
 
 typedef struct leaderboard_entry_s
 {
 	char		name[32];		// The player's name
-	int			score;			// The player's score (kills - deaths)
+	int32_t 		score;			// The player's score (kills - deaths)
 	common_team	team;			// The player's team
-	int			ping;			// The user's ping
-	int			time;			// Time the player has spent in the game since they joined. 
+	int32_t 		ping;			// The user's ping
+	int32_t 		time;			// Time the player has spent in the game since they joined. 
 	bool	is_spectator;	// Is the player a spectator?
 	char		map_name[32];	// Map name
-	int			time_remaining;		// Seconds of time left in game.
+	int32_t 		time_remaining;		// Seconds of time left in game.
 } leaderboard_entry_t;
 
 // Zombono Leaderboard
 typedef struct leaderboard_s
 {
-	int					num_clients;
+	int32_t 				num_clients;
 	leaderboard_entry_t	entries[MAX_CLIENTS];
 } leaderboard_t;
 
@@ -110,21 +110,21 @@ typedef struct leaderboard_s
 //
 typedef struct client_state_s
 {
-	int			timeoutcount;
+	int32_t 	timeoutcount;
 
-	int			timedemo_frames;
-	int			timedemo_start;
+	int32_t 	timedemo_frames;
+	int32_t 	timedemo_start;
 
-	bool	refresh_prepped;	// false if on new level or new ref dll
-	bool	sound_prepped;		// ambient sounds can start
-	bool	force_refdef;		// vid has changed, so we can't use a paused refdef
+	bool		refresh_prepped;	// false if on new level or new ref dll
+	bool		sound_prepped;		// ambient sounds can start
+	bool		force_refdef;		// vid has changed, so we can't use a paused refdef
 
-	int			parse_entities;		// index (not anded off) into cl_parse_entities[]
+	int32_t 	parse_entities;		// index (not anded off) into cl_parse_entities[]
 
 	usercmd_t	cmd;
 	usercmd_t	cmds[CMD_BACKUP];	// each mesage will send several old cmds
-	int			cmd_time[CMD_BACKUP];	// time sent, for calculating pings
-	short		predicted_origins[CMD_BACKUP][3];	// for debug comparing against server
+	int32_t 	cmd_time[CMD_BACKUP];	// time sent, for calculating pings
+	int16_t		predicted_origins[CMD_BACKUP][3];	// for debug comparing against server
 
 	float		predicted_step;				// for stair up smoothing
 	unsigned	predicted_step_time;
@@ -134,7 +134,7 @@ typedef struct client_state_s
 	vec3_t		prediction_error;
 
 	frame_t		frame;				// received from server
-	int			surpressCount;		// number of messages rate supressed
+	int32_t 	surpressCount;		// number of messages rate supressed
 	frame_t		frames[UPDATE_BACKUP];
 
 	// the client maintains its own idea of view angles, which are
@@ -144,7 +144,7 @@ typedef struct client_state_s
 	// and teleport direction changes
 	vec3_t		viewangles;
 
-	int			time;			// this is the time value that the client
+	int32_t 		time;			// this is the time value that the client
 								// is rendering at.  always <= cls.realtime
 	float		lerpfrac;		// between oldframe and frame
 
@@ -158,15 +158,15 @@ typedef struct client_state_s
 	char			layout[1024];		// general 2D overlay
 	leaderboard_t	leaderboard;	// ZombonoUI leaderboard
 
-	int			inventory[MAX_ITEMS];
+	int32_t 		inventory[MAX_ITEMS];
 
 	//
 	// server state information
 	//
 	bool	attractloop;		// running the attract loop, any key will menu
-	int			servercount;		// server identification for prespawns
+	int32_t 		servercount;		// server identification for prespawns
 	char		gamedir[MAX_QPATH];
-	int			playernum;
+	int32_t 		playernum;
 
 	char		configstrings[MAX_CONFIGSTRINGS][MAX_QPATH];
 
@@ -217,34 +217,34 @@ typedef struct
 	connstate_t	state;
 	keydest_t	key_dest;
 
-	int			framecount;
-	int			realtime;			// always increasing, no clamping, etc
+	int32_t 		framecount;
+	int32_t 		realtime;			// always increasing, no clamping, etc
 	float		frametime;			// seconds since last frame
 
 // screen rendering information
 	float		disable_screen;		// showing loading plaque between levels
 									// or changing rendering dlls
 									// if time gets > 30 seconds ahead, break it
-	int			disable_servercount;	// when we receive a frame and cl.servercount
+	int32_t 		disable_servercount;	// when we receive a frame and cl.servercount
 									// > cls.disable_servercount, clear disable_screen
 
 // connection information
 	char		servername[MAX_OSPATH];	// name of server from original connect
 	float		connect_time;		// for connection retransmits
 
-	int			quakePort;			// a 16 bit value that allows quake servers
+	int32_t 		quakePort;			// a 16 bit value that allows quake servers
 									// to work around address translating routers
 	netchan_t	netchan;
-	int			serverProtocol;		// in case we are doing some kind of version hack
+	int32_t 		serverProtocol;		// in case we are doing some kind of version hack
 
-	int			challenge;			// from the server to use for connecting
+	int32_t 		challenge;			// from the server to use for connecting
 
 	FILE		*download;			// file transfer from server
 	char		downloadtempname[MAX_OSPATH];
 	char		downloadname[MAX_OSPATH];
-	int			downloadnumber;
+	int32_t 		downloadnumber;
 	dltype_t	downloadtype;
-	int			downloadpercent;
+	int32_t 		downloadpercent;
 
 // demo recording info must be here, so it isn't cleared on level change
 	bool	demorecording;
@@ -311,7 +311,7 @@ extern	cvar_t  *cl_drawhud;
 
 typedef struct
 {
-	int		key;				// so entities can reuse same entry
+	int32_t 	key;				// so entities can reuse same entry
 	vec3_t	color;
 	vec3_t	origin;
 	float	radius;
@@ -339,8 +339,8 @@ bool CL_CheckOrDownloadFile (char *filename);
 void CL_AddNetgraph (void);
 
 void CL_TeleporterParticles (entity_state_t *ent);
-void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int count);
-void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int count);
+void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
+void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
 
 
 //=============================================================================
@@ -386,25 +386,25 @@ void CL_IonripperTrail (vec3_t start, vec3_t end);
 void CL_BlasterParticles2 (vec3_t org, vec3_t dir, vec4_t color);
 void CL_BlasterTrail2 (vec3_t start, vec3_t end);
 void CL_DebugTrail (vec3_t start, vec3_t end);
-void CL_SmokeTrail (vec3_t start, vec3_t end, vec4_t colorStart, vec4_t colorRun, int spacing);
-void CL_Flashlight (int ent, vec3_t pos);
+void CL_SmokeTrail (vec3_t start, vec3_t end, vec4_t colorStart, vec4_t colorRun, int32_t spacing);
+void CL_Flashlight (int32_t ent, vec3_t pos);
 void CL_ForceWall (vec3_t start, vec3_t end, vec4_t color);
 void CL_FlameEffects (centity_t *ent, vec3_t origin);
-void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int count, vec4_t run, int dirspread, float alphavel);
-void CL_BubbleTrail2 (vec3_t start, vec3_t end, int dist);
-void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int count, int magnitude);
+void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel);
+void CL_BubbleTrail2 (vec3_t start, vec3_t end, int32_t dist);
+void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
 void CL_TrackerTrail (vec3_t start, vec3_t end, vec4_t particleColor);
 void CL_Tracker_Explode(vec3_t origin);
 void CL_TagTrail (vec3_t start, vec3_t end, vec4_t color);
-void CL_ColorFlash (vec3_t pos, int ent, int intensity, float r, float g, float b);
+void CL_ColorFlash (vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b);
 void CL_Tracker_Shell(vec3_t origin);
 void CL_MonsterPlasma_Shell(vec3_t origin);
 void CL_ColorExplosionParticles (vec3_t org, vec4_t color, vec4_t run);
-void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int count, int magnitude);
+void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
 void CL_WidowSplash (vec3_t org);
 
-int CL_ParseEntityBits (unsigned *bits);
-void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int number, int bits);
+int32_t CL_ParseEntityBits (unsigned *bits);
+void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int32_t number, int32_t bits);
 void CL_ParseFrame (void);
 
 void CL_ParseTEnt (void);
@@ -412,7 +412,7 @@ void CL_ParseConfigString (void);
 void CL_ParseMuzzleFlash (void);
 void CL_ParseMuzzleFlash2 (void);
 
-void CL_SetLightstyle (int i);
+void CL_SetLightstyle (int32_t i);
 
 void CL_RunDLights (void);
 void CL_RunLightStyles (void);
@@ -448,10 +448,10 @@ void CL_RequestNextDownload (void);
 //
 typedef struct
 {
-	int			down[2];		// key nums holding it down
+	int32_t 		down[2];		// key nums holding it down
 	unsigned	downtime;		// msec timestamp
 	unsigned	msec;			// msec down this frame
-	int			state;
+	int32_t 		state;
 } kbutton_t;
 
 extern	kbutton_t	in_mlook, in_klook;
@@ -469,7 +469,7 @@ void CL_BaseMove (usercmd_t *cmd);
 void IN_CenterView (void);
 
 float CL_KeyState (kbutton_t *key);
-char *Key_KeynumToString (int keynum);
+char *Key_KeynumToString (int32_t keynum);
 
 //
 // cl_demo.c
@@ -486,21 +486,21 @@ extern	char *svc_strings[256];
 void CL_ParseServerMessage (void);
 void CL_LoadClientinfo (clientinfo_t *ci, char *s);
 void ShowNet(char *s);
-void CL_ParseClientinfo (int player);
+void CL_ParseClientinfo (int32_t player);
 void CL_Download_f (void);
 
 //
 // cl_view.c
 //
-extern	int			gun_frame;
+extern	int32_t 		gun_frame;
 extern	struct model_s	*gun_model;
 
 void V_Init (void);
 void V_RenderView( float stereo_separation );
 void V_AddEntity (entity_t *ent);
-void V_AddParticle (vec3_t org, int color, float alpha);
+void V_AddParticle (vec3_t org, int32_t color, float alpha);
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b);
-void V_AddLightStyle (int style, float r, float g, float b);
+void V_AddLightStyle (int32_t style, float r, float g, float b);
 
 //
 // cl_tent.c
@@ -519,10 +519,10 @@ void CL_CheckPredictionError (void);
 //
 // cl_fx.c
 //
-cdlight_t *CL_AllocDlight (int key);
+cdlight_t *CL_AllocDlight (int32_t key);
 void CL_BigTeleportParticles (vec3_t org);
 void CL_RocketTrail (vec3_t start, vec3_t end, centity_t *old);
-void CL_DiminishingTrail (vec3_t start, vec3_t end, centity_t *old, int flags);
+void CL_DiminishingTrail (vec3_t start, vec3_t end, centity_t *old, int32_t flags);
 void CL_FlyEffect (centity_t *ent, vec3_t origin);
 void CL_BfgParticles (entity_t *ent);
 void CL_AddParticles (void);
@@ -534,7 +534,7 @@ void CL_TrapParticles (entity_t *ent);
 // menus
 //
 void M_Init (void);
-void M_Keydown (int key);
+void M_Keydown (int32_t key);
 void M_Draw (void);
 void M_Menu_Main_f (void);
 void M_ForceMenuOff (void);
@@ -577,11 +577,11 @@ typedef struct ui_control_s
 {
 	// general
 	ui_control_type		type;								// Type of this UI control.
-	int					position_x;							// UI control position (x-component).
-	int					position_y;							// UI control position (y-component).
+	int32_t 				position_x;							// UI control position (x-component).
+	int32_t 				position_y;							// UI control position (y-component).
 	char				font[MAX_FONT_FILENAME_LEN];
-	int					size_x;								// UI control size (x-component).
-	int					size_y;								// UI control size (y-component).
+	int32_t 				size_x;								// UI control size (x-component).
+	int32_t 				size_y;								// UI control size (y-component).
 	char				name[MAX_UI_STR_LENGTH];			// UI control name (for code)
 	bool			visible;							// Is this control visible?
 	bool			focused;							// Is this control focused?
@@ -591,20 +591,20 @@ typedef struct ui_control_s
 	// image
 	char				image_path[MAX_UI_STR_LENGTH];		// Image path UI control: Image to display (path relative to the "pics" folder)
 	// slider
-	int					value_min;							// Slider UI control: minimum value.
-	int					value_max;							// Slider UI control: maximum value.
+	int32_t 				value_min;							// Slider UI control: minimum value.
+	int32_t 				value_max;							// Slider UI control: maximum value.
 	// checkbox
 	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
 	vec4_t				color;								// The color of this UI element.
 	// events
-	void				(*on_click)(int btn, int x, int y);	// C function to call on click starting with X and Y coordinates.
-	void				(*on_key_down)(int btn);			// C function to call on a key being pressed. 
+	void				(*on_click)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
+	void				(*on_key_down)(int32_t btn);			// C function to call on a key being pressed. 
 } ui_control_t;
 
 typedef struct ui_s
 {
-	int					num_controls;				// Number of controls in the UI.
+	int32_t 				num_controls;				// Number of controls in the UI.
 	char				name[MAX_UI_STR_LENGTH];	// UI name.			
 	bool(*on_create)();							// UI Create function for client
 	bool			enabled;					// True if the UI is currently being drawn.
@@ -615,7 +615,7 @@ typedef struct ui_s
 
 extern ui_t					ui_list[MAX_UIS];			// The list of UIs.
 extern ui_t*				current_ui;					// the current UI being displayed
-extern int					num_uis;					// the current number of UIs
+extern int32_t 				num_uis;					// the current number of UIs
 extern bool				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
@@ -623,11 +623,11 @@ bool UI_Init();
 bool UI_AddUI(char* name, bool (*on_create)());
 
 // UI: Init Controls
-bool UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y);												// Draws text.
-bool UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y);				// Draws an image.
-bool UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max);	// Draws a slider.
-bool UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, bool checked);			// Draws a checkbox.
-bool UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a);		// Draws a regular ole box.
+bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32_t position_y);												// Draws text.
+bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);				// Draws an image.
+bool UI_AddSlider(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max);	// Draws a slider.
+bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
+bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
 // UI: Toggle
 bool UI_SetEnabled(char* name, bool enabled);																					// Sets a UI to enabled (visible).
@@ -639,12 +639,12 @@ bool UI_SetText(char* ui_name, char* control_name, char* text);																	
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);																// Updates a UI control's image.
 
 // UI: Set Event Handler
-bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int btn, int x, int y));											// Sets a UI's OnClick handler.
-bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int btn));														// Sets a UI's OnKeyDown handler.
+bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));											// Sets a UI's OnClick handler.
+bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn));														// Sets a UI's OnKeyDown handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClick(int btn, int x, int y);																						// Handles click events.
-void UI_HandleEventOnKeyDown(int btn);																									// Handles key down events.
+void UI_HandleEventOnClick(int32_t btn, int32_t x, int32_t y);																						// Handles click events.
+void UI_HandleEventOnKeyDown(int32_t btn);																									// Handles key down events.
 
 // UI: Draw
 void UI_Draw();																															// Draws a UI.
@@ -660,12 +660,12 @@ void UI_Reset();																														// INTERNAL, resets all UI states 
 // UI: Create Scripts
 // TeamUI
 bool UI_TeamUICreate();
-void UI_TeamUISetDirectorTeam(int btn, int x, int y);
-void UI_TeamUISetPlayerTeam(int btn, int x, int y);
+void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y);
+void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y);
 
 // LeaderboardUI
 bool UI_LeaderboardUICreate();
-void UI_LeaderboardUIToggle(int btn);
+void UI_LeaderboardUIToggle(int32_t btn);
 
 // BamfuslicatorUI
 bool UI_BamfuslicatorUICreate();
@@ -698,30 +698,30 @@ void UI_LeaderboardUIUpdate();
 typedef struct color_code_s
 {
 	const char* name;			// The string used by the colour code.
-	byte		color[4];		// The colour generated by the colour code.
+	uint8_t		color[4];		// The colour generated by the colour code.
 } color_code_t;
 
 // Defines a cached glyph standard.
 typedef struct glyph_s
 {
-	int			width;							// Width of this glyph.
-	int			height;							// Height of this glyph.
+	int32_t 		width;							// Width of this glyph.
+	int32_t 		height;							// Height of this glyph.
 	char		char_code;						// Character code for this character (ansi for now, utf-8 later?)
-	int			x_start;						// Start X position of the glyph within the texture.
-	int			x_advance;						// Amount X has to advance to reach the next character.
-	int			x_offset;						// X offset of where the character starts relative to start_x - x_start + x_offset + x_advance = end of char
-	int			y_start;						// Start Y position of the glyph within the texture.
-	int			y_advance;						// Amount Y has to advance to reach the next character. Only used if you are drawing vertically written languages e.g. Japanese
-	int			y_offset;						// Y offset of where the character starts relative to start_y - y_start + y_offset + y_advance = end of char
+	int32_t 		x_start;						// Start X position of the glyph within the texture.
+	int32_t 		x_advance;						// Amount X has to advance to reach the next character.
+	int32_t 		x_offset;						// X offset of where the character starts relative to start_x - x_start + x_offset + x_advance = end of char
+	int32_t 		y_start;						// Start Y position of the glyph within the texture.
+	int32_t 		y_advance;						// Amount Y has to advance to reach the next character. Only used if you are drawing vertically written languages e.g. Japanese
+	int32_t 		y_offset;						// Y offset of where the character starts relative to start_y - y_start + y_offset + y_advance = end of char
 } glyph_t;
 
 // font_t defines a font
 typedef struct font_s
 {
 	char		name[MAX_FONT_FILENAME_LEN];	// The name of the current font.
-	int			size;							// The size of the current font.
-	int			num_glyphs;						// The number of loaded glyphs.
-	int			line_height;					// Height of one line in this font.
+	int32_t 		size;							// The size of the current font.
+	int32_t 		num_glyphs;						// The number of loaded glyphs.
+	int32_t 		line_height;					// Height of one line in this font.
 	glyph_t		glyphs[MAX_GLYPHS];				// The glyphs loaded for the current font.
 } font_t;
 
@@ -738,7 +738,7 @@ typedef enum font_json_section_e
 extern font_t			fonts[MAX_FONTS];			// Global object containing all loaded fonts.
 
 extern cvar_t*			cl_system_font;				// The font used for the console.	
-extern int				num_fonts;					// The number of loaded fonts.
+extern int32_t 			num_fonts;					// The number of loaded fonts.
 
 bool Font_Init();								// Initialises the font subsystem.
 font_t* Font_GetByName(const char* name);			// Returns a pointer to the font with name name, or NULL.
@@ -749,7 +749,7 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 // Modern Text Engine
 //
 
-void Text_Draw(const char* font, int x, int y, const char* text, ...);					// Draws text using font font.
-void Text_DrawChar(const char* font, int x, int y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
-bool Text_GetSize(const char* font, int *size_x, int *size_y, const char* text, ...);	// Gets the size of the text text.#
+void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...);					// Draws text using font font.
+void Text_DrawChar(const char* font, int32_t x, int32_t y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+bool Text_GetSize(const char* font, int32_t *size_x, int32_t *size_y, const char* text, ...);	// Gets the size of the text text.#
 bool Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.

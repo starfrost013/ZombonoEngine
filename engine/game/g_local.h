@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	GAMENAME	"Zombono"
 
-// the "gameversion" client command will print this plus compile date
+// the "gameversion" client command will print32_t this plus compile date
 #define GAMEVERSION GAMENAME " v0.0.5-pre1 " __DATE__
 
 // protocol bytes that can be directly added to messages
@@ -675,10 +675,10 @@ void SetRespawn (edict_t *ent, float delay);
 void ChangeWeapon (edict_t *ent);
 void SpawnItem (edict_t *ent, gitem_t *item);
 void Think_Weapon (edict_t *ent);
-int ArmorIndex (edict_t *ent);
-int PowerArmorType (edict_t *ent);
-gitem_t	*GetItemByIndex (int index);
-bool Add_Ammo (edict_t *ent, gitem_t *item, int count);
+int32_t ArmorIndex (edict_t *ent);
+int32_t PowerArmorType (edict_t *ent);
+gitem_t	*GetItemByIndex (int32_t index);
+bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count);
 void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
 
 //
@@ -686,7 +686,7 @@ void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf
 //
 bool	KillBox (edict_t *ent);
 void	G_ProjectSource (vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
-edict_t *G_Find (edict_t *from, int fieldofs, char *match);
+edict_t *G_Find (edict_t *from, int32_t fieldofs, char *match);
 edict_t *findradius (edict_t *from, vec3_t org, float rad);
 edict_t *G_PickTarget (char *targetname);
 void	G_UseTargets (edict_t *ent, edict_t *activator);
@@ -729,8 +729,8 @@ typedef enum player_team_e
 // A tiny little struct containing both teams' scores.
 typedef struct team_scores_s
 {
-	int director_score;
-	int player_score;
+	int32_t director_score;
+	int32_t player_score;
 } team_scores_t;
 
 player_team	G_TDMGetWinner();
@@ -740,8 +740,8 @@ team_scores_t G_TDMGetScores();
 // g_combat.c
 //
 bool CanDamage (edict_t *targ, edict_t *inflictor);
-void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
-void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod);
+void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int32_t damage, int32_t knockback, int32_t dflags, int32_t mod);
+void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int32_t mod);
 
 //
 // p_client.c
@@ -767,13 +767,13 @@ void	GiveBaseWeaponForTeam(edict_t* client_edict);
 //
 // g_monster.c
 //
-void monster_fire_bullet (edict_t *self, vec3_t start, vec3_t dir, int damage, int kick, int hspread, int vspread, int flashtype);
-void monster_fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int count, int flashtype);
-void monster_fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int flashtype, int effect);
-void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int flashtype);
-void monster_fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int flashtype);
-void monster_fire_railgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int flashtype);
-void monster_fire_bfg (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int kick, float damage_radius, int flashtype);
+void monster_fire_bullet (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t flashtype);
+void monster_fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t flashtype);
+void monster_fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype, int32_t effect);
+void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t flashtype);
+void monster_fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype);
+void monster_fire_railgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t flashtype);
+void monster_fire_bfg (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t kick, float damage_radius, int32_t flashtype);
 void M_droptofloor (edict_t *ent);
 void monster_think (edict_t *self);
 void walkmonster_start (edict_t *self);
@@ -789,9 +789,9 @@ void M_CheckGround (edict_t *ent);
 //
 // g_misc.c
 //
-void ThrowHead (edict_t *self, char *gibname, int damage, int type);
-void ThrowClientHead (edict_t *self, int damage);
-void ThrowGib (edict_t *self, char *gibname, int damage, int type);
+void ThrowHead (edict_t *self, char *gibname, int32_t damage, int32_t type);
+void ThrowClientHead (edict_t *self, int32_t damage);
+void ThrowGib (edict_t *self, char *gibname, int32_t damage, int32_t type);
 void BecomeExplosion1(edict_t *self);
 
 //
@@ -805,7 +805,7 @@ void ai_walk (edict_t *self, float dist);
 void ai_turn (edict_t *self, float dist);
 void ai_run (edict_t *self, float dist);
 void ai_charge (edict_t *self, float dist);
-int range (edict_t *self, edict_t *other);
+int32_t range (edict_t *self, edict_t *other);
 
 void FoundTarget (edict_t *self);
 bool infront (edict_t *self, edict_t *other);
@@ -816,15 +816,15 @@ bool FacingIdeal(edict_t *self);
 // g_weapon.c
 //
 void ThrowDebris (edict_t *self, char *modelname, float speed, vec3_t origin);
-bool fire_hit (edict_t *self, vec3_t aim, int damage, int kick);
-void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int mod);
-void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int count, int mod);
-void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int effect, bool hyper);
-void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius);
-void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, bool held);
-void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
-void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
-void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
+bool fire_hit (edict_t *self, vec3_t aim, int32_t damage, int32_t kick);
+void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t mod);
+void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t mod);
+void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t effect, bool hyper);
+void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius);
+void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius, bool held);
+void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius, int32_t radius_damage);
+void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick);
+void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius);
 void fire_bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
 //
 // g_ptrail.c
@@ -850,8 +850,8 @@ void ClientBeginServerFrame (edict_t *ent);
 //
 // g_player.c
 //
-void player_pain (edict_t *self, edict_t *other, float kick, int damage);
-void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point);
+void player_pain (edict_t *self, edict_t *other, float kick, int32_t damage);
+void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point);
 
 //
 // g_svcmds.c
@@ -876,7 +876,7 @@ void ValidateSelectedItem (edict_t *ent);
 //
 // g_pweapon.c
 //
-void PlayerNoise(edict_t *who, vec3_t where, int type);
+void PlayerNoise(edict_t *who, vec3_t where, int32_t type);
 
 //
 // m_move.c
@@ -1131,8 +1131,8 @@ struct edict_s
 	void		(*blocked)(edict_t *self, edict_t *other);	//move to moveinfo?
 	void		(*touch)(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf);
 	void		(*use)(edict_t *self, edict_t *other, edict_t *activator);
-	void		(*pain)(edict_t *self, edict_t *other, float kick, int damage);
-	void		(*die)(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point);
+	void		(*pain)(edict_t *self, edict_t *other, float kick, int32_t damage);
+	void		(*die)(edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point);
 
 	float		touch_debounce_time;		// are all these legit?  do we need more/less of them?
 	float		pain_debounce_time;

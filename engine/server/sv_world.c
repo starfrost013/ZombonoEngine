@@ -34,13 +34,13 @@ FIXME: this use of "area" is different from the bsp file use
 // (type *)STRUCT_FROM_LINK(link_t *link, type, member)
 // ent = STRUCT_FROM_LINK(link,entity_t,order)
 // FIXME: remove this mess!
-#define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (intptr_t)&(((t *)0)->m)))
+#define	STRUCT_FROM_LINK(l,t,m) ((t *)((uint8_t *)l - (intptr_t)&(((t *)0)->m)))
 
 #define	EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)
 
 typedef struct areanode_s
 {
-	int		axis;		// -1 = leaf node
+	int32_t 	axis;		// -1 = leaf node
 	float	dist;
 	struct areanode_s	*children[2];
 	link_t	trigger_edicts;
@@ -51,14 +51,14 @@ typedef struct areanode_s
 #define	AREA_NODES	32
 
 areanode_t	sv_areanodes[AREA_NODES];
-int			sv_numareanodes;
+int32_t 		sv_numareanodes;
 
 float	*area_mins, *area_maxs;
 edict_t	**area_list;
-int		area_count, area_maxcount;
-int		area_type;
+int32_t 	area_count, area_maxcount;
+int32_t 	area_type;
 
-int SV_HullForEntity (edict_t *ent);
+int32_t SV_HullForEntity (edict_t *ent);
 
 
 // ClearLink is used for new headnodes
@@ -88,7 +88,7 @@ SV_CreateAreaNode
 Builds a uniformly subdivided tree for the given world size
 ===============
 */
-areanode_t *SV_CreateAreaNode (int depth, vec3_t mins, vec3_t maxs)
+areanode_t *SV_CreateAreaNode (int32_t depth, vec3_t mins, vec3_t maxs)
 {
 	areanode_t	*anode;
 	vec3_t		size;
@@ -166,12 +166,12 @@ SV_LinkEdict
 void SV_LinkEdict (edict_t *ent)
 {
 	areanode_t	*node;
-	int			leafs[MAX_TOTAL_ENT_LEAFS];
-	int			clusters[MAX_TOTAL_ENT_LEAFS];
-	int			num_leafs;
-	int			i, j, k;
-	int			area;
-	int			topnode;
+	int32_t 		leafs[MAX_TOTAL_ENT_LEAFS];
+	int32_t 		clusters[MAX_TOTAL_ENT_LEAFS];
+	int32_t 		num_leafs;
+	int32_t 		i, j, k;
+	int32_t 		area;
+	int32_t 		topnode;
 
 	if (ent->area.prev)
 		SV_UnlinkEdict (ent);	// unlink from old position
@@ -222,7 +222,7 @@ void SV_LinkEdict (edict_t *ent)
 	(ent->s.angles[0] || ent->s.angles[1] || ent->s.angles[2]) )
 	{	// expand for rotation
 		float		max, v;
-		int			i;
+		int32_t 		i;
 
 		max = 0;
 		for (i=0 ; i<3 ; i++)
@@ -356,7 +356,7 @@ void SV_AreaEdicts_r (areanode_t *node)
 {
 	link_t		*l, *next, *start;
 	edict_t		*check;
-	int			count;
+	int32_t 		count;
 
 	count = 0;
 
@@ -406,8 +406,8 @@ void SV_AreaEdicts_r (areanode_t *node)
 SV_AreaEdicts
 ================
 */
-int SV_AreaEdicts (vec3_t mins, vec3_t maxs, edict_t **list,
-	int maxcount, int areatype)
+int32_t SV_AreaEdicts (vec3_t mins, vec3_t maxs, edict_t **list,
+	int32_t maxcount, int32_t areatype)
 {
 	area_mins = mins;
 	area_maxs = maxs;
@@ -429,12 +429,12 @@ int SV_AreaEdicts (vec3_t mins, vec3_t maxs, edict_t **list,
 SV_PointContents
 =============
 */
-int SV_PointContents (vec3_t p)
+int32_t SV_PointContents (vec3_t p)
 {
 	edict_t		*touch[MAX_EDICTS], *hit;
-	int			i, num;
-	int			contents, c2;
-	int			headnode;
+	int32_t 		i, num;
+	int32_t 		contents, c2;
+	int32_t 		headnode;
 	float		*angles;
 
 	// get base contents from world
@@ -471,7 +471,7 @@ typedef struct
 	float		*start, *end;
 	trace_t		trace;
 	edict_t		*passedict;
-	int			contentmask;
+	int32_t 		contentmask;
 } moveclip_t;
 
 
@@ -486,7 +486,7 @@ Offset is filled in to contain the adjustment that must be added to the
 testing object's origin to get a point to use with the returned hull.
 ================
 */
-int SV_HullForEntity (edict_t *ent)
+int32_t SV_HullForEntity (edict_t *ent)
 {
 	cmodel_t	*model;
 
@@ -517,10 +517,10 @@ SV_ClipMoveToEntities
 */
 void SV_ClipMoveToEntities ( moveclip_t *clip )
 {
-	int			i, num;
+	int32_t 		i, num;
 	edict_t		*touchlist[MAX_EDICTS], *touch;
 	trace_t		trace;
-	int			headnode;
+	int32_t 		headnode;
 	float		*angles;
 
 	num = SV_AreaEdicts (clip->boxmins, clip->boxmaxs, touchlist
@@ -589,7 +589,7 @@ SV_TraceBounds
 */
 void SV_TraceBounds (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, vec3_t boxmins, vec3_t boxmaxs)
 {
-	int		i;
+	int32_t 	i;
 	
 	for (i=0 ; i<3 ; i++)
 	{
@@ -616,7 +616,7 @@ Passedict and edicts owned by passedict are explicitly not checked.
 
 ==================
 */
-trace_t SV_Trace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t *passedict, int contentmask)
+trace_t SV_Trace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t *passedict, int32_t contentmask)
 {
 	moveclip_t	clip;
 

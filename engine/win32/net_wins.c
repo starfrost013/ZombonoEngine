@@ -27,21 +27,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	byte	data[MAX_MSGLEN];
-	int		datalen;
+	uint8_t	data[MAX_MSGLEN];
+	int32_t 	datalen;
 } loopmsg_t;
 
 typedef struct
 {
 	loopmsg_t	msgs[MAX_LOOPBACK];
-	int			get, send;
+	int32_t 		get, send;
 } loopback_t;
 
 cvar_t		*net_shownet;
 static cvar_t	*noudp;
 
 loopback_t	loopbacks[2];
-int			ip_sockets[2];
+int32_t 		ip_sockets[2];
 
 char *NET_ErrorString (void);
 
@@ -70,7 +70,7 @@ void SockadrToNetadr (struct sockaddr *s, netadr_t *a)
 	if (s->sa_family == AF_INET)
 	{
 		a->type = NA_IP;
-		*(int *)&a->ip = ((struct sockaddr_in *)s)->sin_addr.s_addr;
+		*(int32_t *)&a->ip = ((struct sockaddr_in *)s)->sin_addr.s_addr;
 		a->port = ((struct sockaddr_in *)s)->sin_port;
 	}
 }
@@ -161,7 +161,7 @@ bool	NET_StringToSockaddr (char *s, struct sockaddr *sadr)
 		if (*colon == ':')
 		{
 			*colon = 0;
-			((struct sockaddr_in*)sadr)->sin_port = htons((short)atoi(colon + 1));
+			((struct sockaddr_in*)sadr)->sin_port = htons((int16_t)atoi(colon + 1));
 		}
 
 	if (copy[0] >= '0' && copy[0] <= '9')
@@ -224,7 +224,7 @@ LOOPBACK BUFFERS FOR LOCAL PLAYER
 
 bool	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
 {
-	int		i;
+	int32_t 	i;
 	loopback_t	*loop;
 
 	loop = &loopbacks[sock];
@@ -247,9 +247,9 @@ bool	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_messag
 }
 
 
-void NET_SendLoopPacket (netsrc_t sock, int length, void *data, netadr_t to)
+void NET_SendLoopPacket (netsrc_t sock, int32_t length, void *data, netadr_t to)
 {
-	int		i;
+	int32_t 	i;
 	loopback_t	*loop;
 
 	loop = &loopbacks[sock^1];
@@ -265,12 +265,12 @@ void NET_SendLoopPacket (netsrc_t sock, int length, void *data, netadr_t to)
 
 bool	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
 {
-	int 	ret;
+	int32_t 	ret;
 	struct sockaddr from;
-	int		fromlen;
-	int		net_socket;
-	int		protocol;
-	int		err;
+	int32_t 	fromlen;
+	int32_t 	net_socket;
+	int32_t 	protocol;
+	int32_t 	err;
 
 	if (NET_GetLoopPacket (sock, net_from, net_message))
 		return true;
@@ -319,11 +319,11 @@ bool	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
 
 //=============================================================================
 
-void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
+void NET_SendPacket (netsrc_t sock, int32_t length, void *data, netadr_t to)
 {
-	int		ret;
+	int32_t 	ret;
 	struct sockaddr	addr;
-	int		net_socket;
+	int32_t 	net_socket;
 
 	if ( to.type == NA_LOOPBACK )
 	{
@@ -352,7 +352,7 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 
 	if (ret == -1)
 	{
-		int err = WSAGetLastError();
+		int32_t err = WSAGetLastError();
 
 		// wouldblock is silent
 		if (err == WSAEWOULDBLOCK)
@@ -392,13 +392,13 @@ void NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to)
 NET_Socket
 ====================
 */
-int NET_IPSocket (char *net_interface, int port)
+int32_t NET_IPSocket (char *net_interface, int32_t port)
 {
-	int					newsocket;
+	int32_t 				newsocket;
 	struct sockaddr_in	address;
 	u_long		 		_true = 1;
-	int					i = 1;
-	int					err;
+	int32_t 				i = 1;
+	int32_t 				err;
 
 	if ((newsocket = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
 	{
@@ -430,7 +430,7 @@ int NET_IPSocket (char *net_interface, int port)
 	if (port == PORT_ANY)
 		address.sin_port = 0;
 	else
-		address.sin_port = htons((short)port);
+		address.sin_port = htons((int16_t)port);
 
 	address.sin_family = AF_INET;
 
@@ -453,8 +453,8 @@ NET_OpenIP
 void NET_OpenIP (void)
 {
 	cvar_t	*ip;
-	int		port;
-	int		dedicated;
+	int32_t 	port;
+	int32_t 	dedicated;
 
 	ip = Cvar_Get ("ip", "localhost", CVAR_NOSET);
 
@@ -505,7 +505,7 @@ A single player game will only use the loopback code
 */
 void	NET_Config (bool multiplayer)
 {
-	int		i;
+	int32_t 	i;
 	static	bool	old_config;
 
 	if (old_config == multiplayer)
@@ -532,12 +532,12 @@ void	NET_Config (bool multiplayer)
 }
 
 // sleeps msec or until net socket is ready
-void NET_Sleep(int msec)
+void NET_Sleep(int32_t msec)
 {
     struct timeval timeout;
 	fd_set	fdset;
 	extern cvar_t *dedicated;
-	int i;
+	int32_t i;
 
 	if (!dedicated || !dedicated->value)
 		return; // we're not a server, just run full speed
@@ -567,7 +567,7 @@ NET_Init
 void NET_Init (void)
 {
 	WORD	wVersionRequested; 
-	int		r;
+	int32_t 	r;
 
 	wVersionRequested = MAKEWORD(1, 1); 
 
@@ -604,7 +604,7 @@ NET_ErrorString
 */
 char *NET_ErrorString (void)
 {
-	int		code;
+	int32_t 	code;
 
 	code = WSAGetLastError ();
 	switch (code)

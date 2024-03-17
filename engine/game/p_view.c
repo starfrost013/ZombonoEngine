@@ -559,7 +559,7 @@ void P_FallingDamage (edict_t *ent)
 			damage = 1;
 		VectorSet (dir, 0, 0, 1);
 
-		if (!((int)gameflags->value & GF_NO_FALLING) )
+		if (!((int32_t)gameflags->value & GF_NO_FALLING) )
 			T_Damage (ent, world, world, dir, ent->s.origin, vec3_origin, damage, 0, 0, MOD_FALLING);
 	}
 	else
@@ -657,7 +657,7 @@ void P_WorldEffects (void)
 		{
 			current_player->air_finished = level.time + 10;
 
-			if (((int)(current_client->breather_framenum - level.framenum) % 25) == 0)
+			if (((int32_t)(current_client->breather_framenum - level.framenum) % 25) == 0)
 			{
 				if (!current_client->breather_sound)
 					gi.sound (current_player, CHAN_AUTO, gi.soundindex("player/u_breath1.wav"), 1, ATTN_NORM, 0);
@@ -802,7 +802,7 @@ void G_SetClientEvent (edict_t *ent)
 
 	if ( ent->groundentity && xyspeed > 225)
 	{
-		if ( (int)(current_client->bobtime+bobmove) != bobcycle )
+		if ( (int32_t)(current_client->bobtime+bobmove) != bobcycle )
 			ent->s.event = EV_FOOTSTEP;
 	}
 }
@@ -1033,7 +1033,7 @@ void ClientEndServerFrame (edict_t *ent)
 	if (current_client->ps.pmove.pm_flags & PMF_DUCKED)
 		bobtime *= 4;
 
-	bobcycle = (int)bobtime;
+	bobcycle = (int32_t)bobtime;
 	bobfracsin = fabs(sin(bobtime*M_PI));
 
 	// detect hitting the floor

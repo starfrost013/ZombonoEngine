@@ -118,7 +118,7 @@ Dumps the current net message, prefixed by the length
 */
 void CL_WriteDemoMessage (void)
 {
-	int		len, swlen;
+	int32_t 	len, swlen;
 
 	// the first eight bytes are just packet sequencing stuff
 	len = net_message.cursize-8;
@@ -137,7 +137,7 @@ stop recording a demo
 */
 void CL_Stop_f (void)
 {
-	int		len;
+	int32_t 	len;
 
 	if (!cls.demorecording)
 	{
@@ -168,8 +168,8 @@ void CL_Record_f (void)
 	char	name[MAX_OSPATH];
 	char	buf_data[MAX_MSGLEN];
 	sizebuf_t	buf;
-	int		i;
-	int		len;
+	int32_t 	i;
+	int32_t 	len;
 	entity_state_t	*ent;
 	entity_state_t	nullstate;
 
@@ -299,22 +299,22 @@ void Cmd_ForwardToServer (void)
 	}
 
 	MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-	SZ_Print (&cls.netchan.message, cmd);
+	SZ_Print32_t (&cls.netchan.message, cmd);
 	if (Cmd_Argc() > 1)
 	{
-		SZ_Print (&cls.netchan.message, " ");
-		SZ_Print (&cls.netchan.message, Cmd_Args());
+		SZ_Print32_t (&cls.netchan.message, " ");
+		SZ_Print32_t (&cls.netchan.message, Cmd_Args());
 	}
 }
 
 void CL_Setenv_f( void )
 {
-	int argc = Cmd_Argc();
+	int32_t argc = Cmd_Argc();
 
 	if ( argc > 2 )
 	{
 		char buffer[1000];
-		int i;
+		int32_t i;
 
 		strcpy( buffer, Cmd_Argv(1) );
 		strcat( buffer, "=" );
@@ -360,7 +360,7 @@ void CL_ForwardToServer_f (void)
 	if (Cmd_Argc() > 1)
 	{
 		MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-		SZ_Print (&cls.netchan.message, Cmd_Args());
+		SZ_Print32_t (&cls.netchan.message, Cmd_Args());
 	}
 }
 
@@ -426,7 +426,7 @@ connect.
 void CL_SendConnectPacket (void)
 {
 	netadr_t	adr;
-	int		port;
+	int32_t 	port;
 
 	if (!NET_StringToAdr (cls.servername, &adr))
 	{
@@ -440,7 +440,7 @@ void CL_SendConnectPacket (void)
 	port = Cvar_VariableValue ("qport");
 	userinfo_modified = false;
 
-	Netchan_OutOfBandPrint (NS_CLIENT, adr, "connect %i %i %i \"%s\"\n",
+	Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, "connect %i %i %i \"%s\"\n",
 		PROTOCOL_VERSION, port, cls.challenge, Cvar_Userinfo() );
 }
 
@@ -487,7 +487,7 @@ void CL_CheckForResend (void)
 
 	Com_Printf ("Connecting to %s...\n", cls.servername);
 
-	Netchan_OutOfBandPrint (NS_CLIENT, adr, "getchallenge\n");
+	Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, "getchallenge\n");
 }
 
 
@@ -540,7 +540,7 @@ CL_Rcon_f
 void CL_Rcon_f (void)
 {
 	char	message[1024];
-	int		i;
+	int32_t 	i;
 	netadr_t	to;
 
 	if (!rcon_client_password->string)
@@ -586,7 +586,7 @@ void CL_Rcon_f (void)
 			to.port = BigShort (PORT_SERVER);
 	}
 	
-	NET_SendPacket (NS_CLIENT, (int)strlen(message)+1, message, to);
+	NET_SendPacket (NS_CLIENT, (int32_t)strlen(message)+1, message, to);
 }
 
 
@@ -623,14 +623,14 @@ This is also called on Com_Error, so it shouldn't cause any errors
 */
 void CL_Disconnect (void)
 {
-	byte	final[32];
+	uint8_t	final[32];
 
 	if (cls.state == ca_disconnected)
 		return;
 
 	if (cl_timedemo && cl_timedemo->value)
 	{
-		int	time;
+		int32_t time;
 		
 		time = Sys_Milliseconds () - cl.timedemo_start;
 		if (time > 0)
@@ -650,9 +650,9 @@ void CL_Disconnect (void)
 	// send a disconnect message to the server
 	final[0] = clc_stringcmd;
 	strcpy ((char *)final+1, "disconnect");
-	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
-	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
-	Netchan_Transmit (&cls.netchan, (int)strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int32_t)strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int32_t)strlen(final), final);
+	Netchan_Transmit (&cls.netchan, (int32_t)strlen(final), final);
 
 	CL_ClearState ();
 
@@ -683,7 +683,7 @@ Contents allows \n escape character
 void CL_Packet_f (void)
 {
 	char	send[2048];
-	int		i, l;
+	int32_t 	i, l;
 	char	*in, *out;
 	netadr_t	adr;
 
@@ -707,7 +707,7 @@ void CL_Packet_f (void)
 	out = send+4;
 	send[0] = send[1] = send[2] = send[3] = (char)0xff;
 
-	l = (int)strlen (in);
+	l = (int32_t)strlen (in);
 	for (i=0 ; i<l ; i++)
 	{
 		if (in[i] == '\\' && in[i+1] == 'n')
@@ -727,7 +727,7 @@ void CL_Packet_f (void)
 =================
 CL_Changing_f
 
-Just sent as a hint to the client that they should
+Just sent as a hint32_t to the client that they should
 drop to full console
 =================
 */
@@ -804,7 +804,7 @@ CL_PingServers_f
 */
 void CL_PingServers_f (void)
 {
-	int			i;
+	int32_t 		i;
 	netadr_t	adr;
 	char		name[32];
 	char		*adrstring;
@@ -820,7 +820,7 @@ void CL_PingServers_f (void)
 	{
 		adr.type = NA_BROADCAST;
 		adr.port = BigShort(PORT_SERVER);
-		Netchan_OutOfBandPrint (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
+		Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
 	}
 	// send a packet to each address book entry
 	for (i=0 ; i<16 ; i++)
@@ -838,7 +838,7 @@ void CL_PingServers_f (void)
 		}
 		if (!adr.port)
 			adr.port = BigShort(PORT_SERVER);
-		Netchan_OutOfBandPrint (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
+		Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
 	}
 }
 
@@ -852,7 +852,7 @@ Load or download any custom player skins and models
 */
 void CL_Skins_f (void)
 {
-	int		i;
+	int32_t 	i;
 
 	for (i=0 ; i<MAX_CLIENTS ; i++)
 	{
@@ -925,7 +925,7 @@ void CL_ConnectionlessPacket (void)
 		Cbuf_AddText ("\n");
 		return;
 	}
-	// print command from somewhere
+	// print32_t command from somewhere
 	if (!strcmp(c, "print"))
 	{
 		s = MSG_ReadString (&net_message);
@@ -936,7 +936,7 @@ void CL_ConnectionlessPacket (void)
 	// ping from somewhere
 	if (!strcmp(c, "ping"))
 	{
-		Netchan_OutOfBandPrint (NS_CLIENT, net_from, "ack");
+		Netchan_OutOfBandPrint32_t (NS_CLIENT, net_from, "ack");
 		return;
 	}
 
@@ -951,7 +951,7 @@ void CL_ConnectionlessPacket (void)
 	// echo request from server
 	if (!strcmp(c, "echo"))
 	{
-		Netchan_OutOfBandPrint (NS_CLIENT, net_from, "%s", Cmd_Argv(1) );
+		Netchan_OutOfBandPrint32_t (NS_CLIENT, net_from, "%s", Cmd_Argv(1) );
 		return;
 	}
 
@@ -988,7 +988,7 @@ void CL_ReadPackets (void)
 		//
 		// remote command packet
 		//
-		if (*(int *)net_message.data == -1)
+		if (*(int32_t *)net_message.data == -1)
 		{
 			CL_ConnectionlessPacket ();
 			continue;
@@ -1079,7 +1079,7 @@ CL_Userinfo_f
 void CL_Userinfo_f (void)
 {
 	Com_Printf ("User info settings:\n");
-	Info_Print (Cvar_Userinfo());
+	Info_Print32_t (Cvar_Userinfo());
 }
 
 /*
@@ -1097,12 +1097,12 @@ void CL_Snd_Restart_f (void)
 	CL_RegisterSounds ();
 }
 
-int precache_check; // for autodownload of precache items
-int precache_spawncount;
-int precache_tex;
-int precache_model_skin;
+int32_t precache_check; // for autodownload of precache items
+int32_t precache_spawncount;
+int32_t precache_tex;
+int32_t precache_model_skin;
 
-byte *precache_model; // used for skin checking in alias models
+uint8_t *precache_model; // used for skin checking in alias models
 
 #define PLAYER_MULT 5
 
@@ -1229,7 +1229,7 @@ void CL_RequestNextDownload (void)
 	if (precache_check >= CS_PLAYERSKINS && precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) {
 		if (allow_download_players->value) {
 			while (precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) {
-				int i, n;
+				int32_t i, n;
 				char model[MAX_QPATH], skin[MAX_QPATH], *p;
 
 				i = (precache_check - CS_PLAYERSKINS)/PLAYER_MULT;
@@ -1321,7 +1321,7 @@ void CL_RequestNextDownload (void)
 	if (precache_check > ENV_CNT && precache_check < TEXTURE_CNT) {
 		if (allow_download->value && allow_download_maps->value) {
 			while (precache_check < TEXTURE_CNT) {
-				int n = precache_check++ - ENV_CNT - 1;
+				int32_t n = precache_check++ - ENV_CNT - 1;
 
 				if (n & 1)
 					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga", 
@@ -1344,7 +1344,7 @@ void CL_RequestNextDownload (void)
 	// confirm existance of textures, download any that don't exist
 	if (precache_check == TEXTURE_CNT+1) {
 		// from qcommon/cmodel.c
-		extern int			numtexinfo;
+		extern int32_t 		numtexinfo;
 		extern mapsurface_t	map_surfaces[];
 
 		if (allow_download->value && allow_download_maps->value) {
@@ -1606,11 +1606,11 @@ cheatvar_t	cheatvars[] = {
 	{NULL, NULL}
 };
 
-int		numcheatvars;
+int32_t 	numcheatvars;
 
 void CL_FixCvarCheats (void)
 {
-	int			i;
+	int32_t 		i;
 	cheatvar_t	*var;
 
 	if ( !strcmp(cl.configstrings[CS_MAXCLIENTS], "1") 
@@ -1678,10 +1678,10 @@ CL_Frame
 
 ==================
 */
-void CL_Frame (int msec)
+void CL_Frame (int32_t msec)
 {
-	static int	extratime;
-	static int  lasttimecalled;
+	static int32_t extratime;
+	static int32_t  lasttimecalled;
 
 	if (dedicated->value)
 		return;
@@ -1762,7 +1762,7 @@ void CL_Frame (int msec)
 			}
 			else
 			{
-				int now = Sys_Milliseconds();
+				int32_t now = Sys_Milliseconds();
 
 				if ( log_stats_file )
 					fprintf( log_stats_file, "%d\n", now - lasttimecalled );

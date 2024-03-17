@@ -89,7 +89,7 @@ bool CanDamage (edict_t *targ, edict_t *inflictor)
 Killed
 ============
 */
-void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point)
 {
 	if (targ->health < -999)
 		targ->health = -999;
@@ -144,7 +144,7 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 SpawnDamage
 ================
 */
-void SpawnDamage (int type, vec3_t origin, vec3_t normal, int damage)
+void SpawnDamage (int32_t type, vec3_t origin, vec3_t normal, int32_t damage)
 {
 	if (damage > 255)
 		damage = 255;
@@ -181,7 +181,7 @@ dflags		these flags are used to control how T_Damage works
 	DAMAGE_NO_PROTECTION	kills godmode, armor, everything
 ============
 */
-static int CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int damage, int dflags)
+static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32_t damage, int32_t dflags)
 {
 	gclient_t	*client;
 	int			save;
@@ -265,7 +265,7 @@ static int CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int damag
 	return save;
 }
 
-static int CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int damage, int te_sparks, int dflags)
+static int32_t CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int32_t damage, int32_t te_sparks, int32_t dflags)
 {
 	gclient_t	*client;
 	int			save;
@@ -376,7 +376,7 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 	}
 }
 
-void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
+void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int32_t damage, int32_t knockback, int32_t dflags, int32_t mod)
 {
 	gclient_t	*client;
 	int			take;
@@ -402,7 +402,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		{
 			if (gamemode->value != GAMEMODE_COOP
 				&& gamemode->value != GAMEMODE_WAVES
-				&& !((int)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
+				&& !((int32_t)gameflags->value & GF_ITEM_FRIENDLY_FIRE))
 			{
 				if ((targ->team) & (attacker->team))
 				{
@@ -414,7 +414,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		{
 			if (targ->team == attacker->team)
 			{
-				if ((int)(gameflags->value) & GF_NO_FRIENDLY_FIRE)
+				if ((int32_t)(gameflags->value) & GF_NO_FRIENDLY_FIRE)
 					damage = 0;
 				else
 					mod |= MOD_FRIENDLY_FIRE;
@@ -571,7 +571,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 T_RadiusDamage
 ============
 */
-void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int mod)
+void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore, float radius, int32_t mod)
 {
 	float	points;
 	edict_t	*ent = NULL;
@@ -596,7 +596,7 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 			if (CanDamage (ent, inflictor))
 			{
 				VectorSubtract (ent->s.origin, inflictor->s.origin, dir);
-				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int32_t)points, (int32_t)points, DAMAGE_RADIUS, mod);
 			}
 		}
 	}

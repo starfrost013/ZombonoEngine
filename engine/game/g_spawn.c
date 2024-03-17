@@ -172,7 +172,7 @@ char *ED_NewString (char *string)
 	char	*newb, *new_p;
 	int		i,l;
 	
-	l = (int)strlen(string) + 1;
+	l = (int32_t)strlen(string) + 1;
 
 	newb = gi.TagMalloc (l, TAG_LEVEL);
 
@@ -209,7 +209,7 @@ in an edict
 void ED_ParseField (char *key, char *value, edict_t *ent)
 {
 	field_t	*f;
-	byte	*b;
+	uint8_t* b;
 	float	v;
 	vec3_t	vec;
 
@@ -218,9 +218,9 @@ void ED_ParseField (char *key, char *value, edict_t *ent)
 		if (!(f->flags & FFL_NOSPAWN) && !Q_stricmp(f->name, key))
 		{	// found it
 			if (f->flags & FFL_SPAWNTEMP)
-				b = (byte *)&st;
+				b = (uint8_t *)&st;
 			else
-				b = (byte *)ent;
+				b = (uint8_t *)ent;
 
 			switch (f->type)
 			{
@@ -234,7 +234,7 @@ void ED_ParseField (char *key, char *value, edict_t *ent)
 				((float *)(b+f->ofs))[2] = vec[2];
 				break;
 			case F_INT:
-				*(int *)(b+f->ofs) = atoi(value);
+				*(int32_t *)(b+f->ofs) = atoi(value);
 				break;
 			case F_FLOAT:
 				*(float *)(b+f->ofs) = atof(value);
@@ -559,7 +559,7 @@ Only used for the world.
 "skyrotate"	speed of rotation in degrees/second
 "sounds"	music cd track number
 "gravity"	800 is default gravity
-"message"	text to print at user logon
+"message"	text to print32_t at user logon
 */
 void SP_worldspawn (edict_t *ent)
 {
@@ -601,7 +601,7 @@ void SP_worldspawn (edict_t *ent)
 
 	gi.configstring (CS_CDTRACK, va("%i", ent->sounds) );
 
-	gi.configstring (CS_MAXCLIENTS, va("%i", (int)(maxclients->value) ) );
+	gi.configstring (CS_MAXCLIENTS, va("%i", (int32_t)(maxclients->value) ) );
 
 	// status bar program
 

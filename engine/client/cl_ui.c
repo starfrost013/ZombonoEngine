@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Globals
 // see client.h for explanations on what these are 
-int			num_uis;																					
+int32_t 		num_uis;																					
 ui_t		ui_list[MAX_UIS];
 bool	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
@@ -33,7 +33,7 @@ bool	ui_active = false;																				// This is so we know to turn on the 
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
-bool		UI_AddControl(ui_t* ui, char* name, int position_x, int position_y, int size_x, int size_y);// Shared function that adds controls.
+bool		UI_AddControl(ui_t* ui, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
 // Draw methods
 void			UI_DrawText(ui_control_t* text);															// Draws a text control.
@@ -99,7 +99,7 @@ bool UI_AddUI(char* name, bool(*on_create)())
 // return a pointer to a UI
 ui_t* UI_GetUI(char* name)
 {
-	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
@@ -124,7 +124,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 		return NULL; 
 	}
 
-	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+	for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 	{
 		ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
@@ -137,7 +137,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 	return NULL;
 }
 
-bool UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y, int size_x, int size_y)
+bool UI_AddControl(ui_t* ui_ptr, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y)
 {
 	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
@@ -158,7 +158,7 @@ bool UI_AddControl(ui_t* ui_ptr, char* name, int position_x, int position_y, int
 	return true;
 }
 
-bool UI_AddText(char* ui_name, char* name, char* text, int position_x, int position_y)
+bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32_t position_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -184,7 +184,7 @@ bool UI_AddText(char* ui_name, char* name, char* text, int position_x, int posit
 	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
 }
 
-bool UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, int position_y, int size_x, int size_y)
+bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -210,7 +210,7 @@ bool UI_AddImage(char* ui_name, char* name, char* image_path, int position_x, in
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int value_min, int value_max)
+bool UI_AddSlider(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -229,7 +229,7 @@ bool UI_AddSlider(char* ui_name, char* name, int position_x, int position_y, int
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, bool checked)
+bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, bool checked)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -247,7 +247,7 @@ bool UI_AddCheckbox(char* ui_name, char* name, int position_x, int position_y, i
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddBox(char* ui_name, char* name, int position_x, int position_y, int size_x, int size_y, int r, int g, int b, int a)
+bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -371,7 +371,7 @@ void UI_Clear(char* ui_name)
 
 	// clear every control but not the ui's info
 	// we clear every control, not just the ones that exist currently, in case more controls existed at some point (such as with Leaderboard UI)
-	for (int ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+	for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 	{
 		ui_control_t* ui_control = &ui_ptr->controls[ui_control_num];
 		memset(ui_control, 0x00, sizeof(ui_control_t));
@@ -384,7 +384,7 @@ void UI_Clear(char* ui_name)
 // Resets all UIs
 void UI_Reset()
 {
-	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
@@ -411,7 +411,7 @@ void UI_Draw()
 	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
-	int size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
 	Text_Draw(cl_system_font->string, viddef.width - size_x, 0, time_str);
@@ -421,14 +421,14 @@ void UI_Draw()
 
 #endif
 
-	for (int ui_num = 0; ui_num < num_uis; ui_num++)
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		// draw the current UI if enabled (*ACTIVE* means it's receiving input events0
 		ui_t* current_ui = &ui_list[ui_num];
 
 		if (current_ui->enabled)
 		{
-			for (int ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
+			for (int32_t ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
 				ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
 				

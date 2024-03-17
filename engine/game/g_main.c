@@ -29,7 +29,7 @@ spawn_temp_t	st;
 
 int	sm_meat_index;
 int	snd_fry;
-int meansOfDeath;
+int32_t meansOfDeath;
 
 edict_t		*g_edicts;
 
@@ -229,7 +229,7 @@ void EndMatch (void)
 	static const char *seps = " ,\n\r";
 
 	// stay on same level flag
-	if ((int)gameflags->value & GF_SAME_LEVEL)
+	if ((int32_t)gameflags->value & GF_SAME_LEVEL)
 	{
 		BeginIntermission (CreateTargetChangeLevel (level.mapname) );
 		return;
@@ -294,7 +294,7 @@ CheckNeedPass
 */
 void CheckNeedPass (void)
 {
-	int need;
+	int32_t need;
 
 	// if password or spectator_password has changed, update needpass
 	// as needed
@@ -352,10 +352,10 @@ void CheckTDMRules()
 		{
 			char text[TIME_BUF_LENGTH] = { 0 };
 
-			int total_seconds = timelimit->value - (int)level.time;
+			int32_t total_seconds = timelimit->value - (int32_t)level.time;
 			// convert remaining time to integer mm:ss
-			int seconds = (int)(total_seconds % 60);
-			int minutes = (int)(total_seconds / 60);
+			int32_t seconds = (int32_t)(total_seconds % 60);
+			int32_t minutes = (int32_t)(total_seconds / 60);
 
 			if (seconds < 10)
 			{
@@ -387,7 +387,7 @@ void CheckTDMRules()
 	{
 		for (i = 0; i < maxclients->value; i++)
 		{
-			if ((int)gameflags->value & GF_INDIVIDUAL_FRAGLIMIT)
+			if ((int32_t)gameflags->value & GF_INDIVIDUAL_FRAGLIMIT)
 			{
 				cl = game.clients + i;
 				if (!g_edicts[i + 1].inuse)

@@ -43,7 +43,7 @@ NULL will be returned if the end of the list is reached.
 
 =============
 */
-edict_t *G_Find (edict_t *from, int fieldofs, char *match)
+edict_t *G_Find (edict_t *from, int32_t fieldofs, char *match)
 {
 	char	*s;
 
@@ -56,7 +56,7 @@ edict_t *G_Find (edict_t *from, int fieldofs, char *match)
 	{
 		if (!from->inuse)
 			continue;
-		s = *(char **) ((byte *)from + fieldofs);
+		s = *(char **) ((uint8_t *)from + fieldofs);
 		if (!s)
 			continue;
 		if (!Q_stricmp (s, match))
@@ -196,7 +196,7 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	
 	
 //
-// print the message
+// print32_t the message
 //
 	if ((ent->message) && !(activator->svflags & SVF_MONSTER))
 	{
@@ -301,7 +301,7 @@ char	*vtos (vec3_t v)
 	s = str[index];
 	index = (index + 1)&7;
 
-	Com_sprintf (s, 32, "(%i %i %i)", (int)v[0], (int)v[1], (int)v[2]);
+	Com_sprintf (s, 32, "(%i %i %i)", (int32_t)v[0], (int32_t)v[1], (int32_t)v[2]);
 
 	return s;
 }
@@ -345,7 +345,7 @@ float vectoyaw (vec3_t vec)
 	} 
 	else
 	{
-		yaw = (int) (atan2(vec[YAW], vec[PITCH]) * 180 / M_PI);
+		yaw = (int32_t) (atan2(vec[YAW], vec[PITCH]) * 180 / M_PI);
 		if (yaw < 0)
 			yaw += 360;
 	}
@@ -370,7 +370,7 @@ void vectoangles (vec3_t value1, vec3_t angles)
 	else
 	{
 		if (value1[0])
-			yaw = (int) (atan2(value1[1], value1[0]) * 180 / M_PI);
+			yaw = (int32_t) (atan2(value1[1], value1[0]) * 180 / M_PI);
 		else if (value1[1] > 0)
 			yaw = 90;
 		else
@@ -379,7 +379,7 @@ void vectoangles (vec3_t value1, vec3_t angles)
 			yaw += 360;
 
 		forward = sqrt (value1[0]*value1[0] + value1[1]*value1[1]);
-		pitch = (int) (atan2(value1[2], forward) * 180 / M_PI);
+		pitch = (int32_t) (atan2(value1[2], forward) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -393,7 +393,7 @@ char *G_CopyString (char *in)
 {
 	char	*out;
 	
-	out = gi.TagMalloc ((int)strlen(in)+1, TAG_LEVEL);
+	out = gi.TagMalloc ((int32_t)strlen(in)+1, TAG_LEVEL);
 	strcpy (out, in);
 	return out;
 }
@@ -423,7 +423,7 @@ edict_t *G_Spawn (void)
 	int			i;
 	edict_t		*e;
 
-	e = &g_edicts[(int)maxclients->value+1];
+	e = &g_edicts[(int32_t)maxclients->value+1];
 	for ( i=maxclients->value+1 ; i<globals.num_edicts ; i++, e++)
 	{
 		// the first couple seconds of server time can involve a lot of
@@ -568,13 +568,13 @@ bool KillBox (edict_t *ent)
 //
 // G_CountClients: Counts the number of clients currently playing the game, regardless of their status (alive, dead, spectating, etc)
 //
-int G_CountClients()
+int32_t G_CountClients()
 {
 	edict_t* client_edict;
 	int		 real_client_count = 0;
 
 	// count clients
-	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	for (int32_t client_num = 0; client_num < game.maxclients; client_num++)
 	{
 		// is the client actually being used
 		client_edict = g_edicts + client_num + 1; // client edicts are always at the start???
@@ -592,7 +592,7 @@ team_scores_t G_TDMGetScores()
 
 	team_scores_t team_scores = { 0 };
 
-	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	for (int32_t client_num = 0; client_num < game.maxclients; client_num++)
 	{
 		client_edict = g_edicts + client_num + 1;
 

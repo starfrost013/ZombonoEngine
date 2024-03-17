@@ -79,27 +79,27 @@ typedef struct sizebuf_s
 {
 	bool	allowoverflow;	// if false, do a Com_Error
 	bool	overflowed;		// set to true if the buffer size failed
-	byte	*data;
-	int		maxsize;
-	int		cursize;
-	int		readcount;
+	uint8_t* data;
+	int32_t 	maxsize;
+	int32_t 	cursize;
+	int32_t 	readcount;
 } sizebuf_t;
 
-void SZ_Init (sizebuf_t *buf, byte *data, int length);
+void SZ_Init (sizebuf_t *buf, uint8_t *data, int32_t length);
 void SZ_Clear (sizebuf_t *buf);
-void *SZ_GetSpace (sizebuf_t *buf, int length);
-void SZ_Write (sizebuf_t *buf, void *data, int length);
-void SZ_Print (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
+void *SZ_GetSpace (sizebuf_t *buf, int32_t length);
+void SZ_Write (sizebuf_t *buf, void *data, int32_t length);
+void SZ_Print32_t (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
 
 //============================================================================
 
 struct usercmd_s;
 struct entity_state_s;
 
-void MSG_WriteChar (sizebuf_t *sb, int c);
-void MSG_WriteByte (sizebuf_t *sb, int c);
-void MSG_WriteShort (sizebuf_t *sb, int c);
-void MSG_WriteInt (sizebuf_t *sb, int c);
+void MSG_WriteChar (sizebuf_t *sb, int32_t c);
+void MSG_WriteByte (sizebuf_t *sb, int32_t c);
+void MSG_WriteShort (sizebuf_t *sb, int32_t c);
+void MSG_WriteInt (sizebuf_t *sb, int32_t c);
 void MSG_WriteFloat (sizebuf_t *sb, float f);
 void MSG_WriteString (sizebuf_t *sb, char *s);
 void MSG_WriteCoord (sizebuf_t *sb, float f);
@@ -113,10 +113,10 @@ void MSG_WriteDir (sizebuf_t *sb, vec3_t vector);
 
 void	MSG_BeginReading (sizebuf_t *sb);
 
-int		MSG_ReadChar (sizebuf_t *sb);
-int		MSG_ReadByte (sizebuf_t *sb);
-int		MSG_ReadShort (sizebuf_t *sb);
-int		MSG_ReadLong (sizebuf_t *sb);
+int32_t 	MSG_ReadChar (sizebuf_t *sb);
+int32_t 	MSG_ReadByte (sizebuf_t *sb);
+int32_t 	MSG_ReadShort (sizebuf_t *sb);
+int32_t 	MSG_ReadLong (sizebuf_t *sb);
 float	MSG_ReadFloat (sizebuf_t *sb);
 char	*MSG_ReadString (sizebuf_t *sb);
 char	*MSG_ReadStringLine (sizebuf_t *sb);
@@ -129,42 +129,42 @@ void	MSG_ReadDeltaUsercmd (sizebuf_t* msg_read, usercmd_t* from, usercmd_t* move
 
 void	MSG_ReadDir (sizebuf_t *sb, vec3_t vector);
 
-void	MSG_ReadData (sizebuf_t *sb, void *buffer, int size);
+void	MSG_ReadData (sizebuf_t *sb, void *buffer, int32_t size);
 
 //============================================================================
 
 extern	bool		bigendien;
 
-extern	short	BigShort (short l);
-extern	short	LittleShort (short l);
-extern	int		BigInt (int l);
-extern	int		LittleInt (int l);
+extern	short	BigShort (int16_t l);
+extern	short	LittleShort (int16_t l);
+extern	int32_t 	BigInt (int32_t l);
+extern	int32_t 	LittleInt (int32_t l);
 extern	float	BigFloat (float l);
 extern	float	LittleFloat (float l);
 
 //============================================================================
 
 
-int	COM_Argc (void);
-char *COM_Argv (int arg);	// range and null checked
-void COM_ClearArgv (int arg);
-int COM_CheckParm (char *parm);
+int32_t COM_Argc (void);
+char *COM_Argv (int32_t arg);	// range and null checked
+void COM_ClearArgv (int32_t arg);
+int32_t COM_CheckParm (char *parm);
 void COM_AddParm (char *parm);
 
-void COM_InitArgv (int argc, char **argv);
+void COM_InitArgv (int32_t argc, char **argv);
 
 char *CopyString (char *in);
 
 //============================================================================
 
-void Info_Print (char *s);
+void Info_Print32_t (char *s);
 
 /* crc.h */
 
-void CRC_Init(unsigned short *crcvalue);
-void CRC_ProcessByte(unsigned short *crcvalue, byte data);
-unsigned short CRC_Value(unsigned short crcvalue);
-unsigned short CRC_Block (byte *start, int count);
+void CRC_Init(uint16_t *crcvalue);
+void CRC_ProcessByte(uint16_t *crcvalue, uint8_t data);
+uint16_t CRC_Value(uint16_t crcvalue);
+uint16_t CRC_Block (uint8_t *start, int32_t count);
 
 /*
 ==============================================================
@@ -294,7 +294,7 @@ typedef enum clc_ops_e
 #define	SND_VOLUME		(1<<0)		// a byte
 #define	SND_ATTENUATION	(1<<1)		// a byte
 #define	SND_POS			(1<<2)		// three coordinates
-#define	SND_ENT			(1<<3)		// a short 0-2: channel, 3-12: entity
+#define	SND_ENT			(1<<3)		// a int16_t 0-2: channel, 3-12: entity
 #define	SND_OFFSET		(1<<4)		// a byte, msec offset from frame start
 
 #define DEFAULT_SOUND_PACKET_VOLUME	1.0
@@ -378,7 +378,7 @@ void Cbuf_InsertText (char *text);
 // inserted at the beginning of the buffer, before any remaining unexecuted
 // commands.
 
-void Cbuf_ExecuteText (int exec_when, char *text);
+void Cbuf_ExecuteText (int32_t exec_when, char *text);
 // this can be used in place of either Cbuf_AddText or Cbuf_InsertText
 
 void Cbuf_AddEarlyCommands (bool clear);
@@ -428,8 +428,8 @@ char 	*Cmd_CompleteCommand (char *partial);
 // attempts to match a partial command for automatic command line completion
 // returns NULL if nothing fits
 
-int		Cmd_Argc (void);
-char	*Cmd_Argv (int arg);
+int32_t 	Cmd_Argc (void);
+char	*Cmd_Argv (int32_t arg);
 char	*Cmd_Args (void);
 // The functions that execute commands get their parameters with these
 // functions. Cmd_Argv () will return an empty string, not a NULL
@@ -472,7 +472,7 @@ interface from being ambiguous.
 
 extern	cvar_t	*cvar_vars;
 
-cvar_t *Cvar_Get (char *var_name, char *value, int flags);
+cvar_t *Cvar_Get (char *var_name, char *value, int32_t flags);
 // creates the variable if it doesn't exist, or returns the existing one
 // if it exists, the value will not be changed, but flags will be ORed in
 // that allows variables to be unarchived without needing bitflags
@@ -483,7 +483,7 @@ cvar_t 	*Cvar_Set (char *var_name, char *value);
 cvar_t *Cvar_ForceSet (char *var_name, char *value);
 // will set the variable even if NOSET or LATCH
 
-cvar_t 	*Cvar_FullSet (char *var_name, char *value, int flags);
+cvar_t 	*Cvar_FullSet (char *var_name, char *value, int32_t flags);
 
 void	Cvar_SetValue (char *var_name, float value);
 // expands value to a string and calls Cvar_Set
@@ -504,7 +504,7 @@ void	Cvar_GetLatchedVars (void);
 bool Cvar_Command (void);
 // called by Cmd_ExecuteString when Cmd_Argv(0) doesn't match a known
 // command.  Returns true if the command was a variable reference that
-// was handled. (print or change)
+// was handled. (print32_t or change)
 
 void 	Cvar_WriteVariables (char *path);
 // appends lines containing "set variable value" for all variables
@@ -545,9 +545,9 @@ typedef struct
 {
 	netadrtype_t	type;
 
-	byte	ip[4];
+	uint8_t		ip[4];
 
-	unsigned short	port;
+	uint16_t	port;
 } netadr_t;
 
 void		NET_Init (void);
@@ -556,14 +556,14 @@ void		NET_Shutdown (void);
 void		NET_Config (bool multiplayer);
 
 bool	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message);
-void		NET_SendPacket (netsrc_t sock, int length, void *data, netadr_t to);
+void		NET_SendPacket (netsrc_t sock, int32_t length, void *data, netadr_t to);
 
 bool	NET_CompareAdr (netadr_t a, netadr_t b);
 bool	NET_CompareBaseAdr (netadr_t a, netadr_t b);
 bool	NET_IsLocalAddress (netadr_t adr);
 char		*NET_AdrToString (netadr_t a);
 bool	NET_StringToAdr (char *s, netadr_t *a);
-void		NET_Sleep(int msec);
+void		NET_Sleep(int32_t msec);
 
 //============================================================================
 
@@ -577,46 +577,46 @@ typedef struct
 #pragma once
 	netsrc_t	sock;
 
-	int			dropped;			// between last packet and previous
+	int32_t 		dropped;			// between last packet and previous
 
-	int			last_received;		// for timeouts
-	int			last_sent;			// for retransmits
+	int32_t 		last_received;		// for timeouts
+	int32_t 		last_sent;			// for retransmits
 
 	netadr_t	remote_address;
-	int			qport;				// qport value to write when transmitting
+	int32_t 		qport;				// qport value to write when transmitting
 
 // sequencing variables
-	int			incoming_sequence;
-	int			incoming_acknowledged;
-	int			incoming_reliable_acknowledged;	// single bit
+	int32_t 		incoming_sequence;
+	int32_t 		incoming_acknowledged;
+	int32_t 		incoming_reliable_acknowledged;	// single bit
 
-	int			incoming_reliable_sequence;		// single bit, maintained local
+	int32_t 		incoming_reliable_sequence;		// single bit, maintained local
 
-	int			outgoing_sequence;
-	int			reliable_sequence;			// single bit
-	int			last_reliable_sequence;		// sequence number of last send
+	int32_t 		outgoing_sequence;
+	int32_t 		reliable_sequence;			// single bit
+	int32_t 		last_reliable_sequence;		// sequence number of last send
 
 // reliable staging and holding areas
 	sizebuf_t	message;		// writing buffer to send to server
-	byte		message_buf[MAX_MSGLEN-16];		// leave space for header
+	uint8_t		message_buf[MAX_MSGLEN-16];		// leave space for header
 
 // message is copied to this buffer when it is first transfered
-	int			reliable_length;
-	byte		reliable_buf[MAX_MSGLEN-16];	// unacked reliable message
+	int32_t 		reliable_length;
+	uint8_t		reliable_buf[MAX_MSGLEN-16];	// unacked reliable message
 } netchan_t;
 
 extern	netadr_t	net_from;
 extern	sizebuf_t	net_message;
-extern	byte		net_message_buffer[MAX_MSGLEN];
+extern	uint8_t		net_message_buffer[MAX_MSGLEN];
 
 
 void Netchan_Init (void);
-void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int qport);
+void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int32_t qport);
 
 bool Netchan_NeedReliable (netchan_t *chan);
-void Netchan_Transmit (netchan_t *chan, int length, byte *data);
-void Netchan_OutOfBand (int net_socket, netadr_t adr, int length, byte *data);
-void Netchan_OutOfBandPrint (int net_socket, netadr_t adr, char *format, ...);
+void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data);
+void Netchan_OutOfBand (int32_t net_socket, netadr_t adr, int32_t length, uint8_t *data);
+void Netchan_OutOfBandPrint32_t (int32_t net_socket, netadr_t adr, char *format, ...);
 bool Netchan_Process (netchan_t *chan, sizebuf_t *msg);
 
 bool Netchan_CanReliable (netchan_t *chan);
@@ -636,45 +636,45 @@ CMODEL
 cmodel_t	*CM_LoadMap (char *name, bool clientload, unsigned *checksum);
 cmodel_t	*CM_InlineModel (char *name);	// *1, *2, etc
 
-int			CM_NumClusters (void);
-int			CM_NumInlineModels (void);
+int32_t 		CM_NumClusters (void);
+int32_t 		CM_NumInlineModels (void);
 char		*CM_EntityString (void);
 
 // creates a clipping hull for an arbitrary box
-int			CM_HeadnodeForBox (vec3_t mins, vec3_t maxs);
+int32_t 		CM_HeadnodeForBox (vec3_t mins, vec3_t maxs);
 
 
 // returns an ORed contents mask
-int			CM_PointContents (vec3_t p, int headnode);
-int			CM_TransformedPointContents (vec3_t p, int headnode, vec3_t origin, vec3_t angles);
+int32_t 		CM_PointContents (vec3_t p, int32_t headnode);
+int32_t 		CM_TransformedPointContents (vec3_t p, int32_t headnode, vec3_t origin, vec3_t angles);
 
 trace_t		CM_BoxTrace (vec3_t start, vec3_t end,
 						  vec3_t mins, vec3_t maxs,
-						  int headnode, int brushmask);
+						  int32_t headnode, int32_t brushmask);
 trace_t		CM_TransformedBoxTrace (vec3_t start, vec3_t end,
 						  vec3_t mins, vec3_t maxs,
-						  int headnode, int brushmask,
+						  int32_t headnode, int32_t brushmask,
 						  vec3_t origin, vec3_t angles);
 
-byte		*CM_ClusterPVS (int cluster);
-byte		*CM_ClusterPHS (int cluster);
+uint8_t*	CM_ClusterPVS (int32_t cluster);
+uint8_t*	CM_ClusterPHS (int32_t cluster);
 
-int			CM_PointLeafnum (vec3_t p);
+int32_t 		CM_PointLeafnum (vec3_t p);
 
 // call with topnode set to the headnode, returns with topnode
 // set to the first node that splits the box
-int			CM_BoxLeafnums (vec3_t mins, vec3_t maxs, int *list,
-							int listsize, int *topnode);
+int32_t 		CM_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list,
+							int32_t listsize, int32_t *topnode);
 
-int			CM_LeafContents (int leafnum);
-int			CM_LeafCluster (int leafnum);
-int			CM_LeafArea (int leafnum);
+int32_t 		CM_LeafContents (int32_t leafnum);
+int32_t 		CM_LeafCluster (int32_t leafnum);
+int32_t 		CM_LeafArea (int32_t leafnum);
 
-void		CM_SetAreaPortalState (int portalnum, bool open);
-bool	CM_AreasConnected (int area1, int area2);
+void		CM_SetAreaPortalState (int32_t portalnum, bool open);
+bool		CM_AreasConnected (int32_t area1, int32_t area2);
 
-int			CM_WriteAreaBits (byte *buffer, int area);
-bool	CM_HeadnodeVisible (int headnode, byte *visbits);
+int32_t 		CM_WriteAreaBits (uint8_t *buffer, int32_t area);
+bool		CM_HeadnodeVisible (int32_t headnode, uint8_t *visbits);
 
 void		CM_WritePortalState (FILE *f);
 void		CM_ReadPortalState (FILE *f);
@@ -707,15 +707,15 @@ char	*FS_Gamedir (void);
 char	*FS_NextPath (char *prevpath);
 void	FS_ExecAutoexec (void);
 
-int		FS_FOpenFile (char *filename, FILE **file);
+int32_t 	FS_FOpenFile (char *filename, FILE **file);
 void	FS_FCloseFile (FILE *f);
 // note: this can't be called from another DLL, due to MS libc issues
 
-int		FS_LoadFile (char *path, void **buffer);
+int32_t 	FS_LoadFile (char *path, void **buffer);
 // a null buffer will just return the file length without loading
 // a -1 length is not present
 
-void	FS_Read (void *buffer, int len, FILE *f);
+void	FS_Read (void *buffer, int32_t len, FILE *f);
 // properly handles partial reads
 
 void	FS_FreeFile (void *buffer);
@@ -733,7 +733,7 @@ MISC
 
 
 #define	ERR_FATAL	0		// exit the entire game with a popup window
-#define	ERR_DROP	1		// print to console and disconnect from game
+#define	ERR_DROP	1		// print32_t to console and disconnect from game
 #define	ERR_QUIT	2		// not an error, just a normal exit
 
 #define	EXEC_NOW	0		// don't return until completed
@@ -741,20 +741,20 @@ MISC
 #define	EXEC_APPEND	2		// add to end of the command buffer
 
 #define	PRINT_ALL		0
-#define PRINT_DEVELOPER	1	// only print when "developer 1"
+#define PRINT_DEVELOPER	1	// only print32_t when "developer 1"
 
-void		Com_BeginRedirect (int target, char *buffer, int buffersize, void (*flush));
+void		Com_BeginRedirect (int32_t target, char *buffer, int32_t buffersize, void (*flush));
 void		Com_EndRedirect (void);
 void 		Com_Printf (char *fmt, ...);
 void 		Com_DPrintf (char *fmt, ...);
-void 		Com_Error (int code, char *fmt, ...);
+void 		Com_Error (int32_t code, char *fmt, ...);
 void 		Com_Quit (void);
 
-int			Com_ServerState (void);		// this should have just been a cvar...
-void		Com_SetServerState (int state);
+int32_t 		Com_ServerState (void);		// this should have just been a cvar...
+void		Com_SetServerState (int32_t state);
 
-unsigned	Com_BlockChecksum (void *buffer, int length);
-byte		COM_BlockSequenceCRCByte (byte *base, int length, int sequence);
+unsigned	Com_BlockChecksum (void *buffer, int32_t length);
+uint8_t		COM_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequence);
 
 float	frand(void);	// 0 ti 1
 float	crand(void);	// -1 to 1
@@ -768,25 +768,25 @@ extern	cvar_t	*debug_console;
 extern	FILE *log_stats_file;
 
 // host_speeds times
-extern	int		time_before_game;
-extern	int		time_after_game;
-extern	int		time_before_ref;
-extern	int		time_after_ref;
+extern	int32_t 	time_before_game;
+extern	int32_t 	time_after_game;
+extern	int32_t 	time_before_ref;
+extern	int32_t 	time_after_ref;
 
 void Z_Free (void *ptr);
-void *Z_Malloc (int size);			// returns 0 filled memory
-void *Z_TagMalloc (int size, int tag);
-void Z_FreeTags (int tag);
+void *Z_Malloc (int32_t size);			// returns 0 filled memory
+void *Z_TagMalloc (int32_t size, int32_t tag);
+void Z_FreeTags (int32_t tag);
 
-void Qcommon_Init (int argc, char **argv);
-void Qcommon_Frame (int msec);
+void Qcommon_Init (int32_t argc, char **argv);
+void Qcommon_Frame (int32_t msec);
 void Qcommon_Shutdown (void);
 
 #define NUMVERTEXNORMALS	162
 extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
 
 // this is in the client code, but can be used for debugging from server
-void SCR_DebugGraph (float value, int r, int g, int b, int a);
+void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
 
 /*
@@ -823,13 +823,13 @@ CLIENT / SERVER SYSTEMS
 void CL_Init (void);
 void CL_Drop (void);
 void CL_Shutdown (void);
-void CL_Frame (int msec);
-void Con_Print (char *text);
+void CL_Frame (int32_t msec);
+void Con_Print32_t (char *text);
 void SCR_BeginLoadingPlaque (void);
 
 void SV_Init (void);
 void SV_Shutdown (char *finalmsg, bool reconnect);
-void SV_Frame (int msec);
+void SV_Frame (int32_t msec);
 
 // MUST BE KEPT IN SYNC WITH GAME DLL player_team ENUM!
 // Client and server version of game team enum (temp).

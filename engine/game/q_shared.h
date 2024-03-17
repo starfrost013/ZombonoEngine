@@ -37,10 +37,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdarg.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
-
-typedef unsigned char 		byte;
 
 #ifndef NULL
 #define NULL ((void *)0)
@@ -70,18 +69,18 @@ typedef unsigned char 		byte;
 #define	MAX_ITEMS			256
 #define MAX_GENERAL			(MAX_CLIENTS*2)	// general config strings
 
-// game print flags
+// game print32_t flags
 #define	PRINT_LOW			0		// pickup messages
 #define	PRINT_MEDIUM		1		// death messages
 #define	PRINT_HIGH			2		// critical messages
 #define	PRINT_CHAT			3		// chat messages
 
 #define	ERR_FATAL			0		// exit the entire game with a popup window
-#define	ERR_DROP			1		// print to console and disconnect from game
+#define	ERR_DROP			1		// print32_t to console and disconnect from game
 #define	ERR_DISCONNECT		2		// don't kill server
 
 #define	PRINT_ALL			0
-#define PRINT_DEVELOPER		1		// only print when "developer 1"
+#define PRINT_DEVELOPER		1		// only print32_t when "developer 1"
 #define PRINT_ALERT			2		
 
 
@@ -109,10 +108,6 @@ typedef vec_t vec3_t[3];
 typedef vec_t vec4_t[4];
 typedef vec_t vec5_t[5];
 
-typedef	int	fixed4_t;
-typedef	int	fixed8_t;
-typedef	int	fixed16_t;
-
 #ifndef M_PI
 #define M_PI		3.14159265358979323846	// matches value in gcc v2 math.h
 #endif
@@ -123,16 +118,9 @@ extern vec3_t vec3_origin;
 
 #define	nanmask (255<<23)
 
-#define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
+#define	IS_NAN(x) (((*(int32_t *)&x)&nanmask)==nanmask)
 
-// microsoft's fabs seems to be ungodly slow...
-//float Q_fabs (float f);
-//#define	fabs(f) Q_fabs(f)
-#if !defined C_ONLY && !defined __linux__ && !defined __sgi && !defined _M_X64 && !defined __APPLE__
-extern long Q_ftol( float f );
-#else
 #define Q_ftol( f ) ( long ) (f)
-#endif
 
 #define DotProduct(x,y)			(x[0]*y[0]+x[1]*y[1]+x[2]*y[2])
 #define VectorSubtract(a,b,c)	(c[0]=a[0]-b[0],c[1]=a[1]-b[1],c[2]=a[2]-b[2])
@@ -152,20 +140,20 @@ void _VectorCopy (vec3_t in, vec3_t out);
 
 void ClearBounds (vec3_t mins, vec3_t maxs);
 void AddPointToBounds (vec3_t v, vec3_t mins, vec3_t maxs);
-int VectorCompare (vec3_t v1, vec3_t v2);
+int32_t VectorCompare (vec3_t v1, vec3_t v2);
 vec_t VectorLength (vec3_t v);
 void CrossProduct (vec3_t v1, vec3_t v2, vec3_t cross);
 vec_t VectorNormalize (vec3_t v);		// returns vector length
 vec_t VectorNormalize2 (vec3_t v, vec3_t out);
 void VectorInverse (vec3_t v);
 void VectorScale (vec3_t in, vec_t scale, vec3_t out);
-int Q_log2(int val);
+int32_t Q_log2(int32_t val);
 
 void R_ConcatRotations (float in1[3][3], float in2[3][3], float out[3][3]);
 void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4]);
 
 void AngleVectors (vec3_t angles, vec3_t forward, vec3_t right, vec3_t up);
-int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, struct cplane_s *plane);
+int32_t BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, struct cplane_s *plane);
 float	anglemod(float a);
 float LerpAngle (float a1, float a2, float frac);
 
@@ -201,23 +189,23 @@ void COM_DefaultExtension (char *path, char *extension);
 char *COM_Parse (char **data_p);
 // data is an in/out parm, returns a parsed out token
 
-void Com_sprintf (char *dest, int size, char *fmt, ...);
+void Com_sprintf (char *dest, int32_t size, char *fmt, ...);
 
-void Com_PageInMemory (byte *buffer, int size);
+void Com_PageInMemory (uint8_t *buffer, int32_t size);
 
 //=============================================
 
 // portable case insensitive compare
-int Q_stricmp (char *s1, char *s2);
-int Q_strcasecmp (char *s1, char *s2);
-int Q_strncasecmp (char *s1, char *s2, int n);
+int32_t Q_stricmp (char *s1, char *s2);
+int32_t Q_strcasecmp (char *s1, char *s2);
+int32_t Q_strncasecmp (char *s1, char *s2, int32_t n);
 
 //=============================================
 
-short	BigShort(short l);
-short	LittleShort(short l);
-int		BigInt (int l);
-int		LittleInt (int l);
+short	BigShort(int16_t l);
+short	LittleShort(int16_t l);
+int32_t 	BigInt (int32_t l);
+int32_t 	LittleInt (int32_t l);
 float	BigFloat (float l);
 float	LittleFloat (float l);
 
@@ -246,16 +234,16 @@ SYSTEM SPECIFIC
 ==============================================================
 */
 
-extern	int	curtime;		// time returned by last Sys_Milliseconds
+extern	int32_t curtime;		// time returned by last Sys_Milliseconds
 
-int		Sys_Milliseconds (void);
+int32_t 	Sys_Milliseconds (void);
 void	Sys_Mkdir (char *path);
 
 // large block stack allocation routines
-void	*Hunk_Begin (int maxsize);
-void	*Hunk_Alloc (int size);
+void	*Hunk_Begin (int32_t maxsize);
+void	*Hunk_Alloc (int32_t size);
 void	Hunk_Free (void *buf);
-int		Hunk_End (void);
+int32_t 	Hunk_End (void);
 
 // directory searching
 #define SFF_ARCH    0x01
@@ -301,7 +289,7 @@ typedef struct cvar_s
 	char		*name;
 	char		*string;
 	char		*latched_string;	// for CVAR_LATCH vars
-	int			flags;
+	int32_t 		flags;
 	bool	modified;	// set each time the cvar is changed
 	float		value;
 	struct cvar_s *next;
@@ -389,9 +377,9 @@ typedef struct cplane_s
 {
 	vec3_t	normal;
 	float	dist;
-	byte	type;			// for fast side tests
-	byte	signbits;		// signx + (signy<<1) + (signz<<1)
-	byte	pad[2];
+	uint8_t	type;			// for fast side tests
+	uint8_t	signbits;		// signx + (signy<<1) + (signz<<1)
+	uint8_t	pad[2];
 } cplane_t;
 
 // structure offset for asm code
@@ -408,14 +396,14 @@ typedef struct cmodel_s
 {
 	vec3_t		mins, maxs;
 	vec3_t		origin;		// for sounds or lights
-	int			headnode;
+	int32_t 		headnode;
 } cmodel_t;
 
 typedef struct csurface_s
 {
 	char		name[16];
-	int			flags;
-	int			value;
+	int32_t 		flags;
+	int32_t 		value;
 } csurface_t;
 
 typedef struct mapsurface_s  // used internally due to name len probs //ZOID
@@ -433,7 +421,7 @@ typedef struct
 	vec3_t		endpos;		// final position
 	cplane_t	plane;		// surface normal at impact
 	csurface_t	*surface;	// surface hit
-	int			contents;	// contents on other side of surface hit
+	int32_t 		contents;	// contents on other side of surface hit
 	struct edict_s	*ent;		// not set by CM_*() functions
 } trace_t;
 
@@ -472,13 +460,12 @@ typedef struct
 
 	float		origin[3];		// float
 	float		velocity[3];	// float
-	byte		pm_flags;		// ducked, jump_held, etc
-	byte		pm_time;		// each unit = 8 ms
-	short		gravity;
-	short		delta_angles[3];	// add to command angles to get view direction
+	uint8_t		pm_flags;		// ducked, jump_held, etc
+	uint8_t		pm_time;		// each unit = 8 ms
+	int16_t		gravity;
+	int16_t		delta_angles[3];	// add to command angles to get view direction
 									// changed by spawns, rotating objects, and teleporters
 } pmove_state_t;
-
 
 //
 // button bits
@@ -491,12 +478,12 @@ typedef struct
 // usercmd_t is sent to the server each client frame
 typedef struct usercmd_s
 {
-	byte	msec;
-	byte	buttons;
+	uint8_t	msec;
+	uint8_t	buttons;
 	short	angles[3];
 	short	forwardmove, sidemove, upmove;
-	byte	impulse;		// remove?
-	byte	lightlevel;		// light level the player is standing on
+	uint8_t	impulse;		// remove?
+	uint8_t	lightlevel;		// light level the player is standing on
 } usercmd_t;
 
 
@@ -511,7 +498,7 @@ typedef struct
 	bool		snapinitial;	// if s has been changed outside pmove
 
 	// results (out)
-	int			numtouch;
+	int32_t 		numtouch;
 	struct edict_s	*touchents[MAXTOUCH];
 
 	vec3_t		viewangles;			// clamped
@@ -520,12 +507,12 @@ typedef struct
 	vec3_t		mins, maxs;			// bounding box size
 
 	struct edict_s	*groundentity;
-	int			watertype;
-	int			waterlevel;
+	int32_t 		watertype;
+	int32_t 		waterlevel;
 
 	// callbacks to test the world
 	trace_t		(*trace) (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
-	int			(*pointcontents) (vec3_t point);
+	int32_t 		(*pointcontents) (vec3_t point);
 } pmove_t;
 
 
@@ -904,7 +891,7 @@ typedef enum
 ==========================================================
 */
 
-#define	ANGLE2SHORT(x)	((int)((x)*65536/360) & 65535)
+#define	ANGLE2SHORT(x)	((int32_t)((x)*65536/360) & 65535)
 #define	SHORT2ANGLE(x)	((x)*(360.0/65536))
 
 
@@ -959,24 +946,24 @@ typedef enum
 // need to render in some way
 typedef struct entity_state_s
 {
-	int		number;			// edict index
+	int32_t 	number;			// edict index
 
 	vec3_t	origin;
 	vec3_t	angles;
 	vec3_t	old_origin;		// for lerping
 	vec3_t  extents;
 
-	int		modelindex;
-	int		modelindex2, modelindex3, modelindex4;	// weapons, CTF flags, etc
-	int		frame;
-	int		skinnum;
-	unsigned int		effects;		// PGM - we're filling it, so it needs to be unsigned
-	int		renderfx;
-	int		solid;			// for client side prediction, 8*(bits 0-4) is x/y radius
+	int32_t 	modelindex;
+	int32_t 	modelindex2, modelindex3, modelindex4;	// weapons, CTF flags, etc
+	int32_t 	frame;
+	int32_t 	skinnum;
+	uint32_t		effects;		// PGM - we're filling it, so it needs to be unsigned
+	int32_t 	renderfx;
+	int32_t 	solid;			// for client side prediction, 8*(bits 0-4) is x/y radius
 							// 8*(bits 5-9) is z down distance, 8(bits10-15) is z up
 							// gi.linkentity sets this properly
-	int		sound;			// for looping sounds, to guarantee shutoff
-	int		event;			// impulse events -- muzzle flashes, footsteps, etc
+	int32_t 	sound;			// for looping sounds, to guarantee shutoff
+	int32_t 	event;			// impulse events -- muzzle flashes, footsteps, etc
 							// events only go out for a single frame, they
 							// are automatically cleared each frame
 } entity_state_t;
@@ -1001,16 +988,16 @@ typedef struct
 
 	vec3_t		gunangles;
 	vec3_t		gunoffset;
-	int			gunindex;
-	int			gunframe;
+	int32_t 		gunindex;
+	int32_t 		gunframe;
 
 	float		blend[4];		// rgba full screen effect
 	
 	float		fov;			// horizontal field of view
 
-	int			rdflags;		// refdef flags
+	int32_t 		rdflags;		// refdef flags
 
-	short		stats[MAX_STATS];		// fast status bar updates
+	int16_t stats[MAX_STATS];		// fast status bar updates
 } player_state_t;
 
 
@@ -1019,6 +1006,6 @@ typedef struct
 #define VIDREF_GL		1
 #define VIDREF_OTHER	2
 
-extern int vidref_val;
+extern int32_t vidref_val;
 // PGM
 // ==================

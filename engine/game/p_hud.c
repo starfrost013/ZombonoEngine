@@ -185,9 +185,9 @@ void G_LeaderboardSend(edict_t* ent)
 	// tell the client there is a leaderboard update coming
 	gi.WriteByte(svc_leaderboard);
 
-	int client_count = G_CountClients();
-	int total = 0, score = 0;
-	int j, k;
+	int32_t client_count = G_CountClients();
+	int32_t total = 0, score = 0;
+	int32_t j, k;
 
 	edict_t* sorted_client_edicts[MAX_CLIENTS] = { 0 }; 
 
@@ -198,7 +198,7 @@ void G_LeaderboardSend(edict_t* ent)
 	// 	// loop through them again to actually send each client's data
 	// TODO: SORT SCORES FOR EACH TEAM!!!
 
-	for (int i=0 ; i<game.maxclients ; i++)
+	for (int32_t i=0 ; i<game.maxclients ; i++)
 	{
 		client_edict = g_edicts + 1 + i;
 
@@ -223,7 +223,7 @@ void G_LeaderboardSend(edict_t* ent)
 		total++;
 	}
 
-	for (int client_num = 0; client_num < game.maxclients; client_num++)
+	for (int32_t client_num = 0; client_num < game.maxclients; client_num++)
 	{
 		client_edict = sorted_client_edicts[client_num]; // client edicts are always at the start???
 
@@ -454,7 +454,7 @@ G_CheckChaseStats
 */
 void G_CheckChaseStats (edict_t *ent)
 {
-	int i;
+	int32_t i;
 	gclient_t *cl;
 
 	for (i = 1; i <= maxclients->value; i++) {

@@ -95,9 +95,9 @@ Cvar_CompleteVariable
 char *Cvar_CompleteVariable (char *partial)
 {
 	cvar_t		*cvar;
-	int			len;
+	int32_t 		len;
 	
-	len = (int)strlen(partial);
+	len = (int32_t)strlen(partial);
 	
 	if (!len)
 		return NULL;
@@ -124,7 +124,7 @@ If the variable already exists, the value will not be set
 The flags will be or'ed in if the variable exists.
 ============
 */
-cvar_t *Cvar_Get (char *var_name, char *var_value, int flags)
+cvar_t *Cvar_Get (char *var_name, char *var_value, int32_t flags)
 {
 	cvar_t	*var;
 	
@@ -285,7 +285,7 @@ cvar_t *Cvar_Set (char *var_name, char *value)
 Cvar_FullSet
 ============
 */
-cvar_t *Cvar_FullSet (char *var_name, char *value, int flags)
+cvar_t *Cvar_FullSet (char *var_name, char *value, int32_t flags)
 {
 	cvar_t	*var;
 	
@@ -318,8 +318,8 @@ void Cvar_SetValue (char *var_name, float value)
 {
 	char	val[32];
 
-	if (value == (int)value)
-		Com_sprintf (val, sizeof(val), "%i",(int)value);
+	if (value == (int32_t)value)
+		Com_sprintf (val, sizeof(val), "%i",(int32_t)value);
 	else
 		Com_sprintf (val, sizeof(val), "%f",value);
 	Cvar_Set (var_name, val);
@@ -369,7 +369,7 @@ bool Cvar_Command (void)
 	if (!v)
 		return false;
 		
-// perform a variable print or set
+// perform a variable print32_t or set
 	if (Cmd_Argc() == 1)
 	{
 		Com_Printf ("\"%s\" is \"%s\"\n", v->name, v->string);
@@ -390,8 +390,8 @@ Allows setting and defining of arbitrary cvars from console
 */
 void Cvar_Set_f (void)
 {
-	int		c;
-	int		flags;
+	int32_t 	c;
+	int32_t 	flags;
 
 	c = Cmd_Argc();
 	if (c != 3 && c != 4)
@@ -453,7 +453,7 @@ Cvar_List_f
 void Cvar_List_f (void)
 {
 	cvar_t	*var;
-	int		i;
+	int32_t 	i;
 
 	i = 0;
 	for (var = cvar_vars ; var ; var = var->next, i++)
@@ -485,7 +485,7 @@ void Cvar_List_f (void)
 bool userinfo_modified;
 
 
-char	*Cvar_BitInfo (int bit)
+char	*Cvar_BitInfo (int32_t bit)
 {
 	static char	info[MAX_INFO_STRING];
 	cvar_t	*var;

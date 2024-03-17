@@ -143,7 +143,7 @@ returns the blocked flags (1 = floor, 2 = step / wall)
 */
 #define	STOP_EPSILON	0.1
 
-int ClipVelocity (vec3_t in, vec3_t normal, vec3_t out, float overbounce)
+int32_t ClipVelocity (vec3_t in, vec3_t normal, vec3_t out, float overbounce)
 {
 	float	backoff;
 	float	change;
@@ -181,7 +181,7 @@ Returns the clipflags if the velocity was modified (hit something solid)
 ============
 */
 #define	MAX_CLIP_PLANES	5
-int SV_FlyMove (edict_t *ent, float time, int mask)
+int32_t SV_FlyMove (edict_t *ent, float time, int32_t mask)
 {
 	edict_t		*hit;
 	int			bumpcount, numbumps;
@@ -419,7 +419,7 @@ bool SV_Push (edict_t *pusher, vec3_t move, vec3_t amove)
 			temp += 0.5;
 		else
 			temp -= 0.5;
-		move[i] = (int)temp;
+		move[i] = (int32_t)temp;
 	}
 
 	// find the bounding box
@@ -930,7 +930,7 @@ void G_RunEntity (edict_t *ent)
 	if (ent->prethink)
 		ent->prethink (ent);
 
-	switch ( (int)ent->movetype)
+	switch ( (int32_t)ent->movetype)
 	{
 	case MOVETYPE_PUSH:
 	case MOVETYPE_STOP:
@@ -952,6 +952,6 @@ void G_RunEntity (edict_t *ent)
 		SV_Physics_Toss (ent);
 		break;
 	default:
-		gi.error ("SV_Physics: bad movetype %i", (int)ent->movetype);			
+		gi.error ("SV_Physics: bad movetype %i", (int32_t)ent->movetype);			
 	}
 }

@@ -23,22 +23,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "snd_loc.h"
 #include <inttypes.h>
 
-int			cache_full_cycle;
+int32_t 		cache_full_cycle;
 
-byte *S_Alloc (int size);
+uint8_t *S_Alloc (int32_t size);
 
 /*
 ================
 ResampleSfx
 ================
 */
-void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
+void ResampleSfx (sfx_t *sfx, int32_t inrate, int32_t inwidth, uint8_t *data)
 {
-	int		outcount;
-	int		srcsample;
+	int32_t 	outcount;
+	int32_t 	srcsample;
 	float	stepscale;
-	int		i;
-	int		sample, samplefrac, fracstep;
+	int32_t 	i;
+	int32_t 	sample, samplefrac, fracstep;
 	sfxcache_t	*sc;
 	
 	sc = sfx->cache;
@@ -66,7 +66,7 @@ void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
 // fast special case
 		for (i=0 ; i<outcount ; i++)
 			((signed char *)sc->data)[i]
-			= (int)( (unsigned char)(data[i]) - 128);
+			= (int32_t)( (uint8_t)(data[i]) - 128);
 	}
 	else
 	{
@@ -78,11 +78,11 @@ void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
 			srcsample = samplefrac >> 8;
 			samplefrac += fracstep;
 			if (inwidth == 2)
-				sample = LittleShort ( ((short *)data)[srcsample] );
+				sample = LittleShort ( ((int16_t *)data)[srcsample] );
 			else
-				sample = (int)( (unsigned char)(data[srcsample]) - 128) << 8;
+				sample = (int32_t)( (uint8_t)(data[srcsample]) - 128) << 8;
 			if (sc->width == 2)
-				((short *)sc->data)[i] = sample;
+				((int16_t *)sc->data)[i] = sample;
 			else
 				((signed char *)sc->data)[i] = sample >> 8;
 		}
@@ -99,12 +99,12 @@ S_LoadSound
 sfxcache_t *S_LoadSound (sfx_t *s)
 {
     char	namebuffer[MAX_QPATH];
-	byte	*data;
+	uint8_t* data;
 	wavinfo_t	info;
-	int		len;
+	int32_t 	len;
 	float	stepscale;
 	sfxcache_t	*sc;
-	int		size;
+	int32_t 	size;
 	char	*name;
 
 	if (s->name[0] == '*')
@@ -115,7 +115,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	if (sc)
 		return sc;
 
-//Com_Printf ("S_LoadSound: %x\n", (int)stackbuf);
+//Com_Printf ("S_LoadSound: %x\n", (int32_t)stackbuf);
 // load it in
 	if (s->truename)
 		name = s->truename;
@@ -181,25 +181,25 @@ WAV loading
 */
 
 
-byte	*data_p;
-byte 	*iff_end;
-byte 	*last_chunk;
-byte 	*iff_data;
-int 	iff_chunk_len;
+uint8_t	*data_p;
+uint8_t *iff_end;
+uint8_t *last_chunk;
+uint8_t *iff_data;
+uint8_t	iff_chunk_len;
 
 
-short GetLittleShort(void)
+int16_t GetLittleShort(void)
 {
-	short val = 0;
+	int16_t val = 0;
 	val = *data_p;
 	val = val + (*(data_p+1)<<8);
 	data_p += 2;
 	return val;
 }
 
-int GetLittleLong(void)
+int32_t GetLittleLong(void)
 {
-	int val = 0;
+	int32_t val = 0;
 	val = *data_p;
 	val = val + (*(data_p+1)<<8);
 	val = val + (*(data_p+2)<<16);
@@ -264,12 +264,12 @@ void DumpChunks(void)
 GetWavinfo
 ============
 */
-wavinfo_t GetWavinfo (char *name, byte *wav, int wavlength)
+wavinfo_t GetWavinfo (char *name, uint8_t *wav, int32_t wavlength)
 {
 	wavinfo_t	info;
-	int     i;
-	int     format;
-	int		samples;
+	int32_t     i;
+	int32_t     format;
+	int32_t 	samples;
 
 	memset (&info, 0, sizeof(info));
 

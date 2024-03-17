@@ -63,7 +63,7 @@ static int	quad_drop_timeout_hack;
 GetItemByIndex
 ===============
 */
-gitem_t	*GetItemByIndex (int index)
+gitem_t	*GetItemByIndex (int32_t index)
 {
 	if (index == 0 || index >= game.num_items)
 		return NULL;
@@ -126,7 +126,7 @@ void DoRespawn (edict_t *ent)
 	{
 		edict_t	*master;
 		int	count;
-		int choice;
+		int32_t choice;
 
 		master = ent->teammaster;
 
@@ -172,7 +172,7 @@ bool Pickup_Powerup (edict_t *ent, edict_t *other)
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn(ent, ent->item->quantity);
-	if (((int)gameflags->value & GF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
+	if (((int32_t)gameflags->value & GF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
 	{
 		if ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM))
 			quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
@@ -428,7 +428,7 @@ bool Pickup_Key (edict_t *ent, edict_t *other)
 
 //======================================================================
 
-bool Add_Ammo (edict_t *ent, gitem_t *item, int count)
+bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count)
 {
 	int			index;
 	int			max;
@@ -471,7 +471,7 @@ bool Pickup_Ammo (edict_t *ent, edict_t *other)
 	bool	weapon;
 
 	weapon = (ent->item->flags & IT_WEAPON);
-	if ( (weapon) && ( (int)gameflags->value & GF_INFINITE_AMMO ) )
+	if ( (weapon) && ( (int32_t)gameflags->value & GF_INFINITE_AMMO ) )
 		count = 1000;
 	else if (ent->count)
 		count = ent->count;
@@ -571,7 +571,7 @@ bool Pickup_Health (edict_t *ent, edict_t *other)
 
 //======================================================================
 
-int ArmorIndex (edict_t *ent)
+int32_t ArmorIndex (edict_t *ent)
 {
 	if (!ent->client)
 		return 0;
@@ -669,7 +669,7 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 
 //======================================================================
 
-int PowerArmorType (edict_t *ent)
+int32_t PowerArmorType (edict_t *ent)
 {
 	if (!ent->client)
 		return POWER_ARMOR_NONE;
@@ -1050,7 +1050,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 	}
 
-	if ((int)gameflags->value & GF_NO_ARMOR)
+	if ((int32_t)gameflags->value & GF_NO_ARMOR)
 	{
 		if (item->pickup == Pickup_Armor || item->pickup == Pickup_PowerArmor)
 		{
@@ -1058,7 +1058,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & GF_NO_ITEMS)
+	if ((int32_t)gameflags->value & GF_NO_ITEMS)
 	{
 		if (item->pickup == Pickup_Powerup)
 		{
@@ -1066,7 +1066,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & GF_NO_HEALTH)
+	if ((int32_t)gameflags->value & GF_NO_HEALTH)
 	{
 		if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
 		{
@@ -1074,7 +1074,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			return;
 		}
 	}
-	if ((int)gameflags->value & GF_INFINITE_AMMO)
+	if ((int32_t)gameflags->value & GF_INFINITE_AMMO)
 	{
 		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0))
 		{
@@ -1935,7 +1935,7 @@ gives +1 to maximum health
 */
 void SP_item_health (edict_t *self)
 {
-	if (((int)gameflags->value & GF_NO_HEALTH) )
+	if (((int32_t)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1951,7 +1951,7 @@ void SP_item_health (edict_t *self)
 */
 void SP_item_health_small (edict_t *self)
 {
-	if (((int)gameflags->value & GF_NO_HEALTH) )
+	if (((int32_t)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1968,7 +1968,7 @@ void SP_item_health_small (edict_t *self)
 */
 void SP_item_health_large (edict_t *self)
 {
-	if (((int)gameflags->value & GF_NO_HEALTH) )
+	if (((int32_t)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;
@@ -1984,7 +1984,7 @@ void SP_item_health_large (edict_t *self)
 */
 void SP_item_health_mega (edict_t *self)
 {
-	if (((int)gameflags->value & GF_NO_HEALTH) )
+	if (((int32_t)gameflags->value & GF_NO_HEALTH) )
 	{
 		G_FreeEdict (self);
 		return;

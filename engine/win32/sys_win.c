@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <conio.h>
 #include "../win32/conproc.h"
 
-int			starttime;
+int32_t 		starttime;
 bool		ActiveApp;
 bool		Minimized;
 
@@ -46,7 +46,7 @@ unsigned	sys_frame_time;
 static HANDLE		qwclsemaphore;
 
 #define	MAX_NUM_ARGVS	128
-int			argc;
+int32_t 		argc;
 char		*argv[MAX_NUM_ARGVS];
 
 /*
@@ -248,7 +248,7 @@ void Sys_Init (void)
 
 
 static char	console_text[256];
-static int	console_textlen;
+static int32_t console_textlen;
 
 /*
 ================
@@ -258,8 +258,8 @@ Sys_ConsoleInput
 char *Sys_ConsoleInput (void)
 {
 	INPUT_RECORD	recs[1024];
-	int		dummy;
-	int		ch, numread, numevents;
+	int32_t 	dummy;
+	int32_t 	ch, numread, numevents;
 
 	if (!dedicated || !dedicated->value)
 		return NULL;
@@ -332,12 +332,12 @@ char *Sys_ConsoleInput (void)
 ================
 Sys_ConsoleOutput
 
-Print text to the dedicated console
+Print32_t text to the dedicated console
 ================
 */
 void Sys_ConsoleOutput (char *string)
 {
-	int		dummy;
+	int32_t 	dummy;
 	char	text[256];
 
 	if (!dedicated || !dedicated->value)
@@ -593,10 +593,10 @@ WinMain
 */
 HINSTANCE	global_hInstance;
 
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
     MSG				msg;
-	int				time, oldtime, newtime;
+	int32_t 			time, oldtime, newtime;
 	char			*cddir;
 
     /* previous instances do not exist in Win32 */
@@ -611,7 +611,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	cddir = Sys_ScanForCD ();
 	if (cddir && argc < MAX_NUM_ARGVS - 3)
 	{
-		int		i;
+		int32_t 	i;
 
 		// don't override a cddir on the command line
 		for (i=0 ; i<argc ; i++)

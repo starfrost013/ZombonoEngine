@@ -33,7 +33,7 @@ is not a staircase.
 
 =============
 */
-int c_yes, c_no;
+int32_t c_yes, c_no;
 
 bool M_CheckBottom (edict_t *ent)
 {
@@ -411,7 +411,7 @@ void SV_NewChaseDir (edict_t *actor, edict_t *enemy, float dist)
 	if (!enemy)
 		return;
 
-	olddir = anglemod( (int)(actor->ideal_yaw/45)*45 );
+	olddir = anglemod( (int32_t)(actor->ideal_yaw/45)*45 );
 	turnaround = anglemod(olddir - 180);
 
 	deltax = enemy->s.origin[0] - actor->s.origin[0];

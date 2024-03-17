@@ -32,18 +32,18 @@ typedef struct console_s
 	bool	initialized;
 
 	char	text[CON_TEXTSIZE];
-	int		current;		// line where next message will be printed
-	int		x;				// offset in current line for next print
-	int		display;		// bottom of console displays this line
+	int32_t 	current;		// line where next message will be printed
+	int32_t 	x;				// offset in current line for next print
+	int32_t 	display;		// bottom of console displays this line
 
-	int		ormask;			// high bit mask for colored characters
+	int32_t 	ormask;			// high bit mask for colored characters
 
-	int 	linewidth;		// characters across screen
-	int		totallines;		// total lines in console scrollback
+	int32_t 	linewidth;		// characters across screen
+	int32_t 	totallines;		// total lines in console scrollback
 
 	float	cursorspeed;
 
-	int		vislines;
+	int32_t 	vislines;
 
 	float	times[NUM_CON_CHAT_LINES];	// cls.realtime time the line was generated
 								// for transparent notify lines
@@ -54,8 +54,8 @@ extern	console_t	con;
 void Con_CheckResize (void);
 void Con_Init (void);
 void Con_DrawConsole (float frac);
-void Con_Print (char *txt);
-void Con_CenteredPrint (char *text);
+void Con_Print32_t (char *txt);
+void Con_CenteredPrint32_t (char *text);
 void Con_Clear_f (void);
 void Con_DrawNotify (void);
 void Con_ClearNotify (void);

@@ -240,7 +240,7 @@ void InitGame (void)
 
 //=========================================================
 
-void WriteField1 (FILE *f, field_t *field, byte *base)
+void WriteField1 (FILE *f, field_t *field, uint8_t *base)
 {
 	void		*p;
 	int			len;
@@ -262,49 +262,49 @@ void WriteField1 (FILE *f, field_t *field, byte *base)
 	case F_LSTRING:
 	case F_GSTRING:
 		if ( *(char **)p )
-			len = (int)strlen(*(char **)p) + 1;
+			len = (int32_t)strlen(*(char **)p) + 1;
 		else
 			len = 0;
-		*(int *)p = len;
+		*(int32_t *)p = len;
 		break;
 	case F_EDICT:
 		if ( *(edict_t **)p == NULL)
 			index = -1;
 		else
 			index = *(edict_t **)p - g_edicts;
-		*(int *)p = index;
+		*(int32_t *)p = index;
 		break;
 	case F_CLIENT:
 		if ( *(gclient_t **)p == NULL)
 			index = -1;
 		else
 			index = *(gclient_t **)p - game.clients;
-		*(int *)p = index;
+		*(int32_t *)p = index;
 		break;
 	case F_ITEM:
 		if ( *(edict_t **)p == NULL)
 			index = -1;
 		else
 			index = *(gitem_t **)p - itemlist;
-		*(int *)p = index;
+		*(int32_t *)p = index;
 		break;
 
 	//relative to code segment
 	case F_FUNCTION:
-		if (*(byte **)p == NULL)
+		if (*(uint8_t**)p == NULL)
 			index = 0;
 		else
-			index = *(byte **)p - ((byte *)InitGame);
-		*(int *)p = index;
+			index = *(uint8_t**)p - ((uint8_t *)InitGame);
+		*(int32_t *)p = index;
 		break;
 
 	//relative to data segment
 	case F_MMOVE:
-		if (*(byte **)p == NULL)
+		if (*(uint8_t**)p == NULL)
 			index = 0;
 		else
-			index = *(byte **)p - (byte *)&mmove_reloc;
-		*(int *)p = index;
+			index = *(uint8_t**)p - (uint8_t*)&mmove_reloc;
+		*(int32_t *)p = index;
 		break;
 
 	default:
@@ -313,7 +313,7 @@ void WriteField1 (FILE *f, field_t *field, byte *base)
 }
 
 
-void WriteField2 (FILE *f, field_t *field, byte *base)
+void WriteField2 (FILE *f, field_t *field, uint8_t *base)
 {
 	int			len;
 	void		*p;
@@ -327,7 +327,7 @@ void WriteField2 (FILE *f, field_t *field, byte *base)
 	case F_LSTRING:
 		if ( *(char **)p )
 		{
-			len = (int)strlen(*(char **)p) + 1;
+			len = (int32_t)strlen(*(char **)p) + 1;
 			fwrite (*(char **)p, len, 1, f);
 		}
 		break;
@@ -336,7 +336,7 @@ void WriteField2 (FILE *f, field_t *field, byte *base)
 	}
 }
 
-void ReadField (FILE *f, field_t *field, byte *base)
+void ReadField (FILE *f, field_t *field, uint8_t *base)
 {
 	void		*p;
 	int			len;
@@ -356,7 +356,7 @@ void ReadField (FILE *f, field_t *field, byte *base)
 		break;
 
 	case F_LSTRING:
-		len = *(int *)p;
+		len = *(int32_t *)p;
 		if (!len)
 			*(char **)p = NULL;
 		else
@@ -366,21 +366,21 @@ void ReadField (FILE *f, field_t *field, byte *base)
 		}
 		break;
 	case F_EDICT:
-		index = *(int *)p;
+		index = *(int32_t *)p;
 		if ( index == -1 )
 			*(edict_t **)p = NULL;
 		else
 			*(edict_t **)p = &g_edicts[index];
 		break;
 	case F_CLIENT:
-		index = *(int *)p;
+		index = *(int32_t *)p;
 		if ( index == -1 )
 			*(gclient_t **)p = NULL;
 		else
 			*(gclient_t **)p = &game.clients[index];
 		break;
 	case F_ITEM:
-		index = *(int *)p;
+		index = *(int32_t *)p;
 		if ( index == -1 )
 			*(gitem_t **)p = NULL;
 		else
@@ -389,20 +389,20 @@ void ReadField (FILE *f, field_t *field, byte *base)
 
 	//relative to code segment
 	case F_FUNCTION:
-		index = *(int *)p;
+		index = *(int32_t *)p;
 		if ( index == 0 )
-			*(byte **)p = NULL;
+			*(uint8_t **)p = NULL;
 		else
-			*(byte **)p = ((byte *)InitGame) + index;
+			*(uint8_t**)p = ((uint8_t*)InitGame) + index;
 		break;
 
 	//relative to data segment
 	case F_MMOVE:
-		index = *(int *)p;
+		index = *(int32_t *)p;
 		if (index == 0)
-			*(byte **)p = NULL;
+			*(uint8_t**)p = NULL;
 		else
-			*(byte **)p = (byte *)&mmove_reloc + index;
+			*(uint8_t **)p = (uint8_t *)&mmove_reloc + index;
 		break;
 
 	default:
@@ -430,7 +430,7 @@ void WriteClient (FILE *f, gclient_t *client)
 	// change the pointers to lengths or indexes
 	for (field=clientfields ; field->name ; field++)
 	{
-		WriteField1 (f, field, (byte *)&temp);
+		WriteField1 (f, field, (uint8_t *)&temp);
 	}
 
 	// write the block
@@ -439,7 +439,7 @@ void WriteClient (FILE *f, gclient_t *client)
 	// now write any allocated data following the edict
 	for (field=clientfields ; field->name ; field++)
 	{
-		WriteField2 (f, field, (byte *)client);
+		WriteField2 (f, field, (uint8_t*)client);
 	}
 }
 
@@ -458,7 +458,7 @@ void ReadClient (FILE *f, gclient_t *client)
 
 	for (field=clientfields ; field->name ; field++)
 	{
-		ReadField (f, field, (byte *)client);
+		ReadField (f, field, (uint8_t*)client);
 	}
 }
 
@@ -554,7 +554,7 @@ void WriteEdict (FILE *f, edict_t *ent)
 	// change the pointers to lengths or indexes
 	for (field=fields ; field->name ; field++)
 	{
-		WriteField1 (f, field, (byte *)&temp);
+		WriteField1 (f, field, (uint8_t*)&temp);
 	}
 
 	// write the block
@@ -563,7 +563,7 @@ void WriteEdict (FILE *f, edict_t *ent)
 	// now write any allocated data following the edict
 	for (field=fields ; field->name ; field++)
 	{
-		WriteField2 (f, field, (byte *)ent);
+		WriteField2 (f, field, (uint8_t*)ent);
 	}
 
 }
@@ -586,7 +586,7 @@ void WriteLevelLocals (FILE *f)
 	// change the pointers to lengths or indexes
 	for (field=levelfields ; field->name ; field++)
 	{
-		WriteField1 (f, field, (byte *)&temp);
+		WriteField1 (f, field, (uint8_t*)&temp);
 	}
 
 	// write the block
@@ -595,7 +595,7 @@ void WriteLevelLocals (FILE *f)
 	// now write any allocated data following the edict
 	for (field=levelfields ; field->name ; field++)
 	{
-		WriteField2 (f, field, (byte *)&level);
+		WriteField2 (f, field, (uint8_t *)&level);
 	}
 }
 
@@ -615,7 +615,7 @@ void ReadEdict (FILE *f, edict_t *ent)
 
 	for (field=fields ; field->name ; field++)
 	{
-		ReadField (f, field, (byte *)ent);
+		ReadField (f, field, (uint8_t *)ent);
 	}
 }
 
@@ -634,7 +634,7 @@ void ReadLevelLocals (FILE *f)
 
 	for (field=levelfields ; field->name ; field++)
 	{
-		ReadField (f, field, (byte *)&level);
+		ReadField (f, field, (uint8_t *)&level);
 	}
 }
 

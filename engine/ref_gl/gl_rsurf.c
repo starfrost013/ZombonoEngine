@@ -45,7 +45,7 @@ int		c_visible_textures;
 
 typedef struct
 {
-	int internal_format;
+	int32_t internal_format;
 	int	current_lightmap_texture;
 
 	msurface_t	*lightmap_surfaces[MAX_LIGHTMAPS];
@@ -54,7 +54,7 @@ typedef struct
 
 	// the lightmap texture data needs to be kept in
 	// main memory so texsubimage can update properly
-	byte		lightmap_buffer[BLOCK_WIDTH*BLOCK_HEIGHT];
+	uint8_t		lightmap_buffer[BLOCK_WIDTH*BLOCK_HEIGHT];
 } gllightmapstate_t;
 
 static gllightmapstate_t gl_lms;
@@ -62,10 +62,10 @@ static gllightmapstate_t gl_lms;
 
 static void		LM_InitBlock( void );
 static void		LM_UploadBlock( bool dynamic );
-static bool	LM_AllocBlock (int w, int h, int *x, int *y);
+static bool	LM_AllocBlock (int32_t w, int32_t h, int32_t *x, int32_t *y);
 
 extern void R_SetCacheState( msurface_t *surf );
-extern void R_BuildLightMap (msurface_t *surf, byte *dest, int stride);
+extern void R_BuildLightMap (msurface_t *surf, uint8_t *dest, int32_t stride);
 
 /*
 =============================================================
@@ -135,7 +135,7 @@ void DrawGLFlowingPoly (msurface_t *fa)
 
 	p = fa->polys;
 
-	scroll = -64 * ( (r_newrefdef.time / 40.0) - (int)(r_newrefdef.time / 40.0) );
+	scroll = -64 * ( (r_newrefdef.time / 40.0) - (int32_t)(r_newrefdef.time / 40.0) );
 	if(scroll == 0.0)
 		scroll = -64.0;
 
@@ -202,7 +202,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 		for ( ; p != 0; p = p->chain )
 		{
 			float *v;
-			int j;
+			int32_t j;
 
 			qglBegin (GL_POLYGON);
 			v = p->verts[0];
@@ -219,7 +219,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 		for ( ; p != 0; p = p->chain )
 		{
 			float *v;
-			int j;
+			int32_t j;
 
 			qglBegin (GL_POLYGON);
 			v = p->verts[0];
@@ -310,7 +310,7 @@ void R_BlendLightmaps (void)
 		for ( surf = gl_lms.lightmap_surfaces[0]; surf != 0; surf = surf->lightmapchain )
 		{
 			int		smax, tmax;
-			byte	*base;
+			uint8_t	*base;
 
 			smax = (surf->extents[0]>>4)+1;
 			tmax = (surf->extents[1]>>4)+1;
@@ -690,7 +690,7 @@ dynamic:
 		{
 			float scroll;
 		
-			scroll = -64 * ( (r_newrefdef.time / 40.0) - (int)(r_newrefdef.time / 40.0) );
+			scroll = -64 * ( (r_newrefdef.time / 40.0) - (int32_t)(r_newrefdef.time / 40.0) );
 			if(scroll == 0.0)
 				scroll = -64.0;
 
@@ -738,7 +738,7 @@ dynamic:
 		{
 			float scroll;
 		
-			scroll = -64 * ( (r_newrefdef.time / 40.0) - (int)(r_newrefdef.time / 40.0) );
+			scroll = -64 * ( (r_newrefdef.time / 40.0) - (int32_t)(r_newrefdef.time / 40.0) );
 			if(scroll == 0.0)
 				scroll = -64.0;
 
@@ -1082,7 +1082,7 @@ void R_DrawWorld (void)
 
 	// auto cycle the world frame for texture animation
 	memset (&ent, 0, sizeof(ent));
-	ent.frame = (int)(r_newrefdef.time*2);
+	ent.frame = (int32_t)(r_newrefdef.time*2);
 	currententity = &ent;
 
 	gl_state.currenttextures[0] = gl_state.currenttextures[1] = -1;
@@ -1136,7 +1136,7 @@ cluster
 */
 void R_MarkLeaves (void)
 {
-	byte	*vis;
+	uint8_t* vis;
 	byte	fatvis[MAX_MAP_LEAFS/8];
 	mnode_t	*node;
 	int		i, c;
@@ -1173,7 +1173,7 @@ void R_MarkLeaves (void)
 		vis = Mod_ClusterPVS (r_viewcluster2, r_worldmodel);
 		c = (r_worldmodel->numleafs+31)/32;
 		for (i=0 ; i<c ; i++)
-			((int *)fatvis)[i] |= ((int *)vis)[i];
+			((int32_t *)fatvis)[i] |= ((int32_t *)vis)[i];
 		vis = fatvis;
 	}
 	
@@ -1211,8 +1211,8 @@ static void LM_InitBlock( void )
 
 static void LM_UploadBlock( bool dynamic )
 {
-	int texture;
-	int height = 0;
+	int32_t texture;
+	int32_t height = 0;
 
 	if ( dynamic )
 	{
@@ -1229,7 +1229,7 @@ static void LM_UploadBlock( bool dynamic )
 
 	if ( dynamic )
 	{
-		int i;
+		int32_t i;
 
 		for ( i = 0; i < BLOCK_WIDTH; i++ )
 		{
@@ -1261,7 +1261,7 @@ static void LM_UploadBlock( bool dynamic )
 }
 
 // returns a texture number and the position inside it
-static bool LM_AllocBlock (int w, int h, int *x, int *y)
+static bool LM_AllocBlock (int32_t w, int32_t h, int32_t *x, int32_t *y)
 {
 	int		i, j;
 	int		best, best2;
@@ -1392,7 +1392,7 @@ GL_CreateSurfaceLightmap
 void GL_CreateSurfaceLightmap (msurface_t *surf)
 {
 	int		smax, tmax;
-	byte	*base;
+	uint8_t* base;
 
 	if (surf->flags & (SURF_DRAWSKY|SURF_DRAWTURB))
 		return;

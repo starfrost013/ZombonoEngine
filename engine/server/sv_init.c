@@ -32,9 +32,9 @@ const char* master_alternative = "iswearimnotanazi.bjornhocke.com"; // temp
 SV_FindIndex
 ================
 */
-int SV_FindIndex (char *name, int start, int max, bool create)
+int32_t SV_FindIndex (char *name, int32_t start, int32_t max, bool create)
 {
-	int		i;
+	int32_t 	i;
 	
 	if (!name || !name[0])
 		return 0;
@@ -64,17 +64,17 @@ int SV_FindIndex (char *name, int start, int max, bool create)
 }
 
 
-int SV_ModelIndex (char *name)
+int32_t SV_ModelIndex (char *name)
 {
 	return SV_FindIndex (name, CS_MODELS, MAX_MODELS, true);
 }
 
-int SV_SoundIndex (char *name)
+int32_t SV_SoundIndex (char *name)
 {
 	return SV_FindIndex (name, CS_SOUNDS, MAX_SOUNDS, true);
 }
 
-int SV_ImageIndex (char *name)
+int32_t SV_ImageIndex (char *name)
 {
 	return SV_FindIndex (name, CS_IMAGES, MAX_IMAGES, true);
 }
@@ -92,7 +92,7 @@ baseline will be transmitted
 void SV_CreateBaseline (void)
 {
 	edict_t			*svent;
-	int				entnum;	
+	int32_t 			entnum;	
 
 	for (entnum = 1; entnum < ge->num_edicts ; entnum++)
 	{
@@ -121,7 +121,7 @@ void SV_CheckForSavegame (void)
 {
 	char		name[MAX_OSPATH];
 	FILE		*f;
-	int			i;
+	int32_t 		i;
 
 	if (sv_noreload->value)
 		return;
@@ -171,7 +171,7 @@ clients along with it.
 */
 void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate, bool attractloop, bool loadgame)
 {
-	int			i;
+	int32_t 		i;
 	unsigned	checksum;
 
 	if (attractloop)
@@ -294,7 +294,7 @@ A brand new game has been started
 */
 void SV_InitGame (void)
 {
-	int		i;
+	int32_t 	i;
 	edict_t	*ent;
 	char	zombono_master[ZOMBONO_MASTER_LENGTH];
 
@@ -383,7 +383,7 @@ void SV_Map (bool attractloop, char *levelstring, bool loadgame)
 {
 	char	level[MAX_QPATH];
 	char	*ch;
-	int		l;
+	int32_t 	l;
 	char	spawnpoint[MAX_QPATH];
 
 	sv.loadgame = loadgame;
@@ -415,7 +415,7 @@ void SV_Map (bool attractloop, char *levelstring, bool loadgame)
 		spawnpoint[0] = 0;
 
 	// skip the end-of-unit flag if necessary
-	l = (int)strlen(level);
+	l = (int32_t)strlen(level);
 	if (level[0] == '*')
 	{
 		memmove(level, level + 1, l);

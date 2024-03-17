@@ -48,11 +48,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct _tag_menuframework
 {
-	int x, y;
-	int	cursor;
+	int32_t x, y;
+	int32_t cursor;
 
-	int	nitems;
-	int nslots;
+	int32_t nitems;
+	int32_t nslots;
 	void *items[64];
 
 	const char *statusbar;
@@ -63,12 +63,12 @@ typedef struct _tag_menuframework
 
 typedef struct menucommon_s
 {
-	int type;
+	int32_t type;
 	const char *name;
-	int x, y;
+	int32_t x, y;
 	menuframework_t *parent;
-	int cursor_offset;
-	int	localdata[4];
+	int32_t cursor_offset;
+	int32_t localdata[4];
 	unsigned flags;
 
 	const char *statusbar;
@@ -84,10 +84,10 @@ typedef struct menufield_s
 	menucommon_t generic;
 
 	char		buffer[80];
-	int			cursor;
-	int			length;
-	int			visible_length;
-	int			visible_offset;
+	int32_t 		cursor;
+	int32_t 		length;
+	int32_t 		visible_length;
+	int32_t 		visible_offset;
 } menufield_t;
 
 typedef struct menuslider_s
@@ -105,7 +105,7 @@ typedef struct menulist_s
 {
 	menucommon_t generic;
 
-	int curvalue;
+	int32_t curvalue;
 
 	const char **itemnames;
 } menulist_t;
@@ -120,15 +120,15 @@ typedef struct menuseparator_s
 	menucommon_t generic;
 } menuseparator_t;
 
-bool Field_Key( menufield_t *field, int key );
+bool Field_Key( menufield_t *field, int32_t key );
 
 void	Menu_AddItem( menuframework_t *menu, void *item );
-void	Menu_AdjustCursor( menuframework_t *menu, int dir );
+void	Menu_AdjustCursor( menuframework_t *menu, int32_t dir );
 void	Menu_Center( menuframework_t *menu );
 void	Menu_Draw( menuframework_t *menu );
 void	*Menu_ItemAtCursor( menuframework_t *m );
 bool Menu_SelectItem( menuframework_t *s );
 void	Menu_SetStatusBar( menuframework_t *s, const char *string );
-void	Menu_SlideItem( menuframework_t *s, int dir );
-int		Menu_TallySlots( menuframework_t *menu );
+void	Menu_SlideItem( menuframework_t *s, int32_t dir );
+int32_t 	Menu_TallySlots( menuframework_t *menu );
 

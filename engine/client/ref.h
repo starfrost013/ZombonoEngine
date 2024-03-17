@@ -57,25 +57,25 @@ typedef struct entity_s
 	** most recent data
 	*/
 	float				origin[3];		// also used as RF_BEAM's "from"
-	int					frame;			// also used as RF_BEAM's diameter
+	int32_t 				frame;			// also used as RF_BEAM's diameter
 
 	/*
 	** previous data for lerping
 	*/
 	float				oldorigin[3];	// also used as RF_BEAM's "to"
-	int					oldframe;
+	int32_t 				oldframe;
 
 	/*
 	** misc
 	*/
 	float	backlerp;				// 0.0 = current, 1.0 = old
-	int		skinnum;				// also used as RF_BEAM's palette index
+	int32_t 	skinnum;				// also used as RF_BEAM's palette index
 
-	int		lightstyle;				// for flashing entities
+	int32_t 	lightstyle;				// for flashing entities
 	float	alpha;					// ignore if RF_TRANSLUCENT isn't set
 
 	struct image_s	*skin;			// NULL for inline skin
-	int		flags;
+	int32_t 	flags;
 
 } entity_t;
 
@@ -91,7 +91,7 @@ typedef struct dlight_s
 typedef struct
 {
 	vec3_t	origin;
-	int		color;
+	int32_t 	color;
 	float	alpha;
 } particle_t;
 
@@ -103,25 +103,25 @@ typedef struct lightstyle_s
 
 typedef struct refdef_s
 {
-	int			x, y, width, height;// in virtual screen coordinates
+	int32_t 		x, y, width, height;// in virtual screen coordinates
 	float		fov_x, fov_y;
 	float		vieworg[3];
 	float		viewangles[3];
 	float		blend[4];			// rgba 0-1 full screen blend
 	float		time;				// time is uesed to auto animate
-	int			rdflags;			// RDF_UNDERWATER, etc
+	int32_t 		rdflags;			// RDF_UNDERWATER, etc
 
-	byte		*areabits;			// if not NULL, only areas with set bits will be drawn
+	uint8_t		*areabits;			// if not NULL, only areas with set bits will be drawn
 
 	lightstyle_t	*lightstyles;	// [MAX_LIGHTSTYLES]
 
-	int			num_entities;
+	int32_t 		num_entities;
 	entity_t	*entities;
 
-	int			num_dlights;
+	int32_t 		num_dlights;
 	dlight_t	*dlights;
 
-	int			num_particles;
+	int32_t 		num_particles;
 	particle_t	*particles;
 } refdef_t;
 
@@ -133,7 +133,7 @@ typedef struct refdef_s
 typedef struct refexport_s
 {
 	// if api_version is different, the dll cannot be used
-	int		api_version;
+	int32_t 	api_version;
 
 	// called when the library is loaded
 	bool	(*Init) ( void *hinstance, void *wndproc );
@@ -162,13 +162,13 @@ typedef struct refexport_s
 
 	void	(*RenderFrame) (refdef_t *fd);
 
-	void	(*DrawGetPicSize) (int *w, int *h, char *name);	// will return 0 0 if not found
-	void	(*DrawPic) (int x, int y, char *name);
+	void	(*DrawGetPicSize) (int32_t *w, int32_t *h, char *name);	// will return 0 0 if not found
+	void	(*DrawPic) (int32_t x, int32_t y, char *name);
 	void	(*LoadPic) (char* name);
-	void	(*DrawStretchPic) (int x, int y, int w, int h, char *name);
-	void	(*DrawTileClear) (int x, int y, int w, int h, char *name);
-	void	(*DrawFill) (int x, int y, int w, int h, int r, int g, int b, int a);
-	void	(*DrawPicRegion)(int x, int y, int start_x, int start_y, int end_x, int end_y, char* pic, float color[4]);
+	void	(*DrawStretchPic) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
+	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
 	void	(*DrawFadeScreen) (void);
 	/*
 	** video mode and refresh state management entry points
@@ -186,35 +186,35 @@ typedef struct refexport_s
 //
 typedef struct
 {
-	void	(*Sys_Error) (int err_level, char *str, ...);
+	void	(*Sys_Error) (int32_t err_level, char *str, ...);
 
 	void	(*Cmd_AddCommand) (char *name, void(*cmd)(void));
 	void	(*Cmd_RemoveCommand) (char *name);
-	int		(*Cmd_Argc) (void);
-	char	*(*Cmd_Argv) (int i);
-	void	(*Cmd_ExecuteText) (int exec_when, char *text);
+	int32_t 	(*Cmd_Argc) (void);
+	char	*(*Cmd_Argv) (int32_t i);
+	void	(*Cmd_ExecuteText) (int32_t exec_when, char *text);
 
-	void	(*Con_Printf) (int print_level, char *str, ...);
+	void	(*Con_Printf) (int32_t print_level, char *str, ...);
 
 	// files will be memory mapped read only
 	// the returned buffer may be part of a larger pak file,
 	// or a discrete file from anywhere in the quake search path
 	// a -1 return means the file does not exist
 	// NULL can be passed for buf to just determine existance
-	int		(*FS_LoadFile) (char *name, void **buf);
+	int32_t 	(*FS_LoadFile) (char *name, void **buf);
 	void	(*FS_FreeFile) (void *buf);
 
 	// gamedir will be the current directory that generated
 	// files should be stored to, ie: "f:\quake\id1"
 	char	*(*FS_Gamedir) (void);
 
-	cvar_t	*(*Cvar_Get) (char *name, char *value, int flags);
+	cvar_t	*(*Cvar_Get) (char *name, char *value, int32_t flags);
 	cvar_t	*(*Cvar_Set)( char *name, char *value );
 	void	 (*Cvar_SetValue)( char *name, float value );
 
-	bool	(*Vid_GetModeInfo)( int *width, int *height, int mode );
+	bool	(*Vid_GetModeInfo)( int32_t *width, int32_t *height, int32_t mode );
 	void		(*Vid_MenuInit)( void );
-	void		(*Vid_NewWindow)( int width, int height );
+	void		(*Vid_NewWindow)( int32_t width, int32_t height );
 } refimport_t;
 
 

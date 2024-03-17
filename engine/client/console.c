@@ -31,8 +31,8 @@ extern cvar_t	*vid_hudscale;
 
 #define		MAXCMDLINE	256
 extern	char	key_lines[128][MAXCMDLINE];
-extern	int		edit_line;
-extern	int		key_linepos;
+extern	int32_t 	edit_line;
+extern	int32_t 	key_linepos;
 
 void Key_ClearTyping (void)
 {
@@ -123,7 +123,7 @@ Save the console contents out to a file
 */
 void Con_Dump_f (void)
 {
-	int		l, x;
+	int32_t 	l, x;
 	char	*line;
 	FILE	*f;
 	char	buffer[1024];
@@ -187,7 +187,7 @@ Con_ClearNotify
 */
 void Con_ClearNotify (void)
 {
-	int		i;
+	int32_t 	i;
 	
 	for (i=0 ; i<NUM_CON_CHAT_LINES ; i++)
 		con.times[i] = 0;
@@ -225,7 +225,7 @@ If the line width has changed, reformat the buffer.
 */
 void Con_CheckResize (void)
 {
-	int		i, j, width, oldwidth, oldtotallines, numlines, numchars;
+	int32_t 	i, j, width, oldwidth, oldtotallines, numlines, numchars;
 	char	tbuf[CON_TEXTSIZE];
 
 	width = (viddef.width >> 3) - 2;
@@ -332,12 +332,12 @@ All console printing must go through this in order to be logged to disk
 If no console is visible, the text will appear at the top of the game window
 ================
 */
-void Con_Print (char *txt)
+void Con_Print32_t (char *txt)
 {
-	int		y;
-	int		c, l;
-	static int	cr;
-	int		mask;
+	int32_t 	y;
+	int32_t 	c, l;
+	static int32_t cr;
+	int32_t 	mask;
 
 	if (!con.initialized)
 		return;
@@ -408,19 +408,19 @@ void Con_Print (char *txt)
 Con_CenteredPrint
 ==============
 */
-void Con_CenteredPrint (char *text)
+void Con_CenteredPrint32_t (char *text)
 {
-	int		l;
+	int32_t 	l;
 	char	buffer[1024];
 
-	l = (int)strlen(text);
+	l = (int32_t)strlen(text);
 	l = (con.linewidth-l)/2;
 	if (l < 0)
 		l = 0;
 	memset (buffer, ' ', l);
 	strcpy (buffer+l, text);
 	strcat (buffer, "\n");
-	Con_Print (buffer);
+	Con_Print32_t (buffer);
 }
 
 /*
@@ -441,10 +441,10 @@ The input line scrolls horizontally if typing goes beyond the right edge
 */
 void Con_DrawInput (void)
 {
-	int		y;
-	int		i;
+	int32_t 	y;
+	int32_t 	i;
 	char	*text;
-	int		size_x = 0, size_y = 0;
+	int32_t 	size_x = 0, size_y = 0;
 	font_t*	system_font_ptr = Font_GetByName(cl_system_font->string); // checked by drawconsole
 
 	if (cls.key_dest == key_menu)
@@ -455,7 +455,7 @@ void Con_DrawInput (void)
 	text = key_lines[edit_line];
 	
 // add the cursor frame
-	text[key_linepos] = 10+((int)(cls.realtime>>8)&1);
+	text[key_linepos] = 10+((int32_t)(cls.realtime>>8)&1);
 	
 // fill out remainder with spaces
 	for (i=key_linepos+1 ; i< con.linewidth ; i++)
@@ -485,11 +485,11 @@ Draws the last few lines of output transparently over the game top
 */
 void Con_DrawNotify (void)
 {
-	int		x, v = 0;
-	int		skip_size_x = 0, skip_size_y = 0;
+	int32_t 	x, v = 0;
+	int32_t 	skip_size_x = 0, skip_size_y = 0;
 	char	*text;
-	int		i;
-	int		time;
+	int32_t 	i;
+	int32_t 	time;
 	char	*s;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
@@ -506,7 +506,7 @@ void Con_DrawNotify (void)
 		text = con.text + (i % con.totallines)*con.linewidth;
 		
 		// temporary set a text terminator for the text system
-		// TODO: does this overflow if we print all the 128kb.
+		// TODO: does this overflow if we print32_t all the 128kb.
 		char temp = text[con.linewidth];
 		text[con.linewidth] = '\0';
 		Text_Draw(cl_system_font->string, 8 * vid_hudscale->value, v * vid_hudscale->value, text);
@@ -547,8 +547,8 @@ void Con_DrawNotify (void)
 	
 	if (v)
 	{
-		SCR_AddDirtyPoint (0,0);
-		SCR_AddDirtyPoint (viddef.width-1, v*vid_hudscale->value);
+		SCR_AddDirtyPoint32_t (0,0);
+		SCR_AddDirtyPoint32_t (viddef.width-1, v*vid_hudscale->value);
 	}
 }
 
@@ -561,14 +561,14 @@ Draws the console with the solid background
 */
 void Con_DrawConsole (float frac)
 {
-	int				i, j, x, y, n;
-	int				rows;
+	int32_t 			i, j, x, y, n;
+	int32_t 			rows;
 	char			*text;
-	int				row;
-	int				lines;
+	int32_t 			row;
+	int32_t 			lines;
 	char			version[64];
 	char			dlbar[1024];
-	int				size_x = 0, size_y = 0;
+	int32_t 			size_x = 0, size_y = 0;
 	font_t*			system_font_ptr;
 
 	system_font_ptr = Font_GetByName(cl_system_font->string);
@@ -607,8 +607,8 @@ void Con_DrawConsole (float frac)
 		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback");
 	}
 
-	SCR_AddDirtyPoint (0,0);
-	SCR_AddDirtyPoint (viddef.width-1,lines-1);
+	SCR_AddDirtyPoint32_t (0,0);
+	SCR_AddDirtyPoint32_t (viddef.width-1,lines-1);
 
 	Com_sprintf (version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, version);
@@ -661,7 +661,7 @@ void Con_DrawConsole (float frac)
 			text = cls.downloadname;
 
 		x = con.linewidth - ((con.linewidth * 7) / 40);
-		y = (x - (int)strlen(text) - 24 * vid_hudscale->value) / vid_hudscale->value;
+		y = (x - (int32_t)strlen(text) - 24 * vid_hudscale->value) / vid_hudscale->value;
 		i = con.linewidth/6;
 		if (strlen(text) > i) {
 			y = x - i - 20;
@@ -671,7 +671,7 @@ void Con_DrawConsole (float frac)
 		} else
 			strcpy(dlbar, text);
 		strcat(dlbar, ": ");
-		i = (int)strlen(dlbar);
+		i = (int32_t)strlen(dlbar);
 		dlbar[i++] = '\x80';
 		// where's the dot go?
 		if (cls.downloadpercent == 0)
@@ -689,7 +689,7 @@ void Con_DrawConsole (float frac)
 
 		sprintf(dlbar + strlen(dlbar), " %02d%%", cls.downloadpercent);
 
-		int size_x = 0, size_y = 0;
+		int32_t size_x = 0, size_y = 0;
 
 		// draw it
 		y = con.vislines-12*vid_hudscale->value;

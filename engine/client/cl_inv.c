@@ -28,7 +28,7 @@ CL_ParseInventory
 */
 void CL_ParseInventory (void)
 {
-	int		i;
+	int32_t 	i;
 
 	for (i=0 ; i<MAX_ITEMS ; i++)
 		cl.inventory[i] = MSG_ReadShort (&net_message);
@@ -43,15 +43,15 @@ CL_DrawInventory
 
 void CL_DrawInventory (void)
 {
-	int		i, j;
-	int		num, selected_num, item;
-	int		index[MAX_ITEMS];
+	int32_t 	i, j;
+	int32_t 	num, selected_num, item;
+	int32_t 	index[MAX_ITEMS];
 	char	string[1024];
-	int		x, y;
+	int32_t 	x, y;
 	char	binding[1024];
 	char	*bind;
-	int		selected;
-	int		top;
+	int32_t 	selected;
+	int32_t 	top;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	selected = cl.frame.playerstate.stats[STAT_SELECTED_ITEM];
@@ -79,7 +79,7 @@ void CL_DrawInventory (void)
 	x = (viddef.width-256 * vid_hudscale->value)/2;
 	y = (viddef.height-240 * vid_hudscale->value)/2;
 
-	// repaint everything next frame
+	// repaint32_t everything next frame
 	SCR_DirtyScreen ();
 
 	re.DrawPic (x, y + 8 * vid_hudscale->value, "pics/inventory");
@@ -107,7 +107,7 @@ void CL_DrawInventory (void)
 
 		if (item == selected)	// draw a blinky cursor by the selected item
 		{
-			if ( (int)(cls.realtime*10) & 1)
+			if ( (int32_t)(cls.realtime*10) & 1)
 				re.DrawPic(x - 8 * vid_hudscale->value, y * vid_hudscale->value, "dot_01");
 		}
 
