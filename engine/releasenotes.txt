@@ -14,8 +14,10 @@ March XX, 2024
 		* Changed texture length limit from 32 to 80
 		* Changed pak filesize limit from 56 to 256
 		* Removed LUMP_POP as it was 1 byte and useless (and a quake 1 left over)
-	* Converted all maps
+	* Converted all maps to the new format
 		* Blockout only ones don't have lighting
+* Reorganised source code generaally
+* Split primary and secondary attack animations
 
 Version 0.04
 March 10, 2024

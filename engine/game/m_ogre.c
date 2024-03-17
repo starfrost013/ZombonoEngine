@@ -319,7 +319,7 @@ void ogre_fire(edict_t* self)
 	//temp
 	VectorSet(aim, OGRE_RANGE_MELEE, 0, 16);
 	// todo: types
-	fire_hit(self, aim, OGRE_RANGE_MELEE, 0);
+	Ammo_Melee(self, aim, OGRE_RANGE_MELEE, 0);
 }
 
 // Attack 1:

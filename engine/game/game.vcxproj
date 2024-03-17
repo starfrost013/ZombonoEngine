@@ -113,7 +113,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>$(ProjectName)x64</TargetName>
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)build\out\zombono</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
@@ -274,6 +274,14 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ammunition\ammo_bamfuslicator.c" />
+    <ClCompile Include="ammunition\ammo_bfg.c" />
+    <ClCompile Include="ammunition\ammo_blaster.c" />
+    <ClCompile Include="ammunition\ammo_bullet.c" />
+    <ClCompile Include="ammunition\ammo_grenade.c" />
+    <ClCompile Include="ammunition\ammo_melee.c" />
+    <ClCompile Include="ammunition\ammo_rail.c" />
+    <ClCompile Include="ammunition\ammo_rocket.c" />
     <ClCompile Include="g_ai.c" />
     <ClCompile Include="g_chase.c" />
     <ClCompile Include="g_cmds.c" />
@@ -290,7 +298,6 @@
     <ClCompile Include="g_target.c" />
     <ClCompile Include="g_trigger.c" />
     <ClCompile Include="g_utils.c" />
-    <ClCompile Include="g_weapon.c" />
     <ClCompile Include="m_flash.c" />
     <ClCompile Include="m_move.c" />
     <ClCompile Include="m_ogre.c" />
@@ -301,8 +308,20 @@
     <ClCompile Include="p_hud.c" />
     <ClCompile Include="p_trail.c" />
     <ClCompile Include="p_view.c" />
-    <ClCompile Include="p_weapon.c" />
     <ClCompile Include="q_shared.c" />
+    <ClCompile Include="weapons\weapon_bamfuslicator.c" />
+    <ClCompile Include="weapons\weapon_base.c" />
+    <ClCompile Include="weapons\weapon_bfg.c" />
+    <ClCompile Include="weapons\weapon_blaster.c" />
+    <ClCompile Include="weapons\weapon_blaster_hyper.c" />
+    <ClCompile Include="weapons\weapon_chaingun.c" />
+    <ClCompile Include="weapons\weapon_grenade_hand.c" />
+    <ClCompile Include="weapons\weapon_grenade_launcher.c" />
+    <ClCompile Include="weapons\weapon_machinegun.c" />
+    <ClCompile Include="weapons\weapon_railgun.c" />
+    <ClCompile Include="weapons\weapon_rocket_launcher.c" />
+    <ClCompile Include="weapons\weapon_shotgun.c" />
+    <ClCompile Include="weapons\weapon_shotgun_super.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def" />

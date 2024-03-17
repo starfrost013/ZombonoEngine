@@ -489,7 +489,27 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/g_target.o \
 	$(BUILDDIR)/game/g_trigger.o \
 	$(BUILDDIR)/game/g_utils.o \
-	$(BUILDDIR)/game/g_weapon.o \
+	$(BUILDDIR)/game/ammunition/ammo_bamfuslicator.o \
+	$(BUILDDIR)/game/ammunition/ammo_bfg.o \
+	$(BUILDDIR)/game/ammunition/ammo_blaster.o \
+	$(BUILDDIR)/game/ammunition/ammon_bullet.o \
+	$(BUILDDIR)/game/ammunition/ammo_grenade.o \
+	$(BUILDDIR)/game/ammunition/ammo_melee.o \
+	$(BUILDDIR)/game/ammunition/ammo_rail.o \
+	$(BUILDDIR)/game/ammunition/ammo_rocket.o \
+	$(BUILDDIR)/game/weapons/weapon_bamfuslicator.o \
+	$(BUILDDIR)/game/weapons/weapon_base.o \
+	$(BUILDDIR)/game/weapons/weapon_bfg.o \
+	$(BUILDDIR)/game/weapons/weapon_blaster.o \
+	$(BUILDDIR)/game/weapons/weapon_blaster_hyper.o \
+	$(BUILDDIR)/game/weapons/weapon_chaingun.o \
+	$(BUILDDIR)/game/weapons/weapon_grenade_hand.o \
+	$(BUILDDIR)/game/weapons/weapon_grenade_launcher.o \
+	$(BUILDDIR)/game/weapons/weapon_machinegun.o \
+	$(BUILDDIR)/game/weapons/weapon_railgun.o \
+	$(BUILDDIR)/game/weapons/weapon_rocket_launcher.o \
+	$(BUILDDIR)/game/weapons/weapon_shotgun.o \
+	$(BUILDDIR)/game/weapons/weapon_shotgun_super.o \
 	$(BUILDDIR)/game/m_ogre.o \
 	$(BUILDDIR)/game/m_soldier.o \
 	$(BUILDDIR)/game/m_zombie.o \
@@ -554,7 +574,70 @@ $(BUILDDIR)/game/g_trigger.o :   $(GAME_DIR)/g_trigger.c
 $(BUILDDIR)/game/g_utils.o :     $(GAME_DIR)/g_utils.c
 	$(DO_SHLIB_CC)
 
-$(BUILDDIR)/game/g_weapon.o :    $(GAME_DIR)/g_weapon.c
+$(BUILDDIR)/game/ammunition/ammo_bamfuslicator.o :    $(GAME_DIR)/game/ammunition/ammo_bamfuslicator.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_bfg.o :    $(GAME_DIR)/game/ammunition/ammo_bfg.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_blaster.o :    $(GAME_DIR)/game/ammunition/ammo_blaster.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_bullet.o :    $(GAME_DIR)/game/ammunition/ammo_bullet.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_grenade.o :    $(GAME_DIR)/game/ammunition/ammo_grenade.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_melee.o :    $(GAME_DIR)/game/ammunition/ammo_melee.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_rail.o :    $(GAME_DIR)/game/ammunition/ammo_rail.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/ammunition/ammo_rocket.o :    $(GAME_DIR)/game/ammunition/ammo_rocket.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_bamfuslicator.o :    $(GAME_DIR)/game/weapons/weapon_bamfuslicator.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_base.o :    $(GAME_DIR)/game/weapons/weapon_base.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_bfg.o :    $(GAME_DIR)/game/weapons/weapon_bfg.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_blaster.o :    $(GAME_DIR)/game/weapon/weapon_blaster.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_blaster_hyper.o :    $(GAME_DIR)/game/ammunition/weapon_blaster_hyper.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_chaingun.o :    $(GAME_DIR)/game/weapons/weapon_chaingun.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_grenade_hand.o :    $(GAME_DIR)/game/weapons/weapon_grenade_hand.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_grenade_launcher.o :    $(GAME_DIR)/game/ammunition/weapon_grenade_launcher.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_machinegun.o :    $(GAME_DIR)/game/weapons/weapon_machinegun.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_railgun.o :    $(GAME_DIR)/game/weapons/weapon_railgun.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_rocket_launcher.o :    $(GAME_DIR)/game/weapons/weapon_rocket_launcher.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_machinegun.o :    $(GAME_DIR)/game/weapons/weapon_machinegun.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_shotgun.o :    $(GAME_DIR)/game/weapons/weapon_shotgun.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_shotgun_super.o :    $(GAME_DIR)/game/weapons/weapon_shotgun_super
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/m_ogre.o :   	$(GAME_DIR)/m_ogre.c

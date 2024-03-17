@@ -20,87 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "g_local.h"
 
-
-//
-// monster weapons
-//
-
-//FIXME mosnters should call these with a totally accurate direction
-// and we can mess it up based on skill.  Spread should be for normal
-// and we can tighten or loosen based on skill.  We could muck with
-// the damages too, but I'm not sure that's such a good idea.
-void monster_fire_bullet (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t flashtype)
-{
-	fire_bullet (self, start, dir, damage, kick, hspread, vspread, MOD_UNKNOWN);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}
-
-void monster_fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t flashtype)
-{
-	fire_shotgun (self, start, aimdir, damage, kick, hspread, vspread, count, MOD_UNKNOWN);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}
-
-void monster_fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype, int32_t effect)
-{
-	fire_blaster (self, start, dir, damage, speed, effect, false);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}	
-
-void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t flashtype)
-{
-	fire_grenade (self, start, aimdir, damage, speed, 2.5, damage+40);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}
-
-void monster_fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype)
-{
-	fire_rocket (self, start, dir, damage, speed, damage+20, damage);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}	
-
-void monster_fire_railgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t flashtype)
-{
-	fire_rail (self, start, aimdir, damage, kick);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}
-
-void monster_fire_bfg (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t kick, float damage_radius, int32_t flashtype)
-{
-	fire_bfg (self, start, aimdir, damage, speed, damage_radius);
-
-	gi.WriteByte (svc_muzzleflash2);
-	gi.WriteShort (self - g_edicts);
-	gi.WriteByte (flashtype);
-	gi.multicast (start, MULTICAST_PVS);
-}
-
-
-
 //
 // Monster utility functions
 //
@@ -730,4 +649,37 @@ void swimmonster_start (edict_t *self)
 	self->flags |= FL_SWIM;
 	self->think = swimmonster_start_go;
 	monster_start (self);
+}
+
+
+/*
+=================
+check_dodge
+
+This is a support routine used when a client is firing
+a non-instant attack weapon.  It checks to see if a
+monster's dodge function should be called.
+=================
+*/
+void monster_check_dodge(edict_t* self, vec3_t start, vec3_t dir, int32_t speed)
+{
+	vec3_t	end;
+	vec3_t	v;
+	trace_t	tr;
+	float	eta;
+
+	// easy mode only ducks one quarter the time
+	if (skill->value == 0)
+	{
+		if (random() > 0.25)
+			return;
+	}
+	VectorMA(start, 8192, dir, end);
+	tr = gi.trace(start, NULL, NULL, end, self, MASK_SHOT);
+	if ((tr.ent) && (tr.ent->svflags & SVF_MONSTER) && (tr.ent->health > 0) && (tr.ent->monsterinfo.dodge) && infront(tr.ent, self))
+	{
+		VectorSubtract(tr.endpos, start, v);
+		eta = (VectorLength(v) - tr.ent->maxs[0]) / speed;
+		tr.ent->monsterinfo.dodge(tr.ent, self, eta);
+	}
 }

@@ -13,11 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Weapons">
-      <UniqueIdentifier>{a3ef6150-1c33-4511-a8d6-b57f0112d47c}</UniqueIdentifier>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{f6421167-76c1-4a7d-bbb4-90fa8428f011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Items">
+      <UniqueIdentifier>{dc561ee8-a251-4f3e-9cda-ba385f23305d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{39f624d2-87fa-4c66-b808-78b07b17a6ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Flow">
+      <UniqueIdentifier>{1e6644b2-49bc-4a8a-b97d-0401735bf30e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Ammunition">
       <UniqueIdentifier>{95083eee-1a23-4ca6-b77b-c29ed1079716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Weapons">
+      <UniqueIdentifier>{a3ef6150-1c33-4511-a8d6-b57f0112d47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Monsters">
+      <UniqueIdentifier>{869dbc01-436b-4256-8f09-fd2b922e9857}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +87,6 @@
     <ClCompile Include="g_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_weapon.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="m_soldier.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -88,9 +100,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="p_view.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="p_weapon.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="m_move.c">
@@ -107,6 +116,69 @@
     </ClCompile>
     <ClCompile Include="m_ogre.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_melee.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_bfg.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_bullet.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_blaster.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_bamfuslicator.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_grenade.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_rail.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_rocket.c">
+      <Filter>Source Files\Ammunition</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_base.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_grenade_hand.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_grenade_launcher.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_rocket_launcher.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_blaster.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_blaster_hyper.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_machinegun.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_chaingun.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_shotgun.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_shotgun_super.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_railgun.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_bfg.c">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\weapon_bamfuslicator.c">
+      <Filter>Source Files\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

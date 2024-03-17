@@ -837,12 +837,12 @@ void G_SetClientSound (edict_t *ent)
 
 	if (ent->waterlevel && (ent->watertype&(CONTENTS_LAVA|CONTENTS_SLIME)) )
 		ent->s.sound = snd_fry;
-	else if (strcmp(weap, "weapon_railgun") == 0)
+	else if (strcmp(weap, "Weapon_railgun") == 0)
 		ent->s.sound = gi.soundindex("weapons/rg_hum.wav");
-	else if (strcmp(weap, "weapon_bfg") == 0)
+	else if (strcmp(weap, "Weapon_bfg") == 0)
 		ent->s.sound = gi.soundindex("weapons/bfg_hum.wav");
-	else if (ent->client->weapon_sound)
-		ent->s.sound = ent->client->weapon_sound;
+	else if (ent->client->Weapon_sound)
+		ent->s.sound = ent->client->Weapon_sound;
 	else
 		ent->s.sound = 0;
 }

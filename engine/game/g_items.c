@@ -1076,7 +1076,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 	}
 	if ((int32_t)gameflags->value & GF_INFINITE_AMMO)
 	{
-		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0))
+		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "Weapon_bfg") == 0))
 		{
 			G_FreeEdict(ent);
 			return;
@@ -1249,11 +1249,11 @@ gitem_t	itemlist[] =
 	// WEAPONS 
 	//
 
-/* weapon_blaster (.3 .3 1) (-16 -16 -16) (16 16 16)
+/* Weapon_blaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 always owned, never in the world
 */
 	{
-		"weapon_blaster", 
+		"Weapon_blaster", 
 		NULL,
 		Use_Weapon,
 		NULL,
@@ -1273,10 +1273,10 @@ always owned, never in the world
 /* precache */ "weapons/blastf1a.wav misc/lasfly.wav"
 	},
 
-/*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_shotgun", 
+		"Weapon_shotgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1296,10 +1296,10 @@ always owned, never in the world
 /* precache */ "weapons/shotgf1b.wav weapons/shotgr1b.wav"
 	},
 
-/*QUAKED weapon_supershotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_supershotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_supershotgun", 
+		"Weapon_supershotgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1319,10 +1319,10 @@ always owned, never in the world
 /* precache */ "weapons/sshotf1b.wav"
 	},
 
-/*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_machinegun", 
+		"Weapon_machinegun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1342,10 +1342,10 @@ always owned, never in the world
 /* precache */ "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
 	},
 
-/*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_chaingun", 
+		"Weapon_chaingun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1365,10 +1365,10 @@ always owned, never in the world
 /* precache */ "weapons/chngnu1a.wav weapons/chngnl1a.wav weapons/machgf3b.wav` weapons/chngnd1a.wav"
 	},
 
-/*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_Grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_grenades",
+		"Ammo_Grenades",
 		Pickup_Ammo,
 		Use_Weapon,
 		Drop_Ammo,
@@ -1388,10 +1388,10 @@ always owned, never in the world
 /* precache */ "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
 	},
 
-/*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_grenadelauncher",
+		"Weapon_grenadelauncher",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1411,10 +1411,10 @@ always owned, never in the world
 /* precache */ "models/objects/grenade/tris.md2 weapons/grenlf1a.wav weapons/grenlr1b.wav weapons/grenlb1b.wav"
 	},
 
-/*QUAKED weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_rocketlauncher",
+		"Weapon_rocketlauncher",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1434,10 +1434,10 @@ always owned, never in the world
 /* precache */ "models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2"
 	},
 
-/*QUAKED weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_hyperblaster", 
+		"Weapon_hyperblaster", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1457,10 +1457,10 @@ always owned, never in the world
 /* precache */ "weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav"
 	},
 
-/*QUAKED weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_railgun", 
+		"Weapon_railgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1480,10 +1480,10 @@ always owned, never in the world
 /* precache */ "weapons/rg_hum.wav"
 	},
 
-/*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_bfg",
+		"Weapon_bfg",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1508,7 +1508,7 @@ always owned, never in the world
 	//
 
 	{
-		"weapon_bamfuslicator",
+		"Weapon_bamfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1530,7 +1530,7 @@ always owned, never in the world
 	},
 
 	{
-		"weapon_planfuslicator",
+		"Weapon_planfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1551,7 +1551,7 @@ always owned, never in the world
 			team_director,
 	},
 	{
-		"weapon_tangfuslicator",
+		"Weapon_tangfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1577,10 +1577,10 @@ always owned, never in the world
 	// AMMO ITEMS
 	//
 
-/*QUAKED ammo_shells (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_shells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_shells",
+		"Ammo_shells",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1600,10 +1600,10 @@ always owned, never in the world
 /* precache */ ""
 	},
 
-/*QUAKED ammo_bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_Bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_bullets",
+		"Ammo_Bullets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1623,10 +1623,10 @@ always owned, never in the world
 /* precache */ ""
 	},
 
-/*QUAKED ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_cells",
+		"Ammo_cells",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1646,10 +1646,10 @@ always owned, never in the world
 /* precache */ ""
 	},
 
-/*QUAKED ammo_rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_Rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_rockets",
+		"Ammo_Rockets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1669,10 +1669,10 @@ always owned, never in the world
 /* precache */ ""
 	},
 
-/*QUAKED ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED Ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_slugs",
+		"Ammo_slugs",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,

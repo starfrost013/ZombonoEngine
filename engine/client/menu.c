@@ -2431,7 +2431,7 @@ static menulist_t	s_samelevel_box;
 static menulist_t	s_force_respawn_box;
 static menulist_t	s_armor_box;
 static menulist_t	s_allow_exit_box;
-static menulist_t	s_infinite_ammo_box;
+static menulist_t	s_infinite_Ammo_box;
 static menulist_t	s_quad_drop_box;
 static menulist_t	s_individual_fraglimit_box;
 
@@ -2507,7 +2507,7 @@ static void GameFlagCallback( void *self )
 			flags |= GF_NO_ARMOR;
 		goto setvalue;
 	}
-	else if ( f == &s_infinite_ammo_box )
+	else if ( f == &s_infinite_Ammo_box )
 	{
 		bit = GF_INFINITE_AMMO;
 	}
@@ -2642,13 +2642,13 @@ void GameOptions_MenuInit( void )
 	s_allow_exit_box.itemnames = yes_no_names;
 	s_allow_exit_box.curvalue = ( gameflags & GF_ALLOW_EXIT ) != 0;
 
-	s_infinite_ammo_box.generic.type = MTYPE_SPINCONTROL;
-	s_infinite_ammo_box.generic.x	= 0;
-	s_infinite_ammo_box.generic.y	= y += 10 * vid_hudscale->value;
-	s_infinite_ammo_box.generic.name	= "^5Infinite Ammo";
-	s_infinite_ammo_box.generic.callback = GameFlagCallback;
-	s_infinite_ammo_box.itemnames = yes_no_names;
-	s_infinite_ammo_box.curvalue = ( gameflags & GF_INFINITE_AMMO ) != 0;
+	s_infinite_Ammo_box.generic.type = MTYPE_SPINCONTROL;
+	s_infinite_Ammo_box.generic.x	= 0;
+	s_infinite_Ammo_box.generic.y	= y += 10 * vid_hudscale->value;
+	s_infinite_Ammo_box.generic.name	= "^5Infinite Ammo";
+	s_infinite_Ammo_box.generic.callback = GameFlagCallback;
+	s_infinite_Ammo_box.itemnames = yes_no_names;
+	s_infinite_Ammo_box.curvalue = ( gameflags & GF_INFINITE_AMMO ) != 0;
 
 	s_quad_drop_box.generic.type = MTYPE_SPINCONTROL;
 	s_quad_drop_box.generic.x	= 0;
@@ -2692,7 +2692,7 @@ void GameOptions_MenuInit( void )
 	Menu_AddItem( &s_gameoptions_menu, &s_samelevel_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_force_respawn_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_allow_exit_box );
-	Menu_AddItem( &s_gameoptions_menu, &s_infinite_ammo_box );
+	Menu_AddItem( &s_gameoptions_menu, &s_infinite_Ammo_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_quad_drop_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_box );
 	Menu_AddItem( &s_gameoptions_menu, &s_friendlyfire_item_box);

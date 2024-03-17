@@ -109,7 +109,12 @@ typedef enum
 	WEAPON_FIRING_SECONDARY,
 } weaponstate_t;
 
+extern bool		is_quad;
+extern uint8_t	is_silenced;
+
 // STUPID hack
+void P_ProjectSource(edict_t* ent, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
+void Weapon_grenade_fire(edict_t* ent, bool held);
 void Weapon_Bamfuslicator_SetType(edict_t* ent);
 
 typedef enum
@@ -120,8 +125,7 @@ typedef enum
 	AMMO_GRENADES,
 	AMMO_CELLS,
 	AMMO_SLUGS
-} ammo_t;
-
+} Ammo_t;
 
 //deadflag
 #define DEAD_NO					0
@@ -767,15 +771,16 @@ void	GiveBaseWeaponForTeam(edict_t* client_edict);
 //
 // g_monster.c
 //
-void monster_fire_bullet (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t flashtype);
-void monster_fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t flashtype);
-void monster_fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype, int32_t effect);
-void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t flashtype);
-void monster_fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype);
-void monster_fire_railgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t flashtype);
-void monster_fire_bfg (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t kick, float damage_radius, int32_t flashtype);
+void Ammo_Bullet_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t flashtype);
+void Ammo_Shotgun_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t flashtype);
+void Ammo_Blaster_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype, int32_t effect);
+void Ammo_Grenade_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t flashtype);
+void Ammo_Rocket_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype);
+void Ammo_Rail_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t flashtype);
+void Ammo_BFG_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t kick, float damage_radius, int32_t flashtype);
 void M_droptofloor (edict_t *ent);
 void monster_think (edict_t *self);
+void monster_check_dodge(edict_t* self, vec3_t start, vec3_t dir, int32_t speed);
 void walkmonster_start (edict_t *self);
 void swimmonster_start (edict_t *self);
 void flymonster_start (edict_t *self);
@@ -813,19 +818,20 @@ bool visible (edict_t *self, edict_t *other);
 bool FacingIdeal(edict_t *self);
 
 //
-// g_weapon.c
+// Ammo_*.c
 //
+
 void ThrowDebris (edict_t *self, char *modelname, float speed, vec3_t origin);
-bool fire_hit (edict_t *self, vec3_t aim, int32_t damage, int32_t kick);
-void fire_bullet (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t mod);
-void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t mod);
-void fire_blaster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t effect, bool hyper);
-void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius);
-void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius, bool held);
-void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius, int32_t radius_damage);
-void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick);
-void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius);
-void fire_bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
+bool Ammo_Melee (edict_t *self, vec3_t aim, int32_t damage, int32_t kick);
+void Ammo_Bullet (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t mod);
+void Ammo_Bullet_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t mod);
+void Ammo_Blaster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t effect, bool hyper);
+void Ammo_Grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius);
+void Ammo_Grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius, bool held);
+void Ammo_Rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius, int32_t radius_damage);
+void Ammo_Rail (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick);
+void Ammo_BFG (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius);
+void Ammo_Bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
 //
 // g_ptrail.c
 //
@@ -983,13 +989,13 @@ typedef struct gclient_s
 	bool	showhelp;
 	bool	showhelpicon;
 
-	int			ammo_index;
+	int			Ammo_index;
 
 	int			buttons;
 	int			oldbuttons;
 	int			latched_buttons;
 
-	bool	weapon_thunk;
+	bool	Weapon_thunk;
 
 	gitem_t*	newweapon;
 
@@ -1037,7 +1043,7 @@ typedef struct gclient_s
 	bool	grenade_blew_up;
 	float		grenade_time;
 	int			silencer_shots;
-	int			weapon_sound;
+	int			Weapon_sound;
 
 	float		pickup_msg_time;
 
