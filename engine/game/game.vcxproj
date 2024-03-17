@@ -97,7 +97,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>$(ProjectName)x64</TargetName>
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)\obj_game</IntDir>
     <OutDir>$(SolutionDir)build\out\zombonogame</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,14 +113,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>$(ProjectName)x64</TargetName>
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)build\out\zombono</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)\obj_game</IntDir>
+    <OutDir>$(SolutionDir)build\out\zombonogame</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
     <TargetName>$(ProjectName)x64</TargetName>
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)build\out\zombono</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)\obj_game</IntDir>
+    <OutDir>$(SolutionDir)build\out\zombonogame</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
