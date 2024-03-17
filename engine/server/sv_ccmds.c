@@ -72,7 +72,7 @@ void SV_SetMaster_f (void)
 
 		Com_Printf ("Sending a ping.\n");
 
-		Netchan_OutOfBandPrint32_t (NS_SERVER, master_adr[slot], "ping");
+		Netchan_OutOfBandPrint (NS_SERVER, master_adr[slot], "ping");
 
 		slot++;
 	}
@@ -732,7 +732,7 @@ void SV_Kick_f (void)
 		return;
 
 	SV_BroadcastPrintf (PRINT_HIGH, "%s was kicked\n", sv_client->name);
-	// print32_t directly, because the dropped client won't get the
+	// print directly, because the dropped client won't get the
 	// SV_BroadcastPrintf message
 	SV_ClientPrintf (sv_client, PRINT_HIGH, "You were kicked from the game\n");
 	SV_DropClient (sv_client);
@@ -853,7 +853,7 @@ SV_Serverinfo_f
 void SV_Serverinfo_f (void)
 {
 	Com_Printf ("Server info settings:\n");
-	Info_Print32_t (Cvar_Serverinfo());
+	Info_Print (Cvar_Serverinfo());
 }
 
 
@@ -877,7 +877,7 @@ void SV_DumpUser_f (void)
 
 	Com_Printf ("userinfo\n");
 	Com_Printf ("--------\n");
-	Info_Print32_t (sv_client->userinfo);
+	Info_Print (sv_client->userinfo);
 
 }
 

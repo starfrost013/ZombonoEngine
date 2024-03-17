@@ -89,7 +89,7 @@ void SZ_Init (sizebuf_t *buf, uint8_t *data, int32_t length);
 void SZ_Clear (sizebuf_t *buf);
 void *SZ_GetSpace (sizebuf_t *buf, int32_t length);
 void SZ_Write (sizebuf_t *buf, void *data, int32_t length);
-void SZ_Print32_t (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
+void SZ_Print (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
 
 //============================================================================
 
@@ -157,7 +157,7 @@ char *CopyString (char *in);
 
 //============================================================================
 
-void Info_Print32_t (char *s);
+void Info_Print (char *s);
 
 /* crc.h */
 
@@ -504,7 +504,7 @@ void	Cvar_GetLatchedVars (void);
 bool Cvar_Command (void);
 // called by Cmd_ExecuteString when Cmd_Argv(0) doesn't match a known
 // command.  Returns true if the command was a variable reference that
-// was handled. (print32_t or change)
+// was handled. (print or change)
 
 void 	Cvar_WriteVariables (char *path);
 // appends lines containing "set variable value" for all variables
@@ -616,7 +616,7 @@ void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int32_t qport)
 bool Netchan_NeedReliable (netchan_t *chan);
 void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data);
 void Netchan_OutOfBand (int32_t net_socket, netadr_t adr, int32_t length, uint8_t *data);
-void Netchan_OutOfBandPrint32_t (int32_t net_socket, netadr_t adr, char *format, ...);
+void Netchan_OutOfBandPrint (int32_t net_socket, netadr_t adr, char *format, ...);
 bool Netchan_Process (netchan_t *chan, sizebuf_t *msg);
 
 bool Netchan_CanReliable (netchan_t *chan);
@@ -733,7 +733,7 @@ MISC
 
 
 #define	ERR_FATAL	0		// exit the entire game with a popup window
-#define	ERR_DROP	1		// print32_t to console and disconnect from game
+#define	ERR_DROP	1		// print to console and disconnect from game
 #define	ERR_QUIT	2		// not an error, just a normal exit
 
 #define	EXEC_NOW	0		// don't return until completed
@@ -741,7 +741,7 @@ MISC
 #define	EXEC_APPEND	2		// add to end of the command buffer
 
 #define	PRINT_ALL		0
-#define PRINT_DEVELOPER	1	// only print32_t when "developer 1"
+#define PRINT_DEVELOPER	1	// only print when "developer 1"
 
 void		Com_BeginRedirect (int32_t target, char *buffer, int32_t buffersize, void (*flush));
 void		Com_EndRedirect (void);
@@ -824,7 +824,7 @@ void CL_Init (void);
 void CL_Drop (void);
 void CL_Shutdown (void);
 void CL_Frame (int32_t msec);
-void Con_Print32_t (char *text);
+void Con_Print (char *text);
 void SCR_BeginLoadingPlaque (void);
 
 void SV_Init (void);

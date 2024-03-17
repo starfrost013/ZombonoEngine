@@ -122,7 +122,7 @@ void Com_Printf (char *fmt, ...)
 		return;
 	}
 
-	Con_Print32_t (msg);
+	Con_Print (msg);
 		
 	// also echo to debugging console
 	Sys_ConsoleOutput (msg);
@@ -924,7 +924,7 @@ void SZ_Write (sizebuf_t *buf, void *data, int32_t length)
 	memcpy (SZ_GetSpace(buf,length),data,length);		
 }
 
-void SZ_Print32_t (sizebuf_t *buf, char *data)
+void SZ_Print (sizebuf_t *buf, char *data)
 {
 	int32_t 	len;
 	
@@ -1031,7 +1031,7 @@ char *CopyString (char *in)
 	return out;
 }
 
-void Info_Print32_t (char *s)
+void Info_Print (char *s)
 {
 	char	key[512];
 	char	value[512];

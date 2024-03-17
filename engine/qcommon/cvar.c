@@ -369,7 +369,7 @@ bool Cvar_Command (void)
 	if (!v)
 		return false;
 		
-// perform a variable print32_t or set
+// perform a variable print or set
 	if (Cmd_Argc() == 1)
 	{
 		Com_Printf ("\"%s\" is \"%s\"\n", v->name, v->string);

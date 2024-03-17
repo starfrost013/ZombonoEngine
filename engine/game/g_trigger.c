@@ -278,7 +278,7 @@ trigger_counter
 /*QUAKED trigger_counter (.5 .5 .5) ? nomessage
 Acts as an intermediary for an action that takes multiple inputs.
 
-If nomessage is not set, t will print32_t "1 more.. " etc when triggered and "sequence complete" when finished.
+If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
 
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
 */

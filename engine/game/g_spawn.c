@@ -559,7 +559,7 @@ Only used for the world.
 "skyrotate"	speed of rotation in degrees/second
 "sounds"	music cd track number
 "gravity"	800 is default gravity
-"message"	text to print32_t at user logon
+"message"	text to print at user logon
 */
 void SP_worldspawn (edict_t *ent)
 {

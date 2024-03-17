@@ -147,7 +147,7 @@ Responds with all the info that qplug or qspy can see
 */
 void SVC_Status (void)
 {
-	Netchan_OutOfBandPrint32_t (NS_SERVER, net_from, "print\n%s", SV_StatusString());
+	Netchan_OutOfBandPrint (NS_SERVER, net_from, "print\n%s", SV_StatusString());
 }
 
 /*
@@ -192,7 +192,7 @@ void SVC_Info (void)
 		Com_sprintf (string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)maxclients->value);
 	}
 
-	Netchan_OutOfBandPrint32_t (NS_SERVER, net_from, "info\n%s", string);
+	Netchan_OutOfBandPrint (NS_SERVER, net_from, "info\n%s", string);
 }
 
 /*
@@ -204,7 +204,7 @@ Just responds with an acknowledgement
 */
 void SVC_Ping (void)
 {
-	Netchan_OutOfBandPrint32_t (NS_SERVER, net_from, "ack");
+	Netchan_OutOfBandPrint (NS_SERVER, net_from, "ack");
 }
 
 
@@ -250,7 +250,7 @@ void SVC_GetChallenge (void)
 	}
 
 	// send it back
-	Netchan_OutOfBandPrint32_t (NS_SERVER, net_from, "challenge %i", svs.challenges[i].challenge);
+	Netchan_OutOfBandPrint (NS_SERVER, net_from, "challenge %i", svs.challenges[i].challenge);
 }
 
 /*
@@ -280,7 +280,7 @@ void SVC_DirectConnect (void)
 	version = atoi(Cmd_Argv(1));
 	if (version != PROTOCOL_VERSION)
 	{
-		Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nServer is version %4.2f.\n", ZOMBONO_VERSION);
+		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is version %4.2f.\n", ZOMBONO_VERSION);
 		Com_DPrintf ("    rejected connect from version %i\n", version);
 		return;
 	}
@@ -301,7 +301,7 @@ void SVC_DirectConnect (void)
 		if (!NET_IsLocalAddress (adr))
 		{
 			Com_Printf ("Remote connect in attract loop.  Ignored.\n");
-			Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nConnection refused.\n");
+			Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nConnection refused.\n");
 			return;
 		}
 	}
@@ -315,13 +315,13 @@ void SVC_DirectConnect (void)
 			{
 				if (challenge == svs.challenges[i].challenge)
 					break;		// good
-				Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nBad challenge.\n");
+				Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nBad challenge.\n");
 				return;
 			}
 		}
 		if (i == MAX_CHALLENGES)
 		{
-			Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nNo challenge for address.\n");
+			Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nNo challenge for address.\n");
 			return;
 		}
 	}
@@ -361,7 +361,7 @@ void SVC_DirectConnect (void)
 	}
 	if (!newcl)
 	{
-		Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nServer is full.\n");
+		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is full.\n");
 		Com_DPrintf ("Rejected a connection.\n");
 		return;
 	}
@@ -381,10 +381,10 @@ gotnewcl:
 	if (!(ge->ClientConnect (ent, userinfo)))
 	{
 		if (*Info_ValueForKey (userinfo, "rejmsg")) 
-			Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\n%s\nConnection refused.\n",  
+			Netchan_OutOfBandPrint (NS_SERVER, adr, "print\n%s\nConnection refused.\n",  
 				Info_ValueForKey (userinfo, "rejmsg"));
 		else
-			Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "print\nConnection refused.\n" );
+			Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nConnection refused.\n" );
 		Com_DPrintf ("Game rejected a connection.\n");
 		return;
 	}
@@ -394,7 +394,7 @@ gotnewcl:
 	SV_UserinfoChanged (newcl);
 
 	// send the connect packet to the client
-	Netchan_OutOfBandPrint32_t (NS_SERVER, adr, "client_connect");
+	Netchan_OutOfBandPrint (NS_SERVER, adr, "client_connect");
 
 	Netchan_Setup (NS_SERVER, &newcl->netchan , adr, qport);
 
@@ -839,7 +839,7 @@ void Master_Heartbeat (void)
 		if (master_adr[i].port)
 		{
 			Com_Printf ("Sending heartbeat to %s\n", NET_AdrToString (master_adr[i]));
-			Netchan_OutOfBandPrint32_t (NS_SERVER, master_adr[i], "heartbeat\n%s", string);
+			Netchan_OutOfBandPrint (NS_SERVER, master_adr[i], "heartbeat\n%s", string);
 		}
 }
 
@@ -868,7 +868,7 @@ void Master_Shutdown (void)
 		{
 			if (i > 0)
 				Com_Printf ("Sending heartbeat to %s\n", NET_AdrToString (master_adr[i]));
-			Netchan_OutOfBandPrint32_t (NS_SERVER, master_adr[i], "shutdown");
+			Netchan_OutOfBandPrint (NS_SERVER, master_adr[i], "shutdown");
 		}
 }
 

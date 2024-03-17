@@ -58,7 +58,7 @@ void PF_Unicast (edict_t *ent, bool reliable)
 ===============
 PF_dprintf
 
-Debug print32_t to server console
+Debug print to server console
 ===============
 */
 void PF_dprintf (char *fmt, ...)
@@ -78,7 +78,7 @@ void PF_dprintf (char *fmt, ...)
 ===============
 PF_cprintf
 
-Print32_t to a single client
+Print to a single client
 ===============
 */
 void PF_cprintf (edict_t *ent, int32_t level, char *fmt, ...)
@@ -121,7 +121,7 @@ void PF_Text_Draw(edict_t* ent, const char* font, int32_t x, int32_t y, const ch
 ===============
 PF_centerprintf
 
-centerprint32_t to a single client
+centerprint to a single client
 ===============
 */
 void PF_centerprintf (edict_t *ent, char *fmt, ...)

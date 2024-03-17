@@ -299,11 +299,11 @@ void Cmd_ForwardToServer (void)
 	}
 
 	MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-	SZ_Print32_t (&cls.netchan.message, cmd);
+	SZ_Print (&cls.netchan.message, cmd);
 	if (Cmd_Argc() > 1)
 	{
-		SZ_Print32_t (&cls.netchan.message, " ");
-		SZ_Print32_t (&cls.netchan.message, Cmd_Args());
+		SZ_Print (&cls.netchan.message, " ");
+		SZ_Print (&cls.netchan.message, Cmd_Args());
 	}
 }
 
@@ -360,7 +360,7 @@ void CL_ForwardToServer_f (void)
 	if (Cmd_Argc() > 1)
 	{
 		MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-		SZ_Print32_t (&cls.netchan.message, Cmd_Args());
+		SZ_Print (&cls.netchan.message, Cmd_Args());
 	}
 }
 
@@ -440,7 +440,7 @@ void CL_SendConnectPacket (void)
 	port = Cvar_VariableValue ("qport");
 	userinfo_modified = false;
 
-	Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, "connect %i %i %i \"%s\"\n",
+	Netchan_OutOfBandPrint (NS_CLIENT, adr, "connect %i %i %i \"%s\"\n",
 		PROTOCOL_VERSION, port, cls.challenge, Cvar_Userinfo() );
 }
 
@@ -487,7 +487,7 @@ void CL_CheckForResend (void)
 
 	Com_Printf ("Connecting to %s...\n", cls.servername);
 
-	Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, "getchallenge\n");
+	Netchan_OutOfBandPrint (NS_CLIENT, adr, "getchallenge\n");
 }
 
 
@@ -820,7 +820,7 @@ void CL_PingServers_f (void)
 	{
 		adr.type = NA_BROADCAST;
 		adr.port = BigShort(PORT_SERVER);
-		Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
+		Netchan_OutOfBandPrint (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
 	}
 	// send a packet to each address book entry
 	for (i=0 ; i<16 ; i++)
@@ -838,7 +838,7 @@ void CL_PingServers_f (void)
 		}
 		if (!adr.port)
 			adr.port = BigShort(PORT_SERVER);
-		Netchan_OutOfBandPrint32_t (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
+		Netchan_OutOfBandPrint (NS_CLIENT, adr, va("info %i", PROTOCOL_VERSION));
 	}
 }
 
@@ -925,7 +925,7 @@ void CL_ConnectionlessPacket (void)
 		Cbuf_AddText ("\n");
 		return;
 	}
-	// print32_t command from somewhere
+	// print command from somewhere
 	if (!strcmp(c, "print"))
 	{
 		s = MSG_ReadString (&net_message);
@@ -936,7 +936,7 @@ void CL_ConnectionlessPacket (void)
 	// ping from somewhere
 	if (!strcmp(c, "ping"))
 	{
-		Netchan_OutOfBandPrint32_t (NS_CLIENT, net_from, "ack");
+		Netchan_OutOfBandPrint (NS_CLIENT, net_from, "ack");
 		return;
 	}
 
@@ -951,7 +951,7 @@ void CL_ConnectionlessPacket (void)
 	// echo request from server
 	if (!strcmp(c, "echo"))
 	{
-		Netchan_OutOfBandPrint32_t (NS_CLIENT, net_from, "%s", Cmd_Argv(1) );
+		Netchan_OutOfBandPrint (NS_CLIENT, net_from, "%s", Cmd_Argv(1) );
 		return;
 	}
 
@@ -1079,7 +1079,7 @@ CL_Userinfo_f
 void CL_Userinfo_f (void)
 {
 	Com_Printf ("User info settings:\n");
-	Info_Print32_t (Cvar_Userinfo());
+	Info_Print (Cvar_Userinfo());
 }
 
 /*

@@ -332,7 +332,7 @@ char *Sys_ConsoleInput (void)
 ================
 Sys_ConsoleOutput
 
-Print32_t text to the dedicated console
+Print text to the dedicated console
 ================
 */
 void Sys_ConsoleOutput (char *string)

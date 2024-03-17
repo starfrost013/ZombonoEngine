@@ -399,7 +399,7 @@ Dumps the serverinfo info string
 */
 void SV_ShowServerinfo_f (void)
 {
-	Info_Print32_t (Cvar_Serverinfo());
+	Info_Print (Cvar_Serverinfo());
 }
 
 

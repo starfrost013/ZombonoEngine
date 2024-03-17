@@ -429,7 +429,7 @@ bool GLimp_InitGL (void)
 	}
 
 	/*
-	** print32_t out PFD specifics 
+	** print out PFD specifics 
 	*/
 	ri.Con_Printf( PRINT_ALL, "GL PFD: color(%d-bits) Z(%d-bit)\n", ( int32_t ) pfd.cColorBits, ( int32_t ) pfd.cDepthBits );
 

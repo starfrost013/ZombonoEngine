@@ -253,7 +253,7 @@ void CL_ParseDownload (void)
 		cls.downloadpercent = percent;
 
 		MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-		SZ_Print32_t (&cls.netchan.message, "nextdl");
+		SZ_Print (&cls.netchan.message, "nextdl");
 	}
 	else
 	{
@@ -727,7 +727,7 @@ void CL_ParseServerMessage (void)
 			break;
 			
 		case svc_centerprint:
-			SCR_CenterPrint32_t (MSG_ReadString (&net_message));
+			SCR_CenterPrint (MSG_ReadString (&net_message));
 			break;
 			
 		case svc_stufftext:

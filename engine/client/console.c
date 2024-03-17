@@ -332,7 +332,7 @@ All console printing must go through this in order to be logged to disk
 If no console is visible, the text will appear at the top of the game window
 ================
 */
-void Con_Print32_t (char *txt)
+void Con_Print (char *txt)
 {
 	int32_t 	y;
 	int32_t 	c, l;
@@ -408,7 +408,7 @@ void Con_Print32_t (char *txt)
 Con_CenteredPrint
 ==============
 */
-void Con_CenteredPrint32_t (char *text)
+void Con_CenteredPrint (char *text)
 {
 	int32_t 	l;
 	char	buffer[1024];
@@ -420,7 +420,7 @@ void Con_CenteredPrint32_t (char *text)
 	memset (buffer, ' ', l);
 	strcpy (buffer+l, text);
 	strcat (buffer, "\n");
-	Con_Print32_t (buffer);
+	Con_Print (buffer);
 }
 
 /*
@@ -506,7 +506,7 @@ void Con_DrawNotify (void)
 		text = con.text + (i % con.totallines)*con.linewidth;
 		
 		// temporary set a text terminator for the text system
-		// TODO: does this overflow if we print32_t all the 128kb.
+		// TODO: does this overflow if we print all the 128kb.
 		char temp = text[con.linewidth];
 		text[con.linewidth] = '\0';
 		Text_Draw(cl_system_font->string, 8 * vid_hudscale->value, v * vid_hudscale->value, text);

@@ -666,7 +666,7 @@ void Cmd_Players_f (edict_t *ent)
 	// sort by frags
 	qsort (index, count, sizeof(index[0]), PlayerSort);
 
-	// print32_t information
+	// print information
 	large[0] = 0;
 
 	for (i = 0 ; i < count ; i++)
@@ -675,7 +675,7 @@ void Cmd_Players_f (edict_t *ent)
 			game.clients[index[i]].ps.stats[STAT_FRAGS],
 			game.clients[index[i]].pers.netname);
 		if (strlen (small) + strlen(large) > sizeof(large) - 100 )
-		{	// can't print32_t all of them in one packet
+		{	// can't print all of them in one packet
 			strcat (large, "...\n");
 			break;
 		}

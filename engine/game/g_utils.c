@@ -196,7 +196,7 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	
 	
 //
-// print32_t the message
+// print the message
 //
 	if ((ent->message) && !(activator->svflags & SVF_MONSTER))
 	{
