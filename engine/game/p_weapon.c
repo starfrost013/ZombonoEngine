@@ -406,7 +406,7 @@ A generic function to handle the basics of weapon thinking
 #define FRAME_DEACTIVATE_FIRST	(FRAME_IDLE_LAST + 1)
 
 void Weapon_Generic (edict_t *ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIRE_LAST, int32_t FRAME_IDLE_LAST, int32_t FRAME_DEACTIVATE_LAST, 
-	int32_t *pause_frames, int32_t *fire_frames, void (*fire_primary)(edict_t *ent), void(*fire_secondary)(edict_t *ent))
+	int32_t *pause_frames, int32_t *fire_frames_primary, int32_t *fire_frames_secondary, void (*fire_primary)(edict_t *ent), void(*fire_secondary)(edict_t *ent))
 {
 	int			n;
 	bool	no_ammo = false;
@@ -573,33 +573,45 @@ void Weapon_Generic (edict_t *ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FI
 
 	}
 
-	if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY
-		|| ent->client->weaponstate == WEAPON_FIRING_SECONDARY)
+	if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY)
 	{
-		for (n = 0; fire_frames[n]; n++)
+		for (n = 0; fire_frames_primary[n]; n++)
 		{
-			if (ent->client->ps.gunframe == fire_frames[n])
+			if (ent->client->ps.gunframe == fire_frames_primary[n])
 			{
 				if (ent->client->quad_framenum > level.framenum)
 					gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
 
-				// fire primary or secondary based on button no.
-				if (ent->client->weaponstate == WEAPON_FIRING_PRIMARY)
-				{
-					fire_primary(ent);
-				}
-				else if (ent->client->weaponstate == WEAPON_FIRING_SECONDARY)
-				{
-					fire_secondary(ent);
-				}
+				fire_primary(ent);
+			}
+		}
+
+		if (!fire_frames_primary[n])
+			ent->client->ps.gunframe++;
+
+		if (ent->client->ps.gunframe == FRAME_IDLE_FIRST+1)
+			ent->client->weaponstate = WEAPON_READY;
+	}
+	else if (ent->client->weaponstate == WEAPON_FIRING_SECONDARY)
+	{
+		for (n = 0; fire_frames_secondary[n]; n++)
+		{
+			if (ent->client->ps.gunframe == fire_frames_primary[n])
+			{
+				if (ent->client->quad_framenum > level.framenum)
+					gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+
+				// we already checked if it's not null while setting the weapon state
+				fire_secondary(ent);
+
 				break;
 			}
 		}
 
-		if (!fire_frames[n])
+		if (!fire_frames_secondary[n])
 			ent->client->ps.gunframe++;
 
-		if (ent->client->ps.gunframe == FRAME_IDLE_FIRST+1)
+		if (ent->client->ps.gunframe == FRAME_IDLE_FIRST + 1)
 			ent->client->weaponstate = WEAPON_READY;
 	}
 }
@@ -828,7 +840,7 @@ void Weapon_GrenadeLauncher (edict_t *ent)
 	static int	pause_frames[]	= {34, 51, 59, 0};
 	static int	fire_frames[]	= {6, 0};
 
-	Weapon_Generic (ent, 5, 16, 59, 64, pause_frames, fire_frames, weapon_grenadelauncher_fire, NULL);
+	Weapon_Generic (ent, 5, 16, 59, 64, pause_frames, fire_frames, NULL, weapon_grenadelauncher_fire, NULL);
 }
 
 /*
@@ -886,7 +898,7 @@ void Weapon_RocketLauncher (edict_t *ent)
 	static int	pause_frames[]	= {25, 33, 42, 50, 0};
 	static int	fire_frames[]	= {5, 0};
 
-	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_RocketLauncher_Fire, NULL);
+	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, NULL, Weapon_RocketLauncher_Fire, NULL);
 }
 
 
@@ -944,7 +956,7 @@ void Weapon_Blaster (edict_t *ent)
 	static int	pause_frames[]	= {19, 32, 0};
 	static int	fire_frames[]	= {5, 0};
 
-	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire, NULL);
+	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, NULL, Weapon_Blaster_Fire, NULL);
 }
 
 
@@ -1021,7 +1033,7 @@ void Weapon_HyperBlaster (edict_t *ent)
 	static int	pause_frames[]	= {0};
 	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
 
-	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_HyperBlaster_Fire, NULL);
+	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, NULL, Weapon_HyperBlaster_Fire, NULL);
 }
 
 /*
@@ -1115,7 +1127,7 @@ void Weapon_Machinegun (edict_t *ent)
 	static int	pause_frames[]	= {23, 45, 0};
 	static int	fire_frames[]	= {4, 5, 0};
 
-	Weapon_Generic (ent, 3, 5, 45, 49, pause_frames, fire_frames, Machinegun_Fire, NULL);
+	Weapon_Generic (ent, 3, 5, 45, 49, pause_frames, fire_frames, NULL, Machinegun_Fire, NULL);
 }
 
 void Chaingun_Fire (edict_t *ent)
@@ -1240,7 +1252,7 @@ void Weapon_Chaingun (edict_t *ent)
 	static int	pause_frames[]	= {38, 43, 51, 61, 0};
 	static int	fire_frames[]	= {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0};
 
-	Weapon_Generic (ent, 4, 31, 61, 64, pause_frames, fire_frames, Chaingun_Fire, NULL);
+	Weapon_Generic (ent, 4, 31, 61, 64, pause_frames, fire_frames, NULL, Chaingun_Fire, NULL);
 }
 
 
@@ -1299,7 +1311,7 @@ void Weapon_Shotgun (edict_t *ent)
 	static int	pause_frames[]	= {22, 28, 34, 0};
 	static int	fire_frames[]	= {8, 9, 0};
 
-	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire, NULL);
+	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, NULL, weapon_shotgun_fire, NULL);
 }
 
 
@@ -1353,7 +1365,7 @@ void Weapon_SuperShotgun (edict_t *ent)
 	static int	pause_frames[]	= {29, 42, 57, 0};
 	static int	fire_frames[]	= {7, 0};
 
-	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, weapon_supershotgun_fire, NULL);
+	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, NULL, weapon_supershotgun_fire, NULL);
 }
 
 /*
@@ -1409,7 +1421,7 @@ void Weapon_Railgun (edict_t *ent)
 	static int	pause_frames[]	= {56, 0};
 	static int	fire_frames[]	= {4, 0};
 
-	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, weapon_railgun_fire, NULL);
+	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, NULL, weapon_railgun_fire, NULL);
 }
 
 
@@ -1481,7 +1493,7 @@ void Weapon_BFG (edict_t *ent)
 	static int	pause_frames[]	= {39, 45, 50, 55, 0};
 	static int	fire_frames[]	= {9, 17, 0};
 
-	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire, NULL);
+	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, NULL, weapon_bfg_fire, NULL);
 }
 
 //
@@ -1536,7 +1548,7 @@ void Weapon_Bamfuslicator (edict_t *ent)
 	static int	pause_frames[] = { 29, 42, 57, 0 };
 	static int	fire_frames[] = { 7, 0 };
 
-	Weapon_Generic(ent, 6, 17, 56, 61, pause_frames, fire_frames, Weapon_Bamfuslicator_Fire, Weapon_Bamfuslicator_SetType);
+	Weapon_Generic(ent, 6, 17, 56, 61, pause_frames, fire_frames, fire_frames, Weapon_Bamfuslicator_Fire, Weapon_Bamfuslicator_SetType);
 }
 
 //======================================================================
