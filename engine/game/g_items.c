@@ -1391,7 +1391,7 @@ always owned, never in the world
 /*QUAKED Weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_grenadelauncher",
+		"weapon_grenadelauncher",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1414,7 +1414,7 @@ always owned, never in the world
 /*QUAKED Weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_rocketlauncher",
+		"weapon_rocketlauncher",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1437,7 +1437,7 @@ always owned, never in the world
 /*QUAKED Weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_hyperblaster", 
+		"weapon_hyperblaster", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1460,7 +1460,7 @@ always owned, never in the world
 /*QUAKED Weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_railgun", 
+		"weapon_railgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1483,7 +1483,7 @@ always owned, never in the world
 /*QUAKED Weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_bfg",
+		"weapon_bfg",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1508,7 +1508,7 @@ always owned, never in the world
 	//
 
 	{
-		"Weapon_bamfuslicator",
+		"weapon_bamfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1530,7 +1530,7 @@ always owned, never in the world
 	},
 
 	{
-		"Weapon_planfuslicator",
+		"weapon_planfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1551,7 +1551,7 @@ always owned, never in the world
 			team_director,
 	},
 	{
-		"Weapon_tangfuslicator",
+		"weapon_tangfuslicator",
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
@@ -1580,7 +1580,7 @@ always owned, never in the world
 /*QUAKED Ammo_shells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_shells",
+		"ammo_shells",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1603,7 +1603,7 @@ always owned, never in the world
 /*QUAKED Ammo_Bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_Bullets",
+		"ammo_Bullets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1626,7 +1626,7 @@ always owned, never in the world
 /*QUAKED Ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_cells",
+		"ammo_cells",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1649,7 +1649,7 @@ always owned, never in the world
 /*QUAKED Ammo_Rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_Rockets",
+		"ammo_Rockets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1672,7 +1672,7 @@ always owned, never in the world
 /*QUAKED Ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_slugs",
+		"ammo_slugs",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,

@@ -77,29 +77,29 @@ void MoveClientToIntermission(edict_t* ent, player_team winning_team)
 		{
 			if (ent->team == winning_team)
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_director", true);
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_win_director", true);
 			}
 			else
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_lose_director", true);
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_lose_director", true);
 			}
 		}
 		else if (winning_team == team_player)
 		{
 			if (ent->team == winning_team)
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_player", true);
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_win_player", true);
 
 				
 			}
 			else
 			{
-				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_win_player", true);
+				G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_win_player", true);
 			}
 		}
 		else
 		{
-			G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "ui/leaderboardui_draw", true);
+			G_UISetImage(ent, "LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_draw", true);
 		}
 	}
 
@@ -134,7 +134,7 @@ void BeginIntermission (edict_t *targ)
 	// find an intermission spot
 	ent = G_Find (NULL, FOFS(classname), "info_player_intermission");
 	if (!ent)
-	{	// the map creator forgot to put in an intermission point...
+	{	// the map creator forgot to put in an intermission point, so use the unassigned MP start...
 		ent = G_Find (NULL, FOFS(classname), "info_player_start");
 		if (!ent)
 			ent = G_Find (NULL, FOFS(classname), "info_player_deathmatch");
@@ -181,6 +181,12 @@ Sends over the leaderboard
 */
 void G_LeaderboardSend(edict_t* ent)
 {
+	// don't send leaderboard during intermission (there is no reason to do so as the game has stopped)
+	if (level.intermissiontime)
+	{
+		return;
+	}
+
 	edict_t* client_edict;
 	// tell the client there is a leaderboard update coming
 	gi.WriteByte(svc_leaderboard);
@@ -241,7 +247,7 @@ void G_LeaderboardSend(edict_t* ent)
 			// send the time remaining if timelimit > 0
 			if (timelimit->value > 0)
 			{
-				gi.WriteShort((timelimit->value * 60) - level.time);
+				gi.WriteShort((timelimit->value) - level.time);
 			}
 			else
 			{
