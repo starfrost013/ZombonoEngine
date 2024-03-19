@@ -32,6 +32,9 @@ March XX, 2024
 * Fixed alpha transparency values between 0 and 0.666 for the entire game:
 	* OpenGL was being set to fail alpha testing where the translucency/alpha value was below 0.666f. It has been changed. 
 	* Fonts now don't look like absolute garbage
+* Split cl_system_font into cl_system_font (game text) and cl_consOle_font (the console font)
+	* Changed console font to Cascadia Code
+* Fixed centering of TeamUI and ScoreUI
 
 Version 0.04
 March 10, 2024
@@ -65,7 +68,6 @@ March 10, 2024
 * Renamed S_RegisterSexedSound to S_RegisterModelSound, because what kind of name is that *sob*
 * Fixed newlines in text rendering.
 * Added some help text to TeamUI.
-* Changed leaderboard texture.
 
 Version 0.04-pre5
 February 22, 2024

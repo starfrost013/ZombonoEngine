@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 bool UI_LeaderboardUICreate()
 {
 	// SIZE SHOULDN'T HAVE TO BE MULTIPLIED BY VID_HUDSCALE
-	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 640 * vid_hudscale->value, 384 * vid_hudscale->value, 0, 0, 0, 192); // why do alpha values below 0.67f/171 not work. wtf
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value,
+		640 * vid_hudscale->value, 384 * vid_hudscale->value, 0, 0, 0, 150); 
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
 	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_header", (viddef.width / 2) - 160 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 320, 64);

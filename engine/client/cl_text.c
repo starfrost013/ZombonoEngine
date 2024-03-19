@@ -21,10 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 
 #define NUM_COLOR_CODES			16
-#define TAB_SIZE_CHARS				8 // make a cvar?
+#define TAB_SIZE_CHARS			8 // make a cvar?
 
 // The list of valid colour codes.
 // This is based on Quake 3 (which is also used by COD games as late as Black Ops III), but additional colours are added while still remaining compatible.
+// Some of these are from EGA!
 // RGBA format
 color_code_t color_codes[] =
 {

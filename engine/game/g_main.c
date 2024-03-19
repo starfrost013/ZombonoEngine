@@ -257,13 +257,12 @@ void EndMatch (void)
 			if (!f)
 				f = t;
 			t = strtok(NULL, seps);
-
-			// --- WHY DOES THIS NOT WORK --- //
-			level.framenum = 0; 
-			level.intermissiontime = 0;
-			level.time = 0;
 		}
 
+		// --- WHY DOES THIS NOT WORK --- //
+		//level.framenum = 0; // reset frame number 
+		//level.intermissiontime = 0;
+		//level.time = 0;
 		free(s);
 	}
 
@@ -279,11 +278,6 @@ void EndMatch (void)
 		}
 		BeginIntermission (ent);
 	}
-
-	// --- WHY DOES THIS NOT WORK --- //
-	level.framenum = 0; // reset frame number and frametime!
-	level.intermissiontime = 0;
-	level.time = 0;
 }
 
 
@@ -340,7 +334,7 @@ void CheckTDMRules()
 
 	if (timelimit->value)
 	{
-		if (level.time >= timelimit->value * 60)
+		if (level.time >= timelimit->value)
 		{
 			gi.bprintf(PRINT_HIGH, "Out of time!\n");
 			EndMatch();
@@ -378,7 +372,7 @@ void CheckTDMRules()
 		team_scores_t team_scores = G_TDMGetScores();
 		char text[SCORE_BUF_LENGTH] = { 0 };
 
-		snprintf(text, SCORE_BUF_LENGTH, "^cDirectors^0 %d : ^aPlayers^0 %d", team_scores.director_score, team_scores.player_score);
+		snprintf(text, SCORE_BUF_LENGTH, "Directors %d : Players %d", team_scores.director_score, team_scores.player_score);
 
 		G_UISetText(NULL, "ScoreUI", "ScoreUI_Text", text, false);
 	}
@@ -420,6 +414,7 @@ void CheckTDMRules()
 /*
 =============
 ExitLevel
+This runs after the end of a game
 =============
 */
 void ExitLevel (void)
@@ -433,6 +428,8 @@ void ExitLevel (void)
 	level.changemap = NULL;
 	level.exitintermission = 0;
 	level.intermissiontime = 0;
+	level.framenum = 0; // reset frame number 
+	level.time = 0;
 	ClientEndServerFrames ();
 
 	// clear some things before going to next level

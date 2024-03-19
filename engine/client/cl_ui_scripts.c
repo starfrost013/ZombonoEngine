@@ -81,9 +81,11 @@ bool UI_BamfuslicatorUICreate()
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	int32_t x = (viddef.width / 2) - (120 * vid_hudscale->value);
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
-		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 255);
+		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 127);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), (viddef.height / 1.25));
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_TextHelp", "Right click to change type of monster to spawn",
+		x + (3 * vid_hudscale->value), (viddef.height / 1.25) + (size_y * vid_hudscale->value) + (2 * vid_hudscale->value)); // lazy way of centering it lol
 	return true; 
 }
 
@@ -101,10 +103,10 @@ bool UI_TimeUICreate()
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 
 	UI_AddBox("TimeUI", "TimeUI_TextBox", (viddef.width / 2) - (size_x / 2) - (36 * vid_hudscale->value), 10 * vid_hudscale->value,
-		size_x * vid_hudscale->value + (36 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
+		size_x * vid_hudscale->value + (72 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("TimeUI", "TimeUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (18 * vid_hudscale->value), 10 * vid_hudscale->value);
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 11 * vid_hudscale->value); //+1 for padding/advance reasons
 
 	return true; 
 }
@@ -121,12 +123,15 @@ bool UI_ScoreUICreate()
 
 	const char* temp_text = "Directors 0 : Players 0";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
-
-	UI_AddBox("ScoreUI", "ScoreUI_TextBox", (viddef.width / 2) - (size_x / 2) - (24 * vid_hudscale->value), 30 * vid_hudscale->value,
-		size_x * vid_hudscale->value + (24 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 255, 255, 180); // add a buffer of 10 pixels for larger numbers 
+	//87, 0, 127, 255
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", (viddef.width / 2) - (size_x / 2) - (24 * vid_hudscale->value), 30 * vid_hudscale->value,
+		(size_x * vid_hudscale->value + (24 * vid_hudscale->value) / 2), size_y * vid_hudscale->value, 87, 0, 127, 255); // add a buffer of 10 pixels for larger numbers 
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", (viddef.width / 2) - (size_x / 2) + (62 * vid_hudscale->value), 30 * vid_hudscale->value,
+		(size_x * vid_hudscale->value - (70 * vid_hudscale->value) / 2), size_y * vid_hudscale->value, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
-	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2) - (12 * vid_hudscale->value), 30 * vid_hudscale->value);
+	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 
+		(30 * vid_hudscale->value) + (1 * vid_hudscale->value));
 
 	return true; 
 }
