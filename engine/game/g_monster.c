@@ -343,7 +343,7 @@ void monster_think (edict_t *self)
 	{
 		self->monsterinfo.linkcount = self->linkcount;
 		M_CheckGround (self);
-	} 
+	}
 
 	M_CategorizePosition (self);
 	M_WorldEffects (self);

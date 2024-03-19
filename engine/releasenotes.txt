@@ -28,6 +28,10 @@ March XX, 2024
 * You can now move while using the leaderboard by holding TAB
 * Increased default mouse sensitivity from 3 to 6
 * Renamed "Mouse Speed" option to Mouse Sensitivity
+* Fixed Player Options menu spacing
+* Fixed alpha transparency values between 0 and 0.666 for the entire game:
+	* OpenGL was being set to fail alpha testing where the translucency/alpha value was below 0.666f. It has been changed. 
+	* Fonts now don't look like absolute garbage
 
 Version 0.04
 March 10, 2024

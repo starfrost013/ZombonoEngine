@@ -3192,7 +3192,7 @@ bool PlayerConfig_MenuInit( void )
 	cvar_t *hand = Cvar_Get( "hand", "0", CVAR_USERINFO | CVAR_ARCHIVE );
 
 	static const char *handedness[] = { "Right", "Left", "Center", 0 };
-	static const char *genders[] = { "Male", "Female", "None", "Other", 0}; 	// WOKE!
+	static const char *genders[] = { "Male", "Female", "None", "Other", 0}; 
 
 	PlayerConfig_ScanDirectories();
 

@@ -743,7 +743,8 @@ typedef enum font_json_section_e
 
 extern font_t			fonts[MAX_FONTS];			// Global object containing all loaded fonts.
 
-extern cvar_t*			cl_system_font;				// The font used for the console.	
+extern cvar_t*			cl_system_font;				// The font used for the game's text (chat, et cetera).
+extern cvar_t*			cl_console_font;			// The font used for the console.
 extern int32_t 			num_fonts;					// The number of loaded fonts.
 
 bool Font_Init();								// Initialises the font subsystem.

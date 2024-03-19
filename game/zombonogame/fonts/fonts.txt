@@ -12,7 +12,10 @@ bahnschrift_italic_18
 bahnschrift_regular_8
 bahnschrift_regular_12
 bahnschrift_regular_18
+cascadia_code_regular_8
 consolas_regular_8
 tahoma_bold_8
 tahoma_regular_8
+tahoma_bold_12
+tahoma_regular_12
 trebuchet_ms_regular_8

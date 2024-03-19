@@ -26,8 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Globals
 
 font_t			fonts[MAX_FONTS] = { 0 };
-cvar_t*			cl_system_font;
-int32_t 			num_fonts;						// The number of loaded fonts.
+cvar_t*			cl_system_font;					// The font used for in-game text.
+cvar_t*			cl_console_font;				// The font used for the console.
+int32_t 		num_fonts;						// The number of loaded fonts.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
@@ -53,6 +54,7 @@ bool Font_Init()
 
 	// create the system font cvar
 	cl_system_font = Cvar_Get("cl_system_font", "bahnschrift_bold_8", 0);
+	cl_console_font = Cvar_Get("cl_console_font", "cascadia_code_regular_8", 0);
 
 	// open up fonts.txt
 	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
@@ -138,13 +140,19 @@ bool Font_Init()
 	fclose(font_list_stream); 
 	free(file);
 
-	// check if the system font (font used by the system) was loaded properly.
+	// check if the system font (font used by in game text) was loaded properly.
 	// Sys_Error if it failed
 
 	if (!Font_GetByName(cl_system_font->string))
 	{
 		Sys_Error("Failed to load system font %s", cl_system_font->string);
 		return false; 
+	}
+
+	if (!Font_GetByName(cl_console_font->string))
+	{
+		Sys_Error("Failed to load console font %s", cl_console_font->string);
+		return false;
 	}
 
 	Com_Printf("Successfully loaded %d fonts!\n", num_fonts);
