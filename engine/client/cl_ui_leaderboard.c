@@ -205,7 +205,7 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 
-		y = ((viddef.height / 2) - 124 + ((system_font_ptr->line_height * (client_num + 1))) * vid_hudscale->value);
+		y = ((viddef.height / 2) - 124 + ((system_font_ptr->line_height * (client_num))) * vid_hudscale->value);
 	}
 	
 	x = (viddef.width / 2) - (160 * vid_hudscale->value);

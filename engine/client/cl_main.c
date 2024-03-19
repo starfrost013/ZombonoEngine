@@ -1649,9 +1649,10 @@ CL_SendCommand
 */
 void CL_SendCommand (void)
 {
-	// Kill input when a UI that captures input is active
+	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active
 	if (!ui_active
-		|| (ui_active && current_ui->passive))
+		|| (ui_active && current_ui->passive)
+			|| (ui_active && !strncmp(current_ui->name, "LeaderboardUI", 14)))
 	{
 		// get new key events
 		Sys_SendKeyEvents();

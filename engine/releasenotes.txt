@@ -20,10 +20,12 @@ March XX, 2024
 * Split primary and secondary attack animations
 * Split lights into pointlights (light) and spotlights (light_spot). Spotlights are a bit fucked
 	* All light now has a direction!
-* Split key and mouse events in the UI system into key down and key up. 
+* Split key and mouse events in the UI system into key down and key up and mouse down and mouse up events respectively. 
+	* Fixed mouse events (as they are internally implemented as keys) getting sent to key and mouse event functions
 * Fixed bug where the state of the leaderboard would "invert" - it would only be turned on when TAB WAS pressed.
 	* Made leaderboard explicitly disable on keydown and explicitly enable on key up.
 * Leaderboard updates every 1 second instead of 3
+* You can now move while using the leaderboard by holding TAB
 
 Version 0.04
 March 10, 2024
