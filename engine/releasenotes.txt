@@ -26,6 +26,8 @@ March XX, 2024
 	* Made leaderboard explicitly disable on keydown and explicitly enable on key up.
 * Leaderboard updates every 1 second instead of 3
 * You can now move while using the leaderboard by holding TAB
+* Increased default mouse sensitivity from 3 to 6
+* Renamed "Mouse Speed" option to Mouse Sensitivity
 
 Version 0.04
 March 10, 2024

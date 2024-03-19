@@ -1093,7 +1093,7 @@ static void FreeLookFunc( void *unused )
 	Cvar_SetValue( "freelook", s_options_freelook_box.curvalue );
 }
 
-static void MouseSpeedFunc( void *unused )
+static void MouseSensitivityFunc( void *unused )
 {
 	Cvar_SetValue( "sensitivity", s_options_sensitivity_slider.curvalue / 2.0F );
 }
@@ -1285,8 +1285,8 @@ void Options_MenuInit( void )
 	s_options_sensitivity_slider.generic.type	= MTYPE_SLIDER;
 	s_options_sensitivity_slider.generic.x		= 0;
 	s_options_sensitivity_slider.generic.y		= 50 * vid_hudscale->value;
-	s_options_sensitivity_slider.generic.name	= "^5Mouse Speed";
-	s_options_sensitivity_slider.generic.callback = MouseSpeedFunc;
+	s_options_sensitivity_slider.generic.name	= "^5Mouse Sensitivity";
+	s_options_sensitivity_slider.generic.callback = MouseSensitivityFunc;
 	s_options_sensitivity_slider.minvalue		= 2;
 	s_options_sensitivity_slider.maxvalue		= 22;
 
@@ -3259,8 +3259,9 @@ bool PlayerConfig_MenuInit( void )
 
 	s_player_model_title.generic.type = MTYPE_SEPARATOR;
 	s_player_model_title.generic.name = "^5Model";
-	s_player_model_title.generic.x    = -8 * vid_hudscale->value;
+	s_player_model_title.generic.x    = -14 * vid_hudscale->value;
 	s_player_model_title.generic.y	 = 60 * vid_hudscale->value;
+	s_player_model_title.generic.flags = QMF_LEFT_JUSTIFY;
 
 	s_player_model_box.generic.type = MTYPE_SPINCONTROL;
 	s_player_model_box.generic.x	= -56 * vid_hudscale->value;
@@ -3272,8 +3273,9 @@ bool PlayerConfig_MenuInit( void )
 
 	s_player_skin_title.generic.type = MTYPE_SEPARATOR;
 	s_player_skin_title.generic.name = "^5Skin";
-	s_player_skin_title.generic.x    = -16 * vid_hudscale->value;
+	s_player_skin_title.generic.x    = -21 * vid_hudscale->value;
 	s_player_skin_title.generic.y	 = 84 * vid_hudscale->value;
+	//s_player_skin_title.generic.flags = QMF_LEFT_JUSTIFY;
 
 	s_player_skin_box.generic.type = MTYPE_SPINCONTROL;
 	s_player_skin_box.generic.x	= -56 * vid_hudscale->value;
@@ -3286,8 +3288,9 @@ bool PlayerConfig_MenuInit( void )
 
 	s_player_handedness_title.generic.type = MTYPE_SEPARATOR;
 	s_player_handedness_title.generic.name = "^5Handedness";
-	s_player_handedness_title.generic.x    = 32 * vid_hudscale->value;
+	s_player_handedness_title.generic.x    = 18 * vid_hudscale->value;
 	s_player_handedness_title.generic.y	 = 108 * vid_hudscale->value;
+	//s_player_handedness_title.generic.flags = QMF_LEFT_JUSTIFY;
 
 	s_player_handedness_box.generic.type = MTYPE_SPINCONTROL;
 	s_player_handedness_box.generic.x	= -56 * vid_hudscale->value;
@@ -3301,8 +3304,9 @@ bool PlayerConfig_MenuInit( void )
 	// ULTRA WOKE!
 	s_player_gender_title.generic.type = MTYPE_SEPARATOR;
 	s_player_gender_title.generic.name = "^5Gender";
-	s_player_gender_title.generic.x = 0;
+	s_player_gender_title.generic.x = -7 * vid_hudscale->value;
 	s_player_gender_title.generic.y = 132 * vid_hudscale->value;
+	//s_player_gender_title.generic.flags = QMF_LEFT_JUSTIFY;
 
 	s_player_gender_box.generic.type = MTYPE_SPINCONTROL;
 	s_player_gender_box.generic.x = -56 * vid_hudscale->value;
