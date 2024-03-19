@@ -1077,9 +1077,9 @@ void ClientEndServerFrame (edict_t *ent)
 	VectorClear (ent->client->kick_origin);
 	VectorClear (ent->client->kick_angles);
 
-	// update the leaderboard every 31 frames
+	// update the leaderboard every 10 ticks (1 second)
 	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
-	if ((level.framenum % 31) == 0)
+	if ((level.framenum % 10) == 0)
 	{
 		G_LeaderboardSend(ent);
 	}

@@ -22,7 +22,8 @@ March XX, 2024
 	* All light now has a direction!
 * Split key and mouse events in the UI system into key down and key up. 
 * Fixed bug where the state of the leaderboard would "invert" - it would only be turned on when TAB WAS pressed.
-	* * Made leaderboard explicitly disable on keydown and explicitly enable on key up.
+	* Made leaderboard explicitly disable on keydown and explicitly enable on key up.
+* Leaderboard updates every 1 second instead of 3
 
 Version 0.04
 March 10, 2024

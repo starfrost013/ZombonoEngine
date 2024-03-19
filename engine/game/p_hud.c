@@ -251,7 +251,7 @@ void G_LeaderboardSend(edict_t* ent)
 	}
 
 	// send it!
-	gi.unicast(ent, true); // make it false? it's still not very common...(only when the user presses TAB)
+	gi.unicast(ent, false); // make it false? it's still not very common...(only when the user presses TAB)
 }
 
 void Cmd_Leaderboard_f(edict_t* ent)
