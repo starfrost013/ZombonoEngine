@@ -787,7 +787,7 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_leaderboarddraw:
-			UI_LeaderboardUIToggle(K_TAB);
+			UI_LeaderboardUIEnable(K_TAB);
 			break;
 
 		case svc_playerinfo:

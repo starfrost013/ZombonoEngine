@@ -664,7 +664,8 @@ void target_lightramp_use (edict_t *self, edict_t *other, edict_t *activator)
 			e = G_Find (e, FOFS(targetname), self->target);
 			if (!e)
 				break;
-			if (strcmp(e->classname, "light") != 0)
+			if (strcmp(e->classname, "light") != 0
+				|| strcmp(e->classname, "light_spot") != 0)
 			{
 				gi.dprintf("%s at %s ", self->classname, vtos(self->s.origin));
 				gi.dprintf("target %s (%s at %s) is not a light\n", self->target, e->classname, vtos(e->s.origin));

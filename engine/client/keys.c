@@ -815,16 +815,36 @@ void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 
 	// Send ZombonoUI events
 
-	if (key >= K_MOUSE1 && key <= K_MOUSE5)
+	// no point handling a mousepress as a key event if we already handled i
+	bool mouse_event_handled = false; 
+
+	if (down)
 	{
-		// todo: send mouse button
-		UI_HandleEventOnClick(key, x, y);
-		//return; // force an early return so clicks are completely ignored, another stupid hack
+		if (key >= K_MOUSE1 && key <= K_MOUSE5)
+		{
+			// todo: send mouse button
+			UI_HandleEventOnClickDown(key, x, y);
+			mouse_event_handled = true; 
+		}
+		else if (key != K_ESCAPE
+			&& !mouse_event_handled) // KEY IS FUCKING HARDBOUND
+		{
+			UI_HandleEventOnKeyDown(key);
+		}
 	}
-	else if (key != K_ESCAPE) // KEY IS FUCKING HARDBOUND
+	else
 	{
-		UI_HandleEventOnKeyDown(key);
-		//return;
+		if (key >= K_MOUSE1 && key <= K_MOUSE5)
+		{
+			// todo: send mouse button
+			UI_HandleEventOnClickUp(key, x, y);
+		}
+		else if (key != K_ESCAPE
+			&& !mouse_event_handled) // KEY IS FUCKING HARDBOUND
+		{
+			UI_HandleEventOnKeyUp(key);
+			mouse_event_handled = true;
+		}
 	}
 
 	// menu key is hardcoded, so the user can never unbind it

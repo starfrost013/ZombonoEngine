@@ -576,47 +576,49 @@ typedef enum ui_control_type_e
 typedef struct ui_control_s
 {
 	// general
-	ui_control_type		type;								// Type of this UI control.
-	int32_t 				position_x;							// UI control position (x-component).
-	int32_t 				position_y;							// UI control position (y-component).
-	char				font[MAX_FONT_FILENAME_LEN];
-	int32_t 				size_x;								// UI control size (x-component).
-	int32_t 				size_y;								// UI control size (y-component).
-	char				name[MAX_UI_STR_LENGTH];			// UI control name (for code)
-	bool			visible;							// Is this control visible?
-	bool			focused;							// Is this control focused?
+	ui_control_type	type;									// Type of this UI control.
+	int32_t 		position_x;								// UI control position (x-component).
+	int32_t 		position_y;								// UI control position (y-component).
+	char			font[MAX_FONT_FILENAME_LEN];
+	int32_t 		size_x;									// UI control size (x-component).
+	int32_t 		size_y;									// UI control size (y-component).
+	char			name[MAX_UI_STR_LENGTH];				// UI control name (for code)
+	bool			visible;								// Is this control visible?
+	bool			focused;								// Is this control focused?
 
 	// text
-	char				text[MAX_UI_STR_LENGTH];			// Text UI control: Text to display.
+	char			text[MAX_UI_STR_LENGTH];				// Text UI control: Text to display.
 	// image
-	char				image_path[MAX_UI_STR_LENGTH];		// Image path UI control: Image to display (path relative to the "pics" folder)
+	char			image_path[MAX_UI_STR_LENGTH];			// Image path UI control: Image to display (path relative to the "pics" folder)
 	// slider
-	int32_t 				value_min;							// Slider UI control: minimum value.
-	int32_t 				value_max;							// Slider UI control: maximum value.
+	int32_t 		value_min;								// Slider UI control: minimum value.
+	int32_t 		value_max;								// Slider UI control: maximum value.
 	// checkbox
-	bool			checked;							// Checkbox UI control: Is it checked?
+	bool			checked;								// Checkbox UI control: Is it checked?
 	// box
-	vec4_t				color;								// The color of this UI element.
-	// events
-	void				(*on_click)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
-	void				(*on_key_down)(int32_t btn);			// C function to call on a key being pressed. 
+	vec4_t			color;									// The color of this UI element.
+	// 
+	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
+
+	void			(*on_click_up)(int32_t btn, int32_t x, int32_t y);		// C function to call on click starting with X and Y coordinates.
+	void			(*on_key_down)(int32_t btn);							// C function to call on a key starting to bressed.
+	void			(*on_key_up)(int32_t btn);								// C function to call on a key stopping being pressed. 
 } ui_control_t;
 
 typedef struct ui_s
-{
-	int32_t 				num_controls;				// Number of controls in the UI.
-	char				name[MAX_UI_STR_LENGTH];	// UI name.			
-	bool(*on_create)();							// UI Create function for client
+{	int32_t 		num_controls;				// Number of controls in the UI.
+	char			name[MAX_UI_STR_LENGTH];	// UI name.			
+	bool			(*on_create)();				// UI Create function for client
 	bool			enabled;					// True if the UI is currently being drawn.
 	bool			active;						// True if the UI is currently interactable.
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
-	ui_control_t		controls[CONTROLS_PER_UI];	// Control list.
+	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
-extern ui_t					ui_list[MAX_UIS];			// The list of UIs.
-extern ui_t*				current_ui;					// the current UI being displayed
-extern int32_t 				num_uis;					// the current number of UIs
-extern bool				ui_active;					// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern ui_t					ui_list[MAX_UIS];	// The list of UIs.
+extern ui_t*				current_ui;			// the current UI being displayed
+extern int32_t 				num_uis;			// the current number of UIs
+extern bool					ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
 bool UI_Init();
@@ -630,32 +632,36 @@ bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t posit
 bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
 // UI: Toggle
-bool UI_SetEnabled(char* name, bool enabled);																					// Sets a UI to enabled (visible).
-bool UI_SetActive(char* name, bool active);																					// Sets a UI to active (tangible).
-bool UI_SetPassive(char* name, bool passive);
+bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to enabled (visible).
+bool UI_SetActive(char* name, bool active);																	// Sets a UI to active (tangible).
+bool UI_SetPassive(char* name, bool passive);																// Sets a UI to passive (does not capture the mouse).
 
 // UI: Update
-bool UI_SetText(char* ui_name, char* control_name, char* text);																		// Updates a UI control's text.
-bool UI_SetImage(char* ui_name, char* control_name, char* image_path);																// Updates a UI control's image.
+bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
+bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
 
 // UI: Set Event Handler
-bool UI_SetEventOnClick(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));											// Sets a UI's OnClick handler.
-bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn));														// Sets a UI's OnKeyDown handler.
+bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.
+bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn));							// Sets a UI's OnKeyDown handler.
+bool UI_SetEventOnClickUp(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));		// Sets a UI's OnClickUp handler.
+bool UI_SetEventOnKeyUp(char* ui_name, char* name, void (*func)(int32_t btn));								// Sets a UI's OnKeyUp handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClick(int32_t btn, int32_t x, int32_t y);																						// Handles click events.
-void UI_HandleEventOnKeyDown(int32_t btn);																									// Handles key down events.
+void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y);											// Handles click down events.
+void UI_HandleEventOnKeyDown(int32_t btn);																	// Handles key down events.
+void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y);											// Handles click up events.
+void UI_HandleEventOnKeyUp(int32_t btn);																	// Handles key up events.
 
 // UI: Draw
-void UI_Draw();																															// Draws a UI.
+void UI_Draw();																								// Draws a UI.
 
 // UI: Clear
-void UI_Clear(char* name);																												// Removes all the controls in a UI.
+void UI_Clear(char* name);																					// Removes all the controls in a UI.
 
 // UI: Internal
-ui_t* UI_GetUI(char* name);																												// Returns a pointer so NULL can be indicated for failure
-ui_control_t* UI_GetControl(char* ui_name, char* name);																					// Gets the control with name name in the ui UI.
-void UI_Reset();																														// INTERNAL, resets all UI states to their defaults.																													// INTERNAL, deletes all UIs, and restarts the UI system
+ui_t* UI_GetUI(char* name);																					// Returns a pointer so NULL can be indicated for failure
+ui_control_t* UI_GetControl(char* ui_name, char* name);														// Gets the control with name name in the ui UI.
+void UI_Reset();																							// INTERNAL, resets all UI states to their defaults.																													// INTERNAL, deletes all UIs, and restarts the UI system
 
 // UI: Create Scripts
 // TeamUI
@@ -665,7 +671,8 @@ void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y);
 
 // LeaderboardUI
 bool UI_LeaderboardUICreate();
-void UI_LeaderboardUIToggle(int32_t btn);
+void UI_LeaderboardUIEnable(int32_t btn);								// Enables the Leaderboard UI.
+void UI_LeaderboardUIDisable(int32_t btn);								// Disables the Leaderboard UI.
 
 // BamfuslicatorUI
 bool UI_BamfuslicatorUICreate();

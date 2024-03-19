@@ -350,7 +350,10 @@ LONG WINAPI MainWndProc (
 				
 				// fullscreen -> desktop transition
 				if (fActive == WA_INACTIVE)
+				{
 					ChangeDisplaySettingsEx(monInfo.szDevice, NULL, NULL, 0, NULL);
+				}
+
 
 				// desktop -> fullscreen transition
 				if (fMinimized && (fActive == WA_ACTIVE))
@@ -394,7 +397,7 @@ LONG WINAPI MainWndProc (
 				vid_ypos->modified = false;
 				if (ActiveApp
 					&& (!ui_active
-						|| (ui_active && current_ui->passive))) // ZombonoUI
+						|| (ui_active && current_ui->passive))) // ZombonoUI - only turn on input if we have a passive UI
 					IN_Activate (true);
 			}
 		}

@@ -31,7 +31,8 @@ bool UI_LeaderboardUICreate()
 {
 	// SIZE SHOULDN'T HAVE TO BE MULTIPLIED BY VID_HUDSCALE
 	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 640 * vid_hudscale->value, 384 * vid_hudscale->value, 0, 0, 0, 192); // why do alpha values below 0.67f/171 not work. wtf
-	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIToggle);
+	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
+	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
 	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_header", (viddef.width / 2) - 160 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 320, 64);
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - (304 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - (144 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
@@ -42,7 +43,7 @@ bool UI_LeaderboardUICreate()
 	return true;
 }
 
-void UI_LeaderboardUIToggle(int32_t btn)
+void UI_LeaderboardUIEnable(int32_t btn)
 {
 	if (btn == K_TAB)
 	{
@@ -55,8 +56,26 @@ void UI_LeaderboardUIToggle(int32_t btn)
 		// fucking hack
 		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
 
-		UI_SetEnabled("LeaderboardUI", !leaderboard_ui_ptr->enabled);
-		UI_SetActive("LeaderboardUI", !leaderboard_ui_ptr->active);
+		UI_SetEnabled("LeaderboardUI", true);
+		UI_SetActive("LeaderboardUI", true);
+	}
+}
+
+void UI_LeaderboardUIDisable(int32_t btn)
+{
+	if (btn == K_TAB)
+	{
+		if (current_ui != NULL)
+		{
+			// ugly hack so we can't override teamui
+			if (!strncmp(current_ui->name, "TeamUI", 6)) return;
+		}
+
+		// fucking hack
+		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
+
+		UI_SetEnabled("LeaderboardUI", false);
+		UI_SetActive("LeaderboardUI", false);
 	}
 }
 

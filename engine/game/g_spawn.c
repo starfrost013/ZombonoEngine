@@ -93,6 +93,7 @@ spawn_t	spawns[] = {
 	{"light", SP_light},
 	{"light_mine1", SP_light_mine1},
 	{"light_mine2", SP_light_mine2},
+	{"light_spot", SP_light_spot},
 	{"info_null", SP_info_null},
 	{"func_group", SP_info_null},
 	{"info_notnull", SP_info_notnull},

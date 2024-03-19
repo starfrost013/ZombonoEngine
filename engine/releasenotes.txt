@@ -18,6 +18,11 @@ March XX, 2024
 		* Blockout only ones don't have lighting
 * Reorganised source code generaally
 * Split primary and secondary attack animations
+* Split lights into pointlights (light) and spotlights (light_spot). Spotlights are a bit fucked
+	* All light now has a direction!
+* Split key and mouse events in the UI system into key down and key up. 
+* Fixed bug where the state of the leaderboard would "invert" - it would only be turned on when TAB WAS pressed.
+	* * Made leaderboard explicitly disable on keydown and explicitly enable on key up.
 
 Version 0.04
 March 10, 2024

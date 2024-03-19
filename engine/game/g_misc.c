@@ -525,30 +525,53 @@ void SP_info_notnull (edict_t *self)
 	VectorCopy (self->s.origin, self->absmax);
 };
 
-
-/*QUAKED light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
-Non-displayed light.
-Default light value is 300.
-Default style is 0.
-If targeted, will toggle between on and off.
+/* 
+light_spot (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+Non-displayed spot light as implemented by QBSP
 Default _cone value is 10 (used to set size of light for spotlights)
 */
 
 #define START_OFF	1
 
-static void light_use (edict_t *self, edict_t *other, edict_t *activator)
+static void light_use(edict_t* self, edict_t* other, edict_t* activator)
 {
 	if (self->spawnflags & START_OFF)
 	{
-		gi.configstring (CS_LIGHTS+self->style, "m");
+		gi.configstring(CS_LIGHTS + self->style, "m");
 		self->spawnflags &= ~START_OFF;
 	}
 	else
 	{
-		gi.configstring (CS_LIGHTS+self->style, "a");
+		gi.configstring(CS_LIGHTS + self->style, "a");
 		self->spawnflags |= START_OFF;
 	}
 }
+
+void SP_light_spot(edict_t* self)
+{
+	if (!self->targetname)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	if (self->style >= 32)
+	{
+		self->use = light_use;
+		if (self->spawnflags & START_OFF)
+			gi.configstring(CS_LIGHTS + self->style, "a");
+		else
+			gi.configstring(CS_LIGHTS + self->style, "m");
+	}
+}
+
+/*QUAKED light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+Non-displayed point light.
+Default light value is 300.
+Default style is 0.
+If targeted, will toggle between on and off.
+*/
+
 
 void SP_light (edict_t *self)
 {

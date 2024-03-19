@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/03/01 version
+// 2024/03/18 version
 
 //
 // worldspawn
@@ -21,6 +21,9 @@
 	gravity(integer) : "Gravity" : 800
 	message(string) : "Level name"
 	nextmap(string) : "Next map (DM only)"
+	_sun_ambient(integer) : "Sun ambient colour"
+	_sun_color(integer): "Sunlight colour"
+	_sun_light(integer): "Sunlight intensity"
 ]
 
 //
@@ -120,7 +123,6 @@
 //		5 : "In-Out"
 //	]
 	message(string) : "Activation message"
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // 0221 - added "count" key...oops :)
@@ -146,7 +148,6 @@
 // func_conveyor code is incomplete.  use the surface attribute "flowing"
 // and the "current" content flag.  (texture won't scroll)
 //
-// 0221 - added _minlight
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_conveyor : "Conveyor belt"
 [
 	spawnflags(Flags) =
@@ -155,7 +156,6 @@
 		2 : "Toggle" : 0
 	]
 	speed(integer) : "Speed" : 100
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // 0221 - updated "sounds" information
@@ -194,7 +194,6 @@
 //		3 : "Medium"
 //		4 : "Heavy"
 //	]
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // 0221 - added "killtarget" and "target" keys
@@ -236,10 +235,8 @@
 //		3 : "Medium"
 //		4 : "Heavy"
 //	]
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
-// 0221 - added "_minlight" key (even tho you dont want it to stand out)
 // 0221 - added "message" key
 // 0221 - removed "team" key
 @SolidClass base(Angle, Appearflags, Targetname) color(0 128 204) = func_door_secret : "Secret Door"
@@ -256,12 +253,10 @@
 		-1 : "Stay open"
 	]
 	message(string) : "Message"
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // not visible in DM mode
 //
-// 0221 - added "_minlight" key (even tho you dont want it to stand out)
 @SolidClass base(Appearflags, Targetname, Target) color(0 128 204) = func_explosive : "Exploding/Breakable brush"
 [
 	spawnflags(Flags) =
@@ -273,7 +268,6 @@
 	health(integer) : "Health" : 100
 	mass(integer) : "Mass (debris)" : 75
 	dmg(integer) : "Damage" : 0
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 @SolidClass base(Appearflags, Targetname) color(255 0 0) = func_killbox : "Instant death" []
@@ -287,7 +281,6 @@
 		2 : "Animated" : 0
 		4 : "Animated Fast" : 0
 	]
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // 0221 - removed "sounds" key
@@ -301,7 +294,6 @@
 	accel(integer) : "Acceleration" : 500
 	lip(integer) : "Lip remaining after move" : 8
 	height(integer) : "Movement distance"
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // 0222 - added "team" key
@@ -321,7 +313,6 @@
 	team(integer) : "Team"
 	speed(integer) : "Speed" : 100
 	dmg(integer) : "Damage when blocked" : 2
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 @PointClass base(Appearflags, Targetname, Target) color(76 25 153) size(-8 -8 -8, 8 8 8) = func_timer : "Timer"
@@ -350,7 +341,6 @@
 	speed(integer) : "Speed" : 100
 	dmg(integer) : "Damage when blocked" : 2
 	noise(string) : "Sound (path/file.wav)"
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_trampoline : "Trampoline"
@@ -359,7 +349,6 @@
 	jump_velocity(integer): "Jump Height" : 100
 	dmg(integer): "Damage on hit"
 	noise(string) : "Sound (path/file.wav)"
-	_minlight(integer) : "Minimum light (optional)"
 	spawnflags(Flags) =
 	[
 		1 : "Has Knockback" : 0
@@ -379,7 +368,6 @@
 		16 : "Animated Fast" : 0
 		32 : "Walkthrough" : 0
 	]
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 // must never be transparent?
@@ -404,7 +392,6 @@
 		2 : "Lava"
 	]
 	team(integer) : "Team"
-	_minlight(integer) : "Minimum light (optional)"
 ]
 
 @PointClass base(Appearflags, Targetname) color(0 128 0) size(-4 -4 -4, 4 4 4) = info_null : "Spotlight target" []
@@ -447,7 +434,7 @@
 	]
 ]
 
-@PointClass base(Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Light"
+@PointClass base(Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Pointlight"
 [
 	spawnflags(Flags) =
 	[
@@ -470,8 +457,40 @@
 		10 : "Fluorescent Flicker"
 		11 : "Slow pulse, no black"
 	]
-	_cone(integer) : "Size of light (spotlight)" : 10
+	_falloff(integer) : "Decline in intensity as you move away from the light"
+	angle(float): "Angle" : 0
+	wait(integer) : "Wait time before the light turns on"
+	_angwait(integer): "Angle adjustment?"
 ]
+
+@PointClass base(Appearflags, Target, Targetname) color(255 0 0) size(-8 -8 -8, 8 8 8) = light_spot : "Spotlight"
+[
+	spawnflags(Flags) =
+	[
+		1 : "Start Off" : 0
+	]
+	light(integer) : "Brightness" : 300
+	_color(color1) : "RGB Color" // why is this not here already
+	style(Choices) : "Style" : 0 =
+	[
+		0 : "Normal"
+		1 : "Flicker #1"
+		6 : "Flicker #2"
+		2 : "Slow Strong Pulse"
+		3 : "Candle #1"
+		7 : "Candle #2"
+		8 : "Candle #3"
+		4 : "Fast Strobe"
+		5 : "Gentle Pulse #1"
+		9 : "Slow Strobe"
+		10 : "Fluorescent Flicker"
+		11 : "Slow pulse, no black"
+	]
+	_cone(float): "Light cone size" : 200
+	angle(float): "Angle" : 0
+	wait(integer) : "Wait time before the light turns on"
+	_angwait(integer): "Angle adjustment?"
+] 
 
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light1/tris.md2", "skin": 0 }) = light_mine1 : "Clean fluorescent light fixture"	[spawnflags(Flags) =	[	1 : "" : 0	]]
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light2/tris.md2", "skin": 0 }) = light_mine2 : "Dusty fluorescent light fixture"	[spawnflags(Flags) = [	1 : "" : 0]]
