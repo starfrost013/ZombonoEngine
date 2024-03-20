@@ -1253,7 +1253,7 @@ gitem_t	itemlist[] =
 always owned, never in the world
 */
 	{
-		"Weapon_blaster", 
+		"weapon_blaster", 
 		NULL,
 		Use_Weapon,
 		NULL,
@@ -1276,7 +1276,7 @@ always owned, never in the world
 /*QUAKED Weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_shotgun", 
+		"wapon_shotgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1299,7 +1299,7 @@ always owned, never in the world
 /*QUAKED Weapon_supershotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_supershotgun", 
+		"weapon_supershotgun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1322,7 +1322,7 @@ always owned, never in the world
 /*QUAKED Weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_machinegun", 
+		"weapon_machinegun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1345,7 +1345,7 @@ always owned, never in the world
 /*QUAKED Weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Weapon_chaingun", 
+		"weapon_chaingun", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
@@ -1368,7 +1368,7 @@ always owned, never in the world
 /*QUAKED Ammo_Grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"Ammo_Grenades",
+		"ammo_Grenades",
 		Pickup_Ammo,
 		Use_Weapon,
 		Drop_Ammo,

@@ -200,13 +200,13 @@ void ChangeWeapon(edict_t* ent)
 	if (ent->client->newweapon != NULL)
 	{
 		// toggle the UI depending on if we are switching into or out of the bamfuslicator (TODO: HACK!!!!)
-		if (!strcmp(ent->client->newweapon->classname, "Weapon_bamfuslicator"))
+		if (!strcmp(ent->client->newweapon->classname, "weapon_bamfuslicator"))
 		{
 			G_UISend(ent, "BamfuslicatorUI", true, false, false);
 			ent->client->pers.weapon->spawn_type = -1; // another hack, settype increments it so it will be set to 0
 			Weapon_Bamfuslicator_SetType(ent);
 		}
-		else if (!strcmp(ent->client->pers.lastweapon->classname, "Weapon_bamfuslicator")) // switching out
+		else if (!strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator")) // switching out
 		{
 			G_UISend(ent, "BamfuslicatorUI", false, false, false);
 		}
