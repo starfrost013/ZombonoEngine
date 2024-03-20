@@ -35,6 +35,9 @@ March XX, 2024
 * Split cl_system_font into cl_system_font (game text) and cl_consOle_font (the console font)
 	* Changed console font to Cascadia Code
 * Fixed centering of TeamUI and ScoreUI
+* Changed TeamUI background
+* Don't send leaderboard during intermission time - fixes victory declaration
+* Fix back to back TDM games
 
 Version 0.04
 March 10, 2024
