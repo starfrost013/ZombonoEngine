@@ -38,6 +38,7 @@ March 23, 2024
 * Changed TeamUI background
 * Don't send leaderboard during intermission time - fixes victory declaration
 * Fix back to back TDM games not endlessly restarting
+* Halved damage from rocket jumping
 
 Version 0.04
 March 10, 2024

@@ -463,10 +463,24 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 			else
 				mass = targ->mass;
 
-			if (targ->client  && attacker == targ)
-				VectorScale (dir, 1600.0 * (float)knockback / mass, kvel);	// the rocket jump hack...
+			if (targ->client && attacker == targ)
+			{
+				// the rocket jump hack...
+				VectorScale(dir, 1600.0 * (float)knockback / mass, kvel);	
+
+				// make rocket jumping easier
+				//TODO: refactor this whole thing so checks like the rocket jump check can be done in ammo_*
+				if (mod == MOD_ROCKET
+					|| mod == MOD_R_SPLASH) // sanity check
+				{
+					damage /= 2;
+				}
+
+			}
 			else
-				VectorScale (dir, 500.0 * (float)knockback / mass, kvel);
+			{
+				VectorScale(dir, 500.0 * (float)knockback / mass, kvel);
+			}
 
 			VectorAdd (targ->velocity, kvel, targ->velocity);
 		}
