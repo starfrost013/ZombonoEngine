@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Weapon_blaster.c : Blaster weapon code - split from p_weapon.c
 
 #include "..\g_local.h"
-#include "..\m_player.h"
+#include "..\mobs\mob_player.h"
 
 void Blaster_Fire(edict_t* ent, vec3_t g_offset, int32_t damage, bool hyper, int32_t effect)
 {

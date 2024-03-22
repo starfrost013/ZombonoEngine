@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Weapon_shotgun.c : Shotgun weapon code - split from p_weapon.c
 
 #include "..\g_local.h"
-#include "..\m_player.h"
+#include "..\mobs\mob_player.h"
 
 
 /*

@@ -497,6 +497,10 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/ammunition/ammo_melee.o \
 	$(BUILDDIR)/game/ammunition/ammo_rail.o \
 	$(BUILDDIR)/game/ammunition/ammo_rocket.o \
+	$(BUILDDIR)/game/mobs/mobs_ogre.o \
+	$(BUILDDIR)/game/mobs/mobs_soldier.o \
+	$(BUILDDIR)/game/mobs/mobs_zombie.o \
+	$(BUILDDIR)/game/mobs/mobs_zombie_fast.o \
 	$(BUILDDIR)/game/weapons/weapon_bamfuslicator.o \
 	$(BUILDDIR)/game/weapons/weapon_base.o \
 	$(BUILDDIR)/game/weapons/weapon_bfg.o \
@@ -510,10 +514,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/weapons/weapon_rocket_launcher.o \
 	$(BUILDDIR)/game/weapons/weapon_shotgun.o \
 	$(BUILDDIR)/game/weapons/weapon_shotgun_super.o \
-	$(BUILDDIR)/game/m_ogre.o \
-	$(BUILDDIR)/game/m_soldier.o \
-	$(BUILDDIR)/game/m_zombie.o \
-	$(BUILDDIR)/game/m_zombie_fast.o \
+
 	$(BUILDDIR)/game/p_hud.o \
 	$(BUILDDIR)/game/p_trail.o \
 	$(BUILDDIR)/game/p_view.o \
@@ -598,7 +599,22 @@ $(BUILDDIR)/game/ammunition/ammo_rail.o :    $(GAME_DIR)/game/ammunition/ammo_ra
 $(BUILDDIR)/game/ammunition/ammo_rocket.o :    $(GAME_DIR)/game/ammunition/ammo_rocket.c
 	$(DO_SHLIB_CC)
 
+$(BUILDDIR)/game/mobs/mob_ogre.o :   	$(GAME_DIR)/mobs/mob_ogre.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/mobs/mob_soldier.o :   $(GAME_DIR)/mobs/mob_soldier.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/mobs/mob_zombie.o :   $(GAME_DIR)/mobs/mob_zombie.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/mobs/mob_zombie_fast.o :   $(GAME_DIR)/mobs/mob_zombie_fast.c
+	$(DO_SHLIB_CC)
+
 $(BUILDDIR)/game/weapons/weapon_bamfuslicator.o :    $(GAME_DIR)/game/weapons/weapon_bamfuslicator.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/weapons/weapon_mobs.o :    $(GAME_DIR)/game/weapons/weapon_bamfuslicator.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/weapons/weapon_base.o :    $(GAME_DIR)/game/weapons/weapon_base.c
@@ -638,18 +654,6 @@ $(BUILDDIR)/game/weapons/weapon_shotgun.o :    $(GAME_DIR)/game/weapons/weapon_s
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/weapons/weapon_shotgun_super.o :    $(GAME_DIR)/game/weapons/weapon_shotgun_super
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/m_ogre.o :   	$(GAME_DIR)/m_ogre.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/m_soldier.o :   $(GAME_DIR)/m_soldier.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/m_zombie.o :   $(GAME_DIR)/m_zombie.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/m_zombie_fast.o :   $(GAME_DIR)/m_zombie_fast.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/p_hud.o :       $(GAME_DIR)/p_hud.c

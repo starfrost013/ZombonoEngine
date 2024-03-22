@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Weapon_grenade_hand.c : Hand grenade weapon code - split from p_weapon.c
 
 #include "..\g_local.h"
-#include "..\m_player.h"
+#include "..\mobs\mob_player.h"
 
 #define GRENADE_TIMER		3.0
 #define GRENADE_MINSPEED	400

@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Fast Zombie - February 7, 2024
 // TODO: This is more than just a fast zombie, name it...
 
-#include "g_local.h"
-#include "m_zombie_fast.h"
+#include "../g_local.h"
+#include "mob_zombie_fast.h"
 
 static int	sound_idle;
 static int	sound_sight1;

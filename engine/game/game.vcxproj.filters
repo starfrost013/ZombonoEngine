@@ -87,7 +87,7 @@
     <ClCompile Include="g_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_soldier.c">
+    <ClCompile Include="mobs\mob_soldier.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="p_client.c">
@@ -108,13 +108,13 @@
     <ClCompile Include="m_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_zombie.c">
+    <ClCompile Include="mobs\mob_zombie.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_zombie_fast.c">
+    <ClCompile Include="mobs\mob_zombie_fast.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_ogre.c">
+    <ClCompile Include="mobs\mob_ogre.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ammunition\ammo_melee.c">
@@ -199,25 +199,22 @@
     <ClInclude Include="m_actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_player.h">
+    <ClInclude Include="mobs\mob_player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_soldier.h">
+    <ClInclude Include="mobs\mob_soldier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_zombie.h">
+    <ClInclude Include="mobs\mob_zombie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="g_spawn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_zombie_fast.h">
+    <ClInclude Include="mobs\mob_zombie_fast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="m_ogre.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="m_zombie_shared.h">
+    <ClInclude Include="mobs\mob_ogre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

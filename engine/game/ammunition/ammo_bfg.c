@@ -72,7 +72,7 @@ void Ammo_BFG_explode(edict_t* self)
 		self->think = G_FreeEdict;
 }
 
-void Ammo_BFG_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
+void Ammo_BFG_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf) 
 {
 	if (other == self->owner)
 		return;

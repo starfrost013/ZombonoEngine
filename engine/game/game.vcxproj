@@ -300,10 +300,10 @@
     <ClCompile Include="g_utils.c" />
     <ClCompile Include="m_flash.c" />
     <ClCompile Include="m_move.c" />
-    <ClCompile Include="m_ogre.c" />
-    <ClCompile Include="m_soldier.c" />
-    <ClCompile Include="m_zombie.c" />
-    <ClCompile Include="m_zombie_fast.c" />
+    <ClCompile Include="mobs\mob_ogre.c" />
+    <ClCompile Include="mobs\mob_soldier.c" />
+    <ClCompile Include="mobs\mob_zombie.c" />
+    <ClCompile Include="mobs\mob_zombie_fast.c" />
     <ClCompile Include="p_client.c" />
     <ClCompile Include="p_hud.c" />
     <ClCompile Include="p_trail.c" />
@@ -331,12 +331,11 @@
     <ClInclude Include="g_local.h" />
     <ClInclude Include="g_spawn.h" />
     <ClInclude Include="m_actor.h" />
-    <ClInclude Include="m_ogre.h" />
-    <ClInclude Include="m_player.h" />
-    <ClInclude Include="m_soldier.h" />
-    <ClInclude Include="m_zombie.h" />
-    <ClInclude Include="m_zombie_fast.h" />
-    <ClInclude Include="m_zombie_shared.h" />
+    <ClInclude Include="mobs\mob_ogre.h" />
+    <ClInclude Include="mobs\mob_player.h" />
+    <ClInclude Include="mobs\mob_soldier.h" />
+    <ClInclude Include="mobs\mob_zombie.h" />
+    <ClInclude Include="mobs\mob_zombie_fast.h" />
     <ClInclude Include="q_shared.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
