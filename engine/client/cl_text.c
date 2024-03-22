@@ -111,14 +111,14 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 		if (next_char == ' ')
 		{
 			// just use the size/2 for now
-			size_x += (font_ptr->size / 2) * vid_hudscale->value;
+			size_x += (font_ptr->size / 2.5f) * vid_hudscale->value;
 			continue; // skip spaces
 		}
 
 		// if we've found a tab, advance by the amount above
 		if (next_char == '\t')
 		{
-			size_x += (font_ptr->size / 2) * vid_hudscale->value * TAB_SIZE_CHARS;
+			size_x += (font_ptr->size / 2.5f) * vid_hudscale->value * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 
@@ -235,15 +235,15 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		// if we found a space, advance (no character drawn)
 		if (next_char == ' ')
 		{
-			// just use the size/2 for now
-			current_x += (font_ptr->size/2) * vid_hudscale->value;
+			// just use the size of the font divided by 2.5 (TODO: DEFINE THIS) for now
+			current_x += (font_ptr->size/ 2.5f) * vid_hudscale->value;
 			continue; // skip spaces
 		}
 
 		// if we've found a tab, advance by the amount above
 		if (next_char == '\t')
 		{
-			current_x += (font_ptr->size / 2) * vid_hudscale->value * TAB_SIZE_CHARS;
+			current_x += (font_ptr->size / 2.5f) * vid_hudscale->value * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 

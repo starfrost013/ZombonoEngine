@@ -2279,7 +2279,7 @@ void StartServer_MenuInit( void )
 	s_rules_box.generic.type = MTYPE_SPINCONTROL;
 	s_rules_box.generic.x	= 0;
 	s_rules_box.generic.y	= 20 * vid_hudscale->value;
-	s_rules_box.generic.name	= "^5Gamemode";
+	s_rules_box.generic.name	= "^5Game Mode";
 	
 	s_rules_box.itemnames = gamemode_names;
 
@@ -2339,7 +2339,7 @@ void StartServer_MenuInit( void )
 	s_startserver_dmoptions_action.generic.type = MTYPE_ACTION;
 	s_startserver_dmoptions_action.generic.name	= " ^3Game Settings";
 	s_startserver_dmoptions_action.generic.flags= QMF_LEFT_JUSTIFY;
-	s_startserver_dmoptions_action.generic.x	= 24 * vid_hudscale->value;
+	s_startserver_dmoptions_action.generic.x	= 29 * vid_hudscale->value;
 	s_startserver_dmoptions_action.generic.y	= 108 * vid_hudscale->value;
 	s_startserver_dmoptions_action.generic.statusbar = NULL;
 	s_startserver_dmoptions_action.generic.callback = DMOptionsFunc;
@@ -2347,7 +2347,7 @@ void StartServer_MenuInit( void )
 	s_startserver_start_action.generic.type = MTYPE_ACTION;
 	s_startserver_start_action.generic.name	= " ^3Start";
 	s_startserver_start_action.generic.flags= QMF_LEFT_JUSTIFY;
-	s_startserver_start_action.generic.x	= 24 * vid_hudscale->value;
+	s_startserver_start_action.generic.x	= 29 * vid_hudscale->value;
 	s_startserver_start_action.generic.y	= 128 * vid_hudscale->value;
 	s_startserver_start_action.generic.callback = StartServerActionFunc;
 
