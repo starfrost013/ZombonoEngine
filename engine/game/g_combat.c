@@ -470,12 +470,8 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 
 				// make rocket jumping easier
 				//TODO: refactor this whole thing so checks like the rocket jump check can be done in ammo_*
-				if (mod == MOD_ROCKET
-					|| mod == MOD_R_SPLASH) // sanity check
-				{
-					damage /= 2;
-				}
-
+				//does this halve the penalty for stupidity? or does it just allow rocket/grenade/etc (answer in 3/23/2024 0.0.5 playtest0
+				damage /= 2;
 			}
 			else
 			{
