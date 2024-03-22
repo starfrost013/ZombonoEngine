@@ -1,7 +1,7 @@
 Zombono
 Release Notes
 
-Version 0.05
+Version 0.0.5
 March 23, 2024
 * Made the engine and gamex64 compile on GCC and run on Linux. Still working on the renderer...
 * Changed game files directory from "zombono" to "zombonogame" as some(?) linux filesystems can't have a folder named the same name as a file (zombono binary vs zombono folder)
@@ -20,6 +20,7 @@ March 23, 2024
 * Split primary and secondary attack animations
 * Split lights into pointlights (light) and spotlights (light_spot). Spotlights are a bit fucked
 	* All light now has a direction!
+	* Far better lighting in all levels with it
 * Split key and mouse events in the UI system into key down and key up and mouse down and mouse up events respectively. 
 	* Fixed mouse events (as they are internally implemented as keys) getting sent to key and mouse event functions
 * Fixed bug where the state of the leaderboard would "invert" - it would only be turned on when TAB WAS pressed.
@@ -38,9 +39,10 @@ March 23, 2024
 * Changed TeamUI background
 * Don't send leaderboard during intermission time - fixes victory declaration
 * Fix back to back TDM games not endlessly restarting
-* Halved damage from rocket jumping
+* Halved damage from rocket jumping (from ~45-53 to ~20-25)
+* Made screenshots use 32-bit colour instead of 24-bit and read the screen as RGBA instead of RGB
 
-Version 0.04
+Version 0.0.4
 March 10, 2024
 * Changed menus to use new text system and colorised them.
 * Rewrote credits code to use text system.
@@ -73,7 +75,7 @@ March 10, 2024
 * Fixed newlines in text rendering.
 * Added some help text to TeamUI.
 
-Version 0.04-pre5
+Version 0.0.4-pre5
 February 22, 2024
 * Fixed Gender option in player setup menu changing handedness instead of gender.
 * Many more details in z_tdm_subway.
@@ -128,13 +130,13 @@ February 22, 2024
 * Removed already dead CTRL and ALT bindings from default.cfg.
 * Fixed save files being accidentally added to game build.
 
-Version 0.04-pre4
+Version 0.0.4-pre4
 February 10, 2024
 * Fix TDM end screen not displaying.
 * Push zombies away if they hit a player while being spawned. This should prevent players from being trapped by zombies.
 * Reset the state of all active UIs on connect and disconnect (should at least mitigate "stuck UI" bugs)
 * Directors killing zombies don't get frags anymore. Players killing zombies have a separate score tallied up for that. Not sure what to do with this rn... Directors killing zombies lose that score.
-* Fixed a bug where, on team change, weapons were not being visually indicated.
+* Fixed a bug where, on team change, your weapon was not visually switching to the team's spawn weapon and still showed the weapon you had in pre-spawn.
 * Very rough implementation of primary and secondary attack (presently, only attack functions and state are separated, animations and reload time aren't)
 	* Renamed +attack to +attack1
 	* Added +attack2
@@ -153,7 +155,7 @@ February 10, 2024
 	* Ogres: They will have a range attack in the future and move slowly. The Shrek voice lins are temporary.
 * Added gender option in player setup menu.
 
-Version 0.04-pre3
+Version 0.0.4-pre3
 January 14, 2024
 * Began designing textures for z_tdm_labrats
 * Added total player and director scores to leaderboard UI
@@ -177,7 +179,7 @@ January 14, 2024
 * Added a prompt on how to use the main menu, someone struggled with this.
 * New map - z_tdm_subway! Still blockout though
 
-Version 0.04-pre2
+Version 0.0.4-pre2
 December 31, 2023
 * Reduced Bamfuslicator range from 1024 to 768 units
 * z_tdm_labrats improvements - use actual cylindrical pillars, add more lights and decoration
@@ -195,17 +197,17 @@ December 31, 2023
 * Increase number of messages before the chat scrolls from 4 to 9
 * Fixed lighting on second floor of z_tdm_labrats
 
-Version 0.04-pre1
+Version 0.0.4-pre1
 December 23, 2023
 * Rewrote everything using vkquake2 as a base
 * Labrats remodel
 * Basicallty the same feature set as test3, but it works
 
-Version 0.03.1
+Version 0.0.3.1
 September 28, 2023
 * Fixed the fact it doesn't fucking work
 
-Version 0.03
+Version 0.0.3
 September 24, 2023
 * Added new map: Labrats!
 * Removed MFC dependency
@@ -239,7 +241,7 @@ September 24, 2023
 * Remaining time now showed on screen when playing
 * Added text that shows which team wins
 
-Version 0.02
+Version 0.0.2
 September 7, 2023
 
 * Added "postspawn" command - it runs after you spawn and cannot be triggered from the console.
@@ -265,7 +267,7 @@ September 7, 2023
 * Fixed areas in the map where you could get stuck.
 * Changed method of distribution 
 
-Version 0.01 (ZTest1) - Initial Release
+Version 0.0.1 (ZTest1) - Initial Release
 August 31, 2023
 
 * Initial release.

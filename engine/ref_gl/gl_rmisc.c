@@ -92,6 +92,9 @@ typedef struct _TargaHeader {
 	uint8_t	pixel_size, attributes;
 } TargaHeader;
 
+#define SCREENSHOT_BPP			32									// Bits per pixel
+#define SCREENSHOT_BUFFER_SIZE	(4 * vid.width * vid.height) + 18	// Size of buffer to save screenshot into
+
 /* 
 ================== 
 GL_ScreenShot_f
@@ -106,7 +109,7 @@ void GL_ScreenShot_f (void)
 	FILE		*f;
 
 	// create the scrnshots directory if it doesn't exist
-	Com_sprintf (checkname, sizeof(checkname), "%s/scrnshot", ri.FS_Gamedir());
+	Com_sprintf (checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
 	Sys_Mkdir (checkname);
 
 // 
@@ -123,7 +126,7 @@ void GL_ScreenShot_f (void)
 	// should work on all FSes
 	strftime(&picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
 
-	Com_sprintf(checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), picname);
+	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots/%s", ri.FS_Gamedir(), picname);
 
 	f = fopen(checkname, "rb");
 
@@ -156,14 +159,10 @@ void GL_ScreenShot_f (void)
 		// restore the .tga file
 		strcat(tempbuf, ".tga");
 
-		// copy the final name so the screenshot code can open it
-
-		Com_sprintf(checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), tempbuf);
-
 		fclose(f);
 	}
 
-	buffer = malloc(vid.width*vid.height*3 + 18);
+	buffer = malloc(SCREENSHOT_BUFFER_SIZE);
 
 	assert(buffer != NULL);
 
@@ -173,13 +172,15 @@ void GL_ScreenShot_f (void)
 	buffer[13] = vid.width>>8;
 	buffer[14] = vid.height&255;
 	buffer[15] = vid.height>>8;
-	buffer[16] = 24;	// pixel size
+	buffer[16] = 32;	// pixel size
 
-	qglReadPixels (0, 0, vid.width, vid.height, GL_RGB, GL_UNSIGNED_BYTE, buffer+18 ); 
+	qglReadPixels (0, 0, vid.width, vid.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer+18 ); 
 
-	// swap rgb to bgr
-	c = 18+vid.width*vid.height*3;
-	for (i=18 ; i<c ; i+=3)
+	// swap rgba to bgra
+	// OpenGL2+ supports BGRA, but to be safe on all GL 1.1 drivers that may not implement the extension,
+	// we swap
+	c = SCREENSHOT_BUFFER_SIZE;
+	for (i=18 ; i<c ; i+=4)
 	{
 		temp = buffer[i];
 		buffer[i] = buffer[i+2];
@@ -191,7 +192,7 @@ void GL_ScreenShot_f (void)
 	fclose (f);
 
 	free (buffer);
-	ri.Con_Printf (PRINT_ALL, "Wrote %s\n", checkname);
+	ri.Con_Printf (PRINT_ALL, "Saved screenshot to %s\n", checkname);
 } 
 
 /*

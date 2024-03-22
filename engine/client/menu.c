@@ -2340,15 +2340,15 @@ void StartServer_MenuInit( void )
 	s_startserver_dmoptions_action.generic.name	= " ^3Game Settings";
 	s_startserver_dmoptions_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_startserver_dmoptions_action.generic.x	= 29 * vid_hudscale->value;
-	s_startserver_dmoptions_action.generic.y	= 108 * vid_hudscale->value;
+	s_startserver_dmoptions_action.generic.y	= 107 * vid_hudscale->value;
 	s_startserver_dmoptions_action.generic.statusbar = NULL;
 	s_startserver_dmoptions_action.generic.callback = DMOptionsFunc;
 
 	s_startserver_start_action.generic.type = MTYPE_ACTION;
-	s_startserver_start_action.generic.name	= " ^3Start";
+	s_startserver_start_action.generic.name	= " ^3Start!";
 	s_startserver_start_action.generic.flags= QMF_LEFT_JUSTIFY;
 	s_startserver_start_action.generic.x	= 29 * vid_hudscale->value;
-	s_startserver_start_action.generic.y	= 128 * vid_hudscale->value;
+	s_startserver_start_action.generic.y	= 120 * vid_hudscale->value;
 	s_startserver_start_action.generic.callback = StartServerActionFunc;
 
 	Menu_AddItem( &s_startserver_menu, &s_startmap_list );

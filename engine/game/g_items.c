@@ -1207,7 +1207,7 @@ gitem_t	itemlist[] =
 		Drop_PowerArmor,
 		NULL,
 		"misc/ar3_pkup.wav",
-		"models/items/armor/screen/tris.md2", EF_ROTATE,
+		"models/items/armor/screen/tris.md2", EF_ROTATE, 
 		NULL,
 /* icon */		"pics/i_powerscreen",
 /* pickup */	"Power Screen",
