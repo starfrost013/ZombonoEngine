@@ -41,6 +41,9 @@ March 23, 2024
 * Fix back to back TDM games not endlessly restarting
 * Halved damage from rocket jumping (from ~45-53 to ~20-25)
 * Made screenshots use 32-bit colour instead of 24-bit and read the screen as RGBA instead of RGB
+* Changed screenshot folder from "scrnshot" to "screenshots", as we aren't in 8.3 land anymore.
+	* The buffer overflow and corrupt screenshot bug when taking screenshots at 16:9 resolutions appears to have magically fixed itself, WTF?
+* Reduced spacing between words (in the text rendering engine)
 
 Version 0.0.4
 March 10, 2024

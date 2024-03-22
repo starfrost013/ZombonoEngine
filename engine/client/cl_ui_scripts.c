@@ -85,7 +85,7 @@ bool UI_BamfuslicatorUICreate()
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), (viddef.height / 1.25));
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_TextHelp", "Right click to change type of monster to spawn",
-		x + (3 * vid_hudscale->value), (viddef.height / 1.25) + (size_y * vid_hudscale->value) + (3 * vid_hudscale->value)); // lazy way of centering it lol
+		x + (5 * vid_hudscale->value), (viddef.height / 1.25) + (size_y * vid_hudscale->value) + (3 * vid_hudscale->value)); // lazy way of centering it lol
 	return true; 
 }
 

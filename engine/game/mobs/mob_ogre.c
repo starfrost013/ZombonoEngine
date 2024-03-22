@@ -312,14 +312,30 @@ void ogre_pain(edict_t* self, edict_t* other, float kick, int32_t damage)
 // ATTACK
 //
 
+//main attack code
 void ogre_fire(edict_t* self)
 {
 	vec3_t	aim;
+	vec3_t	forward;
+	float	attack_random = random();
 
 	//temp
 	VectorSet(aim, OGRE_RANGE_MELEE, 0, 16);
-	// todo: types
-	Ammo_Melee(self, aim, OGRE_RANGE_MELEE, 0);
+
+	// random chance to fire a rocket
+	// test for 3/23/2024
+	if (attack_random > 0.75)
+	{
+		AngleVectors(self->s.angles, forward, NULL, NULL);
+		Ammo_Rocket(self, self->s.origin, forward, OGRE_DAMAGE_FUNNY_SHREK, OGRE_SPEED_FUNNY_SHREK, 120, 120);
+	}
+	else
+	{
+		// todo: types
+		Ammo_Melee(self, aim, OGRE_RANGE_MELEE, 0);
+	}
+
+
 }
 
 // Attack 1:
