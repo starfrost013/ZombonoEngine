@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //===============================================================================
 
-byte *membase;
+uint8_t *membase;
 int maxhunksize;
 int curhunksize;
 
@@ -44,8 +44,8 @@ void *Hunk_Begin (int maxsize)
 	curhunksize = 0;
 	membase = mmap(0, maxhunksize, PROT_READ|PROT_WRITE, 
 		MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-	if (membase == NULL || membase == (byte *)-1)
-		Sys_Error("unable to virtual allocate %d bytes", maxsize);
+	if (membase == NULL || membase == (uint8_t *)-1)
+		Sys_Error("unable to virtual allocate %d uint8_ts", maxsize);
 
 	*((int *)membase) = curhunksize;
 
@@ -54,7 +54,7 @@ void *Hunk_Begin (int maxsize)
 
 void *Hunk_Alloc (int size)
 {
-	byte *buf;
+	uint8_t *buf;
 
 	// round to cacheline
 	size = (size+31)&~31;
@@ -67,7 +67,7 @@ void *Hunk_Alloc (int size)
 
 int Hunk_End (void)
 {
-	byte *n;
+	uint8_t *n;
 
 #if defined(__linux__)
 	n = mremap(membase, maxhunksize, curhunksize + sizeof(int), 0);
@@ -86,10 +86,10 @@ int Hunk_End (void)
 
 void Hunk_Free (void *base)
 {
-	byte *m;
+	uint8_t *m;
 
 	if (base) {
-		m = ((byte *)base) - sizeof(int);
+		m = ((uint8_t *)base) - sizeof(int);
 		if (munmap(m, *((int *)m)))
 			Sys_Error("Hunk_Free: munmap failed (%d)", errno);
 	}

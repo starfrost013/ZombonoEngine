@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // Weapon_chaingun.c : Chaingun weapon code - split from p_weapon.c
 
-#include "..\g_local.h"
-#include "..\mobs\mob_player.h"
+#include "../g_local.h"
+#include "../mobs/mob_player.h"
 
 void Chaingun_Fire(edict_t* ent)
 {

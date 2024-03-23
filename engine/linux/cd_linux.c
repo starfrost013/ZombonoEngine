@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // rights reserved.
 
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
@@ -56,9 +58,9 @@ static bool	initialized = false;
 static bool	enabled = true;
 static bool playLooping = false;
 static float	cdvolume;
-static byte 	remap[100];
-static byte		playTrack;
-static byte		maxTrack;
+static uint8_t 	remap[100];
+static uint8_t		playTrack;
+static uint8_t		maxTrack;
 
 static int cdfile = -1;
 
@@ -332,13 +334,13 @@ static void CD_f (void)
 
 	if (Q_strcasecmp(command, "play") == 0)
 	{
-		CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
+		CDAudio_Play((uint8_t)atoi(Cmd_Argv (2)), false);
 		return;
 	}
 
 	if (Q_strcasecmp(command, "loop") == 0)
 	{
-		CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
+		CDAudio_Play((uint8_t)atoi(Cmd_Argv (2)), true);
 		return;
 	}
 

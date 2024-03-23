@@ -1210,3 +1210,16 @@ struct edict_s
 	monsterinfo_t	monsterinfo;
 };
 
+
+// /weapons/weapon_base.c
+
+void P_ProjectSource(edict_t* ent, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
+void PlayerNoise(edict_t* who, vec3_t where, int32_t type);
+bool Pickup_Weapon(edict_t* ent, edict_t* other);
+void ChangeWeapon(edict_t* ent);
+void NoAmmoWeaponChange(edict_t* ent);
+void Think_Weapon(edict_t* ent);
+void Use_Weapon(edict_t* ent, gitem_t* item);
+void Drop_Weapon(edict_t* ent, gitem_t* item);
+void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIRE_LAST, int32_t FRAME_IDLE_LAST, int32_t FRAME_DEACTIVATE_LAST,
+	int32_t* pause_frames, int32_t* fire_frames_primary, int32_t* fire_frames_secondary, void (*fire_primary)(edict_t* ent), void(*fire_secondary)(edict_t* ent));

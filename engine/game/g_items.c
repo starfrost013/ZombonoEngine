@@ -1603,7 +1603,7 @@ always owned, never in the world
 /*QUAKED Ammo_Bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_Bullets",
+		"ammo_bullets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,
@@ -1649,7 +1649,7 @@ always owned, never in the world
 /*QUAKED Ammo_Rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_Rockets",
+		"ammo_rockets",
 		Pickup_Ammo,
 		NULL,
 		Drop_Ammo,

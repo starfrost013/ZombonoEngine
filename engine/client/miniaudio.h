@@ -4431,7 +4431,7 @@ The frequency at which data is delivered to and from a device depends on the siz
 or milliseconds, whichever is more convenient. Generally speaking, the smaller the period, the lower the latency at the expense of higher CPU usage and
 increased risk of glitching due to the more frequent and granular data deliver intervals. The size of a period will depend on your requirements, but
 miniaudio's defaults should work fine for most scenarios. If you're building a game you should leave this fairly small, whereas if you're building a simple
-media player you can make it larger. Note that the period size you request is actually just a hma_int32 - miniaudio will tell the backend what you want, but the
+media player you can make it larger. Note that the period size you request is actually just a hint - miniaudio will tell the backend what you want, but the
 backend is ultimately responsible for what it gives you. You cannot assume you will get exactly what you ask for.
 
 When delivering data to and from a device you need to make sure it's in the correct format which you can set through the device configuration. You just set the
@@ -4497,10 +4497,10 @@ then be set directly on the structure. Below are the members of the `ma_device_c
 
     periods
         The number of periods making up the device's entire buffer. The total buffer size is `periodSizeInFrames` or `periodSizeInMilliseconds` multiplied by
-        this value. This is just a hma_int32 as backends will be the ones who ultimately decide how your periods will be configured.
+        this value. This is just a hint as backends will be the ones who ultimately decide how your periods will be configured.
 
     performanceProfile
-        A hma_int32 to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
+        A hint to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
         `ma_performance_profile_conservative`. This mainly affects the size of default buffers and can usually be left at it's default value.
 
     noPreZeroedOutputBuffer
@@ -16891,8 +16891,8 @@ static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enu
         return ma_result_from_errno(-resultALSA);
     }
 
-    ppNextDeviceHma_int32 = ppDeviceHints;
-    while (*ppNextDeviceHma_int32 != NULL) {
+    ppNextDeviceHint = ppDeviceHints;
+    while (*ppNextDeviceHint != NULL) {
         char* NAME = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "NAME");
         char* DESC = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "DESC");
         char* IOID = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "IOID");
@@ -17015,7 +17015,7 @@ static ma_result ma_context_enumerate_devices__alsa(ma_context* pContext, ma_enu
         free(NAME);
         free(DESC);
         free(IOID);
-        ppNextDeviceHma_int32 += 1;
+        ppNextDeviceHint += 1;
 
         /* We need to stop enumeration if the callback returned false. */
         if (stopEnumeration) {
@@ -17492,8 +17492,8 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
                         return MA_NO_BACKEND;
                     }
 
-                    ppNextDeviceHma_int32 = ppDeviceHints;
-                    while (*ppNextDeviceHma_int32 != NULL) {
+                    ppNextDeviceHint = ppDeviceHints;
+                    while (*ppNextDeviceHint != NULL) {
                         char* NAME = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "NAME");
                         char* DESC = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "DESC");
                         char* IOID = ((ma_snd_device_name_get_hint_proc)pContext->alsa.snd_device_name_get_hint)(*ppNextDeviceHint, "IOID");
@@ -17510,7 +17510,7 @@ static ma_result ma_device_init_by_type__alsa(ma_context* pContext, const ma_dev
                         free(NAME);
                         free(DESC);
                         free(IOID);
-                        ppNextDeviceHma_int32 += 1;
+                        ppNextDeviceHint += 1;
 
                         if (foundDevice) {
                             break;
@@ -18295,10 +18295,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     pContext->alsa.snd_pcm_start                          = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_start");
     pContext->alsa.snd_pcm_drop                           = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_drop");
     pContext->alsa.snd_pcm_drain                          = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_drain");
-    pContext->alsa.snd_device_name_hma_int32                   = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_hint");
-    pContext->alsa.snd_device_name_get_hma_int32               = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_get_hint");
+    pContext->alsa.snd_device_name_hint                   = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_hint");
+    pContext->alsa.snd_device_name_get_hint               = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_get_hint");
     pContext->alsa.snd_card_get_index                     = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_card_get_index");
-    pContext->alsa.snd_device_name_free_hma_int32              = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_free_hint");
+    pContext->alsa.snd_device_name_free_hint              = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_device_name_free_hint");
     pContext->alsa.snd_pcm_mmap_begin                     = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_mmap_begin");
     pContext->alsa.snd_pcm_mmap_commit                    = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_mmap_commit");
     pContext->alsa.snd_pcm_recover                        = (ma_proc)ma_dlsym(pContext, pContext->alsa.asoundSO, "snd_pcm_recover");
@@ -18352,10 +18352,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     ma_snd_pcm_start_proc                          _snd_pcm_start                          = snd_pcm_start;
     ma_snd_pcm_drop_proc                           _snd_pcm_drop                           = snd_pcm_drop;
     ma_snd_pcm_drain_proc                          _snd_pcm_drain                          = snd_pcm_drain;
-    ma_snd_device_name_hint_proc                   _snd_device_name_hma_int32                   = snd_device_name_hint;
-    ma_snd_device_name_get_hint_proc               _snd_device_name_get_hma_int32               = snd_device_name_get_hint;
+    ma_snd_device_name_hint_proc                   _snd_device_name_hint                   = snd_device_name_hint;
+    ma_snd_device_name_get_hint_proc               _snd_device_name_get_hint               = snd_device_name_get_hint;
     ma_snd_card_get_index_proc                     _snd_card_get_index                     = snd_card_get_index;
-    ma_snd_device_name_free_hint_proc              _snd_device_name_free_hma_int32              = snd_device_name_free_hint;
+    ma_snd_device_name_free_hint_proc              _snd_device_name_free_hint              = snd_device_name_free_hint;
     ma_snd_pcm_mmap_begin_proc                     _snd_pcm_mmap_begin                     = snd_pcm_mmap_begin;
     ma_snd_pcm_mmap_commit_proc                    _snd_pcm_mmap_commit                    = snd_pcm_mmap_commit;
     ma_snd_pcm_recover_proc                        _snd_pcm_recover                        = snd_pcm_recover;
@@ -18406,10 +18406,10 @@ static ma_result ma_context_init__alsa(const ma_context_config* pConfig, ma_cont
     pContext->alsa.snd_pcm_start                          = (ma_proc)_snd_pcm_start;
     pContext->alsa.snd_pcm_drop                           = (ma_proc)_snd_pcm_drop;
     pContext->alsa.snd_pcm_drain                          = (ma_proc)_snd_pcm_drain;
-    pContext->alsa.snd_device_name_hma_int32                   = (ma_proc)_snd_device_name_hint;
-    pContext->alsa.snd_device_name_get_hma_int32               = (ma_proc)_snd_device_name_get_hint;
+    pContext->alsa.snd_device_name_hint                   = (ma_proc)_snd_device_name_hint;
+    pContext->alsa.snd_device_name_get_hint               = (ma_proc)_snd_device_name_get_hint;
     pContext->alsa.snd_card_get_index                     = (ma_proc)_snd_card_get_index;
-    pContext->alsa.snd_device_name_free_hma_int32              = (ma_proc)_snd_device_name_free_hint;
+    pContext->alsa.snd_device_name_free_hint              = (ma_proc)_snd_device_name_free_hint;
     pContext->alsa.snd_pcm_mmap_begin                     = (ma_proc)_snd_pcm_mmap_begin;
     pContext->alsa.snd_pcm_mmap_commit                    = (ma_proc)_snd_pcm_mmap_commit;
     pContext->alsa.snd_pcm_recover                        = (ma_proc)_snd_pcm_recover;
