@@ -367,15 +367,32 @@ NET_OpenIP
 */
 void NET_OpenIP (void)
 {
-	cvar_t	*port, *ip;
+	cvar_t	*port, *client_port, *ip;
 
 	port = Cvar_Get ("port", va("%i", PORT_SERVER), CVAR_NOSET);
+	client_port = Cvar_Get("clientport", va("%i", PORT_CLIENT), CVAR_NOSET);
 	ip = Cvar_Get ("ip", "localhost", CVAR_NOSET);
 
 	if (!ip_sockets[NS_SERVER])
 		ip_sockets[NS_SERVER] = NET_Socket (ip->string, port->value);
+
+	// we don't need client port on dedi
+	if (dedicated)
+		return;
+
 	if (!ip_sockets[NS_CLIENT])
-		ip_sockets[NS_CLIENT] = NET_Socket (ip->string, PORT_ANY);
+	{
+		// try any port 
+		if (!client_port->value)
+		{
+			ip_sockets[NS_CLIENT] = NET_Socket (ip->string, PORT_ANY);
+		}
+		else
+		{
+			ip_sockets[NS_CLIENT] = NET_Socket (ip->string, client_port->value);
+		}
+	}
+
 }
 
 
@@ -471,6 +488,8 @@ int NET_Socket (char *net_interface, int port)
 		close (newsocket);
 		return 0;
 	}
+
+	Com_Printf("Bound socket on port %d\n", port);
 
 	return newsocket;
 }
