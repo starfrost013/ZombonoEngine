@@ -333,8 +333,8 @@ void CL_ParseServerData (void)
 	str = MSG_ReadString (&net_message);
 
 	// seperate the printfs so the server message can have a color
-	Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
-	Com_Printf("%c%s\n", 2, str);
+	Com_Printf("\n\n\n\n");
+	Com_Printf("%s\n", str);
 
 	// need to prep refresh at next oportunity
 	cl.refresh_prepped = false;

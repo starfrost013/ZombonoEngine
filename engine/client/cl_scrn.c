@@ -243,7 +243,7 @@ void SCR_CenterPrint (char *str)
 			break;
 		s++;		// skip the \n
 	} while (1);
-	Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
+	Com_Printf("\n\n\n\n");
 	Con_ClearNotify ();
 }
 

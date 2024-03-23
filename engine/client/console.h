@@ -36,8 +36,6 @@ typedef struct console_s
 	int32_t 	x;				// offset in current line for next print
 	int32_t 	display;		// bottom of console displays this line
 
-	int32_t 	ormask;			// high bit mask for colored characters
-
 	int32_t 	linewidth;		// characters across screen
 	int32_t 	totallines;		// total lines in console scrollback
 

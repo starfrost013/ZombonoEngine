@@ -337,19 +337,9 @@ void Con_Print (char *txt)
 	int32_t 	y;
 	int32_t 	c, l;
 	static int32_t cr;
-	int32_t 	mask;
 
 	if (!con.initialized)
 		return;
-
-	if (txt[0] == 1 || txt[0] == 2)
-	{
-		mask = 128;		// go to colored text
-		txt++;
-	}
-	else
-		mask = 0;
-
 
 	while ( (c = *txt) )
 	{
@@ -392,7 +382,7 @@ void Con_Print (char *txt)
 
 		default:	// display character and advance
 			y = con.current % con.totallines;
-			con.text[y*con.linewidth+con.x] = c | mask | con.ormask;
+			con.text[y*con.linewidth+con.x] = c;
 			con.x++;
 			if (con.x >= con.linewidth)
 				con.x = 0;
