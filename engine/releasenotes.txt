@@ -47,6 +47,7 @@ March 23, 2024
 * Made the Ogres fire rockets (they're basically ranged tank zombies kinda)
 	* 25% chance they will fire a rocket instead of their regular melee attack.
 	* 40 damage if it hits you. Same speed as a rocket fired from a rocket launcher.
+* The game should save your resolution now.
 
 Version 0.0.4
 March 10, 2024
