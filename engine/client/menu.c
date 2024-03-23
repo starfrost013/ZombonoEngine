@@ -2292,7 +2292,7 @@ void StartServer_MenuInit( void )
 	s_timelimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_timelimit_field.generic.x	= 0;
 	s_timelimit_field.generic.y	= 36 * vid_hudscale->value;
-	s_timelimit_field.generic.statusbar = "0 = No Limit (this time is in *MINUTES*)";
+	s_timelimit_field.generic.statusbar = "0 = No Limit (this time is in seconds)";
 	s_timelimit_field.length = 3;
 	s_timelimit_field.visible_length = 3;
 	strcpy( s_timelimit_field.buffer, Cvar_VariableString("timelimit") );

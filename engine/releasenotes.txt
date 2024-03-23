@@ -44,6 +44,9 @@ March 23, 2024
 * Changed screenshot folder from "scrnshot" to "screenshots", as we aren't in 8.3 land anymore.
 	* The buffer overflow and corrupt screenshot bug when taking screenshots at 16:9 resolutions appears to have magically fixed itself, WTF?
 * Reduced spacing between words (in the text rendering engine)
+* Made the Ogres fire rockets (they're basically ranged tank zombies kinda)
+	* 25% chance they will fire a rocket instead of their regular melee attack.
+	* 40 damage if it hits you. Same speed as a rocket fired from a rocket launcher.
 
 Version 0.0.4
 March 10, 2024

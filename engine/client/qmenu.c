@@ -42,9 +42,6 @@ extern refexport_t re;
 extern viddef_t viddef;
 extern cvar_t *vid_hudscale;
 
-#define VID_WIDTH viddef.width
-#define VID_HEIGHT viddef.height
-
 void Action_DoEnter( menuaction_t *a )
 {
 	if ( a->generic.callback )
@@ -108,7 +105,7 @@ void Field_Draw( menufield_t *f )
 	}
 
 	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
-	Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, f->generic.y + f->generic.parent->y, tempbuffer );
+	Text_Draw(cl_system_font->string, f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value, (f->generic.y + f->generic.parent->y) - 1, tempbuffer ); // -1 for padding
 
 	if ( Menu_ItemAtCursor( f->generic.parent ) == f )
 	{
@@ -337,7 +334,7 @@ void Menu_Center( menuframework_t *menu )
 	height = ( ( menucommon_t * ) menu->items[menu->nitems-1])->y;
 	height += 10;
 
-	menu->y = ( VID_HEIGHT - height ) / 2;
+	menu->y = ( viddef.height - height ) / 2;
 }
 
 void Menu_Draw( menuframework_t *menu )
@@ -424,16 +421,16 @@ void Menu_DrawStatusBar( const char *string )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, string);
 		int32_t l = (int32_t)strlen( string );
-		int32_t maxcol = VID_WIDTH / (8*vid_hudscale->value);
+		int32_t maxcol = viddef.width / (8*vid_hudscale->value);
 		int32_t col = maxcol / 2 - l / 2;
 
-		re.DrawFill( 0, (VID_HEIGHT-system_font_ptr->line_height)*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 63, 63, 63, 255 );
+		re.DrawFill( 0, (viddef.height-system_font_ptr->line_height)*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, 63, 63, 63, 255 );
 
-		Text_Draw(cl_system_font->string, col*size_x*vid_hudscale->value, VID_HEIGHT - size_y*vid_hudscale->value, string );
+		Text_Draw(cl_system_font->string, col*size_x*vid_hudscale->value, viddef.height - size_y*vid_hudscale->value, string );
 	}
 	else
 	{
-		re.DrawFill( 0, VID_HEIGHT-8*vid_hudscale->value, VID_WIDTH, 8*vid_hudscale->value, 0, 0, 0, 255 );
+		re.DrawFill( 0, viddef.height-8*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, 0, 0, 0, 255 );
 	}
 }
 
