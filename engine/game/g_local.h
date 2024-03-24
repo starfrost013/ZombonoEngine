@@ -646,8 +646,8 @@ typedef enum zombie_type_e
 
 #define MAX_ZOMBIE_TYPE				2
 
-#define ZOMBIE_DAMAGE_STANDARD		10
-#define ZOMBIE_DAMAGE_FAST			20
+#define ZOMBIE_DAMAGE_STANDARD		15
+#define ZOMBIE_DAMAGE_FAST			25
 
 #define ZOMBIE_RANGE_STANDARD		MELEE_DISTANCE
 // todo: fast has more range?

@@ -332,7 +332,7 @@ void zombie_fast_fire(edict_t* self)
 
 	VectorSet(aim, ZOMBIE_RANGE_STANDARD, 0, 16);
 	// todo: types
-	Ammo_Melee(self, aim, ZOMBIE_RANGE_STANDARD, 0);
+	Ammo_Melee(self, aim, ZOMBIE_DAMAGE_FAST, 0);
 }
 
 // Attack 1:
