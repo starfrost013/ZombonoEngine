@@ -1,5 +1,11 @@
 Zombono
 Release Notes
+Version 0.0.6
+April XX, 2024
+* Reduced Zombie on Speed damage from 80 to 25 (it was a bug where the range was used and not the intended speed value)
+* Increased regular zombie damage from 10 to 15
+* Changed default crouch bind from C to CTRL
+* MAX_TOTAL_ENT_LEAFS 128 -> 256
 
 Version 0.0.5
 March 23, 2024

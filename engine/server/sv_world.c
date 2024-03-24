@@ -162,7 +162,7 @@ SV_LinkEdict
 
 ===============
 */
-#define MAX_TOTAL_ENT_LEAFS		128
+#define MAX_TOTAL_ENT_LEAFS		256
 void SV_LinkEdict (edict_t *ent)
 {
 	areanode_t	*node;
