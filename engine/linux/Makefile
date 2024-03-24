@@ -107,6 +107,7 @@ build_debug:
 		$(BUILD_DEBUG_DIR)/ref_gl \
 		$(BUILD_DEBUG_DIR)/game \
 		$(BUILD_DEBUG_DIR)/game/ammunition \
+		$(BUILD_DEBUG_DIR)/game/entities \
 		$(BUILD_DEBUG_DIR)/game/mobs \
 		$(BUILD_DEBUG_DIR)/game/weapons \
 		$(BUILD_DEBUG_DIR)/qcommon 

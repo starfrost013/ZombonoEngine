@@ -100,6 +100,7 @@
     <ClInclude Include="client\vid.h" />
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\q_shared.h" />
+    <ClInclude Include="qcommon\netservices.h" />
     <ClInclude Include="qcommon\pdjson.h" />
     <ClInclude Include="qcommon\qcommon.h" />
     <ClInclude Include="qcommon\qfiles.h" />

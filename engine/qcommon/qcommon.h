@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "pdjson.h"
 
 // Engine version
-#define ZOMBONO_VERSION "0.0.5"
+#define ZOMBONO_VERSION "0.0.6"
 
 #define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
 
@@ -182,7 +182,7 @@ PROTOCOL
 // 36 - Zombono with larger map bounds
 // 37 - Zombono 0.04 final
 // Then incremented by one for each version.
-#define	PROTOCOL_VERSION	38
+#define	PROTOCOL_VERSION	39
 
 //=========================================
 

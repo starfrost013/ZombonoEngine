@@ -247,6 +247,9 @@
     <ClInclude Include="qcommon\pdjson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="qcommon\netservices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="win32\zombono.ico">
