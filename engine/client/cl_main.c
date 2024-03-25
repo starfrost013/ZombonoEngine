@@ -1811,7 +1811,7 @@ void CL_Init (void)
 	Miniaudio_Init();
 	CL_InitLocal();
 	IN_Init();
-	if (!Font_Init()) Sys_Error("Unknown error initialising font engine");
+	if (!Font_Init()) Sys_Error("Error initialising font engine");
 	UI_Init();
 
 	FS_ExecAutoexec();

@@ -6,6 +6,9 @@ April XX, 2024
 * Increased regular zombie damage from 10 to 15
 * Changed default crouch bind from C to CTRL
 * MAX_TOTAL_ENT_LEAFS 128 -> 256
+* Began working on the game's various attached network services.
+	* Curl is now integrated into the engine. On Windows, this appears to require horrifying hacks.
+	* The game contacts updates.zombono.com for an internet connection check. This is done after config.cfg is run, so you can put "ns_nointernetcheck 1" in your 	config.cfg or default.cfg to not run the check, if you don't like this for whatever reason. If you want to completely cut off all connections to zombono.com, put 	"ns_disabled 1" in your config.cfg or default.cfg files.
 
 Version 0.0.5
 March 23, 2024

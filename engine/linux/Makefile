@@ -111,7 +111,8 @@ build_debug:
 		$(BUILD_DEBUG_DIR)/game/mobs \
 		$(BUILD_DEBUG_DIR)/game/physics \
 		$(BUILD_DEBUG_DIR)/game/weapons \
-		$(BUILD_DEBUG_DIR)/qcommon 
+		$(BUILD_DEBUG_DIR)/qcommon \
+		$(BUILD_DEBUG_DIR)/qcommon/netservices
 	$(MAKE) targets BUILDDIR=$(BUILD_DEBUG_DIR) CFLAGS="$(DEBUG_CFLAGS)"
 
 build_release:
@@ -127,7 +128,8 @@ build_release:
 		$(BUILD_RELEASE_DIR)/game/mobs \
 		$(BUILD_RELEASE_DIR)/game/physics \
 		$(BUILD_RELEASE_DIR)/game/weapons \
-		$(BUILD_RELEASE_DIR)/qcommon 
+		$(BUILD_DEBUG_DIR)/qcommon \
+		$(BUILD_DEBUG_DIR)/qcommon/netservices
 	$(MAKE) targets BUILDDIR=$(BUILD_RELEASE_DIR) CFLAGS="$(RELEASE_CFLAGS)"
 
 all: build_debug build_release
@@ -178,6 +180,8 @@ ZOMBONO_OBJS = \
 	$(BUILDDIR)/qcommon/files.o \
 	$(BUILDDIR)/qcommon/md4.o \
 	$(BUILDDIR)/qcommon/net_chan.o \
+	$(BUILDDIR)/qcommon/netservices/netservices_base.o \
+	$(BUILDDIR)/qcommon/netservices/netservices_update.o \
 	\
 	$(BUILDDIR)/client/sv_ccmds.o \
 	$(BUILDDIR)/client/sv_ents.o \
@@ -215,7 +219,6 @@ $(BUILDDIR)/qcommon/cmd.o :        $(COMMON_DIR)/cmd.c
 $(BUILDDIR)/qcommon/map_loader.o :     $(COMMON_DIR)/map_loader.c
 	$(DO_CC)
 
-
 $(BUILDDIR)/qcommon/crc.o :        $(COMMON_DIR)/crc.c
 	$(DO_CC)
 
@@ -229,6 +232,12 @@ $(BUILDDIR)/qcommon/md4.o :        $(COMMON_DIR)/md4.c
 	$(DO_CC)
 
 $(BUILDDIR)/qcommon/net_chan.o :   $(COMMON_DIR)/net_chan.c
+	$(DO_CC)
+
+$(BUILDDIR)/qcommon/netservices/netservices_base.o :   $(COMMON_DIR)/netservices/netservices_base.c
+	$(DO_CC)
+	
+$(BUILDDIR)/qcommon/netservices/netservices_update.o :   $(COMMON_DIR)/netservices/netservices_update.c
 	$(DO_CC)
 	
 $(BUILDDIR)/client/cl_ents.o :    $(CLIENT_DIR)/cl_ents.c

@@ -398,7 +398,7 @@ void UI_Draw()
 // playtest indicator
 	
 // this is NOT!! efficient don't do this (esp. getting the length of the string every frame and stuff) but not used in release 
-#if defined(PLAYTEST) || defined(_DEBUG)
+#if defined(PLAYTEST) || !defined(NDEBUG)
 	time_t		raw_time;
 	struct tm*	local_time;
 
@@ -407,7 +407,7 @@ void UI_Draw()
 	char		time_str[128] = { 0 };
 #ifdef PLAYTEST
 	strftime(&time_str, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
-#elif _DEBUG
+#elif !defined(NDEBUG)
 	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 

@@ -86,6 +86,7 @@ void Sys_Quit (void)
 	timeEndPeriod( 1 );
 
 	CL_Shutdown();
+	Netservices_Shutdown();
 	Qcommon_Shutdown ();
 	CloseHandle (qwclsemaphore);
 	if (dedicated && dedicated->value)

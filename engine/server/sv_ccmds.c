@@ -190,7 +190,7 @@ void SV_WipeSavegame (char *savename)
 CopyFile
 ================
 */
-void CopyFile (char *src, char *dst)
+void SV_CopyFile (char *src, char *dst)
 {
 	FILE	*f1, *f2;
 	size_t	l;
@@ -240,11 +240,11 @@ void SV_CopySaveGame (char *src, char *dst)
 	Com_sprintf (name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), src);
 	Com_sprintf (name2, sizeof(name2), "%s/save/%s/server.ssv", FS_Gamedir(), dst);
 	FS_CreatePath (name2);
-	CopyFile (name, name2);
+	SV_CopyFile (name, name2);
 
 	Com_sprintf (name, sizeof(name), "%s/save/%s/game.ssv", FS_Gamedir(), src);
 	Com_sprintf (name2, sizeof(name2), "%s/save/%s/game.ssv", FS_Gamedir(), dst);
-	CopyFile (name, name2);
+	SV_CopyFile (name, name2);
 
 	Com_sprintf (name, sizeof(name), "%s/save/%s/", FS_Gamedir(), src);
 	len = (int32_t)strlen(name);
@@ -255,14 +255,14 @@ void SV_CopySaveGame (char *src, char *dst)
 		strcpy (name+len, found+len);
 
 		Com_sprintf (name2, sizeof(name2), "%s/save/%s/%s", FS_Gamedir(), dst, found+len);
-		CopyFile (name, name2);
+		SV_CopyFile (name, name2);
 
 		// change sav to sv2
 		l = (int32_t)strlen(name);
 		strcpy (name+l-3, "sv2");
 		l = (int32_t)strlen(name2);
 		strcpy (name2+l-3, "sv2");
-		CopyFile (name, name2);
+		SV_CopyFile (name, name2);
 
 		found = Sys_FindNext( 0, 0 );
 	}

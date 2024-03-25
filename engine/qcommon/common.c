@@ -1385,7 +1385,7 @@ void Qcommon_Init (int32_t argc, char **argv)
 	developer = Cvar_Get("developer", "0", 0);
 
 	// force developer mode on on debug builds
-#ifdef _DEBUG
+#ifndef NDEBUG
 	Cvar_Set("developer", "1");
 #endif
 
@@ -1414,11 +1414,24 @@ void Qcommon_Init (int32_t argc, char **argv)
 
 	Sys_Init ();
 
-	NET_Init ();
-	Netchan_Init ();
+	NET_Init ();					// Open sockets
+	Netchan_Init ();				// Initialise networking channels
 
-	SV_Init ();
-	CL_Init ();
+	if (!Netservices_Init())		// Initialise CURL/the game's network services
+	{
+		if (!ns_disabled->value
+			&& !ns_nointernetcheck->value) // make sure we actually KNOW netservices are down and the user didn't jsut turn it off
+		{
+			Com_Printf("Not connected to the internet!\n");
+		}
+		else
+		{
+			Com_Printf("Net services disabled - not contacting zombono.com at all\n");
+		}
+	}
+
+	SV_Init ();						// Initialise server variables
+	CL_Init ();						// Initialise the actual game
 
 	// add + commands from command line
 	if (!Cbuf_AddLateCommands ())

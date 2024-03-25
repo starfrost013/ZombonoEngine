@@ -65,7 +65,7 @@ static menuaction_t		s_apply_action[3];
 static menuaction_t		s_cancel_action[3];
 static menuaction_t		s_defaults_action[3];
 
-static void DriverCallback( void *unused )
+static void VidMenu_DriverCallback( void *unused )
 {
 	int32_t curr_value = s_ref_list[s_current_menu_index].curvalue;
 
@@ -242,7 +242,7 @@ void VID_MenuInit( void )
 		s_ref_list[i].generic.name = "^5Driver";
 		s_ref_list[i].generic.x = 0;
 		s_ref_list[i].generic.y = 0;
-		s_ref_list[i].generic.callback = DriverCallback;
+		s_ref_list[i].generic.callback = VidMenu_DriverCallback;
 		s_ref_list[i].itemnames = refs;
 
 		s_mode_list[i].generic.type = MTYPE_SPINCONTROL;
