@@ -1078,7 +1078,7 @@ void ClientEndServerFrame (edict_t *ent)
 
 	// update the leaderboard every 10 ticks (1 second)
 	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
-	if ((level.framenum % 10) == 0)
+	if ((level.framenum % (int)(1 / FRAMETIME)) == 0)
 	{
 		G_LeaderboardSend(ent);
 	}

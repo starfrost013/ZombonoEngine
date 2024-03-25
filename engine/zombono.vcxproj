@@ -100,7 +100,19 @@
     <ClInclude Include="client\vid.h" />
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\q_shared.h" />
-    <ClInclude Include="qcommon\netservices.h" />
+    <ClInclude Include="qcommon\curl\curl.h" />
+    <ClInclude Include="qcommon\curl\curlver.h" />
+    <ClInclude Include="qcommon\curl\easy.h" />
+    <ClInclude Include="qcommon\curl\header.h" />
+    <ClInclude Include="qcommon\curl\mprintf.h" />
+    <ClInclude Include="qcommon\curl\multi.h" />
+    <ClInclude Include="qcommon\curl\options.h" />
+    <ClInclude Include="qcommon\curl\stdcheaders.h" />
+    <ClInclude Include="qcommon\curl\system.h" />
+    <ClInclude Include="qcommon\curl\typecheck-gcc.h" />
+    <ClInclude Include="qcommon\curl\urlapi.h" />
+    <ClInclude Include="qcommon\curl\websockets.h" />
+    <ClInclude Include="qcommon\netservices\netservices.h" />
     <ClInclude Include="qcommon\pdjson.h" />
     <ClInclude Include="qcommon\qcommon.h" />
     <ClInclude Include="qcommon\qfiles.h" />
@@ -243,8 +255,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;wsock32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>4194304</StackReserveSize>
+      <AdditionalLibraryDirectories>$(ProjectDir)/lib/win64</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -340,8 +353,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;wsock32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>4194304</StackReserveSize>
+      <AdditionalLibraryDirectories>$(ProjectDir)/lib/win64</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -375,8 +389,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;wsock32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>4194304</StackReserveSize>
+      <AdditionalLibraryDirectories>$(ProjectDir)/lib/win64</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>

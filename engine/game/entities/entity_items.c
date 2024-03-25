@@ -18,11 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#include "g_local.h"
+#include "../g_local.h"
 
 bool	Pickup_Weapon (edict_t *ent, edict_t *other);
-void		Use_Weapon (edict_t *ent, gitem_t *inv);
-void		Drop_Weapon (edict_t *ent, gitem_t *inv);
+void	Use_Weapon (edict_t *ent, gitem_t *inv);
+void	Drop_Weapon (edict_t *ent, gitem_t *inv);
 
 // Q2 Base
 void Weapon_Blaster (edict_t *ent);

@@ -18,12 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// g_phys.c
+// physics_base.c : Base physics code
 
-#include "g_local.h"
+#include "../g_local.h"
 
 /*
-
 
 pushmove objects do not obey gravity, and do not interact with each other or trigger fields, but block normal movement and push normal objects when they move.
 

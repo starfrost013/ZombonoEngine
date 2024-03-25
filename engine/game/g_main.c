@@ -341,8 +341,8 @@ void CheckTDMRules()
 			return;
 		}
 
-		// update every 10 gameticks (1 second) roughly
-		if (level.framenum % 10 == 0)
+		// update every 1 second roughly
+		if (level.framenum % (int)(1/FRAMETIME) == 0)
 		{
 			char text[TIME_BUF_LENGTH] = { 0 };
 
@@ -367,7 +367,7 @@ void CheckTDMRules()
 	}
 
 	// every second update each team's score
-	if (level.framenum % 10 == 0)
+	if (level.framenum % (int)(1 / FRAMETIME) == 0)
 	{
 		team_scores_t team_scores = G_TDMGetScores();
 		char text[SCORE_BUF_LENGTH] = { 0 };

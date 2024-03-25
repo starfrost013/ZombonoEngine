@@ -65,7 +65,7 @@ RELEASE_CFLAGS=$(BASE_CFLAGS) -DNDEBUG -O3 -funroll-loops \
 	-fomit-frame-pointer -fexpensive-optimizations
 
 DEBUG_CFLAGS=$(BASE_CFLAGS) -g -D_DEBUG
-LDFLAGS=-L/usr/local/lib -ldl -lm -lpthread
+LDFLAGS=-L/usr/local/lib -L$(MOUNT_DIR)/lib/linux -ldl -lm -lpthread -llibcurl
 XCFLAGS=
 
 GLLDFLAGS=-L/usr/X11R6/lib -L/usr/local/lib -L$(MESA_DIR)/lib -lX11 -lXext -lvga -lm
@@ -109,6 +109,7 @@ build_debug:
 		$(BUILD_DEBUG_DIR)/game/ammunition \
 		$(BUILD_DEBUG_DIR)/game/entities \
 		$(BUILD_DEBUG_DIR)/game/mobs \
+		$(BUILD_DEBUG_DIR)/game/physics \
 		$(BUILD_DEBUG_DIR)/game/weapons \
 		$(BUILD_DEBUG_DIR)/qcommon 
 	$(MAKE) targets BUILDDIR=$(BUILD_DEBUG_DIR) CFLAGS="$(DEBUG_CFLAGS)"
@@ -122,7 +123,9 @@ build_release:
 		$(BUILD_RELEASE_DIR)/ref_gl \
 		$(BUILD_RELEASE_DIR)/game \
 		$(BUILD_RELEASE_DIR)/game/ammunition \
+		$(BUILD_RELEASE_DIR)/game/entities \
 		$(BUILD_RELEASE_DIR)/game/mobs \
+		$(BUILD_RELEASE_DIR)/game/physics \
 		$(BUILD_RELEASE_DIR)/game/weapons \
 		$(BUILD_RELEASE_DIR)/qcommon 
 	$(MAKE) targets BUILDDIR=$(BUILD_RELEASE_DIR) CFLAGS="$(RELEASE_CFLAGS)"
@@ -485,16 +488,13 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/g_svcmds.o \
 	$(BUILDDIR)/game/g_chase.o \
 	$(BUILDDIR)/game/g_combat.o \
-	$(BUILDDIR)/game/g_func.o \
-	$(BUILDDIR)/game/g_items.o \
+
 	$(BUILDDIR)/game/g_main.o \
-	$(BUILDDIR)/game/g_misc.o \
+
 	$(BUILDDIR)/game/g_monster.o \
 	$(BUILDDIR)/game/g_phys.o \
 	$(BUILDDIR)/game/g_save.o \
 	$(BUILDDIR)/game/g_spawn.o \
-	$(BUILDDIR)/game/g_target.o \
-	$(BUILDDIR)/game/g_trigger.o \
 	$(BUILDDIR)/game/g_utils.o \
 	$(BUILDDIR)/game/ammunition/ammo_bamfuslicator.o \
 	$(BUILDDIR)/game/ammunition/ammo_bfg.o \
@@ -504,10 +504,17 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/ammunition/ammo_melee.o \
 	$(BUILDDIR)/game/ammunition/ammo_rail.o \
 	$(BUILDDIR)/game/ammunition/ammo_rocket.o \
+	$(BUILDDIR)/game/entities/entity_func.o \
+	$(BUILDDIR)/game/entities/entity_items.o \
+	$(BUILDDIR)/game/entities/entity_misc.o \
+	$(BUILDDIR)/game/entities/entity_target.o \
+	$(BUILDDIR)/game/entities/entity_trigger.o \
 	$(BUILDDIR)/game/mobs/mob_ogre.o \
 	$(BUILDDIR)/game/mobs/mob_soldier.o \
 	$(BUILDDIR)/game/mobs/mob_zombie.o \
 	$(BUILDDIR)/game/mobs/mob_zombie_fast.o \
+	$(BUILDDIR)/game/physics/physics_base.o \
+	$(BUILDDIR)/game/physics/physics_movement.o \
 	$(BUILDDIR)/game/weapons/weapon_bamfuslicator.o \
 	$(BUILDDIR)/game/weapons/weapon_base.o \
 	$(BUILDDIR)/game/weapons/weapon_bfg.o \
@@ -547,16 +554,7 @@ $(BUILDDIR)/game/g_chase.o :    $(GAME_DIR)/g_chase.c
 $(BUILDDIR)/game/g_combat.o :    $(GAME_DIR)/g_combat.c
 	$(DO_SHLIB_CC)
 
-$(BUILDDIR)/game/g_func.o :      $(GAME_DIR)/g_func.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/g_items.o :     $(GAME_DIR)/g_items.c
-	$(DO_SHLIB_CC)
-
 $(BUILDDIR)/game/g_main.o :      $(GAME_DIR)/g_main.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/g_misc.o :      $(GAME_DIR)/g_misc.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/g_monster.o :   $(GAME_DIR)/g_monster.c
@@ -569,12 +567,6 @@ $(BUILDDIR)/game/g_save.o :      $(GAME_DIR)/g_save.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/g_spawn.o :     $(GAME_DIR)/g_spawn.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/g_target.o :    $(GAME_DIR)/g_target.c
-	$(DO_SHLIB_CC)
-
-$(BUILDDIR)/game/g_trigger.o :   $(GAME_DIR)/g_trigger.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/g_utils.o :     $(GAME_DIR)/g_utils.c
@@ -604,6 +596,21 @@ $(BUILDDIR)/game/ammunition/ammo_rail.o :    $(GAME_DIR)/ammunition/ammo_rail.c
 $(BUILDDIR)/game/ammunition/ammo_rocket.o :    $(GAME_DIR)/ammunition/ammo_rocket.c
 	$(DO_SHLIB_CC)
 
+$(BUILDDIR)/game/entities/entity_func.o :      $(GAME_DIR)/entities/entity_func.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/entities/entity_items.o :     $(GAME_DIR)/entities/entity_items.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/entities/entity_misc.o :      $(GAME_DIR)/entities/entity_misc.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/entities/entity_target.o :    $(GAME_DIR)/entities/entityg_target.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/entities/entity_trigger.o :   $(GAME_DIR)/entities/entity_trigger.c
+	$(DO_SHLIB_CC)
+
 $(BUILDDIR)/game/mobs/mob_ogre.o :   	$(GAME_DIR)/mobs/mob_ogre.c
 	$(DO_SHLIB_CC)
 
@@ -614,6 +621,12 @@ $(BUILDDIR)/game/mobs/mob_zombie.o :   $(GAME_DIR)/mobs/mob_zombie.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/mobs/mob_zombie_fast.o :   $(GAME_DIR)/mobs/mob_zombie_fast.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/physics/physics_base.o :   $(GAME_DIR)/physics/physics_base.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/game/physics/physics_movement.o :   $(GAME_DIR)/physics/physics_movement.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/game/weapons/weapon_bamfuslicator.o :    $(GAME_DIR)/weapons/weapon_bamfuslicator.c
