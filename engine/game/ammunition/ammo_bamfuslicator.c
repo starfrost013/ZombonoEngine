@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../g_spawn.h"
 
 // ammo_bamfuslicator.c: Code for the Director team's bamfuslicator weapon ammo (split from g_weapon.c)
+// WHERE IS THE FUCKING AMMUNITION?
 
 #define BAMFUSLICATOR_MIN_DISTANCE		56		// so you don't get stuck
 #define BAMFUSLICATOR_MAX_DISTANCE		768
