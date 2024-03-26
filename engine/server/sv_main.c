@@ -280,7 +280,7 @@ void SVC_DirectConnect (void)
 	version = atoi(Cmd_Argv(1));
 	if (version != PROTOCOL_VERSION)
 	{
-		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is version %4.2f.\n", ZOMBONO_VERSION);
+		Netchan_OutOfBandPrint (NS_SERVER, adr, "print\nServer is game version %s.\n", ZOMBONO_VERSION);
 		Com_DPrintf ("    rejected connect from version %i\n", version);
 		return;
 	}

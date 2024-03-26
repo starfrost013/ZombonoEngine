@@ -31,9 +31,8 @@ const char* connect_test_url = UPDATER_BASE_URL "/connecttest.txt"; // Just use 
 char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];	// Buffer to use for receiving data from curl
 
 // debug build only (both msvc and gcc)
-#ifndef NDEBUG
+
 char connect_test_error_buffer[CURL_ERROR_SIZE];	// Error string buffer returned by CURL functions
-#endif
 
 cvar_t* ns_disabled;								// If true, don't e
 cvar_t* ns_nointernetcheck;							// If true, don't perform an internet check
@@ -83,10 +82,9 @@ bool Netservices_Init()
 	if (curl_easy_setopt(curl_obj, CURLOPT_WRITEFUNCTION, Netservices_Init_WriteCallback))
 		return false;
 
-#ifndef NDEBUG
 	if (curl_easy_setopt(curl_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
 		return false;
-#endif
+
 	// get the file - blocking for now - this should take a max of 2s
 	CURLcode error_code = curl_easy_perform(curl_obj);
 
