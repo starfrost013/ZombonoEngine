@@ -539,7 +539,7 @@ void CL_ParseConfigString (void)
 		{
 			cl.model_draw[i-CS_MODELS] = re.RegisterModel (cl.configstrings[i]);
 			if (cl.configstrings[i][0] == '*')
-				cl.model_clip[i-CS_MODELS] = CM_InlineModel (cl.configstrings[i]);
+				cl.model_clip[i-CS_MODELS] = Map_LoadInlineModel (cl.configstrings[i]);
 			else
 				cl.model_clip[i-CS_MODELS] = NULL;
 		}

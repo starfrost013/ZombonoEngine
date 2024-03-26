@@ -304,7 +304,7 @@ void CL_PrepRefresh (void)
 		{
 			cl.model_draw[i] = re.RegisterModel (cl.configstrings[CS_MODELS+i]);
 			if (name[0] == '*')
-				cl.model_clip[i] = CM_InlineModel (cl.configstrings[CS_MODELS+i]);
+				cl.model_clip[i] = Map_LoadInlineModel (cl.configstrings[CS_MODELS+i]);
 			else
 				cl.model_clip[i] = NULL;
 		}

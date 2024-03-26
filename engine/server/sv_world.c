@@ -261,14 +261,14 @@ void SV_LinkEdict (edict_t *ent)
 	ent->areanum2 = 0;
 
 	//get all leafs, including solids
-	num_leafs = CM_BoxLeafnums (ent->absmin, ent->absmax,
+	num_leafs = Map_BoxLeafnums (ent->absmin, ent->absmax,
 		leafs, MAX_TOTAL_ENT_LEAFS, &topnode);
 
 	// set areas
 	for (i=0 ; i<num_leafs ; i++)
 	{
-		clusters[i] = CM_LeafCluster (leafs[i]);
-		area = CM_LeafArea (leafs[i]);
+		clusters[i] = Map_GetLeafCluster (leafs[i]);
+		area = Map_LeafArea (leafs[i]);
 		if (area)
 		{	// doors may legally straggle two areas,
 			// but nothing should evern need more than that
@@ -438,7 +438,7 @@ int32_t SV_PointContents (vec3_t p)
 	float		*angles;
 
 	// get base contents from world
-	contents = CM_PointContents (p, sv.models[1]->headnode);
+	contents = Map_PointContents (p, sv.models[1]->headnode);
 
 	// or in contents from all the other entities
 	num = SV_AreaEdicts (p, p, touch, MAX_EDICTS, AREA_SOLID);
@@ -453,7 +453,7 @@ int32_t SV_PointContents (vec3_t p)
 		if (hit->solid != SOLID_BSP)
 			angles = vec3_origin;	// boxes don't rotate
 
-		c2 = CM_TransformedPointContents (p, headnode, hit->s.origin, hit->s.angles);
+		c2 = Map_TransformedPointContents (p, headnode, hit->s.origin, hit->s.angles);
 
 		contents |= c2;
 	}
@@ -503,7 +503,7 @@ int32_t SV_HullForEntity (edict_t *ent)
 
 	// create a temp hull from bounding box sizes
 
-	return CM_HeadnodeForBox (ent->mins, ent->maxs);
+	return Map_HeadnodeForBox (ent->mins, ent->maxs);
 }
 
 
@@ -556,11 +556,11 @@ void SV_ClipMoveToEntities ( moveclip_t *clip )
 			angles = vec3_origin;	// boxes don't rotate
 
 		if (touch->svflags & SVF_MONSTER)
-			trace = CM_TransformedBoxTrace (clip->start, clip->end,
+			trace = Map_TransformedBoxTrace (clip->start, clip->end,
 				clip->mins2, clip->maxs2, headnode, clip->contentmask,
 				touch->s.origin, angles);
 		else
-			trace = CM_TransformedBoxTrace (clip->start, clip->end,
+			trace = Map_TransformedBoxTrace (clip->start, clip->end,
 				clip->mins, clip->maxs, headnode,  clip->contentmask,
 				touch->s.origin, angles);
 
@@ -628,7 +628,7 @@ trace_t SV_Trace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t *p
 	memset ( &clip, 0, sizeof ( moveclip_t ) );
 
 	// clip to world
-	clip.trace = CM_BoxTrace (start, end, mins, maxs, 0, contentmask);
+	clip.trace = Map_BoxTrace (start, end, mins, maxs, 0, contentmask);
 	clip.trace.ent = ge->edicts;
 	if (clip.trace.fraction == 0)
 		return clip.trace;		// blocked by the world

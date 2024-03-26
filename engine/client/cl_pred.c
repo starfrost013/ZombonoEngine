@@ -111,14 +111,14 @@ void CL_ClipMoveToEntities ( vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end,
 			bmins[2] = -zd;
 			bmaxs[2] = zu;
 
-			headnode = CM_HeadnodeForBox (bmins, bmaxs);
+			headnode = Map_HeadnodeForBox (bmins, bmaxs);
 			angles = vec3_origin;	// boxes don't rotate
 		}
 
 		if (tr->allsolid)
 			return;
 
-		trace = CM_TransformedBoxTrace (start, end,
+		trace = Map_TransformedBoxTrace (start, end,
 			mins, maxs, headnode,  MASK_PLAYERSOLID,
 			ent->origin, angles);
 
@@ -150,7 +150,7 @@ trace_t		CL_PMTrace (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 	trace_t	t;
 
 	// check against world
-	t = CM_BoxTrace (start, end, mins, maxs, 0, MASK_PLAYERSOLID);
+	t = Map_BoxTrace (start, end, mins, maxs, 0, MASK_PLAYERSOLID);
 	if (t.fraction < 1.0)
 		t.ent = (struct edict_s *)1;
 
@@ -168,7 +168,7 @@ int32_t 	CL_PMpointcontents (vec3_t point)
 	cmodel_t		*cmodel;
 	int32_t 		contents;
 
-	contents = CM_PointContents (point, 0);
+	contents = Map_PointContents (point, 0);
 
 	for (i=0 ; i<cl.frame.num_entities ; i++)
 	{
@@ -182,7 +182,7 @@ int32_t 	CL_PMpointcontents (vec3_t point)
 		if (!cmodel)
 			continue;
 
-		contents |= CM_TransformedPointContents (point, cmodel->headnode, ent->origin, ent->angles);
+		contents |= Map_TransformedPointContents (point, cmodel->headnode, ent->origin, ent->angles);
 	}
 
 	return contents;

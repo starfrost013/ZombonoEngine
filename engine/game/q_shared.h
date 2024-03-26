@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // per-level limits
 //
 #define	MAX_CLIENTS			256		// absolute limit
-#define	MAX_EDICTS			1024	// must change protocol to increase more
+#define	MAX_EDICTS			2048	// must change protocol to increase more
 #define	MAX_LIGHTSTYLES		256
 #define	MAX_MODELS			256		// these are sent over the net as bytes
 #define	MAX_SOUNDS			256		// so they cannot be blindly increased

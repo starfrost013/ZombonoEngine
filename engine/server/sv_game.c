@@ -187,7 +187,7 @@ void PF_setmodel (edict_t *ent, char *name)
 // if it is an inline model, get the size information for it
 	if (name[0] == '*')
 	{
-		mod = CM_InlineModel (name);
+		mod = Map_LoadInlineModel (name);
 		VectorCopy (mod->mins, ent->mins);
 		VectorCopy (mod->maxs, ent->maxs);
 		SV_LinkEdict (ent);
@@ -251,16 +251,16 @@ bool PF_inPVS (vec3_t p1, vec3_t p2)
 	uint8_t	*mask;
 
 	leafnum = CM_PointLeafnum (p1);
-	cluster = CM_LeafCluster (leafnum);
-	area1 = CM_LeafArea (leafnum);
-	mask = CM_ClusterPVS (cluster);
+	cluster = Map_GetLeafCluster (leafnum);
+	area1 = Map_LeafArea (leafnum);
+	mask = Map_ClusterPVS (cluster);
 
 	leafnum = CM_PointLeafnum (p2);
-	cluster = CM_LeafCluster (leafnum);
-	area2 = CM_LeafArea (leafnum);
+	cluster = Map_GetLeafCluster (leafnum);
+	area2 = Map_LeafArea (leafnum);
 	if ( mask && (!(mask[cluster>>3] & (1<<(cluster&7)) ) ) )
 		return false;
-	if (!CM_AreasConnected (area1, area2))
+	if (!Map_AreasConnected (area1, area2))
 		return false;		// a door blocks sight
 	return true;
 }
@@ -281,16 +281,16 @@ bool PF_inPHS (vec3_t p1, vec3_t p2)
 	uint8_t	*mask;
 
 	leafnum = CM_PointLeafnum (p1);
-	cluster = CM_LeafCluster (leafnum);
-	area1 = CM_LeafArea (leafnum);
-	mask = CM_ClusterPHS (cluster);
+	cluster = Map_GetLeafCluster (leafnum);
+	area1 = Map_LeafArea (leafnum);
+	mask = Map_ClusterPHS (cluster);
 
 	leafnum = CM_PointLeafnum (p2);
-	cluster = CM_LeafCluster (leafnum);
-	area2 = CM_LeafArea (leafnum);
+	cluster = Map_GetLeafCluster (leafnum);
+	area2 = Map_LeafArea (leafnum);
 	if ( mask && (!(mask[cluster>>3] & (1<<(cluster&7)) ) ) )
 		return false;		// more than one bounce away
-	if (!CM_AreasConnected (area1, area2))
+	if (!Map_AreasConnected (area1, area2))
 		return false;		// a door blocks hearing
 
 	return true;
@@ -392,8 +392,8 @@ void SV_InitGameProgs (void)
 	import.AddCommandString = Cbuf_AddText;
 
 	import.DebugGraph = SCR_DebugGraph;
-	import.SetAreaPortalState = CM_SetAreaPortalState;
-	import.AreasConnected = CM_AreasConnected;
+	import.SetAreaPortalState = Map_SetAreaPortalState;
+	import.AreasConnected = Map_AreasConnected;
 
 	ge = (game_export_t *)Sys_GetGameAPI (&import);
 

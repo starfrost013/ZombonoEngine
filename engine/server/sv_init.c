@@ -228,13 +228,13 @@ void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate,
 
 	if (serverstate != ss_game)
 	{
-		sv.models[1] = CM_LoadMap ("", false, &checksum);	// no real map
+		sv.models[1] = Map_Load ("", false, &checksum);	// no real map
 	}
 	else
 	{
 		Com_sprintf (sv.configstrings[CS_MODELS+1],sizeof(sv.configstrings[CS_MODELS+1]),
 			"maps/%s.bsp", server);
-		sv.models[1] = CM_LoadMap (sv.configstrings[CS_MODELS+1], false, &checksum);
+		sv.models[1] = Map_Load (sv.configstrings[CS_MODELS+1], false, &checksum);
 	}
 	Com_sprintf (sv.configstrings[CS_MAPCHECKSUM],sizeof(sv.configstrings[CS_MAPCHECKSUM]),
 		"%i", checksum);
@@ -244,11 +244,11 @@ void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate,
 	//
 	SV_ClearWorld ();
 	
-	for (i=1 ; i< CM_NumInlineModels() ; i++)
+	for (i=1 ; i< Map_NumInlineModels() ; i++)
 	{
 		Com_sprintf (sv.configstrings[CS_MODELS+1+i], sizeof(sv.configstrings[CS_MODELS+1+i]),
 			"*%i", i);
-		sv.models[i+1] = CM_InlineModel (sv.configstrings[CS_MODELS+1+i]);
+		sv.models[i+1] = Map_LoadInlineModel (sv.configstrings[CS_MODELS+1+i]);
 	}
 
 	//
@@ -261,7 +261,7 @@ void SV_SpawnServer (char *server, char *spawnpoint, server_state_t serverstate,
 	Com_SetServerState (sv.state);
 
 	// load and spawn all other entities
-	ge->SpawnEntities ( sv.name, CM_EntityString(), spawnpoint );
+	ge->SpawnEntities ( sv.name, Map_GetEntityString(), spawnpoint );
 
 	// run two frames to allow everything to settle
 	ge->RunFrame ();

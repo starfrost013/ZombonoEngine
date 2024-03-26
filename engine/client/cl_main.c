@@ -1309,7 +1309,7 @@ void CL_RequestNextDownload (void)
 	if (precache_check == ENV_CNT) {
 		precache_check = ENV_CNT + 1;
 
-		CM_LoadMap (cl.configstrings[CS_MODELS+1], true, &map_checksum);
+		Map_Load (cl.configstrings[CS_MODELS+1], true, &map_checksum);
 
 		if (map_checksum != atoi(cl.configstrings[CS_MAPCHECKSUM])) {
 			Com_Error (ERR_DROP, "Local map version differs from server: %i != '%s'\n",
@@ -1383,7 +1383,7 @@ void CL_Precache_f (void)
 	{
 		uint32_t	map_checksum;		// for detecting cheater maps
 
-		CM_LoadMap (cl.configstrings[CS_MODELS+1], true, &map_checksum);
+		Map_Load (cl.configstrings[CS_MODELS+1], true, &map_checksum);
 		CL_RegisterSounds ();
 		CL_PrepRefresh ();
 		return;

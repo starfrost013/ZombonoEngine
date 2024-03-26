@@ -536,7 +536,7 @@ NET
 
 #define	PORT_ANY	-1
 
-#define	MAX_MSGLEN		2800		// max length of a message
+#define	MAX_MSGLEN		16384		// max length of a message (Quake 3)
 #define	PACKET_HEADER	10			// two ints and a short
 
 typedef enum {NA_LOOPBACK, NA_BROADCAST, NA_IP } netadrtype_t;
@@ -627,7 +627,7 @@ bool Netchan_CanReliable (netchan_t *chan);
 /*
 ==============================================================
 
-CMODEL
+Map Loader
 
 ==============================================================
 */
@@ -635,51 +635,51 @@ CMODEL
 
 #include "../qcommon/qfiles.h"
 
-cmodel_t	*CM_LoadMap (char *name, bool clientload, uint32_t *checksum);
-cmodel_t	*CM_InlineModel (char *name);	// *1, *2, etc
+cmodel_t	*Map_Load (char *name, bool clientload, uint32_t *checksum);
+cmodel_t	*Map_LoadInlineModel (char *name);	// *1, *2, etc
 
-int32_t 		CM_NumClusters (void);
-int32_t 		CM_NumInlineModels (void);
-char		*CM_EntityString (void);
+int32_t 		Map_GetNumClusters (void);
+int32_t 		Map_NumInlineModels (void);
+char		*Map_GetEntityString (void);
 
 // creates a clipping hull for an arbitrary box
-int32_t 		CM_HeadnodeForBox (vec3_t mins, vec3_t maxs);
+int32_t 		Map_HeadnodeForBox (vec3_t mins, vec3_t maxs);
 
 
 // returns an ORed contents mask
-int32_t 		CM_PointContents (vec3_t p, int32_t headnode);
-int32_t 		CM_TransformedPointContents (vec3_t p, int32_t headnode, vec3_t origin, vec3_t angles);
+int32_t 		Map_PointContents (vec3_t p, int32_t headnode);
+int32_t 		Map_TransformedPointContents (vec3_t p, int32_t headnode, vec3_t origin, vec3_t angles);
 
-trace_t		CM_BoxTrace (vec3_t start, vec3_t end,
+trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 						  vec3_t mins, vec3_t maxs,
 						  int32_t headnode, int32_t brushmask);
-trace_t		CM_TransformedBoxTrace (vec3_t start, vec3_t end,
+trace_t		Map_TransformedBoxTrace (vec3_t start, vec3_t end,
 						  vec3_t mins, vec3_t maxs,
 						  int32_t headnode, int32_t brushmask,
 						  vec3_t origin, vec3_t angles);
 
-uint8_t*	CM_ClusterPVS (int32_t cluster);
-uint8_t*	CM_ClusterPHS (int32_t cluster);
+uint8_t*	Map_ClusterPVS (int32_t cluster);
+uint8_t*	Map_ClusterPHS (int32_t cluster);
 
 int32_t 		CM_PointLeafnum (vec3_t p);
 
 // call with topnode set to the headnode, returns with topnode
 // set to the first node that splits the box
-int32_t 		CM_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list,
+int32_t 		Map_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list,
 							int32_t listsize, int32_t *topnode);
 
-int32_t 		CM_LeafContents (int32_t leafnum);
-int32_t 		CM_LeafCluster (int32_t leafnum);
-int32_t 		CM_LeafArea (int32_t leafnum);
+int32_t 		Map_GetLeafContents (int32_t leafnum);
+int32_t 		Map_GetLeafCluster (int32_t leafnum);
+int32_t 		Map_LeafArea (int32_t leafnum);
 
-void		CM_SetAreaPortalState (int32_t portalnum, bool open);
-bool		CM_AreasConnected (int32_t area1, int32_t area2);
+void		Map_SetAreaPortalState (int32_t portalnum, bool open);
+bool		Map_AreasConnected (int32_t area1, int32_t area2);
 
-int32_t 		CM_WriteAreaBits (uint8_t *buffer, int32_t area);
-bool		CM_HeadnodeVisible (int32_t headnode, uint8_t *visbits);
+int32_t 		Map_WriteAreaBits (uint8_t *buffer, int32_t area);
+bool		Map_HeadnodeVisible (int32_t headnode, uint8_t *visbits);
 
-void		CM_WritePortalState (FILE *f);
-void		CM_ReadPortalState (FILE *f);
+void		Map_WritePortalState (FILE *f);
+void		Map_ReadPortalState (FILE *f);
 
 /*
 ==============================================================
