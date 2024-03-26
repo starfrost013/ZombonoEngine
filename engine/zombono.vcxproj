@@ -118,6 +118,7 @@
     <ClInclude Include="qcommon\pdjson.h" />
     <ClInclude Include="qcommon\qcommon.h" />
     <ClInclude Include="qcommon\qfiles.h" />
+    <ClInclude Include="qcommon\version.h" />
     <ClInclude Include="server\server.h" />
     <ClInclude Include="win32\conproc.h" />
     <ClInclude Include="win32\resource.h" />
@@ -262,8 +263,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)/lib/win64</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)/tools/autoincrement.cmd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -366,8 +366,7 @@
       <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embed.manifest.res</ResourceOutputFileName>
     </ManifestResourceCompile>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)/tools/autoincrement.cmd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -402,8 +401,7 @@
       <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embed.manifest.res</ResourceOutputFileName>
     </ManifestResourceCompile>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)/tools/autoincrement.cmd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>

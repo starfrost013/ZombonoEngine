@@ -49,12 +49,12 @@ BUILD_DEBUG_DIR=debug$(ARCH)$(GLIBC)
 BUILD_RELEASE_DIR=release$(ARCH)$(GLIBC)
 CLIENT_DIR=$(MOUNT_DIR)/client
 SERVER_DIR=$(MOUNT_DIR)/server
-REF_SOFT_DIR=$(MOUNT_DIR)/ref_soft
 REF_GL_DIR=$(MOUNT_DIR)/ref_gl
 COMMON_DIR=$(MOUNT_DIR)/qcommon
 LINUX_DIR=$(MOUNT_DIR)/linux
 GAME_DIR=$(MOUNT_DIR)/game
 NULL_DIR=$(MOUNT_DIR)/null
+TOOLS_DIR=$(MOUNT_DIR)/../tools 
 
 MESA_DIR=/usr/local/src/Mesa-2.6
 
@@ -99,11 +99,12 @@ TARGETS=$(BUILDDIR)/zombono \
 	$(BUILDDIR)/ref_gl.$(SHLIBEXT)
 
 build_debug:
+	@-$(TOOLS_DIR)/autoincrement.sh
+
 	@-mkdir -p $(BUILD_DEBUG_DIR) \
 		$(BUILD_DEBUG_DIR)/zombonogame \
 		$(BUILD_DEBUG_DIR)/client \
 		$(BUILD_DEBUG_DIR)/ded \
-		$(BUILD_DEBUG_DIR)/ref_soft \
 		$(BUILD_DEBUG_DIR)/ref_gl \
 		$(BUILD_DEBUG_DIR)/game \
 		$(BUILD_DEBUG_DIR)/game/ammunition \
@@ -116,11 +117,12 @@ build_debug:
 	$(MAKE) targets BUILDDIR=$(BUILD_DEBUG_DIR) CFLAGS="$(DEBUG_CFLAGS)"
 
 build_release:
+	@-$(TOOLS_DIR)/autoincrement.sh
+
 	@-mkdir -p $(BUILD_RELEASE_DIR) \
 		$(BUILD_RELEASE_DIR)/zombonogame \
 		$(BUILD_RELEASE_DIR)/client \
 		$(BUILD_RELEASE_DIR)/ded \
-		$(BUILD_RELEASE_DIR)/ref_soft \
 		$(BUILD_RELEASE_DIR)/ref_gl \
 		$(BUILD_RELEASE_DIR)/game \
 		$(BUILD_RELEASE_DIR)/game/ammunition \
@@ -849,8 +851,6 @@ rpm-zombono: zombono.spec
 	-mkdir $(ZOMBONO_INSTALL_DIR)/zombonogame
 	chmod 1777 $(ZOMBONO_INSTALL_DIR)/zombonogame
 	cp $(BUILD_RELEASE_DIR)/game$(ARCH).$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)/zombonogame
-	cp $(BUILD_RELEASE_DIR)/ref_soft.$(SHLIBEXT)  $(ZOMBONO_INSTALL_DIR)
-	cp $(BUILD_RELEASE_DIR)/ref_softx.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
 	cp $(BUILD_RELEASE_DIR)/ref_gl.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
 	cp $(BUILD_RELEASE_DIR)/ref_glx.$(SHLIBEXT) $(ZOMBONO_INSTALL_DIR)
 	-mkdirhier $(ZOMBONO_DIR)/usr/lib

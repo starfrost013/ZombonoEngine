@@ -24,9 +24,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../game/q_shared.h"
 #include "netservices/netservices.h" // hmm
 #include "pdjson.h"
+#include "version.h"
 
-// Engine version
-#define ZOMBONO_VERSION "0.0.6"
+// Due to awk(wardness) we can't put this in version.h
+#define ZOMBONO_VERSION STR(ZOMBONO_VERSION_MAJOR) "." STR(ZOMBONO_VERSION_MINOR) "." STR(ZOMBONO_VERSION_REVISION) "." STR(ZOMBONO_VERSION_BUILD)
 
 #define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
 
