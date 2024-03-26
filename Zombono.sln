@@ -7,11 +7,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "engine\zombono.v
 	ProjectSection(ProjectDependencies) = postProject
 		{089318CF-012D-4723-BCAC-036EEF68344E} = {089318CF-012D-4723-BCAC-036EEF68344E}
 		{B21C65E1-7AE4-43DD-A648-F8920414B75D} = {B21C65E1-7AE4-43DD-A648-F8920414B75D}
+		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_gl", "engine\ref_gl\ref_gl.vcxproj", "{B21C65E1-7AE4-43DD-A648-F8920414B75D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "engine\game\game.vcxproj", "{089318CF-012D-4723-BCAC-036EEF68344E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assetbuild", "tools\assetbuild\assetbuild.csproj", "{FE638112-A5C1-4796-82A7-749622BA1F0F}"
 EndProject
