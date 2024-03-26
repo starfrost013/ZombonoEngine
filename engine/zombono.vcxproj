@@ -75,6 +75,11 @@
     <ClCompile Include="server\sv_user.c" />
     <ClCompile Include="server\sv_world.c" />
     <ClCompile Include="win32\conproc.c" />
+    <ClCompile Include="win32\glw_imp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="win32\in_win.c" />
     <ClCompile Include="win32\net_wins.c" />
     <ClCompile Include="win32\q_shwin.c" />
