@@ -34,9 +34,12 @@ char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];	// Buffer to use for receivin
 
 char connect_test_error_buffer[CURL_ERROR_SIZE];	// Error string buffer returned by CURL functions
 
-cvar_t* ns_disabled;								// If true, don't e
+cvar_t* ns_disabled;								// If true, don't ever contact zombono.com
 cvar_t* ns_nointernetcheck;							// If true, don't perform an internet check
 cvar_t* ns_noupdatecheck;							// If true, don't perform an update check
+
+CURL*	curl_obj_easy;								// The single blocking transfer curl interface object
+CURLM*	curl_obj_multi;								// The multi nonblocking transfer curl interface object
 
 // functions only used within this file
 size_t Netservices_Init_WriteCallback(char *ptr, size_t size, size_t nmemb, char* received_data);				// Callback function on CURL receive
@@ -62,10 +65,11 @@ bool Netservices_Init()
 
 	Com_Printf("Netservices_Init: Determining if you are connected to the Internet...\n");
 
-	// just easy init for this test
-	CURL* curl_obj = curl_easy_init();
+	// init both curl objects
+	curl_obj_easy = curl_easy_init();
+	curl_obj_multi = curl_multi_init();
 
-	if (!curl_obj)
+	if (!curl_obj_easy)
 	{
 		Sys_Error("CURL failed to initialise. You can run the game by adding the line\n\"ns_disabled 1\"\nto your config.cfg or default.cfg files"
 			", but updating, master servers, and accounts won't be available.");
@@ -73,20 +77,20 @@ bool Netservices_Init()
 	}
 
 	// 40 byte text file should take maximum of 2 seconds to download to minimise user wait time
-	if (curl_easy_setopt(curl_obj, CURLOPT_TIMEOUT_MS, 2000))
+	if (curl_easy_setopt(curl_obj_easy, CURLOPT_TIMEOUT_MS, 2000))
 		return false;
 
-	if (curl_easy_setopt(curl_obj, CURLOPT_URL, connect_test_url))
+	if (curl_easy_setopt(curl_obj_easy, CURLOPT_URL, connect_test_url))
 		return false;
 
-	if (curl_easy_setopt(curl_obj, CURLOPT_WRITEFUNCTION, Netservices_Init_WriteCallback))
+	if (curl_easy_setopt(curl_obj_easy, CURLOPT_WRITEFUNCTION, Netservices_Init_WriteCallback))
 		return false;
 
-	if (curl_easy_setopt(curl_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
+	if (curl_easy_setopt(curl_obj_easy, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
 		return false;
 
 	// get the file - blocking for now - this should take a max of 2s
-	CURLcode error_code = curl_easy_perform(curl_obj);
+	CURLcode error_code = curl_easy_perform(curl_obj_easy);
 
 	if (error_code != CURLE_OK)
 	{
@@ -99,7 +103,8 @@ bool Netservices_Init()
 		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s)\n", netservices_recv_buffer, connect_test_string);
 		return false;
 	}
-
+	
+	Com_Printf("Netservices_Init: Connected to netservices successfully.\n");
 	netservices_connected = true;
 	return true;
 }
@@ -120,5 +125,6 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
 
 void Netservices_Shutdown()
 {
-	curl_easy_cleanup(curl_obj);
+	curl_easy_cleanup(curl_obj_easy);
+	curl_multi_cleanup(curl_obj_multi);
 }

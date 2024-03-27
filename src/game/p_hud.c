@@ -331,16 +331,16 @@ void G_SetStats (edict_t *ent)
 	//
 	// ammo
 	//
-	if (!ent->client->Ammo_index /* || !ent->client->pers.inventory[ent->client->Ammo_index] */)
+	if (!ent->client->ammo_index /* || !ent->client->pers.inventory[ent->client->Ammo_index] */)
 	{
 		ent->client->ps.stats[STAT_AMMO_ICON] = 0;
 		ent->client->ps.stats[STAT_AMMO] = 0;
 	}
 	else
 	{
-		item = &itemlist[ent->client->Ammo_index];
+		item = &itemlist[ent->client->ammo_index];
 		ent->client->ps.stats[STAT_AMMO_ICON] = gi.imageindex (item->icon);
-		ent->client->ps.stats[STAT_AMMO] = ent->client->pers.inventory[ent->client->Ammo_index];
+		ent->client->ps.stats[STAT_AMMO] = ent->client->pers.inventory[ent->client->ammo_index];
 	}
 	
 	//

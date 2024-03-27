@@ -52,7 +52,7 @@ void Weapon_grenade_fire(edict_t* ent, bool held)
 	Ammo_Grenade2(ent, start, forward, damage, speed, timer, radius, held);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->Ammo_index]--;
+		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
 
@@ -100,7 +100,7 @@ void Weapon_Grenade(edict_t* ent)
 		if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK1))
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
-			if (ent->client->pers.inventory[ent->client->Ammo_index])
+			if (ent->client->pers.inventory[ent->client->ammo_index])
 			{
 				ent->client->ps.gunframe = 1;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
@@ -146,13 +146,13 @@ void Weapon_Grenade(edict_t* ent)
 			if (!ent->client->grenade_time)
 			{
 				ent->client->grenade_time = level.time + GRENADE_TIMER + 0.2;
-				ent->client->Weapon_sound = gi.soundindex("weapons/hgrenc1b.wav");
+				ent->client->weapon_sound = gi.soundindex("weapons/hgrenc1b.wav");
 			}
 
 			// they waited too long, detonate it in their hand
 			if (!ent->client->grenade_blew_up && level.time >= ent->client->grenade_time)
 			{
-				ent->client->Weapon_sound = 0;
+				ent->client->weapon_sound = 0;
 				Weapon_grenade_fire(ent, true);
 				ent->client->grenade_blew_up = true;
 			}
@@ -176,7 +176,7 @@ void Weapon_Grenade(edict_t* ent)
 
 		if (ent->client->ps.gunframe == 12)
 		{
-			ent->client->Weapon_sound = 0;
+			ent->client->weapon_sound = 0;
 			Weapon_grenade_fire(ent, false);
 		}
 

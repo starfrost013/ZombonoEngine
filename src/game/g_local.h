@@ -221,11 +221,11 @@ MOVETYPE_BOUNCE
 
 typedef struct gitem_armor_s
 {
-	int		base_count;
-	int		max_count;
+	int32_t		base_count;
+	int32_t		max_count;
 	float	normal_protection;
 	float	energy_protection;
-	int		armor;
+	int32_t		armor;
 } gitem_armor_t;
 
 
@@ -263,27 +263,27 @@ typedef struct gitem_s
 	void		(*weaponthink)(struct edict_s *ent);
 	char		*pickup_sound;
 	char		*world_model;
-	int			world_model_flags;
+	int32_t			world_model_flags;
 	char		*view_model;
 
 	// client side info
 	char		*icon;
 	char		*pickup_name;	// for printing on pickup
-	int			count_width;		// number of digits to display by icon
+	int32_t			count_width;		// number of digits to display by icon
 
-	int			quantity;		// for ammo how much, for weapons how much is used per shot
+	int32_t			quantity;		// for ammo how much, for weapons how much is used per shot
 	char		*ammo;			// for weapons
-	int			flags;			// IT_* flags
+	int32_t			flags;			// IT_* flags
 
-	int			weapmodel;		// weapon model index (for weapons)
+	int32_t			weapmodel;		// weapon model index (for weapons)
 
 	void		*info;
-	int			tag;
+	int32_t			tag;
 
 	char		*precaches;		// string of all models, sounds, and images this item will use
 
-	int			allowed_teams;	// The teams that are allowed for this item.
-	int			spawn_type;		// Type of entity to spawn (item-specific)
+	int32_t			allowed_teams;	// The teams that are allowed for this item.
+	int32_t			spawn_type;		// Type of entity to spawn (item-specific)
 } gitem_t;
 
 #define SPEED_DIRECTOR			0.75			// Speed multiplier for director team. 
@@ -298,7 +298,7 @@ typedef struct game_locals_s
 {
 	char		helpmessage1[512];
 	char		helpmessage2[512];
-	int			helpchanged;	// flash F1 icon if non 0, play sound
+	int32_t			helpchanged;	// flash F1 icon if non 0, play sound
 								// and increment only if 1, 2, or 3
 
 	gclient_t	*clients;		// [maxclients]
@@ -308,14 +308,14 @@ typedef struct game_locals_s
 	char		spawnpoint[512];	// needed for coop respawns
 
 	// store latched cvars here that we want to get at often
-	int			maxclients;
-	int			maxentities;
+	int32_t			maxclients;
+	int32_t			maxentities;
 
 	// cross level triggers
-	int			serverflags;
+	int32_t			serverflags;
 
 	// items
-	int			num_items;
+	int32_t			num_items;
 
 	bool	autosaved;
 } game_locals_t;
@@ -327,7 +327,7 @@ typedef struct game_locals_s
 //
 typedef struct level_locals_s
 {
-	int			framenum;				// controls level time
+	int32_t			framenum;				// controls level time
 	float		time;					// level time is incremented by framenum*(frametime in seconds) - - 1 instance of level time = 1 tick (10Hz)
 
 	char		level_name[MAX_QPATH];	// the descriptive name (Outer Base, etc)
@@ -337,34 +337,34 @@ typedef struct level_locals_s
 	// intermission state
 	float		intermissiontime;		// time the intermission was started
 	char		*changemap;
-	int			exitintermission;
+	int32_t			exitintermission;
 	vec3_t		intermission_origin;
 	vec3_t		intermission_angle;
 
 	edict_t		*sight_client;	// changed once each frame for coop games
 
 	edict_t		*sight_entity;
-	int			sight_entity_framenum;
+	int32_t			sight_entity_framenum;
 	edict_t		*sound_entity;
-	int			sound_entity_framenum;
+	int32_t			sound_entity_framenum;
 	edict_t		*sound2_entity;
-	int			sound2_entity_framenum;
+	int32_t			sound2_entity_framenum;
 
-	int			pic_health;
+	int32_t			pic_health;
 
-	int			total_secrets;
-	int			found_secrets;
+	int32_t			total_secrets;
+	int32_t			found_secrets;
 
-	int			total_goals;
-	int			found_goals;
+	int32_t			total_goals;
+	int32_t			found_goals;
 
-	int			total_monsters;
-	int			killed_monsters;
+	int32_t			total_monsters;
+	int32_t			killed_monsters;
 
 	edict_t		*current_entity;	// entity running from G_RunFrame
-	int			body_que;			// dead bodies
+	int32_t			body_que;			// dead bodies
 
-	int			power_cubes;		// ugly necessity for coop
+	int32_t			power_cubes;		// ugly necessity for coop
 } level_locals_t;
 
 
@@ -379,9 +379,9 @@ typedef struct spawn_temp_s
 	vec3_t		skyaxis;
 	char		*nextmap;
 
-	int			lip;
-	int			distance;
-	int			height;
+	int32_t			lip;
+	int32_t			distance;
+	int32_t			height;
 	char		*noise;
 	float		pausetime;
 	char		*item;
@@ -402,9 +402,9 @@ typedef struct moveinfo_s
 	vec3_t		end_origin;
 	vec3_t		end_angles;
 
-	int			sound_start;
-	int			sound_middle;
-	int			sound_end;
+	int32_t			sound_start;
+	int32_t			sound_middle;
+	int32_t			sound_end;
 
 	float		accel;
 	float		speed;
@@ -414,7 +414,7 @@ typedef struct moveinfo_s
 	float		wait;
 
 	// state data
-	int			state;
+	int32_t			state;
 	vec3_t		dir;
 	float		current_speed;
 	float		move_speed;
@@ -434,8 +434,8 @@ typedef struct mframe_s
 
 typedef struct mmove_s
 {
-	int			firstframe;
-	int			lastframe;
+	int32_t			firstframe;
+	int32_t			lastframe;
 	mframe_t	*frame;
 	void		(*endfunc)(edict_t *self);
 } mmove_t;
@@ -443,8 +443,8 @@ typedef struct mmove_s
 typedef struct monsterinfo_s
 {
 	mmove_t		*currentmove;
-	int			aiflags;
-	int			nextframe;
+	int32_t			aiflags;
+	int32_t			nextframe;
 	float		scale;
 
 	void		(*stand)(edict_t *self);
@@ -465,19 +465,19 @@ typedef struct monsterinfo_s
 	float		search_time;
 	float		trail_time;
 	vec3_t		last_sighting;
-	int			attack_state;
-	int			lefty;
+	int32_t			attack_state;
+	int32_t			lefty;
 	float		idle_time;
-	int			linkcount;
+	int32_t			linkcount;
 
-	int			power_armor_type;
-	int			power_armor_power;
+	int32_t			power_armor_type;
+	int32_t			power_armor_power;
 
 	// AI_Wander only.
-	int			wander_steps_min;		// The minimum number of wander steps.
-	int			wander_steps_max;		// The maximum number of wander steps.
-	int			wander_steps;			// The current number of wander steps.
-	int			wander_steps_total;		// The current total number of wander steps.
+	int32_t			wander_steps_min;		// The minimum number of wander steps.
+	int32_t			wander_steps_max;		// The maximum number of wander steps.
+	int32_t			wander_steps;			// The current number of wander steps.
+	int32_t			wander_steps_total;		// The current total number of wander steps.
 } monsterinfo_t;
 
 extern	game_locals_t	game;
@@ -621,9 +621,9 @@ typedef enum {
 typedef struct
 {
 	char	*name;
-	int		ofs;
+	int32_t		ofs;
 	fieldtype_t	type;
-	int		flags;
+	int32_t		flags;
 } field_t;
 
 
@@ -707,7 +707,7 @@ void	G_UISend (edict_t *ent, char* ui_name, bool enabled, bool active, bool reli
 void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, bool reliable);
 void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, bool reliable);
 
-int		G_CountClients();
+int32_t		G_CountClients();
 
 void	G_LeaderboardSend(edict_t* ent);
 
@@ -927,35 +927,35 @@ typedef struct client_persistant_s
 {
 	char		userinfo[MAX_INFO_STRING];
 	char		netname[16];
-	int			hand;
+	int32_t			hand;
 
 	bool	connected;			// a loadgame will leave valid entities that
 									// just don't have a connection yet
 
 	// values saved and restored from edicts when changing levels
-	int			health;
-	int			max_health;
-	int			savedFlags;
+	int32_t			health;
+	int32_t			max_health;
+	int32_t			savedFlags;
 
-	int			selected_item;
-	int			inventory[MAX_ITEMS];
+	int32_t			selected_item;
+	int32_t			inventory[MAX_ITEMS];
 
 	// ammo capacities
-	int			max_bullets;
-	int			max_shells;
-	int			max_rockets;
-	int			max_grenades;
-	int			max_cells;
-	int			max_slugs;
+	int32_t			max_bullets;
+	int32_t			max_shells;
+	int32_t			max_rockets;
+	int32_t			max_grenades;
+	int32_t			max_cells;
+	int32_t			max_slugs;
 
 	gitem_t		*weapon;
 	gitem_t		*lastweapon;
 
 	//restore this if we have resumable co-op games or that 6-level single player campaign.
-	//int		coop_score;
+	//int32_t		coop_score;
 
-	int			game_helpchanged;
-	int			helpchanged;
+	int32_t			game_helpchanged;
+	int32_t			helpchanged;
 
 	bool	spectator;			// client is a spectator
 } client_persistant_t;
@@ -964,9 +964,9 @@ typedef struct client_persistant_s
 typedef struct client_respawn_t
 {
 	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn
-	int			enterframe;			// level.framenum the client entered the game
-	int			score;				// frags, etc
-	int			score_monsters;		// Monster score
+	int32_t		enterframe;			// level.framenum the client entered the game
+	int32_t		score;				// frags, etc
+	int32_t		score_monsters;		// Monster score
 	vec3_t		cmd_angles;			// angles sent over in the last command
 
 	bool	spectator;			// client is a spectator
@@ -978,33 +978,33 @@ typedef struct gclient_s
 {
 	// known to server
 	player_state_t	ps;				// communicated by server to clients
-	int				ping;
+	int32_t			ping;
 
 	// private to game
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 
-	bool	showinventory;		// set layout stat
-	bool	showhelp;
-	bool	showhelpicon;
+	bool		showinventory;		// set layout stat
+	bool		showhelp;
+	bool		showhelpicon;
 
-	int			Ammo_index;
+	int32_t		ammo_index;
 
-	int			buttons;
-	int			oldbuttons;
-	int			latched_buttons;
+	int32_t		buttons;
+	int32_t		oldbuttons;
+	int32_t		latched_buttons;
 
-	bool	Weapon_thunk;
+	bool		weapon_thunk;
 
 	gitem_t*	newweapon;
 
 	// sum up damage over an entire frame, so
 	// shotgun blasts give a single big kick
-	int			damage_armor;		// damage absorbed by armor
-	int			damage_parmor;		// damage absorbed by power armor
-	int			damage_blood;		// damage taken out of health
-	int			damage_knockback;	// impact damage
+	int32_t		damage_armor;		// damage absorbed by armor
+	int32_t		damage_parmor;		// damage absorbed by power armor
+	int32_t		damage_blood;		// damage taken out of health
+	int32_t		damage_knockback;	// impact damage
 	vec3_t		damage_from;		// origin for vector calculation
 
 	float		killer_yaw;			// when dead, look at killer
@@ -1023,16 +1023,16 @@ typedef struct gclient_s
 	vec3_t		oldvelocity;
 
 	float		next_drown_time;
-	int			old_waterlevel;
-	int			breather_sound;
+	int32_t		old_waterlevel;
+	int32_t		breather_sound;
 
-	int			machinegun_shots;	// for weapon raising
+	int32_t		machinegun_shots;	// for weapon raising
 
 	// animation vars
-	int			anim_end;
-	int			anim_priority;
-	bool	anim_duck;
-	bool	anim_run;
+	int32_t		anim_end;
+	int32_t		anim_priority;
+	bool		anim_duck;
+	bool		anim_run;
 
 	// powerup timers
 	float		quad_framenum;
@@ -1040,21 +1040,21 @@ typedef struct gclient_s
 	float		breather_framenum;
 	float		enviro_framenum;
 
-	bool	grenade_blew_up;
+	bool		grenade_blew_up;
 	float		grenade_time;
-	int			silencer_shots;
-	int			Weapon_sound;
+	int32_t		silencer_shots;
+	int32_t		weapon_sound;
 
 	float		pickup_msg_time;
 
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
-	int			flood_whenhead;		// head pointer for when said
+	int32_t		flood_whenhead;		// head pointer for when said
 
 	float		respawn_time;		// can respawn when time > this
 
 	edict_t		*chase_target;		// player we are chasing
-	bool	update_chase;		// need to update chase info? 
+	bool		update_chase;		// need to update chase info? 
 } gclient_t;
 
 struct edict_s
@@ -1064,25 +1064,25 @@ struct edict_s
 									// the server expects the first part
 									// of gclient_s to be a player_state_t
 									// but the rest of it is opaque
-	bool	inuse;
-	int			linkcount;
+	bool		inuse;
+	int32_t		linkcount;
 
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
-	int			num_clusters;		// if -1, use headnode instead
-	int			clusternums[MAX_ENT_CLUSTERS];
-	int			headnode;			// unused if num_clusters != -1
-	int			areanum, areanum2;
+	int32_t		num_clusters;		// if -1, use headnode instead
+	int32_t		clusternums[MAX_ENT_CLUSTERS];
+	int32_t		headnode;			// unused if num_clusters != -1
+	int32_t		areanum, areanum2;
 
 	//================================
 
-	int			svflags;
+	int32_t		svflags;
 	vec3_t		mins, maxs;
 	vec3_t		absmin, absmax, size;
 	solid_t		solid;
-	int			clipmask;
-	edict_t		*owner;
+	int32_t		clipmask;
+	edict_t*	owner;
 
 	// DO NOT MODIFY ANYTHING ABOVE THIS, THE SERVER
 	// EXPECTS THE FIELDS IN THAT ORDER!
@@ -1090,30 +1090,30 @@ struct edict_s
 	player_team	team;
 
 	//================================
-	int			movetype;
-	int			flags;
+	int32_t		movetype;
+	int32_t		flags;
 
-	char		*model;
+	char*		model;
 	float		freetime;			// sv.time when the object was freed
 	
 	//
 	// only used locally in game, not by server
 	//
-	char		*message;
-	char		*classname;
-	int			spawnflags;
+	char*		message;
+	char*		classname;
+	int32_t		spawnflags;
 
 	float		timestamp;
 
 	float		angle;			// set in qe3, -1 = up, -2 = down
-	char		*target;
-	char		*targetname;
-	char		*killtarget;
+	char*		target;
+	char*		targetname;
+	char*		killtarget;
 
-	char		*pathtarget;
-	char		*deathtarget;
-	char		*combattarget;
-	edict_t		*target_ent;
+	char*		pathtarget;
+	char*		deathtarget;
+	char*		combattarget;
+	edict_t*	target_ent;
 
 	float		speed, accel, decel;
 	vec3_t		movedir;
@@ -1121,13 +1121,13 @@ struct edict_s
 
 	vec3_t		velocity;
 	vec3_t		avelocity;
-	int			mass;
+	int32_t		mass;
 	float		air_finished;
 	float		gravity;		// per entity gravity multiplier (1.0 is normal)
 								// use for lowgrav artifact, flares
 
-	edict_t		*goalentity;
-	edict_t		*movetarget;
+	edict_t*	goalentity;
+	edict_t*	movetarget;
 	float		yaw_speed;
 	float		ideal_yaw;
 
@@ -1146,42 +1146,42 @@ struct edict_s
 	float		fly_sound_debounce_time;	//move to clientinfo
 	float		last_move_time;
 
-	int			health;
-	int			max_health;
-	int			gib_health;
-	int			deadflag;
-	bool	show_hostile;
+	int32_t		health;
+	int32_t		max_health;
+	int32_t		gib_health;
+	int32_t		deadflag;
+	bool		show_hostile;
 
 	float		powerarmor_time;
 
 	char		*map;			// target_changelevel
 
-	int			viewheight;		// height above origin where eyesight is determined
-	int			takedamage;
-	int			dmg;
-	int			radius_dmg;
+	int32_t		viewheight;		// height above origin where eyesight is determined
+	int32_t		takedamage;
+	int32_t		dmg;
+	int32_t		radius_dmg;
 	float		dmg_radius;
-	int			sounds;			//make this a spawntemp var?
-	int			count;
+	int32_t		sounds;			//make this a spawntemp var?
+	int32_t		count;
 
 	edict_t		*chain;
 	edict_t		*enemy;
 	edict_t		*oldenemy;
 	edict_t		*activator;
 	edict_t		*groundentity;
-	int			groundentity_linkcount;
+	int32_t			groundentity_linkcount;
 	edict_t		*teamchain;
 	edict_t		*teammaster;
 
 	edict_t		*mynoise;		// can go in client only
 	edict_t		*mynoise2;
 
-	int			noise_index;
-	int			noise_index2;
+	int32_t		noise_index;
+	int32_t		noise_index2;
 	float		volume;
 	float		attenuation;
 
-	int			jump_height; // for func_trampoline
+	int32_t		jump_height; // for func_trampoline
 
 	// timing variables
 	float		wait;
@@ -1190,18 +1190,18 @@ struct edict_s
 
 	float		teleport_time;
 
-	int			watertype;
-	int			waterlevel;
+	int32_t		watertype;
+	int32_t		waterlevel;
 
 	vec3_t		move_origin;
 	vec3_t		move_angles;
 
-	int			allowed_teams;	// Allowed Teams for Zombono Teamdoors
+	int32_t		allowed_teams;	// Allowed Teams for Zombono Teamdoors
 
 	// move this to clientinfo?
-	int			light_level;
+	int32_t		light_level;
 
-	int			style;			// also used as areaportal number
+	int32_t		style;			// also used as areaportal number
 
 	gitem_t		*item;			// for bonus items
 

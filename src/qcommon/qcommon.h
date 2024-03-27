@@ -79,9 +79,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct sizebuf_s
 {
-	bool	allowoverflow;	// if false, do a Com_Error
-	bool	overflowed;		// set to true if the buffer size failed
-	uint8_t* data;
+	bool		allowoverflow;	// if false, do a Com_Error
+	bool		overflowed;		// set to true if the buffer size failed
+	uint8_t*	data;
 	int32_t 	maxsize;
 	int32_t 	cursize;
 	int32_t 	readcount;
@@ -115,13 +115,13 @@ void MSG_WriteDir (sizebuf_t *sb, vec3_t vector);
 
 void	MSG_BeginReading (sizebuf_t *sb);
 
-int32_t 	MSG_ReadChar (sizebuf_t *sb);
-int32_t 	MSG_ReadByte (sizebuf_t *sb);
-int32_t 	MSG_ReadShort (sizebuf_t *sb);
-int32_t 	MSG_ReadLong (sizebuf_t *sb);
+int32_t MSG_ReadChar (sizebuf_t *sb);
+int32_t MSG_ReadByte (sizebuf_t *sb);
+int32_t MSG_ReadShort (sizebuf_t *sb);
+int32_t MSG_ReadLong (sizebuf_t *sb);
 float	MSG_ReadFloat (sizebuf_t *sb);
-char	*MSG_ReadString (sizebuf_t *sb);
-char	*MSG_ReadStringLine (sizebuf_t *sb);
+char*	MSG_ReadString (sizebuf_t *sb);
+char*	MSG_ReadStringLine (sizebuf_t *sb);
 
 float	MSG_ReadCoord (sizebuf_t *sb);
 void	MSG_ReadPos (sizebuf_t *sb, vec3_t pos);
@@ -135,12 +135,12 @@ void	MSG_ReadData (sizebuf_t *sb, void *buffer, int32_t size);
 
 //============================================================================
 
-extern	bool		bigendien;
+extern	bool		big_endian;
 
 extern	short	BigShort (int16_t l);
 extern	short	LittleShort (int16_t l);
-extern	int32_t 	BigInt (int32_t l);
-extern	int32_t 	LittleInt (int32_t l);
+extern	int32_t BigInt (int32_t l);
+extern	int32_t LittleInt (int32_t l);
 extern	float	BigFloat (float l);
 extern	float	LittleFloat (float l);
 

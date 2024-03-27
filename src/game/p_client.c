@@ -323,7 +323,7 @@ void TossClientWeapon (edict_t *self)
 	float		spread;
 
 	item = self->client->pers.weapon;
-	if (! self->client->pers.inventory[self->client->Ammo_index] )
+	if (! self->client->pers.inventory[self->client->ammo_index] )
 		item = NULL;
 	if (item && (strcmp (item->pickup_name, "Blaster") == 0))
 		item = NULL;
@@ -417,7 +417,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t d
 	self->s.angles[2] = 0;
 
 	self->s.sound = 0;
-	self->client->Weapon_sound = 0;
+	self->client->weapon_sound = 0;
 
 	self->maxs[2] = -8;
 
@@ -1628,8 +1628,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			} else
 				GetChaseTarget(ent);
 
-		} else if (!client->Weapon_thunk) {
-			client->Weapon_thunk = true;
+		} else if (!client->weapon_thunk) {
+			client->weapon_thunk = true;
 			Think_Weapon (ent);
 		}
 	}
@@ -1688,10 +1688,10 @@ void ClientBeginServerFrame (edict_t *ent)
 	}
 
 	// run weapon animations if it hasn't been done by a ucmd_t
-	if (!client->Weapon_thunk && !client->resp.spectator)
+	if (!client->weapon_thunk && !client->resp.spectator)
 		Think_Weapon (ent);
 	else
-		client->Weapon_thunk = false;
+		client->weapon_thunk = false;
 
 	if (ent->deadflag)
 	{

@@ -22,16 +22,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // March 23, 2024
 
 #pragma once
-//These are defined on the command line (and aren't needed on Linux seemingly):
-//#define CURL_STATICLIB
-#define HTTP_ONLY			// Compiled libcurl was compiled with this
-#define UPDATER_BASE_URL	"https://updates.zombono.com"	// Base URL for the updater service
-#define MAX_UPDATE_STR_LENGTH		256						// Maximum length of an update string
+
+//CURL_STATICLIB MUST BE DEFINED ON COMMAND LINE OR JHERE
+
+#define UPDATER_BASE_URL			"https://updates.zombono.com"	// Base URL for the updater service
+#define MAX_UPDATE_STR_LENGTH		256								// Maximum length of an update string
 
 #include "../qcommon.h"
 #include "../curl/curl.h"
 
-extern char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];				// The data actually received from the connect test.
+extern char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// The data actually received from the connect test.
 // Cvars
 // 
 // All netservices cvars start with ns_* 
@@ -43,14 +43,14 @@ extern cvar_t*			ns_disabled;						// If true, netservices will be entirely disa
 // netservices_base.c
 //
 
+// Globals
+extern bool		netservices_connected;						// TRUE if you are connected to the internet and can use netservices, FALSE otherwise.
+extern CURL*	curl_obj_easy;								// The curl easy object (used for single blocking transfers)
+extern CURLM*	curl_obj_multi;								// The curl multi object (used for multiple nonblocking transfers)
+
 // Function
 bool			Netservices_Init();							// Initialises Netservices and determines if we are connected to the internet.
 void			Netservices_Shutdown();						// Shuts down netservices
-
-// Globals
-extern bool		netservices_connected;						// TRUE if you are connected to the internet and can use netservices, FALSE otherwise.
-CURL*			curl_obj;									// The curl object
-
 //
 // netservices_update.c
 //
@@ -85,5 +85,5 @@ typedef struct game_update_s
 	char				description[MAX_UPDATE_STR_LENGTH];	// A description of the update's features
 } game_update_t;
 
-bool			Netservices_UpdaterInit();					// Initialises the Updater. Checks that the Update Service on updates.zombono.com is funcitoning.
-game_update_t	Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure
+game_update_t	Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
+void			Netservices_UpdaterUpdateGame();

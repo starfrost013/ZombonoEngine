@@ -445,7 +445,7 @@ void Mod_LoadTexinfo (lump_t *l)
 	mtexinfo_t *out, *step;
 	int32_t 	i, j, count;
 	char	name[MAX_QPATH];
-	int		next;
+	int32_t		next;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -559,9 +559,9 @@ void Mod_LoadFaces (lump_t *l)
 {
 	dface_t		*in;
 	msurface_t 	*out;
-	int			i, count, surfnum;
-	int			planenum, side;
-	int			ti;
+	int32_t		i, count, surfnum;
+	int32_t		planenum, side;
+	int32_t		ti;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -654,7 +654,7 @@ Mod_LoadNodes
 */
 void Mod_LoadNodes (lump_t *l)
 {
-	int			i, j, count, p;
+	int32_t		i, j, count, p;
 	dnode_t		*in;
 	mnode_t 	*out;
 

@@ -304,7 +304,7 @@ void Map_LoadLeafs (lump_t *l)
 	{
 		out->contents = LittleInt (in->contents);
 		out->cluster = LittleInt (in->cluster);
-		out->area = LittleIntUnsigned (in->area);
+		out->area = LittleInt (in->area);
 		out->firstleafbrush = LittleIntUnsigned (in->firstleafbrush);
 		out->numleafbrushes = LittleIntUnsigned (in->numleafbrushes);
 

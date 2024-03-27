@@ -30,7 +30,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 	int		effect;
 	int		damage;
 
-	ent->client->Weapon_sound = gi.soundindex("weapons/hyprbl1a.wav");
+	ent->client->weapon_sound = gi.soundindex("weapons/hyprbl1a.wav");
 
 	if (!(ent->client->buttons & BUTTON_ATTACK1))
 	{
@@ -38,7 +38,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 	}
 	else
 	{
-		if (!ent->client->pers.inventory[ent->client->Ammo_index])
+		if (!ent->client->pers.inventory[ent->client->ammo_index])
 		{
 			if (level.time >= ent->pain_debounce_time)
 			{
@@ -63,7 +63,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 
 			Blaster_Fire(ent, offset, damage, true, effect);
 			if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-				ent->client->pers.inventory[ent->client->Ammo_index]--;
+				ent->client->pers.inventory[ent->client->ammo_index]--;
 
 			ent->client->anim_priority = ANIM_ATTACK;
 			if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
@@ -79,14 +79,14 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 		}
 
 		ent->client->ps.gunframe++;
-		if (ent->client->ps.gunframe == 12 && ent->client->pers.inventory[ent->client->Ammo_index])
+		if (ent->client->ps.gunframe == 12 && ent->client->pers.inventory[ent->client->ammo_index])
 			ent->client->ps.gunframe = 6;
 	}
 
 	if (ent->client->ps.gunframe == 12)
 	{
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/hyprbd1a.wav"), 1, ATTN_NORM, 0);
-		ent->client->Weapon_sound = 0;
+		ent->client->weapon_sound = 0;
 	}
 
 }

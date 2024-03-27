@@ -57,7 +57,12 @@ SYSTEM IO
 ===============================================================================
 */
 
-
+#ifdef _MSC_VER
+// this gets rid of RetardCompiler warnings
+__declspec(noreturn) void Sys_Error(char* error, ...);
+#else
+void Sys_Error(char* error, ...) __attribute__((noreturn));
+#endif
 void Sys_Error (char *error, ...)
 {
 	va_list		argptr;

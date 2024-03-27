@@ -42,11 +42,11 @@ void Chaingun_Fire(edict_t* ent)
 	if ((ent->client->ps.gunframe == 14) && !(ent->client->buttons & BUTTON_ATTACK1))
 	{
 		ent->client->ps.gunframe = 32;
-		ent->client->Weapon_sound = 0;
+		ent->client->weapon_sound = 0;
 		return;
 	}
 	else if ((ent->client->ps.gunframe == 21) && (ent->client->buttons & BUTTON_ATTACK1)
-		&& ent->client->pers.inventory[ent->client->Ammo_index])
+		&& ent->client->pers.inventory[ent->client->ammo_index])
 	{
 		ent->client->ps.gunframe = 15;
 	}
@@ -57,12 +57,12 @@ void Chaingun_Fire(edict_t* ent)
 
 	if (ent->client->ps.gunframe == 22)
 	{
-		ent->client->Weapon_sound = 0;
+		ent->client->weapon_sound = 0;
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/chngnd1a.wav"), 1, ATTN_IDLE, 0);
 	}
 	else
 	{
-		ent->client->Weapon_sound = gi.soundindex("weapons/chngnl1a.wav");
+		ent->client->weapon_sound = gi.soundindex("weapons/chngnl1a.wav");
 	}
 
 	ent->client->anim_priority = ANIM_ATTACK;
@@ -89,8 +89,8 @@ void Chaingun_Fire(edict_t* ent)
 	else
 		shots = 3;
 
-	if (ent->client->pers.inventory[ent->client->Ammo_index] < shots)
-		shots = ent->client->pers.inventory[ent->client->Ammo_index];
+	if (ent->client->pers.inventory[ent->client->ammo_index] < shots)
+		shots = ent->client->pers.inventory[ent->client->ammo_index];
 
 	if (!shots)
 	{
@@ -136,7 +136,7 @@ void Chaingun_Fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->Ammo_index] -= shots;
+		ent->client->pers.inventory[ent->client->ammo_index] -= shots;
 }
 
 

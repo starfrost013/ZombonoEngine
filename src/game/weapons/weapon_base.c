@@ -189,7 +189,7 @@ void ChangeWeapon(edict_t* ent)
 	if (ent->client->grenade_time)
 	{
 		ent->client->grenade_time = level.time;
-		ent->client->Weapon_sound = 0;
+		ent->client->weapon_sound = 0;
 		Weapon_grenade_fire(ent, false);
 		ent->client->grenade_time = 0;
 	}
@@ -225,9 +225,9 @@ void ChangeWeapon(edict_t* ent)
 	}
 
 	if (ent->client->pers.weapon && ent->client->pers.weapon->ammo)
-		ent->client->Ammo_index = ITEM_INDEX(FindItem(ent->client->pers.weapon->ammo));
+		ent->client->ammo_index = ITEM_INDEX(FindItem(ent->client->pers.weapon->ammo));
 	else
-		ent->client->Ammo_index = 0;
+		ent->client->ammo_index = 0;
 
 	if (!ent->client->pers.weapon)
 	{	// dead
@@ -336,7 +336,7 @@ Make the weapon ready if there is ammo
 */
 void Use_Weapon(edict_t* ent, gitem_t* item)
 {
-	int			Ammo_index;
+	int			ammo_index;
 	gitem_t* Ammo_item;
 
 	// see if we're already using it
@@ -346,15 +346,15 @@ void Use_Weapon(edict_t* ent, gitem_t* item)
 	if (item->ammo && !g_select_empty->value && !(item->flags & IT_AMMO))
 	{
 		Ammo_item = FindItem(item->ammo);
-		Ammo_index = ITEM_INDEX(Ammo_item);
+		ammo_index = ITEM_INDEX(Ammo_item);
 
-		if (!ent->client->pers.inventory[Ammo_index])
+		if (!ent->client->pers.inventory[ammo_index])
 		{
 			gi.cprintf(ent, PRINT_HIGH, "No %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
 			return;
 		}
 
-		if (ent->client->pers.inventory[Ammo_index] < item->quantity)
+		if (ent->client->pers.inventory[ammo_index] < item->quantity)
 		{
 			gi.cprintf(ent, PRINT_HIGH, "Not enough %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
 			return;
@@ -482,8 +482,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK1))
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
-			if ((!ent->client->Ammo_index) ||
-				(ent->client->pers.inventory[ent->client->Ammo_index] >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->ammo_index) ||
+				(ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
@@ -511,8 +511,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
 
-			if ((!ent->client->Ammo_index) ||
-				(ent->client->pers.inventory[ent->client->Ammo_index] >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->ammo_index) ||
+				(ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_SECONDARY;

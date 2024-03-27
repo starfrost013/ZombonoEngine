@@ -671,7 +671,7 @@ void COM_DefaultExtension (char *path, char *extension)
 ============================================================================
 */
 
-bool	bigendien;
+bool	big_endian;
 
 // can't just use function pointers, or dll linkage can
 // mess up when qcommon is included in multiple places
@@ -795,7 +795,7 @@ void Swap_Init (void)
 // set the byte swapping variables in a portable manner	
 	if ( *(int16_t *)swaptest == 1)
 	{
-		bigendien = false;
+		big_endian = false;
 		_BigShort = ShortSwap;
 		_LittleShort = ShortNoSwap;
 		_BigShortUnsigned = ShortSwapUnsigned;
@@ -809,7 +809,7 @@ void Swap_Init (void)
 	}
 	else
 	{
-		bigendien = true;
+		big_endian = true;
 		_BigShort = ShortNoSwap;
 		_LittleShort = ShortSwap;
 		_BigShortUnsigned = ShortNoSwapUnsigned;

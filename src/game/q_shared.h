@@ -203,8 +203,8 @@ int32_t Q_strncasecmp (char *s1, char *s2, int32_t n);
 
 short	BigShort(int16_t l);
 short	LittleShort(int16_t l);
-int32_t 	BigInt (int32_t l);
-int32_t 	LittleInt (int32_t l);
+int32_t BigInt (int32_t l);
+int32_t LittleInt (int32_t l);
 float	BigFloat (float l);
 float	LittleFloat (float l);
 
