@@ -345,19 +345,6 @@ bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
 	}
 
 //
-// dropped packets don't keep the message from being used
-//
-	chan->dropped = sequence - (chan->incoming_sequence+1);
-	if (chan->dropped > 0)
-	{
-		if (showdrop->value)
-			Com_Printf ("%s:Dropped %i packets at %i\n"
-			, NET_AdrToString (chan->remote_address)
-			, chan->dropped
-			, sequence);
-	}
-
-//
 // if the current outgoing reliable message has been acknowledged
 // clear the buffer to make way for the next
 //

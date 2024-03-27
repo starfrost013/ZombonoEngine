@@ -579,8 +579,6 @@ typedef struct
 #pragma once
 	netsrc_t	sock;
 
-	int32_t 		dropped;			// between last packet and previous
-
 	int32_t 		last_received;		// for timeouts
 	int32_t 		last_sent;			// for retransmits
 

@@ -99,10 +99,6 @@ void CL_AddNetgraph (void)
 	// add the net lines
 	if (scr_timegraph->value)
 		return;
-
-	for (i=0 ; i<cls.netchan.dropped ; i++)
-		SCR_DebugGraph (30, 51, 47, 46, 255);
-
 	// see what the latency was on this packet
 	in = cls.netchan.incoming_acknowledged & (CMD_BACKUP-1);
 	ping = cls.realtime - cl.cmd_time[in];
