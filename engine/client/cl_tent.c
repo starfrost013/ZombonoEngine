@@ -511,14 +511,14 @@ static vec4_t splash_color[] = {
 
 void CL_ParseTEnt (void)
 {
-	int32_t 	type;
-	vec3_t	pos, pos2, dir;
-	explosion_t	*ex;
-	int32_t 	cnt;
-	vec4_t	color;
-	int32_t 	r;
-	int32_t 	ent;
-	int32_t 	magnitude;
+	int32_t 		type;
+	vec3_t			pos, pos2, dir;
+	explosion_t*	ex;
+	int32_t 		cnt;
+	vec4_t			color;
+	int32_t 		r;
+	int32_t 		ent;
+	int32_t 		magnitude;
 
 	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
 	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
@@ -838,9 +838,12 @@ void CL_ParseTEnt (void)
 
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
-//PGM
-//==============
 
+	case TE_TELEPORT:
+		MSG_ReadPos(&net_message, pos);
+
+		CL_TeleportParticles(pos);
+		break;
 	default:
 		Com_Error (ERR_DROP, "CL_ParseTEnt: bad type");
 	}

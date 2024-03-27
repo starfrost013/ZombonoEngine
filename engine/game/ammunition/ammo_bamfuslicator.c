@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /* Bamfuslicator */
 void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type)
 {
-	edict_t* zombie;
+	edict_t*	monster;
 	trace_t		trace;
 	vec3_t		trace_start = { 0 };
 	vec3_t		trace_end = { 0 };
@@ -102,26 +102,35 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 
 	}
 
+	// spawn some nice particles
+	gi.WriteByte(svc_temp_entity);
+	gi.WriteByte(TE_TELEPORT);
+	gi.WritePosition(trace.endpos);
+
+	gi.sound(self, CHAN_VOICE, gi.soundindex("zombie/zombie_spawn.wav"), 1, ATTN_NORM, 0);
+	//gi.WriteDir(zombie->s.angles);
+	// 
 	// spawn the zombie
-	zombie = G_Spawn();
+	monster = G_Spawn();
 
 	switch (zombie_type)
 	{
 	case zombie_type_normal:
-		SP_monster_zombie(zombie);
+		SP_monster_zombie(monster);
 		break;
 	case zombie_type_fast:
-		SP_monster_zombie_fast(zombie);
+		SP_monster_zombie_fast(monster);
 		break;
 	case zombie_type_ogre:
-		SP_monster_ogre(zombie);
+		SP_monster_ogre(monster);
 		break;
 	}
 
 	// move the zombie to where the player spawned it
 	// the zombie is on director team (this is used so they don't harm directors unless the requisite gameflag is set)
 
-	zombie->team = team_director;
-	VectorCopy(trace.endpos, zombie->s.origin);
-	VectorCopy(aimdir, zombie->s.angles);
+	monster->team = team_director;
+	VectorCopy(trace.endpos, monster->s.origin);
+	VectorCopy(aimdir, monster->s.angles);
+
 }
