@@ -944,7 +944,7 @@ void SV_Init (void)
 
 	sv_noreload = Cvar_Get ("sv_noreload", "0", 0);
 
-	sv_airaccelerate = Cvar_Get("sv_airaccelerate", "0", CVAR_LATCH);
+	sv_airaccelerate = Cvar_Get("sv_airaccelerate", "10", CVAR_LATCH);
 
 	public_server = Cvar_Get ("public", "0", 0);
 
