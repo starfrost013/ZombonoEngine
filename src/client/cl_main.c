@@ -1595,7 +1595,9 @@ typedef struct
 
 cheatvar_t	cheatvars[] = {
 	{"timescale", "1"},
+#ifdef NDEBUG
 	{"timedemo", "0"},
+#endif
 	{"r_drawworld", "1"},
 	{"cl_testlights", "0"},
 	{"r_fullbright", "0"},

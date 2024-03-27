@@ -746,6 +746,13 @@ void Cmd_SetTeam_f(edict_t* ent, player_team team)
 {
 	vec3_t spawn_origin, spawn_angles;
 
+	// If we are switching to player, disable the Director-only UI
+	if (team == team_player)
+	{
+		// TDM mode only?
+		G_UISend(ent, "BamfuslicatorUI", false, false, false);
+	}
+
 	ent->team = team;
 
 	// teleport the player to the spanw point

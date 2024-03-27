@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "engine\zombono.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "src\zombono.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{089318CF-012D-4723-BCAC-036EEF68344E} = {089318CF-012D-4723-BCAC-036EEF68344E}
 		{B21C65E1-7AE4-43DD-A648-F8920414B75D} = {B21C65E1-7AE4-43DD-A648-F8920414B75D}
 		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_gl", "engine\ref_gl\ref_gl.vcxproj", "{B21C65E1-7AE4-43DD-A648-F8920414B75D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_gl", "src\ref_gl\ref_gl.vcxproj", "{B21C65E1-7AE4-43DD-A648-F8920414B75D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "engine\game\game.vcxproj", "{089318CF-012D-4723-BCAC-036EEF68344E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "src\game\game.vcxproj", "{089318CF-012D-4723-BCAC-036EEF68344E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
 	EndProjectSection

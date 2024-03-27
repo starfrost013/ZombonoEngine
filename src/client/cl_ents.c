@@ -1292,12 +1292,6 @@ void CL_AddEntities (void)
 	if (cl_timedemo->value)
 		cl.lerpfrac = 1.0;
 
-//	CL_AddPacketEntities (&cl.frame);
-//	CL_AddTEnts ();
-//	CL_AddParticles ();
-//	CL_AddDLights ();
-//	CL_AddLightStyles ();
-
 	CL_CalcViewValues ();
 	// PMM - moved this here so the heat beam has the right values for the vieworg, and can lock the beam to the gun
 	CL_AddPacketEntities (&cl.frame);

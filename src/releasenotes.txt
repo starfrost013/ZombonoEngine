@@ -13,6 +13,7 @@ April XX, 2024
 	* This is for the updater so that updates can be reissued without changing the game's version number.
 * MAX_MSGLEN 2800 -> 16384 (same as Quake 3)
 * MAX_EDICTS 1024 -> 2048
+* Added a particle effect and sound when you spawn a monster
 
 Version 0.0.5
 March 23, 2024

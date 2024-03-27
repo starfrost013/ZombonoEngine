@@ -310,7 +310,7 @@ extern	cvar_t  *cl_drawhud;
 
 typedef struct
 {
-	int32_t 	key;				// so entities can reuse same entry
+	int32_t key;				// so entities can reuse same entry
 	vec3_t	color;
 	vec3_t	origin;
 	float	radius;

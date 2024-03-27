@@ -648,11 +648,11 @@ CL_ParseServerMessage
 */
 void CL_ParseServerMessage (void)
 {
-	int32_t 		cmd;
+	int32_t 	cmd;
 	char		*s;
 	char		str_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
 	char		str_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
-	int32_t 		i = 0;
+	int32_t 	i = 0;
 
 //
 // if recording demos, copy the message out
