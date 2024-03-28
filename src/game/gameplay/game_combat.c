@@ -413,6 +413,14 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		}
 		else
 		{
+			// prevent people getting murdered in prespawn on TDM games by simply making unassigneds invincible
+			if (gamemode->value == GAMEMODE_TDM
+				&& targ->team == team_unassigned
+				|| attacker->team == team_unassigned)
+			{
+				return false;
+			}
+
 			if (targ->team == attacker->team)
 			{
 				if ((int32_t)(gameflags->value) & GF_NO_FRIENDLY_FIRE)

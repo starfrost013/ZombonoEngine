@@ -27,8 +27,9 @@ April 6, 2024
 * Default FOV changed from 90 -> 100
 * sv_airaccelerate changed from 0 -> 10 (test)
 * Changed healthbar icon
-* Fully reorganised game source code
-
+* Fully reorganised gamedll source code
+* Prevented players in prespawn from killing each other
+	* Fixed a potential method of cheating where the client could switch to team unassigned or an invalid team, and become invincible as a result of the previous change
 
 Version 0.0.5
 March 23, 2024

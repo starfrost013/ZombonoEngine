@@ -746,6 +746,8 @@ typedef enum player_team_e
 	team_player = 2,				// The player team. Doesn't have access to spawning equipment.
 
 	team_unassigned = 4,			// Used for non-team gamemodes and players that are joining.
+
+	team_max = team_unassigned,		// Sentinel value for maximum team
 } player_team;
 
 // A tiny little struct containing both teams' scores.

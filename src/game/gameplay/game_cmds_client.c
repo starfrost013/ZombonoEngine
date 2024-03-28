@@ -744,6 +744,23 @@ Cmd_SetTeam_f
 */
 void Cmd_SetTeam_f(edict_t* ent, player_team team)
 {
+	// anti cheating:
+	// on TDM mode, unassigneds are invincible (for spectating, and also for )
+	// on non-teamed modes, *everyone* is team unassigned (as opposed to having no team), so we gate this in a teammode check
+	if (gamemode->value == GAMEMODE_TDM)
+	{
+		if (team == team_unassigned)
+		{
+			return; 
+		}
+	}
+
+	// reject no team or multiple teams
+	if ((team <= 0)
+		|| (team == team_player | team_director)
+		|| (team > team_max))
+		return;
+
 	vec3_t spawn_origin, spawn_angles;
 
 	// If we are switching to player, disable the Director-only UI
