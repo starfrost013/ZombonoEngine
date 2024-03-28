@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // m_move.c -- monster movement
 
-#include "../g_local.h"
+#include "../game_local.h"
 
 #define	STEPSIZE	18
 

@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
 
 */
-// g_local.h -- local definitions for game module
+// game_local.h -- local definitions for game module
 #pragma once
 #include "q_shared.h"
 
@@ -92,6 +92,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MELEE_DISTANCE	80					// Vector magnitude distance within which an enemy can melee.
 
 #define BODY_QUEUE_SIZE		8
+
+// for gameplay/game_client.c
+
+extern	edict_t* current_player;
+extern	gclient_t* current_client;
+
+extern	vec3_t	forward, right, up;
+
+extern float	xyspeed;
+
+extern float	bobmove;
+extern int		bobcycle;		// odd cycles are right foot going forward
+extern float	bobfracsin;		// sin(bobfrac*M_PI)
 
 typedef enum
 {
@@ -646,6 +659,9 @@ typedef enum zombie_type_e
 
 #define MAX_ZOMBIE_TYPE				2
 
+#define ZOMBIE_HEALTH_STANDARD		60
+#define	ZOMBIE_HEALTH_FAST			50
+
 #define ZOMBIE_DAMAGE_STANDARD		15
 #define ZOMBIE_DAMAGE_FAST			25
 
@@ -659,6 +675,8 @@ typedef enum zombie_type_e
 #define OGRE_DAMAGE_MELEE			80					// Damage of the ogre's melee attack (80 because it moves so slow only incompetents walk into it)
 #define OGRE_DAMAGE_FUNNY_SHREK		40					// Damage of the ogre's rockets
 #define OGRE_SPEED_FUNNY_SHREK		850					// Speed of the ogre's rockets
+
+#define OGRE_HEALTH					105
 
 //
 // g_cmds.c

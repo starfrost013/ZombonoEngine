@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ogre - February 7, 2024
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "mob_ogre.h"
 
 static int	sound_idle;
@@ -752,7 +752,7 @@ SP_monster_ogre(edict_t* self)
 	SP_monster_ogre_x(self);
 
 	self->s.skinnum = 2;
-	self->health = 40;
-	self->max_health = 90;
+	self->health = OGRE_HEALTH;
+	self->max_health = OGRE_HEALTH;
 	self->gib_health = 0; //test
 }

@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // Weapon_shotgun_super.c : Super shotgun weapon code - split from p_weapon.c
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "../mobs/mob_player.h"
 
 void Weapon_supershotgun_fire(edict_t* ent)

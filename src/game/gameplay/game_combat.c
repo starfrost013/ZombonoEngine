@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // g_combat.c
 
-#include "g_local.h"
+#include "../game_local.h"
+#include "../mobs/mob_player.h"
 
 /*
 ============
@@ -609,5 +610,509 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 				T_Damage (ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int32_t)points, (int32_t)points, DAMAGE_RADIUS, mod);
 			}
 		}
+	}
+}
+
+/* Player specific */
+
+
+void player_pain(edict_t* self, edict_t* other, float kick, int32_t damage)
+{
+	// player pain is handled at the end of the frame in P_DamageFeedback
+}
+
+bool IsFemale(edict_t* ent)
+{
+	char* info;
+
+	if (!ent->client)
+		return false;
+
+	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+	if (info[0] == 'f' || info[0] == 'F')
+		return true;
+	return false;
+}
+
+// WOKE!
+bool IsOther(edict_t* ent)
+{
+	char* info;
+
+	if (!ent->client)
+		return false;
+
+	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+	if (info[0] == 'o' || info[0] == 'O')
+		return true;
+	return false;
+}
+
+
+bool IsNeutral(edict_t* ent)
+{
+	char* info;
+
+	if (!ent->client)
+		return false;
+
+	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+	if (info[0] != 'f' && info[0] != 'F' && info[0] != 'm' && info[0] != 'M'
+		&& info[0] != 'o' && info[0] != 'O')
+		return true;
+	return false;
+}
+
+void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
+{
+	int			mod;
+	char* message;
+	char* message2;
+	bool	ff;
+
+	if ((!(int32_t)(gameflags->value) & GF_NO_FRIENDLY_FIRE) && attacker->client)
+		meansOfDeath |= MOD_FRIENDLY_FIRE;
+
+	ff = meansOfDeath & MOD_FRIENDLY_FIRE;
+	mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
+	message = NULL;
+	message2 = "";
+
+	switch (mod)
+	{
+	case MOD_SUICIDE:
+		message = "suicides";
+		break;
+	case MOD_FALLING:
+		message = "cratered";
+		break;
+	case MOD_CRUSH:
+		message = "was squished";
+		break;
+	case MOD_WATER:
+		message = "sank like a rock";
+		break;
+	case MOD_SLIME:
+		message = "melted";
+		break;
+	case MOD_LAVA:
+		message = "does a back flip into the lava";
+		break;
+	case MOD_EXPLOSIVE:
+	case MOD_BARREL:
+		message = "blew up";
+		break;
+	case MOD_EXIT:
+		message = "found a way out";
+		break;
+	case MOD_TARGET_LASER:
+		message = "saw the light";
+		break;
+	case MOD_TARGET_BLASTER:
+		message = "got blasted";
+		break;
+	case MOD_BOMB:
+	case MOD_SPLASH:
+	case MOD_TRIGGER_HURT:
+		message = "was in the wrong place";
+		break;
+	}
+	if (attacker == self)
+	{
+		switch (mod)
+		{
+		case MOD_HELD_GRENADE:
+			message = "tried to put the pin back in";
+			break;
+		case MOD_HG_SPLASH:
+		case MOD_G_SPLASH:
+			if (IsNeutral(self))
+				message = "tripped on its own grenade";
+			else if (IsFemale(self))
+				message = "tripped on her own grenade";
+			else if (IsOther(self))
+				message = "tripped on their own grenade";
+			else
+				message = "tripped on his own grenade";
+			break;
+		case MOD_R_SPLASH:
+			if (IsNeutral(self))
+				message = "blew itself up";
+			else if (IsFemale(self))
+				message = "blew herself up";
+			else if (IsOther(self))
+				message = "blew themselves up";
+			else
+				message = "blew himself up";
+			break;
+		case MOD_BFG_BLAST:
+			message = "should have used a smaller gun";
+			break;
+		default:
+			if (IsNeutral(self))
+				message = "killed itself";
+			else if (IsFemale(self))
+				message = "killed herself";
+			else if (IsOther(self))
+				message = "killed themselves";
+
+			else
+				message = "killed himself";
+			break;
+		}
+	}
+	if (message)
+	{
+		gi.bprintf(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
+		self->client->resp.score--;
+		self->enemy = NULL;
+		return;
+	}
+
+	self->enemy = attacker;
+	if (attacker && attacker->client)
+	{
+		switch (mod)
+		{
+		case MOD_BLASTER:
+			message = "was blasted by";
+			break;
+		case MOD_SHOTGUN:
+			message = "was gunned down by";
+			break;
+		case MOD_SSHOTGUN:
+			message = "was blown away by";
+			message2 = "'s super shotgun";
+			break;
+		case MOD_MACHINEGUN:
+			message = "was machinegunned by";
+			break;
+		case MOD_CHAINGUN:
+			message = "was cut in half by";
+			message2 = "'s chaingun";
+			break;
+		case MOD_GRENADE:
+			message = "was popped by";
+			message2 = "'s grenade";
+			break;
+		case MOD_G_SPLASH:
+			message = "was shredded by";
+			message2 = "'s shrapnel";
+			break;
+		case MOD_ROCKET:
+			message = "ate";
+			message2 = "'s rocket";
+			break;
+		case MOD_R_SPLASH:
+			message = "almost dodged";
+			message2 = "'s rocket";
+			break;
+		case MOD_HYPERBLASTER:
+			message = "was melted by";
+			message2 = "'s hyperblaster";
+			break;
+		case MOD_RAILGUN:
+			message = "was railed by";
+			break;
+		case MOD_BFG_LASER:
+			message = "saw the pretty lights from";
+			message2 = "'s BFG";
+			break;
+		case MOD_BFG_BLAST:
+			message = "was disintegrated by";
+			message2 = "'s BFG blast";
+			break;
+		case MOD_BFG_EFFECT:
+			message = "couldn't hide from";
+			message2 = "'s BFG";
+			break;
+		case MOD_HANDGRENADE:
+			message = "caught";
+			message2 = "'s handgrenade";
+			break;
+		case MOD_HG_SPLASH:
+			message = "didn't see";
+			message2 = "'s handgrenade";
+			break;
+		case MOD_HELD_GRENADE:
+			message = "feels";
+			message2 = "'s pain";
+			break;
+		case MOD_TELEFRAG:
+			message = "tried to invade";
+			message2 = "'s personal space";
+			break;
+		}
+		if (message)
+		{
+			// TODO: send a message if you friendly fired, and then kick
+			gi.bprintf(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
+
+			if (ff)
+
+				attacker->client->resp.score--;
+			else
+				attacker->client->resp.score++;
+
+			return;
+		}
+	}
+
+	gi.bprintf(PRINT_MEDIUM, "%s died.\n", self->client->pers.netname);
+
+	self->client->resp.score--;
+}
+
+
+void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
+
+void TossClientWeapon(edict_t* self)
+{
+	gitem_t* item;
+	edict_t* drop;
+	bool	quad;
+	float		spread;
+
+	item = self->client->pers.weapon;
+	if (!self->client->pers.inventory[self->client->ammo_index])
+		item = NULL;
+	if (item && (strcmp(item->pickup_name, "Blaster") == 0))
+		item = NULL;
+
+	if (!((int32_t)(gameflags->value) & GF_QUAD_DROP))
+		quad = false;
+	else
+		quad = (self->client->quad_framenum > (level.framenum + 10));
+
+	if (item && quad)
+		spread = 22.5;
+	else
+		spread = 0.0;
+
+	if (item)
+	{
+		self->client->v_angle[YAW] -= spread;
+		drop = Drop_Item(self, item);
+		self->client->v_angle[YAW] += spread;
+		drop->spawnflags = DROPPED_PLAYER_ITEM;
+	}
+
+	if (quad)
+	{
+		self->client->v_angle[YAW] += spread;
+		drop = Drop_Item(self, FindItemByClassname("item_quad"));
+		self->client->v_angle[YAW] -= spread;
+		drop->spawnflags |= DROPPED_PLAYER_ITEM;
+
+		drop->touch = Touch_Item;
+		drop->nextthink = level.time + (self->client->quad_framenum - level.framenum) * FRAMETIME;
+		drop->think = G_FreeEdict;
+	}
+}
+
+/*
+==================
+LookAtKiller
+==================
+*/
+void LookAtKiller(edict_t* self, edict_t* inflictor, edict_t* attacker)
+{
+	vec3_t		dir;
+
+	if (attacker && attacker != world && attacker != self)
+	{
+		VectorSubtract(attacker->s.origin, self->s.origin, dir);
+	}
+	else if (inflictor && inflictor != world && inflictor != self)
+	{
+		VectorSubtract(inflictor->s.origin, self->s.origin, dir);
+	}
+	else
+	{
+		self->client->killer_yaw = self->s.angles[YAW];
+		return;
+	}
+
+	if (dir[0])
+		self->client->killer_yaw = 180 / M_PI * atan2(dir[1], dir[0]);
+	else {
+		self->client->killer_yaw = 0;
+		if (dir[1] > 0)
+			self->client->killer_yaw = 90;
+		else if (dir[1] < 0)
+			self->client->killer_yaw = -90;
+	}
+	if (self->client->killer_yaw < 0)
+		self->client->killer_yaw += 360;
+
+
+}
+
+/*
+==================
+player_die
+==================
+*/
+void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int32_t damage, vec3_t point)
+{
+	int		n;
+
+	VectorClear(self->avelocity);
+
+	self->takedamage = DAMAGE_YES;
+	self->movetype = MOVETYPE_TOSS;
+
+	self->s.modelindex2 = 0;	// remove linked weapon model
+
+	self->s.angles[0] = 0;
+	self->s.angles[2] = 0;
+
+	self->s.sound = 0;
+	self->client->weapon_sound = 0;
+
+	self->maxs[2] = -8;
+
+	//	self->solid = SOLID_NOT;
+	self->svflags |= SVF_DEADMONSTER;
+
+	if (!self->deadflag)
+	{
+		self->client->respawn_time = level.time + 1.0;
+		LookAtKiller(self, inflictor, attacker);
+		self->client->ps.pmove.pm_type = PM_DEAD;
+		ClientObituary(self, inflictor, attacker);
+		TossClientWeapon(self);
+
+		// show scores
+		G_LeaderboardSend(self);
+	}
+
+	// remove powerups
+	self->client->quad_framenum = 0;
+	self->client->invincible_framenum = 0;
+	self->client->breather_framenum = 0;
+	self->client->enviro_framenum = 0;
+	self->flags &= ~FL_POWER_ARMOR;
+
+	if (self->health < -40)
+	{	// gib
+		gi.sound(self, CHAN_BODY, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		for (n = 0; n < 4; n++)
+			ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		ThrowClientHead(self, damage);
+
+		self->takedamage = DAMAGE_NO;
+	}
+	else
+	{	// normal death
+		if (!self->deadflag)
+		{
+			static int32_t i;
+
+			i = (i + 1) % 3;
+			// start a death animation
+			self->client->anim_priority = ANIM_DEATH;
+			if (self->client->ps.pmove.pm_flags & PMF_DUCKED)
+			{
+				self->s.frame = FRAME_crdeath1 - 1;
+				self->client->anim_end = FRAME_crdeath5;
+			}
+			else switch (i)
+			{
+			case 0:
+				self->s.frame = FRAME_death101 - 1;
+				self->client->anim_end = FRAME_death106;
+				break;
+			case 1:
+				self->s.frame = FRAME_death201 - 1;
+				self->client->anim_end = FRAME_death206;
+				break;
+			case 2:
+				self->s.frame = FRAME_death301 - 1;
+				self->client->anim_end = FRAME_death308;
+				break;
+			}
+			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
+		}
+	}
+
+	self->deadflag = DEAD_DEAD;
+
+	gi.linkentity(self);
+}
+
+/*
+=================
+P_FallingDamage
+=================
+*/
+void P_FallingDamage(edict_t* ent)
+{
+	float	delta;
+	int		damage;
+	vec3_t	dir;
+
+	if (ent->s.modelindex != 255)
+		return;		// not in the player model
+
+	if (ent->movetype == MOVETYPE_NOCLIP)
+		return;
+
+	if ((ent->client->oldvelocity[2] < 0) && (ent->velocity[2] > ent->client->oldvelocity[2]) && (!ent->groundentity))
+	{
+		delta = ent->client->oldvelocity[2];
+	}
+	else
+	{
+		if (!ent->groundentity)
+			return;
+		delta = ent->velocity[2] - ent->client->oldvelocity[2];
+	}
+	delta = delta * delta * 0.0001;
+
+	// never take falling damage if completely underwater
+	if (ent->waterlevel == 3)
+		return;
+	if (ent->waterlevel == 2)
+		delta *= 0.25;
+	if (ent->waterlevel == 1)
+		delta *= 0.5;
+
+	if (delta < 1)
+		return;
+
+	if (delta < 15)
+	{
+		ent->s.event = EV_FOOTSTEP;
+		return;
+	}
+
+	ent->client->fall_value = delta * 0.5;
+	if (ent->client->fall_value > 40)
+		ent->client->fall_value = 40;
+	ent->client->fall_time = level.time + FALL_TIME;
+
+	if (delta > 30)
+	{
+		if (ent->health > 0)
+		{
+			if (delta >= 55)
+				ent->s.event = EV_FALLFAR;
+			else
+				ent->s.event = EV_FALL;
+		}
+		ent->pain_debounce_time = level.time;	// no normal pain sound
+		damage = (delta - 30) / 2;
+		if (damage < 1)
+			damage = 1;
+		VectorSet(dir, 0, 0, 1);
+
+		if (!((int32_t)gameflags->value & GF_NO_FALLING))
+			T_Damage(ent, world, world, dir, ent->s.origin, vec3_origin, damage, 0, 0, MOD_FALLING);
+	}
+	else
+	{
+		ent->s.event = EV_FALLSHORT;
+		return;
 	}
 }

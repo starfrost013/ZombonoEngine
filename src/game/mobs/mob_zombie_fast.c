@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Fast Zombie - February 7, 2024
 // TODO: This is more than just a fast zombie, name it...
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "mob_zombie_fast.h"
 
 static int	sound_idle;
@@ -753,7 +753,7 @@ SP_monster_zombie_fast(edict_t* self)
 	SP_monster_zombie_fast_x(self);
 
 	self->s.skinnum = 2;
-	self->health = 40;
-	self->max_health = 40;
+	self->health = ZOMBIE_HEALTH_FAST;
+	self->max_health = ZOMBIE_HEALTH_FAST;
 	self->gib_health = 0; //test
 }

@@ -1,9 +1,17 @@
 Zombono
 Release Notes
 Version 0.0.6
-April XX, 2024
-* Reduced Zombie on Speed damage from 80 to 25 (it was a bug where the range was used and not the intended speed value)
-* Increased regular zombie damage from 10 to 15
+April 6, 2024
+* Zombie rebalancing:
+	* Regular Zombie/Average Joe Zombie
+		* Damage: 10 -> 15
+		* Health: 40 -> 60
+	* Zombie on Speed:
+		* Damage: 80 -> 25
+		* Health: 40 -> 50
+	* Ogre:
+		* Health: 40 -> 105
+		* Damage is still 80 for melee (only idiots can run into it) and 40 for rockets
 * Changed default crouch bind from C to CTRL
 * MAX_TOTAL_ENT_LEAFS 128 -> 256
 * Began working on the game's various attached network services.
@@ -13,7 +21,14 @@ April XX, 2024
 	* This is for the updater so that updates can be reissued without changing the game's version number.
 * MAX_MSGLEN 2800 -> 16384 (same as Quake 3)
 * MAX_EDICTS 1024 -> 2048
-* Added a particle effect and sound when you spawn a monster
+* Added a particle effect and sound when you spawn a monster using the Bamfuslicator
+* Fixed a bug where switching from director to player mid game did not disable the Bamfuslicator's UI
+* Fixed ALT+TAB making the game stop running so you would fall through the ground on z_tdm_subway's train.
+* Default FOV changed from 90 -> 100
+* sv_airaccelerate changed from 0 -> 10 (test)
+* Changed healthbar icon
+* Fully reorganised game source code
+
 
 Version 0.0.5
 March 23, 2024

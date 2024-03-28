@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #pragma once
-#include "g_local.h"
+#include "../game_local.h"
 
 void SP_item_health(edict_t* self);
 void SP_item_health_small(edict_t* self);

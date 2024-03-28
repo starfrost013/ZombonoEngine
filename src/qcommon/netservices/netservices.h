@@ -48,6 +48,8 @@ extern bool		netservices_connected;						// TRUE if you are connected to the int
 extern CURL*	curl_obj_easy;								// The curl easy object (used for single blocking transfers)
 extern CURLM*	curl_obj_multi;								// The curl multi object (used for multiple nonblocking transfers)
 
+extern int		curl_running_transfers;						// Utility: Use with multi_perform to know how many transfers are running
+
 // Function
 bool			Netservices_Init();							// Initialises Netservices and determines if we are connected to the internet.
 void			Netservices_Shutdown();						// Shuts down netservices

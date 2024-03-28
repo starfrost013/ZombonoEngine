@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "g_local.h"
-#include "g_spawn.h"
+#include "../game_local.h"
+#include "entity_base.h"
 
 typedef struct
 {
@@ -657,7 +657,7 @@ void SP_worldspawn (edict_t *ent)
 	gi.soundindex ("*pain100_2.wav");
 
 	// sexed models
-	// THIS ORDER MUST MATCH THE DEFINES IN g_local.h
+	// THIS ORDER MUST MATCH THE DEFINES IN game_local.h
 	// you can add more, max 15
 	gi.modelindex ("#w_blaster.md2");
 	gi.modelindex ("#w_shotgun.md2");

@@ -41,6 +41,8 @@ cvar_t* ns_noupdatecheck;							// If true, don't perform an update check
 CURL*	curl_obj_easy;								// The single blocking transfer curl interface object
 CURLM*	curl_obj_multi;								// The multi nonblocking transfer curl interface object
 
+int		curl_running_transfers;						// The number of curl transfers currently running.
+
 // functions only used within this file
 size_t Netservices_Init_WriteCallback(char *ptr, size_t size, size_t nmemb, char* received_data);				// Callback function on CURL receive
 

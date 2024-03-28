@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Zombie - November 30, 2023
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "mob_zombie.h"
 
 static int	sound_idle;
@@ -740,7 +740,7 @@ SP_monster_zombie(edict_t* self)
 	SP_monster_zombie_x(self);
 
 	self->s.skinnum = 2;
-	self->health = 40;
-	self->max_health = 40;
+	self->health = ZOMBIE_HEALTH_STANDARD;
+	self->max_health = ZOMBIE_HEALTH_STANDARD;
 	self->gib_health = 0; //test
 }

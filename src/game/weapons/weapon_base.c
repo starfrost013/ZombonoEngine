@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // Weapon_base.c : Core weapon code spread across many or all weapons - split from p_weapon.c
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "../mobs/mob_player.h"
 
 bool		is_quad;

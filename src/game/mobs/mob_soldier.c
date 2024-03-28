@@ -26,7 +26,7 @@ SOLDIER
 ==============================================================================
 */
 
-#include "../g_local.h"
+#include "../game_local.h"
 #include "mob_soldier.h"
 
 

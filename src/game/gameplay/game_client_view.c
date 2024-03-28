@@ -18,13 +18,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "g_local.h"
-#include "mobs/mob_player.h"
+#include "../game_local.h"
+#include "../mobs/mob_player.h"
 
-static	edict_t		*current_player;
-static	gclient_t	*current_client;
+edict_t		*current_player;
+gclient_t	*current_client;
 
-static	vec3_t	forward, right, up;
+vec3_t	forward, right, up;
 float	xyspeed;
 
 float	bobmove;
@@ -492,84 +492,6 @@ void SV_CalcBlend (edict_t *ent)
 
 
 /*
-=================
-P_FallingDamage
-=================
-*/
-void P_FallingDamage (edict_t *ent)
-{
-	float	delta;
-	int		damage;
-	vec3_t	dir;
-
-	if (ent->s.modelindex != 255)
-		return;		// not in the player model
-
-	if (ent->movetype == MOVETYPE_NOCLIP)
-		return;
-
-	if ((ent->client->oldvelocity[2] < 0) && (ent->velocity[2] > ent->client->oldvelocity[2]) && (!ent->groundentity))
-	{
-		delta = ent->client->oldvelocity[2];
-	}
-	else
-	{
-		if (!ent->groundentity)
-			return;
-		delta = ent->velocity[2] - ent->client->oldvelocity[2];
-	}
-	delta = delta*delta * 0.0001;
-
-	// never take falling damage if completely underwater
-	if (ent->waterlevel == 3)
-		return;
-	if (ent->waterlevel == 2)
-		delta *= 0.25;
-	if (ent->waterlevel == 1)
-		delta *= 0.5;
-
-	if (delta < 1)
-		return;
-
-	if (delta < 15)
-	{
-		ent->s.event = EV_FOOTSTEP;
-		return;
-	}
-
-	ent->client->fall_value = delta*0.5;
-	if (ent->client->fall_value > 40)
-		ent->client->fall_value = 40;
-	ent->client->fall_time = level.time + FALL_TIME;
-
-	if (delta > 30)
-	{
-		if (ent->health > 0)
-		{
-			if (delta >= 55)
-				ent->s.event = EV_FALLFAR;
-			else
-				ent->s.event = EV_FALL;
-		}
-		ent->pain_debounce_time = level.time;	// no normal pain sound
-		damage = (delta-30)/2;
-		if (damage < 1)
-			damage = 1;
-		VectorSet (dir, 0, 0, 1);
-
-		if (!((int32_t)gameflags->value & GF_NO_FALLING) )
-			T_Damage (ent, world, world, dir, ent->s.origin, vec3_origin, damage, 0, 0, MOD_FALLING);
-	}
-	else
-	{
-		ent->s.event = EV_FALLSHORT;
-		return;
-	}
-}
-
-
-
-/*
 =============
 P_WorldEffects
 =============
@@ -942,144 +864,5 @@ newanim:
 			ent->s.frame = FRAME_stand01;
 			client->anim_end = FRAME_stand40;
 		}
-	}
-}
-
-
-/*
-=================
-ClientEndServerFrame
-
-Called for each player at the end of the server frame
-and right after spawning
-=================
-*/
-void ClientEndServerFrame (edict_t *ent)
-{
-	float	bobtime;
-	int		i;
-
-	current_player = ent;
-	current_client = ent->client;
-
-	//
-	// If the origin or velocity have changed since ClientThink(),
-	// update the pmove values.  This will happen when the client
-	// is pushed by a bmodel or kicked by an explosion.
-	// 
-	// If it wasn't updated here, the view position would lag a frame
-	// behind the body position when pushed -- "sinking into plats"
-	//
-	for (i=0 ; i<3 ; i++)
-	{
-		current_client->ps.pmove.origin[i] = ent->s.origin[i];
-		current_client->ps.pmove.velocity[i] = ent->velocity[i];
-	}
-
-	//
-	// If the end of unit layout is displayed, don't give
-	// the player any normal movement attributes
-	//
-	if (level.intermissiontime)
-	{
-		// FIXME: add view drifting here?
-		current_client->ps.blend[3] = 0;
-		current_client->ps.fov = 90;
-		G_SetStats (ent);
-		return;
-	}
-
-	AngleVectors (ent->client->v_angle, forward, right, up);
-
-	// burn from lava, etc
-	P_WorldEffects ();
-
-	//
-	// set model angles from view angles so other things in
-	// the world can tell which direction you are looking
-	//
-	if (ent->client->v_angle[PITCH] > 180)
-		ent->s.angles[PITCH] = (-360 + ent->client->v_angle[PITCH])/3;
-	else
-		ent->s.angles[PITCH] = ent->client->v_angle[PITCH]/3;
-	ent->s.angles[YAW] = ent->client->v_angle[YAW];
-	ent->s.angles[ROLL] = 0;
-	ent->s.angles[ROLL] = SV_CalcRoll (ent->s.angles, ent->velocity)*4;
-
-	//
-	// calculate speed and cycle to be used for
-	// all cyclic walking effects
-	//
-	xyspeed = sqrt(ent->velocity[0]*ent->velocity[0] + ent->velocity[1]*ent->velocity[1]);
-
-	if (xyspeed < 5)
-	{
-		bobmove = 0;
-		current_client->bobtime = 0;	// start at beginning of cycle again
-	}
-	else if (ent->groundentity)
-	{	// so bobbing only cycles when on ground
-		if (xyspeed > 210)
-			bobmove = 0.25;
-		else if (xyspeed > 100)
-			bobmove = 0.125;
-		else
-			bobmove = 0.0625;
-	}
-	
-	bobtime = (current_client->bobtime += bobmove);
-
-	if (current_client->ps.pmove.pm_flags & PMF_DUCKED)
-		bobtime *= 4;
-
-	bobcycle = (int32_t)bobtime;
-	bobfracsin = fabs(sin(bobtime*M_PI));
-
-	// detect hitting the floor
-	P_FallingDamage (ent);
-
-	// apply all the damage taken this frame
-	P_DamageFeedback (ent);
-
-	// determine the view offsets
-	SV_CalcViewOffset (ent);
-
-	// determine the gun offsets
-	SV_CalcGunOffset (ent);
-
-	// determine the full screen color blend
-	// must be after viewoffset, so eye contents can be
-	// accurately determined
-	// FIXME: with client prediction, the contents
-	// should be determined by the client
-	SV_CalcBlend (ent);
-
-	// chase cam stuff
-	if (ent->client->resp.spectator)
-		G_SetSpectatorStats(ent);
-	else
-		G_SetStats (ent);
-	G_CheckChaseStats(ent);
-
-	G_SetClientEvent (ent);
-
-	G_SetClientEffects (ent);
-
-	G_SetClientSound (ent);
-
-	G_SetClientFrame (ent);
-
-	VectorCopy (ent->velocity, ent->client->oldvelocity);
-	VectorCopy (ent->client->ps.viewangles, ent->client->oldviewangles);
-
-	// clear weapon kicks
-	VectorClear (ent->client->kick_origin);
-	VectorClear (ent->client->kick_angles);
-
-	// update the leaderboard every 10 ticks (1 second)
-	// BEFORE IT WAS UPDATING IT EVERY FRAME WHILE ACTIVE???
-	if ((level.framenum % (int)(1 / FRAMETIME)) == 0)
-	{
-		G_LeaderboardSend(ent);
 	}
 }

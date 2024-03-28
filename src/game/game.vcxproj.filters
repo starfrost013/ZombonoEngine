@@ -39,16 +39,16 @@
     <ClCompile Include="q_shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_ai.c">
+    <ClCompile Include="ai\ai_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_chase.c">
+    <ClCompile Include="gameplay\game_chase_camera.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_cmds.c">
+    <ClCompile Include="gameplay\game_cmds_client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_combat.c">
+    <ClCompile Include="gameplay\game_combat.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entities\entity_func.c">
@@ -57,25 +57,25 @@
     <ClCompile Include="entities\entity_items.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_main.c">
+    <ClCompile Include="gameplay\game_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entities\entity_misc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_monster.c">
+    <ClCompile Include="ai\ai_monster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physics\physics_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_save.c">
+    <ClCompile Include="gameplay\game_save.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_spawn.c">
+    <ClCompile Include="entities\entity_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_svcmds.c">
+    <ClCompile Include="gameplay\game_cmds_server.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entities\entity_target.c">
@@ -84,25 +84,25 @@
     <ClCompile Include="entities\entity_trigger.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="g_utils.c">
+    <ClCompile Include="util\game_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="p_client.c">
+    <ClCompile Include="gameplay\game_client_connect.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="p_hud.c">
+    <ClCompile Include="gameplay\game_ui.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="p_trail.c">
+    <ClCompile Include="gameplay\game_player_trail.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="p_view.c">
+    <ClCompile Include="gameplay\game_client_view.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physics\physics_movement.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="m_flash.c">
+    <ClCompile Include="gameplay\game_monster_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ammunition\ammo_melee.c">
@@ -180,6 +180,12 @@
     <ClCompile Include="mobs\mob_zombie_fast.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gameplay\game_client_spawn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameplay\game_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -190,13 +196,13 @@
     <ClInclude Include="q_shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="g_local.h">
+    <ClInclude Include="game_local.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="g_spawn.h">
+    <ClInclude Include="entities\entity_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mobs\mob_ogre.h">

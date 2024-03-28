@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "g_local.h"
+#include "../game_local.h"
 
 /*
 ==============================================================================
@@ -85,7 +85,7 @@ static bool StringToFilter (char *s, ipfilter_t *f)
 	{
 		if (*s < '0' || *s > '9')
 		{
-			gi.cprintf(NULL, PRINT_HIGH, "Bad filter address: %s\n", s);
+			gi.cprintf(NULL, PRINT_HIGH, "Bad filter address: %s\n", s); 
 			return false;
 		}
 		
