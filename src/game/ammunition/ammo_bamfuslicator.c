@@ -58,8 +58,7 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 	// rollback the raycast by a tiny amount because the visual hitbox and the hitbox required to have fun are not the same
 	// horrifying hacks
 
-	// hack for extreme angles due to how the pushing works
-
+	// avoid divide by zero
 	if (trace.endpos[0] == 0) trace.endpos[0] = 0.001;
 	if (trace.endpos[1] == 0) trace.endpos[1] = 0.001;
 
@@ -152,18 +151,20 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 	VectorSubtract(monster->absmin, min_dist, vec_absmin);
 	VectorAdd(monster->absmax, min_dist, vec_absmax);
 
+	// now see if we are tyrign 
 	int num_within_monster_bounds = gi.BoxEdicts(vec_absmin, vec_absmax, &within_monster_bounds, 64, AREA_SOLID);
 
 	for (int edict = 0; edict < num_within_monster_bounds; edict++)
 	{
 		if (!strncmp(within_monster_bounds[edict]->classname, "worldspawn", 11))
 		{
-			//todo: push out
+			//todo: play a rejection sound
 			G_FreeEdict(monster);
 			return;
 		}
 	}
 
+	// we finally succeded
 	// spawn some nice particles
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_TELEPORT);
