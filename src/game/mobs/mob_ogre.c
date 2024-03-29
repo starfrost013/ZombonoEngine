@@ -709,8 +709,8 @@ void SP_monster_ogre_x(edict_t* self)
 	self->classname = "monster_ogre"; // for Bamfuslicator
 	self->s.modelindex = gi.modelindex("models/monsters/ogre/tris.md2");
 	self->monsterinfo.scale = MODEL_SCALE;
-	VectorSet(self->mins, -16, -16, -24);
-	VectorSet(self->maxs, 16, 16, 32);
+	VectorSet(self->mins, -12, -12, -24);
+	VectorSet(self->maxs, 12, 12, 24);
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
 	self->monsterinfo.aiflags |= AI_WANDER;

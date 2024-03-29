@@ -28,20 +28,20 @@ bool netservices_connected = false;					// Determines if netservices is initiali
 // String downloaded from the below url to 
 const char* connect_test_string = "This is a connect test file for Zombono Network Services";
 const char* connect_test_url = UPDATER_BASE_URL "/connecttest.txt"; // Just use updater service for thi
-char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];	// Buffer to use for receiving data from curl
+char	netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
+	
+char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
 
-// debug build only (both msvc and gcc)
+cvar_t* ns_disabled;										// If true, don't ever contact zombono.com
+cvar_t* ns_nointernetcheck;									// If true, don't perform an internet check
+cvar_t* ns_noupdatecheck;									// If true, don't perform an update check
 
-char connect_test_error_buffer[CURL_ERROR_SIZE];	// Error string buffer returned by CURL functions
+CURL*	curl_obj_easy;										// The single blocking transfer curl interface object
+CURLM*	curl_obj;											// The multi nonblocking transfer curl interface object
 
-cvar_t* ns_disabled;								// If true, don't ever contact zombono.com
-cvar_t* ns_nointernetcheck;							// If true, don't perform an internet check
-cvar_t* ns_noupdatecheck;							// If true, don't perform an update check
+int		netservices_running_transfers;						// The number of curl transfers currently running.
 
-CURL*	curl_obj_easy;								// The single blocking transfer curl interface object
-CURLM*	curl_obj_multi;								// The multi nonblocking transfer curl interface object
-
-int		curl_running_transfers;						// The number of curl transfers currently running.
+void	(*netservices_on_complete_callback)(bool successful);	// The callback to use when the current transfer is complete.
 
 // functions only used within this file
 size_t Netservices_Init_WriteCallback(char *ptr, size_t size, size_t nmemb, char* received_data);				// Callback function on CURL receive
@@ -68,8 +68,8 @@ bool Netservices_Init()
 	Com_Printf("Netservices_Init: Determining if you are connected to the Internet...\n");
 
 	// init both curl objects
-	curl_obj_easy = curl_easy_init();
-	curl_obj_multi = curl_multi_init();
+	curl_obj_easy = Netservices_AddCurlObject(connect_test_url, Netservices_Init_WriteCallback);
+	curl_obj = curl_multi_init();
 
 	if (!curl_obj_easy)
 	{
@@ -77,19 +77,6 @@ bool Netservices_Init()
 			", but updating, master servers, and accounts won't be available.");
 		return false;
 	}
-
-	// 40 byte text file should take maximum of 2 seconds to download to minimise user wait time
-	if (curl_easy_setopt(curl_obj_easy, CURLOPT_TIMEOUT_MS, 2000))
-		return false;
-
-	if (curl_easy_setopt(curl_obj_easy, CURLOPT_URL, connect_test_url))
-		return false;
-
-	if (curl_easy_setopt(curl_obj_easy, CURLOPT_WRITEFUNCTION, Netservices_Init_WriteCallback))
-		return false;
-
-	if (curl_easy_setopt(curl_obj_easy, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
-		return false;
 
 	// get the file - blocking for now - this should take a max of 2s
 	CURLcode error_code = curl_easy_perform(curl_obj_easy);
@@ -111,6 +98,64 @@ bool Netservices_Init()
 	return true;
 }
 
+CURL* Netservices_AddCurlObject(const char* url, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
+{
+	CURL* new_obj = curl_easy_init();
+
+	// 40 byte text file should take maximum of 2 seconds to download to minimise user wait time
+	if (curl_easy_setopt(new_obj, CURLOPT_TIMEOUT_MS, 2000))
+		return NULL;
+
+	if (curl_easy_setopt(new_obj, CURLOPT_URL, url))
+		return NULL;
+
+	if (curl_easy_setopt(new_obj, CURLOPT_WRITEFUNCTION, write_callback))
+		return NULL;
+
+	if (curl_easy_setopt(new_obj, CURLOPT_USERAGENT, ZOMBONO_USER_AGENT))
+		return NULL;
+
+	if (curl_easy_setopt(new_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
+		return NULL;
+
+	return new_obj;
+}
+
+void Netservices_DestroyCurlObject(CURL* object)
+{
+	// this is a function as we intend to do more stuff here later
+	curl_easy_cleanup(object);
+}
+
+void Netservices_SetOnCompleteCallback(void on_complete(bool successful))
+{
+	netservices_on_complete_callback = on_complete;
+}
+
+void Netservices_StartTransfer()
+{
+	curl_multi_perform(curl_obj, &netservices_running_transfers);
+}
+
+// Poll
+void Netservices_Poll()
+{
+	// if there is nothing to return (NULL means it was never set)
+	if (netservices_running_transfers == 0
+		|| netservices_on_complete_callback == NULL)
+	{
+		return;
+	}
+		
+	CURLMcode err_code = curl_multi_poll(curl_obj, NULL, 0, 0, &netservices_running_transfers); // we cannot wait as this runs while the game is running as a part of the game loop
+
+	// if we have just finished run the oncomplete function
+	if (netservices_running_transfers == 0)
+	{
+		netservices_on_complete_callback(err_code == CURLE_OK);
+	}
+}
+
 size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char* userdata)
 {
 	if (nmemb >= CURL_MAX_WRITE_SIZE)
@@ -127,6 +172,6 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
 
 void Netservices_Shutdown()
 {
-	curl_easy_cleanup(curl_obj_easy);
-	curl_multi_cleanup(curl_obj_multi);
+	Netservices_DestroyCurlObject(curl_obj_easy);
+	curl_multi_cleanup(curl_obj);
 }

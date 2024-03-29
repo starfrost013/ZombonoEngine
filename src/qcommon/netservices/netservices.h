@@ -22,14 +22,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // March 23, 2024
 
 #pragma once
-
 //CURL_STATICLIB MUST BE DEFINED ON COMMAND LINE OR JHERE
+#include "../qcommon.h"
+#include "../curl/curl.h"
 
 #define UPDATER_BASE_URL			"https://updates.zombono.com"	// Base URL for the updater service
 #define MAX_UPDATE_STR_LENGTH		256								// Maximum length of an update string
 
-#include "../qcommon.h"
-#include "../curl/curl.h"
+#define	ZOMBONO_USER_AGENT			"Zombono/" ZOMBONO_VERSION
 
 extern char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// The data actually received from the connect test.
 // Cvars
@@ -44,15 +44,16 @@ extern cvar_t*			ns_disabled;						// If true, netservices will be entirely disa
 //
 
 // Globals
-extern bool		netservices_connected;						// TRUE if you are connected to the internet and can use netservices, FALSE otherwise.
-extern CURL*	curl_obj_easy;								// The curl easy object (used for single blocking transfers)
-extern CURLM*	curl_obj_multi;								// The curl multi object (used for multiple nonblocking transfers)
-
-extern int		curl_running_transfers;						// Utility: Use with multi_perform to know how many transfers are running
+extern bool		netservices_connected;							// TRUE if you are connected to the internet and can use netservices, FALSE otherwise.
+extern CURLM*	curl_obj;										// The curl multi object (used for multiple nonblocking transfers)
 
 // Function
-bool			Netservices_Init();							// Initialises Netservices and determines if we are connected to the internet.
-void			Netservices_Shutdown();						// Shuts down netservices
+bool			Netservices_Init();								// Initialises Netservices and determines if we are connected to the internet.
+// Sets up an easy curl object for use with a particular URL and the write callback write_callback
+CURL*			Netservices_AddCurlObject(const char* url, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
+void			Netservices_DestroyCurlObject(CURL* object);	// Destroys the easy curl object represented by object
+void			Netservices_StartTransfer();					// Starts the current netservices transfer
+void			Netservices_Shutdown();							// Shuts down netservices
 //
 // netservices_update.c
 //
@@ -88,4 +89,6 @@ typedef struct game_update_s
 } game_update_t;
 
 game_update_t	Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
-void			Netservices_UpdaterUpdateGame();
+void			Netservices_SetOnCompleteCallback(void on_complete(bool successful)); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
+void			Netservices_Poll();	// Checks to see if a curl_multi_obj transfer is complete
+void			Netservices_UpdaterUpdateGame();			

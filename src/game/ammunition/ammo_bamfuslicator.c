@@ -24,23 +24,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // ammo_bamfuslicator.c: Code for the Director team's bamfuslicator weapon ammo (split from g_weapon.c)
 // WHERE IS THE FUCKING AMMUNITION?
 
-#define BAMFUSLICATOR_MIN_DISTANCE		56		// so you don't get stuck
+#define BAMFUSLICATOR_MIN_DISTANCE		64		// so you don't get stuck
 #define BAMFUSLICATOR_MAX_DISTANCE		768
 
 /* Bamfuslicator */
 void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type)
 {
-	edict_t*	monster;
-	trace_t		trace;
+	// Sorry for anyone reading this code
+
+	edict_t*	monster = { 0 };
+	edict_t*	within_player_bounds[MAX_EDICTS] = { 0 };
+	edict_t*	within_monster_bounds[MAX_EDICTS] = { 0 };
+	trace_t		trace = { 0 };
 	vec3_t		trace_start = { 0 };
 	vec3_t		trace_end = { 0 };
-	vec3_t		distance_to_player = { 0 };
-	vec3_t		distance_to_target = { 0 };
-	vec_t		vec_length_player = { 0 }, vec_length_target = { 0 };
+	vec3_t		vec_absmax = { 0 }, vec_absmin = { 0 };
+	// distance AROUND the hitbox to check. for some reason just having this doesn't work and you need the other "rollback" thing later or you can still spawn in walls
+	vec3_t		min_dist = { 12, 12, 12 };
 
-	trace_start[0] = start[0] + (aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE);
-	trace_start[1] = start[1] + (aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE);
-	trace_start[2] = start[2] + (aimdir[2] * BAMFUSLICATOR_MIN_DISTANCE);
+	trace_start[0] = start[0];
+	trace_start[1] = start[1];
+	trace_start[2] = start[2];
 
 	// set up positions 
 	trace_end[0] = trace_start[0] + (aimdir[0] * BAMFUSLICATOR_MAX_DISTANCE);
@@ -51,67 +55,68 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 	// check if we hit somethoing
 	trace = gi.trace(trace_start, NULL, NULL, trace_end, self, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA | CONTENTS_WINDOW | CONTENTS_WATER); // zombies don't like water!
 
-	// completed, too far away to spawn a zombie
+	// rollback the raycast by a tiny amount because the visual hitbox and the hitbox required to have fun are not the same
+	// horrifying hacks
+
+	// hack for extreme angles due to how the pushing works
+
+	if (trace.endpos[0] == 0) trace.endpos[0] = 0.001;
+	if (trace.endpos[1] == 0) trace.endpos[1] = 0.001;
+
+	if (aimdir[0] > 0)
+	{
+		trace.endpos[0] -= aimdir[0] * (16 / aimdir[0]);
+	}
+	else
+	{
+		trace.endpos[0] += aimdir[0] * (16 / aimdir[0]);
+	}
+
+	if (aimdir[1] > 0)
+	{
+		trace.endpos[1] -= aimdir[1] * (16 / aimdir[1]);
+	}
+	else
+	{
+		trace.endpos[1] += aimdir[1] * (16 / aimdir[1]);
+	}
+
+	// don't get the monster stuck in the wall while also not being able to spawn through ceilings, so we push DOWN (positive-Y) if we are looking above the horizon,
+	// and UP 32 units (multiplied by aimdir[2] in this case, if you multiply up by aimdir[2] you get zombies half stuck in the wall)...this seems to give best results
+	// why is this code so bad
+	if (aimdir[2] < 0)
+	{
+		trace.endpos[2] += 32;
+	}
+	else
+	{
+		trace.endpos[2] -= 32*aimdir[2];
+	}
+
+	// completed, too far away to spawn a monster
 	if (trace.fraction == 1.0f)
-	{
 		return;
-	}
 
-	// stupid hack to AVOID spawning zombies in the wall or floor
-	trace.endpos[0] -= aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;
-	trace.endpos[1] -= aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE;
-	trace.endpos[2] += 32;
-
-	// don't get the player spawning the zombie, or any other players stuck
-	VectorSubtract(trace.endpos, start, distance_to_player);
-	vec_length_target = 32768.0f; //dummy value
-
-	if (trace.ent != NULL)
-	{
-		VectorSubtract(trace.endpos, trace.ent->s.origin, distance_to_target);
-		vec_length_target = abs(VectorLength(distance_to_target));
-	}
-
-	vec_length_player = abs(VectorLength(distance_to_player));
-
-	// push out if we are close to target or the spawning player
-	if (vec_length_player <= BAMFUSLICATOR_MIN_DISTANCE
-		|| vec_length_target <= BAMFUSLICATOR_MIN_DISTANCE)
-	{
-		// epsilon pulled out the ass to deal with the case where you are right below the zombie
-		// force moving by BAMFUSLICATOR_MIN_DISTANCE could let people spawn zombies through close enough walls (<=56 units)
-		float stupid_epsilon = 0.625f; // value hand tuned by a retard
-
-		if (aimdir[0] > 0 && aimdir[0] < stupid_epsilon) aimdir[0] = stupid_epsilon;
-		if (aimdir[0] > -stupid_epsilon && aimdir[0] < 0) aimdir[0] = -stupid_epsilon;
-		if (aimdir[1] > 0 && aimdir[1] < stupid_epsilon) aimdir[1] = stupid_epsilon;
-		if (aimdir[1] > -stupid_epsilon && aimdir[1] < 0) aimdir[1] = -stupid_epsilon;
-
-		// don't shove vertical
-		trace.endpos[0] += aimdir[0] * BAMFUSLICATOR_MIN_DISTANCE;
-		trace.endpos[1] += aimdir[1] * BAMFUSLICATOR_MIN_DISTANCE;
-	}
-
+	// can't spawn if inside a player
 	if (trace.ent != NULL)
 	{
 		if (!strncmp(trace.ent->classname, "player", 6))
 		{
-			// can't spawn if inside a player
+			G_FreeEdict(monster);
+
 			return;
 		}
 
 	}
 
-	// spawn some nice particles
-	gi.WriteByte(svc_temp_entity);
-	gi.WriteByte(TE_TELEPORT);
-	gi.WritePosition(trace.endpos);
-
-	gi.sound(self, CHAN_VOICE, gi.soundindex("zombie/zombie_spawn.wav"), 1, ATTN_NORM, 0);
-	//gi.WriteDir(zombie->s.angles);
-	// 
-	// spawn the zombie
+	// spawn the monster
 	monster = G_Spawn();
+
+	// move the zombie to where the player spawned it
+	// the zombie is on director team (this is used so they don't harm directors unless the requisite gameflag is set)
+	monster->team = team_director;
+	VectorCopy(trace.endpos, monster->s.origin);
+	VectorCopy(aimdir, monster->s.angles);
 
 	switch (zombie_type)
 	{
@@ -126,11 +131,44 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 		break;
 	}
 
-	// move the zombie to where the player spawned it
-	// the zombie is on director team (this is used so they don't harm directors unless the requisite gameflag is set)
+	VectorSubtract(self->absmin, min_dist, vec_absmin);
+	VectorAdd(self->absmax, min_dist, vec_absmax);
 
-	monster->team = team_director;
-	VectorCopy(trace.endpos, monster->s.origin);
-	VectorCopy(aimdir, monster->s.angles);
+	// see if we are trying to spawn inside of the player
+	// 64 to limit time this function takes as it's recursive (also would there really be more than 64 in a 64x64 box around the player???)
+	int num_within_player_bounds = gi.BoxEdicts( vec_absmin, vec_absmax, &within_player_bounds, 64, AREA_SOLID);
 
+	for (int edict = 0; edict < num_within_player_bounds; edict++)
+	{
+		if (!strncmp(within_player_bounds[edict]->classname, "monster_", 8)) // check for any monster
+		{
+			//todo: push out
+			G_FreeEdict(monster);
+			return;
+		}
+	}
+
+	// see if we are trying to spawn inside of a wall
+	VectorSubtract(monster->absmin, min_dist, vec_absmin);
+	VectorAdd(monster->absmax, min_dist, vec_absmax);
+
+	int num_within_monster_bounds = gi.BoxEdicts(vec_absmin, vec_absmax, &within_monster_bounds, 64, AREA_SOLID);
+
+	for (int edict = 0; edict < num_within_monster_bounds; edict++)
+	{
+		if (!strncmp(within_monster_bounds[edict]->classname, "worldspawn", 11))
+		{
+			//todo: push out
+			G_FreeEdict(monster);
+			return;
+		}
+	}
+
+	// spawn some nice particles
+	gi.WriteByte(svc_temp_entity);
+	gi.WriteByte(TE_TELEPORT);
+	gi.WritePosition(trace.endpos);
+
+	gi.sound(self, CHAN_VOICE, gi.soundindex("zombie/zombie_spawn.wav"), 1, ATTN_NORM, 0);
+	//gi.WriteDir(zombie->s.angles);
 }

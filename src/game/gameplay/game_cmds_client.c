@@ -757,9 +757,11 @@ void Cmd_SetTeam_f(edict_t* ent, player_team team)
 
 	// reject no team or multiple teams
 	if ((team <= 0)
-		|| (team == team_player | team_director)
+		|| (team == (team_player | team_director))
 		|| (team > team_max))
+	{
 		return;
+	}
 
 	vec3_t spawn_origin, spawn_angles;
 
