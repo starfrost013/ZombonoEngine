@@ -43,12 +43,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	bool		valid;			// cleared if delta parsing was invalid
+	bool				valid;			// cleared if delta parsing was invalid
 	int32_t 			serverframe;
 	int32_t 			servertime;		// server time the message is valid for (in msec)
 	int32_t 			deltaframe;
-	uint8_t			areabits[MAX_MAP_AREAS/8];		// portalarea visibility bits
-	player_state_t	playerstate;
+	uint8_t				areabits[MAX_MAP_AREAS/8];		// portalarea visibility bits
+	player_state_t		playerstate;
 	int32_t 			num_entities;
 	int32_t 			parse_entities;	// non-masked index into cl_parse_entities array
 } frame_t;
@@ -62,7 +62,7 @@ typedef struct
 	int32_t 		serverframe;		// if not current, this ent isn't in the frame
 
 	int32_t 		trailcount;			// for diminishing grenade trails
-	vec3_t		lerp_origin;		// for trails (variable hz)
+	vec3_t			lerp_origin;		// for trails (variable hz)
 
 	int32_t 		fly_stoptime;
 } centity_t;
@@ -285,8 +285,7 @@ extern	cvar_t	*cl_anglespeedkey;
 extern	cvar_t	*cl_shownet;
 extern	cvar_t	*cl_showmiss;
 extern	cvar_t	*cl_showclamp;
-extern  cvar_t  *cl_showvelocity;
-extern  cvar_t  *cl_showposition;
+extern	cvar_t	*cl_showpos;
 
 extern	cvar_t	*lookspring;
 extern	cvar_t	*lookstrafe;
@@ -692,7 +691,7 @@ void UI_LeaderboardUIUpdate();
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
 #define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
 #define FONT_LIST_FILENAME		"fonts\\fonts.txt"	// File name of the font list.
-
+#define MAX_STRING_LENGTH		2048			// Maximum length of a log string.
 
 //
 // cl_font.c

@@ -349,6 +349,7 @@ void CL_PrepRefresh (void)
 	// clear any lines of console text
 	Con_ClearNotify ();
 
+
 	SCR_UpdateScreen ();
 	cl.refresh_prepped = true;
 	cl.force_refdef = true;	// make sure we have a valid refdef

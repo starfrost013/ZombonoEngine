@@ -59,9 +59,7 @@ cvar_t	*cl_drawhud;
 cvar_t	*cl_shownet;
 cvar_t	*cl_showmiss;
 cvar_t	*cl_showclamp;
-cvar_t	*cl_showvelocity;
-cvar_t	*cl_showposition;
-
+cvar_t	*cl_showpos;
 cvar_t	*cl_paused;
 cvar_t	*cl_timedemo;
 
@@ -1008,8 +1006,9 @@ void CL_ReadPackets (void)
 		//
 		if (!NET_CompareAdr (net_from, cls.netchan.remote_address))
 		{
-			Com_DPrintf ("%s:sequenced packet without connection\n"
-				,NET_AdrToString(net_from));
+			// WHY IS THIS EVEN BEING TRIGGERED
+			//Com_DPrintf ("%s:sequenced packet without connection\n"
+			//	,NET_AdrToString(net_from));
 			continue;
 		}
 		if (!Netchan_Process(&cls.netchan, &net_message))
@@ -1458,10 +1457,9 @@ void CL_InitLocal (void)
 	m_side = Cvar_Get ("m_side", "1", 0);
 
 	cl_shownet = Cvar_Get ("cl_shownet", "0", 0);
-	cl_showvelocity = Cvar_Get("cl_showvelocity", "0", 0);
-	cl_showposition = Cvar_Get("cl_showvelocity", "0", 0);
 	cl_showmiss = Cvar_Get ("cl_showmiss", "0", 0);
 	cl_showclamp = Cvar_Get ("showclamp", "0", 0);
+	cl_showpos = Cvar_Get("cl_showpos", "0", 0);
 	cl_timeout = Cvar_Get ("cl_timeout", "120", 0);
 	cl_paused = Cvar_Get ("paused", "0", 0);
 	cl_timedemo = Cvar_Get ("timedemo", "0", 0);
@@ -1685,7 +1683,7 @@ CL_Frame
 void CL_Frame (int32_t msec)
 {
 	static int32_t extratime;
-	static int32_t  lasttimecalled;
+	static int32_t lasttimecalled;
 
 	if (dedicated->value)
 		return;
@@ -1750,6 +1748,8 @@ void CL_Frame (int32_t msec)
 	// advance local effects for next frame
 	CL_RunDLights ();
 	CL_RunLightStyles ();
+
+
 	SCR_RunConsole ();
 
 	cls.framecount++;

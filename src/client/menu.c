@@ -2454,9 +2454,9 @@ static void GameFlagCallback( void *self )
 	else if ( f == &s_falls_box )
 	{
 		if ( f->curvalue )
-			flags &= ~GF_NO_FALLING;
+			flags &= ~GF_NO_FALL_DAMAGE;
 		else
-			flags |= GF_NO_FALLING;
+			flags |= GF_NO_FALL_DAMAGE;
 		goto setvalue;
 	}
 	else if ( f == &s_weapons_stay_box ) 
@@ -2568,7 +2568,7 @@ void GameOptions_MenuInit( void )
 	s_falls_box.generic.name	= "^5Fall Damage";
 	s_falls_box.generic.callback = GameFlagCallback;
 	s_falls_box.itemnames = yes_no_names;
-	s_falls_box.curvalue = ( gameflags & GF_NO_FALLING ) == 0;
+	s_falls_box.curvalue = ( gameflags & GF_NO_FALL_DAMAGE ) == 0;
 
 	s_weapons_stay_box.generic.type = MTYPE_SPINCONTROL;
 	s_weapons_stay_box.generic.x	= 0;

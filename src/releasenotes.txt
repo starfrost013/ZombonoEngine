@@ -28,8 +28,15 @@ April 6, 2024
 * sv_airaccelerate changed from 0 -> 10 (test)
 * Changed healthbar icon
 * Fully reorganised gamedll source code
-* Prevented players in prespawn from killing each other
+* Prevented players in prespawn from killing each other by spawning at the same time
 	* Fixed a potential method of cheating where the client could switch to team unassigned or an invalid team, and become invincible as a result of the previous change
+* Shrunk zombie hitboxes from 32x32x56 to 24x24x48 units
+	* They were too big for the model
+* Rewrote bamfuslicator spawning code
+	* It should be impossible for them or you to get stuck, bar weird geometry like the pipes in subway - working on it!
+* Replaced cl_showposition and cl_showvelocity with cl_showpos that shows both
+	* Is now actually client sided and works while connected (the previous version ran on the server...and tehrefore only worked in SP...)
+* Text engine now has varargs support
 
 Version 0.0.5
 March 23, 2024

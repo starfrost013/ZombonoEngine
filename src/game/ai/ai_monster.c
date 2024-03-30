@@ -85,10 +85,6 @@ void M_CheckGround (edict_t *ent)
 		return;
 	}
 
-//	ent->groundentity = trace.ent;
-//	ent->groundentity_linkcount = trace.ent->linkcount;
-//	if (!trace.startsolid && !trace.allsolid)
-//		VectorCopy (trace.endpos, ent->s.origin);
 	if (!trace.startsolid && !trace.allsolid)
 	{
 		VectorCopy (trace.endpos, ent->s.origin);

@@ -2050,7 +2050,7 @@ void SP_func_killbox (edict_t *ent)
 	ent->svflags = SVF_NOCLIENT;
 }
 
-void use_trampoline (edict_t* self, edict_t* other, edict_t* activator)
+void func_trampoline_use (edict_t* self, edict_t* other, edict_t* activator)
 {
 	// TODO: Temporary SFX
 	gi.sound(other, CHAN_VOICE, gi.soundindex("*jump1.wav"), 1, ATTN_NORM, 0);
@@ -2079,7 +2079,7 @@ void use_trampoline (edict_t* self, edict_t* other, edict_t* activator)
 void SP_func_trampoline(edict_t* ent)
 {
 	ent->classname = "func_trampoline";
-	ent->touch = use_trampoline;
+	ent->touch = func_trampoline_use;
 
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;

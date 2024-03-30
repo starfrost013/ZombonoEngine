@@ -1117,6 +1117,24 @@ void SCR_DrawLayout (void)
 	SCR_ExecuteLayoutString (cl.layout);
 }
 
+void SCR_DrawPos()
+{
+	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
+
+	if (console_font_ptr == NULL)
+	{
+		Sys_Error("cl_console_font NULL in SCR_DrawPos!");
+		return;
+	}
+
+	int y = (viddef.height - (60 * vid_hudscale->value));
+	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y, 
+		"Position: %.2f  %.2f  %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y,
+		"Velocity: %.2f  %.2f  %.2f", cl.frame.playerstate.pmove.velocity[0], cl.frame.playerstate.pmove.velocity[1], cl.frame.playerstate.pmove.velocity[2]);
+}
+
 //=======================================================
 
 /*
@@ -1225,6 +1243,10 @@ void SCR_UpdateScreen (void)
 				UI_Draw();
 			}
 
+			if (cl_showpos->value)
+			{
+				SCR_DrawPos();
+			}
 
 			SCR_DrawConsole ();
 

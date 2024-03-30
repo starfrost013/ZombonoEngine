@@ -63,13 +63,22 @@ bool Text_GetSizeChar(const char* font, int* x, int* y, char text)
 
 bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ...)
 {
+	va_list args;
+	// TODO: VARARGS
+	va_start(args, text);
+
+	char final_text[MAX_STRING_LENGTH] = { 0 };
+
+	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
+	va_end(args);
+
 	font_t* font_ptr = Font_GetByName(font);
 
 	if (!font_ptr)
 	{
 		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
 
-		font_t* font_ptr = Font_GetByName(cl_system_font->string);
+		font_ptr = Font_GetByName(cl_system_font->string);
 
 		if (!font_ptr)
 		{
@@ -78,14 +87,18 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 		}
 	}
 
-	int32_t string_length = strlen(text);
+	int32_t string_length = strlen(final_text);
 
 	if (string_length == 0)
 	{
-		// set the size to 0 and return
-		*x = 0;
-		*y = 0;
-		return false;
+		// don't bother drawing empty strings
+		return;
+	}
+
+	if (string_length > MAX_STRING_LENGTH)
+	{
+		Com_Printf("Tried to print text of pre-colour code length %d, max %d", string_length, MAX_STRING_LENGTH);
+		return;
 	}
 
 	int32_t longest_line_x = 0;
@@ -95,7 +108,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
-		char next_char = text[char_num];
+		char next_char = final_text[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
 		if (next_char == '\n'
@@ -186,7 +199,14 @@ void Text_DrawChar(const char* font, int32_t x, int32_t y, char text)
 
 void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 {
+	va_list args;
 	// TODO: VARARGS
+	va_start(args, text);
+	
+	char final_text[MAX_STRING_LENGTH] = { 0 };
+
+	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
+	va_end(args);
 
 	font_t* font_ptr = Font_GetByName(font);
 
@@ -194,7 +214,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 	{
 		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
 
-		font_t* font_ptr = Font_GetByName(cl_system_font->string);
+		font_ptr = Font_GetByName(cl_system_font->string);
 
 		if (!font_ptr)
 		{
@@ -203,7 +223,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		}
 	}
 
-	int32_t string_length = strlen(text);
+	int32_t string_length = strlen(final_text);
 
 	if (string_length == 0)
 	{
@@ -211,6 +231,12 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		return; 
 	}
 	
+	if (string_length > MAX_STRING_LENGTH)
+	{
+		Com_Printf("Tried to print text of pre-colour code length %d, max %d", string_length, MAX_STRING_LENGTH);
+		return;
+	}
+
 	int32_t initial_x = x;
 
 	int32_t current_x = x;
@@ -221,7 +247,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
-		char next_char = text[char_num];
+		char next_char = final_text[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
 		if (next_char == '\n'
@@ -236,7 +262,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		if (next_char == ' ')
 		{
 			// just use the size of the font divided by 2.5 (TODO: DEFINE THIS) for now
-			current_x += (font_ptr->size/ 2.5f) * vid_hudscale->value;
+			current_x += (font_ptr->size / 2.5f) * vid_hudscale->value;
 			continue; // skip spaces
 		}
 

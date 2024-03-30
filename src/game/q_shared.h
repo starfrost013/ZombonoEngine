@@ -861,7 +861,7 @@ typedef enum
 #define	GF_NO_HEALTH			0x00000001	// 1
 #define	GF_NO_ITEMS				0x00000002	// 2
 #define	GF_WEAPONS_STAY			0x00000004	// 4
-#define	GF_NO_FALLING			0x00000008	// 8
+#define	GF_NO_FALL_DAMAGE		0x00000008	// 8
 #define	GF_INSTANT_ITEMS		0x00000010	// 16
 #define	GF_SAME_LEVEL			0x00000020	// 32
 #define GF_UNUSED1				0x00000040	// 64

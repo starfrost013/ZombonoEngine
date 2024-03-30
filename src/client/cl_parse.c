@@ -313,7 +313,7 @@ void CL_ParseServerData (void)
 
 	if (i != PROTOCOL_VERSION)
 		Com_Error (ERR_DROP,
-			"Server returned version %i, not %i\nEither your engine is incompatible with the server, or you need to re-record the demo file you're trying to play.", i, PROTOCOL_VERSION);
+			"Server returned protocol version %i, not %i\nEither your engine is incompatible with the server, or you need to re-record the demo file you're trying to play.", i, PROTOCOL_VERSION);
 
 	cl.servercount = MSG_ReadLong (&net_message);
 	cl.attractloop = MSG_ReadByte (&net_message);
