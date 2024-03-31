@@ -171,9 +171,6 @@
     <ClCompile Include="mobs\mob_ogre.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mobs\mob_soldier.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mobs\mob_zombie.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -209,9 +206,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mobs\mob_player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mobs\mob_soldier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mobs\mob_zombie.h">

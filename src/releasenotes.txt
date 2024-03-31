@@ -37,6 +37,9 @@ April 6, 2024
 * Replaced cl_showposition and cl_showvelocity with cl_showpos that shows both
 	* Is now actually client sided and works while connected (the previous version ran on the server...and tehrefore only worked in SP...)
 * Text engine now has varargs support
+* Remove Quake 2 monster_soldier and soldier models/sounds (was used for basing zombie code off it, but it's mature enough to remove now)
+* Remove z_tdm_ussr (sucks and was never finished)
+* Massively simplify code for svc_centerprint now we have a text engine supporting newlines (fixes 40th character of each lnie only being displayed every other trigger)
 
 Version 0.0.5
 March 23, 2024

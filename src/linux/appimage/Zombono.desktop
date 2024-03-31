@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Icon=Zombono
+Exec=Zombono
+Terminal=false
+Type=Application
+Categories=Game;
+Name=zombono
+GenericName=Zombono
+Comment=Summon the undead today in a retro inspired 90s fps!

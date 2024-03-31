@@ -192,10 +192,9 @@ for a few moments
 void SCR_CenterPrint (char *str)
 {
 	char	*s;
-	char	line[64];
 	int32_t 	i, j, l;
 
-	strncpy (scr_centerstring, str, sizeof(scr_centerstring)-1);
+	strncpy (scr_centerstring, str, sizeof(scr_centerstring));
 	scr_centertime_off = scr_centertime->value;
 	scr_centertime_start = cl.time;
 
@@ -210,36 +209,11 @@ void SCR_CenterPrint (char *str)
 	}
 
 	// echo it to the console
-	Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
+	Com_Printf("\n\n");
 
-	s = str;
-	do	
-	{
-	// scan the width of the line
-		for (l=0 ; l<40 ; l++)
-			if (s[l] == '\n' || !s[l])
-				break;
-		for (i=0 ; i<(40-l)/2 ; i++)
-			line[i] = ' ';
+	Com_Printf("%s", str);
 
-		for (j=0 ; j<l ; j++)
-		{
-			line[i++] = s[j];
-		}
-
-		line[i] = '\n';
-		line[i+1] = 0;
-
-		Com_Printf ("%s", line);
-
-		while (*s && *s != '\n')
-			s++;
-
-		if (!*s)
-			break;
-		s++;		// skip the \n
-	} while (1);
-	Com_Printf("\n\n\n\n");
+	Com_Printf("\n\n");
 	Con_ClearNotify ();
 }
 
@@ -264,40 +238,11 @@ void SCR_DrawCenterString (void)
 	else
 		y = 48;
 
-	do	
-	{
-	// scan the width of the line to get where it REALLY ends
-	// we do the same hack here as in the cosnole
-		char temp = ' ';
-		for (l = 0; l < 40; l++)
-		{
-			if (start[l] == '\n' || !start[l])
-			{
-				temp = start[l];
-				start[l] = '\0'; // line terminator for text system
-				break;
-			}
-		}
-
-		Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
-		x = (viddef.width - size_x*vid_hudscale->value)/2;
-		SCR_AddDirtyPoint32_t (x, y);
-		Text_Draw(cl_system_font->string, x, y, start);
-
-		// restore original character
-		start[l] = temp;
-
-		SCR_AddDirtyPoint32_t (x, y+system_font_ptr->line_height*vid_hudscale->value);
-			
-		y += system_font_ptr->line_height*vid_hudscale->value;
-
-		while (*start && *start != '\n')
-			start++;
-
-		if (!*start)
-			break;
-		start++;		// skip the \n
-	} while (1);
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
+	x = (viddef.width - size_x * vid_hudscale->value) / 2;
+	SCR_AddDirtyPoint32_t(x, y);
+	Text_Draw(cl_system_font->string, x, y, start);
+	SCR_AddDirtyPoint32_t(x, y + system_font_ptr->line_height * vid_hudscale->value);
 }
 
 void SCR_CheckDrawCenterString (void)

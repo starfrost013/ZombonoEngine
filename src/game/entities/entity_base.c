@@ -110,7 +110,6 @@ spawn_t	spawns[] = {
 	{"misc_teleporter_dest", SP_misc_teleporter_dest},
 	{"misc_blackhole", SP_misc_blackhole},
 
-	{"monster_soldier", SP_monster_soldier},
 	{"monster_zombie", SP_monster_zombie},
 	{"monster_zombie_fast", SP_monster_zombie_fast},
 	{"monster_ogre", SP_monster_ogre},
@@ -426,19 +425,19 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 		{
 			bool killEntity = false;
 
-			if (gamemode->value == 0
+			if (gamemode->value == GAMEMODE_TDM
 				&& ent->spawnflags & SPAWNFLAG_NOT_TDM) killEntity = true;
 
-			if (gamemode->value == 1
+			if (gamemode->value == GAMEMODE_HOSTAGE
 				&& ent->spawnflags & SPAWNFLAG_NOT_HOSTAGE) killEntity = true;
 
-			if (gamemode->value == 2
+			if (gamemode->value == GAMEMODE_WAVES
 				&& ent->spawnflags & SPAWNFLAG_NOT_WAVES) killEntity = true;
 
-			if (gamemode->value == 3
+			if (gamemode->value == GAMEMODE_COOP
 				&& ent->spawnflags & SPAWNFLAG_NOT_COOP) killEntity = true;
 
-			if (gamemode->value == 4
+			if (gamemode->value == GAMEMODE_CONTROL_POINT
 				&& ent->spawnflags & SPAWNFLAG_NOT_CONTROL_POINT) killEntity = true;
 		
 			if (((skill->value == 0) && (ent->spawnflags & SPAWNFLAG_NOT_EASY)) ||

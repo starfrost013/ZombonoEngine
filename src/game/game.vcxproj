@@ -303,7 +303,6 @@
     <ClCompile Include="gameplay\game_monster_flash.c" />
     <ClCompile Include="physics\physics_movement.c" />
     <ClCompile Include="mobs\mob_ogre.c" />
-    <ClCompile Include="mobs\mob_soldier.c" />
     <ClCompile Include="mobs\mob_zombie.c" />
     <ClCompile Include="mobs\mob_zombie_fast.c" />
     <ClCompile Include="gameplay\game_client_connect.c" />
@@ -334,7 +333,6 @@
     <ClInclude Include="entities\entity_base.h" />
     <ClInclude Include="mobs\mob_ogre.h" />
     <ClInclude Include="mobs\mob_player.h" />
-    <ClInclude Include="mobs\mob_soldier.h" />
     <ClInclude Include="mobs\mob_zombie.h" />
     <ClInclude Include="mobs\mob_zombie_fast.h" />
     <ClInclude Include="q_shared.h" />

@@ -101,7 +101,6 @@ void SP_misc_teleporter(edict_t* self);
 void SP_misc_teleporter_dest(edict_t* self);
 void SP_misc_blackhole(edict_t* self);
 
-void SP_monster_soldier(edict_t* self);
 void SP_monster_zombie(edict_t* self);
 void SP_monster_zombie_fast(edict_t* self);
 void SP_monster_ogre(edict_t* self);
