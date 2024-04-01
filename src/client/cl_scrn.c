@@ -1169,7 +1169,6 @@ void SCR_UpdateScreen (void)
 			// still draw console if cl_drawhud is 0
 			if (cl_drawhud->value)
 			{
-				/*
 				SCR_DrawStats();
 				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)
 					SCR_DrawLayout();
@@ -1188,7 +1187,6 @@ void SCR_UpdateScreen (void)
 				SCR_DrawPause();
 
 				UI_Draw();
-				*/
 			}
 
 			if (cl_showpos->value)

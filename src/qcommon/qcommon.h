@@ -59,16 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CPUSTRING "Unknown"
 #endif
 
-#elif defined __APPLE__
-
-#ifdef NDEBUG
-#define BUILDSTRING "MacOS"
-#else
-#define BUILDSTRING "MacOS DEBUG"
-#endif
-#define CPUSTRING "x64"
-
-#else	// !WIN32
+#else	// !WIN32 and !__LINUX__
 
 #define BUILDSTRING "Define the Platform Name!"
 #define	CPUSTRING	"Define the Platform Name!"
