@@ -247,13 +247,13 @@ void IN_MouseEvent (int32_t mstate, int32_t x, int32_t y)
 			!(mouse_oldbuttonstate & (1<<i)) )
 		{
 			// MOUSE4 and MOUSE5 detection needs to have an offset applied due to higher virtual key codes
-			Key_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), true, sys_msg_time, x, y);
+			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), true, sys_msg_time, x, y);
 		}
 
 		if ( !(mstate & (1<<i)) &&
 			(mouse_oldbuttonstate & (1<<i)) )
 		{
-				Key_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), false, sys_msg_time, x, y);
+				Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), false, sys_msg_time, x, y);
 		}
 	}	
 		
@@ -667,13 +667,13 @@ void IN_Commands (void)
 		if ( (buttonstate & (1<<i)) && !(joy_oldbuttonstate & (1<<i)) )
 		{
 			key_index = (i < 4) ? K_JOY1 : K_AUX1;
-			Key_Event (key_index + i, true, 0, 0, 0);
+			Input_Event (key_index + i, true, 0, 0, 0);
 		}
 
 		if ( !(buttonstate & (1<<i)) && (joy_oldbuttonstate & (1<<i)) )
 		{
 			key_index = (i < 4) ? K_JOY1 : K_AUX1;
-			Key_Event (key_index + i, false, 0, 0, 0);
+			Input_Event (key_index + i, false, 0, 0, 0);
 		}
 	}
 	joy_oldbuttonstate = buttonstate;
@@ -700,12 +700,12 @@ void IN_Commands (void)
 		{
 			if ( (povstate & (1<<i)) && !(joy_oldpovstate & (1<<i)) )
 			{
-				Key_Event (K_AUX29 + i, true, 0, 0, 0);
+				Input_Event (K_AUX29 + i, true, 0, 0, 0);
 			}
 
 			if ( !(povstate & (1<<i)) && (joy_oldpovstate & (1<<i)) )
 			{
-				Key_Event (K_AUX29 + i, false, 0, 0, 0);
+				Input_Event (K_AUX29 + i, false, 0, 0, 0);
 			}
 		}
 		joy_oldpovstate = povstate;

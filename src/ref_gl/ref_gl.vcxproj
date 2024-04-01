@@ -94,7 +94,7 @@
     <OutDir>$(SolutionDir)build\out\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)build\out\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\obj_ref_gl</IntDir>
   </PropertyGroup>
@@ -131,6 +131,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib-vc2022</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -138,16 +139,28 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;_USRDLL;REF_GL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)\external\include</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -169,6 +182,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib-vc2022</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -196,6 +210,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib-vc2022</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -215,14 +230,17 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;REF_GL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)\external\include</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -242,14 +260,17 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;REF_GL_EXPORTS;PLAYTEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)\external\include</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -260,9 +281,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\game\q_shared.c" />
-    <ClCompile Include="..\win32\glw_imp.c" />
-    <ClCompile Include="..\win32\qgl_win.c" />
+    <ClCompile Include="gl_glfw.c" />
     <ClCompile Include="..\win32\q_shwin.c" />
+    <ClCompile Include="external\src\glad.c" />
     <ClCompile Include="gl_draw.c" />
     <ClCompile Include="gl_image.c" />
     <ClCompile Include="gl_light.c" />
@@ -285,9 +306,13 @@
     <ClInclude Include="..\qcommon\qfiles.h" />
     <ClInclude Include="anorms.h" />
     <ClInclude Include="anormtab.h" />
+    <ClInclude Include="external\include\glad\gl.h" />
+    <ClInclude Include="external\include\GLFW\glfw3.h" />
+    <ClInclude Include="external\include\GLFW\glfw3native.h" />
+    <ClInclude Include="external\include\KHR\khrplatform.h" />
+    <ClInclude Include="gl_state.h" />
     <ClInclude Include="gl_local.h" />
     <ClInclude Include="gl_model.h" />
-    <ClInclude Include="qgl.h" />
     <ClInclude Include="warpsin.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

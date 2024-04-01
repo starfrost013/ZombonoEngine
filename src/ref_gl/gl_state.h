@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -8,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -17,30 +18,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#ifndef _WIN32
-#  error You should not be including this file on this platform
-#endif
 
-#ifndef __GLW_WIN_H__
-#define __GLW_WIN_H__
+#pragma once
+#include "gl_local.h"
 
-typedef struct
+// gl_state.h: Holds the OpenGL renderer state
+
+typedef struct gl_state_s
 {
-	HINSTANCE	hInstance;
-	void	*wndproc;
+	GLFWwindow* window;					// The GLFW window
 
-	HDC     hDC;			// handle to device context
-	HWND    hWnd;			// handle to window
-	MONITORINFOEX monInfo;	// active monitor info
-	HGLRC   hGLRC;			// handle to GL rendering context
+	float inverse_intensity;
+	bool fullscreen;					// Are we in fullscreen?
 
-	HINSTANCE hinstOpenGL;	// HINSTANCE for the OpenGL library
+	int32_t     prev_mode;
 
-	bool mcd_accelerated;
+	int32_t lightmap_textures;
 
-	FILE *log_fp;
-} glwstate_t;
+	int	currenttextures[2];
+	int32_t currenttmu;
 
-extern glwstate_t glw_state;
+	float camera_separation;
+	bool stereo_enabled;
 
-#endif
+} gl_state_t;

@@ -370,24 +370,20 @@ const char *VID_MenuKey( int32_t key )
 	case K_ESCAPE:
 		CancelChanges( NULL );
 		return NULL;
-	case K_KP_UPARROW:
 	case K_UPARROW:
 		m->cursor--;
 		Menu_AdjustCursor( m, -1 );
 		sound = "misc/menu2.wav";
 		break;
-	case K_KP_DOWNARROW:
 	case K_DOWNARROW:
 		m->cursor++;
 		Menu_AdjustCursor( m, 1 );
 		sound = "misc/menu2.wav";
 		break;
-	case K_KP_LEFTARROW:
 	case K_LEFTARROW:
 		Menu_SlideItem( m, -1 );
 		sound = "misc/menu2.wav";
 		break;
-	case K_KP_RIGHTARROW:
 	case K_RIGHTARROW:
 		Menu_SlideItem( m, 1 );
 		sound = "misc/menu2.wav";

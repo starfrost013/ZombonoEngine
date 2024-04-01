@@ -168,7 +168,6 @@ const char *Default_MenuKey( menuframework_t *m, int32_t key )
 	case K_ESCAPE:
 		M_PopMenu();
 		return menu_out_sound;
-	case K_KP_UPARROW:
 	case K_UPARROW:
 		if ( m )
 		{
@@ -185,7 +184,6 @@ const char *Default_MenuKey( menuframework_t *m, int32_t key )
 			sound = menu_move_sound;
 		}
 		break;
-	case K_KP_DOWNARROW:
 	case K_DOWNARROW:
 		if ( m )
 		{
@@ -194,7 +192,6 @@ const char *Default_MenuKey( menuframework_t *m, int32_t key )
 			sound = menu_move_sound;
 		}
 		break;
-	case K_KP_LEFTARROW:
 	case K_LEFTARROW:
 		if ( m )
 		{
@@ -202,7 +199,6 @@ const char *Default_MenuKey( menuframework_t *m, int32_t key )
 			sound = menu_move_sound;
 		}
 		break;
-	case K_KP_RIGHTARROW:
 	case K_RIGHTARROW:
 		if ( m )
 		{
@@ -428,13 +424,11 @@ const char *M_Main_Key (int32_t key)
 		M_PopMenu ();
 		break;
 
-	case K_KP_DOWNARROW:
 	case K_DOWNARROW:
 		if (++m_main_cursor >= MAIN_ITEMS)
 			m_main_cursor = 0;
 		return sound;
 
-	case K_KP_UPARROW:
 	case K_UPARROW:
 		if (--m_main_cursor < 0)
 			m_main_cursor = MAIN_ITEMS - 1;
@@ -654,7 +648,7 @@ static void M_UnbindCommand (char *command)
 
 	l = (int32_t)strlen(command);
 
-	for (j=0 ; j<256 ; j++)
+	for (j=0 ; j<NUM_KEYS ; j++)
 	{
 		b = keybindings[j];
 		if (!b)
@@ -675,7 +669,7 @@ static void M_FindKeysForCommand (char *command, int32_t *twokeys)
 	l = (int32_t)strlen(command);
 	count = 0;
 
-	for (j=0 ; j<256 ; j++)
+	for (j=0 ; j<NUM_KEYS ; j++)
 	{
 		b = keybindings[j];
 		if (!b)
@@ -1024,8 +1018,7 @@ static const char *Keys_MenuKey( int32_t key )
 		KeyBindingFunc( item );
 		return menu_in_sound;
 	case K_BACKSPACE:		// delete bindings
-	case K_DEL:				// delete bindings
-	case K_KP_DEL:
+	case K_DELETE:				// delete bindings
 		M_UnbindCommand( bindnames[item->generic.localdata[0]][0] );
 		return menu_out_sound;
 	default:

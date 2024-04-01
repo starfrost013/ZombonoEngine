@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#pragma once 
 //
 // qfiles.h: quake file formats
 // This file must be identical in the quake and utils directories

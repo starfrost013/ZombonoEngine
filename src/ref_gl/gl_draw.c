@@ -30,8 +30,8 @@ Draw_InitLocal
 */
 void Draw_InitLocal (void)
 {
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 /*
@@ -94,16 +94,16 @@ void Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 	}
 
 	GL_Bind (gl->texnum);
-	qglBegin (GL_QUADS);
-	qglTexCoord2f (gl->sl, gl->tl);
-	qglVertex2f (x, y);
-	qglTexCoord2f (gl->sh, gl->tl);
-	qglVertex2f (x+w, y);
-	qglTexCoord2f (gl->sh, gl->th);
-	qglVertex2f (x+w, y+h);
-	qglTexCoord2f (gl->sl, gl->th);
-	qglVertex2f (x, y+h);
-	qglEnd ();
+	glBegin (GL_QUADS);
+	glTexCoord2f (gl->sl, gl->tl);
+	glVertex2f (x, y);
+	glTexCoord2f (gl->sh, gl->tl);
+	glVertex2f (x+w, y);
+	glTexCoord2f (gl->sh, gl->th);
+	glVertex2f (x+w, y+h);
+	glTexCoord2f (gl->sl, gl->th);
+	glVertex2f (x, y+h);
+	glEnd ();
 }
 
 
@@ -125,16 +125,16 @@ void Draw_Pic (int32_t x, int32_t y, char *pic)
 	}
 
 	GL_Bind (gl->texnum);
-	qglBegin (GL_QUADS);
-	qglTexCoord2f (gl->sl, gl->tl);
-	qglVertex2f (x, y);
-	qglTexCoord2f (gl->sh, gl->tl);
-	qglVertex2f (x+gl->width*scale->value, y);
-	qglTexCoord2f (gl->sh, gl->th);
-	qglVertex2f (x+gl->width*scale->value, y+gl->height*scale->value);
-	qglTexCoord2f (gl->sl, gl->th);
-	qglVertex2f (x, y+gl->height*scale->value);
-	qglEnd ();
+	glBegin (GL_QUADS);
+	glTexCoord2f (gl->sl, gl->tl);
+	glVertex2f (x, y);
+	glTexCoord2f (gl->sh, gl->tl);
+	glVertex2f (x+gl->width*scale->value, y);
+	glTexCoord2f (gl->sh, gl->th);
+	glVertex2f (x+gl->width*scale->value, y+gl->height*scale->value);
+	glTexCoord2f (gl->sl, gl->th);
+	glVertex2f (x, y+gl->height*scale->value);
+	glEnd ();
 
 }
 
@@ -170,21 +170,21 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 
 	// draw it
 	// set up the colour as well
-	qglEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
-	qglColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
- 	qglBegin(GL_QUADS);
-	qglTexCoord2f(coord_begin_x, coord_begin_y);
-	qglVertex2f(x, y);
-	qglTexCoord2f(coord_end_x, coord_begin_y);
-	qglVertex2f(x + size_x * scale->value, y);
-	qglTexCoord2f(coord_end_x, coord_end_y);
-	qglVertex2f(x + size_x * scale->value, y + size_y * scale->value);
-	qglTexCoord2f(coord_begin_x, coord_end_y);
-	qglVertex2f(x, y + size_y * scale->value);
-	qglEnd();
-	qglColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	qglDisable(GL_BLEND);
+	glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+ 	glBegin(GL_QUADS);
+	glTexCoord2f(coord_begin_x, coord_begin_y);
+	glVertex2f(x, y);
+	glTexCoord2f(coord_end_x, coord_begin_y);
+	glVertex2f(x + size_x * scale->value, y);
+	glTexCoord2f(coord_end_x, coord_end_y);
+	glVertex2f(x + size_x * scale->value, y + size_y * scale->value);
+	glTexCoord2f(coord_begin_x, coord_end_y);
+	glVertex2f(x, y + size_y * scale->value);
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glDisable(GL_BLEND);
 }
 
 /*
@@ -228,16 +228,16 @@ void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 	}
 
 	GL_Bind (image->texnum);
-	qglBegin (GL_QUADS);
-	qglTexCoord2f (x/64.0, y/64.0);
-	qglVertex2f (x, y);
-	qglTexCoord2f ( (x+w)/64.0, y/64.0);
-	qglVertex2f (x+w, y);
-	qglTexCoord2f ( (x+w)/64.0, (y+h)/64.0);
-	qglVertex2f (x+w, y+h);
-	qglTexCoord2f ( x/64.0, (y+h)/64.0 );
-	qglVertex2f (x, y+h);
-	qglEnd ();
+	glBegin (GL_QUADS);
+	glTexCoord2f (x/64.0, y/64.0);
+	glVertex2f (x, y);
+	glTexCoord2f ( (x+w)/64.0, y/64.0);
+	glVertex2f (x+w, y);
+	glTexCoord2f ( (x+w)/64.0, (y+h)/64.0);
+	glVertex2f (x+w, y+h);
+	glTexCoord2f ( x/64.0, (y+h)/64.0 );
+	glVertex2f (x, y+h);
+	glEnd ();
 
 }
 
@@ -257,9 +257,9 @@ void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g
 		byte		v[4];
 	} color;
 
-	//qglBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-	qglEnable (GL_BLEND);
-	qglDisable (GL_TEXTURE_2D);
+	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+	glEnable (GL_BLEND);
+	glDisable (GL_TEXTURE_2D);
 
 	// set up RGBA colors
 	color.v[0] = r;
@@ -269,22 +269,22 @@ void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g
 
 	float alpha = (float)color.v[3] / 255.0f;
 
-	qglColor4f (color.v[0]/255.0,
+	glColor4f (color.v[0]/255.0,
 		color.v[1]/255.0,
 		color.v[2]/255.0,
 		alpha);
 
-	qglBegin (GL_QUADS);
+	glBegin (GL_QUADS);
 
-	qglVertex2f (x,y);
-	qglVertex2f (x+w, y);
-	qglVertex2f (x+w, y+h);
-	qglVertex2f (x, y+h);
+	glVertex2f (x,y);
+	glVertex2f (x+w, y);
+	glVertex2f (x+w, y+h);
+	glVertex2f (x, y+h);
 
-	qglEnd ();
-	qglColor4f (1,1,1,1);
-	qglEnable (GL_TEXTURE_2D);
-	qglDisable (GL_BLEND);
+	glEnd ();
+	glColor4f (1,1,1,1);
+	glEnable (GL_TEXTURE_2D);
+	glDisable (GL_BLEND);
 }
 
 //=============================================================================
@@ -298,18 +298,18 @@ Draw_FadeScreen
 */
 void Draw_FadeScreen (void)
 {
-	qglEnable (GL_BLEND);
-	qglDisable (GL_TEXTURE_2D);
-	qglColor4f (0, 0, 0, 0.8);
-	qglBegin (GL_QUADS);
+	glEnable (GL_BLEND);
+	glDisable (GL_TEXTURE_2D);
+	glColor4f (0, 0, 0, 0.8);
+	glBegin (GL_QUADS);
 
-	qglVertex2f (0,0);
-	qglVertex2f (vid.width, 0);
-	qglVertex2f (vid.width, vid.height);
-	qglVertex2f (0, vid.height);
+	glVertex2f (0,0);
+	glVertex2f (vid.width, 0);
+	glVertex2f (vid.width, vid.height);
+	glVertex2f (0, vid.height);
 
-	qglEnd ();
-	qglColor4f (1,1,1,1);
-	qglEnable (GL_TEXTURE_2D);
-	qglDisable (GL_BLEND);
+	glEnd ();
+	glColor4f (1,1,1,1);
+	glEnable (GL_TEXTURE_2D);
+	glDisable (GL_BLEND);
 }

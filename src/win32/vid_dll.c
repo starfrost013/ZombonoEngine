@@ -51,6 +51,11 @@ cvar_t		*r_customwidth;
 cvar_t		*r_customheight;
 cvar_t		*viewsize;
 
+
+// Structs for GLFW...
+
+
+
 // Global variables used internally by this module
 viddef_t	viddef;				// global video state; used by other modules
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
@@ -150,8 +155,8 @@ uint8_t        scantokey[128] =
 	'b',    'n',    'm',    ',',    '.',    '/',    K_SHIFT,'*', 
 	K_ALT,' ',   0  ,    K_F1, K_F2, K_F3, K_F4, K_F5,   // 3 
 	K_F6, K_F7, K_F8, K_F9, K_F10,  K_PAUSE,    0  , K_HOME, 
-	K_UPARROW,K_PGUP,K_KP_MINUS,K_LEFTARROW,K_KP_5,K_RIGHTARROW, K_KP_PLUS,K_END, //4 
-	K_DOWNARROW,K_PGDN,K_INS,K_DEL,0,0,             0,              K_F11, 
+	K_UPARROW,K_PAGE_UP,K_MINUS,K_LEFTARROW,K_KP_5,K_RIGHTARROW, VK_OEM_PLUS,K_END, //4 
+	K_DOWNARROW,K_PAGE_DOWN,K_INSERT,K_DELETE,0,0,             0,              K_F11, 
 	K_F12,0  ,    0  ,    0  ,    0  ,    0  ,    0  ,    0,        // 5
 	0  ,    0  ,    0  ,    0  ,    0  ,    0  ,    0  ,    0, 
 	0  ,    0  ,    0  ,    0  ,    0  ,    0  ,    0  ,    0,        // 6 
@@ -182,31 +187,7 @@ int32_t MapKey (int32_t key)
 
 	if ( !is_extended )
 	{
-		switch ( result )
-		{
-		case K_HOME:
-			return K_KP_HOME;
-		case K_UPARROW:
-			return K_KP_UPARROW;
-		case K_PGUP:
-			return K_KP_PGUP;
-		case K_LEFTARROW:
-			return K_KP_LEFTARROW;
-		case K_RIGHTARROW:
-			return K_KP_RIGHTARROW;
-		case K_END:
-			return K_KP_END;
-		case K_DOWNARROW:
-			return K_KP_DOWNARROW;
-		case K_PGDN:
-			return K_KP_PGDN;
-		case K_INS:
-			return K_KP_INS;
-		case K_DEL:
-			return K_KP_DEL;
-		default:
-			return result;
-		}
+		return result;
 	}
 	else
 	{
@@ -215,15 +196,15 @@ int32_t MapKey (int32_t key)
 		case 0x0D:
 			return K_KP_ENTER;
 		case 0x2F:
-			return K_KP_SLASH;
+			return K_SLASH;
 		case 0xAF:
-			return K_KP_PLUS;
+			return VK_OEM_PLUS;
 		}
 		return result;
 	}
 }
 
-void AppActivate(BOOL fActive, BOOL minimize)
+void AppActivate(bool fActive, bool minimize)
 {
 	Minimized = minimize;
 
@@ -278,13 +259,13 @@ LONG WINAPI MainWndProc (
 	{
 		if ( ( ( int32_t ) wParam ) > 0 )
 		{
-			Key_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
-			Key_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
 		}
 		else
 		{
-			Key_Event( K_MWHEELDOWN, true, sys_msg_time, 0, 0 );
-			Key_Event( K_MWHEELDOWN, false, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELDOWN, true, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELDOWN, false, sys_msg_time, 0, 0 );
 		}
         return DefWindowProc (hWnd, uMsg, wParam, lParam);
 	}
@@ -298,13 +279,13 @@ LONG WINAPI MainWndProc (
 		*/
 		if ( ( int16_t ) HIWORD( wParam ) > 0 )
 		{
-			Key_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
-			Key_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELUP, true, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELUP, false, sys_msg_time, 0, 0 );
 		}
 		else
 		{
-			Key_Event( K_MWHEELDOWN, true, sys_msg_time, 0, 0 );
-			Key_Event( K_MWHEELDOWN, false, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELDOWN, true, sys_msg_time, 0, 0 );
+			Input_Event( K_MWHEELDOWN, false, sys_msg_time, 0, 0 );
 		}
 		break;
 
@@ -335,9 +316,6 @@ LONG WINAPI MainWndProc (
 			fMinimized = (BOOL) HIWORD(wParam);
 
 			AppActivate( fActive != WA_INACTIVE, fMinimized);
-
-			if ( reflib_active )
-				re.AppActivate( !( fActive == WA_INACTIVE ) );
 
 			// handle toggling between game's fullscreen and desktop resolution on ALT+TAB
 			if (vid_fullscreen->value)
@@ -459,12 +437,12 @@ LONG WINAPI MainWndProc (
 		}
 		// fall through
 	case WM_KEYDOWN:
-		Key_Event( MapKey( lParam ), true, sys_msg_time, 0, 0);
+		Input_Event( MapKey( lParam ), true, sys_msg_time, 0, 0);
 		break;
 
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
-		Key_Event( MapKey( lParam ), false, sys_msg_time, 0, 0);
+		Input_Event( MapKey( lParam ), false, sys_msg_time, 0, 0);
 		break;
 
 	default:	// pass all unhandled messages to DefWindowProc
@@ -673,6 +651,9 @@ bool VID_LoadRefresh( char *name )
 	}
 //PGM
 //======
+
+	re.SetKeyPressedProc(Key_Event);
+	//re.SetMousePressedProc(Input_Event);
 
 	return true;
 }

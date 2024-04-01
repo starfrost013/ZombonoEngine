@@ -130,57 +130,11 @@ bool Field_Key( menufield_t *f, int32_t key )
 {
 	extern int32_t keydown[];
 
-	switch ( key )
-	{
-	case K_KP_SLASH:
-		key = '/';
-		break;
-	case K_KP_MINUS:
-		key = '-';
-		break;
-	case K_KP_PLUS:
-		key = '+';
-		break;
-	case K_KP_HOME:
-		key = '7';
-		break;
-	case K_KP_UPARROW:
-		key = '8';
-		break;
-	case K_KP_PGUP:
-		key = '9';
-		break;
-	case K_KP_LEFTARROW:
-		key = '4';
-		break;
-	case K_KP_5:
-		key = '5';
-		break;
-	case K_KP_RIGHTARROW:
-		key = '6';
-		break;
-	case K_KP_END:
-		key = '1';
-		break;
-	case K_KP_DOWNARROW:
-		key = '2';
-		break;
-	case K_KP_PGDN:
-		key = '3';
-		break;
-	case K_KP_INS:
-		key = '0';
-		break;
-	case K_KP_DEL:
-		key = '.';
-		break;
-	}
-
 	if ( key > 127 )
 	{
 		switch ( key )
 		{
-		case K_DEL:
+		case K_DELETE:
 		default:
 			return false;
 		}
@@ -190,7 +144,7 @@ bool Field_Key( menufield_t *f, int32_t key )
 	** support pasting from the clipboard
 	*/
 	if ( ( toupper( key ) == 'V' && keydown[K_CTRL] ) ||
-		 ( ( ( key == K_INS ) || ( key == K_KP_INS ) ) && keydown[K_SHIFT] ) )
+		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && keydown[K_SHIFT] ) )
 	{
 		char *cbd;
 		
@@ -211,7 +165,6 @@ bool Field_Key( menufield_t *f, int32_t key )
 
 	switch ( key )
 	{
-	case K_KP_LEFTARROW:
 	case K_LEFTARROW:
 	case K_BACKSPACE:
 		if ( f->cursor > 0 )
@@ -226,8 +179,7 @@ bool Field_Key( menufield_t *f, int32_t key )
 		}
 		break;
 
-	case K_KP_DEL:
-	case K_DEL:
+	case K_DELETE:
 		memmove( &f->buffer[f->cursor], &f->buffer[f->cursor+1], strlen( &f->buffer[f->cursor+1] ) + 1 );
 		break;
 

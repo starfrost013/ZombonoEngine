@@ -40,6 +40,12 @@ April 6, 2024
 * Remove Quake 2 monster_soldier and soldier models/sounds (was used for basing zombie code off it, but it's mature enough to remove now)
 * Remove z_tdm_ussr (sucks and was never finished)
 * Massively simplify code for svc_centerprint now we have a text engine supporting newlines (fixes 40th character of each lnie only being displayed every other trigger)
+* Remove old textures:
+	* Quake 2 skyboxes
+	* Soldier models/textures
+	* ourpic* textures
+* Massively refactored the OpenGL renderer.
+	* gl_
 
 Version 0.0.5
 March 23, 2024

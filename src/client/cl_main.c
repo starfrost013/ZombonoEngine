@@ -1824,6 +1824,9 @@ void CL_Init (void)
 	cls.disable_screen = 0;
 	Cbuf_AddText("exec playtest_server.cfg");
 #endif
+
+	// let's go!
+	AppActivate(true, false);
 }
 
 /*

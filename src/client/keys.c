@@ -37,12 +37,12 @@ int32_t 	edit_line=0;
 int32_t 	history_line=0;
 
 int32_t 	key_waiting;
-char	*keybindings[256];
-bool	consolekeys[256];	// if true, can't be rebound while in console
-bool	menubound[256];	// if true, can't be rebound while in menu
-int32_t 	keyshift[256];		// key to map to if shift held down in console
-int32_t 	key_repeats[256];	// if > 1, it is autorepeating
-bool	keydown[256];
+char	*keybindings[NUM_KEYS];
+bool	consolekeys[NUM_KEYS];	// if true, can't be rebound while in console
+bool	menubound[NUM_KEYS];	// if true, can't be rebound while in menu
+int32_t 	keyshift[NUM_KEYS];		// key to map to if shift held down in console
+int32_t 	key_repeats[NUM_KEYS];	// if > 1, it is autorepeating
+bool	keydown[NUM_KEYS];
 
 typedef struct
 {
@@ -79,13 +79,12 @@ keyname_t keynames[] =
 	{"F11", K_F11},
 	{"F12", K_F12},
 
-	{"INS", K_INS},
-	{"DEL", K_DEL},
-	{"PGDN", K_PGDN},
-	{"PGUP", K_PGUP},
+	{"INS", K_INSERT},
+	{"DEL", K_DELETE},
+	{"PGDN", K_PAGE_DOWN},
+	{"PGUP", K_PAGE_UP},
 	{"HOME", K_HOME},
 	{"END", K_END},
-	{"CMD", K_CMD},
 
 	{"MOUSE1", K_MOUSE1},
 	{"MOUSE2", K_MOUSE2},
@@ -131,21 +130,21 @@ keyname_t keynames[] =
 	{"AUX31", K_AUX31},
 	{"AUX32", K_AUX32},
 
-	{"KP_HOME",			K_KP_HOME },
-	{"KP_UPARROW",		K_KP_UPARROW },
-	{"KP_PGUP",			K_KP_PGUP },
-	{"KP_LEFTARROW",	K_KP_LEFTARROW },
+	{"KP_HOME",			K_HOME },
+	{"UPARROW",		K_UPARROW },
+	{"KP_PGUP",			K_PAGE_UP },
+	{"LEFTARROW",	K_LEFTARROW },
 	{"KP_5",			K_KP_5 },
-	{"KP_RIGHTARROW",	K_KP_RIGHTARROW },
-	{"KP_END",			K_KP_END },
-	{"KP_DOWNARROW",	K_KP_DOWNARROW },
-	{"KP_PGDN",			K_KP_PGDN },
+	{"RIGHTARROW",	K_RIGHTARROW },
+	{"KP_END",			K_END },
+	{"DOWNARROW",	K_DOWNARROW },
+	{"KP_PGDN",			K_PAGE_DOWN },
 	{"KP_ENTER",		K_KP_ENTER },
-	{"KP_INS",			K_KP_INS },
-	{"KP_DEL",			K_KP_DEL },
-	{"KP_SLASH",		K_KP_SLASH },
-	{"KP_MINUS",		K_KP_MINUS },
-	{"KP_PLUS",			K_KP_PLUS },
+	{"KP_INS",			K_INSERT },
+	{"KP_DEL",			K_DELETE },
+	{"KP_SLASH",		K_SLASH },
+	{"KP_MINUS",		K_MINUS },
+	{"KP_PLUS",			VK_OEM_PLUS },
 
 	{"MWHEELUP", K_MWHEELUP },
 	{"MWHEELDOWN", K_MWHEELDOWN },
@@ -200,52 +199,52 @@ void Key_Console (int32_t key)
 
 	switch ( key )
 	{
-	case K_KP_SLASH:
+	case K_SLASH:
 		key = '/';
 		break;
-	case K_KP_MINUS:
+	case K_MINUS:
 		key = '-';
 		break;
-	case K_KP_PLUS:
+	case VK_OEM_PLUS:
 		key = '+';
 		break;
-	case K_KP_HOME:
+	case K_HOME:
 		key = '7';
 		break;
-	case K_KP_UPARROW:
+	case K_UPARROW:
 		key = '8';
 		break;
-	case K_KP_PGUP:
+	case K_PAGE_UP:
 		key = '9';
 		break;
-	case K_KP_LEFTARROW:
+	case K_LEFTARROW:
 		key = '4';
 		break;
 	case K_KP_5:
 		key = '5';
 		break;
-	case K_KP_RIGHTARROW:
+	case K_RIGHTARROW:
 		key = '6';
 		break;
-	case K_KP_END:
+	case K_END:
 		key = '1';
 		break;
-	case K_KP_DOWNARROW:
+	case K_DOWNARROW:
 		key = '2';
 		break;
-	case K_KP_PGDN:
+	case K_PAGE_DOWN:
 		key = '3';
 		break;
-	case K_KP_INS:
+	case K_INSERT:
 		key = '0';
 		break;
-	case K_KP_DEL:
+	case K_DELETE:
 		key = '.';
 		break;
 	}
 
 	if ( ( toupper( key ) == 'V' && keydown[K_CTRL] ) ||
-		 ( ( ( key == K_INS ) || ( key == K_KP_INS ) ) && keydown[K_SHIFT] ) )
+		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && keydown[K_SHIFT] ) )
 	{
 		char *cbd;
 		
@@ -305,14 +304,14 @@ void Key_Console (int32_t key)
 		return;
 	}
 	
-	if ( ( key == K_BACKSPACE ) || ( key == K_LEFTARROW ) || ( key == K_KP_LEFTARROW ) || ( ( key == 'h' ) && ( keydown[K_CTRL] ) ) )
+	if ( ( key == K_BACKSPACE ) || ( key == K_LEFTARROW ) || ( key == K_LEFTARROW ) || ( ( key == 'h' ) && ( keydown[K_CTRL] ) ) )
 	{
 		if (key_linepos > 1)
 			key_linepos--;
 		return;
 	}
 
-	if ( ( key == K_UPARROW ) || ( key == K_KP_UPARROW ) ||
+	if ( ( key == K_UPARROW ) || ( key == K_UPARROW ) ||
 		 ( ( key == 'p' ) && keydown[K_CTRL] ) )
 	{
 		do
@@ -327,7 +326,7 @@ void Key_Console (int32_t key)
 		return;
 	}
 
-	if ( ( key == K_DOWNARROW ) || ( key == K_KP_DOWNARROW ) ||
+	if ( ( key == K_DOWNARROW ) || ( key == K_DOWNARROW ) ||
 		 ( ( key == 'n' ) && keydown[K_CTRL] ) )
 	{
 		if (history_line == edit_line) return;
@@ -350,13 +349,13 @@ void Key_Console (int32_t key)
 		return;
 	}
 
-	if (key == K_PGUP || key == K_MWHEELUP || key == K_KP_PGUP )
+	if (key == K_PAGE_UP || key == K_MWHEELUP || key == K_PAGE_UP )
 	{
 		con.display -= 2;
 		return;
 	}
 
-	if (key == K_PGDN || key == K_MWHEELDOWN || key == K_KP_PGDN )
+	if (key == K_PAGE_DOWN || key == K_MWHEELDOWN || key == K_PAGE_DOWN )
 	{
 		con.display += 2;
 		if (con.display > con.current)
@@ -364,13 +363,13 @@ void Key_Console (int32_t key)
 		return;
 	}
 
-	if (key == K_HOME || key == K_KP_HOME )
+	if (key == K_HOME || key == K_HOME )
 	{
 		con.display = con.current - con.totallines + 10;
 		return;
 	}
 
-	if (key == K_END || key == K_KP_END )
+	if (key == K_END || key == K_END )
 	{
 		con.display = con.current;
 		return;
@@ -557,7 +556,7 @@ void Key_Unbindall_f (void)
 {
 	int32_t 	i;
 	
-	for (i=0 ; i<256 ; i++)
+	for (i=0 ; i<NUM_KEYS ; i++)
 		if (keybindings[i])
 			Key_SetBinding (i, "");
 }
@@ -666,31 +665,22 @@ void Key_Init (void)
 	consolekeys[K_KP_ENTER] = true;
 	consolekeys[K_TAB] = true;
 	consolekeys[K_LEFTARROW] = true;
-	consolekeys[K_KP_LEFTARROW] = true;
 	consolekeys[K_RIGHTARROW] = true;
-	consolekeys[K_KP_RIGHTARROW] = true;
 	consolekeys[K_UPARROW] = true;
-	consolekeys[K_KP_UPARROW] = true;
 	consolekeys[K_DOWNARROW] = true;
-	consolekeys[K_KP_DOWNARROW] = true;
 	consolekeys[K_BACKSPACE] = true;
 	consolekeys[K_HOME] = true;
-	consolekeys[K_KP_HOME] = true;
 	consolekeys[K_END] = true;
-	consolekeys[K_KP_END] = true;
-	consolekeys[K_PGUP] = true;
-	consolekeys[K_KP_PGUP] = true;
-	consolekeys[K_PGDN] = true;
-	consolekeys[K_KP_PGDN] = true;
+	consolekeys[K_PAGE_UP] = true;
+	consolekeys[K_PAGE_DOWN] = true;
 	consolekeys[K_MWHEELUP] = true;
 	consolekeys[K_MWHEELDOWN] = true;
 	consolekeys[K_SHIFT] = true;
-	consolekeys[K_INS] = true;
-	consolekeys[K_KP_INS] = true;
-	consolekeys[K_KP_DEL] = true;
-	consolekeys[K_KP_SLASH] = true;
-	consolekeys[K_KP_PLUS] = true;
-	consolekeys[K_KP_MINUS] = true;
+	consolekeys[K_INSERT] = true;
+	consolekeys[K_DELETE] = true;
+	consolekeys[K_SLASH] = true;
+	consolekeys[VK_OEM_PLUS] = true;
+	consolekeys[K_MINUS] = true;
 	consolekeys[K_KP_5] = true;
 
 	consolekeys['`'] = false;
@@ -735,15 +725,25 @@ void Key_Init (void)
 	Cmd_AddCommand ("bindlist",Key_Bindlist_f);
 }
 
+// from GLFW (we don't link to it in zombono.exe)
+#define KEY_RELEASED	0
+#define KEY_PRESSED		1
+#define KEY_REPEAT		2
+
+void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods)
+{
+	Input_Event(key, (action == KEY_PRESSED), 0, 0, 0);
+}
+
 /*
 ===================
-Key_Event
+Input_Event
 
 Called by the system between frames for both key up and key down events
 Should NOT be called during an interrupt!
 ===================
 */
-void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
+void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 {
 	char	*kb;
 	char	cmd[1024];
@@ -766,25 +766,16 @@ void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 		return;
 	}
 
-#ifdef __APPLE__
-	// ALT+F4 game shutdown
-    if (down && keydown[K_ALT] && key == K_F4)
-    {
-		CL_Quit_f();
-		return;
-    }
-#endif
-
 	// update auto-repeat status
 	if (down)
 	{
 		key_repeats[key]++;
 		if (key != K_BACKSPACE 
 			&& key != K_PAUSE 
-			&& key != K_PGUP 
-			&& key != K_KP_PGUP 
-			&& key != K_PGDN
-			&& key != K_KP_PGDN
+			&& key != K_PAGE_UP 
+			&& key != K_PAGE_UP 
+			&& key != K_PAGE_DOWN
+			&& key != K_PAGE_DOWN
 			&& key_repeats[key] > 1)
 			return;	// ignore most autorepeats
 			
@@ -977,7 +968,7 @@ void Key_ClearStates (void)
 	for (i=0 ; i<256 ; i++)
 	{
 		if ( keydown[i] || key_repeats[i] )
-			Key_Event( i, false, 0, 0, 0);
+			Input_Event( i, false, 0, 0, 0);
 		keydown[i] = 0;
 		key_repeats[i] = 0;
 	}

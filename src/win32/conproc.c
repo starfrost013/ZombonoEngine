@@ -154,8 +154,8 @@ void InitConProc (int32_t argc, char **argv)
 
 void DeinitConProc (void)
 {
-	if (heventDone)
-		SetEvent (heventDone);
+	//if (heventDone)
+		//SetEvent (heventDone);
 }
 
 

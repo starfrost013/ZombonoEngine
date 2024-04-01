@@ -24,15 +24,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include <assert.h>
-#include <windows.h>
-#include "../ref_gl/gl_local.h"
-#include "winquake.h"
-
+#include "gl_local.h"
 
 gl_state_t  gl_state;			// The OpenGL state
 
-static bool GLimp_SwitchFullscreen( int32_t width, int32_t height );
-bool GL_Init (void);
+bool GL_Init();
+
+void GLFW_Error(const char* error);
+void GL_DestroyWindow();
+void GL_WindowSizeChanged(GLFWwindow* window, int width, int height); 
+
 
 extern cvar_t *vid_fullscreen;
 extern cvar_t *vid_ref;
@@ -53,12 +54,16 @@ static bool VerifyDriver( void )
 /*
 ** VID_CreateWindow
 */
-#define GLFW_ERROR_MAX	256
+
+#ifndef NDEBUG
+#define GL_CONTEXT_FLAG_DEBUG_BIT	0x2
+#define GL_CONTEXT_FLAGS			33310
+#define GL_DEBUG_OUTPUT				0x92E0
+#define	GL_DEBUG_OUTPUT_SYNCHRONOUS	0x8242
+#endif
 
 bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 {
-	char glfw_error[GLFW_ERROR_MAX];
-
 	GLFWmonitor* monitor = NULL;
 
 	// set fullscreen on the primary monitor
@@ -68,8 +73,7 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 
 		if (!monitor)
 		{
-			glfwGetError(&glfw_error);
-			ri.Con_Printf(PRINT_ALL, "Failed to set fullscreen (couldn't get primary monitor): %d\n", glfw_error);
+			ri.Con_Printf(PRINT_ALL, "Failed to set fullscreen (couldn't get primary monitor)\n");
 			return false;
 		}
 	}
@@ -78,8 +82,7 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 
 	if (!gl_state.window)
 	{
-		int error_code = glfwGetError(&glfw_error);
-		ri.Con_Printf(PRINT_ALL, "GLFW failed to create a window: %s\n", glfw_error);
+		ri.Con_Printf(PRINT_ALL, "GLFW failed to create a window\n");
 		return false;
 	}
 	
@@ -93,17 +96,37 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 	}
 
 	// set up callbacks
+	glfwSetWindowSizeCallback(gl_state.window, GL_WindowSizeChanged);
 	glfwSetWindowCloseCallback(gl_state.window, GL_Shutdown);
 
+	//TODO: vid_xpos, vid_ypos...
+	/*
+	** get our various GL strings
+	*/
+	gl_config.vendor_string = glGetString(GL_VENDOR);
+	ri.Con_Printf(PRINT_ALL, "GL_VENDOR: %s\n", gl_config.vendor_string);
+	gl_config.renderer_string = glGetString(GL_RENDERER);
+	ri.Con_Printf(PRINT_ALL, "GL_RENDERER: %s\n", gl_config.renderer_string);
+	gl_config.version_string = glGetString(GL_VERSION);
+	ri.Con_Printf(PRINT_ALL, "GL_VERSION: %s\n", gl_config.version_string);
+	gl_config.extensions_string = glGetString(GL_EXTENSIONS);
+	ri.Con_Printf(PRINT_ALL, "GL_EXTENSIONS: %s\n", gl_config.extensions_string);
+
+	glfwSetErrorCallback(gl_state.window, GLFW_Error);
+	
 	// let the sound and input subsystems know about the new window
 	ri.Vid_NewWindow (width, height);
 
 	return true;
 }
 
+void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
 
 /*
-** GLimp_SetMode
+** GL_SetMode
 */
 rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
 {
@@ -125,7 +148,8 @@ rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullsc
 	// destroy the existing window
 	if (gl_state.window)
 	{
-		GL_Shutdown ();
+		GL_DestroyWindow ();
+		gl_state.window = NULL;
 	}
 
 	// do a CDS if needed
@@ -172,6 +196,11 @@ rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullsc
 	return rserr_ok;
 }
 
+void GL_DestroyWindow()
+{
+	glfwDestroyWindow(gl_state.window);
+}
+
 /*
 ** GLimp_Shutdown
 **
@@ -183,21 +212,10 @@ rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullsc
 */
 void GL_Shutdown(void)
 {
-	glfwDestroyWindow(gl_state.window);
+	GL_DestroyWindow();
+	glfwTerminate(gl_state.window);
 	gl_state.window = NULL;
-}
 
-
-/*
-** GLimp_Init
-**
-** This routine is responsible for initializing the OS specific portions
-** of OpenGL.  Under Win32 this means dealing with the pixelformats and
-** doing the wgl interface stuff.
-*/
-int32_t GLimp_Init( void *hinstance, void *wndproc )
-{
-	return true;
 }
 
 // This routine initialises GLAD and GLFW, and gets an OpenGL context.
@@ -212,15 +230,15 @@ bool GL_Init (void)
 	// Set it to OpenGL 1.5, compatibility profile
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-
 	return true;
 }
 
 /*
 ** GLimp_BeginFrame
 */
-void GLimp_BeginFrame( float camera_separation )
+void GL_BeginFrame( float camera_separation )
 {
+
 	if ( gl_bitdepth->modified )
 	{
 		gl_bitdepth->modified = false;
@@ -247,34 +265,56 @@ void GLimp_BeginFrame( float camera_separation )
 ** as yet to be determined.  Probably better not to make this a GLimp
 ** function and instead do a call to GLimp_SwapBuffers.
 */
-void GLimp_EndFrame (void)
+void GL_EndFrame (void)
 {
 	int		err;
 
 	err = glGetError();
 	assert( err == GL_NO_ERROR );
 
+	glfwPollEvents();
 	// swap the buffers
 	glfwSwapBuffers(gl_state.window);
 	glfwSwapInterval(1);
 }
 
-/*
-** GLimp_AppActivate
-*/
-void GLimp_AppActivate( bool active )
+void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))
 {
-	/*
-	if ( active )
+	glfwSetMouseButtonCallback(gl_state.window, proc);
+}
+
+void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods))
+{
+	glfwSetKeyCallback(gl_state.window, proc);
+}
+
+void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos))
+{
+	glfwSetCursorPosCallback(gl_state.window, proc);
+}
+
+void	GL_EnableCursor(bool enabled)
+{
+	if (!enabled)
 	{
-		
-		SetForegroundWindow( gl_state.hWnd );
-		ShowWindow( gl_state.hWnd, SW_RESTORE );
+		// turn off mouse acceleration
+		if (glfwRawMouseMotionSupported())
+		{
+			glfwSetInputMode(gl_state.window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+		}
+
+		glfwSetInputMode(gl_state.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 	else
 	{
-		if ( vid_fullscreen->value )
-			ShowWindow( gl_state.hWnd, SW_MINIMIZE );
+		glfwSetInputMode(gl_state.window, GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
+
+		// turn it back on
+		glfwSetInputMode(gl_state.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
-	*/
+}
+
+void GLFW_Error(const char* error)
+{
+	Sys_Error("**** GLFW ERROR ****\n\n%s", error);
 }

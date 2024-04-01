@@ -19,16 +19,21 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+#pragma once 
 
 #ifdef _WIN32
 #  include <windows.h>
 #endif
 
 #include <stdio.h>
-
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <math.h>
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <KHR/khrplatform.h>
+#include "gl_state.h"
 
 #ifndef __linux__
 #ifndef GL_COLOR_INDEX8_EXT
@@ -37,8 +42,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #include "../client/ref.h"
-
-#include "qgl.h"
 
 #define	REF_VERSION	"Zombono Legacy OpenGL 1.x"
 
@@ -117,13 +120,30 @@ typedef enum
 	rserr_unknown
 } rserr_t;
 
+/*
+** GL config stuff
+*/
+
+// keep this system in case we need to work around buggy drivers.
+#define GL_RENDERER_OTHER		0x80000000
+
+typedef struct glconfig_s
+{
+	int32_t        renderer;
+	const char* renderer_string;
+	const char* vendor_string;
+	const char* version_string;
+	const char* extensions_string;
+
+	bool	allow_cds;
+} gl_config_t;
+
+extern gl_config_t  gl_config;
+extern gl_state_t	gl_state;
+
 #include "gl_model.h"
 
-void GL_BeginRendering (int32_t *x, int32_t *y, int32_t *width, int32_t *height);
-void GL_EndRendering (void);
-
 void GL_SetDefaultState( void );
-void GL_UpdateSwapInterval( void );
 
 extern	float	gldepthmin, gldepthmax;
 
@@ -202,7 +222,6 @@ extern cvar_t	*gl_particle_att_c;
 extern	cvar_t	*gl_nosubimage;
 extern	cvar_t	*gl_bitdepth;
 extern	cvar_t	*gl_mode;
-extern	cvar_t	*gl_log;
 extern	cvar_t	*gl_lightmap;
 extern	cvar_t	*gl_shadows;
 extern	cvar_t	*gl_dynamic;
@@ -224,7 +243,6 @@ extern	cvar_t	*gl_modulate;
 extern	cvar_t	*gl_playermip;
 extern	cvar_t	*gl_drawbuffer;
 extern  cvar_t  *gl_driver;
-extern	cvar_t	*gl_swapinterval;
 extern	cvar_t	*gl_texturemode;
 extern	cvar_t	*gl_texturealphamode;
 extern	cvar_t	*gl_texturesolidmode;
@@ -234,7 +252,7 @@ extern  cvar_t  *gl_lockpvs;
 extern	cvar_t	*vid_fullscreen;
 extern	cvar_t	*vid_gamma;
 
-extern	cvar_t		*intensity;
+extern	cvar_t	*intensity;
 
 extern	int		gl_lightmap_format;
 extern	int		gl_solid_format;
@@ -316,49 +334,17 @@ void	GL_ShutdownImages (void);
 
 void	GL_FreeUnusedImages (void);
 
-void GL_TextureAlphaMode( char *string );
-void GL_TextureSolidMode( char *string );
+void	GL_TextureAlphaMode( char *string );
+void	GL_TextureSolidMode( char *string );
 
-/*
-** GL config stuff
-*/
+//
+// gl_glfw.c
+//
 
-// keep this system in case we need to work around buggy drivers.
-#define GL_RENDERER_OTHER		0x80000000
-
-typedef struct glconfig_s
-{
-	int32_t         renderer;
-	const char *renderer_string;
-	const char *vendor_string;
-	const char *version_string;
-	const char *extensions_string;
-
-	bool	allow_cds;
-} glconfig_t;
-
-typedef struct glstate_s
-{
-	float inverse_intensity;
-	bool fullscreen;
-
-	int32_t     prev_mode;
-
-	int32_t lightmap_textures;
-
-	int	currenttextures[2];
-	int32_t currenttmu;
-
-	float camera_separation;
-	bool stereo_enabled;
-
-	uint8_t originalRedGammaTable[256];
-	uint8_t originalGreenGammaTable[256];
-	uint8_t originalBlueGammaTable[256];
-} glstate_t;
-
-extern glconfig_t  gl_config;
-extern glstate_t   gl_state;
+void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods));
+void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
+void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos));
+void	GL_EnableCursor(bool enabled);
 
 /*
 ====================================================================
@@ -378,11 +364,10 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 ====================================================================
 */
 
-void		GLimp_BeginFrame( float camera_separation );
-void		GLimp_EndFrame( void );
-int32_t 		GLimp_Init( void *hinstance, void *hWnd );
-void		GLimp_Shutdown( void );
-int32_t     	GLimp_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
+void		GL_BeginFrame( float camera_separation );
+void		GL_EndFrame( void );
+void		GL_Shutdown( void );
+int32_t     	GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
 void		GLimp_AppActivate( bool active );
 void		GLimp_EnableLogging( bool enable );
 void		GLimp_LogNewFrame( void );

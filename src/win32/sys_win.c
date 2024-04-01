@@ -43,9 +43,6 @@ static HANDLE		hinput, houtput;
 uint32_t	sys_msg_time;
 uint32_t	sys_frame_time;
 
-
-static HANDLE		qwclsemaphore;
-
 #define	MAX_NUM_ARGVS	128
 int32_t 		argc;
 char		*argv[MAX_NUM_ARGVS];
@@ -78,9 +75,6 @@ void Sys_Error (char *error, ...)
 
 	MessageBox(NULL, text, "Error", 0 /* MB_OK */ );
 
-	if (qwclsemaphore)
-		CloseHandle (qwclsemaphore);
-
 // shut down QHOST hooks if necessary 
 	DeinitConProc ();
 
@@ -94,7 +88,6 @@ void Sys_Quit (void)
 	CL_Shutdown();
 	Netservices_Shutdown();
 	Qcommon_Shutdown ();
-	CloseHandle (qwclsemaphore);
 	if (dedicated && dedicated->value)
 		FreeConsole ();
 	else if (debug_console->value)
@@ -644,14 +637,7 @@ int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 			Sleep (1);
 		}
 
-		while (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
-		{
-			if (!GetMessage (&msg, NULL, 0, 0))
-				Com_Quit ();
-			sys_msg_time = msg.time;
-			TranslateMessage (&msg);
-   			DispatchMessage (&msg);
-		}
+	
 
 		do
 		{

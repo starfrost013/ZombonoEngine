@@ -125,7 +125,7 @@ typedef struct refdef_s
 	particle_t	*particles;
 } refdef_t;
 
-#define	API_VERSION		6
+#define	API_VERSION		7
 
 //
 // these are the functions exported by the refresh module
@@ -147,7 +147,7 @@ typedef struct refexport_s
 	// if necessary.
 	//
 	// EndRegistration will free any remaining data that wasn't registered.
-	// Any model_s or skin_s pointers from before the BeginRegistration
+	// Any model_s or skin_s point32_ters from before the BeginRegistration
 	// are no longer valid after EndRegistration.
 	//
 	// Skins and images need to be differentiated, because skins
@@ -171,14 +171,18 @@ typedef struct refexport_s
 	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
 	void	(*DrawFadeScreen) (void);
 	/*
-	** video mode and refresh state management entry points
+	** video mode and refresh state management entry point32_ts
 	*/
 	void	(*BeginFrame)( float camera_separation );
 	void	(*EndFrame) (void);
 	void	(*EndWorldRenderpass) (void); // finish world rendering, apply postprocess and switch to UI render pass
 
-	void	(*AppActivate)( bool activate );
+	// void* here is a kludge for GLFW
 
+	void	(*SetMousePressedProc) (void proc(void* unused, int32_t button, int32_t action, int32_t mods));
+	void	(*SetMouseMovedProc) (void proc(void* unused, int32_t xpos, int32_t ypos));
+	void	(*SetKeyPressedProc) (void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
+	void	(*EnableCursor) (bool);
 } refexport_t;
 
 //
@@ -190,11 +194,11 @@ typedef struct
 
 	void	(*Cmd_AddCommand) (char *name, void(*cmd)(void));
 	void	(*Cmd_RemoveCommand) (char *name);
-	int32_t 	(*Cmd_Argc) (void);
+	int32_t (*Cmd_Argc) (void);
 	char	*(*Cmd_Argv) (int32_t i);
 	void	(*Cmd_ExecuteText) (int32_t exec_when, char *text);
 
-	void	(*Con_Printf) (int32_t print_level, char *str, ...);
+	void	(*Con_Printf) (int32_t print32_t_level, char *str, ...);
 
 	// files will be memory mapped read only
 	// the returned buffer may be part of a larger pak file,

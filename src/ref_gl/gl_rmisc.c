@@ -174,7 +174,7 @@ void GL_ScreenShot_f (void)
 	buffer[15] = vid.height>>8;
 	buffer[16] = 32;	// pixel size
 
-	qglReadPixels (0, 0, vid.width, vid.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer+18 ); 
+	glReadPixels (0, 0, vid.width, vid.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer+18 ); 
 
 	// swap rgba to bgra
 	// OpenGL2+ supports BGRA, but to be safe on all GL 1.1 drivers that may not implement the extension,
@@ -211,65 +211,44 @@ void GL_Strings_f( void )
 */
 void GL_SetDefaultState( void )
 {
-	qglClearColor (1,0, 0.5 , 0.5);
-	qglCullFace(GL_FRONT);
-	qglEnable(GL_TEXTURE_2D);
+	glClearColor (1,0, 0.5 , 0.5);
+	glCullFace(GL_FRONT);
+	glEnable(GL_TEXTURE_2D);
 
-	qglEnable(GL_ALPHA_TEST);
-	qglAlphaFunc(GL_GREATER, 0.0f);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
 
-	qglDisable (GL_DEPTH_TEST);
-	qglDisable (GL_CULL_FACE);
-	qglDisable (GL_BLEND);
+	glDisable (GL_DEPTH_TEST);
+	glDisable (GL_CULL_FACE);
+	glDisable (GL_BLEND);
 
-	qglColor4f (1,1,1,1);
+	glColor4f (1,1,1,1);
 
-	qglPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-	qglShadeModel (GL_FLAT);
+	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	glShadeModel (GL_FLAT);
 
 	GL_TextureMode( gl_texturemode->string );
 	GL_TextureAlphaMode( gl_texturealphamode->string );
 	GL_TextureSolidMode( gl_texturesolidmode->string );
 
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_filter_min);
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_filter_max);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_filter_min);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_filter_max);
 
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	qglBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	GL_TexEnv( GL_REPLACE );
 
-	if ( qglPointParameterfEXT )
-	{
-		float attenuations[3];
+	float attenuations[3];
 
-		attenuations[0] = gl_particle_att_a->value;
-		attenuations[1] = gl_particle_att_b->value;
-		attenuations[2] = gl_particle_att_c->value;
+	attenuations[0] = gl_particle_att_a->value;
+	attenuations[1] = gl_particle_att_b->value;
+	attenuations[2] = gl_particle_att_c->value;
 
-		qglEnable( GL_POINT_SMOOTH );
-		qglPointParameterfEXT( GL_POINT_SIZE_MIN_EXT, gl_particle_min_size->value );
-		qglPointParameterfEXT( GL_POINT_SIZE_MAX_EXT, gl_particle_max_size->value );
-		qglPointParameterfvEXT( GL_DISTANCE_ATTENUATION_EXT, attenuations );
-	}
-
-	GL_UpdateSwapInterval();
-}
-
-void GL_UpdateSwapInterval( void )
-{
-	if ( gl_swapinterval->modified )
-	{
-		gl_swapinterval->modified = false;
-
-		if ( !gl_state.stereo_enabled ) 
-		{
-#ifdef _WIN32
-			if ( qwglSwapIntervalEXT )
-				qwglSwapIntervalEXT( gl_swapinterval->value );
-#endif
-		}
-	}
+	glEnable(GL_POINT_SMOOTH);
+	glPointParameterf(GL_POINT_SIZE_MIN, gl_particle_min_size->value);
+	glPointParameterf(GL_POINT_SIZE_MAX, gl_particle_max_size->value);
+	glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION, attenuations);
 }

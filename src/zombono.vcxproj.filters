@@ -72,9 +72,6 @@
     <ClCompile Include="game\q_shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\m_flash.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="qcommon\pmove.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,7 +177,7 @@
     <ClCompile Include="qcommon\netservices\netservices_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\glw_imp.c">
+    <ClCompile Include="game\gameplay\game_monster_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

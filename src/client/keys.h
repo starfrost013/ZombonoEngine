@@ -21,62 +21,73 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #pragma once
 
-//
-// these are the key numbers that should be passed to Key_Event
-//
-#define	K_TAB			9
-#define	K_ENTER			13
-#define	K_ESCAPE		27
-#define	K_SPACE			32
+/*
+From GLFW:
+These key codes are inspired by the USB HID Usage Tables v1.12 (p. 53-60), 
+but re-arranged to map to 7-bit ASCII for printable keys (function keys are put in the 256+ range).
 
-// normal keys should be passed as lowercased ascii
+They have been renamed from KEY_ to Key_ to fit with the rest of the code
+*/
 
-#define	K_BACKSPACE		127
-#define	K_UPARROW		128
-#define	K_DOWNARROW		129
-#define	K_LEFTARROW		130
-#define	K_RIGHTARROW	131
+#define K_SPACE   32
+#define K_APOSTROPHE   39 /* ' */
+#define K_COMMA   44 /* , */
+#define K_MINUS   45 /* - */
+#define K_PERIOD   46 /* . */
+#define K_SLASH   47 /* / */
+#define K_0   48
+#define K_1   49
+#define K_2   50
+#define K_3   51
+#define K_4   52
+#define K_5   53
+#define K_6   54
+#define K_7   55
+#define K_8   56
+#define K_9   57
+#define K_SEMICOLON   59 /* ; */
+#define K_EQUAL   61 /* = */
+#define K_A   65
+#define K_B   66
+#define K_C   67
+#define K_D   68
+#define K_E   69
+#define K_F   70
+#define K_G   71
+#define K_H   72
+#define K_I   73
+#define K_J   74
+#define K_K   75
+#define K_L   76
+#define K_M   77
+#define K_N   78
+#define K_O   79
+#define K_P   80
+#define K_Q   81
+#define K_R   82
+#define K_S   83
+#define K_T   84
+#define K_U   85
+#define K_V   86
+#define K_W   87
+#define K_X   88
+#define K_Y   89
+#define K_Z   90
 
+#define K_LEFT_BRACKET   91 /* [ */
+#define K_BACKSLASH   92 /* \ */
+#define K_RIGHT_BRACKET   93 /* ] */
+#define K_GRAVE_ACCENT   96 /* ` */
+
+// Kludged virtual keys
 #define	K_ALT			132
 #define	K_CTRL			133
 #define	K_SHIFT			134
-#define	K_F1			135
-#define	K_F2			136
-#define	K_F3			137
-#define	K_F4			138
-#define	K_F5			139
-#define	K_F6			140
-#define	K_F7			141
-#define	K_F8			142
-#define	K_F9			143
-#define	K_F10			144
-#define	K_F11			145
-#define	K_F12			146
-#define	K_INS			147
-#define	K_DEL			148
-#define	K_PGDN			149
-#define	K_PGUP			150
-#define	K_HOME			151
-#define	K_END			152
-#define K_CMD			153
 
-#define K_KP_HOME		160
-#define K_KP_UPARROW	161
-#define K_KP_PGUP		162
-#define	K_KP_LEFTARROW	163
-#define K_KP_5			164
-#define K_KP_RIGHTARROW	165
-#define K_KP_END		166
-#define K_KP_DOWNARROW	167
-#define K_KP_PGDN		168
-#define	K_KP_ENTER		169
-#define K_KP_INS   		170
-#define	K_KP_DEL		171
-#define K_KP_SLASH		172
-#define K_KP_MINUS		173
-#define K_KP_PLUS		174
+#define K_WORLD_1   161 /* non-US #1 */
+#define K_WORLD_2   162 /* non-US #2 */
 
-#define K_PAUSE			255
+
 
 //
 // mouse buttons generate virtual keys
@@ -135,15 +146,93 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define K_MWHEELDOWN	239
 #define K_MWHEELUP		240
 
-extern char		*keybindings[256];
-extern	int32_t 	key_repeats[256];
+#define K_ESCAPE   256
+#define K_ENTER   257
+#define K_TAB   258
+#define K_BACKSPACE   259
+#define K_INSERT   260
+#define K_DELETE   261
+#define K_RIGHTARROW  262
+#define K_LEFTARROW   263
+#define K_DOWNARROW   264
+#define K_UPARROW   265
+#define K_PAGE_UP   266
+#define K_PAGE_DOWN   267
+#define K_HOME   268
+#define K_END   269
+#define K_CAPS_LOCK   280
+#define K_SCROLL_LOCK   281
+#define K_NUM_LOCK   282
+#define K_PRINT_SCREEN   283
+#define K_PAUSE   284
+#define K_F1   290
+#define K_F2   291
+#define K_F3   292
+#define K_F4   293
+#define K_F5   294
+#define K_F6   295
+#define K_F7   296
+#define K_F8   297
+#define K_F9   298
+#define K_F10   299
+#define K_F11   300
+#define K_F12   301
+#define K_F13   302
+#define K_F14   303
+#define K_F15   304
+#define K_F16   305
+#define K_F17   306
+#define K_F18   307
+#define K_F19   308
+#define K_F20   309
+#define K_F21   310
+#define K_F22   311
+#define K_F23   312
+#define K_F24   313
+#define K_F25   314
+
+#define K_KP_0   320
+#define K_KP_1   321
+#define K_KP_2   322
+#define K_KP_3   323
+#define K_KP_4   324
+#define K_KP_5   325
+#define K_KP_6   326
+#define K_KP_7   327
+#define K_KP_8   328
+#define K_KP_9   329
+#define K_KP_DECIMAL   330
+#define K_KP_DIVIDE   331
+#define K_KP_MULTIPLY   332
+#define K_KP_SUBTRACT   333
+#define K_KP_ADD   334
+#define K_KP_ENTER   335
+#define K_KP_EQUAL   336
+#define K_LEFT_SHIFT   340
+#define K_LEFT_CONTROL   341
+#define K_LEFT_ALT   342
+#define K_LEFT_SUPER   343
+#define K_RIGHT_SHIFT   344
+#define K_RIGHT_CONTROL   345
+#define K_RIGHT_ALT   346
+#define K_RIGHT_SUPER   347
+#define K_MENU   348
+#define NUM_KEYS   K_MENU
+#define K_PAUSE			255
+
+
+extern char* keybindings[NUM_KEYS];
+extern	int32_t 	Key_repeats[NUM_KEYS];
 
 extern	int32_t anykeydown;
 extern char chat_buffer[];
 extern	int32_t chat_bufferlen;
 extern	bool	chat_team;
 
-void Key_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y);
+// glfw
+void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods);
+
+void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int32_t keynum, char *binding);
