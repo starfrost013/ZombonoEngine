@@ -115,6 +115,16 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 	// let the sound and input subsystems know about the new window
 	ri.Vid_NewWindow (width, height);
 
+
+	if (!fullscreen)
+	{
+		int vid_xpos = ri.Cvar_Get("vid_xpos", "0", 0)->value;
+		int vid_ypos = ri.Cvar_Get("vid_ypos", "0", 0)->value;
+
+		glfwSetWindowPos(gl_state.window, vid_xpos, vid_ypos);
+	}
+
+
 	return true;
 }
 

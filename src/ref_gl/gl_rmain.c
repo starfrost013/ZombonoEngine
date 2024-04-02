@@ -486,8 +486,8 @@ void MYgluPerspective( GLdouble fovy, GLdouble aspect,
    xmin = ymin * aspect;
    xmax = ymax * aspect;
 
-   xmin += -( 2 * gl_state.camera_separation ) / zNear;
-   xmax += -( 2 * gl_state.camera_separation ) / zNear;
+   xmin += -( 2 * 0 ) / zNear;
+   xmax += -( 2 * 0 ) / zNear;
 
    glFrustum( xmin, xmax, ymin, ymax, zNear, zFar );
 }
@@ -969,9 +969,6 @@ R_BeginFrame
 */
 void R_BeginFrame( float camera_separation )
 {
-
-	gl_state.camera_separation = camera_separation;
-
 	/*
 	** change modes if necessary
 	*/

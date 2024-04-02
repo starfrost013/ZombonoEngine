@@ -156,6 +156,9 @@ void IN_ActivateMouse (void)
 	// this is how the old code worked
 	re.EnableCursor(false);
 	mouseactive = true;
+
+	window_center_x = ((Cvar_Get("vid_xpos", "0", 0)->value) + viddef.width) / 2;
+	window_center_y = ((Cvar_Get("vid_Ypos", "0", 0)->value) + viddef.height) / 2;
 }
 
 
@@ -223,7 +226,7 @@ void IN_MouseEvent (int32_t mstate, int32_t x, int32_t y)
 		if ( !(mstate & (1<<i)) &&
 			(mouse_oldbuttonstate & (1<<i)) )
 		{
-				Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), false, sys_msg_time, x, y);
+			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), false, sys_msg_time, x, y);
 		}
 	}	
 		
@@ -238,52 +241,23 @@ IN_MouseMove
 */
 void IN_MouseMove (usercmd_t *cmd)
 {
-	int32_t 	mx, my;
-
+	// This PoS is a garbage Starfrost special, written on April 2, 2024
 	if (!mouseactive)
 		return;
 
-	mx = last_x_pos - window_center_x;
-	my = last_y_pos - window_center_y;
+	if ((lookstrafe->value && mlooking))
+		cmd->sidemove = (m_side->value / window_center_y) * sensitivity->value;
+	else
+		cl.viewangles[YAW] = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
 
-	if (m_filter->value)
+	if ((mlooking || freelook->value))
 	{
-		mouse_x = (mx + old_mouse_x) * 0.5;
-		mouse_y = (my + old_mouse_y) * 0.5;
+		cl.viewangles[PITCH] = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
 	}
 	else
 	{
-		mouse_x = mx;
-		mouse_y = my;
+		cmd->forwardmove = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
 	}
-
-	old_mouse_x = mx;
-	old_mouse_y = my;
-
-	mouse_x *= sensitivity->value;
-	mouse_y *= sensitivity->value;
-
-// add mouse X/Y movement to cmd
-
-	if ((lookstrafe->value && mlooking ))
-		cmd->sidemove += m_side->value * mouse_x;
-	else
-		cl.viewangles[YAW] -= m_yaw->value * mouse_x;
-
-
-
-	if ( (mlooking || freelook->value))
-	{
-		cl.viewangles[PITCH] += m_pitch->value * mouse_y;
-	}
-	else
-	{
-		cmd->forwardmove -= m_forward->value * mouse_y;
-	}
-
-	// force the mouse to the center, so there's room to move
-	if (mx || my)
-		SetCursorPos (window_center_x, window_center_y);
 }
 
 
