@@ -254,6 +254,7 @@
       <DisableSpecificWarnings>4312;4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BufferSecurityCheck>true</BufferSecurityCheck>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -349,6 +350,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4312;4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -384,6 +386,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;PLAYTEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4312;4996</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -962,7 +962,7 @@ void R_RecursiveWorldNode (mnode_t *node)
 		return;
 	}
 
-// node is just a decision point32_t, so go down the apropriate sides
+// node is just a decision point, so go down the apropriate sides
 
 // find which side of the node we are on
 	plane = node->plane;

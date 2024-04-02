@@ -240,9 +240,9 @@ void SCR_DrawCenterString (void)
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
 	x = (viddef.width - size_x * vid_hudscale->value) / 2;
-	SCR_AddDirtyPoint32_t(x, y);
+	SCR_AddDirtyPoint(x, y);
 	Text_Draw(cl_system_font->string, x, y, start);
-	SCR_AddDirtyPoint32_t(x, y + system_font_ptr->line_height * vid_hudscale->value);
+	SCR_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
 }
 
 void SCR_CheckDrawCenterString (void)
@@ -606,7 +606,7 @@ void SCR_TimeRefresh_f (void)
 SCR_AddDirtyPoint
 =================
 */
-void SCR_AddDirtyPoint32_t (int32_t x, int32_t y)
+void SCR_AddDirtyPoint (int32_t x, int32_t y)
 {
 	if (x < scr_dirty.x1)
 		scr_dirty.x1 = x;
@@ -620,8 +620,8 @@ void SCR_AddDirtyPoint32_t (int32_t x, int32_t y)
 
 void SCR_DirtyScreen (void)
 {
-	SCR_AddDirtyPoint32_t (0, 0);
-	SCR_AddDirtyPoint32_t (viddef.width-1, viddef.height-1);
+	SCR_AddDirtyPoint (0, 0);
+	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
 }
 
 /*
@@ -767,8 +767,8 @@ void SCR_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t 
 	if (width > 5)
 		width = 5;
 
-	SCR_AddDirtyPoint32_t (x, y);
-	SCR_AddDirtyPoint32_t (x+width*CHAR_WIDTH+2, y+23);
+	SCR_AddDirtyPoint (x, y);
+	SCR_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
 
 	Com_sprintf (num, sizeof(num), "%i", value);
 	l = (int32_t)strlen(num);
@@ -903,8 +903,8 @@ void SCR_ExecuteLayoutString (char *s)
 				Com_Error (ERR_DROP, "Pic >= MAX_IMAGES");
 			if (cl.configstrings[CS_IMAGES+value])
 			{
-				SCR_AddDirtyPoint32_t (x, y);
-				SCR_AddDirtyPoint32_t (x+23, y+23);
+				SCR_AddDirtyPoint (x, y);
+				SCR_AddDirtyPoint (x+23, y+23);
 				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value]);
 			}
 			continue;
@@ -913,8 +913,8 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "picn"))
 		{	// draw a pic from a name
 			token = COM_Parse (&s);
-			SCR_AddDirtyPoint32_t (x, y);
-			SCR_AddDirtyPoint32_t (x+23, y+23);
+			SCR_AddDirtyPoint (x, y);
+			SCR_AddDirtyPoint (x+23, y+23);
 			re.DrawPic (x, y, token);
 			continue;
 		}
@@ -1094,7 +1094,6 @@ void SCR_UpdateScreen (void)
 {
 	int32_t numframes;
 	int32_t i;
-	float separation[2] = { 0, 0 };
 
 	// if the screen is disabled (loading plaque is up, or vid mode changing)
 	// do nothing at all
@@ -1111,31 +1110,11 @@ void SCR_UpdateScreen (void)
 	if (!scr_initialized || !con.initialized)
 		return;				// not initialized yet
 
-	/*
-	** range check cl_camera_separation so we don't inadvertently fry someone's
-	** brain
-	*/
-	if ( cl_stereo_separation->value > 1.0 )
-		Cvar_SetValue( "cl_stereo_separation", 1.0 );
-	else if ( cl_stereo_separation->value < 0 )
-		Cvar_SetValue( "cl_stereo_separation", 0.0 );
-
-	if ( cl_stereo->value )
-	{
-		numframes = 2;
-		separation[0] = -cl_stereo_separation->value / 2;
-		separation[1] =  cl_stereo_separation->value / 2;
-	}		
-	else
-	{
-		separation[0] = 0;
-		separation[1] = 0;
-		numframes = 1;
-	}
+	numframes = 1;
 
 	for ( i = 0; i < numframes; i++ )
 	{
-		re.BeginFrame( separation[i] );
+		re.BeginFrame();
 		// end frame and force video restart if swapchain is out of date
 		if (vid_ref->modified)
 		{
@@ -1161,7 +1140,7 @@ void SCR_UpdateScreen (void)
 			// do 3D refresh drawing, and then update the screen
 			SCR_CalcVrect ();
 
-			V_RenderView ( separation[i] );
+			V_RenderView ();
 
 			// clear any dirty part of the background
 			SCR_TileClear ();

@@ -258,8 +258,6 @@ extern client_static_t	cls;
 //
 // cvars
 //
-extern	cvar_t	*cl_stereo_separation;
-extern	cvar_t	*cl_stereo;
 
 extern	cvar_t	*cl_gun;
 extern	cvar_t	*cl_add_blend;
@@ -468,6 +466,8 @@ void CL_BaseMove (usercmd_t *cmd);
 
 void IN_CenterView (void);
 
+extern double last_x_pos, last_y_pos;
+
 float CL_KeyState (kbutton_t *key);
 char *Key_KeynumToString (int32_t keynum);
 
@@ -496,7 +496,7 @@ extern	int32_t 		gun_frame;
 extern	struct model_s	*gun_model;
 
 void V_Init (void);
-void V_RenderView( float stereo_separation );
+void V_RenderView();
 void V_AddEntity (entity_t *ent);
 void V_AddParticle (vec3_t org, int32_t color, float alpha);
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b);

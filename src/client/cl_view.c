@@ -257,8 +257,8 @@ void CL_PrepRefresh (void)
 	if (!cl.configstrings[CS_MODELS+1][0])
 		return;		// no map loaded
 
-	SCR_AddDirtyPoint32_t (0, 0);
-	SCR_AddDirtyPoint32_t (viddef.width-1, viddef.height-1);
+	SCR_AddDirtyPoint (0, 0);
+	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
 
 	// let the render dll load the map
 	strcpy (mapname, cl.configstrings[CS_MODELS+1] + 5);	// skip "maps/"
@@ -445,7 +445,7 @@ V_RenderView
 
 ==================
 */
-void V_RenderView( float stereo_separation )
+void V_RenderView()
 {
 	extern int32_t entitycmpfnc( const entity_t *, const entity_t * );
 
@@ -496,15 +496,6 @@ void V_RenderView( float stereo_separation )
 			cl.refdef.blend[3] = 0.5;
 		}
 
-		// offset vieworg appropriately if we're doing stereo separation
-		if ( stereo_separation != 0 )
-		{
-			vec3_t tmp;
-
-			VectorScale( cl.v_right, stereo_separation, tmp );
-			VectorAdd( cl.refdef.vieworg, tmp, cl.refdef.vieworg );
-		}
-
 		// never let it sit exactly on a node line, because a water plane can
 		// dissapear when viewed with the eye exactly on it.
 		// the server protocol only specifies to 1/8 pixel, so add 1/16 in each axis
@@ -553,8 +544,8 @@ void V_RenderView( float stereo_separation )
 		fprintf( log_stats_file, "%i,%i,%i,",r_numentities, r_numdlights, r_numparticles);
 
 
-	SCR_AddDirtyPoint32_t (scr_vrect.x, scr_vrect.y);
-	SCR_AddDirtyPoint32_t (scr_vrect.x+scr_vrect.width-1,
+	SCR_AddDirtyPoint (scr_vrect.x, scr_vrect.y);
+	SCR_AddDirtyPoint (scr_vrect.x+scr_vrect.width-1,
 		scr_vrect.y+scr_vrect.height-1);
 
 	SCR_DrawCrosshair ();

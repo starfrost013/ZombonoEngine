@@ -271,7 +271,7 @@ void GL_TexEnv( GLenum value );
 void GL_EnableMultitexture( bool enable );
 void GL_SelectTexture( GLenum );
 
-void R_LightPoint32_t (vec3_t p, vec3_t color);
+void R_LightPoint (vec3_t p, vec3_t color);
 void R_PushDlights (void);
 
 //====================================================================
@@ -280,8 +280,8 @@ extern	model_t	*r_worldmodel;
 
 extern	int		registration_sequence;
 
-bool R_Init( void *hinstance, void *hWnd );
-void	 R_Shutdown( void );
+bool R_Init();
+void R_Shutdown( void );
 
 void R_RenderView (refdef_t *fd);
 void GL_ScreenShot_f (void);
@@ -344,6 +344,8 @@ void	GL_TextureSolidMode( char *string );
 void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods));
 void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
 void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos));
+void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused));
+void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified));
 void	GL_EnableCursor(bool enabled);
 
 /*

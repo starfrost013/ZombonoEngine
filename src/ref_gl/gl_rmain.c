@@ -173,7 +173,7 @@ void R_DrawNullModel (void)
 	if ( currententity->flags & RF_FULLBRIGHT )
 		shadelight[0] = shadelight[1] = shadelight[2] = 1.0F;
 	else
-		R_LightPoint32_t (currententity->origin, shadelight);
+		R_LightPoint (currententity->origin, shadelight);
 
     glPushMatrix ();
 	R_RotateForEntity (currententity);
@@ -704,7 +704,7 @@ void R_SetLightLevel (void)
 
 	// save off light value for server to look at (BIG HACK!)
 
-	R_LightPoint32_t (r_newrefdef.vieworg, shadelight);
+	R_LightPoint (r_newrefdef.vieworg, shadelight);
 
 	// pick the greatest component, which should be the same
 	// as the mono value returned by software
@@ -863,7 +863,7 @@ bool R_SetMode (void)
 R_Init
 ===============
 */
-bool R_Init( void *hinstance, void *hWnd )
+bool R_Init()
 {	
 	char renderer_buffer[1000];
 	char vendor_buffer[1000];
@@ -1014,13 +1014,10 @@ void R_BeginFrame( float camera_separation )
 	{
 		gl_drawbuffer->modified = false;
 
-		if ( gl_state.camera_separation == 0 || !gl_state.stereo_enabled )
-		{
-			if ( Q_stricmp( gl_drawbuffer->string, "GL_FRONT" ) == 0 )
-				glDrawBuffer( GL_FRONT );
-			else
-				glDrawBuffer( GL_BACK );
-		}
+		if (Q_stricmp(gl_drawbuffer->string, "GL_FRONT") == 0)
+			glDrawBuffer(GL_FRONT);
+		else
+			glDrawBuffer(GL_BACK);
 	}
 
 	/*
@@ -1202,6 +1199,8 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.SetKeyPressedProc = GL_SetKeyPressedProc;
 	re.SetMousePressedProc = GL_SetMousePressedProc;
 	re.SetMouseMovedProc = GL_SetMouseMovedProc;
+	re.SetWindowFocusProc = GL_SetWindowFocusProc;
+	re.SetWindowIconifyProc = GL_SetWindowIconifyProc;
 	re.EnableCursor = GL_EnableCursor;
 
 	Swap_Init ();

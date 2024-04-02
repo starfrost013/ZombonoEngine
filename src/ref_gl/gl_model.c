@@ -694,7 +694,7 @@ void R_DrawAliasModel (entity_t *e)
 	}
 	else
 	{
-		R_LightPoint32_t (currententity->origin, shadelight);
+		R_LightPoint (currententity->origin, shadelight);
 
 		// player lighting hack for communication back to server
 		// big hack!

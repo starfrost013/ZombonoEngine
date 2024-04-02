@@ -45,7 +45,22 @@ April 6, 2024
 	* Soldier models/textures
 	* ourpic* textures
 * Massively refactored the OpenGL renderer.
-	* gl_
+	* gl_log and gl_swapinterval cvars removed
+	* gl_vsync cvar added to control VSync
+	* Upgraded legacy renderer from OpenGL 1.1 + many extensions, some of which never made it into core, to OpenGL 1.5
+		* This breaks GPUs made before 2003 - the oldest supported GPUs are the Radeon 9000 series and GeForce FX series
+	* QGL replaced with GLAD
+	* GLFW now used for windowing and input
+		* This should provide Non-QWERTY keyboard support, as virtual keys are used (untested, please test!)
+	* Removed win_noalttab cvar
+	* Renderer API version 7:
+		* Windowing events now handled in refresh DLL (for platform-independence reasons)
+		* Added SetWindowFocusProc, SetWindowIconifyProc, SetKeyPressedProc, SetMousePressedProc, SetMouseMovedProc, SetEnableCursor
+		* Removed AppActivate
+		* Init() no longer has any parameters
+		* BeginFrame() no longer has any parameters
+	* Removed stereoscopic 3D support
+		* Removed cl_stereo, cl_stereo_separation cvars
 
 Version 0.0.5
 March 23, 2024

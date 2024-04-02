@@ -136,7 +136,7 @@ typedef struct refexport_s
 	int32_t 	api_version;
 
 	// called when the library is loaded
-	bool	(*Init) ( void *hinstance, void *wndproc );
+	bool	(*Init) ();
 
 	// called before the library is unloaded
 	void	(*Shutdown) (void);
@@ -147,7 +147,7 @@ typedef struct refexport_s
 	// if necessary.
 	//
 	// EndRegistration will free any remaining data that wasn't registered.
-	// Any model_s or skin_s point32_ters from before the BeginRegistration
+	// Any model_s or skin_s pointers from before the BeginRegistration
 	// are no longer valid after EndRegistration.
 	//
 	// Skins and images need to be differentiated, because skins
@@ -171,17 +171,19 @@ typedef struct refexport_s
 	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
 	void	(*DrawFadeScreen) (void);
 	/*
-	** video mode and refresh state management entry point32_ts
+	** video mode and refresh state management entry points
 	*/
-	void	(*BeginFrame)( float camera_separation );
+	void	(*BeginFrame)();
 	void	(*EndFrame) (void);
 	void	(*EndWorldRenderpass) (void); // finish world rendering, apply postprocess and switch to UI render pass
 
 	// void* here is a kludge for GLFW
 
 	void	(*SetMousePressedProc) (void proc(void* unused, int32_t button, int32_t action, int32_t mods));
-	void	(*SetMouseMovedProc) (void proc(void* unused, int32_t xpos, int32_t ypos));
+	void	(*SetMouseMovedProc) (void proc(void* unused, double xpos, double ypos));
 	void	(*SetKeyPressedProc) (void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
+	void	(*SetWindowFocusProc) (void proc(void* unused, int32_t focused));
+	void	(*SetWindowIconifyProc) (void proc(void* unused, int32_t iconified));
 	void	(*EnableCursor) (bool);
 } refexport_t;
 

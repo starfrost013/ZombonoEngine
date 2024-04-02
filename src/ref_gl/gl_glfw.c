@@ -64,18 +64,16 @@ static bool VerifyDriver( void )
 
 bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 {
+	// Monitor is NULL for windowed mode,
+	// non-NULL for fullscreen
 	GLFWmonitor* monitor = NULL;
 
-	// set fullscreen on the primary monitor
+	// Fullscreen in GLFW Zombono is borderless windowed
 	if (fullscreen)
 	{
-		monitor = glfwGetPrimaryMonitor();
+		gl_state.fullscreen = true;
 
-		if (!monitor)
-		{
-			ri.Con_Printf(PRINT_ALL, "Failed to set fullscreen (couldn't get primary monitor)\n");
-			return false;
-		}
+		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 	}
 
 	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5) "CPUSTRING, NULL, NULL);
@@ -234,9 +232,9 @@ bool GL_Init (void)
 }
 
 /*
-** GLimp_BeginFrame
+** GL_BeginFrame
 */
-void GL_BeginFrame( float camera_separation )
+void GL_BeginFrame()
 {
 
 	if ( gl_bitdepth->modified )
@@ -244,18 +242,7 @@ void GL_BeginFrame( float camera_separation )
 		gl_bitdepth->modified = false;
 	}
 
-	if ( camera_separation < 0 && gl_state.stereo_enabled )
-	{
-		glDrawBuffer( GL_BACK_LEFT );
-	}
-	else if ( camera_separation > 0 && gl_state.stereo_enabled )
-	{
-		glDrawBuffer( GL_BACK_RIGHT );
-	}
-	else
-	{
-		glDrawBuffer( GL_BACK );
-	}
+	glDrawBuffer(GL_BACK);
 }
 
 /*
@@ -291,6 +278,16 @@ void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode,
 void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos))
 {
 	glfwSetCursorPosCallback(gl_state.window, proc);
+}
+
+void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused))
+{
+	glfwSetWindowFocusCallback(gl_state.window, proc);
+}
+
+void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified))
+{
+	glfwSetWindowIconifyCallback(gl_state.window, proc);
 }
 
 void	GL_EnableCursor(bool enabled)

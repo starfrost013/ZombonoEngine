@@ -119,17 +119,14 @@ if (!freelook->value && lookspring->value)
 
 int32_t 		mouse_buttons;
 int32_t 		mouse_oldbuttonstate;
-POINT		current_pos;
 int32_t 		mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
 
 int32_t 		old_x, old_y;
 
 bool	mouseactive;	// false when not focus app
 
-bool	restore_spi;
 bool	mouseinitialized;
 int32_t 	originalmouseparms[3], newmouseparms[3] = {0, 0, 0}; // explicitly disable mouse acceleration
-bool	mouseparmsvalid;
 
 int32_t 		window_center_x, window_center_y;
 RECT		window_rect;
@@ -156,28 +153,9 @@ void IN_ActivateMouse (void)
 	if (mouseactive)
 		return;
 
+	// this is how the old code worked
+	re.EnableCursor(false);
 	mouseactive = true;
-
-	if (mouseparmsvalid)
-		restore_spi = SystemParametersInfo (SPI_SETMOUSE, 0, newmouseparms, 0);
-
-	width = GetSystemMetrics (SM_CXSCREEN);
-	height = GetSystemMetrics (SM_CYSCREEN);
-
-	GetWindowRect ( cl_hwnd, &window_rect);
-
-	window_center_x = (window_rect.right + window_rect.left)/2;
-	window_center_y = (window_rect.top + window_rect.bottom)/2;
-
-	SetCursorPos (window_center_x, window_center_y);
-
-	old_x = window_center_x;
-	old_y = window_center_y;
-
-	SetCapture ( cl_hwnd );
-	ClipCursor (&window_rect);
-	while (ShowCursor (FALSE) >= 0)
-		;
 }
 
 
@@ -188,22 +166,15 @@ IN_DeactivateMouse
 Called when the window loses focus
 ===========
 */
-void IN_DeactivateMouse (void)
+void IN_DeactivateMouse(void)
 {
 	if (!mouseinitialized)
 		return;
 	if (!mouseactive)
 		return;
 
-	if (restore_spi)
-		SystemParametersInfo (SPI_SETMOUSE, 0, originalmouseparms, 0);
-
+	re.EnableCursor(true);
 	mouseactive = false;
-
-	ClipCursor (NULL);
-	ReleaseCapture ();
-	while (ShowCursor (TRUE) < 0)
-		;
 }
 
 
@@ -222,7 +193,6 @@ void IN_StartupMouse (void)
 		return; 
 
 	mouseinitialized = true;
-	mouseparmsvalid = SystemParametersInfo (SPI_GETMOUSE, 0, originalmouseparms, 0);
 	mouse_buttons = 5;
 }
 
@@ -273,12 +243,8 @@ void IN_MouseMove (usercmd_t *cmd)
 	if (!mouseactive)
 		return;
 
-	// find mouse movement
-	if (!GetCursorPos (&current_pos))
-		return;
-
-	mx = current_pos.x - window_center_x;
-	my = current_pos.y - window_center_y;
+	mx = last_x_pos - window_center_x;
+	my = last_y_pos - window_center_y;
 
 	if (m_filter->value)
 	{
@@ -427,7 +393,7 @@ void IN_Frame (void)
 		|| cls.key_dest == key_console
 		|| cls.key_dest == key_menu)
 	{
-		// temporarily deactivate if in fullscreen
+		// temporarily deactivate if in windowed
 		if (Cvar_VariableValue ("vid_fullscreen") == 0)
 		{
 			IN_DeactivateMouse ();
@@ -658,7 +624,6 @@ void IN_Commands (void)
 		return;
 	}
 
-	
 	// loop through the joystick buttons
 	// key a joystick event or auxillary event for higher number buttons for each state change
 	buttonstate = ji.dwButtons;

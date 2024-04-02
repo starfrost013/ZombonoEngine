@@ -182,7 +182,7 @@ vec3_t			pointcolor;
 cplane_t		*lightplane;		// used as shadow plane
 vec3_t			lightspot;
 
-int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
+int32_t RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 {
 	float		front, back, frac;
 	int			side;
@@ -208,7 +208,7 @@ int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
 	side = front < 0;
 	
 	if ( (back < 0) == side)
-		return RecursiveLightPoint32_t (node->children[side], start, end);
+		return RecursiveLightPoint (node->children[side], start, end);
 	
 	frac = front / (front-back);
 	mid[0] = start[0] + (end[0] - start[0])*frac;
@@ -216,7 +216,7 @@ int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
 	mid[2] = start[2] + (end[2] - start[2])*frac;
 	
 // go down front side	
-	r = RecursiveLightPoint32_t (node->children[side], start, mid);
+	r = RecursiveLightPoint (node->children[side], start, mid);
 	if (r >= 0)
 		return r;		// hit something
 		
@@ -280,7 +280,7 @@ int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
 	}
 
 // go down back side
-	return RecursiveLightPoint32_t (node->children[!side], mid, end);
+	return RecursiveLightPoint (node->children[!side], mid, end);
 }
 
 /*
@@ -288,7 +288,7 @@ int32_t RecursiveLightPoint32_t (mnode_t *node, vec3_t start, vec3_t end)
 R_LightPoint
 ===============
 */
-void R_LightPoint32_t (vec3_t p, vec3_t color)
+void R_LightPoint (vec3_t p, vec3_t color)
 {
 	vec3_t		end;
 	float		r;
@@ -308,7 +308,7 @@ void R_LightPoint32_t (vec3_t p, vec3_t color)
 	end[1] = p[1];
 	end[2] = p[2] - 2048;
 	
-	r = RecursiveLightPoint32_t (r_worldmodel->nodes, p, end);
+	r = RecursiveLightPoint (r_worldmodel->nodes, p, end);
 	
 	if (r == -1)
 	{

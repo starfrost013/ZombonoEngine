@@ -87,8 +87,6 @@ They have been renamed from KEY_ to Key_ to fit with the rest of the code
 #define K_WORLD_1   161 /* non-US #1 */
 #define K_WORLD_2   162 /* non-US #2 */
 
-
-
 //
 // mouse buttons generate virtual keys
 //
@@ -97,6 +95,10 @@ They have been renamed from KEY_ to Key_ to fit with the rest of the code
 #define	K_MOUSE3		202
 #define	K_MOUSE4		241
 #define	K_MOUSE5		242
+// GLFW
+#define K_MOUSE6		243
+#define K_MOUSE7		244
+#define K_MOUSE8		245
 
 //
 // joystick buttons
@@ -229,9 +231,14 @@ extern char chat_buffer[];
 extern	int32_t chat_bufferlen;
 extern	bool	chat_team;
 
-// glfw
+// glfw evetts
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods);
+void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods);
+void MouseMove_Event(void* unused, double xpos, double ypos);
+void WindowFocus_Event(void* unused, int32_t focused);
+void WindowIconify_Event(void* unused, int32_t iconified);
 
+// zombono events
 void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);

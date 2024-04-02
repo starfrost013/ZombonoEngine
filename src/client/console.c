@@ -537,8 +537,8 @@ void Con_DrawNotify (void)
 	
 	if (v)
 	{
-		SCR_AddDirtyPoint32_t (0,0);
-		SCR_AddDirtyPoint32_t (viddef.width-1, v*vid_hudscale->value);
+		SCR_AddDirtyPoint (0,0);
+		SCR_AddDirtyPoint (viddef.width-1, v*vid_hudscale->value);
 	}
 }
 
@@ -597,8 +597,8 @@ void Con_DrawConsole (float frac)
 		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback");
 	}
 
-	SCR_AddDirtyPoint32_t (0,0);
-	SCR_AddDirtyPoint32_t (viddef.width-1,lines-1);
+	SCR_AddDirtyPoint (0,0);
+	SCR_AddDirtyPoint (viddef.width-1,lines-1);
 
 	Com_sprintf (version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);

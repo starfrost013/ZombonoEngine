@@ -1040,7 +1040,6 @@ CONTROLS MENU
 
 =======================================================================
 */
-static cvar_t *win_noalttab;
 extern cvar_t *in_joystick;
 
 static menuframework_t	s_options_menu;
@@ -1048,7 +1047,6 @@ static menuaction_t		s_options_defaults_action;
 static menuaction_t		s_options_customize_options_action;
 static menuslider_t		s_options_sensitivity_slider;
 static menulist_t		s_options_freelook_box;
-static menulist_t		s_options_noalttab_box;
 static menulist_t		s_options_alwaysrun_box;
 static menulist_t		s_options_invertmouse_box;
 static menulist_t		s_options_lookspring_box;
@@ -1091,11 +1089,6 @@ static void MouseSensitivityFunc( void *unused )
 	Cvar_SetValue( "sensitivity", s_options_sensitivity_slider.curvalue / 2.0F );
 }
 
-static void NoAltTabFunc( void *unused )
-{
-	Cvar_SetValue( "win_noalttab", s_options_noalttab_box.curvalue );
-}
-
 static float ClampCvar( float min, float max, float value )
 {
 	if ( value < min ) return min;
@@ -1129,8 +1122,6 @@ static void ControlsSetMenuItemValues( void )
 
 	Cvar_SetValue( "in_joystick", ClampCvar( 0, 1, in_joystick->value ) );
 	s_options_joystick_box.curvalue		= in_joystick->value;
-
-	s_options_noalttab_box.curvalue			= win_noalttab->value;
 }
 
 static void ControlsResetDefaultsFunc( void *unused )
@@ -1231,8 +1222,6 @@ void Options_MenuInit( void )
 		"Angle",
 		0
 	};
-
-	win_noalttab = Cvar_Get( "win_noalttab", "0", CVAR_ARCHIVE );
 
 	/*
 	** configure controls menu and menu items

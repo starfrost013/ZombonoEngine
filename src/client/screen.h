@@ -48,5 +48,5 @@ extern	vrect_t		scr_vrect;		// position of render window
 extern	char		crosshair_pic[MAX_QPATH];
 extern	int32_t 		crosshair_width, crosshair_height;
 
-void SCR_AddDirtyPoint32_t (int32_t x, int32_t y);
+void SCR_AddDirtyPoint (int32_t x, int32_t y);
 void SCR_DirtyScreen (void);

@@ -38,7 +38,4 @@ typedef struct gl_state_s
 	int	currenttextures[2];
 	int32_t currenttmu;
 
-	float camera_separation;
-	bool stereo_enabled;
-
 } gl_state_t;

@@ -1561,7 +1561,7 @@ void SP_misc_teleporter (edict_t *ent)
 }
 
 /*QUAKED misc_teleporter_dest (1 0 0) (-32 -32 -24) (32 32 -16)
-Point32_t teleporters at these.
+Point teleporters at these.
 */
 void SP_misc_teleporter_dest (edict_t *ent)
 {
