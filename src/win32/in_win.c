@@ -158,7 +158,7 @@ void IN_ActivateMouse (void)
 	mouseactive = true;
 
 	window_center_x = ((Cvar_Get("vid_xpos", "0", 0)->value) + viddef.width) / 2;
-	window_center_y = ((Cvar_Get("vid_Ypos", "0", 0)->value) + viddef.height) / 2;
+	window_center_y = ((Cvar_Get("vid_ypos", "0", 0)->value) + viddef.height) / 2;
 }
 
 
@@ -214,19 +214,17 @@ void IN_MouseEvent (int32_t mstate, int32_t x, int32_t y)
 // perform button actions
 	for (i=0 ; i<mouse_buttons ; i++)
 	{
- 
-
 		if ( (mstate & (1<<i)) &&
 			!(mouse_oldbuttonstate & (1<<i)) )
 		{
 			// MOUSE4 and MOUSE5 detection needs to have an offset applied due to higher virtual key codes
-			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), true, sys_msg_time, x, y);
+			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), 0, true, sys_msg_time, x, y);
 		}
 
 		if ( !(mstate & (1<<i)) &&
 			(mouse_oldbuttonstate & (1<<i)) )
 		{
-			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), false, sys_msg_time, x, y);
+			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), 0, false, sys_msg_time, x, y);
 		}
 	}	
 		
@@ -245,18 +243,41 @@ void IN_MouseMove (usercmd_t *cmd)
 	if (!mouseactive)
 		return;
 
+	float new_yaw = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
+	float new_pitch = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
+	float new_move_forward = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
+	float new_move_side = (m_side->value / window_center_y) * sensitivity->value;
+
 	if ((lookstrafe->value && mlooking))
-		cmd->sidemove = (m_side->value / window_center_y) * sensitivity->value;
+		cmd->sidemove = new_move_side;
 	else
-		cl.viewangles[YAW] = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
+		cl.viewangles[YAW] = new_yaw;
 
 	if ((mlooking || freelook->value))
 	{
-		cl.viewangles[PITCH] = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
+		// IT USES DEGREES???
+		if (new_pitch > 90)
+		{
+			new_pitch = 90;
+			// prevent the player from moving down further than the camera allows
+			double pos_x = 0, pos_y = 0;
+			re.GetCursorPosition(&pos_x, &pos_y);
+			re.SetCursorPosition(pos_x, (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value);
+		}
+		else if (new_pitch < -90)
+		{
+			new_pitch = -90;
+			// prevent the player from moving down further than the camera allows
+			double pos_x = 0, pos_y = 0;
+			re.GetCursorPosition(&pos_x, &pos_y);
+			re.SetCursorPosition(pos_x, (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value);
+		}
+
+		cl.viewangles[PITCH] = new_pitch;
 	}
 	else
 	{
-		cmd->forwardmove = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
+		cmd->forwardmove = new_move_forward;
 	}
 }
 
@@ -606,13 +627,13 @@ void IN_Commands (void)
 		if ( (buttonstate & (1<<i)) && !(joy_oldbuttonstate & (1<<i)) )
 		{
 			key_index = (i < 4) ? K_JOY1 : K_AUX1;
-			Input_Event (key_index + i, true, 0, 0, 0);
+			Input_Event (key_index + i, 0, true, 0, 0, 0);
 		}
 
 		if ( !(buttonstate & (1<<i)) && (joy_oldbuttonstate & (1<<i)) )
 		{
 			key_index = (i < 4) ? K_JOY1 : K_AUX1;
-			Input_Event (key_index + i, false, 0, 0, 0);
+			Input_Event (key_index + i, 0, false, 0, 0, 0);
 		}
 	}
 	joy_oldbuttonstate = buttonstate;
@@ -639,12 +660,12 @@ void IN_Commands (void)
 		{
 			if ( (povstate & (1<<i)) && !(joy_oldpovstate & (1<<i)) )
 			{
-				Input_Event (K_AUX29 + i, true, 0, 0, 0);
+				Input_Event (K_AUX29 + i, 0, true, 0, 0, 0);
 			}
 
 			if ( !(povstate & (1<<i)) && (joy_oldpovstate & (1<<i)) )
 			{
-				Input_Event (K_AUX29 + i, false, 0, 0, 0);
+				Input_Event (K_AUX29 + i, 0, false, 0, 0, 0);
 			}
 		}
 		joy_oldpovstate = povstate;

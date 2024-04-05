@@ -475,7 +475,7 @@ void R_SetupFrame (void)
 }
 
 
-void MYgluPerspective( GLdouble fovy, GLdouble aspect,
+void SetGLPerspective( GLdouble fovy, GLdouble aspect,
 		     GLdouble zNear, GLdouble zFar )
 {
    GLdouble xmin, xmax, ymin, ymax;
@@ -485,9 +485,6 @@ void MYgluPerspective( GLdouble fovy, GLdouble aspect,
 
    xmin = ymin * aspect;
    xmax = ymax * aspect;
-
-   xmin += -( 2 * 0 ) / zNear;
-   xmax += -( 2 * 0 ) / zNear;
 
    glFrustum( xmin, xmax, ymin, ymax, zNear, zFar );
 }
@@ -524,7 +521,7 @@ void R_SetupGL (void)
 //	yfov = 2*atan((float)r_newrefdef.height/r_newrefdef.width)*180/M_PI;
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
-    MYgluPerspective (r_newrefdef.fov_y,  screenaspect,  4,  4096);
+    SetGLPerspective (r_newrefdef.fov_y,  screenaspect,  4,  4096);
 
 	glCullFace(GL_FRONT);
 
@@ -1184,7 +1181,7 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.DrawStretchPic = Draw_StretchPic;
 	re.DrawTileClear = Draw_TileClear;
 	re.DrawFill = Draw_Fill;
-	re.DrawFadeScreen= Draw_FadeScreen;
+	re.DrawFadeScreen = Draw_FadeScreen;
 
 	re.Init = R_Init;
 	re.Shutdown = R_Shutdown;
@@ -1199,7 +1196,9 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.SetWindowFocusProc = GL_SetWindowFocusProc;
 	re.SetWindowIconifyProc = GL_SetWindowIconifyProc;
 	re.EnableCursor = GL_EnableCursor;
-
+	re.GetCursorPosition = GL_GetCursorPosition;
+	re.SetCursorPosition = GL_SetCursorPosition;
+	
 	Swap_Init ();
 
 	return re;

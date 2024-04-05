@@ -3544,7 +3544,7 @@ void M_Draw (void)
 M_Keydown
 =================
 */
-void M_Keydown (int32_t key)
+void M_Keydown (int32_t key, bool shift_used)
 {
 	const char *s;
 

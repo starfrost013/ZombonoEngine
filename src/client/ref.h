@@ -185,6 +185,8 @@ typedef struct refexport_s
 	void	(*SetWindowFocusProc) (void proc(void* unused, int32_t focused));
 	void	(*SetWindowIconifyProc) (void proc(void* unused, int32_t iconified));
 	void	(*EnableCursor) (bool);
+	void	(*GetCursorPosition) (double* x, double* y); // UGLY, FUCKING BULLSHIT
+	void	(*SetCursorPosition) (double x, double y); // UGLY, FUCKING BULLSHIT
 } refexport_t;
 
 //

@@ -28,21 +28,22 @@ key up events are sent even if in console mode
 */
 
 #define		MAXCMDLINE	256
-char	key_lines[128][MAXCMDLINE];
+char		key_lines[128][MAXCMDLINE];
 int32_t 	key_linepos;
-int32_t 	shift_down=false;
-int32_t anykeydown;
+bool		shift_down=false;
+bool		caps_lock=false;
+int32_t		anykeydown;
 
 int32_t 	edit_line=0;
 int32_t 	history_line=0;
 
 int32_t 	key_waiting;
-char	*keybindings[NUM_KEYS];
-bool	consolekeys[NUM_KEYS];	// if true, can't be rebound while in console
-bool	menubound[NUM_KEYS];	// if true, can't be rebound while in menu
+char*		keybindings[NUM_KEYS];
+bool		consolekeys[NUM_KEYS];	// if true, can't be rebound while in console
+bool		menubound[NUM_KEYS];	// if true, can't be rebound while in menu
 int32_t 	keyshift[NUM_KEYS];		// key to map to if shift held down in console
 int32_t 	key_repeats[NUM_KEYS];	// if > 1, it is autorepeating
-bool	keydown[NUM_KEYS];
+bool		keydown[NUM_KEYS];
 
 typedef struct
 {
@@ -90,24 +91,15 @@ keyname_t keynames[] =
 	{ "x", K_X },
 	{ "y", K_Y },
 	{ "z", K_Z },
-	{ "6", K_6 },
-	{ "7", K_7 },
-	{ "8", K_8 },
-	{ "9", K_9 },
 
-	{"TAB", K_TAB},
-	{"ENTER", K_ENTER},
-	{ "ESCAPE", K_ESCAPE },
+	// Multiple names for the same key
+	{ " ", K_SPACE },
 	{ "SPACE", K_SPACE },
-	{ "BACKSPACE", K_BACKSPACE },
-	{ "UPARROW", K_UPARROW },
-	{ "DOWNARROW", K_DOWNARROW },
-	{ "LEFTARROW", K_LEFTARROW },
-	{ "RIGHTARROW", K_RIGHTARROW },
 
-	{ "ALT", K_ALT },
-	{ "CTRL", K_CTRL },
-	{ "SHIFT", K_SHIFT },
+	{ "TAB", K_TAB},
+	{ "ENTER", K_ENTER},
+	{ "ESCAPE", K_ESCAPE },
+	{ "BACKSPACE", K_BACKSPACE },
 
 	{ "F1", K_F1 },
 	{ "F2", K_F2 },
@@ -141,7 +133,6 @@ keyname_t keynames[] =
 	{ "HOME", K_HOME },
 	{ "END", K_END },
 
-	{ " ", K_SPACE },
 	{ "'", K_APOSTROPHE },
 	{ ",", K_COMMA },
 	{ "-", K_MINUS },
@@ -227,25 +218,25 @@ keyname_t keynames[] =
 	{ "KP_EQUAL",		K_KP_EQUAL },
 	{ "KP_PLUS",		VK_OEM_PLUS },
 
-	{ "LEFT SHIFT", K_LEFT_SHIFT },
-	{ "LEFT CTRL", K_LEFT_CONTROL },
-	{ "LEFT ALT", K_LEFT_ALT },
+	{ "LEFTSHIFT", K_LEFT_SHIFT },
+	{ "LEFTCTRL", K_LEFT_CONTROL },
+	{ "LEFTALT", K_LEFT_ALT },
 #ifdef _WIN32
-	{ "LEFT SUPER/WINDOWS KEY", K_LEFT_SUPER },
+	{ "LEFTSUPER/WINDOWS KEY", K_LEFT_SUPER },
 #else
-	{ "LEFT SUPER", K_LEFT_SUPER },
+	{ "LEFTSUPER", K_LEFT_SUPER },
 #endif
 
-	{ "RIGHT SHIFT", K_RIGHT_SHIFT },
-	{ "RIGHT CTRL", K_RIGHT_CONTROL },
-	{ "RIGHT ALT", K_RIGHT_ALT },
-	{ "RIGHT SUPER", K_RIGHT_SUPER },
+	{ "RIGHTSHIFT", K_RIGHT_SHIFT },
+	{ "RIGHTCTRL", K_RIGHT_CONTROL },
+	{ "RIGHTALT", K_RIGHT_ALT },
+	{ "RIGHTSUPER", K_RIGHT_SUPER },
 
 	{ "MENU", K_MENU }, 
-	{ "CAPS LOCK", K_CAPS_LOCK },
-	{ "SCROLL LOCK", K_SCROLL_LOCK },
-	{ "NUM LOCK", K_NUM_LOCK },
-	{ "PRINT SCREEN", K_PRINT_SCREEN },
+	{ "CAPSLOCK", K_CAPS_LOCK },
+	{ "SCROL LOCK", K_SCROLL_LOCK },
+	{ "NUMLOCK", K_NUM_LOCK },
+	{ "PRINTSCREEN", K_PRINT_SCREEN },
 	{ "PAUSE", K_PAUSE },
 	{ "MWHEELUP", K_MWHEELUP },
 	{ "MWHEELDOWN", K_MWHEELDOWN },
@@ -293,7 +284,7 @@ Key_Console
 Interactive line editing and console scrollback
 ====================
 */
-void Key_Console (int32_t key)
+void Key_Console (int32_t key, bool shift_used)
 {
 
 	switch ( key )
@@ -342,7 +333,7 @@ void Key_Console (int32_t key)
 		break;
 	}
 
-	if ( ( toupper( key ) == K_V && keydown[K_CTRL] ) ||
+	if ( ( key == K_V && keydown[K_CTRL] ) ||
 		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && keydown[K_SHIFT] ) )
 	{
 		char *cbd;
@@ -403,7 +394,7 @@ void Key_Console (int32_t key)
 		return;
 	}
 	
-	if ( ( key == K_BACKSPACE ) || ( key == K_LEFTARROW ) || ( key == K_LEFTARROW ) || ( ( key == 'h' ) && ( keydown[K_CTRL] ) ) )
+	if ( ( key == K_BACKSPACE ) || ( key == K_LEFTARROW ) || ( key == K_LEFTARROW ) || ( ( key == K_H ) && ( keydown[K_CTRL] ) ) )
 	{
 		if (key_linepos > 1)
 			key_linepos--;
@@ -411,7 +402,7 @@ void Key_Console (int32_t key)
 	}
 
 	if ( ( key == K_UPARROW ) || ( key == K_UPARROW ) ||
-		 ( ( key == 'p' ) && keydown[K_CTRL] ) )
+		 ( ( key == K_P ) && keydown[K_CTRL] ) )
 	{
 		do
 		{
@@ -478,7 +469,19 @@ void Key_Console (int32_t key)
 		return;	// non printable
 		
 	// translate from virtual to physical keys
-	char final_key = Key_KeynumToString(key)[0];
+
+	// HACK: it's already a physical key if we used shift,
+	// FIX THIS IN V0.0.7!!!
+	char final_key = 0x00;
+	
+	if (shift_used)
+	{
+		final_key = key;
+	}
+	else
+	{
+		final_key = Key_KeynumToString(key)[0];
+	}
 
 	if (key_linepos < MAXCMDLINE-1
 		&& final_key != -1)
@@ -496,7 +499,7 @@ bool	chat_team;
 char		chat_buffer[MAXCMDLINE];
 int32_t 		chat_bufferlen = 0;
 
-void Key_Message (int32_t key)
+void Key_Message (int32_t key, bool shift_used)
 {
 
 	if ( key == K_ENTER || key == K_KP_ENTER )
@@ -550,8 +553,7 @@ void Key_Message (int32_t key)
 Key_StringToKeynum
 
 Returns a key number to be used to index keybindings[] by looking at
-the given string.  Single ascii characters return themselves, while
-the K_* names are matched up.
+the given string.  Matches up the keynames.
 ===================
 */
 int32_t Key_StringToKeynum (char *str)
@@ -810,7 +812,7 @@ void Key_Init (void)
 	keyshift[K_BACKSLASH] = '|';
 
 	menubound[K_ESCAPE] = true;
-	for (i=0 ; i<12 ; i++)
+	for (i=0 ; i<24 ; i++)
 		menubound[K_F1+i] = true;
 
 //
@@ -822,7 +824,7 @@ void Key_Init (void)
 	Cmd_AddCommand ("bindlist",Key_Bindlist_f);
 }
 
-// from GLFW (we don't link to it in zombono.exe)
+// these defines are from GLFW (we don't link to it in zombono.exe)
 #define KEY_RELEASED	0
 #define KEY_PRESSED		1
 #define KEY_REPEAT		2
@@ -830,11 +832,18 @@ void Key_Init (void)
 #define MOUSE_RELEASED	KEY_RELEASED
 #define MOUSE_PRESSED	KEY_PRESSED
 
+#define MOD_SHIFT		0x1
+#define MOD_CONTROL		0x2
+#define MOD_ALT			0x4
+#define MOD_SUPER		0x8
+#define MOD_CAPS_LOCK	0x10
+#define MOD_NUM_LOCK	0x20
+
 double last_x_pos = 0, last_y_pos = 0;
 
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
-	Input_Event(key, (action == KEY_PRESSED), 0, 0, 0);
+	Input_Event(key, mods, (action == KEY_PRESSED || action == KEY_REPEAT), 0, 0, 0);
 }
 
 void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods)
@@ -842,11 +851,11 @@ void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods
 	// they are not contiguous numbers
 	if (button >= 4)
 	{
-		Input_Event(K_MOUSE4 + button, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
+		Input_Event(K_MOUSE4 + button, mods, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
 	}
 	else
 	{
-		Input_Event(K_MOUSE1 + button, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
+		Input_Event(K_MOUSE1 + button, mods, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
 	}
 }
 
@@ -890,7 +899,7 @@ Called by the system between frames for both key up and key down events
 Should NOT be called during an interrupt!
 ===================
 */
-void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
+void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x, int32_t y)
 {
 	char	*kb;
 	char	cmd[1024];
@@ -917,15 +926,26 @@ void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 	if (down)
 	{
  		key_repeats[key]++;
-		if (key != K_BACKSPACE 
-			&& key != K_PAUSE 
-			&& key != K_PAGE_UP 
+		if (key != K_BACKSPACE
+			&& key != K_PAUSE
+			&& key != K_PAGE_UP
 			&& key != K_PAGE_DOWN
 			&& key_repeats[key] > 1)
+		{
 			return;	// ignore most autorepeats
+		}
+
 			
-		if (key >= 200 && key != K_MWHEELUP && key != K_MWHEELDOWN && !keybindings[key])
-			Com_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString (key) );
+		if (key >= 200
+			&& key != K_MWHEELUP
+			&& key != K_MWHEELDOWN
+			&& key != K_CAPS_LOCK
+			&& !keybindings[key])
+		{
+			Com_Printf("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
+		}
+
+
 	}
 	else
 	{
@@ -934,10 +954,15 @@ void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 
 	// Just use physical keys here.
 	// We can't use mods here in case we need to ever plug into an input system that doesn't recognise them.
-	if (key == K_LEFT_SHIFT
-		|| key == K_RIGHT_SHIFT)
+	if (mods & MOD_SHIFT)
 	{
 		shift_down = down;
+	}
+	if (key == K_CAPS_LOCK 
+		&& down)
+	{
+		caps_lock = !caps_lock; // for other detection
+		shift_down = caps_lock;
 	}
 
 
@@ -1003,14 +1028,14 @@ void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 		switch (cls.key_dest)
 		{
 		case key_message:
-			Key_Message (key);
+			Key_Message (key, false);
 			break;
 		case key_menu:
-			M_Keydown (key);
+			M_Keydown (key, false);
 			break;
 		case key_game:
 		case key_console:
-			M_Menu_Main_f ();
+			M_Menu_Main_f (); // hardcoded 
 			break;
 		default:
 			Com_Error (ERR_FATAL, "Bad cls.key_dest");
@@ -1064,7 +1089,12 @@ void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 	|| (cls.key_dest == key_console && !consolekeys[key])
 	|| (cls.key_dest == key_game && ( cls.state == ca_active || !consolekeys[key] ) ) )
 	{
-		kb = keybindings[key];
+		//BUGBUG: modifiers don't work with this
+
+		char physical_key = Key_StringToKeynum(&key);
+
+		kb = keybindings[physical_key];
+
 		if (kb)
 		{
 			if (kb[0] == '+')
@@ -1084,21 +1114,26 @@ void Input_Event (int32_t key, bool down, uint32_t time, int32_t x, int32_t y)
 	if (!down)
 		return;		// other systems only care about key down events
 
+	bool shift_used = false;
+
 	if (shift_down)
+	{
 		key = keyshift[key];
+		shift_used = true;
+	}
 
 	switch (cls.key_dest)
 	{
 	case key_message:
-		Key_Message (key);
+		Key_Message (key, shift_used);
 		break;
 	case key_menu:
-		M_Keydown (key);
+		M_Keydown (key, shift_used);
 		break;
 
 	case key_game:
 	case key_console:
-		Key_Console (key);
+		Key_Console (key, shift_used);
 		break;
 	default:
 		Com_Error (ERR_FATAL, "Bad cls.key_dest");
@@ -1116,10 +1151,10 @@ void Key_ClearStates (void)
 
 	anykeydown = false;
 
-	for (i=0 ; i<256 ; i++)
+	for (i=0 ; i<NUM_KEYS ; i++)
 	{
 		if ( keydown[i] || key_repeats[i] )
-			Input_Event( i, false, 0, 0, 0);
+			Input_Event( i, 0, false, 0, 0, 0);
 		keydown[i] = 0;
 		key_repeats[i] = 0;
 	}

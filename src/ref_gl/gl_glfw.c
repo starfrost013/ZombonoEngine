@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 // =============================================
-// gl_init.c - Contains GLAD and GLFW init stuff
+// gl_init.c - Contains GLAD and GLFW glue stuff
 // =============================================
 
 
@@ -298,6 +299,17 @@ void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused))
 void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified))
 {
 	glfwSetWindowIconifyCallback(gl_state.window, proc);
+}
+
+void	GL_GetCursorPosition(double* x, double* y)
+{
+	glfwGetCursorPos(gl_state.window, &x, &y);
+}
+
+// RELATIVE TO THE WINDOW
+void	GL_SetCursorPosition(double x, double y)
+{
+	glfwSetCursorPos(gl_state.window, x, y);
 }
 
 void	GL_EnableCursor(bool enabled)

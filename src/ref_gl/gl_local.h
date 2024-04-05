@@ -339,6 +339,7 @@ void	GL_TextureSolidMode( char *string );
 
 //
 // gl_glfw.c
+// GLFW glue functions
 //
 
 void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods));
@@ -346,6 +347,8 @@ void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode,
 void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos));
 void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused));
 void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified));
+void	GL_GetCursorPosition(double* x, double* y);
+void	GL_SetCursorPosition(double x, double y);
 void	GL_EnableCursor(bool enabled);
 
 /*

@@ -196,6 +196,7 @@ float CL_KeyState (kbutton_t *key)
 	if (key->state)
 	{	// still down
 		msec += sys_frame_time - key->downtime;
+
 		key->downtime = sys_frame_time;
 	}
 
@@ -292,8 +293,6 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->sidemove *= 2;
 		cmd->upmove *= 2;
 	}	
-
-	
 }
 
 void CL_ClampPitch (void)
