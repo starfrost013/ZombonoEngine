@@ -255,14 +255,16 @@ void IN_MouseMove (usercmd_t *cmd)
 
 	if ((mlooking || freelook->value))
 	{
+		// slight hack: prevent the player from moving down further than the camera allows by moving their cursor (since the cursor controls where the camera is)
 		// IT USES DEGREES???
 		if (new_pitch > 90)
 		{
 			new_pitch = 90;
-			// prevent the player from moving down further than the camera allows
+
 			double pos_x = 0, pos_y = 0;
 			re.GetCursorPosition(&pos_x, &pos_y);
-			re.SetCursorPosition(pos_x, (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value);
+			pos_y = (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value;
+			re.SetCursorPosition(pos_x, pos_y);
 		}
 		else if (new_pitch < -90)
 		{
@@ -270,7 +272,8 @@ void IN_MouseMove (usercmd_t *cmd)
 			// prevent the player from moving down further than the camera allows
 			double pos_x = 0, pos_y = 0;
 			re.GetCursorPosition(&pos_x, &pos_y);
-			re.SetCursorPosition(pos_x, (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value);
+			pos_y = (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value;
+			re.SetCursorPosition(pos_x, pos_y);
 		}
 
 		cl.viewangles[PITCH] = new_pitch;

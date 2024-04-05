@@ -935,7 +935,6 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			return;	// ignore most autorepeats
 		}
 
-			
 		if (key >= 200
 			&& key != K_MWHEELUP
 			&& key != K_MWHEELDOWN
@@ -944,8 +943,6 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 		{
 			Com_Printf("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
 		}
-
-
 	}
 	else
 	{
@@ -1091,9 +1088,9 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	{
 		//BUGBUG: modifiers don't work with this
 
-		char physical_key = Key_StringToKeynum(&key);
+		//char physical_key = Key_StringToKeynum(&key);
 
-		kb = keybindings[physical_key];
+		kb = keybindings[key];
 
 		if (kb)
 		{

@@ -303,7 +303,7 @@ void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified))
 
 void	GL_GetCursorPosition(double* x, double* y)
 {
-	glfwGetCursorPos(gl_state.window, &x, &y);
+	glfwGetCursorPos(gl_state.window, x, y);
 }
 
 // RELATIVE TO THE WINDOW
