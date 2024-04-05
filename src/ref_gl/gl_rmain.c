@@ -124,7 +124,8 @@ cvar_t	*gl_texturealphamode;
 cvar_t	*gl_texturesolidmode;
 cvar_t	*gl_lockpvs;
 
-cvar_t	*vid_fullscreen;
+cvar_t	*vid_borderless;
+cvar_t* vid_fullscreen;
 cvar_t	*vid_gamma;
 cvar_t	*vid_ref;
 
@@ -799,7 +800,8 @@ void R_Register( void )
 
 	gl_saturatelighting = ri.Cvar_Get( "gl_saturatelighting", "0", 0 );
 
-	vid_fullscreen = ri.Cvar_Get( "vid_fullscreen", "0", CVAR_ARCHIVE );
+	vid_borderless = ri.Cvar_Get( "vid_borderless", "0", CVAR_ARCHIVE );
+	vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
 	vid_gamma = ri.Cvar_Get( "vid_gamma", "1.0", CVAR_ARCHIVE );
 	vid_ref = ri.Cvar_Get( "vid_ref", "soft", CVAR_ARCHIVE );
 
@@ -819,8 +821,8 @@ bool R_SetMode (void)
 	rserr_t err;
 	bool fullscreen;
 
-	fullscreen = vid_fullscreen->value;
-
+	fullscreen = vid_borderless->value || vid_fullscreen->value;
+	vid_borderless->modified = false;
 	vid_fullscreen->modified = false;
 	gl_mode->modified = false;
 
@@ -832,7 +834,8 @@ bool R_SetMode (void)
 	{
 		if ( err == rserr_invalid_fullscreen )
 		{
-			ri.Cvar_SetValue( "vid_fullscreen", 0);
+			ri.Cvar_SetValue( "vid_borderless", 0);
+			vid_borderless->modified = false;
 			vid_fullscreen->modified = false;
 			ri.Con_Printf( PRINT_ALL, "ref_gl::R_SetMode() - fullscreen unavailable in this mode\n" );
 			if ( ( err = GL_SetMode( &vid.width, &vid.height, gl_mode->value, false ) ) == rserr_ok )
@@ -969,7 +972,7 @@ void R_BeginFrame( float camera_separation )
 	/*
 	** change modes if necessary
 	*/
-	if ( gl_mode->modified || vid_fullscreen->modified )
+	if ( gl_mode->modified || vid_borderless->modified || vid_fullscreen->modified)
 	{	// FIXME: only restart if CDS is required
 		cvar_t	*ref;
 

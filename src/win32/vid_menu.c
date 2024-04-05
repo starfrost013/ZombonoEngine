@@ -26,16 +26,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define NUM_REFS	1
 
-extern cvar_t *vid_ref;
-extern cvar_t *vid_fullscreen;
-extern cvar_t *vid_gamma;
-extern cvar_t *vid_hudscale;
-extern cvar_t *scr_viewsize;
+extern cvar_t* vid_ref;
+extern cvar_t* vid_borderless;
+extern cvar_t* vid_fullscreen;
+extern cvar_t* vid_gamma;
+extern cvar_t* vid_hudscale;
+extern cvar_t* scr_viewsize;
 
-static cvar_t *gl_mode;
-static cvar_t *gl_driver;
-static cvar_t *gl_picmip;
-static cvar_t *gl_finish;
+static cvar_t* gl_mode;
+static cvar_t* gl_driver;
+static cvar_t* gl_picmip;
+static cvar_t* gl_finish;
 
 extern void M_ForceMenuOff( void );
 
@@ -121,7 +122,7 @@ static void ApplyChanges( void *unused )
 
 	Cvar_SetValue( "vid_gamma", gamma );
 	Cvar_SetValue( "gl_picmip", 3 - s_tq_slider.curvalue );
-	Cvar_SetValue( "vid_fullscreen", s_fs_box[s_current_menu_index].curvalue );
+	Cvar_SetValue( "vid_borderless", s_fs_box[s_current_menu_index].curvalue );
 	Cvar_SetValue( "gl_finish", s_finish_box.curvalue );
 	Cvar_SetValue( "gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1 );
 
@@ -273,7 +274,7 @@ void VID_MenuInit( void )
 		s_fs_box[i].generic.y	= 40 * vid_hudscale->value;
 		s_fs_box[i].generic.name	= "^5Fullscreen";
 		s_fs_box[i].itemnames = yes_no_names;
-		s_fs_box[i].curvalue = vid_fullscreen->value;
+		s_fs_box[i].curvalue = (vid_borderless->value || vid_fullscreen->value);
 
 		s_apply_action[i].generic.type = MTYPE_ACTION;
 		s_apply_action[i].generic.name = "^5Apply Changes";

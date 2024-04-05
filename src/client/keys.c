@@ -916,9 +916,9 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	// ALT+ENTER fullscreen toggle
 	if (down && keydown[K_ALT] && key == K_ENTER)
 	{
-		extern cvar_t *vid_fullscreen;
-		Cvar_Set("vid_fullscreen", vid_fullscreen->value ? "0" : "1");
-		vid_fullscreen->modified = true;
+		extern cvar_t *vid_borderless;
+		Cvar_Set("vid_borderless", vid_borderless->value ? "0" : "1");
+		vid_borderless->modified = true;
 		return;
 	}
 

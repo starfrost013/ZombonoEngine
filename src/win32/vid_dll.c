@@ -40,15 +40,16 @@ refexport_t	re;
 static UINT MSH_MOUSEWHEEL;
 
 // Console variables that we need to access from this module
-cvar_t		*vid_gamma;
-cvar_t		*vid_ref;			// Name of Refresh DLL loaded
-cvar_t		*vid_xpos;			// X coordinate of window position
-cvar_t		*vid_ypos;			// Y coordinate of window position
-cvar_t		*vid_fullscreen;
-cvar_t		*vid_refresh;
-cvar_t		*r_customwidth;
-cvar_t		*r_customheight;
-cvar_t		*viewsize;
+cvar_t*		vid_gamma;
+cvar_t*		vid_ref;			// Name of Refresh DLL loaded
+cvar_t*		vid_xpos;			// X coordinate of window position
+cvar_t*		vid_ypos;			// Y coordinate of window position
+cvar_t*		vid_borderless;
+cvar_t*		vid_fullscreen;
+cvar_t*		vid_refresh;
+cvar_t*		r_customwidth;
+cvar_t*		r_customheight;
+cvar_t*		viewsize;
 
 
 // Structs for GLFW...
@@ -278,7 +279,7 @@ VID_LoadRefresh
 */
 bool VID_LoadRefresh( char *name )
 {
-	refimport_t	ri;
+	refimport_t	ri = { 0 };
 	GetRefAPI_t	GetRefAPI;
 	
 	if ( reflib_active )
@@ -345,6 +346,7 @@ bool VID_LoadRefresh( char *name )
 //PGM
 //======
 
+	// set up the event procs
 	re.SetKeyPressedProc(Key_Event);
 	re.SetMousePressedProc(MouseClick_Event);
 	re.SetMouseMovedProc(MouseMove_Event);
@@ -377,6 +379,7 @@ void VID_CheckChanges (void)
 		** refresh has changed
 		*/
 		vid_ref->modified = false;
+		vid_borderless->modified = true;
 		vid_fullscreen->modified = true;
 		cl.refresh_prepped = false;
 		cls.disable_screen = true;
@@ -400,6 +403,13 @@ void VID_CheckChanges (void)
 		Font_Init();
 		UI_Init();
 
+		// turn off the cursor if we are switching into fullscreen mode
+		if (vid_fullscreen->value
+			|| vid_borderless->value)
+		{
+			re.EnableCursor(false);
+		}
+
 		cls.disable_screen = false;
 	}
 
@@ -408,8 +418,11 @@ void VID_CheckChanges (void)
 	*/
 	if ( vid_xpos->modified || vid_ypos->modified )
 	{
-		if (!vid_fullscreen->value)
-			VID_UpdateWindowPosAndSize( vid_xpos->value, vid_ypos->value );
+		if (!vid_borderless->value
+			&& !vid_fullscreen->value)
+		{
+			VID_UpdateWindowPosAndSize(vid_xpos->value, vid_ypos->value);
+		}
 
 		vid_xpos->modified = false;
 		vid_ypos->modified = false;
@@ -433,7 +446,8 @@ void VID_Init (void)
 	vid_ref = Cvar_Get ("vid_ref", "gl", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get ("vid_xpos", "3", CVAR_ARCHIVE);
 	vid_ypos = Cvar_Get ("vid_ypos", "22", CVAR_ARCHIVE);
-	vid_fullscreen = Cvar_Get ("vid_fullscreen", "0", CVAR_ARCHIVE);
+	vid_borderless = Cvar_Get ("vid_borderless", "0", CVAR_ARCHIVE);
+	vid_fullscreen = Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
 	vid_refresh = Cvar_Get ("vid_refresh", "0", CVAR_NOSET);
 	vid_gamma = Cvar_Get( "vid_gamma", "1", CVAR_ARCHIVE );
 	r_customwidth = Cvar_Get( "r_customwidth", "1024", CVAR_ARCHIVE );

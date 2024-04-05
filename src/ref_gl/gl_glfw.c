@@ -35,9 +35,9 @@ void GLFW_Error(const char* error);
 void GL_DestroyWindow();
 void GL_WindowSizeChanged(GLFWwindow* window, int width, int height); 
 
-
-extern cvar_t *vid_fullscreen;
-extern cvar_t *vid_ref;
+extern cvar_t* vid_fullscreen;
+extern cvar_t* vid_borderless;
+extern cvar_t* vid_ref;
 
 static bool VerifyDriver( void )
 {
@@ -56,12 +56,6 @@ static bool VerifyDriver( void )
 ** VID_CreateWindow
 */
 
-#ifndef NDEBUG
-#define GL_CONTEXT_FLAG_DEBUG_BIT	0x2
-#define GL_CONTEXT_FLAGS			33310
-#define GL_DEBUG_OUTPUT				0x92E0
-#define	GL_DEBUG_OUTPUT_SYNCHRONOUS	0x8242
-#endif
 
 bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 {
@@ -69,15 +63,31 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 	// non-NULL for fullscreen
 	GLFWmonitor* monitor = NULL;
 
-	// Fullscreen in GLFW Zombono is borderless windowed
+	// Fullscreen in GLFW Zombono is borderless windowed by default, unless the user chose vid_fullscreen
 	if (fullscreen)
 	{
 		gl_state.fullscreen = true;
 
-		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+		// determine if the user wanted borderless fullscreen or real fullscreen
+		bool dedicated_fullscreen = (vid_fullscreen->value);
+
+		if (dedicated_fullscreen)
+		{
+			monitor = glfwGetPrimaryMonitor(); // set 
+
+			if (!monitor)
+			{
+				ri.Con_Printf(PRINT_ALL, "Failed to obtain the primary monitor for dedicated fullscreen!");
+				return false;
+			}
+		}
+		else // fullscreen was specified, but not dedi
+		{
+			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE); // dedicated fullscreen is a hint in GLFW
+		}
 	}
 
-	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5) "CPUSTRING, NULL, NULL);
+	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5) "CPUSTRING, monitor, NULL);
 
 	if (!gl_state.window)
 	{
@@ -116,7 +126,7 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 	// let the sound and input subsystems know about the new window
 	ri.Vid_NewWindow (width, height);
 
-
+	// move the window if the user specified 
 	if (!fullscreen)
 	{
 		int vid_xpos = ri.Cvar_Get("vid_xpos", "0", 0)->value;
@@ -140,7 +150,7 @@ void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
 rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
 {
 	int32_t width, height;
-	const char *win_fs[] = { "Windowed", "Fullscreen" };
+	const char *win_fs[] = { "Windowed", "Fullscreen"};
 
 	ri.Con_Printf( PRINT_ALL, "Initializing OpenGL display\n");
 
@@ -151,8 +161,6 @@ rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullsc
 		ri.Con_Printf( PRINT_ALL, " invalid mode\n" );
 		return rserr_invalid_mode;
 	}
-
-	ri.Con_Printf( PRINT_ALL, " %d %d %s\n", width, height, win_fs[fullscreen] );
 
 	// destroy the existing window
 	if (gl_state.window)
