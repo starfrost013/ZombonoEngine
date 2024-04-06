@@ -1553,7 +1553,11 @@ void CL_WriteConfiguration (void)
 	if (cls.state == ca_uninitialized)
 		return;
 
-	Com_sprintf (path, sizeof(path),"%s/config.cfg",FS_Gamedir());
+#ifdef PLAYTEST
+	Com_sprintf (path, sizeof(path),"%s/config_playtest.cfg",FS_Gamedir());
+#else
+	Com_sprintf(path, sizeof(path), "%s/config.cfg", FS_Gamedir());
+#endif
 	f = fopen (path, "w");
 	if (!f)
 	{

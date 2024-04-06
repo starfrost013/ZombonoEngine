@@ -541,6 +541,16 @@ void Key_Message (int32_t key, bool shift_used)
 	if (chat_bufferlen == sizeof(chat_buffer)-1)
 		return; // all full
 
+	if (shift_used)
+	{
+		key = keyshift[key];
+	}
+	else
+	{
+		// TOTAL HACK FOR 0.0.6 only
+		key = tolower(key);
+	}
+
 	chat_buffer[chat_bufferlen++] = key;
 	chat_buffer[chat_bufferlen] = 0;
 }
