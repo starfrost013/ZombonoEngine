@@ -104,7 +104,7 @@ void UI_LeaderboardUIUpdate()
 		x = (viddef.width / 2) - (304 * vid_hudscale->value);
 
 		leaderboard_entry_t leaderboard_entry = cl.leaderboard.entries[client_num];
-		strncpy(leaderboard_entry.name, MSG_ReadString(&net_message), 32);
+		strncpy(leaderboard_entry.name, MSG_ReadString(&net_message), PLAYER_NAME_LENGTH);
 		leaderboard_entry.ping = MSG_ReadShort(&net_message);
 		leaderboard_entry.score = MSG_ReadShort(&net_message);
 		leaderboard_entry.team = MSG_ReadShort(&net_message);

@@ -24,13 +24,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	cplane_t	*plane;
+	cplane_t		*plane;
 	int32_t 		children[2];		// negative numbers are leafs
 } cnode_t;
 
 typedef struct
 {
-	cplane_t	*plane;
+	cplane_t		*plane;
 	mapsurface_t	*surface;
 } cbrushside_t;
 
@@ -39,8 +39,8 @@ typedef struct
 	int32_t 		contents;
 	int32_t 		cluster;
 	int32_t 		area;
-	uint32_t	firstleafbrush;
-	uint32_t	numleafbrushes;
+	uint32_t		firstleafbrush;
+	uint32_t		numleafbrushes;
 } cleaf_t;
 
 typedef struct
@@ -605,9 +605,9 @@ cmodel_t *Map_Load (char *name, bool clientload, uint32_t *checksum)
 	for (i=0 ; i<sizeof(dheader_t)/4 ; i++)
 		((int32_t *)&header)[i] = LittleInt ( ((int32_t *)&header)[i]);
 
-	if (header.version != BSPVERSION)
+	if (header.version != ZBSP_VERSION)
 		Com_Error (ERR_DROP, "Map_Load: %s has wrong version number (%i should be %i)"
-		, name, header.version, BSPVERSION);
+		, name, header.version, ZBSP_VERSION);
 
 	cmod_base = (uint8_t *)buf;
 

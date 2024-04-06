@@ -1,0 +1,4 @@
+BSP format changes from ZBSPv1 (2024-03-11) to ZBSPv2 (2024-04-06)
+
+texinfo_t:
+	texture: char[32] -> char[80] (TEXTURE_LENGTH)

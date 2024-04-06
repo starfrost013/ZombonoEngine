@@ -3161,9 +3161,9 @@ static int32_t pmicmpfnc( const void *_a, const void *_b )
 
 bool PlayerConfig_MenuInit( void )
 {
-	extern cvar_t *name;
-	extern cvar_t *team;
-	extern cvar_t *skin;
+	extern cvar_t* name;
+	extern cvar_t* team;
+	extern cvar_t* skin;
 	char currentdirectory[1024];
 	char currentskin[1024];
 	int32_t i = 0;

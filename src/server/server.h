@@ -92,8 +92,9 @@ typedef struct
 	int32_t 				senttime;			// for ping calculations
 } client_frame_t;
 
-#define	LATENCY_COUNTS	16
-#define	RATE_MESSAGES	10
+#define	LATENCY_COUNTS		16
+#define	RATE_MESSAGES		10
+#define PLAYER_NAME_LENGTH	80
 
 typedef struct client_s
 {
@@ -113,7 +114,7 @@ typedef struct client_s
 	int32_t 			message_size[RATE_MESSAGES];	// used to rate drop packets
 
 	edict_t			*edict;				// EDICT_NUM(clientnum+1)
-	char			name[32];			// extracted from userinfo, high bits masked
+	char			name[PLAYER_NAME_LENGTH];			// extracted from userinfo, high bits masked
 	int32_t 			messagelevel;		// for filtering printed messages
 
 	// The datagram is written to by sound calls, prints, temp ents, etc.

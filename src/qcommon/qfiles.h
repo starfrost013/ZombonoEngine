@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #pragma once 
+
 //
 // qfiles.h: quake file formats
 // This file must be identical in the quake and utils directories
@@ -58,7 +59,7 @@ typedef struct
 ========================================================================
 */
 
-#define IDALIASHEADER		(('2'<<24)+('P'<<16)+('D'<<8)+'I')
+#define IDALIASHEADER	(('2'<<24)+('P'<<16)+('D'<<8)+'I')
 #define ALIAS_VERSION	8
 
 #define	MAX_TRIANGLES	4096
@@ -173,7 +174,7 @@ typedef struct dsprite_s
 #define ZBSP_HEADER	(('P'<<24)+('S'<<16)+('B'<<8)+'Z')
 		// little-endian "IBSP"
 
-#define BSPVERSION	1
+#define ZBSP_VERSION	2
 
 // maximum allocation sizes for various models
 // boosted by 4x to account for 32-bit texturing
@@ -244,8 +245,8 @@ typedef struct lump_s
 
 typedef struct dheader_s
 {
-	int32_t 		ident;
-	int32_t 		version;	
+	int32_t 	ident;
+	int32_t 	version;	
 	lump_t		lumps[HEADER_LUMPS];
 } dheader_t;
 
@@ -253,8 +254,8 @@ typedef struct dmodel_s
 {
 	float		mins[3], maxs[3];
 	float		origin[3];		// for sounds or lights
-	int32_t 		headnode;
-	int32_t 		firstface, numfaces;	// submodels just draw faces
+	int32_t 	headnode;
+	int32_t 	firstface, numfaces;	// submodels just draw faces
 										// without walking the bsp tree
 } dmodel_t;
 
@@ -336,10 +337,10 @@ typedef struct dplane_s
 
 typedef struct dnode_s
 {
-	int32_t 			planenum;
-	int32_t 			children[2];	// negative numbers are -(leafs+1), not nodes
-	float			mins[3];		// for frustom culling
-	float			maxs[3];
+	int32_t 	planenum;
+	int32_t 	children[2];	// negative numbers are -(leafs+1), not nodes
+	float		mins[3];		// for frustom culling
+	float		maxs[3];
 	uint32_t	firstface;
 	uint32_t	numfaces;	// counting both sides
 } dnode_t;
@@ -349,10 +350,10 @@ typedef struct dnode_s
 typedef struct texinfo_s
 {
 	float		vecs[2][4];					// [s/t][xyz offset]
-	int32_t 		flags;						// miptex flags + overrides
-	int32_t 		value;						// light emission, etc
+	int32_t 	flags;						// miptex flags + overrides
+	int32_t 	value;						// light emission, etc
 	char		texture[TEXTURE_LENGTH];	// texture name (textures/*.tga)
-	int32_t 		nexttexinfo;				// for animations, -1 = end of chain
+	int32_t 	nexttexinfo;				// for animations, -1 = end of chain
 } texinfo_t;
 
 // note that edge 0 is never used, because negative edge nums are used for

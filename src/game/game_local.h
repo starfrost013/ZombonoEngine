@@ -946,27 +946,27 @@ void GetChaseTarget(edict_t *ent);
 typedef struct client_persistant_s
 {
 	char		userinfo[MAX_INFO_STRING];
-	char		netname[16];
-	int32_t			hand;
+	char		netname[PLAYER_NAME_LENGTH];
+	int32_t		hand;
 
-	bool	connected;			// a loadgame will leave valid entities that
+	bool		connected;			// a loadgame will leave valid entities that
 									// just don't have a connection yet
 
 	// values saved and restored from edicts when changing levels
-	int32_t			health;
-	int32_t			max_health;
-	int32_t			savedFlags;
+	int32_t		health;
+	int32_t		max_health;
+	int32_t		savedFlags;
 
-	int32_t			selected_item;
-	int32_t			inventory[MAX_ITEMS];
+	int32_t		selected_item;
+	int32_t		inventory[MAX_ITEMS];
 
 	// ammo capacities
-	int32_t			max_bullets;
-	int32_t			max_shells;
-	int32_t			max_rockets;
-	int32_t			max_grenades;
-	int32_t			max_cells;
-	int32_t			max_slugs;
+	int32_t		max_bullets;
+	int32_t		max_shells;
+	int32_t		max_rockets;
+	int32_t		max_grenades;
+	int32_t		max_cells;
+	int32_t		max_slugs;
 
 	gitem_t		*weapon;
 	gitem_t		*lastweapon;
@@ -974,10 +974,10 @@ typedef struct client_persistant_s
 	//restore this if we have resumable co-op games or that 6-level single player campaign.
 	//int32_t		coop_score;
 
-	int32_t			game_helpchanged;
-	int32_t			helpchanged;
+	int32_t		game_helpchanged;
+	int32_t		helpchanged;
 
-	bool	spectator;			// client is a spectator
+	bool		spectator;			// client is a spectator
 } client_persistant_t;
 
 // client data that stays across respawns

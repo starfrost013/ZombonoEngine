@@ -83,11 +83,11 @@ typedef struct
 extern char cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
 extern int32_t num_cl_weaponmodels;
 
-#define	CMD_BACKUP		64	// allow a lot of command backups for very fast systems
+#define	CMD_BACKUP			64	// allow a lot of command backups for very fast systems
 
 typedef struct leaderboard_entry_s
 {
-	char			name[32];		// The player's name
+	char			name[PLAYER_NAME_LENGTH];		// The player's name
 	int32_t 		score;			// The player's score (kills - deaths)
 	common_team		team;			// The player's team
 	int32_t 		ping;			// The user's ping

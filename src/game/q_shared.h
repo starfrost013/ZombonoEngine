@@ -82,6 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PRINT_DEVELOPER		1		// only print when "developer 1"
 #define PRINT_ALERT			2		
 
+#define PLAYER_NAME_LENGTH	80		// Maximum length of a player's name
 
 // destination class for gi.multicast()
 typedef enum

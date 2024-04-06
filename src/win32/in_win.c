@@ -119,15 +119,11 @@ if (!freelook->value && lookspring->value)
 
 int32_t 		mouse_buttons;
 
-int32_t 		old_x, old_y;
-
 bool	mouseactive;	// false when not focus app
 
 bool	mouseinitialized;
 
 int32_t 		window_center_x, window_center_y;
-RECT		window_rect;
-
 
 /*
 ===========
@@ -138,8 +134,6 @@ Called when the window gains focus or changes in some way
 */
 void IN_ActivateMouse (void)
 {
-	int32_t 	width, height;
-
 	if (!mouseinitialized)
 		return;
 	if (!in_mouse->value)

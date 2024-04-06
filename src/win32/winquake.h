@@ -44,4 +44,3 @@ extern bool		ActiveApp, Minimized;
 void IN_Activate (bool active);
 
 extern int32_t 	window_center_x, window_center_y;
-extern RECT		window_rect;

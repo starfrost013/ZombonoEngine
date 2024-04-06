@@ -76,6 +76,9 @@ April 6, 2024
 		* BeginFrame() no longer has any parameters (they were non-portable and Windows specific)
 	* Windowed borderless is now the default fullscreen setting
 		* Can be manually overridden with vid_fullscreen 1 (vid_borderless controls borderless windowed fullscreen)
+* Zombono BSP v2
+	* ACTUALLY increased the texture size limit from 32 to 80 characters
+* Increased maximum length of a Player's name from 16 to 80 characters (it was set as 32 in the client and 16 in the network protocol...)
 
 Version 0.0.5
 March 23, 2024

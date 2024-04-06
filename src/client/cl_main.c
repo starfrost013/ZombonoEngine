@@ -800,7 +800,7 @@ void CL_PingServers_f (void)
 {
 	int32_t 		i;
 	netadr_t	adr;
-	char		name[32];
+	char		name[PLAYER_NAME_LENGTH];
 	char		*adrstring;
 	cvar_t		*noudp;
 

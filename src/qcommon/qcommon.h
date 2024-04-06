@@ -189,6 +189,7 @@ PROTOCOL
 							// must be power of two
 #define	UPDATE_MASK		(UPDATE_BACKUP-1)
 
+
 //==================
 // the svc_strings[] array in cl_parse.c should mirror this
 //==================
