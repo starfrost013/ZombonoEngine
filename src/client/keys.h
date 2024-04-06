@@ -220,8 +220,6 @@ They have been renamed from KEY_ to Key_ to fit with the rest of the code
 #define K_RIGHT_SUPER   347
 #define K_MENU   348
 #define NUM_KEYS   K_MENU
-#define K_PAUSE			255
-
 
 extern char* keybindings[NUM_KEYS];
 extern	int32_t 	Key_repeats[NUM_KEYS];
