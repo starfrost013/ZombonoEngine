@@ -43,24 +43,39 @@ April 6, 2024
 * Remove old textures:
 	* Quake 2 skyboxes
 	* Soldier models/textures
-	* ourpic* textures
+	* ourpic* textures (pictures of Quake2 devs :P)
 * Massively refactored the OpenGL renderer.
-	* gl_log and gl_swapinterval cvars removed
-	* gl_vsync cvar added to control VSync
+	* Removed rendering cvars:
+		* gl_log (useless, just logged every time a frame started)
+		* gl_ext_swapinterval (replaced with gl_vsync)
+		* gl_ext_multitexture (replaced with OpenGL core functionality)
+		* gl_ext_pointparameters (replaced with OpenGL core functionality)
+		* Removed stereoscopic 3D support
+			* Removed cl_stereo, cl_stereo_separation cvars
+	* Added rendering cvars:
+		* gl_vsync cvar added to control VSync (replaced gl_ext_swapinterval)
+			* 0 means the game will render as fast as possible - UNADVISABLE
+			* 1 means the game will render as fast as your monitor's refresh rate
+			* 2 or more means that the number of frames displayed is equal to (monitor refresh rate/value) - UNSUPPORTED
+		* vid_borderless (see below for notes about this)
 	* Upgraded legacy renderer from OpenGL 1.1 + many extensions, some of which never made it into core, to OpenGL 1.5
 		* This breaks GPUs made before 2003 - the oldest supported GPUs are the Radeon 9000 series and GeForce FX series
-	* QGL replaced with GLAD
+	* Removed non-multitexturing code (breaks GPUs without multitexturing support, mostly those made before 1999-2000)
+	* QGL replaced with GLAD for OpenGL bindings
 	* GLFW now used for windowing and input
 		* This should provide Non-QWERTY keyboard support, as virtual keys are used (untested, please test!)
+		* May still be input bugs, please test!
+		* SHIFT, CTRL, ALT, SUPER...keys now only referred to by their individual keys (left shift, right shift...). Yes, it couldn't tell the difference between left and right modifier keys before...
 	* Removed win_noalttab cvar
 	* Renderer API version 7:
 		* Windowing events now handled in refresh DLL (for platform-independence reasons)
-		* Added SetWindowFocusProc, SetWindowIconifyProc, SetKeyPressedProc, SetMousePressedProc, SetMouseMovedProc, SetEnableCursor
+			* Might move to separate windowing DLL
+		* Added SetWindowFocusProc, SetWindowIconifyProc, SetKeyPressedProc, SetMousePressedProc, SetMouseMovedProc, EnableCursor, GetCursorPos, SetCursorPos
 		* Removed AppActivate
-		* Init() no longer has any parameters
-		* BeginFrame() no longer has any parameters
-	* Removed stereoscopic 3D support
-		* Removed cl_stereo, cl_stereo_separation cvars
+		* Init() no longer has any parameters (they were non-portable and Windows specific)
+		* BeginFrame() no longer has any parameters (they were non-portable and Windows specific)
+	* Windowed borderless is now the default fullscreen setting
+		* Can be manually overridden with vid_fullscreen 1 (vid_borderless controls borderless windowed fullscreen)
 
 Version 0.0.5
 March 23, 2024

@@ -104,25 +104,25 @@ typedef struct lightstyle_s
 typedef struct refdef_s
 {
 	int32_t 		x, y, width, height;// in virtual screen coordinates
-	float		fov_x, fov_y;
-	float		vieworg[3];
-	float		viewangles[3];
-	float		blend[4];			// rgba 0-1 full screen blend
-	float		time;				// time is uesed to auto animate
+	float			fov_x, fov_y;
+	float			vieworg[3];
+	float			viewangles[3];
+	float			blend[4];			// rgba 0-1 full screen blend
+	float			time;				// time is uesed to auto animate
 	int32_t 		rdflags;			// RDF_UNDERWATER, etc
 
-	uint8_t		*areabits;			// if not NULL, only areas with set bits will be drawn
+	uint8_t*		areabits;			// if not NULL, only areas with set bits will be drawn
 
-	lightstyle_t	*lightstyles;	// [MAX_LIGHTSTYLES]
+	lightstyle_t*	lightstyles;	// [MAX_LIGHTSTYLES]
 
 	int32_t 		num_entities;
-	entity_t	*entities;
+	entity_t*		entities;
 
 	int32_t 		num_dlights;
-	dlight_t	*dlights;
+	dlight_t*		dlights;
 
 	int32_t 		num_particles;
-	particle_t	*particles;
+	particle_t*		particles;
 } refdef_t;
 
 #define	API_VERSION		7
@@ -199,7 +199,7 @@ typedef struct
 	void	(*Cmd_AddCommand) (char *name, void(*cmd)(void));
 	void	(*Cmd_RemoveCommand) (char *name);
 	int32_t (*Cmd_Argc) (void);
-	char	*(*Cmd_Argv) (int32_t i);
+	char*	(*Cmd_Argv) (int32_t i);
 	void	(*Cmd_ExecuteText) (int32_t exec_when, char *text);
 
 	void	(*Con_Printf) (int32_t print32_t_level, char *str, ...);
@@ -209,20 +209,20 @@ typedef struct
 	// or a discrete file from anywhere in the quake search path
 	// a -1 return means the file does not exist
 	// NULL can be passed for buf to just determine existance
-	int32_t 	(*FS_LoadFile) (char *name, void **buf);
+	int32_t (*FS_LoadFile) (char *name, void **buf);
 	void	(*FS_FreeFile) (void *buf);
 
 	// gamedir will be the current directory that generated
 	// files should be stored to, ie: "f:\quake\id1"
-	char	*(*FS_Gamedir) (void);
+	char*	(*FS_Gamedir) (void);
 
-	cvar_t	*(*Cvar_Get) (char *name, char *value, int32_t flags);
-	cvar_t	*(*Cvar_Set)( char *name, char *value );
+	cvar_t*	(*Cvar_Get) (char *name, char *value, int32_t flags);
+	cvar_t*	(*Cvar_Set)( char *name, char *value );
 	void	 (*Cvar_SetValue)( char *name, float value );
 
 	bool	(*Vid_GetModeInfo)( int32_t *width, int32_t *height, int32_t mode );
-	void		(*Vid_MenuInit)( void );
-	void		(*Vid_NewWindow)( int32_t width, int32_t height );
+	void	(*Vid_MenuInit)( void );
+	void	(*Vid_NewWindow)( int32_t width, int32_t height );
 } refimport_t;
 
 

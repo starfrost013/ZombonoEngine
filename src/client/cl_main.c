@@ -42,7 +42,6 @@ cvar_t	*cl_autoskins;
 cvar_t	*cl_footsteps;
 cvar_t	*cl_timeout;
 cvar_t	*cl_predict;
-//cvar_t	*cl_minfps;
 cvar_t	*cl_maxfps;
 cvar_t	*cl_gun;
 
@@ -1429,7 +1428,6 @@ void CL_InitLocal (void)
 	cl_noskins = Cvar_Get ("cl_noskins", "0", 0);
 	cl_autoskins = Cvar_Get ("cl_autoskins", "0", 0);
 	cl_predict = Cvar_Get ("cl_predict", "1", 0);
-//	cl_minfps = Cvar_Get ("cl_minfps", "5", 0);
 	cl_maxfps = Cvar_Get ("cl_maxfps", "90", 0);
 
 	cl_upspeed = Cvar_Get ("cl_upspeed", "200", 0);
@@ -1701,13 +1699,9 @@ void CL_Frame (int32_t msec)
 	cls.realtime = curtime;
 
 	extratime = 0;
-#if 0
-	if (cls.frametime > (1.0 / cl_minfps->value))
-		cls.frametime = (1.0 / cl_minfps->value);
-#else
+
 	if (cls.frametime > (1.0 / 5))
 		cls.frametime = (1.0 / 5);
-#endif
 
 	// if in the debugger last frame, don't timeout
 	if (msec > 5000)

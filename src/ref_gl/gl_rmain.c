@@ -93,9 +93,7 @@ cvar_t	*gl_particle_att_a;
 cvar_t	*gl_particle_att_b;
 cvar_t	*gl_particle_att_c;
 
-cvar_t	*gl_ext_swapinterval;
-cvar_t	*gl_ext_multitexture;
-cvar_t	*gl_ext_pointparameters;
+cvar_t	*gl_vsync;
 cvar_t	*gl_ext_compiled_vertex_array;
 
 cvar_t	*gl_bitdepth;
@@ -791,9 +789,7 @@ void R_Register( void )
 
 	gl_vertex_arrays = ri.Cvar_Get( "gl_vertex_arrays", "0", CVAR_ARCHIVE );
 
-	gl_ext_swapinterval = ri.Cvar_Get( "gl_ext_swapinterval", "1", CVAR_ARCHIVE );
-	gl_ext_multitexture = ri.Cvar_Get( "gl_ext_multitexture", "1", CVAR_ARCHIVE );
-	gl_ext_pointparameters = ri.Cvar_Get( "gl_ext_pointparameters", "1", CVAR_ARCHIVE );
+	gl_vsync = ri.Cvar_Get( "gl_vsync", "1", CVAR_ARCHIVE );
 	gl_ext_compiled_vertex_array = ri.Cvar_Get( "gl_ext_compiled_vertex_array", "1", CVAR_ARCHIVE );
 
 	gl_drawbuffer = ri.Cvar_Get( "gl_drawbuffer", "GL_BACK", 0 );
@@ -803,7 +799,7 @@ void R_Register( void )
 	vid_borderless = ri.Cvar_Get( "vid_borderless", "0", CVAR_ARCHIVE );
 	vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
 	vid_gamma = ri.Cvar_Get( "vid_gamma", "1.0", CVAR_ARCHIVE );
-	vid_ref = ri.Cvar_Get( "vid_ref", "soft", CVAR_ARCHIVE );
+	vid_ref = ri.Cvar_Get( "vid_ref", "gl", CVAR_ARCHIVE );
 
 	ri.Cmd_AddCommand( "imagelist", GL_ImageList_f );
 	ri.Cmd_AddCommand( "screenshot", GL_ScreenShot_f );

@@ -135,6 +135,7 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 		glfwSetWindowPos(gl_state.window, vid_xpos, vid_ypos);
 	}
 
+	glfwSwapInterval(gl_vsync->value);
 
 	return true;
 }
@@ -281,7 +282,6 @@ void GL_EndFrame (void)
 	glfwPollEvents();
 	// swap the buffers
 	glfwSwapBuffers(gl_state.window);
-	glfwSwapInterval(1);
 }
 
 void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))

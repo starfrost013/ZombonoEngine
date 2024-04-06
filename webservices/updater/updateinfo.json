@@ -11,8 +11,8 @@
             {
                 "name": "Playtest",
                 "version": "0.0.6.99999",
-                "release_date": "2024-03-28 18:18:54",
-                "description": "Zombono 0.0.6 has the Planfuslicator!"
+                "release_date": "2024-04-06 20:00:00",
+                "description": "Zombono 0.0.6...now with GLFW...!"
             },
             {
                 "name": "Debug",

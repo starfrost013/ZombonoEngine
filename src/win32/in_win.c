@@ -118,15 +118,12 @@ if (!freelook->value && lookspring->value)
 }
 
 int32_t 		mouse_buttons;
-int32_t 		mouse_oldbuttonstate;
-int32_t 		mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
 
 int32_t 		old_x, old_y;
 
 bool	mouseactive;	// false when not focus app
 
 bool	mouseinitialized;
-int32_t 	originalmouseparms[3], newmouseparms[3] = {0, 0, 0}; // explicitly disable mouse acceleration
 
 int32_t 		window_center_x, window_center_y;
 RECT		window_rect;
@@ -198,39 +195,6 @@ void IN_StartupMouse (void)
 	mouseinitialized = true;
 	mouse_buttons = 5;
 }
-
-/*
-===========
-IN_MouseEvent
-===========
-*/
-void IN_MouseEvent (int32_t mstate, int32_t x, int32_t y)
-{
-	int32_t 	i;
-
-	if (!mouseinitialized)
-		return;
-
-// perform button actions
-	for (i=0 ; i<mouse_buttons ; i++)
-	{
-		if ( (mstate & (1<<i)) &&
-			!(mouse_oldbuttonstate & (1<<i)) )
-		{
-			// MOUSE4 and MOUSE5 detection needs to have an offset applied due to higher virtual key codes
-			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), 0, true, sys_msg_time, x, y);
-		}
-
-		if ( !(mstate & (1<<i)) &&
-			(mouse_oldbuttonstate & (1<<i)) )
-		{
-			Input_Event (K_MOUSE1 + i + (i > 2 ? 38 : 0), 0, false, sys_msg_time, x, y);
-		}
-	}	
-		
-	mouse_oldbuttonstate = mstate;
-}
-
 
 /*
 ===========
@@ -416,18 +380,6 @@ void IN_Move (usercmd_t *cmd)
 		IN_JoyMove (cmd);
 }
 
-
-/*
-===================
-IN_ClearStates
-===================
-*/
-void IN_ClearStates (void)
-{
-	mx_accum = 0;
-	my_accum = 0;
-	mouse_oldbuttonstate = 0;
-}
 
 
 /*
