@@ -1,5 +1,19 @@
 Zombono
 Release Notes
+Version 0.0.7
+April XX, 2024
+
+BUG FIXES:
+* Fixed saving config on playtest builds
+* Fixed crouching
+
+NEW FEATURES:
+
+Version 0.0.6.161 (Build 161)
+* Fixed typing lowercase in chat (workaround)
+* Fixed panning up and down on playtest builds
+* Fixed the game functioning on some computers
+
 Version 0.0.6.152 (Build 152)
 April 6, 2024
 * Zombie rebalancing:

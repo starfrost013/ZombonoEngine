@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 // qcommon.h -- definitions common between client and server, but not game*.dll
-#include "../game/q_shared.h"
+#include <game/q_shared.h>
 #include "netservices/netservices.h" // hmm
 #include "pdjson.h"
 #include "version.h"
@@ -622,9 +622,7 @@ Map Loader
 ==============================================================
 */
 
-
-#include "../qcommon/qfiles.h"
-
+#include <qcommon/qfiles.h>
 cmodel_t	*Map_Load (char *name, bool clientload, uint32_t *checksum);
 cmodel_t	*Map_LoadInlineModel (char *name);	// *1, *2, etc
 

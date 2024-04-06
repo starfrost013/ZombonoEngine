@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // sys_win.c: Windows specific code
 
-#include "../qcommon/qcommon.h"
-#include "../client/client.h"
+#include <qcommon/qcommon.h>
+#include <client/client.h>
 #include "winquake.h"
 #include "resource.h"
 #include <errno.h>
@@ -32,8 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <direct.h>
 #include <io.h>
 #include <conio.h>
-#include "../win32/conproc.h"
-
+#include <win32/conproc.h>
 int32_t 		starttime;
 bool		ActiveApp;
 bool		Minimized;

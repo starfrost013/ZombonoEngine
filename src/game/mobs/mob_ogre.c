@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ogre - February 7, 2024
 
-#include "../game_local.h"
+#include <game_local.h>
 #include "mob_ogre.h"
 
 static int	sound_idle;

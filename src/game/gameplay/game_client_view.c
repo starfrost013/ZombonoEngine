@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "../game_local.h"
-#include "../mobs/mob_player.h"
+#include <game_local.h>
+#include <mobs/mob_player.h>
 
 edict_t		*current_player;
 gclient_t	*current_client;

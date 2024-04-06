@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // Weapon_machinegun.c : Machine gun weapon code - split from p_weapon.c
 
-#include "../game_local.h"
-#include "../mobs/mob_player.h"
+#include <game_local.h>
+#include <mobs/mob_player.h>
 /*
 ======================================================================
 

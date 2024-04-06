@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 //CURL_STATICLIB MUST BE DEFINED ON COMMAND LINE OR JHERE
-#include "../qcommon.h"
-#include "../curl/curl.h"
+#include <qcommon/qcommon.h>
+#include <qcommon/curl/curl.h>
 
 #define UPDATER_BASE_URL			"https://updates.zombono.com"	// Base URL for the updater service
 #define MAX_UPDATE_STR_LENGTH		256								// Maximum length of an update string
