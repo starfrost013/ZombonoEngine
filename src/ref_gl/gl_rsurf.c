@@ -236,7 +236,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 ** R_BlendLightMaps
 **
 ** This routine takes all the given light mapped surfaces in the world and
-** blends them int32_to the framebuffer.
+** blends them into the framebuffer.
 */
 void R_BlendLightmaps (void)
 {
@@ -579,7 +579,6 @@ void DrawTextureChains (void)
 
 		image->texturechain = NULL;
 	}
-	//		GL_EnableMultitexture( true );
 
 	GL_TexEnv( GL_REPLACE );
 }
@@ -749,11 +748,7 @@ dynamic:
 				}
 				glEnd ();
 			}
-//==========
-//PGM
 		}
-//PGM
-//==========
 	}
 }
 
@@ -1212,6 +1207,7 @@ static void LM_UploadBlock( bool dynamic )
 					   GL_LIGHTMAP_FORMAT, 
 					   GL_UNSIGNED_BYTE, 
 					   gl_lms.lightmap_buffer );
+
 		if ( ++gl_lms.current_lightmap_texture == MAX_LIGHTMAPS )
 			ri.Sys_Error( ERR_DROP, "LM_UploadBlock() - MAX_LIGHTMAPS exceeded\n" );
 	}
@@ -1435,8 +1431,6 @@ void GL_BeginBuildingLightmaps (model_t *m)
 				   GL_LIGHTMAP_FORMAT, 
 				   GL_UNSIGNED_BYTE, 
 				   dummy );
-
-	//free(dummy);
 }
 
 /*

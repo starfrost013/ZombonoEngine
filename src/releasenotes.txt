@@ -1,6 +1,6 @@
 Zombono
 Release Notes
-Version 0.0.6
+Version 0.0.6.152 (Build 152)
 April 6, 2024
 * Zombie rebalancing:
 	* Regular Zombie/Average Joe Zombie
@@ -16,7 +16,9 @@ April 6, 2024
 * MAX_TOTAL_ENT_LEAFS 128 -> 256
 * Began working on the game's various attached network services.
 	* Curl is now integrated into the engine. On Windows, this appears to require horrifying hacks.
-	* The game contacts updates.zombono.com for an internet connection check. This is done after config.cfg is run, so you can put "ns_nointernetcheck 1" in your 	config.cfg or default.cfg to not run the check, if you don't like this for whatever reason. If you want to completely cut off all connections to zombono.com, put 	"ns_disabled 1" in your config.cfg or default.cfg files.
+	* The game contacts updates.zombono.com for an internet connection check. This is done after config.cfg is run, so you can put "ns_nointernetcheck 1" in your 	
+		config.cfg or default.cfg to not run the check, if you don't like this for whatever reason. If you want to completely cut off all connections to zombono.com, put
+		"ns_disabled 1" in your config.cfg or default.cfg files.
 * The game now has an auto-incrementing build number that increments by one each time the game is compiled.
 	* This is for the updater so that updates can be reissued without changing the game's version number.
 * MAX_MSGLEN 2800 -> 16384 (same as Quake 3)
@@ -48,6 +50,7 @@ April 6, 2024
 	* Removed rendering cvars:
 		* gl_log (useless, just logged every time a frame started)
 		* gl_ext_swapinterval (replaced with gl_vsync)
+		* gl_ext_palettedtexture (obsolete)
 		* gl_ext_multitexture (replaced with OpenGL core functionality)
 		* gl_ext_pointparameters (replaced with OpenGL core functionality)
 		* Removed stereoscopic 3D support
@@ -79,6 +82,12 @@ April 6, 2024
 * Zombono BSP v2
 	* ACTUALLY increased the texture size limit from 32 to 80 characters
 * Increased maximum length of a Player's name from 16 to 80 characters (it was set as 32 in the client and 16 in the network protocol...)
+* Minor tweaks to z_tdm_labrats, actually texture the sides and tops of the NDEVs
+* Combined cl_drawposition and cl_drawvelocity debugging CVars into the new debugging cvar cl_drawpos, which now actually works when connected to a server
+* Improved lighting in z_tdm_subway, added a trampoline to the director base as well...
+* Added a new map - z_tdm_warehouse!
+	* This map is actually the first map made for the game in August 2023 back when the game used the Quake 1 engine.
+	* It's been entirely remade with many improvements and a completely new style
 
 Version 0.0.5
 March 23, 2024

@@ -266,7 +266,7 @@ void CL_PrepRefresh (void)
 
 	// register models, pics, and skins
 	Com_Printf ("Map: %s\r", mapname); 
-	//SCR_UpdateScreen ();
+	SCR_UpdateScreen ();
 	re.BeginRegistration (mapname);
 	Com_Printf ("                                     \r");
 
@@ -336,7 +336,7 @@ void CL_PrepRefresh (void)
 
 	// set sky textures and speed
 	Com_Printf ("sky\r", i); 
-	//SCR_UpdateScreen ();
+	SCR_UpdateScreen ();
 	rotate = atof (cl.configstrings[CS_SKYROTATE]);
 	sscanf (cl.configstrings[CS_SKYAXIS], "%f %f %f", 
 		&axis[0], &axis[1], &axis[2]);
@@ -350,7 +350,7 @@ void CL_PrepRefresh (void)
 	Con_ClearNotify ();
 
 
-	//SCR_UpdateScreen ();
+	SCR_UpdateScreen ();
 	cl.refresh_prepped = true;
 	cl.force_refdef = true;	// make sure we have a valid refdef
 
