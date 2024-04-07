@@ -1040,7 +1040,6 @@ CONTROLS MENU
 
 =======================================================================
 */
-extern cvar_t *input_joystick;
 
 static menuframework_t	s_options_menu;
 static menuaction_t		s_options_defaults_action;
@@ -1062,11 +1061,6 @@ static menulist_t		s_options_console_action;
 static void CrosshairFunc( void *unused )
 {
 	Cvar_SetValue( "crosshair", s_options_crosshair_box.curvalue );
-}
-
-static void JoystickFunc( void *unused )
-{
-	Cvar_SetValue( "input_joystick", s_options_joystick_box.curvalue );
 }
 
 static void CustomizeControlsFunc( void *unused )
@@ -1119,9 +1113,6 @@ static void ControlsSetMenuItemValues( void )
 
 	Cvar_SetValue( "crosshair", ClampCvar( 0, 3, crosshair->value ) );
 	s_options_crosshair_box.curvalue		= crosshair->value;
-
-	Cvar_SetValue( "input_joystick", ClampCvar( 0, 1, input_joystick->value ) );
-	s_options_joystick_box.curvalue		= input_joystick->value;
 }
 
 static void ControlsResetDefaultsFunc( void *unused )
@@ -1314,13 +1305,6 @@ void Options_MenuInit( void )
 	s_options_crosshair_box.generic.callback = CrosshairFunc;
 	s_options_crosshair_box.itemnames = crosshair_names;
 
-	s_options_joystick_box.generic.type = MTYPE_SPINCONTROL;
-	s_options_joystick_box.generic.x	= 0;
-	s_options_joystick_box.generic.y	= 120 * vid_hudscale->value;
-	s_options_joystick_box.generic.name	= "^5Use Joystick";
-	s_options_joystick_box.generic.callback = JoystickFunc;
-	s_options_joystick_box.itemnames = yes_no_names;
-
 	s_options_customize_options_action.generic.type	= MTYPE_ACTION;
 	s_options_customize_options_action.generic.x		= 0;
 	s_options_customize_options_action.generic.y		= 140 * vid_hudscale->value;
@@ -1352,7 +1336,6 @@ void Options_MenuInit( void )
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_lookstrafe_box );
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_freelook_box );
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_crosshair_box );
-	Menu_AddItem( &s_options_menu, ( void * ) &s_options_joystick_box );
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_customize_options_action );
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_defaults_action );
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_console_action );

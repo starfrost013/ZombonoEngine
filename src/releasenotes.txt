@@ -16,8 +16,8 @@ REMOVALS:
 * Removed v_centermove cvar (was already dead)
 * Removed viewpos command (cl_viewpos 1 far superior and duplicates functionality)
 
-OTHER:
-* Moved mouse code into platform independent code (because now it is)
+OTHER ENHANCEMENTS:
+* Moved mouse code from platform specific to platform independent code (because now it is)
 * Renamed in_ cvars to input_ and same for functions
 
 Version 0.0.6.161 (Build 161)

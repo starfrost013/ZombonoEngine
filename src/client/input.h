@@ -21,18 +21,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // input.h -- external (non-keyboard) input devices
 #pragma once
 
-void Input_Init(void);					// Non OS specific
+void Input_Init();					
+void Input_StartupMouse();
+void Input_ActivateMouse();
+void Input_DeactivateMouse();
+void Input_MouseMove(usercmd_t* cmd);
 
-void Joystick_Init (void);				// Currently OS specific (temp)
-
-void Input_Shutdown (void);
-
-void Input_Commands (void);
+void Input_Shutdown ();
 // oportunity for devices to stick commands on the script buffer
 
-void Input_Frame (void);
+void Input_Frame ();
 
-void Input_Move (usercmd_t *cmd);
+void Input_Move (usercmd_t* cmd);
 // add additional movement on top of the keyboard move cmd
 
 void Input_Activate (bool active);

@@ -1652,8 +1652,6 @@ void CL_SendCommand (void)
 	{
 		// get new key events
 		Sys_SendKeyEvents();
-		// allow mice or other external controllers to add commands
-		Input_Commands();
 	}
 
 	// process console commands
@@ -1805,7 +1803,6 @@ void CL_Init (void)
 	Miniaudio_Init();
 	CL_InitLocal();
 	Input_Init();
-	Joystick_Init();
 	if (!Font_Init()) Sys_Error("Error initialising font engine");
 	UI_Init();
 

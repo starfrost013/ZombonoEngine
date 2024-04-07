@@ -129,9 +129,6 @@
     <ClCompile Include="win32\conproc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\in_win.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32\net_wins.c">
       <Filter>Source Files</Filter>
     </ClCompile>

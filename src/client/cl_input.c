@@ -28,6 +28,27 @@ cvar_t* input_mouse;
 extern	uint32_t	sys_frame_time;
 uint32_t	frame_msec;
 uint32_t	old_sys_frame_time;
+bool	in_appactive;
+
+// mouse variables
+cvar_t* m_filter;
+
+bool	mlooking;
+
+void Input_MLookDown(void) { mlooking = true; }
+void Input_MLookUp(void) {
+	mlooking = false;
+	if (!freelook->value && lookspring->value)
+		Input_CenterView();
+}
+
+int32_t 		mouse_buttons;
+
+bool	mouseactive;	// false when not focus app
+
+bool	mouseinitialized;
+
+int32_t 		window_center_x, window_center_y;
 
 // ==============
 // INITIALISATION
@@ -38,7 +59,86 @@ void Input_Init()
 	// mouse variables
 	m_filter = Cvar_Get("m_filter", "0", 0);
 	input_mouse = Cvar_Get("input_mouse", "1", CVAR_ARCHIVE);
+
+	Cmd_AddCommand("+mlook", Input_MLookDown);
+	Cmd_AddCommand("-mlook", Input_MLookUp);
+
+	Input_StartupMouse();
 }
+
+// ========= 
+// Activation, Mainloop, Shutdown
+// =========
+
+/*
+===========
+Input_Activate
+
+Called when the main window gains or loses focus.
+The window may have been destroyed and recreated
+between a deactivate and an activate.
+===========
+*/
+void Input_Activate(bool active)
+{
+	in_appactive = active;
+	mouseactive = !active;		// force a new window check or turn off
+}
+
+/*
+===========
+Input_Shutdown
+===========
+*/
+void Input_Shutdown(void)
+{
+	Input_DeactivateMouse();
+}
+
+/*
+==================
+Input_Frame
+
+Called every frame, even if not generating commands
+==================
+*/
+void Input_Frame(void)
+{
+	if (!mouseinitialized)
+		return;
+
+	if (!input_mouse || !in_appactive)
+	{
+		Input_DeactivateMouse();
+		return;
+	}
+
+	if (!cl.refresh_prepped
+		|| cls.key_dest == key_console
+		|| cls.key_dest == key_menu)
+	{
+		// temporarily deactivate if in windowed
+		if (Cvar_VariableValue("vid_borderless") == 0
+			&& Cvar_VariableValue("vid_fullscreen") == 0)
+		{
+			Input_DeactivateMouse();
+			return;
+		}
+	}
+
+	Input_ActivateMouse();
+}
+
+/*
+===========
+Input_Move
+===========
+*/
+void Input_Move(usercmd_t* cmd)
+{
+	Input_MouseMove(cmd);
+}
+
 
 
 /*
@@ -553,25 +653,7 @@ void CL_SendCmd (void)
 ============================================================
 */
 
-// mouse variables
-cvar_t* m_filter;
 
-bool	mlooking;
-
-void Input_MLookDown(void) { mlooking = true; }
-void Input_MLookUp(void) {
-	mlooking = false;
-	if (!freelook->value && lookspring->value)
-		Input_CenterView();
-}
-
-int32_t 		mouse_buttons;
-
-bool	mouseactive;	// false when not focus app
-
-bool	mouseinitialized;
-
-int32_t 		window_center_x, window_center_y;
 
 /*
 ===========
@@ -630,7 +712,7 @@ void Input_StartupMouse(void)
 {
 	cvar_t* cv;
 
-	cv = Cvar_Get("Input_initmouse", "1", CVAR_NOSET);
+	cv = Cvar_Get("input_initmouse", "1", CVAR_NOSET);
 	if (!cv->value)
 		return;
 
@@ -645,11 +727,11 @@ Input_MouseMove
 */
 void Input_MouseMove(usercmd_t* cmd)
 {
-	// This PoS is a garbage Starfrost special, written on April 2, 2024
+	// This PoS is a garbage Starfrost special, written on April 2, 2024 and kinda sorta fixed on April 7, 2024
 	if (!mouseactive)
 		return;
 
-	// can't move wihle dead
+	// don't desync while dead
 	if (cl.frame.playerstate.pmove.pm_type == PM_DEAD)
 	{
 		VectorCopy(cl.refdef.viewangles, cl.viewangles);
@@ -663,16 +745,19 @@ void Input_MouseMove(usercmd_t* cmd)
 	double mouse_pos_x = 0, mouse_pos_y = 0;
 
 	if ((lookstrafe->value && mlooking))
+	{
 		cmd->sidemove = new_move_side;
+	}
 	else
 	{
 		// clamp viewangles to 360 degree range
 		// this is also done on the server...
 		if (new_yaw > 180)
-			new_yaw = -180;
+			new_yaw -= 360;
 		if (new_yaw < -180)
-			new_yaw = 180;
-		// snap the mouse to new yaw
+			new_yaw += 360;
+
+		// snap the mouse to new yaw (since we set viewangles based on where you are)
 		re.GetCursorPosition(&mouse_pos_x, &mouse_pos_y);
 		re.SetCursorPosition(-((window_center_x * new_yaw) / sensitivity->value) / m_pitch->value, mouse_pos_y);
 		cl.viewangles[YAW] = new_yaw;
