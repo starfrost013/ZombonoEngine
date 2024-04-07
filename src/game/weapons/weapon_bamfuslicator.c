@@ -55,8 +55,6 @@ void Weapon_Bamfuslicator_Fire(edict_t* ent)
 {
 	//todo: audio
 	vec3_t offset, start, forward, right;
-	int32_t zombie_min_distance = 32;
-	int32_t zombie_max_distance = 2048;
 
 	// only fire forward
 	AngleVectors(ent->client->v_angle, forward, right, NULL);

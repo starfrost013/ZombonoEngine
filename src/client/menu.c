@@ -35,7 +35,7 @@ static bool search_local_games = false;
 
 #define NUM_CURSOR_FRAMES 15
 
-static char *menu_in_sound		= "misc/menu1.wav";
+static char *menu_Input_sound		= "misc/menu1.wav";
 static char *menu_move_sound	= "misc/menu2.wav";
 static char *menu_out_sound		= "misc/menu3.wav";
 
@@ -359,7 +359,7 @@ MAIN MENU
 
 =======================================================================
 */
-#define	MAIN_ITEMS	5
+#define	Main_ITEMS	5
 
 
 void M_Main_Draw (void)
@@ -425,13 +425,13 @@ const char *M_Main_Key (int32_t key)
 		break;
 
 	case K_DOWNARROW:
-		if (++m_main_cursor >= MAIN_ITEMS)
+		if (++m_main_cursor >= Main_ITEMS)
 			m_main_cursor = 0;
 		return sound;
 
 	case K_UPARROW:
 		if (--m_main_cursor < 0)
-			m_main_cursor = MAIN_ITEMS - 1;
+			m_main_cursor = Main_ITEMS - 1;
 		return sound;
 
 	case K_KP_ENTER:
@@ -1016,7 +1016,7 @@ static const char *Keys_MenuKey( int32_t key )
 	case K_KP_ENTER:
 	case K_ENTER:
 		KeyBindingFunc( item );
-		return menu_in_sound;
+		return menu_Input_sound;
 	case K_BACKSPACE:		// delete bindings
 	case K_DELETE:				// delete bindings
 		M_UnbindCommand( bindnames[item->generic.localdata[0]][0] );
@@ -1040,7 +1040,7 @@ CONTROLS MENU
 
 =======================================================================
 */
-extern cvar_t *in_joystick;
+extern cvar_t *input_joystick;
 
 static menuframework_t	s_options_menu;
 static menuaction_t		s_options_defaults_action;
@@ -1066,7 +1066,7 @@ static void CrosshairFunc( void *unused )
 
 static void JoystickFunc( void *unused )
 {
-	Cvar_SetValue( "in_joystick", s_options_joystick_box.curvalue );
+	Cvar_SetValue( "input_joystick", s_options_joystick_box.curvalue );
 }
 
 static void CustomizeControlsFunc( void *unused )
@@ -1120,8 +1120,8 @@ static void ControlsSetMenuItemValues( void )
 	Cvar_SetValue( "crosshair", ClampCvar( 0, 3, crosshair->value ) );
 	s_options_crosshair_box.curvalue		= crosshair->value;
 
-	Cvar_SetValue( "in_joystick", ClampCvar( 0, 1, in_joystick->value ) );
-	s_options_joystick_box.curvalue		= in_joystick->value;
+	Cvar_SetValue( "input_joystick", ClampCvar( 0, 1, input_joystick->value ) );
+	s_options_joystick_box.curvalue		= input_joystick->value;
 }
 
 static void ControlsResetDefaultsFunc( void *unused )
@@ -2036,7 +2036,7 @@ void JoinServer_MenuInit( void )
 
 void JoinServer_MenuDraw(void)
 {
-	M_Banner( "pics/m_banner_join_server" );
+	M_Banner( "pics/m_banner_joInput_server" );
 	Menu_Draw( &s_joinserver_menu );
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
@@ -3533,7 +3533,7 @@ void M_Draw (void)
 	// caching images
 	if (m_entersound)
 	{
-		S_StartLocalSound( menu_in_sound );
+		S_StartLocalSound( menu_Input_sound );
 		m_entersound = false;
 	}
 }

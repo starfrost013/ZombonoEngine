@@ -6,10 +6,21 @@ April XX, 2024
 BUG FIXES:
 * Fixed saving config on playtest builds
 * Fixed crouching
+* Mostly fixed panning up and down after you die  (you can't desync the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 
 NEW FEATURES:
+* Added viewangles to cl_viewpos
+
+REMOVALS:
+* Removed v_centerspeed cvar (was already dead)
+* Removed v_centermove cvar (was already dead)
+
+OTHER:
+* Moved mouse code into platform independent code (because now it is)
+* Renamed in_ cvars to input_ and same for functions
 
 Version 0.0.6.161 (Build 161)
+April 6, 2024
 * Fixed typing lowercase in chat (workaround)
 * Fixed panning up and down on playtest builds
 * Fixed the game functioning on some computers
@@ -83,7 +94,7 @@ April 6, 2024
 		* This should provide Non-QWERTY keyboard support, as virtual keys are used (untested, please test!)
 		* May still be input bugs, please test!
 		* SHIFT, CTRL, ALT, SUPER...keys now only referred to by their individual keys (left shift, right shift...). Yes, it couldn't tell the difference between left and right modifier keys before...
-	* Removed win_noalttab cvar
+	* Removed wInput_noalttab cvar
 	* Renderer API version 7:
 		* Windowing events now handled in refresh DLL (for platform-independence reasons)
 			* Might move to separate windowing DLL

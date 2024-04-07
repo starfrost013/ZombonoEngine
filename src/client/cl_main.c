@@ -1653,7 +1653,7 @@ void CL_SendCommand (void)
 		// get new key events
 		Sys_SendKeyEvents();
 		// allow mice or other external controllers to add commands
-		IN_Commands();
+		Input_Commands();
 	}
 
 	// process console commands
@@ -1695,7 +1695,7 @@ void CL_Frame (int32_t msec)
 	}
 
 	// let the mouse activate or deactivate
-	IN_Frame ();
+	Input_Frame ();
 
 	// decide the simulation time
 	cls.frametime = extratime/1000.0;
@@ -1804,7 +1804,8 @@ void CL_Init (void)
 
 	Miniaudio_Init();
 	CL_InitLocal();
-	IN_Init();
+	Input_Init();
+	Joystick_Init();
 	if (!Font_Init()) Sys_Error("Error initialising font engine");
 	UI_Init();
 
@@ -1843,6 +1844,6 @@ void CL_Shutdown(void)
 	CL_WriteConfiguration (); 
 	Miniaudio_Shutdown ();
 	S_Shutdown();
-	IN_Shutdown ();
+	Input_Shutdown ();
 	VID_Shutdown();
 }

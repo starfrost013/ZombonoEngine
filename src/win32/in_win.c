@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// in_win.c -- windows 95 mouse and joystick code
+// Input_win.c -- windows 95 mouse and joystick code
 // 02/21/97 JCB Added extended DirectInput code to support external controllers.
 
 #include <client/client.h>
@@ -53,8 +53,7 @@ DWORD	dwAxisMap[JOY_MAX_AXES];
 DWORD	dwControlMap[JOY_MAX_AXES];
 PDWORD	pdwRawValue[JOY_MAX_AXES];
 
-cvar_t	*in_mouse;
-cvar_t	*in_joystick;
+cvar_t	*input_joystick;
 
 
 // none of these cvars are saved over a session
@@ -90,184 +89,24 @@ DWORD		joy_numbuttons;
 
 static JOYINFOEX	ji;
 
-bool	in_appactive;
+bool	Input_appactive;
 
 // forward-referenced functions
-void IN_StartupJoystick (void);
+void Input_StartupJoystick (void);
 void Joy_AdvancedUpdate_f (void);
-void IN_JoyMove (usercmd_t *cmd);
+void Input_JoyMove (usercmd_t *cmd);
 
-/*
-============================================================
-
-  MOUSE CONTROL
-
-============================================================
-*/
-
-// mouse variables
-cvar_t	*m_filter;
-
-bool	mlooking;
-
-void IN_MLookDown (void) { mlooking = true; }
-void IN_MLookUp (void) {
-mlooking = false;
-if (!freelook->value && lookspring->value)
-		IN_CenterView ();
-}
-
-int32_t 		mouse_buttons;
-
-bool	mouseactive;	// false when not focus app
-
-bool	mouseinitialized;
-
-int32_t 		window_center_x, window_center_y;
 
 /*
 ===========
-IN_ActivateMouse
-
-Called when the window gains focus or changes in some way
+Input_Init
 ===========
 */
-void IN_ActivateMouse (void)
+void Joystick_Init (void)
 {
-	if (!mouseinitialized)
-		return;
-	if (!in_mouse->value)
-	{
-		mouseactive = false;
-		return;
-	}
-	if (mouseactive)
-		return;
-
-	// this is how the old code worked
-	re.EnableCursor(false);
-	mouseactive = true;
-
-	window_center_x = ((Cvar_Get("vid_xpos", "0", 0)->value) + viddef.width) / 2;
-	window_center_y = ((Cvar_Get("vid_ypos", "0", 0)->value) + viddef.height) / 2;
-}
-
-
-/*
-===========
-IN_DeactivateMouse
-
-Called when the window loses focus
-===========
-*/
-void IN_DeactivateMouse(void)
-{
-	if (!mouseinitialized)
-		return;
-	if (!mouseactive)
-		return;
-
-	re.EnableCursor(true);
-	mouseactive = false;
-}
-
-
-
-/*
-===========
-IN_StartupMouse
-===========
-*/
-void IN_StartupMouse (void)
-{
-	cvar_t		*cv;
-
-	cv = Cvar_Get ("in_initmouse", "1", CVAR_NOSET);
-	if ( !cv->value ) 
-		return; 
-
-	mouseinitialized = true;
-	mouse_buttons = 5;
-}
-
-/*
-===========
-IN_MouseMove
-===========
-*/
-void IN_MouseMove (usercmd_t *cmd)
-{
-	// This PoS is a garbage Starfrost special, written on April 2, 2024
-	if (!mouseactive)
-		return;
-
-	float new_yaw = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
-	float new_pitch = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
-	float new_move_forward = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
-	float new_move_side = (m_side->value / window_center_y) * sensitivity->value;
-
-	if ((lookstrafe->value && mlooking))
-		cmd->sidemove = new_move_side;
-	else
-		cl.viewangles[YAW] = new_yaw;
-
-	if ((mlooking || freelook->value))
-	{
-		// slight hack: prevent the player from moving down further than the camera allows by moving their cursor (since the cursor controls where the camera is)
-		// IT USES DEGREES???
-		if (new_pitch > 90)
-		{
-			new_pitch = 90;
-
-			double pos_x = 0, pos_y = 0;
-			re.GetCursorPosition(&pos_x, &pos_y);
-			pos_y = (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value;
-			re.SetCursorPosition(pos_x, pos_y);
-		}
-		else if (new_pitch < -90)
-		{
-			new_pitch = -90;
-			// prevent the player from moving down further than the camera allows
-			double pos_x = 0, pos_y = 0;
-			re.GetCursorPosition(&pos_x, &pos_y);
-			pos_y = (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value;
-			re.SetCursorPosition(pos_x, pos_y);
-		}
-
-		cl.viewangles[PITCH] = new_pitch;
-	}
-	else
-	{
-		cmd->forwardmove = new_move_forward;
-	}
-}
-
-
-/*
-=========================================================================
-
-VIEW CENTERING
-
-=========================================================================
-*/
-
-cvar_t	*v_centermove;
-cvar_t	*v_centerspeed;
-
-
-/*
-===========
-IN_Init
-===========
-*/
-void IN_Init (void)
-{
-	// mouse variables
-	m_filter				= Cvar_Get ("m_filter",					"0",		0);
-    in_mouse				= Cvar_Get ("in_mouse",					"1",		CVAR_ARCHIVE);
 
 	// joystick variables
-	in_joystick				= Cvar_Get ("in_joystick",				"0",		CVAR_ARCHIVE);
+	input_joystick				= Cvar_Get ("input_joystick",				"0",		CVAR_ARCHIVE);
 	joy_name				= Cvar_Get ("joy_name",					"joystick",	0);
 	joy_advanced			= Cvar_Get ("joy_advanced",				"0",		0);
 	joy_advaxisx			= Cvar_Get ("joy_advaxisx",				"0",		0);
@@ -287,61 +126,57 @@ void IN_Init (void)
 	joy_pitchsensitivity	= Cvar_Get ("joy_pitchsensitivity",		"1",		0);
 	joy_yawsensitivity		= Cvar_Get ("joy_yawsensitivity",		"-1",		0);
 
-	// centering
-	v_centermove			= Cvar_Get ("v_centermove",				"0.15",		0);
-	v_centerspeed			= Cvar_Get ("v_centerspeed",			"500",		0);
-
-	Cmd_AddCommand ("+mlook", IN_MLookDown);
-	Cmd_AddCommand ("-mlook", IN_MLookUp);
+	Cmd_AddCommand ("+mlook", Input_MLookDown);
+	Cmd_AddCommand ("-mlook", Input_MLookUp);
 
 	Cmd_AddCommand ("joy_advancedupdate", Joy_AdvancedUpdate_f);
 
-	IN_StartupMouse ();
-	IN_StartupJoystick ();
+	Input_StartupMouse ();
+	Input_StartupJoystick ();
 }
 
 /*
 ===========
-IN_Shutdown
+Input_Shutdown
 ===========
 */
-void IN_Shutdown (void)
+void Input_Shutdown (void)
 {
-	IN_DeactivateMouse ();
+	Input_DeactivateMouse ();
 }
 
 
 /*
 ===========
-IN_Activate
+Input_Activate
 
 Called when the main window gains or loses focus.
 The window may have been destroyed and recreated
 between a deactivate and an activate.
 ===========
 */
-void IN_Activate (bool active)
+void Input_Activate (bool active)
 {
-	in_appactive = active;
+	Input_appactive = active;
 	mouseactive = !active;		// force a new window check or turn off
 }
 
 
 /*
 ==================
-IN_Frame
+Input_Frame
 
 Called every frame, even if not generating commands
 ==================
 */
-void IN_Frame (void)
+void Input_Frame (void)
 {
 	if (!mouseinitialized)
 		return;
 
-	if (!in_mouse || !in_appactive)
+	if (!input_mouse || !Input_appactive)
 	{
-		IN_DeactivateMouse ();
+		Input_DeactivateMouse ();
 		return;
 	}
 
@@ -353,25 +188,25 @@ void IN_Frame (void)
 		if (Cvar_VariableValue ("vid_borderless") == 0
 			&& Cvar_VariableValue ("vid_fullscreen") == 0)
 		{
-			IN_DeactivateMouse ();
+			Input_DeactivateMouse ();
 			return;
 		}
 	}
 
-	IN_ActivateMouse ();
+	Input_ActivateMouse ();
 }
 
 /*
 ===========
-IN_Move
+Input_Move
 ===========
 */
-void IN_Move (usercmd_t *cmd)
+void Input_Move (usercmd_t *cmd)
 {
-	IN_MouseMove (cmd);
+	Input_MouseMove (cmd);
 
 	if (ActiveApp)
-		IN_JoyMove (cmd);
+		Input_JoyMove (cmd);
 }
 
 
@@ -386,10 +221,10 @@ JOYSTICK
 
 /* 
 =============== 
-IN_StartupJoystick 
+Input_StartupJoystick 
 =============== 
 */  
-void IN_StartupJoystick (void) 
+void Input_StartupJoystick (void) 
 { 
 	int32_t 		numdevs;
 	JOYCAPS		jc;
@@ -400,7 +235,7 @@ void IN_StartupJoystick (void)
 	joy_avail = false; 
 
 	// abort startup if user requests no joystick
-	cv = Cvar_Get ("in_initjoy", "1", CVAR_NOSET);
+	cv = Cvar_Get ("Input_initjoy", "1", CVAR_NOSET);
 	if ( !cv->value ) 
 		return; 
  
@@ -490,7 +325,7 @@ Joy_AdvancedUpdate_f
 void Joy_AdvancedUpdate_f (void)
 {
 
-	// called once by IN_ReadJoystick and by user whenever an update is needed
+	// called once by Input_ReadJoystick and by user whenever an update is needed
 	// cvars are now available
 	int32_t i;
 	DWORD dwTemp;
@@ -556,10 +391,10 @@ void Joy_AdvancedUpdate_f (void)
 
 /*
 ===========
-IN_Commands
+Input_Commands
 ===========
 */
-void IN_Commands (void)
+void Input_Commands (void)
 {
 	int32_t 	i, key_index;
 	DWORD	buttonstate, povstate;
@@ -625,10 +460,10 @@ void IN_Commands (void)
 
 /* 
 =============== 
-IN_ReadJoystick
+Input_ReadJoystick
 =============== 
 */  
-bool IN_ReadJoystick (void)
+bool Input_ReadJoystick (void)
 {
 
 	memset (&ji, 0, sizeof(ji));
@@ -644,7 +479,7 @@ bool IN_ReadJoystick (void)
 		// read error occurred
 		// turning off the joystick seems too harsh for 1 read error,\
 		// but what should be done?
-		// Com_Printf ("IN_ReadJoystick: no response\n");
+		// Com_Printf ("Input_ReadJoystick: no response\n");
 		// joy_avail = false;
 		return false;
 	}
@@ -653,10 +488,10 @@ bool IN_ReadJoystick (void)
 
 /*
 ===========
-IN_JoyMove
+Input_JoyMove
 ===========
 */
-void IN_JoyMove (usercmd_t *cmd)
+void Input_JoyMove (usercmd_t *cmd)
 {
 	float	speed, aspeed;
 	float	fAxisValue;
@@ -671,18 +506,18 @@ void IN_JoyMove (usercmd_t *cmd)
 	}
 
 	// verify joystick is available and that the user wants to use it
-	if (!joy_avail || !in_joystick->value)
+	if (!joy_avail || !input_joystick->value)
 	{
 		return; 
 	}
  
 	// collect the joystick data, if possible
-	if (IN_ReadJoystick () != true)
+	if (Input_ReadJoystick () != true)
 	{
 		return;
 	}
 
-	if ( (in_speed.state & 1) ^ (int32_t)cl_run->value)
+	if ( (Input_speed.state & 1) ^ (int32_t)cl_run->value)
 		speed = 2;
 	else
 		speed = 1;

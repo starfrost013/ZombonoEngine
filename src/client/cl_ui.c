@@ -297,7 +297,7 @@ bool UI_SetActive(char* ui_name, bool active)
 		if (!ui_ptr->passive)
 		{
 			// turn on the mouse cursor, bit hacky - we basically take over the mouse pointer when a UI is active
-			IN_Activate(!active);
+			Input_Activate(!active);
 		}
 
 		current_ui = ui_ptr;

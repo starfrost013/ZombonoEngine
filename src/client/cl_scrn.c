@@ -1074,10 +1074,16 @@ void SCR_DrawPos()
 
 	int y = (viddef.height - (60 * vid_hudscale->value));
 	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y, 
-		"Position: %.2f  %.2f  %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);
+		"Position: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y,
-		"Velocity: %.2f  %.2f  %.2f", cl.frame.playerstate.pmove.velocity[0], cl.frame.playerstate.pmove.velocity[1], cl.frame.playerstate.pmove.velocity[2]);
+		"Velocity: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.velocity[0], cl.frame.playerstate.pmove.velocity[1], cl.frame.playerstate.pmove.velocity[2]);
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y,
+		"Viewangle: X: %.2f  Y: %.2f  Z: %.2f", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2]);
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, (30 * vid_hudscale->value), y,
+		"Refdef Viewangle: X: %.2f  Y: %.2f  Z: %.2f", cl.refdef.viewangles[0], cl.refdef.viewangles[1], cl.refdef.viewangles[2]);
 }
 
 //=======================================================

@@ -452,8 +452,8 @@ typedef struct
 	int32_t 		state;
 } kbutton_t;
 
-extern	kbutton_t	in_mlook, in_klook;
-extern 	kbutton_t 	in_speed;
+extern	kbutton_t	Input_mlook, Input_klook;
+extern 	kbutton_t 	Input_speed;
 
 void CL_InitInput (void);
 void CL_SendCmd (void);
@@ -464,7 +464,7 @@ void CL_ReadPackets (void);
 
 void CL_BaseMove (usercmd_t *cmd);
 
-void IN_CenterView (void);
+void Input_CenterView (void);
 
 extern double last_x_pos, last_y_pos;
 

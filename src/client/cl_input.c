@@ -22,11 +22,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-cvar_t	*cl_nodelta;
+cvar_t* cl_nodelta;
+cvar_t* input_mouse;
 
 extern	uint32_t	sys_frame_time;
 uint32_t	frame_msec;
 uint32_t	old_sys_frame_time;
+
+// ==============
+// INITIALISATION
+// ==============
+
+void Input_Init()
+{
+	// mouse variables
+	m_filter = Cvar_Get("m_filter", "0", 0);
+	input_mouse = Cvar_Get("input_mouse", "1", CVAR_ARCHIVE);
+}
+
 
 /*
 ===============================================================================
@@ -55,16 +68,16 @@ Key_Event (int32_t key, bool down, uint32_t time);
 */
 
 
-kbutton_t	in_klook;
-kbutton_t	in_left, in_right, in_forward, in_back;
-kbutton_t	in_lookup, in_lookdown, in_moveleft, in_moveright;
-kbutton_t	in_speed, in_use, in_attack1, in_attack2;
-kbutton_t	in_up, in_down;
+kbutton_t	Input_klook;
+kbutton_t	Input_left, Input_right, Input_forward, Input_back;
+kbutton_t	Input_lookup, Input_lookdown, Input_moveleft, Input_moveright;
+kbutton_t	Input_speed, Input_use, Input_attack1, Input_attack2;
+kbutton_t	Input_up, Input_down;
 
-int32_t 		in_impulse;
+int32_t 		Input_impulse;
 
 
-void KeyDown (kbutton_t *b)
+void Input_KeyDown (kbutton_t *b)
 {
 	int32_t 	k;
 	char	*c;
@@ -100,7 +113,7 @@ void KeyDown (kbutton_t *b)
 	b->state |= 1 + 2;	// down + impulse down
 }
 
-void KeyUp (kbutton_t *b)
+void Input_KeyUp (kbutton_t *b)
 {
 	int32_t 	k;
 	char	*c;
@@ -140,41 +153,41 @@ void KeyUp (kbutton_t *b)
 	b->state |= 4; 		// impulse up
 }
 
-void IN_KLookDown (void) {KeyDown(&in_klook);}
-void IN_KLookUp (void) {KeyUp(&in_klook);}
-void IN_UpDown(void) {KeyDown(&in_up);}
-void IN_UpUp(void) {KeyUp(&in_up);}
-void IN_DownDown(void) {KeyDown(&in_down);}
-void IN_DownUp(void) {KeyUp(&in_down);}
-void IN_LeftDown(void) {KeyDown(&in_left);}
-void IN_LeftUp(void) {KeyUp(&in_left);}
-void IN_RightDown(void) {KeyDown(&in_right);}
-void IN_RightUp(void) {KeyUp(&in_right);}
-void IN_ForwardDown(void) {KeyDown(&in_forward);}
-void IN_ForwardUp(void) {KeyUp(&in_forward);}
-void IN_BackDown(void) {KeyDown(&in_back);}
-void IN_BackUp(void) {KeyUp(&in_back);}
-void IN_LookupDown(void) {KeyDown(&in_lookup);}
-void IN_LookupUp(void) {KeyUp(&in_lookup);}
-void IN_LookdownDown(void) {KeyDown(&in_lookdown);}
-void IN_LookdownUp(void) {KeyUp(&in_lookdown);}
-void IN_MoveleftDown(void) {KeyDown(&in_moveleft);}
-void IN_MoveleftUp(void) {KeyUp(&in_moveleft);}
-void IN_MoverightDown(void) {KeyDown(&in_moveright);}
-void IN_MoverightUp(void) {KeyUp(&in_moveright);}
+void Input_KLookDown (void) {Input_KeyDown(&Input_klook);}
+void Input_KLookUp (void) {Input_KeyUp(&Input_klook);}
+void Input_UpDown(void) {Input_KeyDown(&Input_up);}
+void Input_UpUp(void) {Input_KeyUp(&Input_up);}
+void Input_DownDown(void) {Input_KeyDown(&Input_down);}
+void Input_DownUp(void) {Input_KeyUp(&Input_down);}
+void Input_LeftDown(void) {Input_KeyDown(&Input_left);}
+void Input_LeftUp(void) {Input_KeyUp(&Input_left);}
+void Input_RightDown(void) {Input_KeyDown(&Input_right);}
+void Input_RightUp(void) {Input_KeyUp(&Input_right);}
+void Input_ForwardDown(void) {Input_KeyDown(&Input_forward);}
+void Input_ForwardUp(void) {Input_KeyUp(&Input_forward);}
+void Input_BackDown(void) {Input_KeyDown(&Input_back);}
+void Input_BackUp(void) {Input_KeyUp(&Input_back);}
+void Input_LookupDown(void) {Input_KeyDown(&Input_lookup);}
+void Input_LookupUp(void) {Input_KeyUp(&Input_lookup);}
+void Input_LookdownDown(void) {Input_KeyDown(&Input_lookdown);}
+void Input_LookdownUp(void) {Input_KeyUp(&Input_lookdown);}
+void Input_MoveleftDown(void) {Input_KeyDown(&Input_moveleft);}
+void Input_MoveleftUp(void) {Input_KeyUp(&Input_moveleft);}
+void Input_MoverightDown(void) {Input_KeyDown(&Input_moveright);}
+void Input_MoverightUp(void) {Input_KeyUp(&Input_moveright);}
 
-void IN_SpeedDown(void) {KeyDown(&in_speed);}
-void IN_SpeedUp(void) {KeyUp(&in_speed);}
+void Input_SpeedDown(void) {Input_KeyDown(&Input_speed);}
+void Input_SpeedUp(void) {Input_KeyUp(&Input_speed);}
 
-void IN_Attack1Down(void) {KeyDown(&in_attack1);}
-void IN_Attack1Up(void) {KeyUp(&in_attack1);}
-void IN_Attack2Down(void) { KeyDown(&in_attack2); }
-void IN_Attack2Up(void) { KeyUp(&in_attack2); }
+void Input_Attack1Down(void) {Input_KeyDown(&Input_attack1);}
+void Input_Attack1Up(void) {Input_KeyUp(&Input_attack1);}
+void Input_Attack2Down(void) { Input_KeyDown(&Input_attack2); }
+void Input_Attack2Up(void) { Input_KeyUp(&Input_attack2); }
 
-void IN_UseDown (void) {KeyDown(&in_use);}
-void IN_UseUp (void) {KeyUp(&in_use);}
+void Input_UseDown (void) {Input_KeyDown(&Input_use);}
+void Input_UseUp (void) {Input_KeyUp(&Input_use);}
 
-void IN_Impulse (void) {in_impulse=atoi(Cmd_Argv(1));}
+void Input_Impulse (void) {Input_impulse=atoi(Cmd_Argv(1));}
 
 /*
 ===============
@@ -235,23 +248,23 @@ void CL_AdjustAngles (void)
 	float	speed;
 	float	up, down;
 	
-	if (in_speed.state & 1)
+	if (Input_speed.state & 1)
 		speed = cls.frametime * cl_anglespeedkey->value;
 	else
 		speed = cls.frametime;
 
 
-	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&in_right);
-	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&in_left);
+	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&Input_right);
+	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&Input_left);
 
-	if (in_klook.state & 1)
+	if (Input_klook.state & 1)
 	{
-		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&in_forward);
-		cl.viewangles[PITCH] += speed*cl_pitchspeed->value * CL_KeyState (&in_back);
+		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&Input_forward);
+		cl.viewangles[PITCH] += speed*cl_pitchspeed->value * CL_KeyState (&Input_back);
 	}
 	
-	up = CL_KeyState (&in_lookup);
-	down = CL_KeyState(&in_lookdown);
+	up = CL_KeyState (&Input_lookup);
+	down = CL_KeyState(&Input_lookdown);
 	
 	cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * up;
 	cl.viewangles[PITCH] += speed*cl_pitchspeed->value * down;
@@ -272,22 +285,22 @@ void CL_BaseMove (usercmd_t *cmd)
 	
 	VectorCopy (cl.viewangles, cmd->angles);
 
-	cmd->sidemove += cl_sidespeed->value * CL_KeyState (&in_moveright);
-	cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&in_moveleft);
+	cmd->sidemove += cl_sidespeed->value * CL_KeyState (&Input_moveright);
+	cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&Input_moveleft);
 
-	cmd->upmove += cl_upspeed->value * CL_KeyState (&in_up);
-	cmd->upmove -= cl_upspeed->value * CL_KeyState (&in_down);
+	cmd->upmove += cl_upspeed->value * CL_KeyState (&Input_up);
+	cmd->upmove -= cl_upspeed->value * CL_KeyState (&Input_down);
 
-	if (! (in_klook.state & 1) )
+	if (! (Input_klook.state & 1) )
 	{	
-		cmd->forwardmove += cl_forwardspeed->value * CL_KeyState (&in_forward);
-		cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState (&in_back);
+		cmd->forwardmove += cl_forwardspeed->value * CL_KeyState (&Input_forward);
+		cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState (&Input_back);
 	}	
 
 //
 // adjust for speed key / running
 //
-	if ( (in_speed.state & 1) ^ (int32_t)(cl_run->value) )
+	if ( (Input_speed.state & 1) ^ (int32_t)(cl_run->value) )
 	{
 		cmd->forwardmove *= 2;
 		cmd->sidemove *= 2;
@@ -327,17 +340,17 @@ void CL_FinishMove (usercmd_t *cmd)
 //
 // figure button bits
 //	
-	if ( in_attack1.state & 3 )
+	if ( Input_attack1.state & 3 )
 		cmd->buttons |= BUTTON_ATTACK1;
-	in_attack1.state &= ~2;
+	Input_attack1.state &= ~2;
 	
-	if ( in_attack2.state & 3 )
+	if ( Input_attack2.state & 3 )
 		cmd->buttons |= BUTTON_ATTACK2;
-	in_attack2.state &= ~2;
+	Input_attack2.state &= ~2;
 
-	if (in_use.state & 3)
+	if (Input_use.state & 3)
 		cmd->buttons |= BUTTON_USE;
-	in_use.state &= ~2;
+	Input_use.state &= ~2;
 
 	if (anykeydown && cls.key_dest == key_game)
 		cmd->buttons |= BUTTON_ANY;
@@ -352,8 +365,8 @@ void CL_FinishMove (usercmd_t *cmd)
 	for (i=0 ; i<3 ; i++)
 		cmd->angles[i] = ANGLE2SHORT(cl.viewangles[i]);
 
-	cmd->impulse = in_impulse;
-	in_impulse = 0;
+	cmd->impulse = Input_impulse;
+	Input_impulse = 0;
 
 // send the ambient light level at the player's current position
 	cmd->lightlevel = (uint8_t)cl_lightlevel->value;
@@ -366,7 +379,6 @@ CL_CreateCmd
 */
 usercmd_t CL_CreateCmd (void)
 {
-	// you can't move if a UI is active
 	usercmd_t	cmd;
 
 	frame_msec = sys_frame_time - old_sys_frame_time;
@@ -379,7 +391,7 @@ usercmd_t CL_CreateCmd (void)
 	CL_BaseMove (&cmd);
 
 	// allow mice or other external controllers to add to the move
-	IN_Move (&cmd);
+	Input_Move (&cmd);
 
 	CL_FinishMove (&cmd);
 
@@ -391,7 +403,7 @@ usercmd_t CL_CreateCmd (void)
 }
 
 
-void IN_CenterView (void)
+void Input_CenterView (void)
 {
 	cl.viewangles[PITCH] = -SHORT2ANGLE(cl.frame.playerstate.pmove.delta_angles[PITCH]);
 }
@@ -403,39 +415,39 @@ CL_InitInput
 */
 void CL_InitInput (void)
 {
-	Cmd_AddCommand ("centerview",IN_CenterView);
+	Cmd_AddCommand ("centerview",Input_CenterView);
 
-	Cmd_AddCommand ("+moveup",IN_UpDown);
-	Cmd_AddCommand ("-moveup",IN_UpUp);
-	Cmd_AddCommand ("+movedown",IN_DownDown);
-	Cmd_AddCommand ("-movedown",IN_DownUp);
-	Cmd_AddCommand ("+left",IN_LeftDown);
-	Cmd_AddCommand ("-left",IN_LeftUp);
-	Cmd_AddCommand ("+right",IN_RightDown);
-	Cmd_AddCommand ("-right",IN_RightUp);
-	Cmd_AddCommand ("+forward",IN_ForwardDown);
-	Cmd_AddCommand ("-forward",IN_ForwardUp);
-	Cmd_AddCommand ("+back",IN_BackDown);
-	Cmd_AddCommand ("-back",IN_BackUp);
-	Cmd_AddCommand ("+lookup", IN_LookupDown);
-	Cmd_AddCommand ("-lookup", IN_LookupUp);
-	Cmd_AddCommand ("+lookdown", IN_LookdownDown);
-	Cmd_AddCommand ("-lookdown", IN_LookdownUp);
-	Cmd_AddCommand ("+moveleft", IN_MoveleftDown);
-	Cmd_AddCommand ("-moveleft", IN_MoveleftUp);
-	Cmd_AddCommand ("+moveright", IN_MoverightDown);
-	Cmd_AddCommand ("-moveright", IN_MoverightUp);
-	Cmd_AddCommand ("+speed", IN_SpeedDown);
-	Cmd_AddCommand ("-speed", IN_SpeedUp);
-	Cmd_AddCommand ("+attack1", IN_Attack1Down);
-	Cmd_AddCommand ("-attack1", IN_Attack1Up);
-	Cmd_AddCommand ("+attack2", IN_Attack2Down);
-	Cmd_AddCommand ("-attack2", IN_Attack2Up);
-	Cmd_AddCommand ("+use", IN_UseDown);
-	Cmd_AddCommand ("-use", IN_UseUp);
-	Cmd_AddCommand ("impulse", IN_Impulse);
-	Cmd_AddCommand ("+klook", IN_KLookDown);
-	Cmd_AddCommand ("-klook", IN_KLookUp);
+	Cmd_AddCommand ("+moveup",Input_UpDown);
+	Cmd_AddCommand ("-moveup",Input_UpUp);
+	Cmd_AddCommand ("+movedown",Input_DownDown);
+	Cmd_AddCommand ("-movedown",Input_DownUp);
+	Cmd_AddCommand ("+left",Input_LeftDown);
+	Cmd_AddCommand ("-left",Input_LeftUp);
+	Cmd_AddCommand ("+right",Input_RightDown);
+	Cmd_AddCommand ("-right",Input_RightUp);
+	Cmd_AddCommand ("+forward",Input_ForwardDown);
+	Cmd_AddCommand ("-forward",Input_ForwardUp);
+	Cmd_AddCommand ("+back",Input_BackDown);
+	Cmd_AddCommand ("-back",Input_BackUp);
+	Cmd_AddCommand ("+lookup", Input_LookupDown);
+	Cmd_AddCommand ("-lookup", Input_LookupUp);
+	Cmd_AddCommand ("+lookdown", Input_LookdownDown);
+	Cmd_AddCommand ("-lookdown", Input_LookdownUp);
+	Cmd_AddCommand ("+moveleft", Input_MoveleftDown);
+	Cmd_AddCommand ("-moveleft", Input_MoveleftUp);
+	Cmd_AddCommand ("+moveright", Input_MoverightDown);
+	Cmd_AddCommand ("-moveright", Input_MoverightUp);
+	Cmd_AddCommand ("+speed", Input_SpeedDown);
+	Cmd_AddCommand ("-speed", Input_SpeedUp);
+	Cmd_AddCommand ("+attack1", Input_Attack1Down);
+	Cmd_AddCommand ("-attack1", Input_Attack1Up);
+	Cmd_AddCommand ("+attack2", Input_Attack2Down);
+	Cmd_AddCommand ("-attack2", Input_Attack2Up);
+	Cmd_AddCommand ("+use", Input_UseDown);
+	Cmd_AddCommand ("-use", Input_UseUp);
+	Cmd_AddCommand ("impulse", Input_Impulse);
+	Cmd_AddCommand ("+klook", Input_KLookDown);
+	Cmd_AddCommand ("-klook", Input_KLookUp);
 
 	cl_nodelta = Cvar_Get ("cl_nodelta", "0", 0);
 }
@@ -530,4 +542,169 @@ void CL_SendCmd (void)
 	// deliver the message
 	//
 	Netchan_Transmit (&cls.netchan, buf.cursize, buf.data);	
+}
+
+
+/*
+============================================================
+
+  MOUSE CONTROL
+
+============================================================
+*/
+
+// mouse variables
+cvar_t* m_filter;
+
+bool	mlooking;
+
+void Input_MLookDown(void) { mlooking = true; }
+void Input_MLookUp(void) {
+	mlooking = false;
+	if (!freelook->value && lookspring->value)
+		Input_CenterView();
+}
+
+int32_t 		mouse_buttons;
+
+bool	mouseactive;	// false when not focus app
+
+bool	mouseinitialized;
+
+int32_t 		window_center_x, window_center_y;
+
+/*
+===========
+Input_ActivateMouse
+
+Called when the window gains focus or changes in some way
+===========
+*/
+void Input_ActivateMouse(void)
+{
+	if (!mouseinitialized)
+		return;
+	if (!input_mouse->value)
+	{
+		mouseactive = false;
+		return;
+	}
+	if (mouseactive)
+		return;
+
+	// this is how the old code worked
+	re.EnableCursor(false);
+	mouseactive = true;
+
+	window_center_x = ((Cvar_Get("vid_xpos", "0", 0)->value) + viddef.width) / 2;
+	window_center_y = ((Cvar_Get("vid_ypos", "0", 0)->value) + viddef.height) / 2;
+}
+
+
+/*
+===========
+Input_DeactivateMouse
+
+Called when the window loses focus
+===========
+*/
+void Input_DeactivateMouse(void)
+{
+	if (!mouseinitialized)
+		return;
+	if (!mouseactive)
+		return;
+
+	re.EnableCursor(true);
+	mouseactive = false;
+}
+
+
+
+/*
+===========
+Input_StartupMouse
+===========
+*/
+void Input_StartupMouse(void)
+{
+	cvar_t* cv;
+
+	cv = Cvar_Get("Input_initmouse", "1", CVAR_NOSET);
+	if (!cv->value)
+		return;
+
+	mouseinitialized = true;
+	mouse_buttons = 5;
+}
+
+/*
+===========
+Input_MouseMove
+===========
+*/
+void Input_MouseMove(usercmd_t* cmd)
+{
+	// This PoS is a garbage Starfrost special, written on April 2, 2024
+	if (!mouseactive)
+		return;
+
+	// can't move wihle dead
+	if (cl.frame.playerstate.pmove.pm_type == PM_DEAD)
+	{
+		VectorCopy(cl.refdef.viewangles, cl.viewangles);
+		return;
+	}
+
+	float new_yaw = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
+	float new_pitch = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
+	float new_move_forward = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
+	float new_move_side = (m_side->value / window_center_y) * sensitivity->value;
+	double mouse_pos_x = 0, mouse_pos_y = 0;
+
+	if ((lookstrafe->value && mlooking))
+		cmd->sidemove = new_move_side;
+	else
+	{
+		// clamp viewangles to 360 degree range
+		// this is also done on the server...
+		if (new_yaw > 180)
+			new_yaw = -180;
+		if (new_yaw < -180)
+			new_yaw = 180;
+		// snap the mouse to new yaw
+		re.GetCursorPosition(&mouse_pos_x, &mouse_pos_y);
+		re.SetCursorPosition(-((window_center_x * new_yaw) / sensitivity->value) / m_pitch->value, mouse_pos_y);
+		cl.viewangles[YAW] = new_yaw;
+	}
+
+	if ((mlooking || freelook->value))
+	{
+		// slight hack: prevent the player from moving down further than the camera allows by moving their cursor (since the cursor controls where the camera is)
+		// IT USES DEGREES???
+		if (new_pitch > 90)
+		{
+			new_pitch = 90;
+
+			re.GetCursorPosition(&mouse_pos_x, &mouse_pos_y);
+			mouse_pos_y = (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value;
+			re.SetCursorPosition(mouse_pos_x, mouse_pos_y);
+		}
+		else if (new_pitch < -90)
+		{
+			new_pitch = -90;
+			// prevent the player from moving down further than the camera allows
+			double pos_x = 0, pos_y = 0;
+			re.GetCursorPosition(&pos_x, &pos_y);
+			pos_y = (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value;
+			re.SetCursorPosition(pos_x, pos_y);
+		}
+
+		cl.viewangles[PITCH] = new_pitch;
+	}
+	else
+	{
+		cmd->forwardmove = new_move_forward;
+	}
+
 }

@@ -151,7 +151,7 @@ void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
 rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
 {
 	int32_t width, height;
-	const char *win_fs[] = { "Windowed", "Fullscreen"};
+	const char *WIN_fs[] = { "Windowed", "Fullscreen"};
 
 	ri.Con_Printf( PRINT_ALL, "Initializing OpenGL display\n");
 

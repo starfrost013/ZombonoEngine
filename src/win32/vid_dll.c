@@ -134,14 +134,14 @@ void AppActivate(bool fActive, bool minimize)
 	// minimize/restore mouse-capture on demand
 	if (!ActiveApp)
 	{
-		IN_Activate (false);
+		Input_Activate (false);
 		S_Activate (false);
 	}
 	else
 	{
 		// ZombonoUI controls this in the case a UI is active
 		if (!ui_active
-			|| ui_active && current_ui->passive) IN_Activate (true);
+			|| ui_active && current_ui->passive) Input_Activate (true);
 		S_Activate (true);
 	}
 }
