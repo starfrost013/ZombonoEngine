@@ -551,19 +551,6 @@ void V_RenderView()
 	SCR_DrawCrosshair ();
 }
 
-
-/*
-=============
-V_Viewpos_f
-=============
-*/
-void V_Viewpos_f (void)
-{
-	Com_Printf ("(%i %i %i) : %i\n", (int32_t)cl.refdef.vieworg[0],
-		(int32_t)cl.refdef.vieworg[1], (int32_t)cl.refdef.vieworg[2], 
-		(int32_t)cl.refdef.viewangles[YAW]);
-}
-
 /*
 =============
 V_Init
@@ -574,8 +561,6 @@ void V_Init (void)
 	Cmd_AddCommand ("gun_next", V_Gun_Next_f);
 	Cmd_AddCommand ("gun_prev", V_Gun_Prev_f);
 	Cmd_AddCommand ("gun_model", V_Gun_Model_f);
-
-	Cmd_AddCommand ("viewpos", V_Viewpos_f);
 
 	crosshair = Cvar_Get ("crosshair", "0", CVAR_ARCHIVE);
 

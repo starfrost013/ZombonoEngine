@@ -14,6 +14,7 @@ NEW FEATURES:
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
 * Removed v_centermove cvar (was already dead)
+* Removed viewpos command (cl_viewpos 1 far superior and duplicates functionality)
 
 OTHER:
 * Moved mouse code into platform independent code (because now it is)
