@@ -1004,8 +1004,8 @@ typedef struct
 
 // ==================
 // PGM 
-#define VIDREF_GL		1
-#define VIDREF_OTHER	2
+#define VIDREF_GL		0
+#define VIDREF_OTHER	1
 
 extern int32_t vidref_val;
 // PGM

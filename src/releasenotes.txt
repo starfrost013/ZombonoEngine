@@ -6,19 +6,46 @@ April XX, 2024
 BUG FIXES:
 * Fixed saving config on playtest builds
 * Fixed crouching
-* Mostly fixed panning up and down after you die  (you can't desync the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
+* Fixed being able to have a yaw viewangle outside of the range 180 < y < -180
+* Fixed "stuck shift" bug (only flip case if both capslock and shift are pressed, but not both)
+* Fixed all commands involving a modifier key and the console by exposing modifier key to Key_Console
+	* This means copying, pasting, etc... is fixed!
+* Fixed dedicated fullscreen not working with ALT+ENTER toggle
+* Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 
 NEW FEATURES:
-* Added viewangles to cl_viewpos
+* Added viewangles (both refdef and current) to cl_viewpos
+* Added option to choose dedicated fullscreen to settings
+
+OTHER ENHANCEMENTS:
+* Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
+* Renamed in_ cvars to input_ and same for functions
+* Made input shift code slightly less insane
+* Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
 * Removed v_centermove cvar (was already dead)
 * Removed viewpos command (cl_viewpos 1 far superior and duplicates functionality)
-
-OTHER ENHANCEMENTS:
-* Moved mouse code from platform specific to platform independent code (because now it is)
-* Renamed in_ cvars to input_ and same for functions
+* Removed joystick support (code sucks, only obsolete joysticks supported, DirectInput only, non-portable, not even supported on Linux it seems?)
+	* Removed joy_name cvar
+	* Removed joy_advanced cvar
+	* Removed joy_advaxisx cvar
+	* Removed joy_advaxisy cvar
+	* Removed joy_advaxisz cvar
+	* Removed joy_advaxisr cvar
+	* Removed joy_advaxisu cvar
+	* Removed joy_advaxisv cvar
+	* Removed joy_forwardthreshold cvar
+	* Removed joy_sidethreshold cvar
+	* Removed joy_pitchthreshold cvar
+	* Removed joy_yawthreshold cvar
+	* Removed joy_forwardsensitivity cvar
+	* Removed joy_sidesensitivity cvar
+	* Removed joy_pitchsensitivity cvar
+	* Removed joy_yawsensitivity cvar
+	* Removed joy_upthreshold cvar
+	* Removed joy_upsensitivity cvar
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

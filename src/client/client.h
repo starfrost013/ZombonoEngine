@@ -452,8 +452,8 @@ typedef struct
 	int32_t 		state;
 } kbutton_t;
 
-extern	kbutton_t	Input_mlook, Input_klook;
-extern 	kbutton_t 	Input_speed;
+extern	kbutton_t	Input_mlook, input_klook;
+extern 	kbutton_t 	input_speed;
 
 void CL_InitInput (void);
 void CL_SendCmd (void);
@@ -469,7 +469,7 @@ void Input_CenterView (void);
 extern double last_x_pos, last_y_pos;
 
 float CL_KeyState (kbutton_t *key);
-char *Key_KeynumToString (int32_t keynum);
+char *Key_KeynumToString (int32_t keynum, bool shift);
 
 //
 // cl_demo.c
@@ -534,7 +534,7 @@ void CL_TrapParticles (entity_t *ent);
 // menus
 //
 void M_Init (void);
-void M_Keydown (int32_t key);
+void M_Keydown (int32_t key, int32_t mods);
 void M_Draw (void);
 void M_Menu_Main_f (void);
 void M_ForceMenuOff (void);

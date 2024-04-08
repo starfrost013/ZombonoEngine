@@ -55,22 +55,25 @@ static menuframework_t	s_opengl_menu;
 static menuframework_t *s_current_menu;
 static int32_t 			s_current_menu_index;
 
+static bool				is_dedicated_fullscreen;
+
 static menulist_t		s_mode_list[NUM_REF_MENUS];
 static menulist_t		s_ref_list[NUM_REF_MENUS];
 static menuslider_t		s_tq_slider;
-static menuslider_t		s_screensize_slider[3];
-static menuslider_t		s_brightness_slider[3];
-static menulist_t  		s_fs_box[3];
+static menuslider_t		s_screensize_slider[NUM_REF_MENUS];
+static menuslider_t		s_brightness_slider[NUM_REF_MENUS];
+static menulist_t  		s_fullscreen_box[NUM_REF_MENUS];
+static menulist_t		s_fullscreen_dedicated_box[NUM_REF_MENUS];
 static menulist_t		s_finish_box;
-static menuaction_t		s_apply_action[3];
-static menuaction_t		s_cancel_action[3];
-static menuaction_t		s_defaults_action[3];
+static menuaction_t		s_apply_action[NUM_REF_MENUS];
+static menuaction_t		s_cancel_action[NUM_REF_MENUS];
+static menuaction_t		s_defaults_action[NUM_REF_MENUS];
 
 static void VidMenu_DriverCallback( void *unused )
 {
 	int32_t curr_value = s_ref_list[s_current_menu_index].curvalue;
 
-	s_ref_list[0].curvalue = curr_value;
+	s_ref_list[VIDREF_GL].curvalue = curr_value;
 
 	// this menu will be replaced anyway
 	s_current_menu = &s_opengl_menu;
@@ -89,10 +92,15 @@ static void BrightnessCallback( void *s )
 	menuslider_t *slider = ( menuslider_t * ) s;
 	int32_t i;
 
-	for ( i = 0; i < 3; i++ )
+	for ( i = 0; i < NUM_REFS; i++ )
 	{
 		s_brightness_slider[i].curvalue = s_brightness_slider[s_current_menu_index].curvalue;
 	}
+}
+
+static void DedicatedFullscreenCallback(void* s)
+{
+	is_dedicated_fullscreen = s_fullscreen_dedicated_box[s_current_menu_index].curvalue;
 }
 
 static void ResetDefaults( void *unused )
@@ -108,9 +116,9 @@ static void ApplyChanges( void *unused )
 	/*
 	** make values consistent
 	*/
-	for ( i = 0; i < 3; i++ )
+	for ( i = 0; i < NUM_REFS; i++ )
 	{
-		s_fs_box[i].curvalue = s_fs_box[s_current_menu_index].curvalue;
+		s_fullscreen_box[i].curvalue = s_fullscreen_box[s_current_menu_index].curvalue;
 		s_brightness_slider[i].curvalue = s_brightness_slider[s_current_menu_index].curvalue;
 		s_ref_list[i].curvalue = s_ref_list[s_current_menu_index].curvalue;
 	}
@@ -122,7 +130,19 @@ static void ApplyChanges( void *unused )
 
 	Cvar_SetValue( "vid_gamma", gamma );
 	Cvar_SetValue( "gl_picmip", 3 - s_tq_slider.curvalue );
-	Cvar_SetValue( "vid_borderless", s_fs_box[s_current_menu_index].curvalue );
+
+	// if the user wants dedi, use it...
+	if (is_dedicated_fullscreen)
+	{
+		Cvar_SetValue("vid_fullscreen", s_fullscreen_box[s_current_menu_index].curvalue);
+		Cvar_SetValue("vid_borderless", 0);
+	}
+	else
+	{
+		Cvar_SetValue("vid_borderless", s_fullscreen_box[s_current_menu_index].curvalue);
+		Cvar_SetValue("vid_fullscreen", 0);
+	}
+
 	Cvar_SetValue( "gl_finish", s_finish_box.curvalue );
 	Cvar_SetValue( "gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1 );
 
@@ -269,12 +289,20 @@ void VID_MenuInit( void )
 		s_brightness_slider[i].maxvalue = 13;
 		s_brightness_slider[i].curvalue = ( 1.3 - vid_gamma->value + 0.5 ) * 10;
 
-		s_fs_box[i].generic.type = MTYPE_SPINCONTROL;
-		s_fs_box[i].generic.x	= 0;
-		s_fs_box[i].generic.y	= 40 * vid_hudscale->value;
-		s_fs_box[i].generic.name	= "^5Fullscreen";
-		s_fs_box[i].itemnames = yes_no_names;
-		s_fs_box[i].curvalue = (vid_borderless->value || vid_fullscreen->value);
+		s_fullscreen_box[i].generic.type = MTYPE_SPINCONTROL;
+		s_fullscreen_box[i].generic.x	= 0;
+		s_fullscreen_box[i].generic.y	= 40 * vid_hudscale->value;
+		s_fullscreen_box[i].generic.name	= "^5Fullscreen";
+		s_fullscreen_box[i].itemnames = yes_no_names;
+		s_fullscreen_box[i].curvalue = ((is_dedicated_fullscreen) ? vid_fullscreen->value : vid_borderless->value);
+
+		s_fullscreen_dedicated_box[i].generic.type = MTYPE_SPINCONTROL;
+		s_fullscreen_dedicated_box[i].generic.x = 0;
+		s_fullscreen_dedicated_box[i].generic.y = 50 * vid_hudscale->value;
+		s_fullscreen_dedicated_box[i].generic.name = "^5Use dedicated fullscreen";
+		s_fullscreen_dedicated_box[i].generic.callback = DedicatedFullscreenCallback;
+		s_fullscreen_dedicated_box[i].itemnames = yes_no_names;
+		s_fullscreen_dedicated_box[i].curvalue = (is_dedicated_fullscreen);
 
 		s_apply_action[i].generic.type = MTYPE_ACTION;
 		s_apply_action[i].generic.name = "^5Apply Changes";
@@ -314,7 +342,8 @@ void VID_MenuInit( void )
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_mode_list[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_screensize_slider[OPENGL_MENU] );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_brightness_slider[OPENGL_MENU] );
-	Menu_AddItem( &s_opengl_menu, ( void * ) &s_fs_box[OPENGL_MENU] );
+	Menu_AddItem( &s_opengl_menu, ( void * ) &s_fullscreen_box[OPENGL_MENU] );
+	Menu_AddItem(&s_opengl_menu, (void*)&s_fullscreen_dedicated_box[OPENGL_MENU]);
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_tq_slider );
 	Menu_AddItem( &s_opengl_menu, ( void * ) &s_finish_box );
 

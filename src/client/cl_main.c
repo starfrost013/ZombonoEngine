@@ -1536,8 +1536,6 @@ void CL_InitLocal (void)
 	Cmd_AddCommand ("weaplast", NULL);
 }
 
-
-
 /*
 ===============
 CL_WriteConfiguration

@@ -41,7 +41,7 @@ int32_t 	key_waiting;
 char*		keybindings[NUM_KEYS];
 bool		consolekeys[NUM_KEYS];	// if true, can't be rebound while in console
 bool		menubound[NUM_KEYS];	// if true, can't be rebound while in menu
-int32_t 	keyshift[NUM_KEYS];		// key to map to if shift held down in console
+int32_t 	keyshift[NUM_KEYS];		// TODO: MAKE STRINGS key to map to if shift held down in console
 int32_t 	key_repeats[NUM_KEYS];	// if > 1, it is autorepeating
 bool		keydown[NUM_KEYS];
 
@@ -234,7 +234,7 @@ keyname_t keynames[] =
 
 	{ "MENU", K_MENU }, 
 	{ "CAPSLOCK", K_CAPS_LOCK },
-	{ "SCROL LOCK", K_SCROLL_LOCK },
+	{ "SCROLL LOCK", K_SCROLL_LOCK },
 	{ "NUMLOCK", K_NUM_LOCK },
 	{ "PRINTSCREEN", K_PRINT_SCREEN },
 	{ "PAUSE", K_PAUSE },
@@ -284,7 +284,7 @@ Key_Console
 Interactive line editing and console scrollback
 ====================
 */
-void Key_Console (int32_t key, bool shift_used)
+void Key_Console (int32_t key, int32_t mods)
 {
 
 	switch ( key )
@@ -333,8 +333,8 @@ void Key_Console (int32_t key, bool shift_used)
 		break;
 	}
 
-	if ( ( key == K_V && keydown[K_CTRL] ) ||
-		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && keydown[K_SHIFT] ) )
+	if ( ( key == K_V && (mods & MOD_CONTROL) ||
+		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && (mods & MOD_SHIFT))))
 	{
 		char *cbd;
 		
@@ -374,57 +374,56 @@ void Key_Console (int32_t key, bool shift_used)
 		if (key_lines[edit_line][1] == '\\' || key_lines[edit_line][1] == '/')
 			Cbuf_AddText (key_lines[edit_line]+2);	// skip the >
 		else
-			Cbuf_AddText (key_lines[edit_line]+1);	// valid command
+			Cbuf_AddText(key_lines[edit_line] + 1);	// valid command
 
-		Cbuf_AddText ("\n");
-		Com_Printf ("%s\n",key_lines[edit_line]);
-		edit_line = (edit_line + 1) & 31;
-		history_line = edit_line;
-		key_lines[edit_line][0] = ']';
-		key_linepos = 1;
-		if (cls.state == ca_disconnected)
-			SCR_UpdateScreen ();	// force an update, because the command
-									// may take some time
-		return;
+			Cbuf_AddText("\n");
+			Com_Printf("%s\n", key_lines[edit_line]);
+			edit_line = (edit_line + 1) & 31;
+			history_line = edit_line;
+			key_lines[edit_line][0] = ']';
+			key_linepos = 1;
+			if (cls.state == ca_disconnected)
+				SCR_UpdateScreen();	// force an update, because the command
+			// may take some time
+			return;
 	}
 
 	if (key == K_TAB)
 	{	// command completion
-		CompleteCommand ();
+		CompleteCommand();
 		return;
 	}
-	
-	if ( ( key == K_BACKSPACE ) || ( key == K_LEFTARROW ) || ( key == K_LEFTARROW ) || ( ( key == K_H ) && ( keydown[K_CTRL] ) ) )
+
+	if ((key == K_BACKSPACE) || (key == K_LEFTARROW) || (key == K_LEFTARROW) || ((key == K_H) && (mods & MOD_CONTROL)))
 	{
 		if (key_linepos > 1)
 			key_linepos--;
 		return;
 	}
 
-	if ( ( key == K_UPARROW ) || ( key == K_UPARROW ) ||
-		 ( ( key == K_P ) && keydown[K_CTRL] ) )
+	if ((key == K_UPARROW) || (key == K_UPARROW) ||
+		((key == K_P) && (mods & MOD_CONTROL)))
 	{
 		do
 		{
 			history_line = (history_line - 1) & 31;
 		} while (history_line != edit_line
-				&& !key_lines[history_line][1]);
+			&& !key_lines[history_line][1]);
 		if (history_line == edit_line)
-			history_line = (edit_line+1)&31;
+			history_line = (edit_line + 1) & 31;
 		strcpy(key_lines[edit_line], key_lines[history_line]);
 		key_linepos = (int32_t)strlen(key_lines[edit_line]);
 		return;
 	}
 
-	if ( ( key == K_DOWNARROW ) || ( key == K_DOWNARROW ) ||
-		 ( ( key == K_N ) && keydown[K_CTRL] ) )
+	if ((key == K_DOWNARROW) || (key == K_DOWNARROW) ||
+		((key == K_N) && (mods & MOD_CONTROL)))
 	{
 		if (history_line == edit_line) return;
 		do
 		{
 			history_line = (history_line + 1) & 31;
-		}
-		while (history_line != edit_line
+		} while (history_line != edit_line
 			&& !key_lines[history_line][1]);
 		if (history_line == edit_line)
 		{
@@ -439,13 +438,13 @@ void Key_Console (int32_t key, bool shift_used)
 		return;
 	}
 
-	if (key == K_PAGE_UP || key == K_MWHEELUP || key == K_PAGE_UP )
+	if (key == K_PAGE_UP || key == K_MWHEELUP || key == K_PAGE_UP)
 	{
 		con.display -= 2;
 		return;
 	}
 
-	if (key == K_PAGE_DOWN || key == K_MWHEELDOWN || key == K_PAGE_DOWN )
+	if (key == K_PAGE_DOWN || key == K_MWHEELDOWN || key == K_PAGE_DOWN)
 	{
 		con.display += 2;
 		if (con.display > con.current)
@@ -453,40 +452,29 @@ void Key_Console (int32_t key, bool shift_used)
 		return;
 	}
 
-	if (key == K_HOME || key == K_HOME )
+	if (key == K_HOME || key == K_HOME)
 	{
 		con.display = con.current - con.totallines + 10;
 		return;
 	}
 
-	if (key == K_END || key == K_END )
+	if (key == K_END || key == K_END)
 	{
 		con.display = con.current;
 		return;
 	}
-	
+
 	if (key < 32 || key > 127)
 		return;	// non printable
-		
+
 	// translate from virtual to physical keys
 
-	// HACK: it's already a physical key if we used shift,
-	// FIX THIS IN V0.0.7!!!
-	char final_key = 0x00;
-	
-	if (shift_used)
-	{
-		final_key = key;
-	}
-	else
-	{
-		final_key = Key_KeynumToString(key)[0];
-	}
+	// HACK: WE NEED MULTIBYTE CHARACTER SUPPORT
+	key = Key_KeynumToString(key, (caps_lock || shift_down) && (!(caps_lock && shift_down)))[0];
 
-	if (key_linepos < MAXCMDLINE-1
-		&& final_key != -1)
+	if (key_linepos < MAXCMDLINE-1)
 	{	
-		key_lines[edit_line][key_linepos] = final_key;
+		key_lines[edit_line][key_linepos] = key;
 		key_linepos++;
 		key_lines[edit_line][key_linepos] = 0;
 	}
@@ -499,7 +487,7 @@ bool	chat_team;
 char		chat_buffer[MAXCMDLINE];
 int32_t 		chat_bufferlen = 0;
 
-void Key_Message (int32_t key, bool shift_used)
+void Key_Message (int32_t key, int mods)
 {
 
 	if ( key == K_ENTER || key == K_KP_ENTER )
@@ -541,15 +529,8 @@ void Key_Message (int32_t key, bool shift_used)
 	if (chat_bufferlen == sizeof(chat_buffer)-1)
 		return; // all full
 
-	if (shift_used)
-	{
-		key = keyshift[key];
-	}
-	else
-	{
-		// TOTAL HACK FOR 0.0.6 only
-		key = tolower(key);
-	}
+	//TODO: FIX WHEN KEYNUMTOSTRING is actually a string
+	key = Key_KeynumToString(key, (caps_lock || shift_down) && (!(caps_lock && shift_down)))[0];
 
 	chat_buffer[chat_bufferlen++] = key;
 	chat_buffer[chat_bufferlen] = 0;
@@ -590,11 +571,14 @@ given keynum.
 FIXME: handle quote special (general escape sequence?)
 ===================
 */
-char *Key_KeynumToString (int32_t keynum)
+char *Key_KeynumToString (int32_t keynum, bool shift)
 {
 	keyname_t	*kn;	
 	static	char	tinystr[2];
 	
+	if (shift)
+		return &keyshift[keynum];
+
 	if (keynum == -1)
 		return "<KEY NOT FOUND>";
 
@@ -727,7 +711,7 @@ void Key_WriteBindings (FILE *f)
 
 	for (i=0 ; i<NUM_KEYS ; i++)
 		if (keybindings[i] && keybindings[i][0])
-			fprintf (f, "bind %s \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
+			fprintf (f, "bind %s \"%s\"\n", Key_KeynumToString(i, false), keybindings[i]);
 }
 
 
@@ -743,7 +727,7 @@ void Key_Bindlist_f (void)
 
 	for (i=0 ; i<NUM_KEYS; i++)
 		if (keybindings[i] && keybindings[i][0])
-			Com_Printf ("%s \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
+			Com_Printf ("%s \"%s\"\n", Key_KeynumToString(i, false), keybindings[i]);
 }
 
 
@@ -901,6 +885,9 @@ void WindowIconify_Event(void* unused, int32_t iconified)
 	}
 }
 
+// temp hack
+bool is_dedicated = false;
+
 /*
 ===================
 Input_Event
@@ -913,6 +900,8 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 {
 	char	*kb;
 	char	cmd[1024];
+	extern cvar_t* vid_borderless;
+	extern cvar_t* vid_fullscreen;
 
 	// hack for modal presses
 	if (key_waiting == -1)
@@ -926,10 +915,20 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	// ALT+ENTER fullscreen toggle
 	if (down && keydown[K_ALT] && key == K_ENTER)
 	{
-		extern cvar_t *vid_borderless;
-		Cvar_Set("vid_borderless", vid_borderless->value ? "0" : "1");
-		vid_borderless->modified = true;
-		return;
+		if (vid_fullscreen->value 
+			|| is_dedicated)
+		{
+			Cvar_Set("vid_fullscreen", vid_fullscreen->value ? "0" : "1");
+			vid_fullscreen->modified = true;
+			is_dedicated = true;
+			return;
+		}
+		else
+		{
+			Cvar_Set("vid_borderless", vid_borderless->value ? "0" : "1");
+			vid_borderless->modified = true;
+			return;
+		}
 	}
 
 	// update auto-repeat status
@@ -951,7 +950,7 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			&& key != K_CAPS_LOCK
 			&& !keybindings[key])
 		{
-			Com_Printf("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
+			Com_Printf("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key, false));
 		}
 	}
 	else
@@ -959,19 +958,19 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 		key_repeats[key] = 0;
 	}
 
-	// Just use physical keys here.
-	// We can't use mods here in case we need to ever plug into an input system that doesn't recognise them.
-	if (mods & MOD_SHIFT)
+	// see if shift is down
+	if (key != K_LEFT_SHIFT
+		&& key != K_RIGHT_SHIFT)
 	{
-		shift_down = down;
+		shift_down = (mods & MOD_SHIFT);
 	}
+
+	// see if capslock is down
 	if (key == K_CAPS_LOCK 
 		&& down)
 	{
 		caps_lock = !caps_lock; // for other detection
-		shift_down = caps_lock;
 	}
-
 
 	// console key is hardcoded, so the user can never unbind it
 	if (key == '`' || key == '~')
@@ -1035,10 +1034,10 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 		switch (cls.key_dest)
 		{
 		case key_message:
-			Key_Message (key, false);
+			Key_Message (key, 0);
 			break;
 		case key_menu:
-			M_Keydown (key, false);
+			M_Keydown (key, 0);
 			break;
 		case key_game:
 		case key_console:
@@ -1121,26 +1120,18 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	if (!down)
 		return;		// other systems only care about key down events
 
-	bool shift_used = false;
-
-	if (shift_down)
-	{
-		key = keyshift[key];
-		shift_used = true;
-	}
-
 	switch (cls.key_dest)
 	{
 	case key_message:
-		Key_Message (key, shift_used);
+		Key_Message (key, mods);
 		break;
 	case key_menu:
-		M_Keydown (key, shift_used);
+		M_Keydown (key, mods);
 		break;
 
 	case key_game:
 	case key_console:
-		Key_Console (key, shift_used);
+		Key_Console (key, mods);
 		break;
 	default:
 		Com_Error (ERR_FATAL, "Bad cls.key_dest");

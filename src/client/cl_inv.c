@@ -98,7 +98,7 @@ void CL_DrawInventory (void)
 		for (j=0 ; j<NUM_KEYS ; j++)
 			if (keybindings[j] && !Q_stricmp (keybindings[j], binding))
 			{
-				bind = Key_KeynumToString(j);
+				bind = Key_KeynumToString(j, false);
 				break;
 			}
 

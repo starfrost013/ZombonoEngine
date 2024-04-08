@@ -718,11 +718,11 @@ static void DrawKeyBindingFunc( void *self )
 
 		if (keys[1] != -1)
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7 OR ^2%s", Key_KeynumToString(keys[0]), Key_KeynumToString(keys[1]));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7 OR ^2%s", Key_KeynumToString(keys[0], false), Key_KeynumToString(keys[1], false));
 		}
 		else
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7", Key_KeynumToString(keys[0]));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7", Key_KeynumToString(keys[0], false));
 		}
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, name);
@@ -1002,7 +1002,7 @@ static const char *Keys_MenuKey( int32_t key )
 		{
 			char cmd[1024];
 
-			Com_sprintf (cmd, sizeof(cmd), "bind \"%s\" \"%s\"\n", Key_KeynumToString(key), bindnames[item->generic.localdata[0]][0]);
+			Com_sprintf (cmd, sizeof(cmd), "bind \"%s\" \"%s\"\n", Key_KeynumToString(key, false), bindnames[item->generic.localdata[0]][0]);
 			Cbuf_InsertText (cmd);
 		}
 		
@@ -2019,7 +2019,7 @@ void JoinServer_MenuInit( void )
 
 void JoinServer_MenuDraw(void)
 {
-	M_Banner( "pics/m_banner_joInput_server" );
+	M_Banner( "pics/m_banner_join_server" );
 	Menu_Draw( &s_joinserver_menu );
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
@@ -3423,13 +3423,11 @@ const char *M_Quit_Key (int32_t key)
 	switch (key)
 	{
 	case K_ESCAPE:
-	case 'n':
-	case 'N':
+	case K_N:
 		M_PopMenu ();
 		break;
 
-	case 'Y':
-	case 'y':
+	case K_Y:
 		cls.key_dest = key_console;
 		CL_Quit_f ();
 		break;
@@ -3527,7 +3525,7 @@ void M_Draw (void)
 M_Keydown
 =================
 */
-void M_Keydown (int32_t key, bool shift_used)
+void M_Keydown (int32_t key, int32_t mods)
 {
 	const char *s;
 

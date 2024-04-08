@@ -168,13 +168,13 @@ Key_Event (int32_t key, bool down, uint32_t time);
 */
 
 
-kbutton_t	Input_klook;
-kbutton_t	Input_left, Input_right, Input_forward, Input_back;
-kbutton_t	Input_lookup, Input_lookdown, Input_moveleft, Input_moveright;
-kbutton_t	Input_speed, Input_use, Input_attack1, Input_attack2;
-kbutton_t	Input_up, Input_down;
+kbutton_t	input_klook;
+kbutton_t	input_left, input_right, input_forward, input_back;
+kbutton_t	input_lookup, input_lookdown, input_moveleft, input_moveright;
+kbutton_t	input_speed, input_use, input_attack1, input_attack2;
+kbutton_t	input_up, input_down;
 
-int32_t 		Input_impulse;
+int32_t 	input_impulse;
 
 
 void Input_KeyDown (kbutton_t *b)
@@ -253,41 +253,41 @@ void Input_KeyUp (kbutton_t *b)
 	b->state |= 4; 		// impulse up
 }
 
-void Input_KLookDown (void) {Input_KeyDown(&Input_klook);}
-void Input_KLookUp (void) {Input_KeyUp(&Input_klook);}
-void Input_UpDown(void) {Input_KeyDown(&Input_up);}
-void Input_UpUp(void) {Input_KeyUp(&Input_up);}
-void Input_DownDown(void) {Input_KeyDown(&Input_down);}
-void Input_DownUp(void) {Input_KeyUp(&Input_down);}
-void Input_LeftDown(void) {Input_KeyDown(&Input_left);}
-void Input_LeftUp(void) {Input_KeyUp(&Input_left);}
-void Input_RightDown(void) {Input_KeyDown(&Input_right);}
-void Input_RightUp(void) {Input_KeyUp(&Input_right);}
-void Input_ForwardDown(void) {Input_KeyDown(&Input_forward);}
-void Input_ForwardUp(void) {Input_KeyUp(&Input_forward);}
-void Input_BackDown(void) {Input_KeyDown(&Input_back);}
-void Input_BackUp(void) {Input_KeyUp(&Input_back);}
-void Input_LookupDown(void) {Input_KeyDown(&Input_lookup);}
-void Input_LookupUp(void) {Input_KeyUp(&Input_lookup);}
-void Input_LookdownDown(void) {Input_KeyDown(&Input_lookdown);}
-void Input_LookdownUp(void) {Input_KeyUp(&Input_lookdown);}
-void Input_MoveleftDown(void) {Input_KeyDown(&Input_moveleft);}
-void Input_MoveleftUp(void) {Input_KeyUp(&Input_moveleft);}
-void Input_MoverightDown(void) {Input_KeyDown(&Input_moveright);}
-void Input_MoverightUp(void) {Input_KeyUp(&Input_moveright);}
+void Input_KLookDown (void) {Input_KeyDown(&input_klook);}
+void Input_KLookUp (void) {Input_KeyUp(&input_klook);}
+void Input_UpDown(void) {Input_KeyDown(&input_up);}
+void Input_UpUp(void) {Input_KeyUp(&input_up);}
+void Input_DownDown(void) {Input_KeyDown(&input_down);}
+void Input_DownUp(void) {Input_KeyUp(&input_down);}
+void Input_LeftDown(void) {Input_KeyDown(&input_left);}
+void Input_LeftUp(void) {Input_KeyUp(&input_left);}
+void Input_RightDown(void) {Input_KeyDown(&input_right);}
+void Input_RightUp(void) {Input_KeyUp(&input_right);}
+void Input_ForwardDown(void) {Input_KeyDown(&input_forward);}
+void Input_ForwardUp(void) {Input_KeyUp(&input_forward);}
+void Input_BackDown(void) {Input_KeyDown(&input_back);}
+void Input_BackUp(void) {Input_KeyUp(&input_back);}
+void Input_LookupDown(void) {Input_KeyDown(&input_lookup);}
+void Input_LookupUp(void) {Input_KeyUp(&input_lookup);}
+void Input_LookdownDown(void) {Input_KeyDown(&input_lookdown);}
+void Input_LookdownUp(void) {Input_KeyUp(&input_lookdown);}
+void Input_MoveleftDown(void) {Input_KeyDown(&input_moveleft);}
+void Input_MoveleftUp(void) {Input_KeyUp(&input_moveleft);}
+void Input_MoverightDown(void) {Input_KeyDown(&input_moveright);}
+void Input_MoverightUp(void) {Input_KeyUp(&input_moveright);}
 
-void Input_SpeedDown(void) {Input_KeyDown(&Input_speed);}
-void Input_SpeedUp(void) {Input_KeyUp(&Input_speed);}
+void Input_SpeedDown(void) {Input_KeyDown(&input_speed);}
+void Input_SpeedUp(void) {Input_KeyUp(&input_speed);}
 
-void Input_Attack1Down(void) {Input_KeyDown(&Input_attack1);}
-void Input_Attack1Up(void) {Input_KeyUp(&Input_attack1);}
-void Input_Attack2Down(void) { Input_KeyDown(&Input_attack2); }
-void Input_Attack2Up(void) { Input_KeyUp(&Input_attack2); }
+void Input_Attack1Down(void) {Input_KeyDown(&input_attack1);}
+void Input_Attack1Up(void) {Input_KeyUp(&input_attack1);}
+void Input_Attack2Down(void) { Input_KeyDown(&input_attack2); }
+void Input_Attack2Up(void) { Input_KeyUp(&input_attack2); }
 
-void Input_UseDown (void) {Input_KeyDown(&Input_use);}
-void Input_UseUp (void) {Input_KeyUp(&Input_use);}
+void Input_UseDown (void) {Input_KeyDown(&input_use);}
+void Input_UseUp (void) {Input_KeyUp(&input_use);}
 
-void Input_Impulse (void) {Input_impulse=atoi(Cmd_Argv(1));}
+void Input_Impulse (void) {input_impulse=atoi(Cmd_Argv(1));}
 
 /*
 ===============
@@ -348,23 +348,23 @@ void CL_AdjustAngles (void)
 	float	speed;
 	float	up, down;
 	
-	if (Input_speed.state & 1)
+	if (input_speed.state & 1)
 		speed = cls.frametime * cl_anglespeedkey->value;
 	else
 		speed = cls.frametime;
 
 
-	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&Input_right);
-	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&Input_left);
+	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&input_right);
+	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&input_left);
 
-	if (Input_klook.state & 1)
+	if (input_klook.state & 1)
 	{
-		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&Input_forward);
-		cl.viewangles[PITCH] += speed*cl_pitchspeed->value * CL_KeyState (&Input_back);
+		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&input_forward);
+		cl.viewangles[PITCH] += speed*cl_pitchspeed->value * CL_KeyState (&input_back);
 	}
 	
-	up = CL_KeyState (&Input_lookup);
-	down = CL_KeyState(&Input_lookdown);
+	up = CL_KeyState (&input_lookup);
+	down = CL_KeyState(&input_lookdown);
 	
 	cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * up;
 	cl.viewangles[PITCH] += speed*cl_pitchspeed->value * down;
@@ -385,22 +385,22 @@ void CL_BaseMove (usercmd_t *cmd)
 	
 	VectorCopy (cl.viewangles, cmd->angles);
 
-	cmd->sidemove += cl_sidespeed->value * CL_KeyState (&Input_moveright);
-	cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&Input_moveleft);
+	cmd->sidemove += cl_sidespeed->value * CL_KeyState (&input_moveright);
+	cmd->sidemove -= cl_sidespeed->value * CL_KeyState (&input_moveleft);
 
-	cmd->upmove += cl_upspeed->value * CL_KeyState (&Input_up);
-	cmd->upmove -= cl_upspeed->value * CL_KeyState (&Input_down);
+	cmd->upmove += cl_upspeed->value * CL_KeyState (&input_up);
+	cmd->upmove -= cl_upspeed->value * CL_KeyState (&input_down);
 
-	if (! (Input_klook.state & 1) )
+	if (! (input_klook.state & 1) )
 	{	
-		cmd->forwardmove += cl_forwardspeed->value * CL_KeyState (&Input_forward);
-		cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState (&Input_back);
+		cmd->forwardmove += cl_forwardspeed->value * CL_KeyState (&input_forward);
+		cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState (&input_back);
 	}	
 
 //
 // adjust for speed key / running
 //
-	if ( (Input_speed.state & 1) ^ (int32_t)(cl_run->value) )
+	if ( (input_speed.state & 1) ^ (int32_t)(cl_run->value) )
 	{
 		cmd->forwardmove *= 2;
 		cmd->sidemove *= 2;
@@ -440,17 +440,17 @@ void CL_FinishMove (usercmd_t *cmd)
 //
 // figure button bits
 //	
-	if ( Input_attack1.state & 3 )
+	if ( input_attack1.state & 3 )
 		cmd->buttons |= BUTTON_ATTACK1;
-	Input_attack1.state &= ~2;
+	input_attack1.state &= ~2;
 	
-	if ( Input_attack2.state & 3 )
+	if ( input_attack2.state & 3 )
 		cmd->buttons |= BUTTON_ATTACK2;
-	Input_attack2.state &= ~2;
+	input_attack2.state &= ~2;
 
-	if (Input_use.state & 3)
+	if (input_use.state & 3)
 		cmd->buttons |= BUTTON_USE;
-	Input_use.state &= ~2;
+	input_use.state &= ~2;
 
 	if (anykeydown && cls.key_dest == key_game)
 		cmd->buttons |= BUTTON_ANY;
@@ -465,8 +465,8 @@ void CL_FinishMove (usercmd_t *cmd)
 	for (i=0 ; i<3 ; i++)
 		cmd->angles[i] = ANGLE2SHORT(cl.viewangles[i]);
 
-	cmd->impulse = Input_impulse;
-	Input_impulse = 0;
+	cmd->impulse = input_impulse;
+	input_impulse = 0;
 
 // send the ambient light level at the player's current position
 	cmd->lightlevel = (uint8_t)cl_lightlevel->value;
