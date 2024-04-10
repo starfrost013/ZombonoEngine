@@ -4,6 +4,7 @@ Version 0.0.7
 April XX, 2024
 
 BUG FIXES:
+* Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
 * Fixed saving config on playtest builds
 * Fixed crouching
 * Fixed being able to have a yaw viewangle outside of the range 180 < y < -180
@@ -12,6 +13,8 @@ BUG FIXES:
 	* This means copying, pasting, etc... is fixed!
 * Fixed dedicated fullscreen not working with ALT+ENTER toggle
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
+* Restored gl_drawbuffer functionality
+
 
 NEW FEATURES:
 * Added viewangles (both refdef and current) to cl_viewpos

@@ -857,7 +857,6 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			gi.bprintf(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
 
 			if (ff)
-
 				attacker->client->resp.score--;
 			else
 				attacker->client->resp.score++;

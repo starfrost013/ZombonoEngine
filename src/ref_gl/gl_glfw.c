@@ -272,16 +272,20 @@ void GL_BeginFrame()
 ** as yet to be determined.  Probably better not to make this a GLimp
 ** function and instead do a call to GLimp_SwapBuffers.
 */
-void GL_EndFrame (void)
+void GL_EndFrame(void)
 {
 	int		err;
 
 	err = glGetError();
-	assert( err == GL_NO_ERROR );
+	assert(err == GL_NO_ERROR);
 
 	glfwPollEvents();
-	// swap the buffers
-	glfwSwapBuffers(gl_state.window);
+
+	if (!stricmp(gl_drawbuffer->string, "GL_BACK"))
+	{
+		// swap the buffers
+		glfwSwapBuffers(gl_state.window);
+	}
 }
 
 void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))

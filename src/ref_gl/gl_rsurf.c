@@ -1061,9 +1061,25 @@ void R_DrawWorld (void)
 
 	glColor3f (1,1,1);
 	memset (gl_lms.lightmap_surfaces, 0, sizeof(gl_lms.lightmap_surfaces));
+
 	R_ClearSkyBox ();
 
+	// Replace texture data with texture data blended with BSP lightmap info...
+	GL_EnableMultitexture(true);
+
+	GL_SelectTexture(GL_TEXTURE0);
+	GL_TexEnv(GL_REPLACE);
+	GL_SelectTexture(GL_TEXTURE1);
+
+	if (gl_lightmap->value)
+		GL_TexEnv(GL_REPLACE);
+	else
+		GL_TexEnv(GL_MODULATE);
+
+	//...then render the world with that data. This makes it look shiny and not garbage
 	R_RecursiveWorldNode(r_worldmodel->nodes);
+
+	GL_EnableMultitexture(false);
 
 	/*
 	** theoretically nothing should happen in the next two functions

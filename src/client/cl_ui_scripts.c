@@ -135,3 +135,12 @@ bool UI_ScoreUICreate()
 
 	return true; 
 }
+
+//
+// LoadoutUI
+//
+
+bool UI_LoadoutUICreate()
+{
+
+}
