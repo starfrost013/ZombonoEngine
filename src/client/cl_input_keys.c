@@ -221,12 +221,7 @@ keyname_t keynames[] =
 	{ "LEFTSHIFT", K_LEFT_SHIFT },
 	{ "LEFTCTRL", K_LEFT_CONTROL },
 	{ "LEFTALT", K_LEFT_ALT },
-#ifdef _WIN32
-	{ "LEFTSUPER/WINDOWS KEY", K_LEFT_SUPER },
-#else
 	{ "LEFTSUPER", K_LEFT_SUPER },
-#endif
-
 	{ "RIGHTSHIFT", K_RIGHT_SHIFT },
 	{ "RIGHTCTRL", K_RIGHT_CONTROL },
 	{ "RIGHTALT", K_RIGHT_ALT },
