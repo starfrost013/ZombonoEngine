@@ -21,8 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // client.h -- primary header for client
 #pragma once
 
-//define	PARANOID			// speed sapping error checking
-
 #include <math.h>
 #include <string.h>
 #include <stdarg.h>
@@ -259,49 +257,49 @@ extern client_static_t	cls;
 // cvars
 //
 
-extern	cvar_t	*cl_gun;
-extern	cvar_t	*cl_add_blend;
-extern	cvar_t	*cl_add_lights;
-extern	cvar_t	*cl_add_particles;
-extern	cvar_t	*cl_add_entities;
-extern	cvar_t	*cl_predict;
-extern	cvar_t	*cl_footsteps;
-extern	cvar_t	*cl_noskins;
-extern	cvar_t	*cl_autoskins;
+extern	cvar_t* cl_gun;
+extern	cvar_t* cl_add_blend;
+extern	cvar_t* cl_add_lights;
+extern	cvar_t* cl_add_particles;
+extern	cvar_t* cl_add_entities;
+extern	cvar_t* cl_predict;
+extern	cvar_t* cl_footsteps;
+extern	cvar_t* cl_noskins;
+extern	cvar_t* cl_autoskins;
 
-extern	cvar_t	*cl_upspeed;
-extern	cvar_t	*cl_forwardspeed;
-extern	cvar_t	*cl_sidespeed;
+extern	cvar_t* cl_upspeed;
+extern	cvar_t* cl_forwardspeed;
+extern	cvar_t* cl_sidespeed;
 
-extern	cvar_t	*cl_yawspeed;
-extern	cvar_t	*cl_pitchspeed;
+extern	cvar_t* cl_yawspeed;
+extern	cvar_t* cl_pitchspeed;
 
-extern	cvar_t	*cl_run;
+extern	cvar_t* cl_run;
 
-extern	cvar_t	*cl_anglespeedkey;
+extern	cvar_t* cl_anglespeedkey;
 
-extern	cvar_t	*cl_shownet;
-extern	cvar_t	*cl_showmiss;
-extern	cvar_t	*cl_showclamp;
-extern	cvar_t	*cl_showpos;
+extern	cvar_t* cl_shownet;
+extern	cvar_t* cl_showmiss;
+extern	cvar_t* cl_showclamp;
+extern	cvar_t* cl_showpos;
 
-extern	cvar_t	*lookspring;
-extern	cvar_t	*lookstrafe;
-extern	cvar_t	*sensitivity;
+extern	cvar_t* lookspring;
+extern	cvar_t* lookstrafe;
+extern	cvar_t* sensitivity;
 
-extern	cvar_t	*m_pitch;
-extern	cvar_t	*m_yaw;
-extern	cvar_t	*m_forward;
-extern	cvar_t	*m_side;
+extern	cvar_t* m_pitch;
+extern	cvar_t* m_yaw;
+extern	cvar_t* m_forward;
+extern	cvar_t* m_side;
 
-extern	cvar_t	*freelook;
+extern	cvar_t* freelook;
 
-extern	cvar_t	*cl_lightlevel;	// FIXME HACK
+extern	cvar_t* cl_lightlevel;	// FIXME HACK
 
-extern	cvar_t	*cl_paused;
-extern	cvar_t	*cl_timedemo;
+extern	cvar_t* cl_paused;
+extern	cvar_t* cl_timedemo;
 
-extern	cvar_t	*cl_vwep;
+extern	cvar_t* cl_vwep;
 
 extern	cvar_t  *cl_drawhud;
 
@@ -501,6 +499,11 @@ void V_AddEntity (entity_t *ent);
 void V_AddParticle (vec3_t org, int32_t color, float alpha);
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b);
 void V_AddLightStyle (int32_t style, float r, float g, float b);
+
+// Debug stuff for cl_showpos
+extern int32_t r_numdlights;
+extern int32_t r_numentities;
+extern int32_t r_numparticles;
 
 //
 // cl_tent.c

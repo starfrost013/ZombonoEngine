@@ -464,7 +464,7 @@ Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
 */
 
-extern	cvar_t	*cvar_vars;
+extern	cvar_t* cvar_vars;
 
 cvar_t *Cvar_Get (char *var_name, char *value, int32_t flags);
 // creates the variable if it doesn't exist, or returns the existing one
@@ -749,11 +749,11 @@ uint8_t		Com_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequen
 float	frand(void);	// 0 ti 1
 float	crand(void);	// -1 to 1
 
-extern	cvar_t	*developer;
-extern	cvar_t	*dedicated;
-extern	cvar_t	*host_speeds;
-extern	cvar_t	*log_stats;
-extern	cvar_t	*debug_console;
+extern	cvar_t* developer;
+extern	cvar_t* dedicated;
+extern	cvar_t* host_speeds;
+extern	cvar_t* log_stats;
+extern	cvar_t* debug_console;
 
 extern	FILE *log_stats_file;
 

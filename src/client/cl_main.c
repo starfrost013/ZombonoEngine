@@ -22,68 +22,68 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-cvar_t	*freelook;
+cvar_t* freelook;
 
-cvar_t	*adr0;
-cvar_t	*adr1;
-cvar_t	*adr2;
-cvar_t	*adr3;
-cvar_t	*adr4;
-cvar_t	*adr5;
-cvar_t	*adr6;
-cvar_t	*adr7;
-cvar_t	*adr8;
+cvar_t* adr0;
+cvar_t* adr1;
+cvar_t* adr2;
+cvar_t* adr3;
+cvar_t* adr4;
+cvar_t* adr5;
+cvar_t* adr6;
+cvar_t* adr7;
+cvar_t* adr8;
 
-cvar_t	*rcon_client_password;
-cvar_t	*rcon_address;
+cvar_t* rcon_client_password;
+cvar_t* rcon_address;
 
-cvar_t	*cl_noskins;
-cvar_t	*cl_autoskins;
-cvar_t	*cl_footsteps;
-cvar_t	*cl_timeout;
-cvar_t	*cl_predict;
-cvar_t	*cl_maxfps;
-cvar_t	*cl_gun;
+cvar_t* cl_noskins;
+cvar_t* cl_autoskins;
+cvar_t* cl_footsteps;
+cvar_t* cl_timeout;
+cvar_t* cl_predict;
+cvar_t* cl_maxfps;
+cvar_t* cl_gun;
 
-cvar_t	*cl_add_particles;
-cvar_t	*cl_add_lights;
-cvar_t	*cl_add_entities;
-cvar_t	*cl_add_blend;
+cvar_t* cl_add_particles;
+cvar_t* cl_add_lights;
+cvar_t* cl_add_entities;
+cvar_t* cl_add_blend;
 
-cvar_t	*cl_drawhud;
+cvar_t* cl_drawhud;
 
-cvar_t	*cl_shownet;
-cvar_t	*cl_showmiss;
-cvar_t	*cl_showclamp;
-cvar_t	*cl_showpos;
-cvar_t	*cl_paused;
-cvar_t	*cl_timedemo;
+cvar_t* cl_shownet;
+cvar_t* cl_showmiss;
+cvar_t* cl_showclamp;
+cvar_t* cl_showpos;
+cvar_t* cl_paused;
+cvar_t* cl_timedemo;
 
-cvar_t	*lookspring;
-cvar_t	*lookstrafe;
-cvar_t	*sensitivity;
+cvar_t* lookspring;
+cvar_t* lookstrafe;
+cvar_t* sensitivity;
 
-cvar_t	*m_pitch;
-cvar_t	*m_yaw;
-cvar_t	*m_forward;
-cvar_t	*m_side;
+cvar_t* m_pitch;
+cvar_t* m_yaw;
+cvar_t* m_forward;
+cvar_t* m_side;
 
-cvar_t	*cl_lightlevel;
+cvar_t* cl_lightlevel;
 
 //
 // userinfo
 //
-cvar_t	*info_password;
-cvar_t	*info_spectator;
-cvar_t	*name;
-cvar_t	*skin;
-cvar_t	*fov;
-cvar_t	*msg;
-cvar_t	*hand;
-cvar_t	*gender;
-cvar_t	*gender_auto;
+cvar_t* info_password;
+cvar_t* info_spectator;
+cvar_t* name;
+cvar_t* skin;
+cvar_t* fov;
+cvar_t* msg;
+cvar_t* hand;
+cvar_t* gender;
+cvar_t* gender_auto;
 
-cvar_t	*cl_vwep;
+cvar_t* cl_vwep;
 
 client_static_t	cls;
 client_state_t	cl;
@@ -1582,7 +1582,7 @@ typedef struct
 {
 	char	*name;
 	char	*value;
-	cvar_t	*var;
+	cvar_t* var;
 } cheatvar_t;
 
 cheatvar_t	cheatvars[] = {

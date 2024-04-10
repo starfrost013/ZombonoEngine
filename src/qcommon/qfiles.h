@@ -339,7 +339,7 @@ typedef struct dnode_s
 {
 	int32_t 	planenum;
 	int32_t 	children[2];	// negative numbers are -(leafs+1), not nodes
-	float		mins[3];		// for frustom culling
+	float		mins[3];		// for frustum culling
 	float		maxs[3];
 	uint32_t	firstface;
 	uint32_t	numfaces;	// counting both sides

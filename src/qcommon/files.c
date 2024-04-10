@@ -59,9 +59,9 @@ typedef struct pack_s
 } pack_t;
 
 char	fs_gamedir[MAX_OSPATH];
-cvar_t	*fs_basedir;
-cvar_t	*fs_cddir;
-cvar_t	*fs_gamedirvar;
+cvar_t* fs_basedir;
+cvar_t* fs_cddir;
+cvar_t* fs_gamedirvar;
 
 typedef struct filelink_s
 {

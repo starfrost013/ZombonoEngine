@@ -916,7 +916,7 @@ Specifies the model that will be used as the world
 void R_BeginRegistration (char *model)
 {
 	char	fullname[MAX_QPATH];
-	cvar_t	*flushmap;
+	cvar_t* flushmap;
 
 	registration_sequence++;
 	r_oldviewcluster = -1;		// force markleafs

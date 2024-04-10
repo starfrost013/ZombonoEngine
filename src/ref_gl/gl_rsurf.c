@@ -836,8 +836,8 @@ R_DrawBrushModel
 void R_DrawBrushModel (entity_t *e)
 {
 	vec3_t		mins, maxs;
-	int32_t			i;
-	bool	rotated;
+	int32_t		i;
+	bool		rotated;
 
 	if (currentmodel->nummodelsurfaces == 0)
 		return;

@@ -25,17 +25,17 @@ netadr_t	master_adr[MAX_MASTERS];	// address of group servers
 
 client_t	*sv_client;			// current client
 
-cvar_t	*sv_paused;
-cvar_t	*sv_timedemo;
+cvar_t* sv_paused;
+cvar_t* sv_timedemo;
 
-cvar_t	*sv_enforcetime;
+cvar_t* sv_enforcetime;
 
-cvar_t	*msg_timeout;			// seconds without any message
-cvar_t	*zombietime;			// seconds to sink messages after disconnect
+cvar_t* msg_timeout;			// seconds without any message
+cvar_t* zombietime;			// seconds to sink messages after disconnect
 
-cvar_t	*rcon_password;			// password for remote server commands
+cvar_t* rcon_password;			// password for remote server commands
 
-cvar_t	*allow_download;
+cvar_t* allow_download;
 cvar_t *allow_download_players;
 cvar_t *allow_download_models;
 cvar_t *allow_download_sounds;
@@ -43,15 +43,15 @@ cvar_t *allow_download_maps;
 
 cvar_t *sv_airaccelerate;
 
-cvar_t	*sv_noreload;			// don't reload level state when reentering
+cvar_t* sv_noreload;			// don't reload level state when reentering
 
-cvar_t	*maxclients;			// FIXME: rename sv_maxclients
-cvar_t	*sv_showclamp;
+cvar_t* maxclients;			// FIXME: rename sv_maxclients
+cvar_t* sv_showclamp;
 
-cvar_t	*hostname;
-cvar_t	*public_server;			// should heartbeats be sent
+cvar_t* hostname;
+cvar_t* public_server;			// should heartbeats be sent
 
-cvar_t	*sv_reconnect_limit;	// minimum seconds between connect messages
+cvar_t* sv_reconnect_limit;	// minimum seconds between connect messages
 
 void Master_Shutdown (void);
 

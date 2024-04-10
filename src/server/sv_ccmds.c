@@ -335,7 +335,7 @@ SV_WriteServerFile
 void SV_WriteServerFile (bool autosave)
 {
 	FILE	*f;
-	cvar_t	*var;
+	cvar_t* var;
 	char	name[MAX_OSPATH], string[128];
 	char	comment[32];
 	time_t	aclock;

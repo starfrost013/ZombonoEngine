@@ -324,16 +324,16 @@ float CL_KeyState (kbutton_t *key)
 
 //==========================================================================
 
-cvar_t	*cl_upspeed;
-cvar_t	*cl_forwardspeed;
-cvar_t	*cl_sidespeed;
+cvar_t* cl_upspeed;
+cvar_t* cl_forwardspeed;
+cvar_t* cl_sidespeed;
 
-cvar_t	*cl_yawspeed;
-cvar_t	*cl_pitchspeed;
+cvar_t* cl_yawspeed;
+cvar_t* cl_pitchspeed;
 
-cvar_t	*cl_run;
+cvar_t* cl_run;
 
-cvar_t	*cl_anglespeedkey;
+cvar_t* cl_anglespeedkey;
 
 
 /*

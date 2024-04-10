@@ -33,44 +33,44 @@ int32_t meansOfDeath;
 
 edict_t		*g_edicts;
 
-cvar_t	*gamemode;
-cvar_t	*gameflags;
-cvar_t	*skill;
-cvar_t	*fraglimit;
-cvar_t	*timelimit;
-cvar_t	*password;
-cvar_t	*spectator_password;
-cvar_t	*needpass;
-cvar_t	*maxclients;
-cvar_t	*maxspectators;
-cvar_t	*maxentities;
-cvar_t	*g_select_empty;
-cvar_t	*dedicated;
+cvar_t* gamemode;
+cvar_t* gameflags;
+cvar_t* skill;
+cvar_t* fraglimit;
+cvar_t* timelimit;
+cvar_t* password;
+cvar_t* spectator_password;
+cvar_t* needpass;
+cvar_t* maxclients;
+cvar_t* maxspectators;
+cvar_t* maxentities;
+cvar_t* g_select_empty;
+cvar_t* dedicated;
 
-cvar_t	*filterban;
+cvar_t* filterban;
 
-cvar_t	*sv_maxvelocity;
-cvar_t	*sv_gravity;
+cvar_t* sv_maxvelocity;
+cvar_t* sv_gravity;
 
-cvar_t	*sv_rollspeed;
-cvar_t	*sv_rollangle;
-cvar_t	*gun_x;
-cvar_t	*gun_y;
-cvar_t	*gun_z;
+cvar_t* sv_rollspeed;
+cvar_t* sv_rollangle;
+cvar_t* gun_x;
+cvar_t* gun_y;
+cvar_t* gun_z;
 
-cvar_t	*run_pitch;
-cvar_t	*run_roll;
-cvar_t	*bob_up;
-cvar_t	*bob_pitch;
-cvar_t	*bob_roll;
+cvar_t* run_pitch;
+cvar_t* run_roll;
+cvar_t* bob_up;
+cvar_t* bob_pitch;
+cvar_t* bob_roll;
 
-cvar_t	*sv_cheats;
+cvar_t* sv_cheats;
 
-cvar_t	*flood_msgs;
-cvar_t	*flood_persecond;
-cvar_t	*flood_waitdelay;
+cvar_t* flood_msgs;
+cvar_t* flood_persecond;
+cvar_t* flood_waitdelay;
 
-cvar_t	*sv_maplist;
+cvar_t* sv_maplist;
 
 cvar_t  *aimfix;
 

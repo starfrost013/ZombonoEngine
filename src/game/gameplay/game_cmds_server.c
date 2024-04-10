@@ -236,7 +236,7 @@ void SVCmd_WriteIP_f (void)
 	char	name[MAX_OSPATH];
 	uint8_t	b[4];
 	int		i;
-	cvar_t	*game;
+	cvar_t* game;
 
 	game = gi.cvar("game", "", 0);
 

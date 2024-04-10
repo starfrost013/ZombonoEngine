@@ -37,18 +37,16 @@ cvar_t		*cl_testentities;
 cvar_t		*cl_testlights;
 cvar_t		*cl_testblend;
 
-cvar_t		*cl_stats;
+extern	cvar_t* vid_hudscale;
+extern	cvar_t* viewsize;
 
-extern	cvar_t	*vid_hudscale;
-extern	cvar_t	*viewsize;
-
-int32_t 		r_numdlights;
+int32_t 	r_numdlights;
 dlight_t	r_dlights[MAX_DLIGHTS];
 
-int32_t 		r_numentities;
+int32_t 	r_numentities;
 entity_t	r_entities[MAX_ENTITIES];
 
-int32_t 		r_numparticles;
+int32_t 	r_numparticles;
 particle_t	r_particles[MAX_PARTICLES];
 
 lightstyle_t	r_lightstyles[MAX_LIGHTSTYLES];
@@ -372,11 +370,17 @@ float CalcFov (float fov_x, float width, float height)
 	if (fov_x < 1 || fov_x > 179)
 		Com_Error (ERR_DROP, "Bad fov: %f", fov_x);
 
+	// calculate 4:3 fov 
+
 	x = width/tan(fov_x/360*M_PI);
 
 	a = atan (height/x);
 
 	a = a*360/M_PI;
+
+	// adapt to current aspect ratio (i stole this code from yamagi quake2)
+
+	a = (atanf(tanf(a / 360.0f * M_PI) * (width / height * 0.75f)) / M_PI * 360.0f);
 
 	return a;
 }
@@ -538,8 +542,6 @@ void V_RenderView()
 	}
 
 	re.RenderFrame (&cl.refdef);
-	if (cl_stats->value)
-		Com_Printf ("ent:%i  lt:%i  part:%i\n", r_numentities, r_numdlights, r_numparticles);
 	if ( log_stats->value && ( log_stats_file != 0 ) )
 		fprintf( log_stats_file, "%i,%i,%i,",r_numentities, r_numdlights, r_numparticles);
 
@@ -568,6 +570,4 @@ void V_Init (void)
 	cl_testparticles = Cvar_Get ("cl_testparticles", "0", 0);
 	cl_testentities = Cvar_Get ("cl_testentities", "0", 0);
 	cl_testlights = Cvar_Get ("cl_testlights", "0", 0);
-
-	cl_stats = Cvar_Get ("cl_stats", "0", 0);
 }

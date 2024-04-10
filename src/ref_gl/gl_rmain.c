@@ -70,68 +70,68 @@ refdef_t	r_newrefdef;
 
 int		r_viewcluster, r_viewcluster2, r_oldviewcluster, r_oldviewcluster2;
 
-cvar_t	*r_norefresh;
-cvar_t	*r_drawentities;
-cvar_t	*r_drawworld;
-cvar_t	*r_speeds;
-cvar_t	*r_fullbright;
-cvar_t	*r_novis;
-cvar_t	*r_nocull;
-cvar_t	*r_lerpmodels;
-cvar_t	*r_lefthand;
+cvar_t* r_norefresh;
+cvar_t* r_drawentities;
+cvar_t* r_drawworld;
+cvar_t* r_speeds;
+cvar_t* r_fullbright;
+cvar_t* r_novis;
+cvar_t* r_nocull;
+cvar_t* r_lerpmodels;
+cvar_t* r_lefthand;
 
-cvar_t	*r_lightlevel;	// FIXME: This is a HACK to get the client's light level
+cvar_t* r_lightlevel;	// FIXME: This is a HACK to get the client's light level
 
-cvar_t	*gl_nosubimage;
+cvar_t* gl_nosubimage;
 
-cvar_t	*gl_vertex_arrays;
+cvar_t* gl_vertex_arrays;
 
-cvar_t	*gl_particle_min_size;
-cvar_t	*gl_particle_max_size;
-cvar_t	*gl_particle_size;
-cvar_t	*gl_particle_att_a;
-cvar_t	*gl_particle_att_b;
-cvar_t	*gl_particle_att_c;
+cvar_t* gl_particle_min_size;
+cvar_t* gl_particle_max_size;
+cvar_t* gl_particle_size;
+cvar_t* gl_particle_att_a;
+cvar_t* gl_particle_att_b;
+cvar_t* gl_particle_att_c;
 
-cvar_t	*gl_vsync;
-cvar_t	*gl_ext_compiled_vertex_array;
+cvar_t* gl_vsync;
+cvar_t* gl_ext_compiled_vertex_array;
 
-cvar_t	*gl_bitdepth;
-cvar_t	*gl_drawbuffer;
+cvar_t* gl_bitdepth;
+cvar_t* gl_drawbuffer;
 cvar_t  *gl_driver;
-cvar_t	*gl_lightmap;
-cvar_t	*gl_shadows;
-cvar_t	*gl_mode;
-cvar_t	*gl_dynamic;
-cvar_t	*gl_modulate;
-cvar_t	*gl_nobind;
-cvar_t	*gl_round_down;
-cvar_t	*gl_picmip;
-cvar_t	*gl_skymip;
-cvar_t	*gl_showtris;
-cvar_t	*gl_ztrick;
-cvar_t	*gl_finish;
-cvar_t	*gl_clear;
-cvar_t	*gl_cull;
-cvar_t	*gl_polyblend;
-cvar_t	*gl_flashblend;
-cvar_t	*gl_playermip;
-cvar_t  *gl_saturatelighting;
-cvar_t	*gl_texturemode;
-cvar_t	*gl_texturealphamode;
-cvar_t	*gl_texturesolidmode;
-cvar_t	*gl_lockpvs;
+cvar_t* gl_lightmap;
+cvar_t* gl_shadows;
+cvar_t* gl_mode;
+cvar_t* gl_dynamic;
+cvar_t* gl_modulate;
+cvar_t* gl_nobind;
+cvar_t* gl_round_down;
+cvar_t* gl_picmip;
+cvar_t* gl_skymip;
+cvar_t* gl_showtris;
+cvar_t* gl_ztrick;
+cvar_t* gl_finish;
+cvar_t* gl_clear;
+cvar_t* gl_cull;
+cvar_t* gl_polyblend;
+cvar_t* gl_flashblend;
+cvar_t* gl_playermip;
+cvar_t* gl_saturatelighting;
+cvar_t* gl_texturemode;
+cvar_t* gl_texturealphamode;
+cvar_t* gl_texturesolidmode;
+cvar_t* gl_lockpvs;
 
-cvar_t	*vid_borderless;
+cvar_t*	vid_borderless;
 cvar_t* vid_fullscreen;
-cvar_t	*vid_gamma;
-cvar_t	*vid_ref;
+cvar_t*	vid_gamma;
+cvar_t*	vid_ref;
 
 /*
 =================
 R_CullBox
 
-Returns true if the box is completely outside the frustom
+Returns true if the box is completely outside the frustum
 =================
 */
 bool R_CullBox (vec3_t mins, vec3_t maxs)
@@ -398,8 +398,8 @@ void R_SetFrustum (void)
 	for (i=0 ; i<4 ; i++)
 	{
 		frustum[i].type = PLANE_ANYZ;
-		frustum[i].dist = DotProduct (r_origin, frustum[i].normal);
-		frustum[i].signbits = SignbitsForPlane (&frustum[i]);
+		frustum[i].dist = DotProduct(r_origin, frustum[i].normal);
+		frustum[i].signbits = SignbitsForPlane(&frustum[i]);
 	}
 }
 
@@ -517,7 +517,7 @@ void R_SetupGL (void)
 	// set up projection matrix
 	//
     screenaspect = (float)r_newrefdef.width/r_newrefdef.height;
-//	yfov = 2*atan((float)r_newrefdef.height/r_newrefdef.width)*180/M_PI;
+
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
     SetGLPerspective (r_newrefdef.fov_y,  screenaspect,  4,  4096);
@@ -533,9 +533,6 @@ void R_SetupGL (void)
     glRotatef (-r_newrefdef.viewangles[0],  0, 1, 0);
     glRotatef (-r_newrefdef.viewangles[1],  0, 0, 1);
     glTranslatef (-r_newrefdef.vieworg[0],  -r_newrefdef.vieworg[1],  -r_newrefdef.vieworg[2]);
-
-//	if ( gl_state.camera_separation != 0 && gl_state.stereo_enabled )
-//		glTranslatef ( gl_state.camera_separation, 0, 0 );
 
 	glGetFloatv (GL_MODELVIEW_MATRIX, r_world_matrix);
 
@@ -970,7 +967,7 @@ void R_BeginFrame( float camera_separation )
 	*/
 	if ( gl_mode->modified || vid_borderless->modified || vid_fullscreen->modified)
 	{	// FIXME: only restart if CDS is required
-		cvar_t	*ref;
+		cvar_t* ref;
 
 		ref = ri.Cvar_Get ("vid_ref", "gl", 0);
 		ref->modified = true;

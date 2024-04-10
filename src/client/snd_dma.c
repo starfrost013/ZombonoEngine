@@ -115,7 +115,7 @@ S_Init
 */
 void S_Init (void)
 {
-	cvar_t	*cv;
+	cvar_t* cv;
 
 	Com_Printf("\n------- sound initialization -------\n");
 

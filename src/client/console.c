@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 console_t	con;
 
 cvar_t		*con_notifytime;
-extern cvar_t	*vid_hudscale;
+extern cvar_t* vid_hudscale;
 
 
 #define		MAXCMDLINE	256

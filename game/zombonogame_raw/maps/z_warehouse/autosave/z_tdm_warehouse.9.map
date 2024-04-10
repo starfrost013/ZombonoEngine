@@ -3289,7 +3289,7 @@
 // entity 6
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3306,7 +3306,7 @@
 // entity 7
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3409,7 +3409,7 @@
 // entity 23
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3449,7 +3449,7 @@
 // entity 25
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3466,7 +3466,7 @@
 // entity 26
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3533,7 +3533,7 @@
 // entity 28
 {
 "classname" "func_door"
-"speed" "200"
+"speed" "190"
 "angle" "-2"
 "wait" "3"
 "spawnflags" "0"
@@ -3597,7 +3597,7 @@
 {
 "classname" "func_door"
 "spawnflags" "0"
-"speed" "200"
+"speed" "190"
 "wait" "3"
 "angle" "-2"
 // brush 0
@@ -3616,7 +3616,7 @@
 {
 "classname" "func_door"
 "angle" "-2"
-"speed" "200"
+"speed" "190"
 "spawnflags" "0"
 // brush 0
 {
@@ -3674,7 +3674,7 @@
 "angle" "180"
 "_color" "232 208 192"
 "light" "350"
-"_cone" "390"
+"_cone" "450"
 }
 // entity 42
 {
@@ -3683,7 +3683,7 @@
 "angle" "180"
 "_color" "232 208 192"
 "light" "350"
-"_cone" "390"
+"_cone" "450"
 }
 // entity 43
 {
@@ -3692,7 +3692,7 @@
 "angle" "180"
 "_color" "232 208 192"
 "light" "350"
-"_cone" "390"
+"_cone" "450"
 }
 // entity 44
 {
@@ -3701,7 +3701,7 @@
 "angle" "180"
 "_color" "232 208 192"
 "light" "350"
-"_cone" "390"
+"_cone" "450"
 }
 // entity 45
 {
@@ -3710,7 +3710,7 @@
 "angle" "180"
 "_color" "232 208 192"
 "light" "350"
-"_cone" "390"
+"_cone" "450"
 }
 // entity 46
 {
@@ -3719,7 +3719,7 @@
 "angle" "0"
 "_color" "232 221 188"
 "light" "350"
-"_cone" "350"
+"_cone" "450"
 }
 // entity 47
 {
@@ -3728,7 +3728,7 @@
 "angle" "0"
 "_color" "232 221 188"
 "light" "350"
-"_cone" "350"
+"_cone" "450"
 }
 // entity 48
 {
@@ -3737,7 +3737,7 @@
 "angle" "0"
 "_color" "232 221 188"
 "light" "350"
-"_cone" "350"
+"_cone" "450"
 }
 // entity 49
 {
@@ -3746,7 +3746,7 @@
 "angle" "0"
 "_color" "232 221 188"
 "light" "350"
-"_cone" "350"
+"_cone" "450"
 }
 // entity 50
 {
@@ -3755,77 +3755,63 @@
 "angle" "0"
 "_color" "232 221 188"
 "light" "350"
-"_cone" "350"
+"_cone" "450"
 }
 // entity 51
 {
-"classname" "light_spot"
-"origin" "600 -1016 176"
+"classname" "light"
+"origin" "536 88 272"
 "light" "300"
-"angle" "90"
-"_cone" "300"
+"angle" "0"
 }
 // entity 52
 {
-"classname" "light_spot"
-"origin" "600 320 176"
+"classname" "light"
+"origin" "536 -216 272"
 "light" "300"
-"angle" "270"
-"_cone" "230"
+"angle" "0"
 }
 // entity 53
 {
-"classname" "light_spot"
-"origin" "152 -2784 296"
-"angle" "0"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "536 -776 272"
 "light" "300"
-"_cone" "100"
+"angle" "0"
 }
 // entity 54
 {
-"classname" "light_spot"
-"origin" "152 -2528 296"
-"angle" "0"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "536 -472 272"
 "light" "300"
-"_cone" "100"
+"angle" "0"
 }
 // entity 55
 {
-"classname" "light_spot"
-"origin" "152 -2272 296"
-"angle" "0"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "680 -776 272"
 "light" "300"
-"_cone" "100"
+"angle" "180"
 }
 // entity 56
 {
-"classname" "light_spot"
-"origin" "1512 -2784 296"
-"angle" "180"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "680 -472 272"
 "light" "300"
-"_cone" "100"
+"angle" "180"
 }
 // entity 57
 {
-"classname" "light_spot"
-"origin" "1512 -2528 296"
-"angle" "180"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "680 -216 272"
 "light" "300"
-"_cone" "100"
+"angle" "180"
 }
 // entity 58
 {
-"classname" "light_spot"
-"origin" "1512 -2272 296"
-"angle" "180"
-"_color" "202 212 232"
+"classname" "light"
+"origin" "680 88 272"
 "light" "300"
-"_cone" "100"
+"angle" "180"
 }
 // entity 59
 {

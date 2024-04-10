@@ -37,15 +37,15 @@ static bool shutdown_game = false;
 
 FILE	*log_stats_file;
 
-cvar_t	*host_speeds;
-cvar_t	*log_stats;
-cvar_t	*developer;
-cvar_t	*timescale;
-cvar_t	*fixedtime;
-cvar_t	*logfile_active;	// 1 = buffer log, 2 = flush after each print, 3 = append
-cvar_t	*showtrace;
-cvar_t	*dedicated;
-cvar_t	*debug_console;		// debug console toggle for Windows
+cvar_t* host_speeds;
+cvar_t* log_stats;
+cvar_t* developer;
+cvar_t* timescale;
+cvar_t* fixedtime;
+cvar_t* logfile_active;	// 1 = buffer log, 2 = flush after each print, 3 = append
+cvar_t* showtrace;
+cvar_t* dedicated;
+cvar_t* debug_console;		// debug console toggle for Windows
 
 FILE	*logfile;
 

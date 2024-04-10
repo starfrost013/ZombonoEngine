@@ -12,12 +12,15 @@ BUG FIXES:
 * Fixed all commands involving a modifier key and the console by exposing modifier key to Key_Console
 	* This means copying, pasting, etc... is fixed!
 * Fixed dedicated fullscreen not working with ALT+ENTER toggle
+* Fixed not being able to define the Windows key
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality
 
-
 NEW FEATURES:
-* Added viewangles (both refdef and current) to cl_viewpos
+* Added many features to cl_showpos:
+	* Viewangles (both refdef and current) 
+	* Number of entities being rendered
+	* Number of 
 * Added option to choose dedicated fullscreen to settings
 
 OTHER ENHANCEMENTS:
@@ -25,6 +28,7 @@ OTHER ENHANCEMENTS:
 * Renamed in_ cvars to input_ and same for functions
 * Made input shift code slightly less insane
 * Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
+* Scale FOV with aspect ratio - CURRENTLY THIS FUCKS CULLING!
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
@@ -49,6 +53,7 @@ REMOVALS:
 	* Removed joy_yawsensitivity cvar
 	* Removed joy_upthreshold cvar
 	* Removed joy_upsensitivity cvar
+* Removed duplicated vector code
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

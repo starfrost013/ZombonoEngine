@@ -161,9 +161,9 @@ typedef struct game_import_s
 	void	(*FreeTags) (int32_t tag);
 
 	// console variable interaction
-	cvar_t	*(*cvar) (char *var_name, char *value, int32_t flags);
-	cvar_t	*(*cvar_set) (char *var_name, char *value);
-	cvar_t	*(*cvar_forceset) (char *var_name, char *value);
+	cvar_t* (*cvar) (char *var_name, char *value, int32_t flags);
+	cvar_t* (*cvar_set) (char *var_name, char *value);
+	cvar_t* (*cvar_forceset) (char *var_name, char *value);
 
 	// ClientCommand and ServerCommand parameter access
 	int32_t 	(*argc) (void);
@@ -182,7 +182,7 @@ typedef struct game_import_s
 //
 typedef struct
 {
-	int32_t 		apiversion;
+	int32_t 	apiversion;
 
 	// the init function will only be called when a game starts,
 	// not each time a level is loaded.  Persistant data for clients

@@ -559,42 +559,42 @@ extern	edict_t			*g_edicts;
 #define random()	((rand () & 0x7fff) / ((float)0x7fff))
 #define crandom()	(2.0 * (random() - 0.5))
 
-extern	cvar_t	*maxentities;
-extern	cvar_t	*gamemode;
-extern	cvar_t	*gameflags;
-extern	cvar_t	*skill;
-extern	cvar_t	*fraglimit;
-extern	cvar_t	*timelimit;
-extern	cvar_t	*password;
-extern	cvar_t	*spectator_password;
-extern	cvar_t	*needpass;
-extern	cvar_t	*g_select_empty;
-extern	cvar_t	*dedicated;
+extern	cvar_t* maxentities;
+extern	cvar_t* gamemode;
+extern	cvar_t* gameflags;
+extern	cvar_t* skill;
+extern	cvar_t* fraglimit;
+extern	cvar_t* timelimit;
+extern	cvar_t* password;
+extern	cvar_t* spectator_password;
+extern	cvar_t* needpass;
+extern	cvar_t* g_select_empty;
+extern	cvar_t* dedicated;
 
-extern	cvar_t	*filterban;
+extern	cvar_t* filterban;
 
-extern	cvar_t	*sv_gravity;
-extern	cvar_t	*sv_maxvelocity;
+extern	cvar_t* sv_gravity;
+extern	cvar_t* sv_maxvelocity;
 
-extern	cvar_t	*gun_x, *gun_y, *gun_z;
-extern	cvar_t	*sv_rollspeed;
-extern	cvar_t	*sv_rollangle;
+extern	cvar_t* gun_x, *gun_y, *gun_z;
+extern	cvar_t* sv_rollspeed;
+extern	cvar_t* sv_rollangle;
 
-extern	cvar_t	*run_pitch;
-extern	cvar_t	*run_roll;
-extern	cvar_t	*bob_up;
-extern	cvar_t	*bob_pitch;
-extern	cvar_t	*bob_roll;
+extern	cvar_t* run_pitch;
+extern	cvar_t* run_roll;
+extern	cvar_t* bob_up;
+extern	cvar_t* bob_pitch;
+extern	cvar_t* bob_roll;
 
-extern	cvar_t	*sv_cheats;
-extern	cvar_t	*maxclients;
-extern	cvar_t	*maxspectators;
+extern	cvar_t* sv_cheats;
+extern	cvar_t* maxclients;
+extern	cvar_t* maxspectators;
 
-extern	cvar_t	*flood_msgs;
-extern	cvar_t	*flood_persecond;
-extern	cvar_t	*flood_waitdelay;
+extern	cvar_t* flood_msgs;
+extern	cvar_t* flood_persecond;
+extern	cvar_t* flood_waitdelay;
 
-extern	cvar_t	*sv_maplist;
+extern	cvar_t* sv_maplist;
 
 extern  cvar_t  *aimfix;
 

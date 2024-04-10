@@ -296,7 +296,7 @@ CL_ParseServerData
 */
 void CL_ParseServerData (void)
 {
-	extern cvar_t	*fs_gamedirvar;
+	extern cvar_t* fs_gamedirvar;
 	char	*str;
 	int32_t 	i;
 	

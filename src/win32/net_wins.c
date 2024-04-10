@@ -38,7 +38,7 @@ typedef struct
 } loopback_t;
 
 cvar_t		*net_shownet;
-static cvar_t	*noudp;
+static cvar_t* noudp;
 
 loopback_t	loopbacks[2];
 int32_t 		ip_sockets[2];
@@ -452,7 +452,7 @@ NET_OpenIP
 */
 void NET_OpenIP (void)
 {
-	cvar_t	*ip;
+	cvar_t* ip;
 	int32_t 	port;
 	int32_t 	dedicated;
 

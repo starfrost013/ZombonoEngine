@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "qcommon.h"
 
-cvar_t	*cvar_vars;
+cvar_t* cvar_vars;
 
 /*
 ============
@@ -46,7 +46,7 @@ Cvar_FindVar
 */
 static cvar_t *Cvar_FindVar (char *var_name)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	
 	for (var=cvar_vars ; var ; var=var->next)
 		if (!strcmp (var_name, var->name))
@@ -62,7 +62,7 @@ Cvar_VariableValue
 */
 float Cvar_VariableValue (char *var_name)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	
 	var = Cvar_FindVar (var_name);
 	if (!var)
@@ -126,7 +126,7 @@ The flags will be or'ed in if the variable exists.
 */
 cvar_t *Cvar_Get (char *var_name, char *var_value, int32_t flags)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	
 	if (flags & (CVAR_USERINFO | CVAR_SERVERINFO))
 	{
@@ -178,7 +178,7 @@ Cvar_Set2
 */
 cvar_t *Cvar_Set2 (char *var_name, char *value, bool force)
 {
-	cvar_t	*var;
+	cvar_t* var;
 
 	var = Cvar_FindVar (var_name);
 	if (!var)
@@ -287,7 +287,7 @@ Cvar_FullSet
 */
 cvar_t *Cvar_FullSet (char *var_name, char *value, int32_t flags)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	
 	var = Cvar_FindVar (var_name);
 	if (!var)
@@ -335,7 +335,7 @@ Any variables with latched values will now be updated
 */
 void Cvar_GetLatchedVars (void)
 {
-	cvar_t	*var;
+	cvar_t* var;
 
 	for (var = cvar_vars ; var ; var = var->next)
 	{
@@ -428,7 +428,7 @@ with the archive flag set to true.
 */
 void Cvar_WriteVariables (char *path)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	char	buffer[1024];
 	FILE	*f;
 
@@ -452,7 +452,7 @@ Cvar_List_f
 */
 void Cvar_List_f (void)
 {
-	cvar_t	*var;
+	cvar_t* var;
 	int32_t 	i;
 
 	i = 0;
@@ -488,7 +488,7 @@ bool userinfo_modified;
 char	*Cvar_BitInfo (int32_t bit)
 {
 	static char	info[MAX_INFO_STRING];
-	cvar_t	*var;
+	cvar_t* var;
 
 	info[0] = 0;
 
