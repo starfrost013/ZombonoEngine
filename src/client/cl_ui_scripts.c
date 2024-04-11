@@ -142,5 +142,5 @@ bool UI_ScoreUICreate()
 
 bool UI_LoadoutUICreate()
 {
-
+	UI_SetPassive("LoadoutUI", true);
 }

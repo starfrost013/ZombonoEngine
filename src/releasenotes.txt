@@ -18,12 +18,13 @@ BUG FIXES:
 * Restored gl_drawbuffer functionality
 
 NEW FEATURES:
-* Added many features to cl_showpos:
+* Renamed cl_showpos to cl_showinfo:
 	* Viewangles (both refdef and client) 
 	* Number of entities being rendered
 	* Number of dynamic lights being rendered
 	* Number of particles bing rendered
 * Added option to switch between borderless and dedicated fullscreen to settings
+* Added lighting to z_tdm_warehouse 
 
 OTHER ENHANCEMENTS:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
@@ -35,7 +36,7 @@ OTHER ENHANCEMENTS:
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
 * Removed v_centermove cvar (was already dead)
-* Removed viewpos command (cl_showpos 1 far superior and duplicates functionality)
+* Removed viewpos command (cl_showinfo 1 far superior and duplicates functionality)
 * Removed joystick support (code sucks, only obsolete joysticks supported, DirectInput only, non-portable, not even supported on Linux it seems?)
 	* Removed joy_name cvar
 	* Removed joy_advanced cvar

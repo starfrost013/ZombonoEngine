@@ -451,9 +451,4 @@ void V_Init (void)
 	Cmd_AddCommand ("gun_model", V_Gun_Model_f);
 
 	crosshair = Cvar_Get ("crosshair", "0", CVAR_ARCHIVE);
-
-	cl_testblend = Cvar_Get ("cl_testblend", "0", 0);
-	cl_testparticles = Cvar_Get ("cl_testparticles", "0", 0);
-	cl_testentities = Cvar_Get ("cl_testentities", "0", 0);
-	cl_testlights = Cvar_Get ("cl_testlights", "0", 0);
 }

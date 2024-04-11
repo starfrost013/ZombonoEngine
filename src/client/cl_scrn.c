@@ -1185,7 +1185,7 @@ void SCR_UpdateScreen (void)
 				UI_Draw();
 			}
 
-			if (cl_showpos->value)
+			if (cl_showinfo->value)
 			{
 				SCR_DrawPos();
 			}

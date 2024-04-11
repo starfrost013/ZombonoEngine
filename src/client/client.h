@@ -281,7 +281,7 @@ extern	cvar_t* cl_anglespeedkey;
 extern	cvar_t* cl_shownet;
 extern	cvar_t* cl_showmiss;
 extern	cvar_t* cl_showclamp;
-extern	cvar_t* cl_showpos;
+extern	cvar_t* cl_showinfo;
 
 extern	cvar_t* lookspring;
 extern	cvar_t* lookstrafe;
@@ -500,7 +500,7 @@ void V_AddParticle (vec3_t org, int32_t color, float alpha);
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b);
 void V_AddLightStyle (int32_t style, float r, float g, float b);
 
-// Debug stuff for cl_showpos
+// Debug stuff for cl_showinfo
 extern int32_t r_numdlights;
 extern int32_t r_numentities;
 extern int32_t r_numparticles;
