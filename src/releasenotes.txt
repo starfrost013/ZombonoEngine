@@ -14,8 +14,9 @@ BUG FIXES:
 * Fixed dedicated fullscreen not working with ALT+ENTER toggle
 * Fixed not being able to define the Windows key
 * Fixed r_fullbright 1 with multitexturing
+* Fixed leaderboard appearance at high resolutions
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
-* Restored gl_drawbuffer functionality
+* Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
 NEW FEATURES:

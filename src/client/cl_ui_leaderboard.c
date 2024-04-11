@@ -115,7 +115,7 @@ void UI_LeaderboardUIUpdate()
 
 		// todo: boxes and headers (headers in cl_ui_scripts)
 		
-		// move by one line
+		// move downward by one line from the header
 		y += (system_font_ptr->line_height - 1) * vid_hudscale->value; // safety
 
 		// draw name
@@ -206,14 +206,15 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 
-		y = ((viddef.height / 2) - 124 + ((system_font_ptr->line_height * (client_num))) * vid_hudscale->value);
+		y = ((viddef.height / 2) - (108 * vid_hudscale->value) + ((system_font_ptr->line_height * (client_num + 1) * vid_hudscale->value)));
 	}
 	
 	x = (viddef.width / 2) - (160 * vid_hudscale->value);
 	y = (viddef.height / 2) - (124 * vid_hudscale->value);
 
-	char director_text[TEXT_BUF_LENGTH]; // "Director: " + 4 numbers + 1 for safety
-	char player_text[TEXT_BUF_LENGTH]; // "Player: " + 4 numbers + 1 for safety
+	// "Director: " + 4 numbers + 1 for safety
+	char director_text[TEXT_BUF_LENGTH];
+	char player_text[TEXT_BUF_LENGTH]; 
 
 	// draw the director and player total scores
 	//TODO: ONLY DO THIS ON TDM MODE!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -223,11 +224,11 @@ void UI_LeaderboardUIUpdate()
 
 	int32_t box_size_large = (8 * 14) * vid_hudscale->value;
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, system_font_ptr->line_height - 1, 87, 0, 127, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1) * vid_hudscale->value, 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 
 	x = (viddef.width / 2) + (48 * vid_hudscale->value);
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, system_font_ptr->line_height - 1, 219, 87, 0, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1)* vid_hudscale->value, 219, 87, 0, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);
 }
