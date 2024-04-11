@@ -1403,7 +1403,7 @@ static char *creditsIndex[256];
 static char *creditsBuffer;
 static const char *creditstext[] =
 {
-	"^dZ O M B O N O ^3C R E D I T S"
+	"^dZ O M B O N O ^3  C R E D I T S"
 	"",
 	"",
 	"^5PROGRAMMING^7",
@@ -1418,8 +1418,8 @@ static const char *creditstext[] =
 	"",
 	"TrenchBroom ^5Team^7",
 	"ericw-tools ^5Team^7",
-	"Krzysztof Kondrak",
-	"^5id^7 Software",
+	"Krzysztof Kondrak ^5(vkquake2)^7",
+	"^5id^7 Software ^5(Original Quake 2 engine)^7",
 	"unsubtract ^5(mkpak)^7",
 	"",
 	"",
@@ -1430,6 +1430,14 @@ static const char *creditstext[] =
 	"Hugo5551",
 	"goopy goob",
 	"Samw220506",
+	"solarlight",
+	"CTriggerHurt",
+	"how2rot",
+	"PokeFan919",
+	"ExperiencersInternational", 
+	"'merican boot",
+	"Adrian",
+	"didimmick",
 	"",
 	"",
 	"^5Game software (C) 2023-2024 starfrost^7",
