@@ -574,6 +574,8 @@ typedef enum ui_control_type_e
 	ui_control_slider = 2,									// A slider between different values.
 	ui_control_checkbox = 3,								// A checkable box.
 	ui_control_box = 4,										// A simple box.
+	ui_control_spincontrol = 5,								// A "spinnable" set of options
+	ui_control_entry = 6,									// A textbox that can have text entered into it.
 } ui_control_type;
 
 typedef struct ui_control_s
@@ -592,7 +594,9 @@ typedef struct ui_control_s
 	// text
 	char			text[MAX_UI_STR_LENGTH];				// Text UI control: Text to display.
 	// image
-	char			image_path[MAX_UI_STR_LENGTH];			// Image path UI control: Image to display (path relative to the "pics" folder)
+	char			image_path[MAX_UI_STR_LENGTH];			// Image path to display for Image controls
+	char			image_path_on_hover[MAX_UI_STR_LENGTH];	// Image path when the UI control has been hovered over.
+	char			image_path_on_click[MAX_UI_STR_LENGTH];	// Image path when the UI control clicked on.
 	// slider
 	int32_t 		value_min;								// Slider UI control: minimum value.
 	int32_t 		value_max;								// Slider UI control: maximum value.
@@ -600,9 +604,9 @@ typedef struct ui_control_s
 	bool			checked;								// Checkbox UI control: Is it checked?
 	// box
 	vec4_t			color;									// The color of this UI element.
-	// 
-	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
 
+	// events
+	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
 	void			(*on_click_up)(int32_t btn, int32_t x, int32_t y);		// C function to call on click starting with X and Y coordinates.
 	void			(*on_key_down)(int32_t btn);							// C function to call on a key starting to bressed.
 	void			(*on_key_up)(int32_t btn);								// C function to call on a key stopping being pressed. 
@@ -618,10 +622,10 @@ typedef struct ui_s
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
-extern ui_t					ui_list[MAX_UIS];	// The list of UIs.
-extern ui_t*				current_ui;			// the current UI being displayed
-extern int32_t 				num_uis;			// the current number of UIs
-extern bool					ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern ui_t			ui_list[MAX_UIS];	// The list of UIs.
+extern ui_t*		current_ui;			// the current UI being displayed
+extern int32_t 		num_uis;			// the current number of UIs
+extern bool			ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 
 // UI: Init
 bool UI_Init();
@@ -642,6 +646,8 @@ bool UI_SetPassive(char* name, bool passive);																// Sets a UI to pas
 // UI: Update
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
+bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
+bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
 
 // UI: Set Event Handler
 bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.

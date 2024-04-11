@@ -364,6 +364,48 @@ bool UI_SetImage(char* ui_name, char* name, char* image_path)
 	return true;
 }
 
+bool UI_SetImageOnHover(char* ui_name, char* name, char* image_path)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image on hover path %s to %s!\n", name, image_path);
+		return false;
+	}
+
+	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("UI image on hover path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
+		return false;
+	}
+
+	strcpy(ui_control_ptr->image_path_on_hover, image_path);
+
+	return true;
+}
+
+bool UI_SetImageOnClick(char* ui_name, char* name, char* image_path)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image on click path %s to %s!\n", name, image_path);
+		return false;
+	}
+
+	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	{
+		Com_Printf("UI image on click path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
+		return false;
+	}
+
+	strcpy(ui_control_ptr->image_path_on_click, image_path);
+
+	return true;
+}
+
 void UI_Clear(char* ui_name)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);

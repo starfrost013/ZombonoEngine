@@ -80,12 +80,13 @@ bool UI_BamfuslicatorUICreate()
 	const char* temp_text = "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****"; 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	int32_t x = (viddef.width / 2) - (120 * vid_hudscale->value);
+	int32_t y = (viddef.height / 1.15);
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
-		(viddef.height / 1.25), 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 127);
+		y, 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 127);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
-	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), (viddef.height / 1.25));
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), y);
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_TextHelp", "Right click to change type of monster to spawn",
-		x + (5 * vid_hudscale->value), (viddef.height / 1.25) + (size_y * vid_hudscale->value) + (3 * vid_hudscale->value)); // lazy way of centering it lol
+		x + (5 * vid_hudscale->value), y + (size_y * vid_hudscale->value) + (3 * vid_hudscale->value)); // lazy way of centering it lol
 	return true; 
 }
 

@@ -15,6 +15,7 @@ BUG FIXES:
 * Fixed not being able to define the Windows key
 * Fixed r_fullbright 1 with multitexturing
 * Fixed leaderboard appearance at high resolutions
+* Fixed moving the camera with the leaderboard enabled
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
@@ -27,6 +28,7 @@ NEW FEATURES:
 	* Number of particles bing rendered
 * Added option to switch between borderless and dedicated fullscreen to settings
 * Added lighting to z_tdm_warehouse 
+* Texture fixes in z_tdm_subway
 
 OTHER ENHANCEMENTS:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
@@ -34,6 +36,7 @@ OTHER ENHANCEMENTS:
 * Made input shift code slightly less insane
 * Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
 * Scale FOV with aspect ratio - CURRENTLY THIS FUCKS CULLING!
+* Reduced s_mixahead value from 0.2 to 0.1 to reduce sound lag 
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)

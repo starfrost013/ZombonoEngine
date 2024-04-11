@@ -266,7 +266,7 @@ void GL_BeginFrame()
 }
 
 /*
-** GLimp_EndFrame
+** GL_EndFrame
 ** 
 ** Responsible for doing a swapbuffers and possibly for other stuff
 ** as yet to be determined.  Probably better not to make this a GLimp
@@ -274,6 +274,11 @@ void GL_BeginFrame()
 */
 void GL_EndFrame(void)
 {
+	if (gl_state.window == NULL)
+	{
+		return;
+	}
+
 	int		err;
 
 	err = glGetError();

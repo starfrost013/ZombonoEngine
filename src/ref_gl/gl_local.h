@@ -317,7 +317,7 @@ void	Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void	Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
 void	Draw_FadeScreen (void);
 
-void	R_BeginFrame( float camera_separation );
+void	R_BeginFrame();
 
 void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32_t *out,  int32_t outwidth, int32_t outheight);
 
@@ -368,10 +368,8 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 ====================================================================
 */
 
-void		GL_BeginFrame( float camera_separation );
+void		GL_BeginFrame();
 void		GL_EndFrame( void );
 void		GL_Shutdown( void );
 int32_t     	GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
 void		GLimp_AppActivate( bool active );
-void		GLimp_EnableLogging( bool enable );
-void		GLimp_LogNewFrame( void );

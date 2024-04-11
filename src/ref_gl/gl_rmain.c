@@ -960,7 +960,7 @@ void R_Shutdown (void)
 R_BeginFrame
 @@@@@@@@@@@@@@@@@@@@@
 */
-void R_BeginFrame( float camera_separation )
+void R_BeginFrame()
 {
 	/*
 	** change modes if necessary
@@ -980,7 +980,7 @@ void R_BeginFrame( float camera_separation )
 		vid_gamma->modified = false;
 	}
 
-	GL_BeginFrame( camera_separation );
+	GL_BeginFrame();
 
 	/*
 	** go into 2D mode

@@ -738,6 +738,10 @@ void Input_MouseMove(usercmd_t* cmd)
 		return;
 	}
 
+	// don't desync if a UI is active
+	if (ui_active && !current_ui->passive)
+		return;
+
 	float new_yaw = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
 	float new_pitch = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
 	float new_move_forward = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;

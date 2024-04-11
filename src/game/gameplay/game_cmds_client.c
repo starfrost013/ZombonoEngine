@@ -380,6 +380,11 @@ void Cmd_Use_f (edict_t *ent)
 	it->use (ent, it);
 }
 
+void Cmd_Loadout_f(edict_t* ent)
+{
+	// tell the client to turn on the loadout UI
+	G_UISend(ent, "LoadoutUI", true, true, false);
+}
 
 /*
 ==================
@@ -1053,7 +1058,10 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 		return;
 	}
-
+	else if (!Q_stricmp(cmd, "loadout"))
+	{
+		Cmd_Loadout_f(ent);
+	}
 
 	// anything that doesn't match a command will be a chat
 	Cmd_Say_f (ent, false, true);
