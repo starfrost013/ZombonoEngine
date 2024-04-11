@@ -1438,6 +1438,7 @@ static const char *creditstext[] =
 	"'merican boot",
 	"Adrian",
 	"didimmick",
+	"pivotman319",
 	"",
 	"",
 	"^5Game software (C) 2023-2024 starfrost^7",
@@ -1530,6 +1531,7 @@ void M_Menu_Credits_f( void )
 	}
 	else
 	{
+		// load default credits
 		credits = creditstext;
 	}
 

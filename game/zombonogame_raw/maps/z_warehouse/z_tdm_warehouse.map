@@ -3829,13 +3829,22 @@
 }
 // entity 59
 {
+"classname" "light_spot"
+"origin" "168 -1080 136"
+"angle" "270"
+"_color" "202 212 232"
+"light" "300"
+"_cone" "100"
+}
+// entity 60
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "triggers"
 "_tb_id" "3"
 "_tb_layer_sort_index" "0"
 }
-// entity 60
+// entity 61
 {
 "classname" "trigger_once"
 "target" "help_fuckyou"
@@ -3851,13 +3860,13 @@
 ( -404 412 128 ) ( -404 412 130 ) ( -404 412.22727272727275 128 ) e1u1/trigger 0 0 0 0.25 0.25
 }
 }
-// entity 61
+// entity 62
 {
 "classname" "weapon_rocketlauncher"
 "origin" "528 -948 472"
 "_tb_layer" "3"
 }
-// entity 62
+// entity 63
 {
 "classname" "ammo_shells"
 "origin" "464 360 -16"

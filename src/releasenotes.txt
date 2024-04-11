@@ -16,6 +16,7 @@ BUG FIXES:
 * Fixed r_fullbright 1 with multitexturing
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality
+* Redrew the default crosshairs to actually be centered
 
 NEW FEATURES:
 * Renamed cl_showpos to cl_showinfo:
