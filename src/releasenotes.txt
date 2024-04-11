@@ -5,7 +5,7 @@ April XX, 2024
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
-* Fixed saving config on playtest builds
+* Fixed saving configuration on playtest builds (was writing to regular debug/release build)
 * Fixed crouching
 * Fixed being able to have a yaw viewangle outside of the range 180 < y < -180
 * Fixed "stuck shift" bug (only flip case if both capslock and shift are pressed, but not both)
@@ -13,15 +13,17 @@ BUG FIXES:
 	* This means copying, pasting, etc... is fixed!
 * Fixed dedicated fullscreen not working with ALT+ENTER toggle
 * Fixed not being able to define the Windows key
+* Fixed r_fullbright 1 with multitexturing
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality
 
 NEW FEATURES:
 * Added many features to cl_showpos:
-	* Viewangles (both refdef and current) 
+	* Viewangles (both refdef and client) 
 	* Number of entities being rendered
-	* Number of 
-* Added option to choose dedicated fullscreen to settings
+	* Number of dynamic lights being rendered
+	* Number of particles bing rendered
+* Added option to switch between borderless and dedicated fullscreen to settings
 
 OTHER ENHANCEMENTS:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
@@ -33,7 +35,7 @@ OTHER ENHANCEMENTS:
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
 * Removed v_centermove cvar (was already dead)
-* Removed viewpos command (cl_viewpos 1 far superior and duplicates functionality)
+* Removed viewpos command (cl_showpos 1 far superior and duplicates functionality)
 * Removed joystick support (code sucks, only obsolete joysticks supported, DirectInput only, non-portable, not even supported on Linux it seems?)
 	* Removed joy_name cvar
 	* Removed joy_advanced cvar
@@ -54,6 +56,12 @@ REMOVALS:
 	* Removed joy_upthreshold cvar
 	* Removed joy_upsensitivity cvar
 * Removed duplicated vector code
+* Removed cl_stats cvar (replaced with cl_showpos)
+* Removed "test" rendering code:
+	* Removed cl_testblend cvar
+	* Removed cl_testentities cvar
+	* Removed cl_testlights cvar
+	* Removed cl_testparticles cvar
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

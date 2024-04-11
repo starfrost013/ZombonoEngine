@@ -32,10 +32,6 @@ struct model_s	*gun_model;
 //=============
 
 cvar_t		*crosshair;
-cvar_t		*cl_testparticles;
-cvar_t		*cl_testentities;
-cvar_t		*cl_testlights;
-cvar_t		*cl_testblend;
 
 extern	cvar_t* vid_hudscale;
 extern	cvar_t* viewsize;
@@ -72,6 +68,7 @@ void V_ClearScene (void)
 =====================
 V_AddEntity
 
+Adds an entity.
 =====================
 */
 void V_AddEntity (entity_t *ent)
@@ -139,103 +136,6 @@ void V_AddLightStyle (int32_t style, float r, float g, float b)
 	ls->rgb[1] = g;
 	ls->rgb[2] = b;
 }
-
-/*
-================
-V_TestParticles
-
-If cl_testparticles is set, create 4096 particles in the view
-================
-*/
-void V_TestParticles (void)
-{
-	particle_t	*p;
-	int32_t 		i, j;
-	float		d, r, u;
-
-	r_numparticles = MAX_PARTICLES;
-	for (i=0 ; i<r_numparticles ; i++)
-	{
-		d = i*0.25;
-		r = 4*((i&7)-3.5);
-		u = 4*(((i>>3)&7)-3.5);
-		p = &r_particles[i];
-
-		for (j=0 ; j<3 ; j++)
-			p->origin[j] = cl.refdef.vieworg[j] + cl.v_forward[j]*d +
-			cl.v_right[j]*r + cl.v_up[j]*u;
-
-		p->color = 8;
-		p->alpha = cl_testparticles->value;
-	}
-}
-
-/*
-================
-V_TestEntities
-
-If cl_testentities is set, create 32 player models
-================
-*/
-void V_TestEntities (void)
-{
-	int32_t 		i, j;
-	float		f, r;
-	entity_t	*ent;
-
-	r_numentities = 32;
-	memset (r_entities, 0, sizeof(r_entities));
-
-	for (i=0 ; i<r_numentities ; i++)
-	{
-		ent = &r_entities[i];
-
-		r = 64 * ( (i%4) - 1.5 );
-		f = 64 * (i/4) + 128;
-
-		for (j=0 ; j<3 ; j++)
-			ent->origin[j] = cl.refdef.vieworg[j] + cl.v_forward[j]*f +
-			cl.v_right[j]*r;
-
-		ent->model = cl.baseclientinfo.model;
-		ent->skin = cl.baseclientinfo.skin;
-	}
-}
-
-/*
-================
-V_TestLights
-
-If cl_testlights is set, create 32 lights models
-================
-*/
-void V_TestLights (void)
-{
-	int32_t 		i, j;
-	float		f, r;
-	dlight_t	*dl;
-
-	r_numdlights = 32;
-	memset (r_dlights, 0, sizeof(r_dlights));
-
-	for (i=0 ; i<r_numdlights ; i++)
-	{
-		dl = &r_dlights[i];
-
-		r = 64 * ( (i%4) - 1.5 );
-		f = 64 * (i/4) + 128;
-
-		for (j=0 ; j<3 ; j++)
-			dl->origin[j] = cl.refdef.vieworg[j] + cl.v_forward[j]*f +
-			cl.v_right[j]*r;
-		dl->color[0] = ((i%6)+1) & 1;
-		dl->color[1] = (((i%6)+1) & 2)>>1;
-		dl->color[2] = (((i%6)+1) & 4)>>2;
-		dl->intensity = 200;
-	}
-}
-
-//===================================================================
 
 /*
 =================
@@ -485,20 +385,6 @@ void V_RenderView()
 		// this also calls CL_CalcViewValues which loads
 		// v_forward, etc.
 		CL_AddEntities ();
-
-		if (cl_testparticles->value)
-			V_TestParticles ();
-		if (cl_testentities->value)
-			V_TestEntities ();
-		if (cl_testlights->value)
-			V_TestLights ();
-		if (cl_testblend->value)
-		{
-			cl.refdef.blend[0] = 1;
-			cl.refdef.blend[1] = 0.5;
-			cl.refdef.blend[2] = 0.25;
-			cl.refdef.blend[3] = 0.5;
-		}
 
 		// never let it sit exactly on a node line, because a water plane can
 		// dissapear when viewed with the eye exactly on it.

@@ -1586,10 +1586,9 @@ typedef struct
 } cheatvar_t;
 
 cheatvar_t	cheatvars[] = {
-	{"timescale", "1"},
 #ifdef NDEBUG
+	{"timescale", "1"},
 	{"timedemo", "0"},
-#endif
 	{"r_drawworld", "1"},
 	{"cl_testlights", "0"},
 	{"r_fullbright", "0"},
@@ -1598,6 +1597,7 @@ cheatvar_t	cheatvars[] = {
 	{"fixedtime", "0"},
 	//{"gl_lightmap", "0"},
 	//{"gl_saturatelighting", "0"},
+#endif
 	{NULL, NULL}
 };
 
