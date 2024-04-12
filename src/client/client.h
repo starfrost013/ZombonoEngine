@@ -65,7 +65,7 @@ typedef struct
 	int32_t 		fly_stoptime;
 } centity_t;
 
-#define MAX_CLIENTWEAPONMODELS		20		// PGM -- upped from 16 to fit the chainfist vwep
+#define MAX_CLIENTWEAPONMODELS		20
 
 typedef struct
 {
@@ -324,8 +324,7 @@ void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
 
 //=============================================================================
 
-// ========
-// PGM
+
 typedef struct particle_s
 {
 	struct particle_s	*next;
@@ -344,10 +343,7 @@ typedef struct particle_s
 
 #define	PARTICLE_GRAVITY	40
 #define BLASTER_PARTICLE_COLOR		0xe0
-// PMM
 #define INSTANT_PARTICLE	-10000.0
-// PGM
-// ========
 
 void CL_ClearEffects (void);
 void CL_ClearTEnts (void);
@@ -357,11 +353,8 @@ void CL_RailTrail (vec3_t start, vec3_t end);
 void CL_BubbleTrail (vec3_t start, vec3_t end);
 void CL_FlagTrail (vec3_t start, vec3_t end, vec4_t color);
 
-// RAFAEL
 void CL_IonripperTrail (vec3_t start, vec3_t end);
 
-// ========
-// PGM
 void CL_BlasterParticles2 (vec3_t org, vec3_t dir, vec4_t color);
 void CL_BlasterTrail2 (vec3_t start, vec3_t end);
 void CL_DebugTrail (vec3_t start, vec3_t end);
@@ -513,7 +506,6 @@ void CL_FlyEffect (centity_t *ent, vec3_t origin);
 void CL_BfgParticles (entity_t *ent);
 void CL_AddParticles (void);
 void CL_EntityEvent (entity_state_t *ent);
-// RAFAEL
 void CL_TrapParticles (entity_t *ent);
 
 //

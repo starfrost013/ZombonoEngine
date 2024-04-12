@@ -55,6 +55,7 @@ typedef struct
 	vec3_t	start, end;
 } beam_t;
 beam_t		cl_beams[MAX_BEAMS];
+
 //PMM - added this for player-linked beams.  Currently only used by the plasma beam
 beam_t		cl_playerbeams[MAX_BEAMS];
 
@@ -67,16 +68,11 @@ typedef struct
 } laser_t;
 laser_t		cl_lasers[MAX_LASERS];
 
-
-//PGM
 extern void CL_TeleportParticles (vec3_t org);
-//PGM
 
 void CL_BlasterParticles (vec3_t org, vec3_t dir);
 void CL_ExplosionParticles (vec3_t org);
 void CL_BFGExplosionParticles (vec3_t org);
-// RAFAEL
-void CL_BlueBlasterParticles (vec3_t org, vec3_t dir);
 
 struct sfx_s	*cl_sfx_ric1;
 struct sfx_s	*cl_sfx_ric2;
@@ -89,7 +85,6 @@ struct sfx_s	*cl_sfx_railg;
 struct sfx_s	*cl_sfx_rockexp;
 struct sfx_s	*cl_sfx_grenexp;
 struct sfx_s	*cl_sfx_watrexp;
-// RAFAEL
 struct sfx_s	*cl_sfx_plasexp;
 struct sfx_s	*cl_sfx_footsteps[4];
 
@@ -102,7 +97,6 @@ struct model_s	*cl_mod_parasite_tip;
 struct model_s	*cl_mod_explo4;
 struct model_s	*cl_mod_bfg_explo;
 struct model_s	*cl_mod_powerscreen;
-// RAFAEL
 struct model_s	*cl_mod_plasmaexplo;
 
 /*
@@ -126,8 +120,7 @@ void CL_RegisterTEntSounds (void)
 	cl_sfx_rockexp = S_RegisterSound ("weapons/rocklx1a.wav");
 	cl_sfx_grenexp = S_RegisterSound ("weapons/grenlx1a.wav");
 	cl_sfx_watrexp = S_RegisterSound ("weapons/xpld_wat.wav");
-	// RAFAEL
-	// cl_sfx_plasexp = S_RegisterSound ("weapons/plasexpl.wav");
+
 	S_RegisterSound ("player/land1.wav");
 
 	S_RegisterSound ("player/fall2.wav");
@@ -165,8 +158,6 @@ re.RegisterModel ("models/weapons/v_shotg2/tris.md2");
 re.RegisterModel ("models/objects/gibs/bone/tris.md2");
 re.RegisterModel ("models/objects/gibs/sm_meat/tris.md2");
 re.RegisterModel ("models/objects/gibs/bone2/tris.md2");
-// RAFAEL
-// re.RegisterModel ("models/objects/blaser/tris.md2");
 
 re.RegisterPic ("w_machinegun");
 re.RegisterPic ("a_bullets");
@@ -185,10 +176,7 @@ void CL_ClearTEnts (void)
 	memset (cl_beams, 0, sizeof(cl_beams));
 	memset (cl_explosions, 0, sizeof(cl_explosions));
 	memset (cl_lasers, 0, sizeof(cl_lasers));
-
-//ROGUE
 	memset (cl_playerbeams, 0, sizeof(cl_playerbeams));
-//ROGUE
 }
 
 /*
@@ -350,7 +338,6 @@ int32_t CL_ParseBeam2 (struct model_s *model)
 	return ent;
 }
 
-// ROGUE
 /*
 =================
 CL_ParsePlayerBeam
@@ -375,7 +362,7 @@ int32_t CL_ParsePlayerBeam (struct model_s *model)
 //	Com_Printf ("end- %f %f %f\n", end[0], end[1], end[2]);
 
 // override any beam with the same entity
-// PMM - For player beams, we only want one per player (entity) so..
+// For player beams, we only want one per player (entity) so..
 	for (i=0, b=cl_playerbeams ; i< MAX_BEAMS ; i++, b++)
 	{
 		if (b->entity == ent)
@@ -407,7 +394,6 @@ int32_t CL_ParsePlayerBeam (struct model_s *model)
 	Com_Printf ("beam list overflow!\n");	
 	return ent;
 }
-//rogue
 
 /*
 =================
@@ -629,7 +615,6 @@ void CL_ParseTEnt (void)
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
 
-	// RAFAEL
 	case TE_BLUEHYPERBLASTER:
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadPos (&net_message, dir);
@@ -697,7 +682,6 @@ void CL_ParseTEnt (void)
 			S_StartSound (pos, 0, 0, cl_sfx_grenexp, 1, ATTN_NORM, 0);
 		break;
 
-	// RAFAEL
 	case TE_PLASMA_EXPLOSION:
 		MSG_ReadPos (&net_message, pos);
 		ex = CL_AllocExplosion ();
@@ -733,11 +717,11 @@ void CL_ParseTEnt (void)
 		ex->lightcolor[1] = 0.5;
 		ex->lightcolor[2] = 0.5;
 		ex->ent.angles[1] = rand() % 360;
-		ex->ent.model = cl_mod_explo4;			// PMM
+		ex->ent.model = cl_mod_explo4;
 		if (frand() < 0.5)
 			ex->baseframe = 15;
 		ex->frames = 15;
-		CL_ExplosionParticles(pos);									// PMM
+		CL_ExplosionParticles(pos);	
 		if (type == TE_ROCKET_EXPLOSION_WATER)
 			S_StartSound (pos, 0, 0, cl_sfx_watrexp, 1, ATTN_NORM, 0);
 		else
@@ -791,7 +775,6 @@ void CL_ParseTEnt (void)
 		ent = CL_ParseBeam2 (cl_mod_grapple_cable);
 		break;
 
-	// RAFAEL
 	case TE_WELDING_SPARKS:
 		cnt = MSG_ReadByte (&net_message);
 		MSG_ReadPos (&net_message, pos);
@@ -825,7 +808,6 @@ void CL_ParseTEnt (void)
 		CL_ParticleEffect2 (pos, dir, legacy_colour_df, 30);
 		break;
 
-	// RAFAEL
 	case TE_TUNNEL_SPARKS:
 		cnt = MSG_ReadByte (&net_message);
 		MSG_ReadPos (&net_message, pos);
@@ -965,7 +947,6 @@ void CL_AddPlayerBeams (void)
 	frame_t		*oldframe;
 	player_state_t	*ps, *ops;
 
-//PMM
 	if (hand)
 	{
 		if (hand->value == 2)
@@ -979,7 +960,7 @@ void CL_AddPlayerBeams (void)
 	{
 		hand_multiplier = 1;
 	}
-//PMM
+
 
 // update beams
 	for (i=0, b=cl_playerbeams ; i< MAX_BEAMS ; i++, b++)
@@ -1035,7 +1016,7 @@ void CL_AddPlayerBeams (void)
 		steps = ceil(d/model_length);
 		len = (d-model_length)/(steps-1);
 
-		// PMM - special case for lightning model .. if the real length is shorter than the model,
+		// special case for lightning model .. if the real length is shorter than the model,
 		// flip it around & draw it from the end to the start.  This prevents the model from going
 		// through the tesla mine (instead it goes through the target)
 		if (d <= model_length)
@@ -1204,7 +1185,6 @@ CL_AddTEnts
 void CL_AddTEnts (void)
 {
 	CL_AddBeams ();
-	// PMM - draw plasma beams
 	CL_AddPlayerBeams ();
 	CL_AddExplosions ();
 	CL_AddLasers ();

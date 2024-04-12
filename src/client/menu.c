@@ -2161,8 +2161,6 @@ void StartServer_MenuInit( void )
 		0
 	};
 
-//PGM
-//=======
 	char *buffer;
 	char  mapsname[1024];
 	char *s;

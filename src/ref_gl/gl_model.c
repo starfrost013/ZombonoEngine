@@ -180,7 +180,6 @@ void GL_LerpVerts( int32_t nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t 
 {
 	int32_t i;
 
-	//PMM -- added RF_SHELL_DOUBLE, RF_SHELL_HALF_DAM
 	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
 	{
 		for (i=0 ; i < nverts; i++, v++, ov++, lerp+=4 )
@@ -237,15 +236,11 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 
 	order = (int32_t *)((uint8_t *)paliashdr + paliashdr->ofs_glcmds);
 
-//	glTranslatef (frame->translate[0], frame->translate[1], frame->translate[2]);
-//	glScalef (frame->scale[0], frame->scale[1], frame->scale[2]);
-
 	if (currententity->flags & RF_TRANSLUCENT)
 		alpha = currententity->alpha;
 	else
 		alpha = 1.0;
 
-	// PMM - added double shell
 	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
 		glDisable( GL_TEXTURE_2D );
 
@@ -283,8 +278,6 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 		glEnableClientState( GL_VERTEX_ARRAY );
 		glVertexPointer( 3, GL_FLOAT, 16, s_lerped );	// padded for SIMD
 
-//		if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE ) )
-		// PMM - added double damage shell
 		if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
 		{
 			glColor4f( shadelight[0], shadelight[1], shadelight[2], alpha );
@@ -326,7 +319,6 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 				glBegin (GL_TRIANGLE_STRIP);
 			}
 
-			// PMM - added double damage shell
 			if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
 			{
 				do
@@ -413,7 +405,6 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 		}
 	}
 
-	// PMM - added double damage shell
 	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
 		glEnable( GL_TEXTURE_2D );
 }
@@ -660,10 +651,7 @@ void R_DrawAliasModel (entity_t *e)
 	paliashdr = (dmdl_t *)currentmodel->extradata;
 
 	//
-	// get lighting information
-	//
-	// PMM - rewrote, reordered to handle new shells & mixing
-	// PMM - 3.20 code .. replaced with original way of doing it to keep mod authors happy
+	// get model lighting information
 	//
 	if ( currententity->flags & ( RF_SHELL_HALF_DAM | RF_SHELL_GREEN | RF_SHELL_RED | RF_SHELL_BLUE | RF_SHELL_DOUBLE ) )
 	{

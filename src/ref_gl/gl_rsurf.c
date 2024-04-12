@@ -118,11 +118,9 @@ void DrawGLPoly (glpoly_t *p)
 	glEnd ();
 }
 
-//============
-//PGM
 /*
 ================
-DrawGLFlowingPoly -- version of DrawGLPoly that handles scrolling texture
+DrawGLFlowingPoly -- version of DrawGLPoly that handles scrolling textures
 ================
 */
 void DrawGLFlowingPoly (msurface_t *fa)
@@ -147,8 +145,6 @@ void DrawGLFlowingPoly (msurface_t *fa)
 	}
 	glEnd ();
 }
-//PGM
-//============
 
 /*
 ** R_DrawTriangleOutlines
@@ -413,14 +409,10 @@ void R_RenderBrushPoly (msurface_t *fa)
 		GL_TexEnv( GL_REPLACE );
 	}
 
-//======
-//PGM
 	if(fa->texinfo->flags & SURF_FLOWING)
 		DrawGLFlowingPoly (fa);
 	else
 		DrawGLPoly (fa->polys);
-//PGM
-//======
 
 	/*
 	** check for lightmap modification
@@ -661,8 +653,6 @@ dynamic:
 		GL_MBind( GL_TEXTURE0, image->texnum );
 		GL_MBind( GL_TEXTURE1, gl_state.lightmap_textures + lmtex );
 
-//==========
-//PGM
 		if (surf->texinfo->flags & SURF_FLOWING)
 		{
 			float scroll;
@@ -699,8 +689,7 @@ dynamic:
 				glEnd ();
 			}
 		}
-//PGM
-//==========
+
 	}
 	else
 	{
@@ -709,8 +698,6 @@ dynamic:
 		GL_MBind( GL_TEXTURE0, image->texnum );
 		GL_MBind( GL_TEXTURE1, gl_state.lightmap_textures + lmtex );
 
-//==========
-//PGM
 		if (surf->texinfo->flags & SURF_FLOWING)
 		{
 			float scroll;

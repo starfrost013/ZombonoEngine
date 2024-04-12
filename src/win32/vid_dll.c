@@ -335,16 +335,12 @@ bool VID_LoadRefresh( char *name )
 	Com_Printf( "------------------------------------\n");
 	reflib_active = true;
 
-//======
-//PGM
 	vidref_val = VIDREF_OTHER;
 	if(vid_ref)
 	{
 		if(!strcmp (vid_ref->string, "gl"))
 			vidref_val = VIDREF_GL;
 	}
-//PGM
-//======
 
 	// set up the event procs
 	re.SetKeyPressedProc(Key_Event);

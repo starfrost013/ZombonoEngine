@@ -364,12 +364,10 @@ void CL_ParseMuzzleFlash (void)
 		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/grenlf1a.wav"), 1, ATTN_NORM, 0);
 		CL_LogoutEffect (pl->current.origin, weapon);
 		break;
-	// RAFAEL
 	case MZ_PHALANX:
 		dl->color[0] = 1;dl->color[1] = 0.5; dl->color[2] = 0.5;
 		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/plasshot.wav"), volume, ATTN_NORM, 0);
 		break;
-	// RAFAEL
 	case MZ_IONRIPPER:	
 		dl->color[0] = 1;dl->color[1] = 0.5; dl->color[2] = 0.5;
 		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/rippfire.wav"), volume, ATTN_NORM, 0);
@@ -693,8 +691,6 @@ void CL_AddDLights (void)
 
 	dl = cl_dlights;
 
-//=====
-//PGM
 	if(vidref_val == VIDREF_GL)
 	{
 		for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
@@ -724,8 +720,6 @@ void CL_AddDLights (void)
 				dl->color[0], dl->color[1], dl->color[2]);
 		}
 	}
-//PGM
-//=====
 }
 
 
@@ -1609,7 +1603,6 @@ void CL_RailTrail (vec3_t start, vec3_t end)
 	}
 }
 
-// RAFAEL
 /*
 ===============
 CL_IonripperTrail
@@ -1930,7 +1923,6 @@ void CL_BfgParticles (entity_t *ent)
 CL_TrapParticles
 ===============
 */
-// RAFAEL
 void CL_TrapParticles (entity_t *ent)
 {
 	vec3_t		move;
@@ -2197,7 +2189,7 @@ void CL_AddParticles (void)
 		org[2] = p->org[2] + p->vel[2]*time + p->accel[2]*time2;
 
 		V_AddParticle (org, color, alpha);
-		// PMM
+	
 		if (p->alphavel == INSTANT_PARTICLE)
 		{
 			p->alphavel = 0.0;

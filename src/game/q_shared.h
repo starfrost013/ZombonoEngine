@@ -534,7 +534,6 @@ typedef struct
 #define	EF_TELEPORTER		0x00020000		// particle fountain
 #define EF_FLAG1			0x00040000
 #define EF_FLAG2			0x00080000
-// RAFAEL
 #define EF_IONRIPPER		0x00100000
 #define EF_GREENGIB			0x00200000
 #define	EF_BLUEHYPERBLASTER 0x00400000
@@ -564,12 +563,10 @@ typedef struct
 #define	RF_SHELL_GREEN		2048
 #define RF_SHELL_BLUE		4096
 
-//ROGUE
 #define RF_IR_VISIBLE		0x00008000		// 32768
 #define	RF_SHELL_DOUBLE		0x00010000		// 65536
 #define	RF_SHELL_HALF_DAM	0x00020000
 #define RF_USE_DISGUISE		0x00040000
-//ROGUE
 
 // player_state_t->refdef flags
 #define	RDF_UNDERWATER		1		// warp the screen as apropriate
@@ -594,7 +591,6 @@ typedef struct
 #define	MZ_SSHOTGUN			13
 #define	MZ_HYPERBLASTER		14
 #define	MZ_ITEMRESPAWN		15
-// RAFAEL
 #define MZ_IONRIPPER		16
 #define MZ_BLUEHYPERBLASTER 17
 #define MZ_PHALANX			18
@@ -952,7 +948,7 @@ typedef struct entity_state_s
 	int32_t 	modelindex2, modelindex3, modelindex4;	// weapons, CTF flags, etc
 	int32_t 	frame;
 	int32_t 	skinnum;
-	uint32_t		effects;		// PGM - we're filling it, so it needs to be unsigned
+	uint32_t	effects;		// PGM - we're filling it, so it needs to be unsigned
 	int32_t 	renderfx;
 	int32_t 	solid;			// for client side prediction, 8*(bits 0-4) is x/y radius
 							// 8*(bits 5-9) is z down distance, 8(bits10-15) is z up
@@ -1020,18 +1016,37 @@ typedef enum player_team_e
 typedef struct leaderboard_entry_s
 {
 	char			name[PLAYER_NAME_LENGTH];		// The player's name
-	int32_t 		score;			// The player's score (kills - deaths)
-	player_team		team;			// The player's team
-	int32_t 		ping;			// The user's ping
-	int32_t 		time;			// Time the player has spent in the game since they joined. 
-	bool			is_spectator;	// Is the player a spectator?
-	char			map_name[32];	// Map name
-	int32_t 		time_remaining;		// Seconds of time left in game.
+	int32_t 		score;							// The player's score (kills - deaths)
+	player_team		team;							// The player's team
+	int32_t 		ping;							// The user's ping
+	int32_t 		time;							// Time the player has spent in the game since they joined. 
+	bool			is_spectator;					// Is the player a spectator?
+	char			map_name[32];					// Map name
+	int32_t 		time_remaining;					// Seconds of time left in game.
 } leaderboard_entry_t;
 
 // Zombono Leaderboard
 typedef struct leaderboard_s
 {
-	int32_t 				num_clients;
-	leaderboard_entry_t		entries[MAX_CLIENTS];
+	int32_t 				num_clients;			// The number of clients in the leaderboard
+	leaderboard_entry_t		entries[MAX_CLIENTS];	// The leaderboard entries.
 } leaderboard_t;
+
+// Loadout system
+
+// Currently we only allow the 1-0 keys.
+// but in case we want to add more items to tbe loadout...
+#define LOADOUT_MAX_ITEMS			32
+
+// Defines a loadout entry.
+typedef struct loadout_entry_s
+{
+	char*			item_name;						// The friendly name of the item (ammo, weapon...)
+	int32_t			amount;							// The amount
+} loadout_entry_t;
+
+typedef struct loadout_s
+{
+	int				num_items;						// Number of it
+	loadout_entry_t	items[LOADOUT_MAX_ITEMS];		// The items within the loadout.
+} loadout_t;

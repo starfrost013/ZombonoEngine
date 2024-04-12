@@ -581,7 +581,6 @@ void PM_AirMove (void)
 			pml.velocity[2] = 0;
 		else
 			pml.velocity[2] -= pm->s.gravity * pml.frametime;
-// PGM
 
 		if (!pml.velocity[0] && !pml.velocity[1])
 			return;

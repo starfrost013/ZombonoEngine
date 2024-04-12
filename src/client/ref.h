@@ -40,11 +40,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SHELL_RB_COLOR		0x68
 #define SHELL_BG_COLOR		0x78
 
-//ROGUE
 #define SHELL_DOUBLE_COLOR	0xDF // 223
 #define	SHELL_HALF_DAM_COLOR	0x90
 #define SHELL_CYAN_COLOR	0x72
-//ROGUE
 
 #define SHELL_WHITE_COLOR	0xD7
 
