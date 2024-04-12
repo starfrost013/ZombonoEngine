@@ -439,7 +439,7 @@ void CL_BaseMove (usercmd_t *cmd);
 
 void Input_CenterView (void);
 
-extern double last_x_pos, last_y_pos;
+extern double last_mouse_pos_x, last_mouse_pos_y;
 
 float CL_KeyState (kbutton_t *key);
 char *Key_KeynumToString (int32_t keynum, bool shift);

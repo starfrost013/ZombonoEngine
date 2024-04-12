@@ -828,7 +828,7 @@ void Key_Init (void)
 #define MOD_CAPS_LOCK	0x10
 #define MOD_NUM_LOCK	0x20
 
-double last_x_pos = 0, last_y_pos = 0;
+double last_mouse_pos_x = 0, last_mouse_pos_y = 0;
 
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
@@ -840,18 +840,18 @@ void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods
 	// they are not contiguous numbers
 	if (button >= 4)
 	{
-		Input_Event(K_MOUSE4 + button, mods, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
+		Input_Event(K_MOUSE4 + button, mods, (action == MOUSE_PRESSED), 0, last_mouse_pos_x, last_mouse_pos_y);
 	}
 	else
 	{
-		Input_Event(K_MOUSE1 + button, mods, (action == MOUSE_PRESSED), 0, last_x_pos, last_y_pos);
+		Input_Event(K_MOUSE1 + button, mods, (action == MOUSE_PRESSED), 0, last_mouse_pos_x, last_mouse_pos_y);
 	}
 }
 
 void MouseMove_Event(void* unused, double xpos, double ypos)
 {
-	last_x_pos = xpos;
-	last_y_pos = ypos;
+	last_mouse_pos_x = xpos;
+	last_mouse_pos_y = ypos;
 }
 
 void WindowFocus_Event(void* unused, int32_t focused)

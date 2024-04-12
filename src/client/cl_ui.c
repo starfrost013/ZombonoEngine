@@ -438,7 +438,7 @@ void UI_Reset()
 
 void UI_Draw()
 {
-// playtest indicator
+// draw debug/playtest indicator
 	
 // this is NOT!! efficient don't do this (esp. getting the length of the string every frame and stuff) but not used in release 
 #if defined(PLAYTEST) || !defined(NDEBUG)
@@ -460,7 +460,7 @@ void UI_Draw()
 	Text_Draw(cl_system_font->string, viddef.width - size_x, 0, time_str);
 	const char* prerelease_text = "^3Pre-release build!";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, prerelease_text);
-	Text_Draw(cl_system_font->string, viddef.width - size_x, 10, prerelease_text);
+	Text_Draw(cl_system_font->string, viddef.width - size_x, 10 * vid_hudscale->value, prerelease_text);
 
 #endif
 
@@ -471,11 +471,17 @@ void UI_Draw()
 
 		if (current_ui->enabled)
 		{
-			
 			for (int32_t ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
 				ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
-				
+			
+				// toggle UI hover images if the mouse is within a UI
+				current_ui_control->hovered = 
+					(last_mouse_pos_x >= current_ui_control->position_x
+					&& last_mouse_pos_x <= (current_ui_control->position_x + current_ui_control->size_x)
+					&& last_mouse_pos_y >= current_ui_control->position_y
+					&& last_mouse_pos_y <= (current_ui_control->position_y + current_ui_control->size_y));
+
 				switch (current_ui_control->type)
 				{
 					case ui_control_text:
@@ -518,13 +524,15 @@ void UI_DrawImage(ui_control_t* image)
 	char* image_path = image->image_path;
 
 	if (image->focused
-		&& image->image_path_on_click != NULL)
+		&& image->image_path_on_click != NULL
+		&& strlen(image->image_path_on_click) > 0)
 	{
 		image_path = image->image_path_on_click;
 	}
 
 	if (image->hovered
-		&& image->image_path_on_hover != NULL)
+		&& image->image_path_on_hover != NULL
+		&& strlen(image->image_path_on_hover) > 0)
 	{
 		image_path = image->image_path_on_hover;
 	}

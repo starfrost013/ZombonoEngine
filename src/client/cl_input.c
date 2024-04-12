@@ -743,9 +743,9 @@ void Input_MouseMove(usercmd_t* cmd)
 	if (ui_active && !current_ui->passive)
 		return;
 
-	float new_yaw = -(m_yaw->value * (last_x_pos / window_center_x)) * sensitivity->value;
-	float new_pitch = (m_pitch->value * (last_y_pos / window_center_y)) * sensitivity->value;
-	float new_move_forward = m_forward->value * (last_y_pos / window_center_y) * sensitivity->value;
+	float new_yaw = -(m_yaw->value * (last_mouse_pos_x / window_center_x)) * sensitivity->value;
+	float new_pitch = (m_pitch->value * (last_mouse_pos_y / window_center_y)) * sensitivity->value;
+	float new_move_forward = m_forward->value * (last_mouse_pos_y / window_center_y) * sensitivity->value;
 	float new_move_side = (m_side->value / window_center_y) * sensitivity->value;
 	double mouse_pos_x = 0, mouse_pos_y = 0;
 

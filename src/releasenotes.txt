@@ -17,6 +17,7 @@ BUG FIXES:
 * Fixed leaderboard appearance at high resolutions
 * Fixed moving the camera with the leaderboard enabled
 * Fixed incorrect mouse position being used to calculate centering for window panning
+* Fixed "Pre-release build" text overlapping build and date text at large resolutions
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
@@ -40,7 +41,9 @@ OTHER ENHANCEMENTS:
 * Reduced s_mixahead value from 0.2 to 0.1 to reduce sound lag 
 * UI: Renamed UI_SetActive to UI_SetActivated
 	* Renamed the concept of UI "active" to UI activation so that it makes sense
-* UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click)
+* UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click), set with the UI_SetImageOnClick function
+* UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
+	* Added hover images for team select menu
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
