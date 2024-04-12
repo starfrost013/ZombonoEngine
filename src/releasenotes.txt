@@ -16,6 +16,7 @@ BUG FIXES:
 * Fixed r_fullbright 1 with multitexturing
 * Fixed leaderboard appearance at high resolutions
 * Fixed moving the camera with the leaderboard enabled
+* Fixed incorrect mouse position being used to calculate centering for window panning
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
@@ -71,6 +72,7 @@ REMOVALS:
 	* Removed cl_testentities cvar
 	* Removed cl_testlights cvar
 	* Removed cl_testparticles cvar
+* Removed svc_nop protocol message (was useless)
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

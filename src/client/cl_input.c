@@ -678,8 +678,9 @@ void Input_ActivateMouse(void)
 	re.EnableCursor(false);
 	mouseactive = true;
 
-	window_center_x = ((Cvar_Get("vid_xpos", "0", 0)->value) + viddef.width) / 2;
-	window_center_y = ((Cvar_Get("vid_ypos", "0", 0)->value) + viddef.height) / 2;
+	// position is relative to top-left corner of window
+	window_center_x = viddef.width / 2;
+	window_center_y = viddef.height / 2;
 }
 
 

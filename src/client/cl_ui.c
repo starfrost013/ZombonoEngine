@@ -471,6 +471,7 @@ void UI_Draw()
 
 		if (current_ui->enabled)
 		{
+			
 			for (int32_t ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
 				ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
