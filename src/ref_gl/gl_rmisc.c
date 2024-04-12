@@ -39,7 +39,7 @@ uint8_t	dottexture[8][8] =
 	{0,0,0,0,0,0,0,0},
 };
 
-uint8_t R_InitParticleTexture (void)
+void R_InitParticleTexture (void)
 {
 	int		x,y;
 	uint8_t	data[8][8][4];

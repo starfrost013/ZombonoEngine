@@ -37,8 +37,7 @@ char *svc_strings[256] =
 	"svc_leaderboard",
 	"svc_leaderboarddraw",		// Hack for TDM mode
 	"svc_drawtext",
-	
-	"svc_nop",
+
 	"svc_disconnect",
 	"svc_reconnect",
 	"svc_sound",
@@ -695,10 +694,6 @@ void CL_ParseServerMessage (void)
 		{
 		default:
 			Com_Error (ERR_DROP,"CL_ParseServerMessage: Illegible server message\n");
-			break;
-			
-		case svc_nop:
-//			Com_Printf ("svc_nop\n");
 			break;
 			
 		case svc_disconnect:

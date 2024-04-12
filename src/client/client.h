@@ -83,7 +83,6 @@ extern int32_t num_cl_weaponmodels;
 
 #define	CMD_BACKUP			64	// allow a lot of command backups for very fast systems
 
-
 //
 // the client_state_t structure is wiped completely at every
 // server map change

@@ -215,7 +215,6 @@ typedef enum svc_ops_e
 	svc_drawtext,				// <font name> <x> <y> <text>
 
 	// the rest are private to the client and server
-	svc_nop,
 	svc_disconnect,
 	svc_reconnect,
 	svc_sound,					// <see code>
