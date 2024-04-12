@@ -346,6 +346,7 @@ bool VID_LoadRefresh( char *name )
 	re.SetKeyPressedProc(Key_Event);
 	re.SetMousePressedProc(MouseClick_Event);
 	re.SetMouseMovedProc(MouseMove_Event);
+	re.SetMouseScrollProc(MouseScroll_Event);
 	re.SetWindowFocusProc(WindowFocus_Event);
 	re.SetWindowIconifyProc(WindowIconify_Event);
 	return true;

@@ -149,6 +149,6 @@ bool UI_LoadoutUICreate()
 {
 	UI_SetPassive("LoadoutUI", true);
 
-	UI_AddBox("LoadoutUI", "LoadoutUI_Background", (10 * vid_hudscale->value), 10 * vid_hudscale->value, 325 * vid_hudscale->value, 50 * vid_hudscale->value,
+	UI_AddBox("LoadoutUI", "LoadoutUI_Background", (10 * vid_hudscale->value), 30 * vid_hudscale->value, 325 * vid_hudscale->value, 50 * vid_hudscale->value,
 		127, 127, 127, 255);
 }

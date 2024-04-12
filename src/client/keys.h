@@ -233,6 +233,7 @@ extern	bool	chat_team;
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods);
 void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods);
 void MouseMove_Event(void* unused, double xpos, double ypos);
+void MouseScroll_Event(void* unused, double xoffset, double yoffset);
 void WindowFocus_Event(void* unused, int32_t focused);
 void WindowIconify_Event(void* unused, int32_t iconified);
 

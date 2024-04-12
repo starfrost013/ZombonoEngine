@@ -298,6 +298,11 @@ void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t acti
 	glfwSetMouseButtonCallback(gl_state.window, proc);
 }
 
+void	GL_SetMouseScrollProc(void proc(void* unused, double xoffset, double yoffset))
+{
+	glfwSetScrollCallback(gl_state.window, proc);
+}
+
 void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods))
 {
 	glfwSetKeyCallback(gl_state.window, proc);

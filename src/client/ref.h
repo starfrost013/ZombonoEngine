@@ -123,7 +123,7 @@ typedef struct refdef_s
 	particle_t*		particles;
 } refdef_t;
 
-#define	API_VERSION		7
+#define	API_VERSION		8
 
 //
 // these are the functions exported by the refresh module
@@ -175,9 +175,10 @@ typedef struct refexport_s
 	void	(*EndFrame) (void);
 	void	(*EndWorldRenderpass) (void); // finish world rendering, apply postprocess and switch to UI render pass
 
-	// void* here is a kludge for GLFW
+	// void* here is a kludge for GLFW's windowing ptr so we can use other windowing apis in the future
 
 	void	(*SetMousePressedProc) (void proc(void* unused, int32_t button, int32_t action, int32_t mods));
+	void	(*SetMouseScrollProc) (void proc(void* unused, double xoffset, double yoffset));
 	void	(*SetMouseMovedProc) (void proc(void* unused, double xpos, double ypos));
 	void	(*SetKeyPressedProc) (void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
 	void	(*SetWindowFocusProc) (void proc(void* unused, int32_t focused));

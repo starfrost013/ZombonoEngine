@@ -854,6 +854,23 @@ void MouseMove_Event(void* unused, double xpos, double ypos)
 	last_mouse_pos_y = ypos;
 }
 
+void MouseScroll_Event(void* unused, double xoffset, double yoffset)
+{
+	// original does not care about speed
+	// TODO: mouse speed
+	if (yoffset > 0)
+	{
+		// yes this is how it is meant to work...
+		Input_Event(K_MWHEELUP, 0, true, 0, 0, 0);
+		Input_Event(K_MWHEELUP, 0, false, 0, 0, 0);
+	}
+	else if (yoffset < 0) // do nothing if == 0
+	{
+		Input_Event(K_MWHEELDOWN, 0, true, 0, 0, 0);
+		Input_Event(K_MWHEELDOWN, 0, false, 0, 0, 0);
+	}
+}
+
 void WindowFocus_Event(void* unused, int32_t focused)
 {
 	if (!ui_active 

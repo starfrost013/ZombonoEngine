@@ -1188,6 +1188,7 @@ refexport_t GetRefAPI (refimport_t rimp )
 
 	re.SetKeyPressedProc = GL_SetKeyPressedProc;
 	re.SetMousePressedProc = GL_SetMousePressedProc;
+	re.SetMouseScrollProc = GL_SetMouseScrollProc;
 	re.SetMouseMovedProc = GL_SetMouseMovedProc;
 	re.SetWindowFocusProc = GL_SetWindowFocusProc;
 	re.SetWindowIconifyProc = GL_SetWindowIconifyProc;

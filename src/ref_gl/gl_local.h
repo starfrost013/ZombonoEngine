@@ -342,6 +342,7 @@ void	GL_TextureSolidMode( char *string );
 //
 
 void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods));
+void	GL_SetMouseScrollProc(void proc(void* unused, int32_t xoffset, int32_t yoffset));
 void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
 void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos));
 void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused));
