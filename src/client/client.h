@@ -134,9 +134,9 @@ typedef struct client_state_s
 	// transient data from server
 	//
 	char			layout[1024];		// general 2D overlay
-	leaderboard_t	leaderboard;	// ZombonoUI leaderboard
+	leaderboard_t	leaderboard;		// ZombonoUI leaderboard
 
-	int32_t 		inventory[MAX_ITEMS];
+	loadout_t		loadout;			// Current loadout
 
 	//
 	// server state information
@@ -516,12 +516,6 @@ void M_Draw (void);
 void M_Menu_Main_f (void);
 void M_ForceMenuOff (void);
 void M_AddToServerList (netadr_t adr, char *info);
-
-//
-// cl_inv.c
-//
-void CL_ParseInventory (void);
-void CL_DrawInventory (void);
 
 //
 // cl_pred.c

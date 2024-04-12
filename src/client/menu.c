@@ -599,7 +599,6 @@ char *bindnames[][2] =
 {"+moveup",			"^5Jump"},
 {"+movedown",		"^5Crouch"},
 
-{"inven",			"^5Inventory"},
 {"invuse",			"^5Use Item"},
 {"invdrop",			"^5Drop Item"},
 {"invprev",			"^5Prev Item"},
@@ -632,7 +631,6 @@ static menuaction_t		s_keys_mouse_look_action;
 static menuaction_t		s_keys_keyboard_look_action;
 static menuaction_t		s_keys_move_up_action;
 static menuaction_t		s_keys_move_down_action;
-static menuaction_t		s_keys_inventory_action;
 static menuaction_t		s_keys_inv_use_action;
 static menuaction_t		s_keys_inv_drop_action;
 static menuaction_t		s_keys_inv_prev_action;
@@ -906,14 +904,6 @@ static void Keys_MenuInit( void )
 	s_keys_move_down_action.generic.localdata[0] = ++i;
 	s_keys_move_down_action.generic.name	= bindnames[s_keys_move_down_action.generic.localdata[0]][1];
 
-	s_keys_inventory_action.generic.type	= MTYPE_ACTION;
-	s_keys_inventory_action.generic.flags  = QMF_GRAYED;
-	s_keys_inventory_action.generic.x		= 0;
-	s_keys_inventory_action.generic.y		= y += 9 * vid_hudscale->value;
-	s_keys_inventory_action.generic.ownerdraw = DrawKeyBindingFunc;
-	s_keys_inventory_action.generic.localdata[0] = ++i;
-	s_keys_inventory_action.generic.name	= bindnames[s_keys_inventory_action.generic.localdata[0]][1];
-
 	s_keys_inv_use_action.generic.type	= MTYPE_ACTION;
 	s_keys_inv_use_action.generic.flags  = QMF_GRAYED;
 	s_keys_inv_use_action.generic.x		= 0;
@@ -974,7 +964,6 @@ static void Keys_MenuInit( void )
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_move_up_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_move_down_action );
 
-	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_inventory_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_inv_use_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_inv_drop_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_inv_prev_action );

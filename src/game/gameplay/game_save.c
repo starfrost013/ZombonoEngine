@@ -189,7 +189,6 @@ void InitGame (void)
 	maxspectators = gi.cvar ("maxspectators", "4", CVAR_SERVERINFO);
 	gamemode = gi.cvar ("gamemode", "0", CVAR_SERVERINFO | CVAR_LATCH);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
-	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
 
 	// change anytime vars
 	gameflags = gi.cvar ("gameflags", "0", CVAR_SERVERINFO);
@@ -227,7 +226,7 @@ void InitGame (void)
 	Com_sprintf (game.helpmessage2, sizeof(game.helpmessage2), "");
 
 	// initialize all entities for this game
-	game.maxentities = maxentities->value;
+	game.maxentities = MAX_EDICTS;
 	g_edicts =  gi.TagMalloc (game.maxentities * sizeof(g_edicts[0]), TAG_GAME);
 	globals.edicts = g_edicts;
 	globals.max_edicts = game.maxentities;

@@ -262,7 +262,6 @@ void G_LeaderboardSend(edict_t* ent)
 
 void Cmd_Leaderboard_f(edict_t* ent)
 {
-	ent->client->showinventory = false;
 	ent->client->showhelp = false;
 
 	G_LeaderboardSend(ent);
@@ -431,8 +430,6 @@ void G_SetStats (edict_t *ent)
 
 	if (ent->client->pers.health <= 0 || level.intermissiontime)
 		ent->client->ps.stats[STAT_LAYOUTS] |= 1;
-	if (ent->client->showinventory && ent->client->pers.health > 0)
-		ent->client->ps.stats[STAT_LAYOUTS] |= 2;
 
 	//
 	// frags
@@ -490,8 +487,6 @@ void G_SetSpectatorStats (edict_t *ent)
 	cl->ps.stats[STAT_LAYOUTS] = 0;
 	if (cl->pers.health <= 0 || level.intermissiontime)
 		cl->ps.stats[STAT_LAYOUTS] |= 1;
-	if (cl->showinventory && cl->pers.health > 0)
-		cl->ps.stats[STAT_LAYOUTS] |= 2;
 
 	if (cl->chase_target && cl->chase_target->inuse)
 		cl->ps.stats[STAT_CHASE] = CS_PLAYERSKINS + 

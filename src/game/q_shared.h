@@ -1042,11 +1042,11 @@ typedef struct leaderboard_s
 typedef struct loadout_entry_s
 {
 	char*			item_name;						// The friendly name of the item (ammo, weapon...)
-	int32_t			amount;							// The amount
+	int32_t			amount;							// The amount (usually only used for the ammunition)
 } loadout_entry_t;
 
 typedef struct loadout_s
 {
-	int				num_items;						// Number of it
+	int				num_items;						// Number of items the user currently has.
 	loadout_entry_t	items[LOADOUT_MAX_ITEMS];		// The items within the loadout.
 } loadout_t;

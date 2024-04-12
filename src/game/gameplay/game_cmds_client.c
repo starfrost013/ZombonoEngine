@@ -424,36 +424,6 @@ void Cmd_Drop_f (edict_t *ent)
 
 /*
 =================
-Cmd_Inven_f
-=================
-*/
-void Cmd_Inven_f (edict_t *ent)
-{
-	int			i;
-	gclient_t	*cl;
-
-	cl = ent->client;
-
-	cl->showhelp = false;
-
-	if (cl->showinventory)
-	{
-		cl->showinventory = false;
-		return;
-	}
-
-	cl->showinventory = true;
-
-	gi.WriteByte (svc_inventory);
-	for (i=0 ; i<MAX_ITEMS ; i++)
-	{
-		gi.WriteShort (cl->pers.inventory[i]);
-	}
-	gi.unicast (ent, true);
-}
-
-/*
-=================
 Cmd_InvUse_f
 =================
 */
@@ -626,7 +596,6 @@ Cmd_PutAway_f
 void Cmd_PutAway_f (edict_t *ent)
 {
 	ent->client->showhelp = false;
-	ent->client->showinventory = false;
 }
 
 
@@ -976,11 +945,6 @@ void ClientCommand (edict_t *ent)
 	else if (!Q_stricmp(cmd, "noclip"))
 	{
 		Cmd_Noclip_f(ent);
-		return;
-	}
-	else if (!Q_stricmp(cmd, "inven"))
-	{
-		Cmd_Inven_f(ent);
 		return;
 	}
 	else if (!Q_stricmp(cmd, "invnext"))

@@ -80,6 +80,9 @@ REMOVALS:
 	* Removed cl_testlights cvar
 	* Removed cl_testparticles cvar
 * Removed svc_nop protocol message (was useless)
+* Removed F2 menu to view hotkeys (was useless)
+	* Removed "inven" command
+	* Removed svc_inventory protocol message
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

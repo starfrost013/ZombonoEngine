@@ -1517,7 +1517,6 @@ void CL_InitLocal (void)
 	// to work -- all unknown commands are automatically
 	// forwarded to the server
 	Cmd_AddCommand ("wave", NULL);
-	Cmd_AddCommand ("inven", NULL);
 	Cmd_AddCommand ("kill", NULL);
 	Cmd_AddCommand ("use", NULL);
 	Cmd_AddCommand ("drop", NULL);

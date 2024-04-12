@@ -67,8 +67,8 @@
 	extents(Vector3) : "Extents" 
 ]
 
-// Notes on the 'team' key: First of all, it creates a random respawn pattern.
 // Not sure if this works in Zombono, need to check.
+// Notes on the 'team' key: First of all, it creates a random respawn pattern.
 // Let's say that in one spot, you want to have the shotgun, Quad
 // damage and mega health item to respawn in alternance. Place all of them in approximately
 // the same location, team them and voila! The FIRST item that you place in the map will be

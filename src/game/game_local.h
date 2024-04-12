@@ -36,18 +36,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GAMEVERSION GAMENAME " v0.0.7 " __DATE__
 
 // protocol bytes that can be directly added to messages
-#define	svc_muzzleflash		1
-#define	svc_muzzleflash2	2
-#define	svc_temp_entity		3
-#define	svc_layout			4				// THIS IS GOING TO BE REMOVED FOR BEING A MESS !!!!!
-#define	svc_inventory		5
-#define svc_uidraw			6
-#define svc_uisettext		7
-#define svc_uisetimage		8
-#define svc_leaderboard		9
-#define svc_leaderboarddraw	10				// hack for tdm mode
+#define	svc_muzzleflash			1
+#define	svc_muzzleflash2		2
+#define	svc_temp_entity			3
+#define	svc_layout				4				// THIS IS GOING TO BE REMOVED FOR BEING A MESS !!!!!
+#define svc_uidraw				5
+#define svc_uisettext			6
+#define svc_uisetimage			7
+#define svc_leaderboard			8
+#define svc_leaderboarddraw		9				// hack for tdm mode
+#define svc_drawtext			10
+#define	svc_loadout				11
+#define svc_loadout_setcurrent	12	
 
-#define	svc_stufftext		15
+#define	svc_stufftext			17
 
 //==================================================================
 
@@ -559,7 +561,6 @@ extern	edict_t			*g_edicts;
 #define random()	((rand () & 0x7fff) / ((float)0x7fff))
 #define crandom()	(2.0 * (random() - 0.5))
 
-extern	cvar_t* maxentities;
 extern	cvar_t* gamemode;
 extern	cvar_t* gameflags;
 extern	cvar_t* skill;
@@ -992,7 +993,6 @@ typedef struct gclient_s
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 
-	bool		showinventory;		// set layout stat
 	bool		showhelp;
 	bool		showhelpicon;
 

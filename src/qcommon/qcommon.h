@@ -206,13 +206,14 @@ typedef enum svc_ops_e
 	svc_muzzleflash2,
 	svc_temp_entity,
 	svc_layout,					// will be removed!!!
-	svc_inventory,
 	svc_uidraw,					// <ui name>
 	svc_uisettext,				// <ui control name> <text>
 	svc_uisetimage,				// <ui control name> <image path in pics folder>
 	svc_leaderboard,			// <leaderboard_t struct>
 	svc_leaderboarddraw,		// nothing
 	svc_drawtext,				// <font name> <x> <y> <text>
+	svc_loadout,				// <loadout_t struct>
+	svc_loadout_setcurrent,		// <item id>
 
 	// the rest are private to the client and server
 	svc_disconnect,

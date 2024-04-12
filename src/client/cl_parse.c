@@ -30,13 +30,14 @@ char *svc_strings[256] =
 	"svc_muzzleflash2",
 	"svc_temp_entity",
 	"svc_layout",				// WILL BE REMOVED 
-	"svc_inventory",
 	"svc_uidraw",
 	"svc_uisettext",
 	"svc_uisetimage",
 	"svc_leaderboard",
 	"svc_leaderboarddraw",		// Hack for TDM mode
 	"svc_drawtext",
+	"svc_loadout",
+	"svc_loadout_setcurrent", 
 
 	"svc_disconnect",
 	"svc_reconnect",
@@ -766,10 +767,6 @@ void CL_ParseServerMessage (void)
 
 		case svc_frame:
 			CL_ParseFrame ();
-			break;
-
-		case svc_inventory:
-			CL_ParseInventory ();
 			break;
 
 		case svc_layout:

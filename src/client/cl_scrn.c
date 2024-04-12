@@ -1168,8 +1168,6 @@ void SCR_UpdateScreen (void)
 				SCR_DrawStats();
 				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)
 					SCR_DrawLayout();
-				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 2)
-					CL_DrawInventory();
 
 				SCR_DrawNet();
 				SCR_CheckDrawCenterString();

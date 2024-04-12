@@ -18,10 +18,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// g_combat.c
+// game_combat.c : Everything related to damage and death!
 
 #include <game_local.h>
 #include <mobs/mob_player.h>
+
+void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 
 /*
 ============
@@ -523,12 +525,6 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	//treat cheat/powerup savings the same as armor
 	asave += save;
 
-	/*
-	// team damage avoidance
-	if (!(dflags & DAMAGE_NO_PROTECTION))
-		return;
-		*/
-
 // do the damage
 	if (take)
 	{
@@ -869,9 +865,6 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 
 	self->client->resp.score--;
 }
-
-
-void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 
 void TossClientWeapon(edict_t* self)
 {

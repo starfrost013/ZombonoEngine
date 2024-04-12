@@ -24,9 +24,6 @@
     <ClCompile Include="client\cl_input.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_inv.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\cl_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>

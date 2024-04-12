@@ -31,7 +31,6 @@
     <ClCompile Include="client\cl_text.c" />
     <ClCompile Include="client\cl_fx.c" />
     <ClCompile Include="client\cl_input.c" />
-    <ClCompile Include="client\cl_inv.c" />
     <ClCompile Include="client\cl_main.c" />
     <ClCompile Include="client\cl_newfx.c" />
     <ClCompile Include="client\cl_parse.c" />
