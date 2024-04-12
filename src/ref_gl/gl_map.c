@@ -26,9 +26,8 @@ model_t	*loadmodel;
 int		modfilelen;
 
 void Mod_LoadSpriteModel (model_t *mod, void *buffer);
-void Mod_LoadBrushModel (model_t *mod, void *buffer);
+void RendererMap_Load (model_t *mod, void *buffer);
 void Mod_LoadAliasModel (model_t *mod, void *buffer);
-model_t *Mod_LoadModel (model_t *mod, bool crash);
 
 uint8_t	mod_novis[MAX_MAP_LEAFS/8];
 
@@ -257,7 +256,7 @@ model_t *Mod_ForName (char *name, bool crash)
 	
 	case ZBSP_HEADER:
 		loadmodel->extradata = Hunk_Begin (MAX_BSP_ALLOC);
-		Mod_LoadBrushModel (mod, buf);
+		RendererMap_Load (mod, buf);
 		break;
 
 	default:
@@ -288,7 +287,7 @@ uint8_t* mod_base;
 Mod_LoadLighting
 =================
 */
-void Mod_LoadLighting (lump_t *l)
+void RendererMap_LoadLighting (lump_t *l)
 {
 	if (!l->filelen)
 	{
@@ -305,7 +304,7 @@ void Mod_LoadLighting (lump_t *l)
 Mod_LoadVisibility
 =================
 */
-void Mod_LoadVisibility (lump_t *l)
+void RendererMap_LoadVisibility (lump_t *l)
 {
 	int		i;
 
@@ -331,7 +330,7 @@ void Mod_LoadVisibility (lump_t *l)
 Mod_LoadVertexes
 =================
 */
-void Mod_LoadVertexes (lump_t *l)
+void RendererMap_LoadVertexes (lump_t *l)
 {
 	dvertex_t	*in;
 	mvertex_t	*out;
@@ -378,7 +377,7 @@ float RadiusFromBounds (vec3_t mins, vec3_t maxs)
 Mod_LoadSubmodels
 =================
 */
-void Mod_LoadSubmodels (lump_t *l)
+void RendererMap_LoadSubmodels (lump_t *l)
 {
 	dmodel_t	*in;
 	mmodel_t	*out;
@@ -413,7 +412,7 @@ void Mod_LoadSubmodels (lump_t *l)
 Mod_LoadEdges
 =================
 */
-void Mod_LoadEdges (lump_t *l)
+void RendererMap_LoadEdges (lump_t *l)
 {
 	dedge_t *in;
 	medge_t *out;
@@ -440,7 +439,7 @@ void Mod_LoadEdges (lump_t *l)
 Mod_LoadTexinfo
 =================
 */
-void Mod_LoadTexinfo (lump_t *l)
+void RendererMap_LoadTexinfo (lump_t *l)
 {
 	texinfo_t *in;
 	mtexinfo_t *out, *step;
@@ -556,7 +555,7 @@ void GL_BeginBuildingLightmaps (model_t *m);
 Mod_LoadFaces
 =================
 */
-void Mod_LoadFaces (lump_t *l)
+void RendererMap_LoadFaces (lump_t *l)
 {
 	dface_t		*in;
 	msurface_t 	*out;
@@ -653,7 +652,7 @@ void Mod_SetParent (mnode_t *node, mnode_t *parent)
 Mod_LoadNodes
 =================
 */
-void Mod_LoadNodes (lump_t *l)
+void RendererMap_LoadNodes (lump_t *l)
 {
 	int32_t		i, j, count, p;
 	dnode_t		*in;
@@ -701,7 +700,7 @@ void Mod_LoadNodes (lump_t *l)
 Mod_LoadLeafs
 =================
 */
-void Mod_LoadLeafs (lump_t *l)
+void RendererMap_LoadLeafs (lump_t *l)
 {
 	dleaf_t 	*in;
 	mleaf_t 	*out;
@@ -743,7 +742,7 @@ void Mod_LoadLeafs (lump_t *l)
 Mod_LoadMarksurfaces
 =================
 */
-void Mod_LoadMarksurfaces (lump_t *l)
+void RendererMap_LoadMarksurfaces (lump_t *l)
 {	
 	uint32_t		i, j, count;
 	int		*in;
@@ -772,7 +771,7 @@ void Mod_LoadMarksurfaces (lump_t *l)
 Mod_LoadSurfedges
 =================
 */
-void Mod_LoadSurfedges (lump_t *l)
+void RendererMap_LoadSurfedges (lump_t *l)
 {	
 	int		i, count;
 	int		*in, *out;
@@ -800,7 +799,7 @@ void Mod_LoadSurfedges (lump_t *l)
 Mod_LoadPlanes
 =================
 */
-void Mod_LoadPlanes (lump_t *l)
+void RendererMap_LoadPlanes (lump_t *l)
 {
 	int			i, j;
 	cplane_t	*out;
@@ -838,7 +837,7 @@ void Mod_LoadPlanes (lump_t *l)
 Mod_LoadBrushModel
 =================
 */
-void Mod_LoadBrushModel (model_t *mod, void *buffer)
+void RendererMap_Load (model_t *mod, void *buffer)
 {
 	int			i;
 	dheader_t	*header;
@@ -862,18 +861,18 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer)
 
 // load into heap
 	
-	Mod_LoadVertexes (&header->lumps[LUMP_VERTEXES]);
-	Mod_LoadEdges (&header->lumps[LUMP_EDGES]);
-	Mod_LoadSurfedges (&header->lumps[LUMP_SURFEDGES]);
-	Mod_LoadLighting (&header->lumps[LUMP_LIGHTING]);
-	Mod_LoadPlanes (&header->lumps[LUMP_PLANES]);
-	Mod_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
-	Mod_LoadFaces (&header->lumps[LUMP_FACES]);
-	Mod_LoadMarksurfaces (&header->lumps[LUMP_LEAFFACES]);
-	Mod_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
-	Mod_LoadLeafs (&header->lumps[LUMP_LEAFS]);
-	Mod_LoadNodes (&header->lumps[LUMP_NODES]);
-	Mod_LoadSubmodels (&header->lumps[LUMP_MODELS]);
+	RendererMap_LoadVertexes (&header->lumps[LUMP_VERTEXES]);
+	RendererMap_LoadEdges (&header->lumps[LUMP_EDGES]);
+	RendererMap_LoadSurfedges (&header->lumps[LUMP_SURFEDGES]);
+	RendererMap_LoadLighting (&header->lumps[LUMP_LIGHTING]);
+	RendererMap_LoadPlanes (&header->lumps[LUMP_PLANES]);
+	RendererMap_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
+	RendererMap_LoadFaces (&header->lumps[LUMP_FACES]);
+	RendererMap_LoadMarksurfaces (&header->lumps[LUMP_LEAFFACES]);
+	RendererMap_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
+	RendererMap_LoadLeafs (&header->lumps[LUMP_LEAFS]);
+	RendererMap_LoadNodes (&header->lumps[LUMP_NODES]);
+	RendererMap_LoadSubmodels (&header->lumps[LUMP_MODELS]);
 	mod->numframes = 2;		// regular and alternate animation
 	
 //

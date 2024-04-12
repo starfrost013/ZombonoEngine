@@ -741,5 +741,11 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...);					// Draws text using font font.
 void Text_DrawChar(const char* font, int32_t x, int32_t y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
 bool Text_GetSize(const char* font, int32_t *size_x, int32_t *size_y, const char* text, ...);	// Gets the size of the text text.#
-bool Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+bool Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);					// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
 
+//
+// cl_loadout.c
+// Client parts of the loadout system
+//
+void Loadout_Parse();																			// Parses a loadout message
+void Loadout_SetCurrentItem();

@@ -1047,6 +1047,8 @@ typedef struct loadout_entry_s
 
 typedef struct loadout_s
 {
-	int				num_items;						// Number of items the user currently has.
-	loadout_entry_t	items[LOADOUT_MAX_ITEMS];		// The items within the loadout.
+	int					num_items;					// Number of items the user currently has.
+	int					current_index;				// The currently selected index. (insecure?)
+	loadout_entry_t*	current_item;				// A pointer to the current item.
+	loadout_entry_t		items[LOADOUT_MAX_ITEMS];	// The items within the loadout.
 } loadout_t;

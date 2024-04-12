@@ -27,12 +27,12 @@ void Input_ActivateMouse();
 void Input_DeactivateMouse();
 void Input_MouseMove(usercmd_t* cmd);
 
-void Input_Shutdown ();
-// oportunity for devices to stick commands on the script buffer
+void Input_Shutdown();
 
-void Input_Frame ();
+// provides an opportunity for devices to stick commands on the script buffer
+void Input_Frame();
 
-void Input_Move (usercmd_t* cmd);
+void Input_Move(usercmd_t* cmd);
 // add additional movement on top of the keyboard move cmd
 
-void Input_Activate (bool activated);
+void Input_Activate(bool activated);
