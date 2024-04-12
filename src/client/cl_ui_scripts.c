@@ -144,4 +144,7 @@ bool UI_ScoreUICreate()
 bool UI_LoadoutUICreate()
 {
 	UI_SetPassive("LoadoutUI", true);
+
+	UI_AddBox("LoadoutUI", "LoadoutUI_Background", (100 * vid_hudscale->value), (viddef.width / 1.35), (viddef.width - (100 * vid_hudscale->value)), 50 * vid_hudscale->value,
+		127, 127, 127, 255);
 }

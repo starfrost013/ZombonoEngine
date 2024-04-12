@@ -37,6 +37,9 @@ OTHER ENHANCEMENTS:
 * Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
 * Scale FOV with aspect ratio - CURRENTLY THIS FUCKS CULLING!
 * Reduced s_mixahead value from 0.2 to 0.1 to reduce sound lag 
+* UI: Renamed UI_SetActive to UI_SetActivated
+	* Renamed the concept of UI "active" to UI activation so that it makes sense
+* UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click)
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)

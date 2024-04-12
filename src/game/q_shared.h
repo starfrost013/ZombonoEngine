@@ -996,11 +996,42 @@ typedef struct
 } player_state_t;
 
 
-// ==================
-// PGM 
 #define VIDREF_GL		0
 #define VIDREF_OTHER	1
 
 extern int32_t vidref_val;
-// PGM
-// ==================
+
+// MUST BE KEPT IN SYNC WITH GAME DLL player_team ENUM!
+// Client and server version of game team enum (temp).
+typedef enum player_team_e
+{
+	team_director = 1,
+
+	team_player = 2,
+
+	team_unassigned = 4,
+
+	// Sentinel value defining the last valid team.
+	team_max = 4,
+
+} player_team;
+
+// Leaderboard system
+typedef struct leaderboard_entry_s
+{
+	char			name[PLAYER_NAME_LENGTH];		// The player's name
+	int32_t 		score;			// The player's score (kills - deaths)
+	player_team		team;			// The player's team
+	int32_t 		ping;			// The user's ping
+	int32_t 		time;			// Time the player has spent in the game since they joined. 
+	bool			is_spectator;	// Is the player a spectator?
+	char			map_name[32];	// Map name
+	int32_t 		time_remaining;		// Seconds of time left in game.
+} leaderboard_entry_t;
+
+// Zombono Leaderboard
+typedef struct leaderboard_s
+{
+	int32_t 				num_clients;
+	leaderboard_entry_t		entries[MAX_CLIENTS];
+} leaderboard_t;

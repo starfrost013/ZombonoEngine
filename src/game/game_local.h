@@ -737,19 +737,6 @@ char	*vtos (vec3_t v);
 float vectoyaw (vec3_t vec);
 void vectoangles (vec3_t vec, vec3_t angles);
 
-// Zombono Teams
-// These are flags so that certain items can be set to only work with certain teams.
-typedef enum player_team_e
-{
-	team_director = 1,				// The director team. Has access to spawning equipment.
-
-	team_player = 2,				// The player team. Doesn't have access to spawning equipment.
-
-	team_unassigned = 4,			// Used for non-team gamemodes and players that are joining.
-
-	team_max = team_unassigned,		// Sentinel value for maximum team
-} player_team;
-
 // A tiny little struct containing both teams' scores.
 typedef struct team_scores_s
 {

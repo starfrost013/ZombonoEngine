@@ -134,14 +134,14 @@ void UI_LeaderboardUIUpdate()
 		int32_t box_size_x = 8 * 11 * vid_hudscale->value; // a bit of padding
 		int32_t box_size_y = (system_font_ptr->line_height - 1) * vid_hudscale->value; // -1 because it looks weird with noen
 
-		if (leaderboard_entry.team == common_team_director)
+		if (leaderboard_entry.team == team_director)
 		{
 			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 87, 0, 127, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Director", x, y);
 			director_score += leaderboard_entry.score;
 
 		}
-		else if (leaderboard_entry.team == common_team_player)
+		else if (leaderboard_entry.team == team_player)
 		{
 			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 219, 87, 0, 255);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Player", x, y);

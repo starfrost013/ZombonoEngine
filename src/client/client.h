@@ -83,24 +83,6 @@ extern int32_t num_cl_weaponmodels;
 
 #define	CMD_BACKUP			64	// allow a lot of command backups for very fast systems
 
-typedef struct leaderboard_entry_s
-{
-	char			name[PLAYER_NAME_LENGTH];		// The player's name
-	int32_t 		score;			// The player's score (kills - deaths)
-	common_team		team;			// The player's team
-	int32_t 		ping;			// The user's ping
-	int32_t 		time;			// Time the player has spent in the game since they joined. 
-	bool			is_spectator;	// Is the player a spectator?
-	char			map_name[32];	// Map name
-	int32_t 		time_remaining;		// Seconds of time left in game.
-} leaderboard_entry_t;
-
-// Zombono Leaderboard
-typedef struct leaderboard_s
-{
-	int32_t 				num_clients;
-	leaderboard_entry_t		entries[MAX_CLIENTS];
-} leaderboard_t;
 
 //
 // the client_state_t structure is wiped completely at every
@@ -266,6 +248,7 @@ extern	cvar_t* cl_predict;
 extern	cvar_t* cl_footsteps;
 extern	cvar_t* cl_noskins;
 extern	cvar_t* cl_autoskins;
+extern  cvar_t* cl_modernmenu;
 
 extern	cvar_t* cl_upspeed;
 extern	cvar_t* cl_forwardspeed;
@@ -774,3 +757,4 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...);		
 void Text_DrawChar(const char* font, int32_t x, int32_t y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
 bool Text_GetSize(const char* font, int32_t *size_x, int32_t *size_y, const char* text, ...);	// Gets the size of the text text.#
 bool Text_GetSizeChar(const char* font, int* size_x, int* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
+
