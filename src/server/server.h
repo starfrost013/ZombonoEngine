@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -150,7 +151,7 @@ typedef struct client_s
 
 typedef struct
 {
-	netadr_t	adr;
+	netadr_t		adr;
 	int32_t 		challenge;
 	int32_t 		time;
 } challenge_t;
@@ -213,17 +214,12 @@ int32_t SV_ModelIndex (char *name);
 int32_t SV_SoundIndex (char *name);
 int32_t SV_ImageIndex (char *name);
 
-void SV_WriteClientdataToMessage (client_t *client, sizebuf_t *msg);
-
 void SV_ExecuteUserCommand (char *s, bool no_console);
 void SV_InitOperatorCommands (void);
 
-void SV_SendServerinfo (client_t *client);
 void SV_UserinfoChanged (client_t *cl);
 
-
 void Master_Heartbeat (void);
-void Master_Packet (void);
 
 //
 // sv_init.c
@@ -277,9 +273,6 @@ void SV_WriteFrameToClient (client_t *client, sizebuf_t *msg);
 void SV_RecordDemoMessage (void);
 void SV_BuildClientFrame (client_t *client);
 
-
-void SV_Error (char *error, ...);
-
 //
 // sv_game.c
 //
@@ -287,9 +280,6 @@ extern	game_export_t	*ge;
 
 void SV_InitGameProgs (void);
 void SV_ShutdownGameProgs (void);
-void SV_InitEdict (edict_t *e);
-
-
 
 //============================================================
 

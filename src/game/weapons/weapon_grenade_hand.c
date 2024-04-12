@@ -1,4 +1,3 @@
-
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2023-2024 starfrost

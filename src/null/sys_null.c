@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // sys_null.h -- null system driver to aid porting efforts
 
-#include "../qcommon/qcommon.h"
+#include <qcommon/qcommon.h>
 #include "errno.h"
 
 int	curtime;

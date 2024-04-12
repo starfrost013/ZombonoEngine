@@ -83,6 +83,8 @@ REMOVALS:
 * Removed F2 menu to view hotkeys (was useless)
 	* Removed "inven" command
 	* Removed svc_inventory protocol message
+* Removed maxentities cvar (ignored by client and server)
+	* game->maxentities is now set to MAX_EDICTS
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024
