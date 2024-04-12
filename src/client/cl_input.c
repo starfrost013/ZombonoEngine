@@ -79,10 +79,10 @@ The window may have been destroyed and recreated
 between a deactivate and an activate.
 ===========
 */
-void Input_Activate(bool active)
+void Input_Activate(bool activated)
 {
-	in_appactive = active;
-	mouseactive = !active;		// force a new window check or turn off
+	in_appactive = activated;
+	mouseactive = !activated;		// force a new window check or turn off
 }
 
 /*

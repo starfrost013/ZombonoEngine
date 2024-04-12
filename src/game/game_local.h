@@ -721,7 +721,7 @@ void	G_FreeEdict (edict_t *e);
 void	G_TouchTriggers (edict_t *ent);
 void	G_TouchSolids (edict_t *ent);
 
-void	G_UISend (edict_t *ent, char* ui_name, bool enabled, bool active, bool reliable);
+void	G_UISend (edict_t *ent, char* ui_name, bool enabled, bool activated, bool reliable);
 void	G_UISetText(edict_t* ent, char* ui_name, char* control_name, char* text, bool reliable);
 void	G_UISetImage(edict_t* ent, char* ui_name, char* control_name, char* image_path, bool reliable);
 

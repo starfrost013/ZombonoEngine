@@ -59,7 +59,7 @@ void UI_LeaderboardUIEnable(int32_t btn)
 		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
 
 		UI_SetEnabled("LeaderboardUI", true);
-		UI_SetActive("LeaderboardUI", true);
+		UI_SetActivated("LeaderboardUI", true);
 	}
 }
 
@@ -77,7 +77,7 @@ void UI_LeaderboardUIDisable(int32_t btn)
 		ui_t* leaderboard_ui_ptr = UI_GetUI("LeaderboardUI");
 
 		UI_SetEnabled("LeaderboardUI", false);
-		UI_SetActive("LeaderboardUI", false);
+		UI_SetActivated("LeaderboardUI", false);
 	}
 }
 

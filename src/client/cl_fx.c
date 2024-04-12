@@ -2151,9 +2151,9 @@ void CL_AddParticles (void)
 	float			time = 0, time2;
 	vec3_t			org;
 	int32_t 			color;
-	cparticle_t		*active, *tail;
+	cparticle_t		*activated, *tail;
 
-	active = NULL;
+	activated = NULL;
 	tail = NULL;
 
 	for (p=active_particles ; p ; p=next)
@@ -2179,7 +2179,7 @@ void CL_AddParticles (void)
 
 		p->next = NULL;
 		if (!tail)
-			active = tail = p;
+			activated = tail = p;
 		else
 		{
 			tail->next = p;
@@ -2205,7 +2205,7 @@ void CL_AddParticles (void)
 		}
 	}
 
-	active_particles = active;
+	active_particles = activated;
 }
 
 

@@ -588,8 +588,9 @@ typedef struct ui_control_s
 	int32_t 		size_x;									// UI control size (x-component).
 	int32_t 		size_y;									// UI control size (y-component).
 	char			name[MAX_UI_STR_LENGTH];				// UI control name (for code)
-	bool			visible;								// Is this control visible?
-	bool			focused;								// Is this control focused?
+	bool			visible;								// Is this UI control visible?
+	bool			focused;								// Is this UI control focused?
+	bool			hovered;								// Is the mouse hovering over this UI control?
 
 	// text
 	char			text[MAX_UI_STR_LENGTH];				// Text UI control: Text to display.
@@ -617,7 +618,7 @@ typedef struct ui_s
 	char			name[MAX_UI_STR_LENGTH];	// UI name.			
 	bool			(*on_create)();				// UI Create function for client
 	bool			enabled;					// True if the UI is currently being drawn.
-	bool			active;						// True if the UI is currently interactable.
+	bool			activated;					// True if the UI is currently interactable.
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
@@ -640,7 +641,7 @@ bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y
 
 // UI: Toggle
 bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to enabled (visible).
-bool UI_SetActive(char* name, bool active);																	// Sets a UI to active (tangible).
+bool UI_SetActivated(char* name, bool activated);																	// Sets a UI to active (tangible).
 bool UI_SetPassive(char* name, bool passive);																// Sets a UI to passive (does not capture the mouse).
 
 // UI: Update

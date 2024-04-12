@@ -372,4 +372,4 @@ void		GL_BeginFrame();
 void		GL_EndFrame( void );
 void		GL_Shutdown( void );
 int32_t     	GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
-void		GLimp_AppActivate( bool active );
+void		GLimp_AppActivate( bool activated );

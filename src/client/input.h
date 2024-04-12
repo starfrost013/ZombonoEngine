@@ -35,4 +35,4 @@ void Input_Frame ();
 void Input_Move (usercmd_t* cmd);
 // add additional movement on top of the keyboard move cmd
 
-void Input_Activate (bool active);
+void Input_Activate (bool activated);

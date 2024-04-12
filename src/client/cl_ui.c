@@ -285,20 +285,20 @@ bool UI_SetEnabled(char* ui_name, bool enabled)
 	return false;
 }
 
-bool UI_SetActive(char* ui_name, bool active)
+bool UI_SetActivated(char* ui_name, bool activated)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
 	if (ui_ptr != NULL)
 	{
-		ui_ptr->active = active;
-		ui_active = active;
+		ui_ptr->activated = activated;
+		ui_active = activated;
 
 		// if the UI requires the mouse....
 		if (!ui_ptr->passive)
 		{
 			// turn on the mouse cursor, bit hacky - we basically take over the mouse pointer when a UI is active
-			Input_Activate(!active);
+			Input_Activate(!activated);
 		}
 
 		current_ui = ui_ptr;
@@ -432,7 +432,7 @@ void UI_Reset()
 		ui_t* ui_ptr = &ui_list[ui_num];
 
 		UI_SetEnabled(ui_ptr->name, false);
-		UI_SetActive(ui_ptr->name, false);
+		UI_SetActivated(ui_ptr->name, false);
 	}
 }
 
@@ -514,7 +514,21 @@ void UI_DrawText(ui_control_t* text)
 
 void UI_DrawImage(ui_control_t* image)
 {
-	re.DrawPic(image->position_x, image->position_y, image->image_path);
+	char* image_path = image->image_path;
+
+	if (image->focused
+		&& image->image_path_on_click != NULL)
+	{
+		image_path = image->image_path_on_click;
+	}
+
+	if (image->hovered
+		&& image->image_path_on_hover != NULL)
+	{
+		image_path = image->image_path_on_hover;
+	}
+
+	re.DrawPic(image->position_x, image->position_y, image_path);
 }
 
 void UI_DrawSlider(ui_control_t* slider)

@@ -646,12 +646,12 @@ ZombonoUI
 */
 
 // Sends a UI. ent NULL = multicast
-void G_UISend(edict_t* ent, char* ui_name, bool enabled, bool active, bool reliable)
+void G_UISend(edict_t* ent, char* ui_name, bool enabled, bool activated, bool reliable)
 {
 	gi.WriteByte(svc_uidraw);
 	gi.WriteString(ui_name);
 	gi.WriteByte(enabled);
-	gi.WriteByte(active);
+	gi.WriteByte(activated);
 
 	if (ent == NULL)
 	{

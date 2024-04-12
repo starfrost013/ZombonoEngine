@@ -46,7 +46,7 @@ void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 	if (current_ui == NULL) return;
 	if (strncmp(current_ui->name, "TeamUI", 6)) return;
 
-	UI_SetActive("TeamUI", false);
+	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
 	MSG_WriteString(&cls.netchan.message, "setteam 1");
@@ -57,7 +57,7 @@ void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 	if (current_ui == NULL) return;
 	if (strncmp(current_ui->name, "TeamUI", 6)) return;
 
-	UI_SetActive("TeamUI", false);
+	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
 	MSG_WriteString(&cls.netchan.message, "setteam 2");

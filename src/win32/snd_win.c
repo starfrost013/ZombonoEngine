@@ -840,9 +840,9 @@ The window have been destroyed and recreated
 between a deactivate and an activate.
 ===========
 */
-void S_Activate (bool active)
+void S_Activate (bool activated)
 {
-	if ( active )
+	if ( activated )
 	{
 		if ( pDS && cl_hwnd && snd_isdirect )
 		{

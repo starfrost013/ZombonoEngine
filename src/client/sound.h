@@ -32,7 +32,7 @@ void S_StartLocalSound (char *s);
 void S_StopAllSounds(void);
 void S_Update (vec3_t origin, vec3_t v_forward, vec3_t v_right, vec3_t v_up);
 
-void S_Activate (bool active);
+void S_Activate (bool activated);
 
 void S_BeginRegistration (void);
 struct sfx_s *S_RegisterSound (char *sample);

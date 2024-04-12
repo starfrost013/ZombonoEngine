@@ -801,10 +801,10 @@ void CL_ParseServerMessage (void)
 			// Active can only be changed from UI script
 
 			bool enabled = (bool)MSG_ReadByte(&net_message);
-			bool active = (bool)MSG_ReadByte(&net_message);
+			bool activated = (bool)MSG_ReadByte(&net_message);
 
 			UI_SetEnabled(s, enabled);
-			UI_SetActive(s, active);
+			UI_SetActivated(s, activated);
 			break;
 
 		case svc_uisettext:
