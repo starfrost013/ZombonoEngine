@@ -136,7 +136,8 @@ typedef struct client_state_s
 	char			layout[1024];		// general 2D overlay
 	leaderboard_t	leaderboard;		// ZombonoUI leaderboard
 
-	loadout_t		loadout;			// Current loadout
+	// NULL indicates dead entries
+	loadout_t		loadout;	// Current loadout
 
 	//
 	// server state information

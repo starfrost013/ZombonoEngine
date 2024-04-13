@@ -256,6 +256,10 @@ bool GL_Init (void)
 */
 void GL_BeginFrame()
 {
+	if (gl_state.window == NULL)
+	{
+		return;
+	}
 
 	if ( gl_bitdepth->modified )
 	{

@@ -32,6 +32,8 @@ NEW FEATURES:
 	* Number of particles bing rendered
 * Added option to switch between borderless and dedicated fullscreen to settings
 * Added lighting to z_tdm_warehouse 
+* Added a 50-health medpack (item_health_super) - complements the 2-health (item_health_small), 10-health/stimpack (item_health), 25-health (item_health_large) and 100-health (item_health_mega) entities.
+	* Still uses Q2 assets...
 * Texture fixes in z_tdm_subway
 * Renderer API version 8:
 	* Added SetMouseScrollProc

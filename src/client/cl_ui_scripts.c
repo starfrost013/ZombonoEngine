@@ -37,8 +37,8 @@ bool UI_TeamUICreate()
 	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director_hover");
 	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "pics/ui/teamui_btn_player_hover");
 
-	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7. Moves slower.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value));
-	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Moves faster.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value));
+	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7 creatures. Slow running speed.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value));
+	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Fast running speed.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value));
 
 	UI_SetEventOnClickDown("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
 	UI_SetEventOnClickDown("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);

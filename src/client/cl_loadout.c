@@ -25,10 +25,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void Loadout_Parse()
 {
+	int32_t num_items = MSG_ReadByte(&net_message);
 
+	if (num_items < 0
+		|| num_items > LOADOUT_MAX_ITEMS)
+	{
+		Com_Error(ERR_DROP, "Invalid number of items provided in an svc_loadout message");
+		return;
+	}
+
+	for (int32_t item_num = 0; item_num < num_items; item_num++)
+	{
+		strncpy(&cl.loadout.items[item_num].item_name, MSG_ReadString(&net_message), LOADOUT_MAX_STRLEN);
+		cl.loadout.items[item_num].amount = MSG_ReadLong(&net_message);
+	}
 }
 
 void Loadout_SetCurrent(int32_t index)
 {
-
+	cl.loadout.current_index = index;
 }

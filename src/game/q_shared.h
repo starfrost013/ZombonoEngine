@@ -1037,11 +1037,12 @@ typedef struct leaderboard_s
 // Currently we only allow the 1-0 keys.
 // but in case we want to add more items to tbe loadout...
 #define LOADOUT_MAX_ITEMS			32
+#define LOADOUT_MAX_STRLEN		48
 
 // Defines a loadout entry.
 typedef struct loadout_entry_s
 {
-	char*			item_name;						// The friendly name of the item (ammo, weapon...)
+	char			item_name[LOADOUT_MAX_STRLEN];// The friendly name of the item (ammo, weapon...)
 	int32_t			amount;							// The amount (usually only used for the ammunition)
 } loadout_entry_t;
 
