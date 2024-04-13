@@ -476,7 +476,7 @@ void SV_ConnectionlessPacket (void)
 	char	*c;
 
 	MSG_BeginReading (&net_message);
-	MSG_ReadLong (&net_message);		// skip the -1 marker
+	MSG_ReadInt (&net_message);		// skip the -1 marker
 
 	s = MSG_ReadStringLine (&net_message);
 
@@ -598,8 +598,8 @@ void SV_ReadPackets (void)
 		// read the qport out of the message so we can fix up
 		// stupid address translating routers
 		MSG_BeginReading (&net_message);
-		MSG_ReadLong (&net_message);		// sequence number
-		MSG_ReadLong (&net_message);		// sequence number
+		MSG_ReadInt (&net_message);		// sequence number
+		MSG_ReadInt (&net_message);		// sequence number
 		qport = MSG_ReadShort (&net_message) & 0xffff;
 
 		// check for packets from connected clients

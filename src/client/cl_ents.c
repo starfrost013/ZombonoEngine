@@ -111,21 +111,21 @@ void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int32_t number, in
 		to->frame = MSG_ReadShort (&net_message);
 
 	if ((bits & U_SKIN8) && (bits & U_SKIN16))		//used for laser colors
-		to->skinnum = MSG_ReadLong(&net_message);
+		to->skinnum = MSG_ReadInt(&net_message);
 	else if (bits & U_SKIN8)
 		to->skinnum = MSG_ReadByte(&net_message);
 	else if (bits & U_SKIN16)
 		to->skinnum = MSG_ReadShort(&net_message);
 
 	if ( (bits & (U_EFFECTS8|U_EFFECTS16)) == (U_EFFECTS8|U_EFFECTS16) )
-		to->effects = MSG_ReadLong(&net_message);
+		to->effects = MSG_ReadInt(&net_message);
 	else if (bits & U_EFFECTS8)
 		to->effects = MSG_ReadByte(&net_message);
 	else if (bits & U_EFFECTS16)
 		to->effects = MSG_ReadShort(&net_message);
 
 	if ( (bits & (U_RENDERFX8|U_RENDERFX16)) == (U_RENDERFX8|U_RENDERFX16) )
-		to->renderfx = MSG_ReadLong(&net_message);
+		to->renderfx = MSG_ReadInt(&net_message);
 	else if (bits & U_RENDERFX8)
 		to->renderfx = MSG_ReadByte(&net_message);
 	else if (bits & U_RENDERFX16)
@@ -467,7 +467,7 @@ void CL_ParsePlayerstate (frame_t *oldframe, frame_t *newframe)
 		state->rdflags = MSG_ReadByte (&net_message);
 
 	// parse stats
-	statbits = MSG_ReadLong (&net_message);
+	statbits = MSG_ReadInt (&net_message);
 	for (i=0 ; i<MAX_STATS ; i++)
 		if (statbits & (1<<i) )
 			state->stats[i] = MSG_ReadShort(&net_message);
@@ -512,8 +512,8 @@ void CL_ParseFrame (void)
 
 	memset (&cl.frame, 0, sizeof(cl.frame));
 
-	cl.frame.serverframe = MSG_ReadLong (&net_message);
-	cl.frame.deltaframe = MSG_ReadLong (&net_message);
+	cl.frame.serverframe = MSG_ReadInt (&net_message);
+	cl.frame.deltaframe = MSG_ReadInt (&net_message);
 	cl.frame.servertime = cl.frame.serverframe*100;
 
 	if (cl_shownet->value == 3)

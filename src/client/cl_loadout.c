@@ -37,7 +37,7 @@ void Loadout_Parse()
 	for (int32_t item_num = 0; item_num < num_items; item_num++)
 	{
 		strncpy(&cl.loadout.items[item_num].item_name, MSG_ReadString(&net_message), LOADOUT_MAX_STRLEN);
-		cl.loadout.items[item_num].amount = MSG_ReadLong(&net_message);
+		cl.loadout.items[item_num].amount = MSG_ReadInt(&net_message);
 	}
 }
 

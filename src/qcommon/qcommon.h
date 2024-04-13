@@ -109,7 +109,7 @@ void	MSG_BeginReading (sizebuf_t *sb);
 int32_t MSG_ReadChar (sizebuf_t *sb);
 int32_t MSG_ReadByte (sizebuf_t *sb);
 int32_t MSG_ReadShort (sizebuf_t *sb);
-int32_t MSG_ReadLong (sizebuf_t *sb);
+int32_t MSG_ReadInt (sizebuf_t *sb);
 float	MSG_ReadFloat (sizebuf_t *sb);
 char*	MSG_ReadString (sizebuf_t *sb);
 char*	MSG_ReadStringLine (sizebuf_t *sb);

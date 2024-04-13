@@ -729,7 +729,7 @@ int32_t MSG_ReadShort (sizebuf_t *msg_read)
 	return c;
 }
 
-int32_t MSG_ReadLong (sizebuf_t *msg_read)
+int32_t MSG_ReadInt (sizebuf_t *msg_read)
 {
 	int32_t c;
 	

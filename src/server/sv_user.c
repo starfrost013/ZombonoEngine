@@ -595,7 +595,7 @@ void SV_ExecuteClientMessage (client_t *cl)
 			move_issued = true;
 			checksumIndex = net_message.readcount;
 			checksum = MSG_ReadByte (&net_message);
-			lastframe = MSG_ReadLong (&net_message);
+			lastframe = MSG_ReadInt (&net_message);
 			if (lastframe != cl->lastframe) {
 				cl->lastframe = lastframe;
 				if (cl->lastframe > 0) {

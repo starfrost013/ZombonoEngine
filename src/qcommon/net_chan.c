@@ -302,8 +302,8 @@ bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
 
 // get sequence numbers		
 	MSG_BeginReading (msg);
-	sequence = MSG_ReadLong (msg);
-	sequence_ack = MSG_ReadLong (msg);
+	sequence = MSG_ReadInt (msg);
+	sequence_ack = MSG_ReadInt (msg);
 
 	// read the qport if we are a server
 	if (chan->sock == NS_SERVER)
