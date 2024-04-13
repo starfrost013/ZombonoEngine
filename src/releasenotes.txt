@@ -53,6 +53,8 @@ OTHER ENHANCEMENTS AND CHANGES:
 * UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click), set with the UI_SetImageOnClick function
 * UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
 	* Added hover images for team select menu
+* Renamed MSG_ReadLong and MSG_WriteLong to MSG_ReadInt and MSG_WriteInt
+* Made the healthbar numbers slightly brighter
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
