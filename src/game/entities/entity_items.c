@@ -1980,6 +1980,21 @@ void SP_item_health_large (edict_t *self)
 	gi.soundindex ("items/l_health.wav");
 }
 
+// 50 health pack
+void SP_item_health_super(edict_t* self)
+{
+	if (((int32_t)gameflags->value & GF_NO_HEALTH))
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	self->model = "models/items/healing/large/tris.md2";
+	self->count = 50;
+	SpawnItem(self, FindItem("Health"));
+	gi.soundindex("items/m_health.wav");
+}
+
 /*QUAKED item_health_mega (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 void SP_item_health_mega (edict_t *self)

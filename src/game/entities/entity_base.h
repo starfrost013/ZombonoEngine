@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 void SP_item_health(edict_t* self);
 void SP_item_health_small(edict_t* self);
 void SP_item_health_large(edict_t* self);
+void SP_item_health_super(edict_t* self);
 void SP_item_health_mega(edict_t* self);
 
 void SP_info_player_start(edict_t* ent);

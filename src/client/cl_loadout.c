@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2018-2019 Krzysztof Kondrak
 Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
@@ -18,12 +19,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+#include "client.h"
 
-// If we need it anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+// cl_loadout.c: Loadout system (April 12, 2024)
 
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 0
-#define ZOMBONO_VERSION_REVISION 7
-#define ZOMBONO_VERSION_BUILD 229
+void Loadout_Parse()
+{
+
+}
+
+void Loadout_SetCurrent(int32_t index)
+{
+
+}

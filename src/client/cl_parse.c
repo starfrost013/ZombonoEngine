@@ -782,6 +782,13 @@ void CL_ParseServerMessage (void)
 			UI_LeaderboardUIEnable(K_TAB);
 			break;
 
+		case svc_loadout:
+			Loadout_Parse();
+			break;
+
+		case svc_loadout_setcurrent:
+			Loadout_SetCurrent();
+			break;
 		case svc_playerinfo:
 		case svc_packetentities:
 		case svc_deltapacketentities:

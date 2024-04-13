@@ -32,6 +32,7 @@ spawn_t	spawns[] = {
 	{"item_health", SP_item_health},
 	{"item_health_small", SP_item_health_small},
 	{"item_health_large", SP_item_health_large},
+	{"item_health_super", SP_item_health_super},
 	{"item_health_mega", SP_item_health_mega},
 
 	{"info_player_start", SP_info_player_start},
