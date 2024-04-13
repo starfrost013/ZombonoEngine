@@ -1,7 +1,23 @@
 Zombono
 Release Notes
 Version 0.0.7
-April XX, 2024
+April 20, 2024
+
+NEW FEATURES:
+* Renamed cl_showpos to cl_showinfo:
+	* Viewangles (both refdef and client) 
+	* Number of entities being rendered
+	* Number of dynamic lights being rendered
+	* Number of particles bing rendered
+* Added option to switch between borderless and dedicated fullscreen to settings
+* Added lighting to z_tdm_warehouse 
+* Added a 50-health medpack (item_health_super) - complements the 2-health (item_health_small), 10-health/stimpack (item_health), 25-health (item_health_large) and 100-health (item_health_mega) entities.
+	* Still uses Q2 assets...
+* Texture fixes in z_tdm_subway
+* Renderer API version 8:
+	* Added SetMouseScrollProc!
+* Game API versino 7:
+	* Renamed WriteLong to WriteInt
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
@@ -24,21 +40,8 @@ BUG FIXES:
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
-NEW FEATURES:
-* Renamed cl_showpos to cl_showinfo:
-	* Viewangles (both refdef and client) 
-	* Number of entities being rendered
-	* Number of dynamic lights being rendered
-	* Number of particles bing rendered
-* Added option to switch between borderless and dedicated fullscreen to settings
-* Added lighting to z_tdm_warehouse 
-* Added a 50-health medpack (item_health_super) - complements the 2-health (item_health_small), 10-health/stimpack (item_health), 25-health (item_health_large) and 100-health (item_health_mega) entities.
-	* Still uses Q2 assets...
-* Texture fixes in z_tdm_subway
-* Renderer API version 8:
-	* Added SetMouseScrollProc
 
-OTHER ENHANCEMENTS:
+OTHER ENHANCEMENTS AND CHANGES:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
 * Renamed in_ cvars to input_ and same for functions
 * Made input shift code slightly less insane

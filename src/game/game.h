@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // game.h -- game dll information visible to server
 
-#define	GAME_API_VERSION	6
+#define	GAME_API_VERSION	7
 
 // edict->svflags
 
@@ -148,7 +148,7 @@ typedef struct game_import_s
 	void	(*WriteChar) (int32_t c);
 	void	(*WriteByte) (int32_t c);
 	void	(*WriteShort) (int32_t c);
-	void	(*WriteLong) (int32_t c);
+	void	(*WriteInt) (int32_t c);
 	void	(*WriteFloat) (float f);
 	void	(*WriteString) (char *s);
 	void	(*WritePosition) (vec3_t pos);	// some fractional bits

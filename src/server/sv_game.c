@@ -229,7 +229,7 @@ void PF_Configstring (int32_t index, char *val)
 void PF_WriteChar (int32_t c) {MSG_WriteChar (&sv.multicast, c);}
 void PF_WriteByte (int32_t c) {MSG_WriteByte (&sv.multicast, c);}
 void PF_WriteShort (int32_t c) {MSG_WriteShort (&sv.multicast, c);}
-void PF_WriteLong (int32_t c) {MSG_WriteInt (&sv.multicast, c);}
+void PF_WriteInt (int32_t c) {MSG_WriteInt (&sv.multicast, c);}
 void PF_WriteFloat (float f) {MSG_WriteFloat (&sv.multicast, f);}
 void PF_WriteString (char *s) {MSG_WriteString (&sv.multicast, s);}
 void PF_WritePos (vec3_t pos) {MSG_WritePos (&sv.multicast, pos);}
@@ -372,7 +372,7 @@ void SV_InitGameProgs (void)
 	import.WriteChar = PF_WriteChar;
 	import.WriteByte = PF_WriteByte;
 	import.WriteShort = PF_WriteShort;
-	import.WriteLong = PF_WriteLong;
+	import.WriteInt = PF_WriteInt;
 	import.WriteFloat = PF_WriteFloat;
 	import.WriteString = PF_WriteString;
 	import.WritePosition = PF_WritePos;
