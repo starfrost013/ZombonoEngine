@@ -46,10 +46,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_leaderboard			8
 #define svc_leaderboarddraw		9				// hack for tdm mode
 #define svc_drawtext			10
-#define	svc_loadout				11
-#define svc_loadout_setcurrent	12	
+#define	svc_loadout_add			11
+#define svc_loadout_remove		12
+#define svc_loadout_update		13
+#define svc_loadout_setcurrent	14	
 
-#define	svc_stufftext			17
+#define	svc_stufftext			18
 
 //==================================================================
 

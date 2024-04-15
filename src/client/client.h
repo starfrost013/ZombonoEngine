@@ -748,5 +748,7 @@ bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char t
 // cl_loadout.c
 // Client parts of the loadout system
 //
-void Loadout_Parse();																			// Parses a loadout message
-void Loadout_SetCurrentItem(int32_t index);
+void Loadout_Add();																				// Parses a loadout add message
+void Loadout_Remove();																			// Parses a loadout update message and removes the most recently added element.
+void Loadout_Update();																			// Parses a loadout remove message
+void Loadout_SetCurrent(int32_t index);														// Parses a loadout set current message

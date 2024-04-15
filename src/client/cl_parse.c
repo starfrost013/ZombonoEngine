@@ -36,7 +36,8 @@ char *svc_strings[256] =
 	"svc_leaderboard",
 	"svc_leaderboarddraw",		// Hack for TDM mode
 	"svc_drawtext",
-	"svc_loadout",
+	"svc_loadout_add",
+	"svc_loadout_remove",
 	"svc_loadout_setcurrent", 
 
 	"svc_disconnect",
@@ -782,13 +783,22 @@ void CL_ParseServerMessage (void)
 			UI_LeaderboardUIEnable(K_TAB);
 			break;
 
-		case svc_loadout:
-			Loadout_Parse();
+		case svc_loadout_add:
+			Loadout_Add();
+			break;
+
+		case svc_loadout_remove:
+			Loadout_Remove();
+			break;
+
+		case svc_loadout_update:
+			Loadout_Update();
 			break;
 
 		case svc_loadout_setcurrent:
-			Loadout_SetCurrent();
+			Loadout_SetCurrent(MSG_ReadInt(&net_message));
 			break;
+
 		case svc_playerinfo:
 		case svc_packetentities:
 		case svc_deltapacketentities:

@@ -595,8 +595,6 @@ void PutClientInServer(edict_t* ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
-	// tell the player to spawn 
-
 	// TEMPORARY HACK FOR PLAYTEST - TODO: THIS *WILL* BREAK FOR EXISTING CLIENTS IF THE TIMELIMIT OR FRAGLIMIT IS CHANGED AFTER SERVER CREATE
 
 	if (timelimit->value)
@@ -613,7 +611,8 @@ void PutClientInServer(edict_t* ent)
 	// every player starts out as unassigned
 	ent->team = team_unassigned;
 
-	// find a spawn point
+	// tell the player to spawn;
+	// start by finding a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
 	SelectSpawnPoint(ent, spawn_origin, spawn_angles);

@@ -164,6 +164,10 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 				SetRespawn(ent, 30);
 		}
 	}
+	// new system
+	gi.WriteByte(svc_loadout_add);
+	gi.WriteString(ent->item->pickup_name);
+	gi.WriteInt(1);
 
 	if (other->client->pers.weapon != ent->item &&
 		(other->client->pers.inventory[index] == 1) &&
