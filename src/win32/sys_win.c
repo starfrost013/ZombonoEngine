@@ -62,17 +62,10 @@ void Sys_Error(char* error, ...) __attribute__((noreturn));
 #endif
 void Sys_Error (char *error, ...)
 {
-	va_list		argptr;
-	char		text[1024];
-
 	CL_Shutdown ();
 	Qcommon_Shutdown ();
 
-	va_start (argptr, error);
-	vsnprintf (text, 1024, error, argptr);
-	va_end (argptr);
-
-	MessageBox(NULL, text, "Error", 0 /* MB_OK */ );
+	Sys_Msgbox(error, "Fatal Error", MB_OK);
 
 // shut down QHOST hooks if necessary 
 	DeinitConProc ();
@@ -80,7 +73,22 @@ void Sys_Error (char *error, ...)
 	exit (1);
 }
 
-void Sys_Quit (void)
+void Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
+{
+	va_list		argptr;
+
+	char		text_processed[1024] = { 0 };
+
+	va_start(argptr, text_processed);
+
+	vsnprintf(text_processed, 1024, text, argptr);
+	va_end(argptr);
+
+	MessageBox(NULL, text_processed, title, buttons);
+}
+
+void
+Sys_Quit (void)
 {
 	timeEndPeriod( 1 );
 

@@ -32,6 +32,8 @@ char	netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiv
 	
 char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
 
+//TODO: EXTREMELY NON-REENTRANT BUT WE DO NOT HAVE MULTITHREADING ANYWAY
+
 cvar_t* ns_disabled;										// If true, don't ever contact zombono.com
 cvar_t* ns_nointernetcheck;									// If true, don't perform an internet check
 cvar_t* ns_noupdatecheck;									// If true, don't perform an update check
@@ -39,7 +41,7 @@ cvar_t* ns_noupdatecheck;									// If true, don't perform an update check
 CURL*	curl_obj_easy;										// The single blocking transfer curl interface object
 CURLM*	curl_obj;											// The multi nonblocking transfer curl interface object
 
-int		netservices_running_transfers;						// The number of curl transfers currently running.
+int32_t	netservices_running_transfers;						// The number of curl transfers currently running.
 
 void	(*netservices_on_complete_callback)(bool successful);	// The callback to use when the current transfer is complete.
 
@@ -68,13 +70,13 @@ bool Netservices_Init()
 	Com_Printf("Netservices_Init: Determining if you are connected to the Internet...\n");
 
 	// init both curl objects
-	curl_obj_easy = Netservices_AddCurlObject(connect_test_url, Netservices_Init_WriteCallback);
+
+	curl_obj_easy = Netservices_AddCurlObject(connect_test_url, false, Netservices_Init_WriteCallback);
 	curl_obj = curl_multi_init();
 
 	if (!curl_obj_easy)
 	{
-		Sys_Error("CURL failed to initialise. You can run the game by adding the line\n\"ns_disabled 1\"\nto your config.cfg or default.cfg files"
-			", but updating, master servers, and accounts won't be available.");
+		Sys_Error("CURL failed to initialise. Updating, master servers, and accounts won't be available.");
 		return false;
 	}
 
@@ -93,12 +95,16 @@ bool Netservices_Init()
 		return false;
 	}
 	
+	// destroy the 
+
+	Netservices_DestroyCurlObject(curl_obj_easy);
+
 	Com_Printf("Netservices_Init: Connected to netservices successfully.\n");
 	netservices_connected = true;
 	return true;
 }
 
-CURL* Netservices_AddCurlObject(const char* url, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
+CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
 {
 	CURL* new_obj = curl_easy_init();
 
@@ -118,6 +124,14 @@ CURL* Netservices_AddCurlObject(const char* url, size_t write_callback(char* ptr
 	if (curl_easy_setopt(new_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
 		return NULL;
 
+	if (multi)
+	{
+		if (curl_multi_add_handle(curl_obj, new_obj))
+		{
+			return NULL;
+		}
+	}
+
 	return new_obj;
 }
 
@@ -134,7 +148,13 @@ void Netservices_SetOnCompleteCallback(void on_complete(bool successful))
 
 void Netservices_StartTransfer()
 {
-	curl_multi_perform(curl_obj, &netservices_running_transfers);
+	// perform one perform to get things going
+	CURLMcode error_code = curl_multi_perform(curl_obj, &netservices_running_transfers);
+
+	if (error_code)
+	{
+		Com_Printf("Initial curl_multi_perform failed %d", error_code);
+	}
 }
 
 // Poll
@@ -147,10 +167,25 @@ void Netservices_Poll()
 		return;
 	}
 		
-	CURLMcode err_code = curl_multi_poll(curl_obj, NULL, 0, 0, &netservices_running_transfers); // we cannot wait as this runs while the game is running as a part of the game loop
+	CURLMcode err_code = curl_multi_perform(curl_obj, &netservices_running_transfers);
 
+	if (err_code != CURLM_OK)
+	{
+		Com_Printf("curl_multi_perform failed %d (%d running transfers). Stopping transfers...", err_code);
+		return;
+	}
+
+	if (netservices_running_transfers > 0)
+	{
+		err_code = curl_multi_poll(curl_obj, NULL, 0, 0, NULL); // we cannot wait as this runs while the game is running as a part of the game loop
+
+		if (err_code)
+		{
+			Com_Printf("curl_multi_poll failed %d (%d running transfers). Stopping transfers...", err_code);
+		}
+	}
 	// if we have just finished run the oncomplete function
-	if (netservices_running_transfers == 0)
+	else
 	{
 		netservices_on_complete_callback(err_code == CURLE_OK);
 	}
@@ -160,7 +195,7 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
 {
 	if (nmemb >= CURL_MAX_WRITE_SIZE)
 	{
-		Com_Printf("Netservices_Init_WriteCallback: nmemb > CURL_MAX_WRITE_SIZE");
+		Com_Printf("Netservices_Init_WriteCallback: nmemb (%d) > CURL_MAX_WRITE_SIZE (%d)", nmemb, CURL_MAX_WRITE_SIZE);
  		return nmemb;
 	}
 

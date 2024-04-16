@@ -55,6 +55,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 	* Added hover images for team select menu
 * Renamed MSG_ReadLong and MSG_WriteLong to MSG_ReadInt and MSG_WriteInt
 * Made the healthbar numbers slightly brighter
+* Refactored fatal error code
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)

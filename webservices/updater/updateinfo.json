@@ -4,21 +4,21 @@
         [
             {
                 "name": "Release",
-                "version": "0.0.6.0",
-                "release_date": "2024-03-23 20:00:00",
+                "version": "0.0.7.0",
+                "release_date": "2024-04-16 00:00:00",
                 "description": "Zombono 0.0.5 is the latest version of Zombono, with new content, bugfixes and cool stuff"
             },
             {
                 "name": "Playtest",
-                "version": "0.0.6.99999",
-                "release_date": "2024-04-06 20:00:00",
-                "description": "Zombono 0.0.6...now with GLFW...!"
+                "version": "0.0.7.99998",
+                "release_date": "2024-04-16 00:00:00",
+                "description": "Zombono 0.0.7...now functional...!"
             },
             {
                 "name": "Debug",
-                "version": "0.0.6.0",
-                "release_date": "2024-04-15 00:00:00",
-                "description": "asdjmafdsjhsadjhasdjhasdjhsadhjasda"
+                "version": "0.0.7.99999",
+                "release_date": "2024-04-16 00:00:00",
+                "description": "UpdateInfo test 2024/04/15"
             }
         ]
 }

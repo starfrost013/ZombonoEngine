@@ -1415,6 +1415,13 @@ void Qcommon_Init (int32_t argc, char **argv)
 		}
 	}
 
+	// start the update check
+	if (!ns_noupdatecheck->value
+		&& netservices_connected)
+	{
+		Netservices_UpdaterGetUpdate();
+	}
+
 	SV_Init ();						// Initialise server variables
 	CL_Init ();						// Initialise the actual game
 

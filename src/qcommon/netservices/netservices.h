@@ -35,9 +35,9 @@ extern char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// The data actually
 // Cvars
 // 
 // All netservices cvars start with ns_* 
-extern cvar_t*			ns_nointernetcheck;					// If true, no internet check will be performed.
-extern cvar_t*			ns_noupdatecheck;					// If true, no update check will be performed.
-extern cvar_t*			ns_disabled;						// If true, netservices will be entirely disabled. Zombono.com will not be contacted at all. Essentially acts as if Netservices_Init failed.
+extern cvar_t*			ns_nointernetcheck;							// If true, no internet check will be performed.
+extern cvar_t*			ns_noupdatecheck;							// If true, no update check will be performed.
+extern cvar_t*			ns_disabled;								// If true, netservices will be entirely disabled. Zombono.com will not be contacted at all. Essentially acts as if Netservices_Init failed.
 
 //
 // netservices_base.c
@@ -50,9 +50,10 @@ extern CURLM*	curl_obj;										// The curl multi object (used for multiple non
 // Function
 bool			Netservices_Init();								// Initialises Netservices and determines if we are connected to the internet.
 // Sets up an easy curl object for use with a particular URL and the write callback write_callback
-CURL*			Netservices_AddCurlObject(const char* url, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
+CURL*			Netservices_AddCurlObject(const char* url, bool multi, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
 void			Netservices_DestroyCurlObject(CURL* object);	// Destroys the easy curl object represented by object
 void			Netservices_StartTransfer();					// Starts the current netservices transfer
+void			Netservices_Poll();								// Checks to see if a curl_multi_obj transfer is complete
 void			Netservices_Shutdown();							// Shuts down netservices
 //
 // netservices_update.c
@@ -76,7 +77,6 @@ typedef struct game_version_s
 	int32_t		build;										// Should we have this?
 } game_version_t;
 
-extern game_update_channel update_current_channel;			// The currently defined channel - corresponds with the engine's build config
 
 // Defines a game software update.
 typedef struct game_update_s
@@ -88,7 +88,10 @@ typedef struct game_update_s
 	char				description[MAX_UPDATE_STR_LENGTH];	// A description of the update's features
 } game_update_t;
 
-game_update_t	Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
+extern game_update_channel	update_current_channel;			// The currently defined channel - corresponds with the engine's build config
+extern game_update_t		update_info;					// The most recently obtained update information.
+
+void			Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
 void			Netservices_SetOnCompleteCallback(void on_complete(bool successful)); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
-void			Netservices_Poll();	// Checks to see if a curl_multi_obj transfer is complete
+
 void			Netservices_UpdaterUpdateGame();			
