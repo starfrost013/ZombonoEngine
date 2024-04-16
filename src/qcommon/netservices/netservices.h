@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	ZOMBONO_USER_AGENT			"Zombono/" ZOMBONO_VERSION
 
-extern char netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// The data actually received from the connect test.
+extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// The data actually received from the connect test.
 // Cvars
 // 
 // All netservices cvars start with ns_* 

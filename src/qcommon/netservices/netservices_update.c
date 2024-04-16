@@ -70,8 +70,8 @@ size_t Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, c
 		return nmemb;
 	}
 
-	strncpy(&netservices_recv_buffer, ptr, nmemb);
-	netservices_recv_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
+	strncpy(&netservices_connect_test_buffer, ptr, nmemb);
+	netservices_connect_test_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
 
 	// write it
 	// we close it in the complete callback because this can be called many times (only 16kb is transferred at a time in CURL)

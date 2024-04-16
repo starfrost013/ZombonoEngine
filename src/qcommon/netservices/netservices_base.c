@@ -28,7 +28,7 @@ bool netservices_connected = false;					// Determines if netservices is initiali
 // String downloaded from the below url to 
 const char* connect_test_string = "This is a connect test file for Zombono Network Services";
 const char* connect_test_url = UPDATER_BASE_URL "/connecttest.txt"; // Just use updater service for thi
-char	netservices_recv_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
+char	netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
 	
 char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
 
@@ -89,9 +89,9 @@ bool Netservices_Init()
 		return false; 
 	}
 
-	if (strncmp(&netservices_recv_buffer, connect_test_string, strlen(connect_test_string)))
+	if (strncmp(&netservices_connect_test_buffer, connect_test_string, strlen(connect_test_string)))
 	{
-		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s)\n", netservices_recv_buffer, connect_test_string);
+		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s)\n", netservices_connect_test_buffer, connect_test_string);
 		return false;
 	}
 	
@@ -182,6 +182,7 @@ void Netservices_Poll()
 		if (err_code)
 		{
 			Com_Printf("curl_multi_poll failed %d (%d running transfers). Stopping transfers...", err_code);
+			return;
 		}
 	}
 	// if we have just finished run the oncomplete function
@@ -199,8 +200,8 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
  		return nmemb;
 	}
 
-	strncpy(&netservices_recv_buffer, ptr, nmemb);
-	netservices_recv_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
+	strncpy(&netservices_connect_test_buffer, ptr, nmemb);
+	netservices_connect_test_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
 
 	return nmemb;
 }
