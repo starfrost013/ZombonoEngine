@@ -34,8 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <conio.h>
 #include <win32/conproc.h>
 int32_t 		starttime;
-bool		ActiveApp;
-bool		Minimized;
+
 
 static HANDLE		hinput, houtput;
 
@@ -368,24 +367,6 @@ char *Sys_GetClipboardData( void )
 	return data;
 }
 
-/*
-==============================================================================
-
- WINDOWS CRAP
-
-==============================================================================
-*/
-
-/*
-=================
-Sys_AppActivate
-=================
-*/
-void Sys_AppActivate (void)
-{
-	ShowWindow ( cl_hwnd, SW_RESTORE);
-	SetForegroundWindow ( cl_hwnd );
-}
 
 /*
 ========================================================================
@@ -538,19 +519,16 @@ WinMain
 
 ==================
 */
-HINSTANCE	global_hInstance;
 
 int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
     MSG				msg;
-	int32_t 			time, oldtime, newtime;
+	int32_t 		time, oldtime, newtime;
 	char			*cddir;
 
     /* previous instances do not exist in Win32 */
     if (hPrevInstance)
         return 0;
-
-	global_hInstance = hInstance;
 
 	ParseCommandLine (lpCmdLine);
 
@@ -561,12 +539,10 @@ int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 	while (1)
 	{
 		// if at a full screen console, don't update unless needed
-		if (Minimized || (dedicated && dedicated->value) )
+		if ((dedicated && dedicated->value) )
 		{
 			Sleep (1);
 		}
-
-	
 
 		do
 		{
@@ -574,7 +550,7 @@ int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 			time = newtime - oldtime;
 		} while (time < 1);
 
-		if (ActiveApp
+		if (app_active
 			|| dedicated->value
 			|| (!dedicated->value && (cls.state == ca_connected
 			|| cls.state == ca_active)))

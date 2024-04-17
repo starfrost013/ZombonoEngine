@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // input.h -- external (non-keyboard) input devices
 #pragma once
 
+extern int32_t 	window_center_x, window_center_y;
+
 void Input_Init();					
 void Input_StartupMouse();
 void Input_ActivateMouse();

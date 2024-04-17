@@ -52,6 +52,7 @@
     <ClCompile Include="client\snd_mem.c" />
     <ClCompile Include="client\snd_miniaudio.c" />
     <ClCompile Include="client\snd_mix.c" />
+    <ClCompile Include="cl_video.c" />
     <ClCompile Include="game\gameplay\game_monster_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="qcommon\cmd.c" />
@@ -79,7 +80,6 @@
     <ClCompile Include="win32\q_shwin.c" />
     <ClCompile Include="win32\snd_win.c" />
     <ClCompile Include="win32\sys_win.c" />
-    <ClCompile Include="win32\vid_dll.c" />
     <ClCompile Include="win32\vid_menu.c" />
   </ItemGroup>
   <ItemGroup>

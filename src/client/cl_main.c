@@ -861,7 +861,6 @@ void CL_ConnectionlessPacket (void)
 			Com_Printf ("Command packet from remote host.  Ignored.\n");
 			return;
 		}
-		Sys_AppActivate ();
 		s = MSG_ReadString (&net_message);
 		Cbuf_AddText (s);
 		Cbuf_AddText ("\n");
@@ -1707,6 +1706,34 @@ void CL_Frame (int32_t msec)
 				lasttimecalled = now;
 			}
 		}
+	}
+}
+
+
+void AppActivate(bool fActive, bool minimize)
+{
+	app_minimized = minimize;
+
+	Key_ClearStates();
+
+	// we don't want to act like we're active if we're minimized
+	if (fActive && !app_minimized)
+		app_active = true;
+	else
+		app_active = false;
+
+	// minimize/restore mouse-capture on demand
+	if (!app_active)
+	{
+		Input_Activate(false);
+		S_Activate(false);
+	}
+	else
+	{
+		// ZombonoUI controls this in the case a UI is active
+		if (!ui_active
+			|| ui_active && current_ui->passive) Input_Activate(true);
+		S_Activate(true);
 	}
 }
 

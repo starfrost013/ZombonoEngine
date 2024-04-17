@@ -138,9 +138,6 @@
     <ClCompile Include="win32\sys_win.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\vid_dll.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\snd_miniaudio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_loadout.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cl_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -340,6 +340,11 @@ void	GL_SetCursorPosition(double x, double y)
 	glfwSetCursorPos(gl_state.window, x, y);
 }
 
+void	GL_SetWindowPosition(double x, double y)
+{
+	glfwSetWindowPos(gl_state.window, x, y);
+}
+
 void	GL_EnableCursor(bool enabled)
 {
 	if (!enabled)

@@ -306,7 +306,13 @@ extern	cdlight_t	cl_dlights[MAX_DLIGHTS];
 #define	MAX_PARSE_ENTITIES	1024
 extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 
+// App activation
+
+bool		app_active;
+bool		app_minimized;
 void AppActivate(bool fActive, bool minimize);
+
+
 
 //=============================================================================
 

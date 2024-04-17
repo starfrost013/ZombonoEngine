@@ -1195,7 +1195,8 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.EnableCursor = GL_EnableCursor;
 	re.GetCursorPosition = GL_GetCursorPosition;
 	re.SetCursorPosition = GL_SetCursorPosition;
-	
+	re.SetWindowPosition = GL_SetWindowPosition;
+
 	Swap_Init ();
 
 	return re;
