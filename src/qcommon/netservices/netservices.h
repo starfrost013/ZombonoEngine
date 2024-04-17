@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qcommon/curl/curl.h>
 
 #define UPDATER_BASE_URL			"https://updates.zombono.com"	// Base URL for the updater service
-#define MAX_UPDATE_STR_LENGTH		256								// Maximum length of an update string
+#define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 
 #define	ZOMBONO_USER_AGENT			"Zombono/" ZOMBONO_VERSION
 
-extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// The data actually received from the connect test.
+extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];	// The data actually received from the connect test.
 // Cvars
 // 
 // All netservices cvars start with ns_* 

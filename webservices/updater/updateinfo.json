@@ -6,19 +6,19 @@
                 "name": "Release",
                 "version": "0.0.7.0",
                 "release_date": "2024-04-16 00:00:00",
-                "description": "Zombono 0.0.5 is the latest version of Zombono, with new content, bugfixes and cool stuff"
+                "description": "Zombono 0.0.7 is cool and has a lot of cool stuff like updating automatically"
             },
             {
                 "name": "Playtest",
                 "version": "0.0.7.99998",
                 "release_date": "2024-04-16 00:00:00",
-                "description": "Zombono 0.0.7...now functional...!"
+                "description": "IT WORKS NOW?????"
             },
             {
                 "name": "Debug",
                 "version": "0.0.7.99999",
                 "release_date": "2024-04-16 00:00:00",
-                "description": "UpdateInfo test 2024/04/15"
+                "description": "UpdateInfo test 2024/04/16"
             }
         ]
 }

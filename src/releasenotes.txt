@@ -35,6 +35,7 @@ BUG FIXES:
 * Fixed leaderboard appearance at high resolutions
 * Fixed moving the camera with the leaderboard enabled
 * Fixed incorrect mouse position being used to calculate centering for window panning
+* Fixed no sounds being played for health packs that are less than 25, but not 2 or 10 health
 * Fixed "Pre-release build" text overlapping build and date text at large resolutions
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
@@ -56,6 +57,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Renamed MSG_ReadLong and MSG_WriteLong to MSG_ReadInt and MSG_WriteInt
 * Made the healthbar numbers slightly brighter
 * Refactored fatal error code
+
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)

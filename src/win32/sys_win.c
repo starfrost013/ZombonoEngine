@@ -65,7 +65,7 @@ void Sys_Error (char *error, ...)
 	CL_Shutdown ();
 	Qcommon_Shutdown ();
 
-	Sys_Msgbox(error, "Fatal Error", MB_OK);
+	Sys_Msgbox("Fatal Error", MB_OK, error);
 
 // shut down QHOST hooks if necessary 
 	DeinitConProc ();
