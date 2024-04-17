@@ -1042,14 +1042,13 @@ typedef struct leaderboard_s
 // Defines a loadout entry.
 typedef struct loadout_entry_s
 {
-	char			item_name[LOADOUT_MAX_STRLEN];// The friendly name of the item (ammo, weapon...)
+	char			item_name[LOADOUT_MAX_STRLEN];	// The friendly name of the item (ammo, weapon...)
+	char			icon[MAX_QPATH];				// The icon to draw (since entities are defined on game side)
 	int32_t			amount;							// The amount (usually only used for the ammunition)
 } loadout_entry_t;
 
 typedef struct loadout_s
 {
 	int32_t				num_items;					// Number of items the user currently has.
-	int32_t				current_index;				// The currently selected index. (insecure?)
-	loadout_entry_t*	current_item;				// A pointer to the current item.
 	loadout_entry_t		items[LOADOUT_MAX_ITEMS];	// The items within the loadout.
 } loadout_t;
