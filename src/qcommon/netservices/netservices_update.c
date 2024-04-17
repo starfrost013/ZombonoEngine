@@ -388,9 +388,11 @@ __attribute((noreturn)) void Netservices_UpdaterUpdateGame()
 	char update_exec_parameters[RESTART_MAX_CMD_LINE] = { 0 };
 
 #if _WIN32
-	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe >nul && %s -o\".\" -y && Zombono & exit", update_binary_file_name);
+	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe >nul && %s -o\".\" -y && del %s && Zombono & exit",
+		update_binary_file_name, update_binary_file_name);
 #else
-	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && Zombono", update_binary_file_name);
+	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && rm %s && Zombono", 
+		update_binary_file_name, update_binary_file_name);
 #endif
 
 	// unhook the console (otherwise it won't close)

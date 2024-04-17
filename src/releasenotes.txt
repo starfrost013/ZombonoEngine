@@ -4,6 +4,8 @@ Version 0.0.7
 April 20, 2024
 
 NEW FEATURES:
+* The game now updates automatically! When you start the game, if an update is available, a message box will appear and you will be able to update the game.
+	* The 7zip window while updating is temporary and will be removed in the next release when an actual update utility is written.
 * Renamed cl_showpos to cl_showinfo:
 	* Viewangles (both refdef and client) 
 	* Number of entities being rendered
@@ -16,7 +18,7 @@ NEW FEATURES:
 * Texture fixes in z_tdm_subway
 * Renderer API version 8:
 	* Added SetMouseScrollProc!
-* Game API versino 7:
+* Game API version 7:
 	* Renamed WriteLong to WriteInt
 
 BUG FIXES:
