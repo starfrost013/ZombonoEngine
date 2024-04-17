@@ -119,8 +119,6 @@ int32_t 	SNDDMA_GetDMAPos(void);
 // shutdown the DMA xfer.
 void	SNDDMA_Shutdown(void);
 
-void	SNDDMA_BeginPainting (void);
-
 void	SNDDMA_Submit(void);
 
 //====================================================================

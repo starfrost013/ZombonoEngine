@@ -773,7 +773,6 @@ void S_ClearBuffer (void)
 	else
 		clear = 0;
 
-	SNDDMA_BeginPainting ();
 	if (dma.buffer)
 		memset(dma.buffer, clear, dma.samples * dma.samplebits/8);
 	SNDDMA_Submit ();
@@ -1017,8 +1016,6 @@ void S_Update_(void)
 
 	if (!sound_started)
 		return;
-
-	SNDDMA_BeginPainting ();
 
 	if (!dma.buffer)
 		return;

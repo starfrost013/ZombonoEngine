@@ -33,9 +33,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern	HINSTANCE	global_hInstance;
 
-extern LPDIRECTSOUND pDS;
-extern LPDIRECTSOUNDBUFFER pDSBuf;
-
 extern DWORD gSndBufSize;
 
 extern HWND			cl_hwnd;
