@@ -31,45 +31,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
 
-//BUILDSTRING - Used for presenting to the user
-//PLATFORMSTRING - Used for updates
+//BUILD_CONFIG - Used for presenting to the user
+//BUILD_PLATFORM - Used for updates
 
 #ifdef WIN32
 
 #ifdef NDEBUG
-#define BUILDSTRING "Windows"
+#define BUILD_CONFIG "Windows"
 #else
-#define BUILDSTRING "Windows DEBUG"
+#define BUILD_CONFIG "Windows DEBUG"
 #endif
 
 #ifdef _M_X64
-#define PLATFORMSTRING "win64"
-#define CPUSTRING	"x64"
+#define BUILD_PLATFORM "win64"
+#define CPU_ARCH	"x64"
 #elif _M_ARM64 // TEMP
-#define CPUSTRING	"ARM64"
-#define PLATFORMSTRING "winarm64"
+#define CPU_ARCH	"ARM64"
+#define BUILD_PLATFORM "winarm64"
 #endif
 
 #elif defined __linux__
 
 #ifdef NDEBUG
-#define BUILDSTRING "Linux"
+#define BUILD_CONFIG "Linux"
 #else
-#define BUILDSTRING "Linux DEBUG"
+#define BUILD_CONFIG "Linux DEBUG"
 #endif
 
 #if defined __LP64__
-#define PLATFORMSTRING "linux64"
-#define CPUSTRING	"x64"
+#define BUILD_PLATFORM "linux64"
+#define CPU_ARCH "x64"
 #else
-#define PLATFORMSTRING "linuxarm64"
-#define CPUSTRING "Unknown"
+#define BUILD_PLATFORM "linuxarm64"
+#define CPU_ARCH "Unknown"
 #endif
 
 #else	// !WIN32 and !__LINUX__
 
-#define BUILDSTRING "Define the Platform Name!"
-#define	CPUSTRING	"Define the Platform Name!"
+#define BUILD_CONFIG "Define the Platform Name!"
+#define	CPU_ARCH	"Define the Platform Name!"
 
 #endif
 

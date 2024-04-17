@@ -331,12 +331,12 @@ void Netservices_UpdaterStartUpdate()
 	// generate a build url
 	snprintf(&update_binary_path, DOWNLOAD_URL_STR_LENGTH, UPDATE_BINARY_BASE_URL "/" DOWNLOAD_URL_FORMAT,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
-		PLATFORMSTRING, selected_update_channel_str);
+		BUILD_PLATFORM, selected_update_channel_str);
 
 	// generate the local filename to be opened when we're done
 	snprintf(&update_binary_file_name, DOWNLOAD_URL_STR_LENGTH, DOWNLOAD_URL_FORMAT,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
-		PLATFORMSTRING, selected_update_channel_str);
+		BUILD_PLATFORM, selected_update_channel_str);
 
 	Com_Printf("Downloading update package %s...\n", update_binary_path);
 
@@ -388,7 +388,7 @@ __attribute((noreturn)) void Netservices_UpdaterUpdateGame()
 	char update_exec_parameters[RESTART_MAX_CMD_LINE] = { 0 };
 
 #if _WIN32
-	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe && %s -o\".\" -y && Zombono", update_binary_file_name);
+	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe >nul && %s -o\".\" -y && Zombono & exit", update_binary_file_name);
 #else
 	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && Zombono", update_binary_file_name);
 #endif

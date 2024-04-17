@@ -1389,7 +1389,7 @@ void Qcommon_Init (int32_t argc, char **argv)
 	debug_console = Cvar_Get ("debug_console", "0", CVAR_NOSET);
 #endif
 
-	s = va("%d.%d.%d.%d %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, CPUSTRING, __DATE__, BUILDSTRING);
+	s = va("%d.%d.%d.%d %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, hint, __DATE__, BUILD_CONFIG);
 	Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);
 
 	if (dedicated->value)
