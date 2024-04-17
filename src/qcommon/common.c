@@ -1522,7 +1522,7 @@ void Qcommon_Frame (int32_t msec)
 	Cbuf_Execute ();
 
 	// Poll for netservices transfers
-	Netservices_Poll();
+	Netservices_Frame();
 
 	if (host_speeds->value)
 		time_before = Sys_Milliseconds ();

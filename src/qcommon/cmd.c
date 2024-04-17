@@ -288,7 +288,7 @@ Cbuf_AddLateCommands
 
 Adds command line parameters as script statements
 Commands lead with a + and continue until another + or -
-quake +vid_ref gl +map amlev1
+e.g. zombono +vid_ref gl +map z_tdm_subway...
 
 Returns true if any late commands were added, which
 will keep the demoloop from immediately starting

@@ -54,7 +54,7 @@ CURL*			Netservices_AddCurlObject(const char* url, bool multi, size_t write_call
 void			Netservices_DestroyCurlObject(CURL* object, bool multi);	// Destroys the easy curl object represented by object and optionally removes it from the multi object.
 void			Netservices_SetOnCompleteCallback(void on_complete(bool successful)); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
 void			Netservices_StartTransfer();					// Starts the current netservices transfer
-void			Netservices_Poll();								// Checks to see if a curl_multi_obj transfer is complete
+void			Netservices_Frame();								// Checks to see if a curl_multi_obj transfer is complete
 void			Netservices_Shutdown();							// Shuts down netservices
 //
 // netservices_update.c
@@ -87,6 +87,7 @@ typedef struct game_update_s
 	game_version_t		version;							// The version of the game you are updating to.
 	struct tm			release_date;						// Release date of the update.
 	char				description[MAX_UPDATE_STR_LENGTH];	// A description of the update's features
+	bool				dismissed;							// Has the update been dismissed?
 } game_update_t;
 
 extern game_update_channel	update_current_channel;			// The currently defined channel - corresponds with the engine's build config
@@ -95,5 +96,5 @@ extern game_update_t		update_info;					// The most recently obtained update info
 void			Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
 
 bool			Netservices_UpdaterPromptForUpdate();		// Prompts for an update. Returns true if the user wanted to update.
-void			Netservices_UpdaterStartUpdate();			// Starts updating.
+void			Netservices_UpdaterStartUpdate();			// Starts the update process.
 

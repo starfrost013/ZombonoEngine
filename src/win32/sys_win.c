@@ -160,7 +160,7 @@ char *Sys_ScanForCD (void)
 
 	done = true;
 
-	//TODO; rewrite this
+	//TODO: rewrite this
 	// scan the drives
 	for (drive[0] = 'c' ; drive[0] <= 'z' ; drive[0]++)
 	{

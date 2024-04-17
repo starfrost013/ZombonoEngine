@@ -162,9 +162,20 @@ void Netservices_StartTransfer()
 	}
 }
 
-// Poll
-void Netservices_Poll()
+// Checks for a game update and polls
+void Netservices_Frame()
 {
+	// See if a game update is available
+	if (update_info.update_available
+		&& !update_info.dismissed)
+	{
+		if (Netservices_UpdaterPromptForUpdate())
+			Netservices_UpdaterStartUpdate();
+
+		update_info.dismissed = true;
+	}
+
+
 	// if there is nothing to return (NULL means it was never set)
 	if (netservices_running_transfers == 0
 		|| netservices_on_complete_callback == NULL)

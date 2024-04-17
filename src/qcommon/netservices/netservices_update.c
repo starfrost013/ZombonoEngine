@@ -263,7 +263,7 @@ void Netservices_UpdateInfoJsonComplete(bool successful)
 		&& (update_info.version.build > ZOMBONO_VERSION_BUILD))
 	{
 		// make sure the update has been released yet,
-		// this gives us time for testing
+		// this gives us time for testing jic we fuck it up and allows us to rollout at specific times
 		// just normalise to time_t
 
 		time_t new_version_time = mktime(&update_info.release_date);
@@ -293,13 +293,36 @@ void Netservices_UpdateInfoJsonComplete(bool successful)
 
 // Prompts for an update. Returns true if the user wanted to update
 
-bool			Netservices_UpdaterPromptForUpdate()
-{
+#define UPDATE_PROMPT_STR_LENGTH		2048
 
+// The update prompt text.
+char* update_prompt_format =
+"An update is available for Zombono:\n"
+"\n"
+"Version %d.%d.%d.%d is now available.\n"
+"Description: %s\n"
+"\n"
+"Would you like to update?\n"
+"\n"
+"(This UI is temporary and will be improved in the future.)";
+
+bool Netservices_UpdaterPromptForUpdate()
+{
+	char update_prompt[UPDATE_PROMPT_STR_LENGTH];
+
+	snprintf(&update_prompt, UPDATE_PROMPT_STR_LENGTH, update_prompt_format,
+		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
+		update_info.description);
+
+	// cannot use constants, they are windows specific and this is platform independent code
+	// TODO: convert to enum...
+	int32_t buttons = Sys_Msgbox("Update Available", 4, &update_prompt); // 4 = MB_YESNO
+
+	return (buttons == 6);
 }
 
 // Starts updating
-void			Netservices_UpdaterStartUpdate()
+void Netservices_UpdaterStartUpdate()
 {
 
 }

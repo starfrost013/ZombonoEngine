@@ -57,6 +57,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Renamed MSG_ReadLong and MSG_WriteLong to MSG_ReadInt and MSG_WriteInt
 * Made the healthbar numbers slightly brighter
 * Refactored fatal error code
+	* Split message box code from error code so the game can call the message box and get back what buttons the user pressed
 
 
 REMOVALS:
