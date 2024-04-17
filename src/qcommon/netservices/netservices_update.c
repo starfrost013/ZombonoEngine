@@ -27,7 +27,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define UPDATE_BINARY_BASE_URL UPDATER_BASE_URL "/updates"			// base URL for update binary
 #define UPDATE_PROMPT_STR_LENGTH				2048				// Length of the update prompt string
 #define DOWNLOAD_URL_STR_LENGTH					256					// Length of the download URL string
+#define DOWNLOAD_CMD_STR_LENGTH					512					// Length of the command to run
+#ifdef _WIN32
 #define DOWNLOAD_URL_FORMAT						"Zombono-v%d.%d.%d.%d-%s-%s.exe"	// Format for the update package binary.
+#else
+#define DOWNLOAD_URL_FORMAT						"Zombono-v%d.%d.%d.%d-%s-%s"	// Format for the update package binary.
+#endif
 
 // Functions only used in this file
 size_t	Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when updateinfo.json stuff is received.
@@ -378,5 +383,22 @@ __declspec(noreturn) void Netservices_UpdaterUpdateGame()
 __attribute((noreturn)) void Netservices_UpdaterUpdateGame()
 #endif
 {
+	// TODO: this is incredibly retarded and I am an idiot
+	// I was too lazy to do anything else
+	char update_exec_parameters[RESTART_MAX_CMD_LINE] = { 0 };
 
+#if _WIN32
+	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe && %s -o\".\" -y && Zombono", update_binary_file_name);
+#else
+	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && Zombono", update_binary_file_name);
+#endif
+
+	// unhook the console (otherwise it won't close)
+	if (dedicated && dedicated->value)
+		FreeConsole();
+	else if (debug_console->value)
+		FreeConsole();
+
+	// run the command
+	system(update_exec_parameters);
 }
