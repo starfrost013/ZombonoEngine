@@ -53,7 +53,7 @@ bool			Netservices_Init();								// Initialises Netservices and determines if w
 CURL*			Netservices_AddCurlObject(const char* url, bool multi, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
 void			Netservices_DestroyCurlObject(CURL* object, bool multi);	// Destroys the easy curl object represented by object and optionally removes it from the multi object.
 void			Netservices_SetOnCompleteCallback(void on_complete(bool successful)); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
-void			Netservices_StartTransfer();					// Starts the current netservices transfer
+void			Netservices_StartPendingTransfers();					// Starts the current netservices transfer
 void			Netservices_Frame();								// Checks to see if a curl_multi_obj transfer is complete
 void			Netservices_Shutdown();							// Shuts down netservices
 //

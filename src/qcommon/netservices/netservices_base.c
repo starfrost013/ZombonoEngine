@@ -151,7 +151,7 @@ void Netservices_SetOnCompleteCallback(void on_complete(bool successful))
 	netservices_on_complete_callback = on_complete;
 }
 
-void Netservices_StartTransfer()
+void Netservices_StartPendingTransfers()
 {
 	// perform one perform to get things going
 	CURLMcode error_code = curl_multi_perform(curl_obj, &netservices_running_transfers);

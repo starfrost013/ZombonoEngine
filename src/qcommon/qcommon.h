@@ -31,6 +31,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
 
+//BUILDSTRING - Used for presenting to the user
+//PLATFORMSTRING - Used for updates
+
 #ifdef WIN32
 
 #ifdef NDEBUG
@@ -40,9 +43,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #ifdef _M_X64
+#define PLATFORMSTRING "win64"
 #define CPUSTRING	"x64"
 #elif _M_ARM64 // TEMP
 #define CPUSTRING	"ARM64"
+#define PLATFORMSTRING "winarm64"
 #endif
 
 #elif defined __linux__
@@ -54,8 +59,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #if defined __LP64__
+#define PLATFORMSTRING "linux64"
 #define CPUSTRING	"x64"
 #else
+#define PLATFORMSTRING "linuxarm64"
 #define CPUSTRING "Unknown"
 #endif
 

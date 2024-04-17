@@ -1,32 +1,67 @@
+/*
+Copyright (C) 1997-2001 Id Software, Inc.
+Copyright (C) 2023-2024 starfrost
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+*/
+// netservices_update.c: Updater
+
 #include "netservices.h"
 
-
 // Defines
-#define UPDATE_JSON_URL UPDATER_BASE_URL "/updateinfo.json"
+#define UPDATE_JSON_URL UPDATER_BASE_URL		"/updateinfo.json"	// URL for update info json file
+#define UPDATE_BINARY_BASE_URL UPDATER_BASE_URL "/updates"			// base URL for update binary
+#define UPDATE_PROMPT_STR_LENGTH				2048				// Length of the update prompt string
+#define DOWNLOAD_URL_STR_LENGTH					256					// Length of the download URL string
+#define DOWNLOAD_URL_FORMAT						"Zombono-v%d.%d.%d.%d-%s-%s.exe"	// Format for the update package binary.
 
 // Functions only used in this file
 size_t	Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when updateinfo.json stuff is received.
-void	Netservices_UpdateInfoJsonComplete(bool successful);											// Callback function for when updateinfo.json stuff is completed.
+void	Netservices_UpdateInfoJsonComplete();															// Callback function for when updateinfo.json stuff is completed.
 void	Netservices_UpdaterUpdateGame();																// Actually perform the game update
-// Globals
 
-// Set the update channel based on the build configuration
+void	Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when binary stuff is received.
+void	Netservices_UpdateInfoBinaryComplete();															// Callback function for when binary stuff is received.
+
+// Globals
+// 
+// Set the update channel and a string for it based on the build configuration
 #if !NDEBUG // gcc+msvc portable
 game_update_channel current_update_channel = update_channel_debug;
+const char* selected_update_channel_str = "debug";
 #elif PLAYTEST
 game_update_channel current_channel = update_channel_playtest;
+const char* selected_update_channel_str = "playtest";
 #else
 game_update_channel current_channel = update_channel_release;
+const char* selected_update_channel_str = "release";
 #endif
 
 CURL*			update_json_curl_obj = { 0 };
-CURL*			curl_transfer_update_binary = { 0 }; // see how fast this is and if we need multiple simultaneous connections (curl_multitransfer_t)
+CURL*			update_binary_curl_obj = { 0 };			// see how fast this is and if we need multiple simultaneous connections (curl_multitransfer_t)
 
 int				netservices_running_transfers;
 
 // tmpfile() handle
 FILE*			update_json_handle;						// updateinfo.json file handle
 char			update_json_file_name[L_tmpnam];		// updateinfo.json temp file name
+
+FILE*			update_binary_handle;					// Update binary file handle
+char			update_binary_file_name[DOWNLOAD_URL_STR_LENGTH] = { 0 };	// Update binary file name after downloaded
 
 // stores available update information
 // if update_available is true, it will ask the user to update
@@ -70,20 +105,11 @@ void Netservices_UpdaterGetUpdate()
 	Netservices_SetOnCompleteCallback(Netservices_UpdateInfoJsonComplete);
 	
 	// and start the transfer...
-	Netservices_StartTransfer();
+	Netservices_StartPendingTransfers();
 }
 
 size_t Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, char* userdata)
 {
-	if (nmemb >= CURL_MAX_WRITE_SIZE)
-	{
-		Com_Printf("Netservices_Init_UpdaterOnReceiveJson: nmemb > CURL_MAX_WRITE_SIZE");
-		return nmemb;
-	}
-
-	strncpy(&netservices_connect_test_buffer, ptr, nmemb);
-	netservices_connect_test_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
-
 	// write it
 	// we close it in the complete callback because this can be called many times (only 16kb is transferred at a time in CURL)
 	fwrite(ptr, nmemb, size, update_json_handle);
@@ -91,22 +117,9 @@ size_t Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, c
 }
 
 // sets update_json.update_available to true
-void Netservices_UpdateInfoJsonComplete(bool successful)
+void Netservices_UpdateInfoJsonComplete()
 {
 	JSON_stream update_json_stream;
-
-	if (!successful)
-	{
-		Sys_Msgbox("Non-Fatal Error", 0, "Update failed - failed to download updateinfo!\n");
-		// we don't care if these fail since the file may or may not exist
-		fclose(&update_json_handle);
-		remove(&update_json_file_name);
-		return;
-	}
-	else
-	{
-		// see if there really is an update availale
-	}
 
 	Com_DPrintf("Downloaded update information to tmpfile %s\n", &update_json_file_name);
 
@@ -119,23 +132,6 @@ void Netservices_UpdateInfoJsonComplete(bool successful)
 
 	// set channel to current
 	update_info.channel = current_update_channel;
-
-	// get the update channel to search for in the JSON file based on the update channel (set above)
-
-	const char* selected_update_channel_str = "";
-
-	if (current_update_channel == update_channel_debug)
-	{
-		selected_update_channel_str = "Debug";
-	}
-	else if (current_update_channel == update_channel_playtest)
-	{
-		selected_update_channel_str = "Playtest";
-	}
-	else if (current_update_channel == update_channel_release)
-	{
-		selected_update_channel_str = "Release";
-	}
 
 	// empty string - invalid channel (failsafe)
 	if (strlen(selected_update_channel_str) == 0)
@@ -293,7 +289,7 @@ void Netservices_UpdateInfoJsonComplete(bool successful)
 
 // Prompts for an update. Returns true if the user wanted to update
 
-#define UPDATE_PROMPT_STR_LENGTH		2048
+
 
 // The update prompt text.
 char* update_prompt_format =
@@ -308,7 +304,8 @@ char* update_prompt_format =
 
 bool Netservices_UpdaterPromptForUpdate()
 {
-	char update_prompt[UPDATE_PROMPT_STR_LENGTH];
+	// Temporary UI
+	char update_prompt[UPDATE_PROMPT_STR_LENGTH] = { 0 };
 
 	snprintf(&update_prompt, UPDATE_PROMPT_STR_LENGTH, update_prompt_format,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
@@ -321,10 +318,57 @@ bool Netservices_UpdaterPromptForUpdate()
 	return (buttons == 6);
 }
 
-// Starts updating
+// Starts the update process. We can still get out at this point
 void Netservices_UpdaterStartUpdate()
 {
+	char update_binary_path[DOWNLOAD_URL_STR_LENGTH] = { 0 };
 
+	// generate a build url
+	snprintf(&update_binary_path, DOWNLOAD_URL_STR_LENGTH, UPDATE_BINARY_BASE_URL "/" DOWNLOAD_URL_FORMAT,
+		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
+		PLATFORMSTRING, selected_update_channel_str);
+
+	// generate the local filename to be opened when we're done
+	snprintf(&update_binary_file_name, DOWNLOAD_URL_STR_LENGTH, DOWNLOAD_URL_FORMAT,
+		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
+		PLATFORMSTRING, selected_update_channel_str);
+
+	Com_Printf("Downloading update package %s...\n", update_binary_path);
+
+	// cannot be called if noupdatecheck is not set so dont bother
+	update_binary_curl_obj = Netservices_AddCurlObject(update_binary_path, true, Netservices_UpdateInfoBinaryReceive);
+
+	// override timeout because it's a large file
+	curl_easy_setopt(update_binary_curl_obj, CURLOPT_TIMEOUT, 120000);
+	
+	// remove it if it already exists (we don't care about the result)
+	remove(update_binary_file_name);
+
+	update_binary_handle = fopen(update_binary_file_name, "wb");
+
+	if (!update_binary_handle)
+	{
+		Sys_Msgbox("Update failed", 0, "Failed to update Zombono. Could not create update binary file!");
+		return;
+	}
+
+	Netservices_SetOnCompleteCallback(Netservices_UpdateInfoBinaryComplete);
+	Netservices_StartPendingTransfers();
+}
+
+void Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata)
+{
+	// write to the update bvinary
+	fwrite(ptr, nmemb, size, update_binary_handle);
+	return nmemb;
+}
+
+void Netservices_UpdateInfoBinaryComplete()
+{
+	Com_Printf("Update package downloaded!\n");
+	fclose(update_binary_handle);
+	
+	Netservices_UpdaterUpdateGame();
 }
 
 // Does not return so mark ti as such for the compiler
