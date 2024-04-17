@@ -98,6 +98,8 @@ REMOVALS:
 	* Removed svc_inventory protocol message
 * Removed maxentities cvar (ignored by client and server)
 	* game->maxentities is now set to MAX_EDICTS
+* Removed DirectSound on Windows, only waveout (Windows) and miniaudio (Linux) are left
+		* Only miniaudio will be left in the future (cross platform etc)
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024
