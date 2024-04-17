@@ -73,7 +73,8 @@ void Sys_Error (char *error, ...)
 	exit (1);
 }
 
-void Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
+// returns a value indicating which buttons were pressed
+int32_t Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 {
 	va_list		argptr;
 
@@ -84,7 +85,7 @@ void Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 	vsnprintf(text_processed, 1024, text, argptr);
 	va_end(argptr);
 
-	MessageBox(NULL, text_processed, title, buttons);
+	return MessageBox(NULL, text_processed, title, buttons);
 }
 
 void

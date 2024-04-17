@@ -801,7 +801,7 @@ char	*Sys_ConsoleInput(void);
 void	Sys_ConsoleOutput(char *string);
 void	Sys_SendKeyEvents(void);
 void	Sys_Error(char* error, ...);
-void	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
+int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit(void);
 char	*Sys_GetClipboardData( void );
 
