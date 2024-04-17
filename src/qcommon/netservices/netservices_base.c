@@ -38,7 +38,7 @@ cvar_t* ns_disabled;										// If true, don't ever contact zombono.com
 cvar_t* ns_nointernetcheck;									// If true, don't perform an internet check
 cvar_t* ns_noupdatecheck;									// If true, don't perform an update check
 
-CURL*	curl_obj_easy;										// The single blocking transfer curl interface object
+CURL*	curl_obj_connect_test;								// The single blocking transfer curl interface object used for testing connections
 CURLM*	curl_obj;											// The multi nonblocking transfer curl interface object
 
 int32_t	netservices_running_transfers;						// The number of curl transfers currently running.
@@ -71,17 +71,18 @@ bool Netservices_Init()
 
 	// init both curl objects
 
-	curl_obj_easy = Netservices_AddCurlObject(connect_test_url, false, Netservices_Init_WriteCallback);
+	curl_obj_connect_test = Netservices_AddCurlObject(connect_test_url, false, Netservices_Init_WriteCallback);
 	curl_obj = curl_multi_init();
 
-	if (!curl_obj_easy)
+	if (!curl_obj_connect_test)
 	{
 		Sys_Error("CURL failed to initialise. Updating, master servers, and accounts won't be available.");
 		return false;
 	}
 
-	// get the file - blocking for now - this should take a max of 2s
-	CURLcode error_code = curl_easy_perform(curl_obj_easy);
+	// get the file - this should take a max of 2 seconds because it blocks
+	// I don't want the user to try and use netservices things before the connection test finishes
+	CURLcode error_code = curl_easy_perform(curl_obj_connect_test);
 
 	if (error_code != CURLE_OK)
 	{
@@ -89,15 +90,16 @@ bool Netservices_Init()
 		return false; 
 	}
 
+	// test if teh string was correct (if it isn't it should be a bug)
 	if (strncmp(&netservices_connect_test_buffer, connect_test_string, strlen(connect_test_string)))
 	{
-		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s)\n", netservices_connect_test_buffer, connect_test_string);
+		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s) (Probably a bug)\n", netservices_connect_test_buffer, connect_test_string);
 		return false;
 	}
 	
-	// destroy the 
+	// destroy the connection test object
 
-	Netservices_DestroyCurlObject(curl_obj_easy);
+	Netservices_DestroyCurlObject(curl_obj_connect_test, false);
 
 	Com_Printf("Netservices_Init: Connected to netservices successfully.\n");
 	netservices_connected = true;
@@ -135,8 +137,11 @@ CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callba
 	return new_obj;
 }
 
-void Netservices_DestroyCurlObject(CURL* object)
+void Netservices_DestroyCurlObject(CURL* object, bool multi)
 {
+	if (multi)
+		curl_multi_remove_handle(curl_obj, object);
+
 	// this is a function as we intend to do more stuff here later
 	curl_easy_cleanup(object);
 }
@@ -208,6 +213,6 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
 
 void Netservices_Shutdown()
 {
-	Netservices_DestroyCurlObject(curl_obj_easy);
+	Netservices_DestroyCurlObject(curl_obj_connect_test, false);
 	curl_multi_cleanup(curl_obj);
 }

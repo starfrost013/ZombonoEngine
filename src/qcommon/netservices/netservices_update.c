@@ -1,12 +1,13 @@
 #include "netservices.h"
 
+
 // Defines
 #define UPDATE_JSON_URL UPDATER_BASE_URL "/updateinfo.json"
 
 // Functions only used in this file
-size_t	Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, char* userdata);
-void	Netservices_UpdateInfoJsonComplete(bool successful);
-
+size_t	Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when updateinfo.json stuff is received.
+void	Netservices_UpdateInfoJsonComplete(bool successful);											// Callback function for when updateinfo.json stuff is completed.
+void	Netservices_UpdaterUpdateGame();																// Actually perform the game update
 // Globals
 
 // Set the update channel based on the build configuration
@@ -18,7 +19,7 @@ game_update_channel current_channel = update_channel_playtest;
 game_update_channel current_channel = update_channel_release;
 #endif
 
-CURL*			curl_transfer_update_json = { 0 };
+CURL*			update_json_curl_obj = { 0 };
 CURL*			curl_transfer_update_binary = { 0 }; // see how fast this is and if we need multiple simultaneous connections (curl_multitransfer_t)
 
 int				netservices_running_transfers;
@@ -44,7 +45,7 @@ void Netservices_UpdaterGetUpdate()
 
 	Com_Printf("Checking for updates...\n");
 
-	curl_transfer_update_json = Netservices_AddCurlObject(UPDATE_JSON_URL, true, Netservices_UpdateInfoJsonReceive);
+	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, Netservices_UpdateInfoJsonReceive);
 
 	// create a temporary file
 	tmpnam(&update_json_file_name);
@@ -280,16 +281,27 @@ void Netservices_UpdateInfoJsonComplete(bool successful)
 		
 	}
 
-	// in any case we need to delete the tempfile
+	// in any case we need to delete the tempfile so close it first
 	JSON_close(&update_json_stream);
 	fclose(update_json_handle);
+	remove(&update_json_file_name);
 
-	int errcode = remove(&update_json_file_name);
+	// destroy the curl object
 
-	if (errcode)
-	{
-		Com_DPrintf("Failed to remove json file");
-	}
+	Netservices_DestroyCurlObject(update_json_curl_obj, true);
+}
+
+// Prompts for an update. Returns true if the user wanted to update
+
+bool			Netservices_UpdaterPromptForUpdate()
+{
+
+}
+
+// Starts updating
+void			Netservices_UpdaterStartUpdate()
+{
+
 }
 
 // Does not return so mark ti as such for the compiler
