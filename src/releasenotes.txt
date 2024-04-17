@@ -17,9 +17,12 @@ NEW FEATURES:
 	* Still uses Q2 assets...
 * Texture fixes in z_tdm_subway
 * Renderer API version 8:
-	* Added SetMouseScrollProc!
+	* Added SetMouseScrollProc and SetWindowPos
 * Game API version 7:
 	* Renamed WriteLong to WriteInt
+* UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click), set with the UI_SetImageOnClick function
+* UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
+	* Added hover images to team select menu
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
@@ -32,20 +35,22 @@ BUG FIXES:
 * Fixed all commands involving a modifier key and the console by exposing modifier key to Key_Console
 	* This means copying, pasting, etc... is fixed!
 * Fixed dedicated fullscreen not working with ALT+ENTER toggle
-* Fixed not being able to define the Windows key
+* Fixed not being able to define the Windows key as a key
 * Fixed r_fullbright 1 with multitexturing
 * Fixed leaderboard appearance at high resolutions
 * Fixed moving the camera with the leaderboard enabled
 * Fixed incorrect mouse position being used to calculate centering for window panning
 * Fixed no sounds being played for health packs that are less than 25, but not 2 or 10 health
 * Fixed "Pre-release build" text overlapping build and date text at large resolutions
+* Fixed the game trying to open 24 files on drives C: to Z: every time it starts
 * Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
-
 OTHER ENHANCEMENTS AND CHANGES:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
+* Moved code that interfaces with the video DLL from platform specific to independent and removed all Win32/X/etc dependencies. All video code is now platform independent!
+
 * Renamed in_ cvars to input_ and same for functions
 * Made input shift code slightly less insane
 * Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
@@ -53,14 +58,10 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Reduced s_mixahead value from 0.2 to 0.1 to reduce sound lag 
 * UI: Renamed UI_SetActive to UI_SetActivated
 	* Renamed the concept of UI "active" to UI activation so that it makes sense
-* UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click), set with the UI_SetImageOnClick function
-* UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
-	* Added hover images for team select menu
 * Renamed MSG_ReadLong and MSG_WriteLong to MSG_ReadInt and MSG_WriteInt
 * Made the healthbar numbers slightly brighter
 * Refactored fatal error code
 	* Split message box code from error code so the game can call the message box and get back what buttons the user pressed
-
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
@@ -100,6 +101,9 @@ REMOVALS:
 	* game->maxentities is now set to MAX_EDICTS
 * Removed DirectSound on Windows, only waveout (Windows) and miniaudio (Linux) are left
 		* Only miniaudio will be left in the future (cross platform etc)
+* Removed the ability to play audio off of the CD as most people don't have CD/DVD-ROM drives anymore
+* Removed vid_front command (makes window always on top)
+
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024
