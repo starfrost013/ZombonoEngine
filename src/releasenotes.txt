@@ -116,6 +116,7 @@ REMOVALS:
 * Removed trigger_key entity (useless as keys were removed long ago)
 * Removed 134 of 137 monster muzzle flashes as they all related to removed monsters and were model specific
 	* Kept 3 for example code purposes
+* Removed the original Quake 2 skyboxes as we don't use them anymore
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024
