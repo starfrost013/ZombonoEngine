@@ -1036,7 +1036,7 @@ typedef struct leaderboard_s
 
 // Currently we only allow the 1-0 keys.
 // but in case we want to add more items to tbe loadout...
-#define LOADOUT_MAX_ITEMS			32
+#define LOADOUT_MAX_ITEMS		32
 #define LOADOUT_MAX_STRLEN		48
 
 // Defines a loadout entry.

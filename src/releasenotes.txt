@@ -43,7 +43,7 @@ BUG FIXES:
 * Fixed no sounds being played for health packs that are less than 25, but not 2 or 10 health
 * Fixed "Pre-release build" text overlapping build and date text at large resolutions
 * Fixed the game trying to open 24 files on drives C: to Z: every time it starts
-* Mostly fixed panning up and down after you die - you could previously the server and client viewangles while dead... (TODO: ACTUALLY FIX!!!)
+* Fixed panning up and down after you die - the viewangles were being modified mid-frame which broke viewangle prediction and led to desync between the client and server viewangles
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
@@ -103,7 +103,7 @@ REMOVALS:
 		* Only miniaudio will be left in the future (cross platform etc)
 * Removed the ability to play audio off of the CD as most people don't have CD/DVD-ROM drives anymore
 * Removed vid_front command (makes window always on top)
-
+* Removed packet command (was dangerous, could send arbitrary packets and was disabled anyway)
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

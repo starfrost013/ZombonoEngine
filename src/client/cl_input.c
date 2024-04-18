@@ -733,17 +733,34 @@ void Input_MouseMove(usercmd_t* cmd)
 	if (!mouseactive)
 		return;
 
-	// don't desync while dead
-	if (cl.frame.playerstate.pmove.pm_type == PM_DEAD)
+	float x_pos = (last_mouse_pos_x - window_center_x) * sensitivity->value;
+	float y_pos = (last_mouse_pos_y - window_center_y) * sensitivity->value;
+
+	if ((lookstrafe->value)
+		&& mlooking)
 	{
-		VectorCopy(cl.refdef.viewangles, cl.viewangles);
-		return;
+		cmd->sidemove += m_side->value * x_pos;
+	}
+	else
+	{
+		cl.viewangles[YAW] -= m_yaw->value * x_pos;
 	}
 
-	// don't desync if a UI is active
-	if (ui_active && !current_ui->passive)
-		return;
+	if ((freelook->value)
+		&& mlooking)
+	{
+		cmd->sidemove += m_side->value * y_pos;
+	}
+	else
+	{
+		cl.viewangles[PITCH] += m_pitch->value * y_pos;
+	}
 
+	re.SetCursorPosition(window_center_x, window_center_y);
+	last_mouse_pos_x = window_center_x;
+	last_mouse_pos_y = window_center_y;
+
+	/*
 	float new_yaw = -(m_yaw->value * (last_mouse_pos_x / window_center_x)) * sensitivity->value;
 	float new_pitch = (m_pitch->value * (last_mouse_pos_y / window_center_y)) * sensitivity->value;
 	float new_move_forward = m_forward->value * (last_mouse_pos_y / window_center_y) * sensitivity->value;
@@ -797,5 +814,5 @@ void Input_MouseMove(usercmd_t* cmd)
 	{
 		cmd->forwardmove = new_move_forward;
 	}
-
+	*/
 }
