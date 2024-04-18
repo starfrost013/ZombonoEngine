@@ -444,6 +444,7 @@ bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 	}
 
 	Com_DPrintf("Loaded %d glyphs\n", font_ptr->num_glyphs);
+	return true;
 }
 
 font_t* Font_GetByName(const char* name)
