@@ -56,7 +56,6 @@ void SP_trigger_multiple(edict_t* ent);
 void SP_trigger_relay(edict_t* ent);
 void SP_trigger_push(edict_t* ent);
 void SP_trigger_hurt(edict_t* ent);
-void SP_trigger_key(edict_t* ent);
 void SP_trigger_counter(edict_t* ent);
 void SP_trigger_elevator(edict_t* ent);
 void SP_trigger_gravity(edict_t* ent);

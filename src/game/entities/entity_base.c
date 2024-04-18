@@ -64,7 +64,6 @@ spawn_t	spawns[] = {
 	{"trigger_relay", SP_trigger_relay},
 	{"trigger_push", SP_trigger_push},
 	{"trigger_hurt", SP_trigger_hurt},
-	{"trigger_key", SP_trigger_key},
 	{"trigger_counter", SP_trigger_counter},
 	{"trigger_elevator", SP_trigger_elevator},
 	{"trigger_gravity", SP_trigger_gravity},
@@ -114,8 +113,6 @@ spawn_t	spawns[] = {
 	{"monster_zombie", SP_monster_zombie},
 	{"monster_zombie_fast", SP_monster_zombie_fast},
 	{"monster_ogre", SP_monster_ogre},
-
-	// turrets dependent on infantry so removed 
 
 	{NULL, NULL}
 };

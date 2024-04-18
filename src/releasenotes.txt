@@ -44,6 +44,9 @@ BUG FIXES:
 * Fixed "Pre-release build" text overlapping build and date text at large resolutions
 * Fixed the game trying to open 24 files on drives C: to Z: every time it starts
 * Fixed panning up and down after you die - the viewangles were being modified mid-frame which broke viewangle prediction and led to desync between the client and server viewangles
+	* This means the default m_pitch and m_yaw values are reduced from 20 to 0.05
+* Fixed not being able to jump up to get the big armour on z_tdm_warehouse
+* Fixed bug where players were always upside down or sideways to other players
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
