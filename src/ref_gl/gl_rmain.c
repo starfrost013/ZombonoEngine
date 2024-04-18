@@ -486,7 +486,8 @@ void GL_SetPerspective( GLdouble fovy, GLdouble aspect,
    xmin = ymin * aspect;
    xmax = ymax * aspect;
 
-   glFrustum( xmin, xmax, ymin, ymax, zNear, zFar );
+   // epsilon: so the skybox itself doesn't
+   glFrustum( xmin, xmax, ymin, ymax, zNear, zFar);
 }
 
 
