@@ -729,7 +729,8 @@ Input_MouseMove
 */
 void Input_MouseMove(usercmd_t* cmd)
 {
-	// This PoS is a garbage Starfrost special, written on April 2, 2024 and kinda sorta fixed on April 7, 2024
+	// Add mouse acceleration to predicted viewangles
+	// Replaced godawful method made by a retard on April 18, 2024
 	if (!mouseactive)
 		return;
 
@@ -759,60 +760,4 @@ void Input_MouseMove(usercmd_t* cmd)
 	re.SetCursorPosition(window_center_x, window_center_y);
 	last_mouse_pos_x = window_center_x;
 	last_mouse_pos_y = window_center_y;
-
-	/*
-	float new_yaw = -(m_yaw->value * (last_mouse_pos_x / window_center_x)) * sensitivity->value;
-	float new_pitch = (m_pitch->value * (last_mouse_pos_y / window_center_y)) * sensitivity->value;
-	float new_move_forward = m_forward->value * (last_mouse_pos_y / window_center_y) * sensitivity->value;
-	float new_move_side = (m_side->value / window_center_y) * sensitivity->value;
-	double mouse_pos_x = 0, mouse_pos_y = 0;
-
-	if ((lookstrafe->value && mlooking))
-	{
-		cmd->sidemove = new_move_side;
-	}
-	else
-	{
-		// clamp viewangles to 360 degree range
-		// this is also done on the server...
-		if (new_yaw > 180)
-			new_yaw -= 360;
-		if (new_yaw < -180)
-			new_yaw += 360;
-
-		// snap the mouse to new yaw (since we set viewangles based on where you are)
-		re.GetCursorPosition(&mouse_pos_x, &mouse_pos_y);
-		re.SetCursorPosition(-((window_center_x * new_yaw) / sensitivity->value) / m_pitch->value, mouse_pos_y);
-		cl.viewangles[YAW] = new_yaw;
-	}
-
-	if ((mlooking || freelook->value))
-	{
-		// slight hack: prevent the player from moving down further than the camera allows by moving their cursor (since the cursor controls where the camera is)
-		// IT USES DEGREES???
-		if (new_pitch > 90)
-		{
-			new_pitch = 90;
-
-			re.GetCursorPosition(&mouse_pos_x, &mouse_pos_y);
-			mouse_pos_y = (((double)window_center_y * (double)90) / sensitivity->value) / m_pitch->value;
-			re.SetCursorPosition(mouse_pos_x, mouse_pos_y);
-		}
-		else if (new_pitch < -90)
-		{
-			new_pitch = -90;
-			// prevent the player from moving down further than the camera allows
-			double pos_x = 0, pos_y = 0;
-			re.GetCursorPosition(&pos_x, &pos_y);
-			pos_y = (((double)window_center_y * (double)-90) / sensitivity->value) / m_pitch->value;
-			re.SetCursorPosition(pos_x, pos_y);
-		}
-
-		cl.viewangles[PITCH] = new_pitch;
-	}
-	else
-	{
-		cmd->forwardmove = new_move_forward;
-	}
-	*/
 }
