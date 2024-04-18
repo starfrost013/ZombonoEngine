@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+//game_client_view.c: Handles what clients see (server side)
+
 #include <game_local.h>
 #include <mobs/mob_player.h>
 
