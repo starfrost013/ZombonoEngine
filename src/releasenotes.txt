@@ -24,6 +24,9 @@ NEW FEATURES:
 * UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
 	* Added hover images to team select menu
 * The engine can now deal with texture sizes above 256x256, and can scale textures up to 2048*2048
+* Added the ability to customise your draw distance using the gl_drawdistance cvar:
+	* The default draw distance has been increased from 4096 units on maps without skybox and 2300 without to 8192 on all maps
+	* The skybox now moves with the draw distance and will not become larger than the map
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
