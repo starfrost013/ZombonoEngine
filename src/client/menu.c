@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <io.h>
 #endif
 #include "client.h"
-#include <client/qmenu.h>
+#include <client/menu_framework.h>
 
 extern cvar_t *vid_hudscale;
 

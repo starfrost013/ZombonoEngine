@@ -54,7 +54,7 @@
     <ClCompile Include="client\menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\qmenu.c">
+    <ClCompile Include="client\menu_framework.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\snd_dma.c">
@@ -120,9 +120,6 @@
     <ClCompile Include="server\sv_user.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\vid_menu.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32\conproc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -177,6 +174,12 @@
     <ClCompile Include="cl_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="menu_video.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\menu_video.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc">
@@ -205,7 +208,7 @@
     <ClInclude Include="client\keys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="client\qmenu.h">
+    <ClInclude Include="client\menu_framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\ref.h">

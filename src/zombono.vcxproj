@@ -47,7 +47,8 @@
     <ClCompile Include="client\console.c" />
     <ClCompile Include="client\cl_input_keys.c" />
     <ClCompile Include="client\menu.c" />
-    <ClCompile Include="client\qmenu.c" />
+    <ClCompile Include="client\menu_video.c" />
+    <ClCompile Include="client\menu_framework.c" />
     <ClCompile Include="client\snd_dma.c" />
     <ClCompile Include="client\snd_mem.c" />
     <ClCompile Include="client\snd_miniaudio.c" />
@@ -80,7 +81,6 @@
     <ClCompile Include="win32\q_shwin.c" />
     <ClCompile Include="win32\snd_win.c" />
     <ClCompile Include="win32\sys_win.c" />
-    <ClCompile Include="win32\vid_menu.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc" />
@@ -92,7 +92,7 @@
     <ClInclude Include="client\input.h" />
     <ClInclude Include="client\keys.h" />
     <ClInclude Include="client\miniaudio.h" />
-    <ClInclude Include="client\qmenu.h" />
+    <ClInclude Include="client\menu_framework.h" />
     <ClInclude Include="client\ref.h" />
     <ClInclude Include="client\screen.h" />
     <ClInclude Include="client\snd_loc.h" />
