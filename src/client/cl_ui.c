@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Globals
 // see client.h for explanations on what these are 
-int32_t 		num_uis;																					
-ui_t		ui_list[MAX_UIS];
+int32_t num_uis;																					
+ui_t	ui_list[MAX_UIS];
 bool	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
 
 // Current UI. A non-null value is enforced.
@@ -33,14 +33,14 @@ bool	ui_active = false;																				// This is so we know to turn on the 
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
-bool		UI_AddControl(ui_t* ui, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
+bool	UI_AddControl(ui_t* ui, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
 // Draw methods
-void			UI_DrawText(ui_control_t* text);															// Draws a text control.
-void			UI_DrawImage(ui_control_t* image);															// Draws an image control.
-void			UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
-void			UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
-void			UI_DrawBox(ui_control_t* box);
+void	UI_DrawText(ui_control_t* text);															// Draws a text control.
+void	UI_DrawImage(ui_control_t* image);															// Draws an image control.
+void	UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
+void	UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
+void	UI_DrawBox(ui_control_t* box);
 
 bool UI_Init()
 {
