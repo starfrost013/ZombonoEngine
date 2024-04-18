@@ -388,7 +388,7 @@ void SV_FatPVS (vec3_t org)
 		maxs[i] = org[i] + 8;
 	}
 
-	count = Map_BoxLeafnums (mins, maxs, leafs, 64, NULL);
+	count = MapRenderer_BoxLeafnums (mins, maxs, leafs, 64, NULL);
 	if (count < 1)
 		Com_Error (ERR_FATAL, "SV_FatPVS: count < 1");
 	longs = (Map_GetNumClusters()+31)>>5;

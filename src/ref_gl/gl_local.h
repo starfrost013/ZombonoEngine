@@ -240,12 +240,13 @@ extern	cvar_t* gl_lightmaptype;
 extern	cvar_t* gl_modulate;
 extern	cvar_t* gl_playermip;
 extern	cvar_t* gl_drawbuffer;
-extern  cvar_t  *gl_driver;
+extern  cvar_t* gl_driver;
 extern	cvar_t* gl_texturemode;
 extern	cvar_t* gl_texturealphamode;
 extern	cvar_t* gl_texturesolidmode;
-extern  cvar_t  *gl_saturatelighting;
-extern  cvar_t  *gl_lockpvs;
+extern  cvar_t* gl_saturatelighting;
+extern	cvar_t* gl_drawdistance;
+extern  cvar_t* gl_lockpvs;
 
 extern	cvar_t* vid_borderless;
 extern	cvar_t* vid_fullscreen;
@@ -335,6 +336,9 @@ void	GL_FreeUnusedImages (void);
 
 void	GL_TextureAlphaMode( char *string );
 void	GL_TextureSolidMode( char *string );
+
+// Map extents
+extern float map_radius;
 
 //
 // gl_glfw.c

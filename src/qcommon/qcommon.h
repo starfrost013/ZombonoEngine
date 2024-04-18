@@ -662,7 +662,7 @@ int32_t 		CM_PointLeafnum (vec3_t p);
 
 // call with topnode set to the headnode, returns with topnode
 // set to the first node that splits the box
-int32_t 		Map_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list,
+int32_t 		MapRenderer_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list,
 							int32_t listsize, int32_t *topnode);
 
 int32_t 		Map_GetLeafContents (int32_t leafnum);

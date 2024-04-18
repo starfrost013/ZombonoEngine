@@ -288,7 +288,7 @@
     <ClCompile Include="gl_image.c" />
     <ClCompile Include="gl_light.c" />
     <ClCompile Include="gl_model.c" />
-    <ClCompile Include="gl_map.c" />
+    <ClCompile Include="gl_map_loader.c" />
     <ClCompile Include="gl_rmain.c" />
     <ClCompile Include="gl_rmisc.c" />
     <ClCompile Include="gl_rsurf.c" />

@@ -151,11 +151,11 @@ void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
 rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
 {
 	int32_t width, height;
-	const char *WIN_fs[] = { "Windowed", "Fullscreen"};
+	const char *window_modes[] = { "Windowed", "Fullscreen"};
 
-	ri.Con_Printf( PRINT_ALL, "Initializing OpenGL display\n");
+	ri.Con_Printf(PRINT_ALL, "Initializing OpenGL display\n");
 
-	ri.Con_Printf (PRINT_ALL, "...setting mode %d:", mode );
+	ri.Con_Printf(PRINT_ALL, "...setting mode %d:", mode );
 
 	if ( !ri.Vid_GetModeInfo( &width, &height, mode ) )
 	{
@@ -368,5 +368,5 @@ void	GL_EnableCursor(bool enabled)
 
 void GLFW_Error(const char* error)
 {
-	Sys_Error("**** GLFW ERROR ****\n\n%s", error);
+	Sys_Error("A fatal GLFW error occurred:\n\n\n%s", error);
 }

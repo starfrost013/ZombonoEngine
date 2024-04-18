@@ -3313,7 +3313,7 @@ void PlayerConfig_MenuDraw( void )
 	refdef.y = viddef.height / 2 - 72 * vid_hudscale->value;
 	refdef.width = 144 * vid_hudscale->value;
 	refdef.height = 168 * vid_hudscale->value;
-	refdef.fov_x = 40;
+
 	refdef.fov_y = CalcFov( refdef.fov_x, refdef.width, refdef.height );
 	refdef.time = cls.realtime*0.001;
 

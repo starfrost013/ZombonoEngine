@@ -25,9 +25,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 model_t	*loadmodel;
 int		modfilelen;
 
+float	map_radius;
+
 void Mod_LoadSpriteModel (model_t *mod, void *buffer);
-void RendererMap_Load (model_t *mod, void *buffer);
+void MapRenderer_Load (model_t *mod, void *buffer);
 void Mod_LoadAliasModel (model_t *mod, void *buffer);
+void MapRenderer_BoxLeafnums_r(int32_t nodenum);
 
 uint8_t	mod_novis[MAX_MAP_LEAFS/8];
 
@@ -256,7 +259,7 @@ model_t *Mod_ForName (char *name, bool crash)
 	
 	case ZBSP_HEADER:
 		loadmodel->extradata = Hunk_Begin (MAX_BSP_ALLOC);
-		RendererMap_Load (mod, buf);
+		MapRenderer_Load (mod, buf);
 		break;
 
 	default:
@@ -287,7 +290,7 @@ uint8_t* mod_base;
 Mod_LoadLighting
 =================
 */
-void RendererMap_LoadLighting (lump_t *l)
+void MapRenderer_LoadLighting (lump_t *l)
 {
 	if (!l->filelen)
 	{
@@ -304,7 +307,7 @@ void RendererMap_LoadLighting (lump_t *l)
 Mod_LoadVisibility
 =================
 */
-void RendererMap_LoadVisibility (lump_t *l)
+void MapRenderer_LoadVisibility (lump_t *l)
 {
 	int		i;
 
@@ -330,7 +333,7 @@ void RendererMap_LoadVisibility (lump_t *l)
 Mod_LoadVertexes
 =================
 */
-void RendererMap_LoadVertexes (lump_t *l)
+void MapRenderer_LoadVertexes (lump_t *l)
 {
 	dvertex_t	*in;
 	mvertex_t	*out;
@@ -377,7 +380,7 @@ float RadiusFromBounds (vec3_t mins, vec3_t maxs)
 Mod_LoadSubmodels
 =================
 */
-void RendererMap_LoadSubmodels (lump_t *l)
+void MapRenderer_LoadSubmodels (lump_t *l)
 {
 	dmodel_t	*in;
 	mmodel_t	*out;
@@ -412,7 +415,7 @@ void RendererMap_LoadSubmodels (lump_t *l)
 Mod_LoadEdges
 =================
 */
-void RendererMap_LoadEdges (lump_t *l)
+void MapRenderer_LoadEdges (lump_t *l)
 {
 	dedge_t *in;
 	medge_t *out;
@@ -439,7 +442,7 @@ void RendererMap_LoadEdges (lump_t *l)
 Mod_LoadTexinfo
 =================
 */
-void RendererMap_LoadTexinfo (lump_t *l)
+void MapRenderer_LoadTexinfo (lump_t *l)
 {
 	texinfo_t *in;
 	mtexinfo_t *out, *step;
@@ -555,7 +558,7 @@ void GL_BeginBuildingLightmaps (model_t *m);
 Mod_LoadFaces
 =================
 */
-void RendererMap_LoadFaces (lump_t *l)
+void MapRenderer_LoadFaces (lump_t *l)
 {
 	dface_t		*in;
 	msurface_t 	*out;
@@ -652,7 +655,7 @@ void Mod_SetParent (mnode_t *node, mnode_t *parent)
 Mod_LoadNodes
 =================
 */
-void RendererMap_LoadNodes (lump_t *l)
+void MapRenderer_LoadNodes (lump_t *l)
 {
 	int32_t		i, j, count, p;
 	dnode_t		*in;
@@ -700,7 +703,7 @@ void RendererMap_LoadNodes (lump_t *l)
 Mod_LoadLeafs
 =================
 */
-void RendererMap_LoadLeafs (lump_t *l)
+void MapRenderer_LoadLeafs (lump_t *l)
 {
 	dleaf_t 	*in;
 	mleaf_t 	*out;
@@ -742,7 +745,7 @@ void RendererMap_LoadLeafs (lump_t *l)
 Mod_LoadMarksurfaces
 =================
 */
-void RendererMap_LoadMarksurfaces (lump_t *l)
+void MapRenderer_LoadMarksurfaces (lump_t *l)
 {	
 	uint32_t		i, j, count;
 	int		*in;
@@ -771,7 +774,7 @@ void RendererMap_LoadMarksurfaces (lump_t *l)
 Mod_LoadSurfedges
 =================
 */
-void RendererMap_LoadSurfedges (lump_t *l)
+void MapRenderer_LoadSurfedges (lump_t *l)
 {	
 	int		i, count;
 	int		*in, *out;
@@ -799,7 +802,7 @@ void RendererMap_LoadSurfedges (lump_t *l)
 Mod_LoadPlanes
 =================
 */
-void RendererMap_LoadPlanes (lump_t *l)
+void MapRenderer_LoadPlanes (lump_t *l)
 {
 	int			i, j;
 	cplane_t	*out;
@@ -837,7 +840,7 @@ void RendererMap_LoadPlanes (lump_t *l)
 Mod_LoadBrushModel
 =================
 */
-void RendererMap_Load (model_t *mod, void *buffer)
+void MapRenderer_Load (model_t *mod, void *buffer)
 {
 	int			i;
 	dheader_t	*header;
@@ -851,7 +854,7 @@ void RendererMap_Load (model_t *mod, void *buffer)
 
 	i = LittleInt (header->version);
 	if (i != ZBSP_VERSION)
-		ri.Sys_Error (ERR_DROP, "Mod_LoadBrushModel: %s has wrong version number (%i should be %i)", mod->name, i, ZBSP_VERSION);
+		ri.Sys_Error (ERR_DROP, "MapRenderer_Load: BSP %s has wrong version number (%i should be %i)", mod->name, i, ZBSP_VERSION);
 
 // swap all the lumps
 	mod_base = (uint8_t *)header;
@@ -861,18 +864,18 @@ void RendererMap_Load (model_t *mod, void *buffer)
 
 // load into heap
 	
-	RendererMap_LoadVertexes (&header->lumps[LUMP_VERTEXES]);
-	RendererMap_LoadEdges (&header->lumps[LUMP_EDGES]);
-	RendererMap_LoadSurfedges (&header->lumps[LUMP_SURFEDGES]);
-	RendererMap_LoadLighting (&header->lumps[LUMP_LIGHTING]);
-	RendererMap_LoadPlanes (&header->lumps[LUMP_PLANES]);
-	RendererMap_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
-	RendererMap_LoadFaces (&header->lumps[LUMP_FACES]);
-	RendererMap_LoadMarksurfaces (&header->lumps[LUMP_LEAFFACES]);
-	RendererMap_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
-	RendererMap_LoadLeafs (&header->lumps[LUMP_LEAFS]);
-	RendererMap_LoadNodes (&header->lumps[LUMP_NODES]);
-	RendererMap_LoadSubmodels (&header->lumps[LUMP_MODELS]);
+	MapRenderer_LoadVertexes (&header->lumps[LUMP_VERTEXES]);
+	MapRenderer_LoadEdges (&header->lumps[LUMP_EDGES]);
+	MapRenderer_LoadSurfedges (&header->lumps[LUMP_SURFEDGES]);
+	MapRenderer_LoadLighting (&header->lumps[LUMP_LIGHTING]);
+	MapRenderer_LoadPlanes (&header->lumps[LUMP_PLANES]);
+	MapRenderer_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
+	MapRenderer_LoadFaces (&header->lumps[LUMP_FACES]);
+	MapRenderer_LoadMarksurfaces (&header->lumps[LUMP_LEAFFACES]);
+	MapRenderer_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
+	MapRenderer_LoadLeafs (&header->lumps[LUMP_LEAFS]);
+	MapRenderer_LoadNodes (&header->lumps[LUMP_NODES]);
+	MapRenderer_LoadSubmodels (&header->lumps[LUMP_MODELS]);
 	mod->numframes = 2;		// regular and alternate animation
 	
 //
@@ -902,6 +905,9 @@ void RendererMap_Load (model_t *mod, void *buffer)
 
 		starmod->numleafs = bm->visleafs;
 	}
+
+	// for later use by skybox rendering code
+	map_radius = loadmodel->radius;
 }
 
 //=============================================================================

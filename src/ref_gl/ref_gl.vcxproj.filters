@@ -27,7 +27,7 @@
     <ClCompile Include="gl_model.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gl_map.c">
+    <ClCompile Include="gl_map_loader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gl_rmain.c">

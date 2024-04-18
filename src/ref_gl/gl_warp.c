@@ -502,9 +502,23 @@ void MakeSkyVec (float s, float t, int32_t axis)
 	vec3_t		v, b;
 	int			j, k;
 
-	b[0] = s*2300;
-	b[1] = t*2300;
-	b[2] = 2300;
+	b[0] = s*gl_drawdistance->value;
+	b[1] = t* gl_drawdistance->value;
+	b[2] = gl_drawdistance->value;
+
+	// prevent the skybox from being pushed outside of the map radius and therefore smearing
+	float map_radius_x = s * map_radius;
+	float map_radius_y = t * map_radius;
+	float map_radius_z = map_radius;
+
+	if (abs(b[0]) >= map_radius_x)
+		b[0] = map_radius_x;
+
+	if (abs(b[1]) >= t * map_radius_y)
+		b[1] = map_radius_y;
+
+	if (abs(b[2]) >= map_radius_z)
+		b[2] = map_radius_z;
 
 	for (j=0 ; j<3 ; j++)
 	{

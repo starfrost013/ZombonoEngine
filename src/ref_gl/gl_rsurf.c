@@ -1065,13 +1065,14 @@ void R_DrawWorld (void)
 		else
 			GL_TexEnv(GL_MODULATE);
 
+		//...then render the world with that data. This makes it look shiny and not garbage
 		R_RecursiveWorldNode(r_worldmodel->nodes);
 
 		GL_EnableMultitexture(false);
 	}
 	else
 	{
-		//...then render the world with that data. This makes it look shiny and not garbage
+		// just fullbright it
 		R_RecursiveWorldNode(r_worldmodel->nodes);
 	}
 

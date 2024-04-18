@@ -98,7 +98,7 @@ cvar_t* gl_ext_compiled_vertex_array;
 
 cvar_t* gl_bitdepth;
 cvar_t* gl_drawbuffer;
-cvar_t  *gl_driver;
+cvar_t* gl_driver;
 cvar_t* gl_lightmap;
 cvar_t* gl_shadows;
 cvar_t* gl_mode;
@@ -117,6 +117,7 @@ cvar_t* gl_polyblend;
 cvar_t* gl_flashblend;
 cvar_t* gl_playermip;
 cvar_t* gl_saturatelighting;
+cvar_t* gl_drawdistance;
 cvar_t* gl_texturemode;
 cvar_t* gl_texturealphamode;
 cvar_t* gl_texturesolidmode;
@@ -474,7 +475,7 @@ void R_SetupFrame (void)
 }
 
 
-void SetGLPerspective( GLdouble fovy, GLdouble aspect,
+void GL_SetPerspective( GLdouble fovy, GLdouble aspect,
 		     GLdouble zNear, GLdouble zFar )
 {
    GLdouble xmin, xmax, ymin, ymax;
@@ -520,7 +521,7 @@ void R_SetupGL (void)
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
-    SetGLPerspective (r_newrefdef.fov_y,  screenaspect,  4,  4096);
+    GL_SetPerspective (r_newrefdef.fov_y,  screenaspect,  4,  gl_drawdistance->value);
 
 	glCullFace(GL_FRONT);
 
@@ -792,6 +793,8 @@ void R_Register( void )
 	gl_drawbuffer = ri.Cvar_Get( "gl_drawbuffer", "GL_BACK", 0 );
 
 	gl_saturatelighting = ri.Cvar_Get( "gl_saturatelighting", "0", 0 );
+
+	gl_drawdistance = ri.Cvar_Get("gl_drawdistance", "8192", CVAR_ARCHIVE);
 
 	vid_borderless = ri.Cvar_Get( "vid_borderless", "0", CVAR_ARCHIVE );
 	vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);

@@ -145,8 +145,6 @@ typedef struct mnode_s
 	uint32_t		numsurfaces;
 } mnode_t;
 
-
-
 typedef struct mleaf_s
 {
 // common with node

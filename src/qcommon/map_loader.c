@@ -836,8 +836,6 @@ int32_t CM_PointLeafnum (vec3_t p)
 	return Map_PointLeafnum_r (p, 0);
 }
 
-
-
 /*
 =============
 Map_BoxLeafnums
@@ -848,11 +846,11 @@ Fills in a list of all the leafs touched
 int32_t 	leaf_count;
 int32_t		leaf_maxcount;
 int32_t* 	leaf_list;
-float*		leaf_mins;
-float*		leaf_maxs;
+float*		map_mins;
+float*		map_maxs;
 int32_t 	leaf_topnode;
 
-void Map_BoxLeafnums_r (int32_t nodenum)
+void MapRenderer_BoxLeafnums_r (int32_t nodenum)
 {
 	cplane_t	*plane;
 	cnode_t		*node;
@@ -873,7 +871,7 @@ void Map_BoxLeafnums_r (int32_t nodenum)
 	
 		node = &map_nodes[nodenum];
 		plane = node->plane;
-		s = BOX_ON_PLANE_SIDE(leaf_mins, leaf_maxs, plane);
+		s = BOX_ON_PLANE_SIDE(map_mins, map_maxs, plane);
 		if (s == 1)
 			nodenum = node->children[0];
 		else if (s == 2)
@@ -882,7 +880,7 @@ void Map_BoxLeafnums_r (int32_t nodenum)
 		{	// go down both
 			if (leaf_topnode == -1)
 				leaf_topnode = nodenum;
-			Map_BoxLeafnums_r (node->children[0]);
+			MapRenderer_BoxLeafnums_r (node->children[0]);
 			nodenum = node->children[1];
 		}
 
@@ -892,17 +890,17 @@ void Map_BoxLeafnums_r (int32_t nodenum)
 // ============================
 // Map_BoxLeafnums start (at head leaf)
 // ============================
-int32_t Map_BoxLeafnums_headnode (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t headnode, int32_t *topnode)
+int32_t MapRenderer_BoxLeafnums_headnode (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t headnode, int32_t *topnode)
 {
 	leaf_list = list;
 	leaf_count = 0;
 	leaf_maxcount = listsize;
-	leaf_mins = mins;
-	leaf_maxs = maxs;
+	map_mins = mins;
+	map_maxs = maxs;
 
 	leaf_topnode = -1;
 
-	Map_BoxLeafnums_r (headnode);
+	MapRenderer_BoxLeafnums_r (headnode);
 
 	if (topnode)
 		*topnode = leaf_topnode;
@@ -910,9 +908,9 @@ int32_t Map_BoxLeafnums_headnode (vec3_t mins, vec3_t maxs, int32_t *list, int32
 	return leaf_count;
 }
 
-int32_t Map_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t *topnode)
+int32_t MapRenderer_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t *topnode)
 {
-	return Map_BoxLeafnums_headnode (mins, maxs, list,
+	return MapRenderer_BoxLeafnums_headnode (mins, maxs, list,
 		listsize, map_cmodels[0].headnode, topnode);
 }
 
@@ -1386,7 +1384,7 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 			c2[i] += 1;
 		}
 
-		numleafs = Map_BoxLeafnums_headnode (c1, c2, leafs, 1024, headnode, &topnode);
+		numleafs = MapRenderer_BoxLeafnums_headnode (c1, c2, leafs, 1024, headnode, &topnode);
 		for (i=0 ; i<numleafs ; i++)
 		{
 			Map_TestInLeaf (leafs[i]);
