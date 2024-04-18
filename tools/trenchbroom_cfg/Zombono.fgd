@@ -5,7 +5,7 @@
 // Originally written by by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/04/13 version
+// 2024/04/18 version
 
 //
 // worldspawn
@@ -814,12 +814,6 @@
 		16 : "Slow hurt" : 0
 	]
 	dmg(integer) : "Damage" : 5
-]
-
-@PointClass base(Appearflags, Targetname, Target) color(128 128 128) size(-8 -8 -8, 8 8 8) = trigger_key : "Triggers with key"
-[
-	killtarget(string) : "Kill target"
-	item(string) : "Item classname" : "key_blue_key"
 ]
 
 @SolidClass base(Appearflags) color(128 128 128) = trigger_monsterjump : "Makes monsters jump"
