@@ -107,7 +107,8 @@ REMOVALS:
 * Removed the ability to play audio off of the CD as most people don't have CD/DVD-ROM drives anymore
 * Removed vid_front command (makes window always on top)
 * Removed packet command (was dangerous, could send arbitrary packets and was disabled anyway)
-
+* Removed trigger_key entity (useless as keys were removed long ago)
+ 
 Version 0.0.6.161 (Build 161)
 April 6, 2024
 * Fixed typing lowercase in chat (workaround)
