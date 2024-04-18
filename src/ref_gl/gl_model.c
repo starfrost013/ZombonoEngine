@@ -764,7 +764,7 @@ void R_DrawAliasModel (entity_t *e)
 		glPushMatrix();
 		glLoadIdentity();
 		glScalef( -1, 1, 1 );
-	    GL_SetPerspective( r_newrefdef.fov_y, ( float ) r_newrefdef.width / r_newrefdef.height,  4,  gl_drawdistance->value);
+	    GL_SetPerspective( r_newrefdef.fov_y, ( float ) r_newrefdef.width / r_newrefdef.height,  4,  gl_drawdistance->value + gl_skyboxepsilon->value);
 		glMatrixMode( GL_MODELVIEW );
 
 		glCullFace( GL_BACK );

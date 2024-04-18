@@ -118,6 +118,7 @@ cvar_t* gl_flashblend;
 cvar_t* gl_playermip;
 cvar_t* gl_saturatelighting;
 cvar_t* gl_drawdistance;
+cvar_t* gl_skyboxepsilon;
 cvar_t* gl_texturemode;
 cvar_t* gl_texturealphamode;
 cvar_t* gl_texturesolidmode;
@@ -386,15 +387,24 @@ int32_t SignbitsForPlane (cplane_t *out)
 void R_SetFrustum (void)
 {
 	int		i;
+	int		base = 90;
+
+	// HACK: silly hack to not cull outside the box 
+	// TODO: This code is fundamentally broken and does not care about aspect ratio, but it's hacked to work.
+
+	if ((float)r_newrefdef.width / (float)r_newrefdef.height > 1.4f) // 16:9 widescreen
+	{
+		base = 75;
+	}
 
 	// rotate VPN right by FOV_X/2 degrees
-	RotatePointAroundVector( frustum[0].normal, vup, vpn, -(90-r_newrefdef.fov_x / 2 ) );
+	RotatePointAroundVector( frustum[0].normal, vup, vpn, -(base-r_newrefdef.fov_x / 2 ) );
 	// rotate VPN left by FOV_X/2 degrees
-	RotatePointAroundVector( frustum[1].normal, vup, vpn, 90-r_newrefdef.fov_x / 2 );
+	RotatePointAroundVector( frustum[1].normal, vup, vpn, base-r_newrefdef.fov_x / 2 );
 	// rotate VPN up by FOV_X/2 degrees
-	RotatePointAroundVector( frustum[2].normal, vright, vpn, 90-r_newrefdef.fov_y / 2 );
+	RotatePointAroundVector( frustum[2].normal, vright, vpn, base-r_newrefdef.fov_y / 2 );
 	// rotate VPN down by FOV_X/2 degrees
-	RotatePointAroundVector( frustum[3].normal, vright, vpn, -( 90 - r_newrefdef.fov_y / 2 ) );
+	RotatePointAroundVector( frustum[3].normal, vright, vpn, -( base - r_newrefdef.fov_y / 2 ) );
 
 	for (i=0 ; i<4 ; i++)
 	{
@@ -521,7 +531,7 @@ void R_SetupGL (void)
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
-    GL_SetPerspective (r_newrefdef.fov_y,  screenaspect,  4,  gl_drawdistance->value);
+    GL_SetPerspective (r_newrefdef.fov_y,  screenaspect,  4,  gl_drawdistance->value + gl_skyboxepsilon->value);
 
 	glCullFace(GL_FRONT);
 
@@ -795,6 +805,7 @@ void R_Register( void )
 	gl_saturatelighting = ri.Cvar_Get( "gl_saturatelighting", "0", 0 );
 
 	gl_drawdistance = ri.Cvar_Get("gl_drawdistance", "8192", CVAR_ARCHIVE);
+	gl_skyboxepsilon = ri.Cvar_Get("gl_skyboxepsilon", "725", CVAR_ARCHIVE);
 
 	vid_borderless = ri.Cvar_Get( "vid_borderless", "0", CVAR_ARCHIVE );
 	vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);

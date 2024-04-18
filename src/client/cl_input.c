@@ -757,6 +757,11 @@ void Input_MouseMove(usercmd_t* cmd)
 		cl.viewangles[PITCH] += m_pitch->value * y_pos;
 	}
 
+	if (cl.viewangles[YAW] <= -180) cl.viewangles[YAW] += 360;
+	if (cl.viewangles[YAW] >= 180) cl.viewangles[YAW] -= 360;
+
+	// pitch is clamped elsewhere 
+
 	re.SetCursorPosition(window_center_x, window_center_y);
 	last_mouse_pos_x = window_center_x;
 	last_mouse_pos_y = window_center_y;
