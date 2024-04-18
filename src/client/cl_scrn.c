@@ -641,19 +641,19 @@ void SCR_TileClear (void)
 	if (scr_vrect.y > 0)
 	{	// clear above view screen
 		re.DrawTileClear (scr_vrect.x , 0,
-			scr_vrect.width, scr_vrect.y, "backtile");
+			scr_vrect.width, scr_vrect.y, "pics/backtile");
 
 		// clear below view screen
 		re.DrawTileClear(scr_vrect.x, scr_vrect.y + scr_vrect.height,
-			scr_vrect.width, viddef.height - scr_vrect.height - scr_vrect.y, "backtile");
+			scr_vrect.width, viddef.height - scr_vrect.height - scr_vrect.y, "pics/backtile");
 	}
 
 	if (scr_vrect.x > 0)
 	{	// clear left of view screen
-		re.DrawTileClear (0, 0, scr_vrect.x, viddef.height, "backtile");
+		re.DrawTileClear (0, 0, scr_vrect.x, viddef.height, "pics/backtile");
 
 		// clear right of view screen
-		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, viddef.height, "backtile");
+		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, viddef.height, "pics/backtile");
 	}
 }
 

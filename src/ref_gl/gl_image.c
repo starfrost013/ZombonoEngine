@@ -514,6 +514,8 @@ void LoadTGA (char *name, uint8_t **pic, int32_t *width, int32_t *height)
 	ri.FS_FreeFile (buffer);
 }
 
+#define RESAMPLE_SIZE		4096
+
 /*
 ================
 GL_ResampleTexture
@@ -524,7 +526,7 @@ void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32
 	int			i, j;
 	uint32_t	*inrow, *inrow2;
 	uint32_t	frac, fracstep;
-	uint32_t	p1[1024], p2[1024];
+	uint32_t	p1[RESAMPLE_SIZE], p2[RESAMPLE_SIZE];
 	uint8_t		*pix1, *pix2, *pix3, *pix4;
 
 	fracstep = inwidth*0x10000/outwidth;
@@ -640,12 +642,14 @@ Returns has_alpha
 int		upload_width, upload_height;
 bool uploaded_paletted;
 
+unsigned	scaled[MAX_TEXTURE_SIZE * MAX_TEXTURE_SIZE];
+
 bool GL_Upload32 (uint32_t *data, int32_t width, int32_t height,  bool mipmap)
 {
-	int			samples;
-	unsigned	scaled[256*256];
-	int			scaled_width, scaled_height;
-	int			i, c;
+	int32_t		samples;
+
+	int32_t		scaled_width, scaled_height;
+	int32_t		i, c;
 	uint8_t		*scan;
 	int32_t comp;
 
@@ -668,10 +672,10 @@ bool GL_Upload32 (uint32_t *data, int32_t width, int32_t height,  bool mipmap)
 	}
 
 	// don't ever bother with >256 textures
-	if (scaled_width > 256)
-		scaled_width = 256;
-	if (scaled_height > 256)
-		scaled_height = 256;
+	if (scaled_width > MAX_TEXTURE_SIZE)
+		scaled_width = MAX_TEXTURE_SIZE;
+	if (scaled_height > MAX_TEXTURE_SIZE)
+		scaled_height = MAX_TEXTURE_SIZE;
 
 	if (scaled_width < 1)
 		scaled_width = 1;

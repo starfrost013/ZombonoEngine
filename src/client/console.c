@@ -590,11 +590,33 @@ void Con_DrawConsole (float frac)
 // draw the background (draw widescreen 457*240 background if 16:9 res)
 	if ((float)viddef.width / (float)viddef.height > 1.4f)
 	{
-		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback_16x9");
+		if (viddef.width >= 1920)
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback_16x9");
+		}
+		else if (viddef.width >= 960)
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback_16x9@0.5x");
+		}
+		else
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback_16x9@0.25x");
+		}
 	}
 	else
 	{
-		re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback");
+		if (viddef.width >= 1440)
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback");
+		}
+		else if (viddef.width >= 720)
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback@0.5x");
+		}
+		else
+		{
+			re.DrawStretchPic(0, lines - viddef.height, viddef.width, viddef.height, "pics/conback@0.25x");
+		}
 	}
 
 	SCR_AddDirtyPoint (0,0);

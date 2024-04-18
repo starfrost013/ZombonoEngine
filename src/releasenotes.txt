@@ -23,6 +23,7 @@ NEW FEATURES:
 * UI: Allowed Image controls to optionally display a different image when the mouse is clicking on them (ui_control_t->image_path_on_click), set with the UI_SetImageOnClick function
 * UI: Allowed Image controls to optionally display a different image when the mouse is hovering over them (ui_control_t->image_path_on_hover), set with the UI_SetImageOnHover function
 	* Added hover images to team select menu
+* The engine can now deal with texture sizes above 256x256, and can scale textures up to 2048*2048
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
@@ -47,13 +48,13 @@ BUG FIXES:
 	* This means the default m_pitch and m_yaw values are reduced from 20 to 0.05
 * Fixed not being able to jump up to get the big armour on z_tdm_warehouse
 * Fixed bug where players were always upside down or sideways to other players
+* Fixed backtile not working (you don't get prigozhin'd when you reduce screen size)
 * Restored gl_drawbuffer functionality, which was broken in 0.0.6
 * Redrew the default crosshairs to actually be centered
 
 OTHER ENHANCEMENTS AND CHANGES:
 * Moved mouse code from platform specific to platform independent code (because now it is). All input code is now platform independent!
 * Moved code that interfaces with the video DLL from platform specific to independent and removed all Win32/X/etc dependencies. All video code is now platform independent!
-
 * Renamed in_ cvars to input_ and same for functions
 * Made input shift code slightly less insane
 * Removed almost all relative path includes (one of them is required due to being compiled from two projects...)
@@ -65,6 +66,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Made the healthbar numbers slightly brighter
 * Refactored fatal error code
 	* Split message box code from error code so the game can call the message box and get back what buttons the user pressed
+* Changed console background
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)

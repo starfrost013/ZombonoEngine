@@ -22,7 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 #include "gl_local.h"
 
-// gl_state.h: Holds the OpenGL renderer state
+// gl_state.h: Holds the OpenGL renderer state and gloals
+
+#define		MAX_TEXTURE_SIZE	2048
 
 typedef struct gl_state_s
 {
