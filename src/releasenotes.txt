@@ -110,7 +110,9 @@ REMOVALS:
 * Removed vid_front command (makes window always on top)
 * Removed packet command (was dangerous, could send arbitrary packets and was disabled anyway)
 * Removed trigger_key entity (useless as keys were removed long ago)
- 
+* Removed 134 of 137 monster muzzle flashes as they all related to removed monsters and were model specific
+	* Kept 3 for example code purposes
+
 Version 0.0.6.161 (Build 161)
 April 6, 2024
 * Fixed typing lowercase in chat (workaround)
