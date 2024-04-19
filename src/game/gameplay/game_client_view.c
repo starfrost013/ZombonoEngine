@@ -503,7 +503,7 @@ void P_WorldEffects (void)
 {
 	bool	breather;
 	bool	envirosuit;
-	int			waterlevel, old_waterlevel;
+	int		waterlevel, old_waterlevel;
 
 	if (current_player->movetype == MOVETYPE_NOCLIP)
 	{

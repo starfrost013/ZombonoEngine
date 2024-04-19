@@ -53,7 +53,7 @@
     <ClCompile Include="client\snd_mem.c" />
     <ClCompile Include="client\snd_miniaudio.c" />
     <ClCompile Include="client\snd_mix.c" />
-    <ClCompile Include="cl_video.c" />
+    <ClCompile Include="client\cl_video.c" />
     <ClCompile Include="game\gameplay\game_monster_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="qcommon\cmd.c" />

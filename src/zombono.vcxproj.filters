@@ -171,10 +171,7 @@
     <ClCompile Include="client\cl_loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cl_video.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="menu_video.c">
+    <ClCompile Include="client\cl_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\menu_video.c">
