@@ -312,7 +312,7 @@ void SV_CalcViewOffset (edict_t *ent)
 	bob = bobfracsin * xyspeed * bob_up->value;
 	if (bob > 6)
 		bob = 6;
-	//gi.DebugGraph (bob *2, 255);
+
 	v[2] += bob;
 
 	// add kick offset

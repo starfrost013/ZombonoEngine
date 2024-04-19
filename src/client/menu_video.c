@@ -36,7 +36,7 @@ extern cvar_t* scr_viewsize;
 static cvar_t* gl_mode;
 static cvar_t* gl_driver;
 static cvar_t* gl_picmip;
-static cvar_t* gl_finish;
+static cvar_t* gl_vsync;
 
 extern void M_ForceMenuOff(void);
 
@@ -64,7 +64,7 @@ static menuslider_t		s_screensize_slider[NUM_REF_MENUS];
 static menuslider_t		s_brightness_slider[NUM_REF_MENUS];
 static menulist_t  		s_fullscreen_box[NUM_REF_MENUS];
 static menulist_t		s_fullscreen_dedicated_box[NUM_REF_MENUS];
-static menulist_t		s_finish_box;
+static menulist_t		s_vsync_box;
 static menuaction_t		s_apply_action[NUM_REF_MENUS];
 static menuaction_t		s_cancel_action[NUM_REF_MENUS];
 static menuaction_t		s_defaults_action[NUM_REF_MENUS];
@@ -143,7 +143,7 @@ static void ApplyChanges(void* unused)
 		Cvar_SetValue("vid_fullscreen", 0);
 	}
 
-	Cvar_SetValue("gl_finish", s_finish_box.curvalue);
+	Cvar_SetValue("gl_vsync", s_vsync_box.curvalue);
 	Cvar_SetValue("gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1);
 
 	switch (s_ref_list[s_current_menu_index].curvalue)
@@ -235,8 +235,8 @@ void VID_MenuInit(void)
 		gl_picmip = Cvar_Get("gl_picmip", "0", 0);
 	if (!gl_mode)
 		gl_mode = Cvar_Get("gl_mode", "6", 0, CVAR_ARCHIVE);
-	if (!gl_finish)
-		gl_finish = Cvar_Get("gl_finish", "0", CVAR_ARCHIVE);
+	if (!gl_vsync)
+		gl_vsync = Cvar_Get("gl_vsync", "0", CVAR_ARCHIVE);
 
 	s_mode_list[OPENGL_MENU].curvalue = gl_mode->value < 0 ? 0 : gl_mode->value + 1;
 
@@ -331,12 +331,12 @@ void VID_MenuInit(void)
 	s_tq_slider.maxvalue = 3;
 	s_tq_slider.curvalue = 3 - gl_picmip->value;
 
-	s_finish_box.generic.type = MTYPE_SPINCONTROL;
-	s_finish_box.generic.x = 0;
-	s_finish_box.generic.y = 80 * vid_hudscale->value;
-	s_finish_box.generic.name = "^5Sync Every Frame";
-	s_finish_box.curvalue = gl_finish->value;
-	s_finish_box.itemnames = yes_no_names;
+	s_vsync_box.generic.type = MTYPE_SPINCONTROL;
+	s_vsync_box.generic.x = 0;
+	s_vsync_box.generic.y = 80 * vid_hudscale->value;
+	s_vsync_box.generic.name = "^5VSync";
+	s_vsync_box.curvalue = gl_vsync->value;
+	s_vsync_box.itemnames = yes_no_names;
 
 	Menu_AddItem(&s_opengl_menu, (void*)&s_ref_list[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_mode_list[OPENGL_MENU]);
@@ -345,7 +345,7 @@ void VID_MenuInit(void)
 	Menu_AddItem(&s_opengl_menu, (void*)&s_fullscreen_box[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_fullscreen_dedicated_box[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_tq_slider);
-	Menu_AddItem(&s_opengl_menu, (void*)&s_finish_box);
+	Menu_AddItem(&s_opengl_menu, (void*)&s_vsync_box);
 
 	Menu_AddItem(&s_opengl_menu, (void*)&s_apply_action[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_defaults_action[OPENGL_MENU]);
