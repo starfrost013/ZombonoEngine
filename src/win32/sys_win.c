@@ -517,6 +517,7 @@ void ParseCommandLine (LPSTR lpCmdLine)
 ==================
 WinMain
 
+The entry point on Windows platform
 ==================
 */
 
