@@ -485,14 +485,15 @@ void CL_ParseLaser (int32_t colors)
 CL_ParseTEnt
 =================
 */
-static vec4_t splash_color[] = {
-	{ 0, 0, 0, 0 },
-	{ 254, 171, 7, 255 }, 
-	{ 118, 123, 207, 255 }, 
-	{ 123, 95, 74, 255 }, 
-	{ 0, 255, 0, 255 },
+static vec4_t splash_color[] =
+{
+	{ 0, 0, 0, 0 },					
+	{ 254, 171, 7, 255 },			
+	{ 118, 123, 207, 255 },			
+	{ 123, 95, 74, 255 },			
+	{ 0, 255, 0, 255 },				
 	{ 254, 171, 7, 255 },
-	{ 156, 31, 1, 255 }
+	{ 156, 31, 1, 255 },	
 };
 
 void CL_ParseTEnt (void)
@@ -504,7 +505,6 @@ void CL_ParseTEnt (void)
 	vec4_t			color;
 	int32_t 		r;
 	int32_t 		ent;
-	int32_t 		magnitude;
 
 	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
 	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
@@ -933,19 +933,17 @@ CL_AddPlayerBeams
 void CL_AddPlayerBeams (void)
 {
 	int32_t 		i,j;
-	beam_t		*b;
-	vec3_t		dist, org;
-	float		d;
-	entity_t	ent;
-	float		yaw, pitch;
-	float		forward;
-	float		len, steps;
+	beam_t			*b;
+	vec3_t			dist = { 0 }, org = { 0 };
+	float			d;
+	entity_t		ent;
+	float			yaw, pitch;
+	float			forward;
+	float			len, steps;
 	int32_t 		framenum = 0;
-	float		model_length;
+	float			model_length;
 	
-	float		hand_multiplier;
-	frame_t		*oldframe;
-	player_state_t	*ps, *ops;
+	float			hand_multiplier;
 
 	if (hand)
 	{
@@ -965,7 +963,6 @@ void CL_AddPlayerBeams (void)
 // update beams
 	for (i=0, b=cl_playerbeams ; i< MAX_BEAMS ; i++, b++)
 	{
-		vec3_t		f,r,u;
 		if (!b->model || b->endtime < cl.time)
 			continue;
 
@@ -1021,7 +1018,6 @@ void CL_AddPlayerBeams (void)
 		// through the tesla mine (instead it goes through the target)
 		if (d <= model_length)
 		{
-//			Com_Printf ("special case\n");
 			VectorCopy (b->end, ent.origin);
 			// offset to push beam outside of tesla model (negative because dist is from end to start
 			// for this beam)

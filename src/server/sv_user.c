@@ -546,11 +546,10 @@ void SV_ExecuteClientMessage (client_t *cl)
 
 	usercmd_t	nullcmd;
 	usercmd_t	oldest, oldcmd, newcmd;
-	int32_t 	net_drop;
 	int32_t 	stringCmdCount;
 	int32_t 	checksum, calculatedChecksum;
 	int32_t 	checksumIndex;
-	bool	move_issued;
+	bool		move_issued;
 	int32_t 	lastframe;
 
 	sv_client = cl;

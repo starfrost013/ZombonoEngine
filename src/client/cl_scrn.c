@@ -91,7 +91,6 @@ A new packet was just parsed
 */
 void CL_AddNetgraph (void)
 {
-	int32_t 	i;
 	int32_t 	in;
 	int32_t 	ping;
 
@@ -192,7 +191,6 @@ for a few moments
 void SCR_CenterPrint (char *str)
 {
 	char	*s;
-	int32_t 	i, j, l;
 
 	strncpy (scr_centerstring, str, sizeof(scr_centerstring));
 	scr_centertime_off = scr_centertime->value;
@@ -221,8 +219,6 @@ void SCR_CenterPrint (char *str)
 void SCR_DrawCenterString (void)
 {
 	char	*start;
-	int32_t 	l;
-	int32_t 	j;
 	int32_t 	x, y;
 	int32_t 	remaining;
 	int32_t 	size_x = 0, size_y = 0;

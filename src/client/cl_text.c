@@ -92,13 +92,13 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	if (string_length == 0)
 	{
 		// don't bother drawing empty strings
-		return;
+		return false;
 	}
 
 	if (string_length > MAX_STRING_LENGTH)
 	{
 		Com_Printf("Tried to print text of pre-colour code length %d, max %d", string_length, MAX_STRING_LENGTH);
-		return;
+		return false;
 	}
 
 	int32_t longest_line_x = 0;

@@ -64,8 +64,6 @@ WAVEOUTCAPS	wavecaps;
 
 DWORD	gSndBufSize;
 
-MMTIME		mmstarttime;
-
 bool SNDDMA_InitWav (void);
 
 void FreeSound( void );
@@ -332,10 +330,7 @@ how many sample are required to fill it up.
 */
 int32_t SNDDMA_GetDMAPos(void)
 {
-	MMTIME	mmtime;
 	int32_t 	s;
-	DWORD	dwWrite;
-
 	s = snd_sent * WAV_BUFFER_SIZE;
 
 	s >>= sample16;

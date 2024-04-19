@@ -522,13 +522,7 @@ WinMain
 
 int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
-    MSG				msg;
 	int32_t 		time, oldtime, newtime;
-	char			*cddir;
-
-    /* previous instances do not exist in Win32 */
-    if (hPrevInstance)
-        return 0;
 
 	ParseCommandLine (lpCmdLine);
 
