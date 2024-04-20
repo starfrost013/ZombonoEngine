@@ -435,13 +435,13 @@ void Key_Console (int32_t key, int32_t mods)
 
 	if (key == K_PAGE_UP || key == K_MWHEELUP || key == K_PAGE_UP)
 	{
-		con.display -= 2;
+		con.display -= 4;
 		return;
 	}
 
 	if (key == K_PAGE_DOWN || key == K_MWHEELDOWN || key == K_PAGE_DOWN)
 	{
-		con.display += 2;
+		con.display += 4;
 		if (con.display > con.current)
 			con.display = con.current;
 		return;

@@ -3845,93 +3845,93 @@
 }
 // entity 40
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "2048 -848 904"
-"angle" "multi"
+"angle" "180"
 "_color" "232 208 192"
-"light" "350"
-"_cone" "260"
+"light" "1600"
+"_cone" "335"
 }
 // entity 41
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "2048 -592 904"
-"angle" "multi"
+"angle" "180"
 "_color" "232 208 192"
-"light" "350"
-"_cone" "260"
+"light" "1600"
+"_cone" "335"
 }
 // entity 42
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "2048 -80 904"
-"angle" "multi"
+"angle" "180"
 "_color" "232 208 192"
-"light" "350"
-"_cone" "260"
+"light" "1600"
+"_cone" "335"
 }
 // entity 43
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "2048 -336 904"
-"angle" "multi"
+"angle" "180"
 "_color" "232 208 192"
-"light" "350"
-"_cone" "260"
+"light" "1600"
+"_cone" "335"
 }
 // entity 44
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "2048 176 904"
-"angle" "multi"
+"angle" "180"
 "_color" "232 208 192"
-"light" "350"
-"_cone" "260"
+"light" "1600"
+"_cone" "335"
 }
 // entity 45
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "-432 176 904"
 "angle" "multi"
 "_color" "232 221 188"
-"light" "350"
-"_cone" "225"
+"light" "1600"
+"_cone" "335"
 }
 // entity 46
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "-432 -80 904"
 "angle" "multi"
 "_color" "232 221 188"
-"light" "350"
-"_cone" "225"
+"light" "1600"
+"_cone" "335"
 }
 // entity 47
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "-432 -328 904"
 "angle" "multi"
 "_color" "232 221 188"
-"light" "350"
-"_cone" "225"
+"light" "1600"
+"_cone" "335"
 }
 // entity 48
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "-432 -592 904"
 "angle" "multi"
 "_color" "232 221 188"
-"light" "350"
-"_cone" "225"
+"light" "1600"
+"_cone" "335"
 }
 // entity 49
 {
-"classname" "light_spot"
+"classname" "light"
 "origin" "-432 -848 904"
 "angle" "multi"
 "_color" "232 221 188"
-"light" "350"
-"_cone" "225"
+"light" "1600"
+"_cone" "335"
 }
 // entity 50
 {
@@ -4105,13 +4105,31 @@
 }
 // entity 70
 {
+"classname" "light"
+"origin" "1752 -728 496"
+"angle" "180"
+"_color" "232 208 192"
+"light" "900"
+"_cone" "335"
+}
+// entity 71
+{
+"classname" "light"
+"origin" "1752 128 496"
+"angle" "180"
+"_color" "232 208 192"
+"light" "900"
+"_cone" "335"
+}
+// entity 72
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "triggers"
 "_tb_id" "3"
 "_tb_layer_sort_index" "0"
 }
-// entity 71
+// entity 73
 {
 "classname" "trigger_once"
 "target" "help_fuckyou"
@@ -4127,7 +4145,7 @@
 ( -404 412 128 ) ( -404 412 130 ) ( -404 412.22727272727275 128 ) e1u1/trigger 0 0 0 0.25 0.25
 }
 }
-// entity 72
+// entity 74
 {
 "classname" "ammo_shells"
 "origin" "464 360 -16"

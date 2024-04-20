@@ -34,7 +34,6 @@ extern cvar_t* vid_hudscale;
 extern cvar_t* scr_viewsize;
 
 static cvar_t* gl_mode;
-static cvar_t* gl_driver;
 static cvar_t* gl_picmip;
 static cvar_t* gl_vsync;
 static cvar_t* gl_texturemode;
@@ -184,9 +183,6 @@ static void ApplyChanges(void* unused)
 		{
 			vid_ref->modified = true;
 		}
-
-		if (gl_driver->modified)
-			vid_ref->modified = true;
 	}
 
 	M_ForceMenuOff();
@@ -250,8 +246,6 @@ void VID_MenuInit(void)
 
 	int32_t i;
 
-	if (!gl_driver)
-		gl_driver = Cvar_Get("gl_driver", "opengl32", 0);
 	if (!gl_picmip)
 		gl_picmip = Cvar_Get("gl_picmip", "0", 0);
 	if (!gl_mode)

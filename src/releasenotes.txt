@@ -29,6 +29,7 @@ NEW FEATURES:
 	* The default draw distance has been increased from 4096 units on maps without skybox and 2300 without to 8192 on all maps
 		* 725 units is added to this to draw the skybox itself. This can be controlled using the gl_skyboxepsilon cvar.
 	* The skybox now moves with the draw distance and will not become larger than the map
+* Added texture filtering options to the video settings menu for no filtering purists
 
 BUG FIXES:
 * Fixed lighting (code that replaced raw fullbright textures with textures blended with the lightmap was removed by accident during the GLFW/GLAD port, so I restored it)
@@ -72,6 +73,8 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Refactored fatal error code
 	* Split message box code from error code so the game can call the message box and get back what buttons the user pressed
 * Changed console background
+* Made page up and page down in the console move by 4 rather than 2 lines
+* Changed crouch key from C to Left Ctrl
 
 REMOVALS:
 * Removed v_centerspeed cvar (was already dead)
