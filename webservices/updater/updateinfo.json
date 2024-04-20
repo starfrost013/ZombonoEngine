@@ -10,9 +10,9 @@
             },
             {
                 "name": "playtest",
-                "version": "0.0.7.99998",
-                "release_date": "2024-04-16 00:00:00",
-                "description": "IT WORKS NOW?????"
+                "version": "0.0.7.299",
+                "release_date": "2024-04-20 20:00:00",
+                "description": "Zombono v0.0.7 has many quality of life improvements and bugfixes, and adds an automatic updater!"
             },
             {
                 "name": "debug",
