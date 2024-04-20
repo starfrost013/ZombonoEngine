@@ -18,12 +18,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+// cl_ui_mainmenu.c: New! main menu (April 20, 2024)
 
-// If we need it anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
-
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 0
-#define ZOMBONO_VERSION_REVISION 7
-#define ZOMBONO_VERSION_BUILD 297
+#include "client.h"

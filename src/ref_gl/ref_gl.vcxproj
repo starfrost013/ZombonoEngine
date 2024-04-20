@@ -161,6 +161,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -241,6 +242,7 @@
       <AdditionalDependencies>opengl32.lib;winmm.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -271,6 +273,7 @@
       <AdditionalDependencies>opengl32.lib;winmm.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>ref_gl.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(ProjectDir)\external\lib-vc2022</AdditionalLibraryDirectories>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>

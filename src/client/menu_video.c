@@ -37,6 +37,7 @@ static cvar_t* gl_mode;
 static cvar_t* gl_driver;
 static cvar_t* gl_picmip;
 static cvar_t* gl_vsync;
+static cvar_t* gl_texturemode;
 
 extern void M_ForceMenuOff(void);
 
@@ -64,6 +65,7 @@ static menuslider_t		s_screensize_slider[NUM_REF_MENUS];
 static menuslider_t		s_brightness_slider[NUM_REF_MENUS];
 static menulist_t  		s_fullscreen_box[NUM_REF_MENUS];
 static menulist_t		s_fullscreen_dedicated_box[NUM_REF_MENUS];
+static menulist_t		s_texture_filtering_box[NUM_REF_MENUS];
 static menulist_t		s_vsync_box;
 static menuaction_t		s_apply_action[NUM_REF_MENUS];
 static menuaction_t		s_cancel_action[NUM_REF_MENUS];
@@ -101,6 +103,24 @@ static void BrightnessCallback(void* s)
 static void DedicatedFullscreenCallback(void* s)
 {
 	is_dedicated_fullscreen = s_fullscreen_dedicated_box[s_current_menu_index].curvalue;
+}
+
+static void TextureFilteringCallback(void* unused)
+{
+	if (s_texture_filtering_box[s_current_menu_index].curvalue == 0)
+	{
+		gl_texturemode->string = "GL_NEAREST";
+	}
+	else if (s_texture_filtering_box[s_current_menu_index].curvalue == 1)
+	{
+		gl_texturemode->string = "GL_LINEAR";
+	}
+	else
+	{
+		gl_texturemode->string = "GL_LINEAR_MIPMAP_LINEAR";
+	}
+
+	gl_texturemode->modified = true;
 }
 
 static void ResetDefaults(void* unused)
@@ -219,14 +239,15 @@ void VID_MenuInit(void)
 		"^2Yes",
 		0
 	};
+
 	static const char* filter_modes[] =
 	{
-		"nearest",
-		"linear",
-		"mipmap nearest",
-		"mipmap linear",
+		"None",
+		"Bilinear",
+		"Trilinear",
 		0
 	};
+
 	int32_t i;
 
 	if (!gl_driver)
@@ -237,6 +258,8 @@ void VID_MenuInit(void)
 		gl_mode = Cvar_Get("gl_mode", "6", 0, CVAR_ARCHIVE);
 	if (!gl_vsync)
 		gl_vsync = Cvar_Get("gl_vsync", "0", CVAR_ARCHIVE);
+	if (!gl_texturemode)
+		gl_texturemode = Cvar_Get("gl_texturemode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE);
 
 	s_mode_list[OPENGL_MENU].curvalue = gl_mode->value < 0 ? 0 : gl_mode->value + 1;
 
@@ -248,10 +271,7 @@ void VID_MenuInit(void)
 	if (strcmp(vid_ref->string, "gl") == 0)
 	{
 		s_current_menu_index = OPENGL_MENU;
-		if (strcmp(gl_driver->string, "opengl32") == 0)
-			s_ref_list[s_current_menu_index].curvalue = REF_OPENGL;
-		else
-			s_ref_list[s_current_menu_index].curvalue = REF_OPENGL;
+		s_ref_list[s_current_menu_index].curvalue = REF_OPENGL;
 	}
 
 	s_opengl_menu.x = viddef.width * 0.50;
@@ -304,6 +324,31 @@ void VID_MenuInit(void)
 		s_fullscreen_dedicated_box[i].itemnames = yes_no_names;
 		s_fullscreen_dedicated_box[i].curvalue = (is_dedicated_fullscreen);
 
+		s_fullscreen_dedicated_box[i].curvalue = (is_dedicated_fullscreen);
+
+		s_texture_filtering_box[i].generic.type = MTYPE_SPINCONTROL;
+		s_texture_filtering_box[i].generic.x = 0;
+		s_texture_filtering_box[i].generic.y = 90 * vid_hudscale->value;
+		s_texture_filtering_box[i].generic.name = "^5Texture filtering";
+		s_texture_filtering_box[i].generic.callback = TextureFilteringCallback;
+		s_texture_filtering_box[i].itemnames = filter_modes;
+
+		if (!strcmp(gl_texturemode->string, "GL_NEAREST"))
+		{
+			s_texture_filtering_box->curvalue = 0;
+		}
+		// for some reason this is fucking on on shitpiler (MSVC)
+		// and causing crashes if i directly compare with the bilinear strings...WHAT
+		else if (strcmp(gl_texturemode->string, "GL_LINEAR_MIPMAP_LINEAR"))
+		{
+			s_texture_filtering_box->curvalue = 1;
+		}
+		else
+		{
+			s_texture_filtering_box->curvalue = 2;
+		}
+
+
 		s_apply_action[i].generic.type = MTYPE_ACTION;
 		s_apply_action[i].generic.name = "^5Apply Changes";
 		s_apply_action[i].generic.x = 0;
@@ -346,6 +391,7 @@ void VID_MenuInit(void)
 	Menu_AddItem(&s_opengl_menu, (void*)&s_fullscreen_dedicated_box[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_tq_slider);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_vsync_box);
+	Menu_AddItem(&s_opengl_menu, (void*)&s_texture_filtering_box[OPENGL_MENU]);
 
 	Menu_AddItem(&s_opengl_menu, (void*)&s_apply_action[OPENGL_MENU]);
 	Menu_AddItem(&s_opengl_menu, (void*)&s_defaults_action[OPENGL_MENU]);

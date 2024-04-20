@@ -166,6 +166,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\Debug\net8.0\assetbuild.exe</Command>
@@ -246,6 +247,7 @@
       <ModuleDefinitionFile>game.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\Debug\net8.0\assetbuild.exe</Command>
@@ -274,6 +276,7 @@
       <ModuleDefinitionFile>game.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>$(SolutionDir)\tools\assetbuild\bin\Debug\net8.0\assetbuild.exe</Command>
