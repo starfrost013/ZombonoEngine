@@ -1,6 +1,16 @@
 Zombono
 Release Notes:
 
+Version 0.0.8
+May XX, 2024
+
+NEW FEATURES:
+BUG FIXES:
+OTHER ENHANCEMENTS AND CHANGES:
+* Changed the bamfuslicator texture to distinguish it from the shotgun.
+REMOVALS:
+
+
 Version 0.0.7.299 (Build 299)
 April 20, 2024
 
