@@ -49,10 +49,10 @@ void	Netservices_UpdateInfoBinaryComplete();															// Callback function 
 game_update_channel current_update_channel = update_channel_debug;
 const char* selected_update_channel_str = "debug";
 #elif PLAYTEST
-game_update_channel current_channel = update_channel_playtest;
+game_update_channel current_update_channel = update_channel_playtest;
 const char* selected_update_channel_str = "playtest";
 #else
-game_update_channel current_channel = update_channel_release;
+game_update_channel current_update_channel = update_channel_release;
 const char* selected_update_channel_str = "release";
 #endif
 
@@ -148,7 +148,7 @@ void Netservices_UpdateInfoJsonComplete()
 	}
 
 	// are we parsing the selected update channel?
-	bool current_channel_selected = false;
+	bool current_update_channel_selected = false;
 
 	// parse the json stream
 	// A PARSE FAILURE IS A SYS_ERROR CONDITION
@@ -179,12 +179,21 @@ void Netservices_UpdateInfoJsonComplete()
 								next_object = JSON_next(&update_json_stream);
 								char* current_update_channel_string = JSON_get_string(&update_json_stream, NULL);
 
-								if (!strcmp(current_update_channel_string, selected_update_channel_str))
-									current_channel_selected = true;
+								bool is_current_update_channel = !strcmp(current_update_channel_string, selected_update_channel_str);
+
+								if (is_current_update_channel)
+								{
+									current_update_channel_selected = true;
+								}
+								else if (!is_current_update_channel
+									&& current_update_channel_selected)
+								{
+									current_update_channel_selected = false;
+								}
 							}
 							// Version information - only parsed if current channel is selected
 							else if (!strcmp(json_string, "version")
-								&& current_channel_selected)
+								&& current_update_channel_selected)
 							{
 								next_object = JSON_next(&update_json_stream);
 								char* version_string = JSON_get_string(&update_json_stream, NULL);
