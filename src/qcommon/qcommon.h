@@ -182,7 +182,7 @@ PROTOCOL
 // 36 - Zombono with larger map bounds
 // 37 - Zombono 0.04 final
 // Then incremented by one for each version.
-#define	PROTOCOL_VERSION	40
+#define	PROTOCOL_VERSION	41
 
 //=========================================
 

@@ -56,6 +56,7 @@ bool UI_Init()
 	if (successful) successful = UI_AddUI("TimeUI", UI_TimeUICreate);
 	if (successful) successful = UI_AddUI("ScoreUI", UI_ScoreUICreate);
 	if (successful) successful = UI_AddUI("LoadoutUI", UI_LoadoutUICreate);
+	if (successful) successful = UI_AddUI("MainMenuUI", UI_MainMenuUICreate);
 	return successful;
 }
 

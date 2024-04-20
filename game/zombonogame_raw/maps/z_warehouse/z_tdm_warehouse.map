@@ -2272,16 +2272,16 @@
 }
 // brush 248
 {
-( 632 0 16 ) ( 632 2 16 ) ( 632 0 16.5 ) architecture/warehouse_wall_02 -55.57144 0 0 1.75 1
-( 632 8 24 ) ( 640 0 152 ) ( 640 0 24 ) architecture/warehouse_wall_02 -55.57144 0 0 1.75 1
-( 640 128 24 ) ( 632 120 152 ) ( 632 120 24 ) architecture/warehouse_wall_02 -55.57144 0 0 1.75 1
-( 632 0 16 ) ( 632 0 16.5 ) ( 633.75 0 16 ) architecture/warehouse_wall_02 0.3333435 0 0 1.5 1
-( 632 0 16 ) ( 633.75 0 16 ) ( 632 2 16 ) architecture/warehouse_wall_02 0.3333435 55.57144 0 1.5 1.75
-( 688 128 24 ) ( 688 130 24 ) ( 689.75 128 24 ) architecture/warehouse_wall_02 0.3333435 55.57144 0 1.5 1.75
-( 688 128 24 ) ( 689.75 128 24 ) ( 688 128 24.5 ) architecture/warehouse_wall_02 0.3333435 0 0 1.5 1
-( 680 0 24 ) ( 688 8 152 ) ( 688 8 24 ) architecture/warehouse_wall_02 0.3333435 0 0 1.5 1
-( 680 128 24 ) ( 688 120 24 ) ( 688 120 152 ) architecture/warehouse_wall_02 0.3333435 0 0 1.5 1
-( 688 128 24 ) ( 688 128 24.5 ) ( 688 130 24 ) architecture/warehouse_wall_02 -55.57144 0 0 1.75 1
+( 632 0 16 ) ( 632 2 16 ) ( 632 0 16.5 ) architecture/warehouse_wall_02 -55.57144 0 0 0.25 0.25
+( 632 8 24 ) ( 640 0 152 ) ( 640 0 24 ) architecture/warehouse_wall_02 -55.57144 0 0 0.25 0.25
+( 640 128 24 ) ( 632 120 152 ) ( 632 120 24 ) architecture/warehouse_wall_02 -55.57144 0 0 0.25 0.25
+( 632 0 16 ) ( 632 0 16.5 ) ( 633.75 0 16 ) architecture/warehouse_wall_02 0.3333435 0 0 0.25 0.25
+( 632 0 16 ) ( 633.75 0 16 ) ( 632 2 16 ) architecture/warehouse_wall_02 0.3333435 55.57144 0 0.25 0.25
+( 688 128 24 ) ( 688 130 24 ) ( 689.75 128 24 ) architecture/warehouse_wall_02 0.3333435 55.57144 0 0.25 0.25
+( 688 128 24 ) ( 689.75 128 24 ) ( 688 128 24.5 ) architecture/warehouse_wall_02 0.3333435 0 0 0.25 0.25
+( 680 0 24 ) ( 688 8 152 ) ( 688 8 24 ) architecture/warehouse_wall_02 0.3333435 0 0 0.25 0.25
+( 680 128 24 ) ( 688 120 24 ) ( 688 120 152 ) architecture/warehouse_wall_02 0.3333435 0 0 0.25 0.25
+( 688 128 24 ) ( 688 128 24.5 ) ( 688 130 24 ) architecture/warehouse_wall_02 -55.57144 0 0 0.25 0.25
 }
 // brush 249
 {

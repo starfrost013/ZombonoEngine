@@ -671,6 +671,9 @@ bool UI_ScoreUICreate();
 // LoadoutUI
 bool UI_LoadoutUICreate();
 
+// MainMenuUI
+bool UI_MainMenuUICreate();
+
 // UI: Required CVars
 
 extern cvar_t* vid_hudscale;

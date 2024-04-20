@@ -1362,7 +1362,7 @@ always owned, never in the world
 /*QUAKED Ammo_Grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_Grenades",
+		"ammo_grenades",
 		Pickup_Ammo,
 		Use_Weapon,
 		Drop_Ammo,
@@ -1508,8 +1508,8 @@ always owned, never in the world
 			Drop_Weapon,
 			Weapon_Bamfuslicator,
 			"misc/w_pkup.wav",
-			"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
-			"models/weapons/v_shotg2/tris.md2",
+			"models/weapons/g_bamfuslicator/tris.md2", EF_ROTATE,
+			"models/weapons/v_bamfuslicator/tris.md2",
 			/* icon */		"pics/w_bamfuslicator",
 			/* pickup */	"Director - Bamfuslicator",
 			0,
