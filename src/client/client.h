@@ -248,7 +248,7 @@ extern	cvar_t* cl_predict;
 extern	cvar_t* cl_footsteps;
 extern	cvar_t* cl_noskins;
 extern	cvar_t* cl_autoskins;
-extern  cvar_t* cl_modernmenu;
+extern  cvar_t* ui_newmenu;
 
 extern	cvar_t* cl_upspeed;
 extern	cvar_t* cl_forwardspeed;
@@ -573,6 +573,7 @@ typedef struct ui_control_s
 	char			image_path[MAX_UI_STR_LENGTH];			// Image path to display for Image controls
 	char			image_path_on_hover[MAX_UI_STR_LENGTH];	// Image path when the UI control has been hovered over.
 	char			image_path_on_click[MAX_UI_STR_LENGTH];	// Image path when the UI control clicked on.
+	bool			image_is_stretched;						// Is this UI control's image stretched?
 	// slider
 	int32_t 		value_min;								// Slider UI control: minimum value.
 	int32_t 		value_max;								// Slider UI control: maximum value.
@@ -619,11 +620,12 @@ bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to ena
 bool UI_SetActivated(char* name, bool activated);																	// Sets a UI to active (tangible).
 bool UI_SetPassive(char* name, bool passive);																// Sets a UI to passive (does not capture the mouse).
 
-// UI: Update
+// UI: Update Properties 
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
 bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
+bool UI_SetImageIsStretched(char* ui_name, char* control_name, char* image_path);							// Updates a UI control's stretched status.
 
 // UI: Set Event Handler
 bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.
@@ -704,7 +706,7 @@ typedef struct glyph_s
 {
 	int32_t 		width;							// Width of this glyph.
 	int32_t 		height;							// Height of this glyph.
-	char		char_code;						// Character code for this character (ansi for now, utf-8 later?)
+	char			char_code;						// Character code for this character (ansi for now, utf-8 later?)
 	int32_t 		x_start;						// Start X position of the glyph within the texture.
 	int32_t 		x_advance;						// Amount X has to advance to reach the next character.
 	int32_t 		x_offset;						// X offset of where the character starts relative to start_x - x_start + x_offset + x_advance = end of char
@@ -716,11 +718,11 @@ typedef struct glyph_s
 // font_t defines a font
 typedef struct font_s
 {
-	char		name[MAX_FONT_FILENAME_LEN];	// The name of the current font.
+	char			name[MAX_FONT_FILENAME_LEN];	// The name of the current font.
 	int32_t 		size;							// The size of the current font.
 	int32_t 		num_glyphs;						// The number of loaded glyphs.
 	int32_t 		line_height;					// Height of one line in this font.
-	glyph_t		glyphs[MAX_GLYPHS];				// The glyphs loaded for the current font.
+	glyph_t			glyphs[MAX_GLYPHS];				// The glyphs loaded for the current font.
 } font_t;
 
 // util methods

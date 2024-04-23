@@ -44,6 +44,9 @@ void	UI_DrawBox(ui_control_t* box);
 
 bool UI_Init()
 {
+	// init UI cvars
+	ui_newmenu = Cvar_Get("ui_newmenu", "0", 0);
+
 	// they are not statically initalised here because UI gets reinit'd on vidmode change so we need to wipe everything clean
 	memset(&ui_list, 0x00, sizeof(ui_t) * num_uis); // only clear the uis that actually exist
 	num_uis = 0;
@@ -323,6 +326,7 @@ bool UI_SetPassive(char* ui_name, bool passive)
 	return false;
 }
 
+
 bool UI_SetText(char* ui_name, char* name, char* text)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
@@ -407,6 +411,20 @@ bool UI_SetImageOnClick(char* ui_name, char* name, char* image_path)
 	return true;
 }
 
+bool UI_SetImageIsStretched(char* ui_name, char* name, bool is_stretched)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image is stretched %s to %d!\n", name, is_stretched);
+		return false;
+	}
+	
+	ui_control_ptr->image_is_stretched = is_stretched;
+	return true;
+}
+
 void UI_Clear(char* ui_name)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
@@ -479,9 +497,9 @@ void UI_Draw()
 				// toggle UI hover images if the mouse is within a UI
 				current_ui_control->hovered = 
 					(last_mouse_pos_x >= current_ui_control->position_x
-					&& last_mouse_pos_x <= (current_ui_control->position_x + current_ui_control->size_x)
+					&& last_mouse_pos_x <= (current_ui_control->position_x + (current_ui_control->size_x * vid_hudscale->value))
 					&& last_mouse_pos_y >= current_ui_control->position_y
-					&& last_mouse_pos_y <= (current_ui_control->position_y + current_ui_control->size_y));
+					&& last_mouse_pos_y <= (current_ui_control->position_y + (current_ui_control->size_y * vid_hudscale->value)));
 
 				switch (current_ui_control->type)
 				{
@@ -538,7 +556,15 @@ void UI_DrawImage(ui_control_t* image)
 		image_path = image->image_path_on_hover;
 	}
 
-	re.DrawPic(image->position_x, image->position_y, image_path);
+	if (image->image_is_stretched)
+	{
+		re.DrawStretchPic(image->position_x, image->position_y, image->size_x, image->size_y, image_path);
+	}
+	else
+	{
+		re.DrawPic(image->position_x, image->position_y, image_path);
+	}
+
 }
 
 void UI_DrawSlider(ui_control_t* slider)

@@ -779,7 +779,7 @@ void	GiveBaseWeaponForTeam(edict_t* client_edict);
 #define DEFAULT_SSHOTGUN_COUNT	20
 
 //
-// g_monster.c
+// ai_monster.c
 //
 void Ammo_Bullet_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t flashtype);
 void Ammo_Shotgun_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t hspread, int32_t vspread, int32_t count, int32_t flashtype);
@@ -810,7 +810,7 @@ void ThrowGib (edict_t *self, char *gibname, int32_t damage, int32_t type);
 void BecomeExplosion1(edict_t *self);
 
 //
-// g_ai.c
+// ai_base.c
 //
 void AI_SetSightClient (void);
 
@@ -827,6 +827,12 @@ bool infront (edict_t *self, edict_t *other);
 bool visible (edict_t *self, edict_t *other);
 bool FacingIdeal(edict_t *self);
 
+bool M_CheckBottom(edict_t* ent);
+bool M_walkmove(edict_t* ent, float yaw, float dist);
+void M_MoveToGoal(edict_t* ent, float dist);
+void M_ChangeYaw(edict_t* ent);
+
+
 //
 // Ammo_*.c
 //
@@ -842,8 +848,10 @@ void Ammo_Rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32
 void Ammo_Rail (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick);
 void Ammo_BFG (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius);
 void Ammo_Bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
+void Ammo_Tangfuslicator (edict_t* self, vec3_t start, vec3_t aimdir); //todo: recoil
+
 //
-// g_ptrail.c
+// game_player_trail.c
 //
 void PlayerTrail_Init (void);
 void PlayerTrail_Add (vec3_t spot);
@@ -853,7 +861,7 @@ edict_t *PlayerTrail_PickNext (edict_t *self);
 edict_t	*PlayerTrail_LastSpot (void);
 
 //
-// g_client.c
+// game_client_*.c
 //
 void respawn (edict_t *ent);
 void BeginIntermission (edict_t *targ);
@@ -864,24 +872,24 @@ void InitBodyQue (void);
 void ClientBeginServerFrame (edict_t *ent);
 
 //
-// g_player.c
+// files that use mob_player.h
 //
 void player_pain (edict_t *self, edict_t *other, float kick, int32_t damage);
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int32_t damage, vec3_t point);
 
 //
-// g_svcmds.c
+// game_cmds_server.c
 //
 void	ServerCommand (void);
-bool SV_FilterPacket (char *from);
+bool	SV_FilterPacket (char *from);
 
 //
-// p_view.c
+// game_client_view.c
 //
 void ClientEndServerFrame (edict_t *ent);
 
 //
-// p_hud.c
+// game_ui.c
 //
 void MoveClientToIntermission (edict_t *ent, player_team winning_team);
 void G_SetStats (edict_t *ent);
@@ -890,31 +898,23 @@ void G_CheckChaseStats (edict_t *ent);
 void ValidateSelectedItem (edict_t *ent);
 
 //
-// g_pweapon.c
+// weapon_base.c
 //
 void PlayerNoise(edict_t *who, vec3_t where, int32_t type);
 
 //
-// m_move.c
-//
-bool M_CheckBottom (edict_t *ent);
-bool M_walkmove (edict_t *ent, float yaw, float dist);
-void M_MoveToGoal (edict_t *ent, float dist);
-void M_ChangeYaw (edict_t *ent);
-
-//
-// g_phys.c
+// physics_base.c
 //
 void G_RunEntity (edict_t *ent);
 
 //
-// g_main.c
+// game_save.c
 //
 void SaveClientData (void);
 void FetchClientEntData (edict_t *ent);
 
 //
-// g_chase.c
+// game_chase_camera.c
 //
 void UpdateChaseCam(edict_t *ent);
 void ChaseNext(edict_t *ent);

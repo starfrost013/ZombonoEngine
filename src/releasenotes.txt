@@ -6,8 +6,10 @@ May XX, 2024
 
 NEW FEATURES:
 BUG FIXES:
+* Fixed hover and clicked UI images not scaling with the hudscale cvar
 OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to distinguish it from the shotgun.
+* Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
 REMOVALS:
 
 
@@ -132,6 +134,7 @@ REMOVALS:
 * Removed 134 of 137 monster muzzle flashes as they all related to removed monsters and were model specific
 	* Kept 3 for example code purposes
 * Removed the original Quake 2 skyboxes as we don't use them anymore
+* Removed the gl_driver cvar
 
 Version 0.0.6.161 (Build 161)
 April 6, 2024

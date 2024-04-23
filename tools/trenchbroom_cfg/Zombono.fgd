@@ -2,10 +2,10 @@
 // Copyright © 2023-2024 starfrost
 //
 // Based on quake2 FGD
-// Originally written by by autolycus
+// Originally written by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/04/18 version
+// 2024/04/22 version
 
 //
 // worldspawn
@@ -43,7 +43,7 @@
 		32768 : "Not in Control Point mode" : 0
 	]
 ]
-@baseclass = Angle [ angle(integer) : "Direction" ]
+@baseclass = Angle [ angle(integer) : "Direction in degrees. Special values: -1 is up, -2 is down" ]
 @baseclass = Targetname [ targetname(target_source) : "Name" ]
 @baseclass = Target [ target(target_destination) : "Target" ]
 
@@ -435,7 +435,7 @@
 	]
 ]
 
-@PointClass base(Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Pointlight"
+@PointClass base( Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Pointlight"
 [
 	spawnflags(Flags) =
 	[
@@ -459,6 +459,7 @@
 		11 : "Slow pulse, no black"
 	]
 	_falloff(integer) : "Decline in intensity as you move away from the light"
+	// must be a float for ZBSP
 	angle(float): "Angle" : 0
 	wait(integer) : "Wait time before the light turns on"
 	_angwait(integer): "Angle adjustment?"

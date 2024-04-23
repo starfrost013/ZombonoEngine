@@ -20,25 +20,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include <game_local.h>
 
-bool	Pickup_Weapon (edict_t *ent, edict_t *other);
-void	Use_Weapon (edict_t *ent, gitem_t *inv);
-void	Drop_Weapon (edict_t *ent, gitem_t *inv);
+bool	Pickup_Weapon(edict_t *ent, edict_t *other);
+void	Use_Weapon(edict_t *ent, gitem_t *inv);
+void	Drop_Weapon(edict_t *ent, gitem_t *inv);
 
-// Q2 Base
-void Weapon_Blaster (edict_t *ent);
-void Weapon_Shotgun (edict_t *ent);
-void Weapon_SuperShotgun (edict_t *ent);
-void Weapon_Machinegun (edict_t *ent);
-void Weapon_Chaingun (edict_t *ent);
-void Weapon_HyperBlaster (edict_t *ent);
-void Weapon_RocketLauncher (edict_t *ent);
-void Weapon_Grenade (edict_t *ent);
-void Weapon_GrenadeLauncher (edict_t *ent);
-void Weapon_Railgun (edict_t *ent);
-void Weapon_BFG (edict_t *ent);
 
-// Zombono
+void Weapon_Blaster(edict_t *ent);
+void Weapon_Shotgun(edict_t *ent);
+void Weapon_SuperShotgun(edict_t *ent);
+void Weapon_Machinegun(edict_t *ent);
+void Weapon_Chaingun(edict_t *ent);
+void Weapon_HyperBlaster(edict_t *ent);
+void Weapon_RocketLauncher(edict_t *ent);
+void Weapon_Grenade(edict_t *ent);
+void Weapon_GrenadeLauncher(edict_t *ent);
+void Weapon_Railgun(edict_t *ent);
+void Weapon_BFG(edict_t *ent);
 void Weapon_Bamfuslicator(edict_t *ent);
+void Weapon_Tangfuslicator(edict_t* ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -1549,12 +1548,12 @@ always owned, never in the world
 			Pickup_Weapon,
 			Use_Weapon,
 			Drop_Weapon,
-			Weapon_Bamfuslicator,
+			Weapon_Tangfuslicator,
 			"misc/w_pkup.wav",
-			"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
-			"models/weapons/v_shotg2/tris.md2",
+			"models/weapons/g_tangfuslicator/tris.md2", EF_ROTATE,
+			"models/weapons/v_tangfuslicator/tris.md2",
 			/* icon */		"pics/w_tangfuslicator",
-			/* pickup */	"Director - Tngfuslicator",
+			/* pickup */	"Director - Tangfuslicator",
 			0,
 			0, // 0 = infinite
 			NULL, // Also means infinite

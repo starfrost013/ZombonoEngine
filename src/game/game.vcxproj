@@ -292,6 +292,7 @@
     <ClCompile Include="ammunition\ammo_rail.c" />
     <ClCompile Include="ammunition\ammo_rocket.c" />
     <ClCompile Include="ai\ai_base.c" />
+    <ClCompile Include="ammunition\ammo_tangfuslicator.c" />
     <ClCompile Include="gameplay\game_chase_camera.c" />
     <ClCompile Include="gameplay\game_client.c" />
     <ClCompile Include="gameplay\game_client_spawn.c" />
@@ -332,6 +333,7 @@
     <ClCompile Include="weapons\weapon_rocket_launcher.c" />
     <ClCompile Include="weapons\weapon_shotgun.c" />
     <ClCompile Include="weapons\weapon_shotgun_super.c" />
+    <ClCompile Include="weapons\weapon_tangfuslicator.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def" />

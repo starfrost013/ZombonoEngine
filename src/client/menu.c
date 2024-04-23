@@ -56,8 +56,6 @@ void M_Menu_Main_f (void);
 		void M_Menu_Keys_f (void);
 	void M_Menu_Quit_f (void);
 
-	void M_Menu_Credits( void );
-
 bool	m_entersound;		// play after drawing a frame, so caching
 								// won't disrupt the sound
 

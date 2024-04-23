@@ -1053,7 +1053,30 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			break;
 		case key_game:
 		case key_console:
-			M_Menu_Main_f (); // hardcoded 
+
+			// still hardcoded: TODO - GET FROM CONFIG FILE
+			if (ui_newmenu->value)
+			{
+				bool is_active = false; 
+
+				// TEMP HACK until new UI functionality
+				if (current_ui != NULL
+					&& !strcmp(current_ui->name, "MainMenuUI"))
+				{
+					UI_SetEnabled("MainMenuUI", false);
+					UI_SetActivated("MainMenuUI", false);
+				}
+				else
+				{
+					UI_SetEnabled("MainMenuUI", true);
+					UI_SetActivated("MainMenuUI", true);
+				}
+			}
+			else
+			{
+				M_Menu_Main_f(); // hardcoded 
+			}
+
 			break;
 		default:
 			Com_Error (ERR_FATAL, "Bad cls.key_dest");

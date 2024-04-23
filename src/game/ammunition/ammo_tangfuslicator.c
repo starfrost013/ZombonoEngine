@@ -18,28 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// cl_ui_mainmenu.c: New! main menu (April 20, 2024)
+#include <game_local.h>
+#include <entities/entity_base.h>
 
-#include "client.h"
-
-bool UI_MainMenuUICreate()
+// ammo_tangfuslicator.c: Code for the Lightning Gun thing...
+void Ammo_Tangfuslicator(edict_t* self, vec3_t start, vec3_t aimdir)
 {
-	// don't bother creating it if ui_newmenu is not set to 1
-	if (!ui_newmenu->value)
-		return true; 
 
-	if (viddef.width >= 1920)
-	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "pics/ui/mainmenuui_background", 0, 0, viddef.width, viddef.height);
-	}
-	else if (viddef.width >= 960)
-	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "pics/ui/mainmenuui_background@0.5x", 0, 0, viddef.width, viddef.height);
-	}
-	else
-	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "pics/ui/mainmenuui_background@0.25x", 0, 0, viddef.width, viddef.height);
-	}
-
-	return true;
 }

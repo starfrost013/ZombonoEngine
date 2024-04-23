@@ -183,6 +183,12 @@
     <ClCompile Include="gameplay\game_client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="weapons\weapon_tangfuslicator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ammunition\ammo_tangfuslicator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
