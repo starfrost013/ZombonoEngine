@@ -95,8 +95,8 @@ Cvar_CompleteVariable
 */
 char *Cvar_CompleteVariable (char *partial)
 {
-	cvar_t		*cvar;
-	int32_t 		len;
+	cvar_t	*cvar;
+	int32_t len;
 	
 	len = (int32_t)strlen(partial);
 	

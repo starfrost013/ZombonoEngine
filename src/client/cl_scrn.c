@@ -1180,13 +1180,12 @@ void SCR_UpdateScreen (void)
 			}
 
 			if (cl_showinfo->value)
-			{
 				SCR_DrawPos();
-			}
-			
+
 			SCR_DrawConsole ();
 
-			M_Draw ();
+			if (!ui_newmenu->value)
+				M_Draw ();
 
 			SCR_DrawLoading ();
 			

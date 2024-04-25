@@ -71,6 +71,12 @@ void Loadout_Update()
 	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadInt(&net_message);
 }
 
+// Draws the loadout UI
+void Loadout_Draw()
+{
+
+}
+
 // Removes the most recently added item.
 void Loadout_Remove()
 {

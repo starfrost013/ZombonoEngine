@@ -108,7 +108,10 @@ Sys_Milliseconds
 ================
 */
 int32_t curtime;
-int32_t Sys_Milliseconds (void)
+int32_t curtime_ns; 
+
+// Returns the number of milliseconds since the engine started.
+int32_t Sys_Milliseconds()
 {
 	static int32_t 	base;
 	static bool	initialized = false;
@@ -123,6 +126,35 @@ int32_t Sys_Milliseconds (void)
 	return curtime;
 }
 
+// Returns the number of nanoseconds since the engine started.
+int64_t Sys_Nanoseconds()
+{
+	static int64_t base;
+	static struct timespec timespec;
+	static bool initialized = true;
+
+	if (!initialized)
+	{
+		if (!timespec_get(&timespec, TIME_UTC))
+			Sys_Error("**** BUG **** Timespec_Get failed! This should never happen...");
+
+		base = ((int64_t)timespec.tv_sec * 1000000) + timespec.tv_nsec;
+
+		// determine the base
+		initialized = true;
+	}
+
+	if (!timespec_get(&timespec, TIME_UTC))
+		Sys_Error("**** BUG **** Timespec_Get failed! This should never happen...");
+
+	int64_t time_now = ((int64_t)timespec.tv_sec * 1000000) + timespec.tv_nsec;
+
+	curtime_ns = time_now - base;
+
+	return curtime_ns;
+}
+
+
 void Sys_Mkdir (char *path)
 {
 	_mkdir (path);
@@ -130,8 +162,8 @@ void Sys_Mkdir (char *path)
 
 //============================================
 
-char	findbase[MAX_OSPATH];
-char	findpath[MAX_OSPATH];
+char		findbase[MAX_OSPATH];
+char		findpath[MAX_OSPATH];
 intptr_t	findhandle;
 
 static bool CompareAttributes(uint32_t found, uint32_t musthave, uint32_t canthave)

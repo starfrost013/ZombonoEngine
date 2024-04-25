@@ -229,15 +229,17 @@ SYSTEM SPECIFIC
 */
 
 extern	int32_t curtime;		// time returned by last Sys_Milliseconds
+extern	int32_t curtime_ns;		// time returned by last Sys_Nanoseconds
 
-int32_t 	Sys_Milliseconds (void);
+int32_t 	Sys_Milliseconds();
+int64_t		Sys_Nanoseconds(); // should be platform independent
 void	Sys_Mkdir (char *path);
 
 // large block stack allocation routines
 void	*Hunk_Begin (int32_t maxsize);
 void	*Hunk_Alloc (int32_t size);
 void	Hunk_Free (void *buf);
-int32_t 	Hunk_End (void);
+int32_t Hunk_End();
 
 // directory searching
 #define SFF_ARCH    0x01

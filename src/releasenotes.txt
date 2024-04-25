@@ -5,11 +5,13 @@ Version 0.0.8
 May XX, 2024
 
 NEW FEATURES:
+* Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
+* Added the ability for the engine to get the nanoseconds since start as well as millisecondd
 BUG FIXES:
 * Fixed hover and clicked UI images not scaling with the hudscale cvar
 OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to distinguish it from the shotgun.
-* Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
+
 REMOVALS:
 
 
