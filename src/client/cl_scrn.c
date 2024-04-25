@@ -1058,7 +1058,7 @@ void SCR_DrawLayout (void)
 	SCR_ExecuteLayoutString (cl.layout);
 }
 
-void SCR_DrawPos()
+void SCR_DrawInfo()
 {
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
@@ -1070,7 +1070,10 @@ void SCR_DrawPos()
 
 	int x = (10 * vid_hudscale->value);
 
-	int y = (viddef.height - (105 * vid_hudscale->value));
+	int y = (viddef.height - (120 * vid_hudscale->value));
+	Text_Draw(cl_console_font->string, x, y,
+		"FPS: %.2f", cls.fps);
+	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Position: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);
 	y += console_font_ptr->line_height * vid_hudscale->value;
@@ -1180,7 +1183,7 @@ void SCR_UpdateScreen (void)
 			}
 
 			if (cl_showinfo->value)
-				SCR_DrawPos();
+				SCR_DrawInfo();
 
 			SCR_DrawConsole ();
 

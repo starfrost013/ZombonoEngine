@@ -1619,7 +1619,7 @@ CL_Frame
 void CL_Frame (int32_t msec)
 {
 	static int32_t extratime;
-	static int32_t lasttimecalled;
+	static int64_t lasttimecalled;
 
 	if (dedicated->value)
 		return;
@@ -1681,29 +1681,37 @@ void CL_Frame (int32_t msec)
 	CL_RunDLights ();
 	CL_RunLightStyles ();
 
-
 	SCR_RunConsole ();
 
 	cls.framecount++;
 
-	if ( log_stats->value )
+	if (cls.state == ca_active)
 	{
-		if ( cls.state == ca_active )
+		if (!lasttimecalled)
 		{
-			if ( !lasttimecalled )
+			lasttimecalled = Sys_Nanoseconds();
+			if (log_stats->value
+				&& log_stats_file)
 			{
-				lasttimecalled = Sys_Milliseconds();
-				if ( log_stats_file )
-					fprintf( log_stats_file, "0\n" );
+				fprintf(log_stats_file, "0\n");
 			}
-			else
-			{
-				int32_t now = Sys_Milliseconds();
 
-				if ( log_stats_file )
-					fprintf( log_stats_file, "%d\n", now - lasttimecalled );
-				lasttimecalled = now;
+		}
+		else
+		{
+			int64_t now = Sys_Nanoseconds();
+			float frametime_ms = (float)(now - lasttimecalled) / 1000000.0f;
+
+			if (log_stats->value
+				&& log_stats_file)
+			{
+				fprintf(log_stats_file, "%.2f\n", frametime_ms);
 			}
+
+			lasttimecalled = now;
+
+			// calculate the fps
+			cls.fps = 1000.0f/frametime_ms;
 		}
 	}
 }

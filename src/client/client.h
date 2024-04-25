@@ -199,6 +199,7 @@ typedef struct
 	int32_t 	framecount;
 	int32_t 	realtime;			// always increasing, no clamping, etc
 	float		frametime;			// seconds since last frame
+	float		fps;				// most recent framerate
 
 // screen rendering information
 	float		disable_screen;		// showing loading plaque between levels

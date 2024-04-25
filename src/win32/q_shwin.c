@@ -138,7 +138,7 @@ int64_t Sys_Nanoseconds()
 		if (!timespec_get(&timespec, TIME_UTC))
 			Sys_Error("**** BUG **** Timespec_Get failed! This should never happen...");
 
-		base = ((int64_t)timespec.tv_sec * 1000000) + timespec.tv_nsec;
+		base = ((int64_t)timespec.tv_sec * (int64_t)1000000000) + timespec.tv_nsec;
 
 		// determine the base
 		initialized = true;
@@ -147,7 +147,7 @@ int64_t Sys_Nanoseconds()
 	if (!timespec_get(&timespec, TIME_UTC))
 		Sys_Error("**** BUG **** Timespec_Get failed! This should never happen...");
 
-	int64_t time_now = ((int64_t)timespec.tv_sec * 1000000) + timespec.tv_nsec;
+	int64_t time_now = ((int64_t)timespec.tv_sec * (int64_t)1000000000) + timespec.tv_nsec;
 
 	curtime_ns = time_now - base;
 
