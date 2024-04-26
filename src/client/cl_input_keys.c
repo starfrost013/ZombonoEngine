@@ -1059,12 +1059,13 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			{
 				bool is_active = false; 
 
-				// TEMP HACK until new UI functionality
+				// TEMP HACK until new UI functionality (UI_SetCurrent)
 				if (current_ui != NULL
 					&& !strcmp(current_ui->name, "MainMenuUI"))
 				{
 					UI_SetEnabled("MainMenuUI", false);
 					UI_SetActivated("MainMenuUI", false);
+					current_ui = NULL;
 				}
 				else
 				{

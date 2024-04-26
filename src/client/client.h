@@ -626,7 +626,7 @@ bool UI_SetText(char* ui_name, char* control_name, char* text);												// Up
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
 bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
-bool UI_SetImageIsStretched(char* ui_name, char* control_name, char* image_path);							// Updates a UI control's stretched status.
+bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched);							// Updates a UI control's stretched status.
 
 // UI: Set Event Handler
 bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.

@@ -278,6 +278,11 @@ void GL_BeginFrame()
 */
 void GL_EndFrame(void)
 {
+	// if the window closed exit
+	if (gl_state.window == NULL)
+	{
+		return;
+	}
 
 	int		err;
 
@@ -290,12 +295,6 @@ void GL_EndFrame(void)
 	{
 		// swap the buffers
 		glfwSwapBuffers(gl_state.window);
-	}
-
-	// if the window closed exit
-	if (gl_state.window == NULL)
-	{
-		return;
 	}
 }
 

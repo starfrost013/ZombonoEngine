@@ -108,7 +108,7 @@ Sys_Milliseconds
 ================
 */
 int32_t curtime;
-int32_t curtime_ns; 
+int64_t curtime_ns; 
 
 // Returns the number of milliseconds since the engine started.
 int32_t Sys_Milliseconds()
