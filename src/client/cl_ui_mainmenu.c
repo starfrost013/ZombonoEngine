@@ -47,15 +47,15 @@ bool UI_MainMenuUICreate()
 	int32_t x = (10 * vid_hudscale->value);
 	int32_t y = (viddef.width / 1.85f);
 	//todo: scale these?
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnCoop", "pics/ui/mainmenuui_btn_coop", x, y, 256, 128); 
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnCoop", "pics/ui/mainmenuui_btn_coop", x, y, 256, 40); 
 	y += 40 * vid_hudscale->value;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "pics/ui/mainmenuui_btn_browseservers", x, y, 256, 128);
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "pics/ui/mainmenuui_btn_browseservers", x, y, 256, 40);
 	y += 40 * vid_hudscale->value;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnZombieTelevision", "pics/ui/mainmenuui_btn_zombietelevision", x, y, 256, 128);
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnZombieTelevision", "pics/ui/mainmenuui_btn_zombietelevision", x, y, 256, 40);
 	y += 40 * vid_hudscale->value;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnSettings", "pics/ui/mainmenuui_btn_settings", x, y, 256, 128);
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnSettings", "pics/ui/mainmenuui_btn_settings", x, y, 256, 40);
 	y += 40 * vid_hudscale->value;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnQuit", "pics/ui/mainmenuui_btn_quit", x, y, 256, 128);
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnQuit", "pics/ui/mainmenuui_btn_quit", x, y, 256, 40);
 	y += 40 * vid_hudscale->value;
 
 	// Main Menu buttons onhover images
