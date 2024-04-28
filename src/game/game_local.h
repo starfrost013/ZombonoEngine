@@ -949,6 +949,7 @@ typedef struct client_persistant_s
 
 	int32_t		selected_item;
 	int32_t		inventory[MAX_ITEMS];
+	loadout_t	loadout;
 
 	// ammo capacities
 	int32_t		max_bullets;
