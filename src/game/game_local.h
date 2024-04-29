@@ -700,8 +700,8 @@ void SetRespawn (edict_t *ent, float delay);
 void ChangeWeapon (edict_t *ent);
 void SpawnItem (edict_t *ent, gitem_t *item);
 void Think_Weapon (edict_t *ent);
-int32_t ArmorIndex (edict_t *ent);
-int32_t PowerArmorType (edict_t *ent);
+loadout_entry_t* GetCurrentArmor (edict_t *ent);
+int32_t GetCurrentPowerArmor (edict_t *ent);
 gitem_t	*GetItemByIndex (int32_t index);
 bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count);
 void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
@@ -948,8 +948,9 @@ typedef struct client_persistant_s
 	int32_t		savedFlags;
 
 	int32_t		selected_item;
-	int32_t		inventory[MAX_ITEMS];
 	loadout_t	loadout;
+	loadout_entry_t* loadout_current_weapon;
+	loadout_entry_t* loadout_current_ammo;
 
 	// ammo capacities
 	int32_t		max_bullets;
@@ -998,8 +999,6 @@ typedef struct gclient_s
 
 	bool		showhelp;
 	bool		showhelpicon;
-
-	int32_t		ammo_index;
 
 	int32_t		buttons;
 	int32_t		oldbuttons;
@@ -1179,7 +1178,7 @@ struct edict_s
 	edict_t		*oldenemy;
 	edict_t		*activator;
 	edict_t		*groundentity;
-	int32_t			groundentity_linkcount;
+	int32_t		groundentity_linkcount;
 	edict_t		*teamchain;
 	edict_t		*teammaster;
 
@@ -1233,3 +1232,9 @@ void Use_Weapon(edict_t* ent, gitem_t* item);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIRE_LAST, int32_t FRAME_IDLE_LAST, int32_t FRAME_DEACTIVATE_LAST,
 	int32_t* pause_frames, int32_t* fire_frames_primary, int32_t* fire_frames_secondary, void (*fire_primary)(edict_t* ent), void(*fire_secondary)(edict_t* ent));
+
+// game_loadout.c
+loadout_entry_t* Loadout_AddItem(edict_t* ent, const char* item_name, int32_t amount);		// Adds the loadout item with the name name and the amount amount. Returns the new loadout item
+void Loadout_DeleteItem(edict_t* ent, const char* item_name);				// Deletes the loadout item with the name name.
+loadout_entry_t* Loadout_GetItem(edict_t* ent, const char* item_name);		// Returns the loadout item with the name item_name.
+bool Loadout_EntryIsItem(loadout_entry_t* entry, const char* item_name);	// Determines if the loadout entry entry is the item with the name item_name.

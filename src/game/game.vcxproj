@@ -300,6 +300,7 @@
     <ClCompile Include="gameplay\game_combat.c" />
     <ClCompile Include="entities\entity_func.c" />
     <ClCompile Include="entities\entity_items.c" />
+    <ClCompile Include="gameplay\game_loadout.c" />
     <ClCompile Include="gameplay\game_main.c" />
     <ClCompile Include="entities\entity_misc.c" />
     <ClCompile Include="ai\ai_monster.c" />

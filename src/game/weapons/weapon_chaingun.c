@@ -33,6 +33,7 @@ void Chaingun_Fire(edict_t* ent)
 	vec3_t		offset;
 	int			damage;
 	int			kick = 2;
+	loadout_entry_t* loadout_ptr = Loadout_GetItem(ent, "chaingun");
 
 	damage = 6;
 
@@ -46,7 +47,7 @@ void Chaingun_Fire(edict_t* ent)
 		return;
 	}
 	else if ((ent->client->ps.gunframe == 21) && (ent->client->buttons & BUTTON_ATTACK1)
-		&& ent->client->pers.inventory[ent->client->ammo_index])
+		&& loadout_ptr->amount > 0)
 	{
 		ent->client->ps.gunframe = 15;
 	}
@@ -89,8 +90,8 @@ void Chaingun_Fire(edict_t* ent)
 	else
 		shots = 3;
 
-	if (ent->client->pers.inventory[ent->client->ammo_index] < shots)
-		shots = ent->client->pers.inventory[ent->client->ammo_index];
+	if (shots > loadout_ptr->amount)
+		shots = loadout_ptr->amount;
 
 	if (!shots)
 	{
@@ -136,7 +137,10 @@ void Chaingun_Fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->ammo_index] -= shots;
+	{
+		loadout_entry_t* entry_ptr = Loadout_GetItem(ent, "bullets");
+		entry_ptr->amount -= shots;
+	}
 }
 
 

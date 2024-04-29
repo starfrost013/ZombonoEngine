@@ -67,24 +67,15 @@ void InitClientPersistent(edict_t* client_edict)
 void GiveBaseWeaponForTeam(edict_t* client_edict)
 {
 	gclient_t* client = client_edict->client;
-	gitem_t* item;
-	int			i;
 
 	if (client_edict->team == team_director)
 	{
-		//todo: make a method
-		item = FindItem("Director - Bamfuslicator");
-
-		client->pers.selected_item = ITEM_INDEX(item);
-		client->pers.inventory[client->pers.selected_item] = WEAP_BAMFUSLICATOR;
-		client->pers.weapon = item;
+		Loadout_AddItem(client_edict, "Director - Bamfuslicator", 1);
+		Loadout_AddItem(client_edict, "Director - Tangfuslicator", 1);
 	}
 	else
 	{
-		item = FindItem("Blaster");
-		client->pers.selected_item = ITEM_INDEX(item);
-		client->pers.inventory[client->pers.selected_item] = WEAP_BLASTER;
-		client->pers.weapon = item;
+		Loadout_AddItem(client_edict, "Blaster", 1);
 	}
 }
 
@@ -312,9 +303,7 @@ edict_t* SelectFarthestSpawnPoint(char* spawn_class_name)
 	}
 
 	if (bestspot)
-	{
 		return bestspot;
-	}
 
 	// if there is a player just spawned on each and every start spot
 	// we have no choice to turn one into a telefrag meltdown
@@ -595,7 +584,7 @@ void PutClientInServer(edict_t* ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
-	// TEMPORARY HACK FOR PLAYTEST - TODO: THIS *WILL* BREAK FOR EXISTING CLIENTS IF THE TIMELIMIT OR FRAGLIMIT IS CHANGED AFTER SERVER CREATE
+	// TEMPORARY HACK FOR PLAYTEST - TODO: THIS *WILL* BREAK FOR EXISTING CLIENTS IF THE TIMELIMIT OR FRAGLIMIT IS CHANGED AFTER SERVER CREATION UNTIL YOU RESPAWN
 
 	if (timelimit->value)
 	{

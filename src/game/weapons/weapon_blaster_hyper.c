@@ -38,7 +38,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 	}
 	else
 	{
-		if (!ent->client->pers.inventory[ent->client->ammo_index])
+		if (!ent->client->pers.loadout_current_ammo)
 		{
 			if (level.time >= ent->pain_debounce_time)
 			{
@@ -63,7 +63,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 
 			Blaster_Fire(ent, offset, damage, true, effect);
 			if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-				ent->client->pers.inventory[ent->client->ammo_index]--;
+				ent->client->pers.loadout_current_ammo->amount--;
 
 			ent->client->anim_priority = ANIM_ATTACK;
 			if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
@@ -79,7 +79,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 		}
 
 		ent->client->ps.gunframe++;
-		if (ent->client->ps.gunframe == 12 && ent->client->pers.inventory[ent->client->ammo_index])
+		if (ent->client->ps.gunframe == 12 && ent->client->pers.loadout_current_ammo)
 			ent->client->ps.gunframe = 6;
 	}
 

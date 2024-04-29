@@ -48,7 +48,7 @@ void Weapon_bfg_fire(edict_t* ent)
 
 	// cells can go down during windup (from power armor hits), so
 	// check again and abort firing if we don't have enough now
-	if (ent->client->pers.inventory[ent->client->ammo_index] < 50)
+	if (ent->client->pers.loadout_current_ammo < 50)
 	{
 		ent->client->ps.gunframe++;
 		return;
@@ -75,7 +75,12 @@ void Weapon_bfg_fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->ammo_index] -= 50;
+	{
+		loadout_entry_t* loadout = Loadout_GetItem(ent, "bfg blast");
+		loadout->amount -= 50;
+	}
+
+
 }
 
 void Weapon_BFG(edict_t* ent)

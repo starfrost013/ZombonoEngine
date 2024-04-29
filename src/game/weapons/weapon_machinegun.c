@@ -53,7 +53,7 @@ void Weapon_Machinegun_Fire(edict_t* ent)
 	else
 		ent->client->ps.gunframe = 5;
 
-	if (ent->client->pers.inventory[ent->client->ammo_index] < 1)
+	if (ent->client->pers.loadout_current_ammo < 1)
 	{
 		ent->client->ps.gunframe = 6;
 		if (level.time >= ent->pain_debounce_time)
@@ -94,7 +94,7 @@ void Weapon_Machinegun_Fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->ammo_index]--;
+		ent->client->pers.loadout_current_ammo--;
 
 	ent->client->anim_priority = ANIM_ATTACK;
 	if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)

@@ -22,11 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <game_local.h>
 #include <mobs/mob_player.h>
 
-void SelectNextItem (edict_t *ent, int32_t itflags)
+void SelectNextItem(edict_t* ent, int32_t itflags)
 {
-	gclient_t	*cl;
-	int			i, index;
-	gitem_t		*it;
+	gclient_t* cl;
+	gitem_t* it;
 
 	cl = ent->client;
 
@@ -35,55 +34,90 @@ void SelectNextItem (edict_t *ent, int32_t itflags)
 		return;
 	}
 
-	// scan  for the next valid one
-	for (i=1 ; i<=MAX_ITEMS ; i++)
+	cl = ent->client;
+
+	// return if no weapon
+	if (!cl->pers.weapon)
+		return;
+
+	// new loadout system...
+	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+
+	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
 	{
-		index = (cl->pers.selected_item + i)%MAX_ITEMS;
-		if (!cl->pers.inventory[index])
+		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+
+		it = FindItem(loadout_entry_ptr->item_name);
+
+		if (it == NULL)
 			continue;
-		it = &itemlist[index];
+
 		if (!it->use)
 			continue;
+
 		if (!(it->flags & itflags))
 			continue;
 
-		cl->pers.selected_item = index;
-		return;
-	}
+		// cycle if its the first item
+		if (cl->pers.selected_item == it)
+		{
+			int32_t new_item_num = item_num + 1;
+			if (new_item_num > cl->pers.loadout.num_items) new_item_num = 0;
 
-	cl->pers.selected_item = -1;
+			// get the current weapon
+			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num];
+			return;	// successful
+		}
+	}
 }
 
 void SelectPrevItem (edict_t *ent, int32_t itflags)
 {
-	gclient_t	*cl;
-	int			i, index;
-	gitem_t		*it;
+	gclient_t* cl;
+	gitem_t* it;
 
 	cl = ent->client;
 
 	if (cl->chase_target) {
-		ChasePrev(ent);
+		ChaseNext(ent);
 		return;
 	}
 
-	// scan  for the next valid one
-	for (i=1 ; i<=MAX_ITEMS ; i++)
+	cl = ent->client;
+
+	// return if no weapon
+	if (!cl->pers.weapon)
+		return;
+
+	// new loadout system...
+	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+
+	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
 	{
-		index = (cl->pers.selected_item + MAX_ITEMS - i)%MAX_ITEMS;
-		if (!cl->pers.inventory[index])
+		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+
+		it = FindItem(loadout_entry_ptr->item_name);
+
+		if (it == NULL)
 			continue;
-		it = &itemlist[index];
+
 		if (!it->use)
 			continue;
+
 		if (!(it->flags & itflags))
 			continue;
 
-		cl->pers.selected_item = index;
-		return;
-	}
+		// cycle if its the first item
+		if (cl->pers.selected_item == it)
+		{
+			int32_t new_item_num = item_num - 1;
+			if (new_item_num < 0) new_item_num = cl->pers.loadout.num_items;
 
-	cl->pers.selected_item = -1;
+			// get the current weapon
+			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num];
+			return;	// successful
+		}
+	}
 }
 
 void ValidateSelectedItem (edict_t *ent)
@@ -92,7 +126,7 @@ void ValidateSelectedItem (edict_t *ent)
 
 	cl = ent->client;
 
-	if (cl->pers.inventory[cl->pers.selected_item])
+	if (cl->pers.loadout_current_weapon == NULL)
 		return;		// valid
 
 	SelectNextItem (ent, -1);
@@ -149,7 +183,8 @@ void Cmd_Give_f (edict_t *ent)
 				continue;
 			if (!(it->flags & IT_WEAPON))
 				continue;
-			ent->client->pers.inventory[i] += 1;
+			
+			Loadout_AddItem(ent, it->pickup_name, 1);
 		}
 		if (!give_all)
 			return;
@@ -172,17 +207,26 @@ void Cmd_Give_f (edict_t *ent)
 
 	if (give_all || Q_stricmp(name, "armor") == 0)
 	{
-		gitem_armor_t	*info;
+		gitem_armor_t*		info;
 
-		it = FindItem("Jacket Armor");
-		ent->client->pers.inventory[ITEM_INDEX(it)] = 0;
-
-		it = FindItem("Combat Armor");
-		ent->client->pers.inventory[ITEM_INDEX(it)] = 0;
-
+		Loadout_DeleteItem(ent, "Jacket Armor");
+		Loadout_DeleteItem(ent, "Combat Armor");
+		
 		it = FindItem("Body Armor");
 		info = (gitem_armor_t *)it->info;
-		ent->client->pers.inventory[ITEM_INDEX(it)] = info->max_count;
+
+		// see if you already have it
+		loadout_entry_t* body_armor_ptr = Loadout_GetItem(ent, "Body Armor");
+
+		// if its not there add it, otherwise set it to max_count
+		if (!body_armor_ptr)
+		{
+			body_armor_ptr = Loadout_AddItem(ent, "Body Armor", info->max_count);
+		}
+		else
+		{
+			body_armor_ptr->amount = info->max_count;
+		}
 
 		if (!give_all)
 			return;
@@ -211,7 +255,8 @@ void Cmd_Give_f (edict_t *ent)
 				continue;
 			if (it->flags & (IT_ARMOR|IT_WEAPON|IT_AMMO))
 				continue;
-			ent->client->pers.inventory[i] = 1;
+
+			Loadout_AddItem(ent, it->pickup_name, 1);
 		}
 		return;
 	}
@@ -234,14 +279,14 @@ void Cmd_Give_f (edict_t *ent)
 		return;
 	}
 
-	index = ITEM_INDEX(it);
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 	if (it->flags & IT_AMMO)
 	{
 		if (gi.argc() == 3)
-			ent->client->pers.inventory[index] = atoi(gi.argv(2));
+			loadout_entry_ptr->amount = atoi(gi.argv(2));
 		else
-			ent->client->pers.inventory[index] += it->quantity;
+			loadout_entry_ptr->amount += it->quantity;
 	}
 	else
 	{
@@ -354,9 +399,9 @@ Use an inventory item
 */
 void Cmd_Use_f (edict_t *ent)
 {
-	int			index;
 	gitem_t		*it;
 	char		*s;
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 	s = gi.args();
 	it = FindItem (s);
@@ -370,8 +415,8 @@ void Cmd_Use_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Item is not usable.\n");
 		return;
 	}
-	index = ITEM_INDEX(it);
-	if (!ent->client->pers.inventory[index])
+
+	if (!loadout_entry_ptr->amount)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
@@ -395,9 +440,10 @@ Drop an inventory item
 */
 void Cmd_Drop_f (edict_t *ent)
 {
-	int			index;
 	gitem_t		*it;
 	char		*s;
+
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 	s = gi.args();
 	it = FindItem (s);
@@ -411,8 +457,7 @@ void Cmd_Drop_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Item is not dropable.\n");
 		return;
 	}
-	index = ITEM_INDEX(it);
-	if (!ent->client->pers.inventory[index])
+	if (loadout_entry_ptr->amount == 0)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
@@ -456,31 +501,42 @@ Cmd_WeapPrev_f
 void Cmd_WeapPrev_f (edict_t *ent)
 {
 	gclient_t	*cl;
-	int			i, index;
 	gitem_t		*it;
-	int			selected_weapon;
 
 	cl = ent->client;
 
 	if (!cl->pers.weapon)
 		return;
 
-	selected_weapon = ITEM_INDEX(cl->pers.weapon);
+	// new loadout system...
+	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
 
-	// scan  for the next valid one
-	for (i=1 ; i<=MAX_ITEMS ; i++)
+	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
 	{
-		index = (selected_weapon + i)%MAX_ITEMS;
-		if (!cl->pers.inventory[index])
+		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+
+		it = FindItem(loadout_entry_ptr->item_name);
+
+		if (it == NULL)
 			continue;
-		it = &itemlist[index];
+
 		if (!it->use)
 			continue;
-		if (! (it->flags & IT_WEAPON) )
+
+		if (!(it->flags & IT_WEAPON))
 			continue;
-		it->use (ent, it);
+
+		// cycle if its the first item
 		if (cl->pers.weapon == it)
+		{
+			int32_t new_item_num = item_num - 1;
+			if (new_item_num < 0) new_item_num = cl->pers.loadout.num_items - 1;
+
+			// get the current weapon
+			cl->pers.loadout_current_weapon = &cl->pers.loadout.items[new_item_num];
+
 			return;	// successful
+		}
 	}
 }
 
@@ -491,32 +547,44 @@ Cmd_WeapNext_f
 */
 void Cmd_WeapNext_f (edict_t *ent)
 {
-	gclient_t	*cl;
-	int			i, index;
-	gitem_t		*it;
-	int			selected_weapon;
+	gclient_t* cl;
+	gitem_t* it;
 
 	cl = ent->client;
 
+	// return if no weapon
 	if (!cl->pers.weapon)
 		return;
 
-	selected_weapon = ITEM_INDEX(cl->pers.weapon);
+	// new loadout system...
+	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
 
-	// scan  for the next valid one
-	for (i=1 ; i<=MAX_ITEMS ; i++)
+	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
 	{
-		index = (selected_weapon + MAX_ITEMS - i)%MAX_ITEMS;
-		if (!cl->pers.inventory[index])
+		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+
+		it = FindItem(loadout_entry_ptr->item_name);
+
+		if (it == NULL)
 			continue;
-		it = &itemlist[index];
+
 		if (!it->use)
 			continue;
-		if (! (it->flags & IT_WEAPON) )
+
+		if (!(it->flags & IT_WEAPON))
 			continue;
-		it->use (ent, it);
+
+		// cycle if its the first item
 		if (cl->pers.weapon == it)
+		{
+			int32_t new_item_num = item_num + 1;
+			if (new_item_num > cl->pers.loadout.num_items) 0;
+
+			// get the current weapon
+			cl->pers.loadout_current_weapon = &cl->pers.loadout.items[new_item_num];
+
 			return;	// successful
+		}
 	}
 }
 
@@ -536,10 +604,9 @@ void Cmd_WeapLast_f (edict_t *ent)
 	if (!cl->pers.weapon || !cl->pers.lastweapon)
 		return;
 
-	index = ITEM_INDEX(cl->pers.lastweapon);
-	if (!cl->pers.inventory[index])
-		return;
-	it = &itemlist[index];
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, cl->pers.lastweapon->pickup_name);
+
+	it = FindItem(cl->pers.lastweapon->pickup_name);
 	if (!it->use)
 		return;
 	if (! (it->flags & IT_WEAPON) )

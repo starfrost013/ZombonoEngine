@@ -127,12 +127,13 @@ void PlayerNoise(edict_t* who, vec3_t where, int32_t type)
 bool Pickup_Weapon(edict_t* ent, edict_t* other)
 {
 	int			index;
-	gitem_t* ammo;
+	gitem_t*	ammo;
+	loadout_entry_t* loadout_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
 	index = ITEM_INDEX(ent->item);
 
 	if ((((int32_t)(gameflags->value) & GF_WEAPONS_STAY))
-		&& other->client->pers.inventory[index])
+		&& loadout_ptr->amount > 0)
 	{
 		if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 			return false;	// leave the weapon for others to pickup
@@ -145,7 +146,7 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 		return false;
 	}
 
-	other->client->pers.inventory[index]++;
+	loadout_ptr->amount++;
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
 	{
@@ -169,8 +170,9 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 	gi.WriteString(ent->item->pickup_name);
 	gi.WriteInt(1);
 
+	// wtf does this do?
 	if (other->client->pers.weapon != ent->item &&
-		(other->client->pers.inventory[index] == 1) &&
+		//(other->client->pers.inventory[index] == 1) && doesn't work with new loadout system
 		(other->client->pers.weapon == FindItem("blaster")))
 		other->client->newweapon = ent->item;
 
@@ -229,9 +231,25 @@ void ChangeWeapon(edict_t* ent)
 	}
 
 	if (ent->client->pers.weapon && ent->client->pers.weapon->ammo)
-		ent->client->ammo_index = ITEM_INDEX(FindItem(ent->client->pers.weapon->ammo));
+	{
+		gitem_t* item_ammo = FindItem(ent->client->pers.weapon->ammo);
+
+		item_ammo = Loadout_GetItem(ent, item_ammo->pickup_name);
+
+		// if the ammo is not already there, add it (failsafe, really shouldn't happen)
+		if (!item_ammo)
+		{
+			gi.dprintf("Somehow we lost the ammo...giving you 1 :(");
+			item_ammo = Loadout_AddItem(ent, ent->client->pers.weapon->ammo, 1);
+		}
+
+		// add it to the loadout
+		ent->client->pers.loadout_current_ammo = item_ammo;
+	}
 	else
-		ent->client->ammo_index = 0;
+	{
+		ent->client->pers.loadout_current_ammo = NULL; // TEMP
+	}
 
 	if (!ent->client->pers.weapon)
 	{	// dead
@@ -263,38 +281,42 @@ NoAmmoWeaponChange
 */
 void NoAmmoWeaponChange(edict_t* ent)
 {
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("slugs"))]
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("railgun"))])
+	if (Loadout_GetItem(ent, "slugs")
+		&& Loadout_GetItem(ent, "railgun"))
 	{
 		ent->client->newweapon = FindItem("railgun");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("cells"))]
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("hyperblaster"))])
+	if (Loadout_GetItem(ent, "cells")
+		&& Loadout_GetItem(ent, "hyperblaster"))
 	{
 		ent->client->newweapon = FindItem("hyperblaster");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("chaingun"))])
+	if (Loadout_GetItem(ent, "bullets")
+		&& Loadout_GetItem(ent, "chaingun"))
 	{
 		ent->client->newweapon = FindItem("chaingun");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("machinegun"))])
+	if (Loadout_GetItem(ent, "bullets")
+		&& Loadout_GetItem(ent, "machinegun"))
 	{
 		ent->client->newweapon = FindItem("machinegun");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))] > 1
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("super shotgun"))])
+	//required as super shotgun uses 2 bullets
+	loadout_entry_t* bullets = Loadout_GetItem(ent, "bullets");
+
+	if (bullets != NULL
+		&& bullets->amount >= 1
+		&& Loadout_GetItem(ent, "super shotgun"))
 	{
 		ent->client->newweapon = FindItem("super shotgun");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))]
-		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("shotgun"))])
+	if (Loadout_GetItem(ent, "shells")
+		&& Loadout_GetItem(ent, "shotgun"))
 	{
 		ent->client->newweapon = FindItem("shotgun");
 		return;
@@ -352,13 +374,13 @@ void Use_Weapon(edict_t* ent, gitem_t* item)
 		Ammo_item = FindItem(item->ammo);
 		ammo_index = ITEM_INDEX(Ammo_item);
 
-		if (!ent->client->pers.inventory[ammo_index])
+		if (!ent->client->pers.loadout_current_ammo)
 		{
 			gi.cprintf(ent, PRINT_HIGH, "No %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
 			return;
 		}
 
-		if (ent->client->pers.inventory[ammo_index] < item->quantity)
+		if (ent->client->pers.loadout_current_ammo < item->quantity)
 		{
 			gi.cprintf(ent, PRINT_HIGH, "Not enough %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
 			return;
@@ -383,16 +405,17 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	if ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)
 		return;
 
-	index = ITEM_INDEX(item);
+	loadout_entry_t* loadout_ptr = Loadout_GetItem(ent, item->pickup_name);
+
 	// see if we're already using it
-	if (((item == ent->client->pers.weapon) || (item == ent->client->newweapon)) && (ent->client->pers.inventory[index] == 1))
+	if (((item == ent->client->pers.weapon) || (item == ent->client->newweapon)) && loadout_ptr->amount == 1)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "Can't drop current weapon\n");
 		return;
 	}
 
 	Drop_Item(ent, item);
-	ent->client->pers.inventory[index]--;
+	ent->client->pers.loadout.num_items--;
 }
 
 
@@ -486,8 +509,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK1))
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
-			if ((!ent->client->ammo_index) ||
-				(ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->pers.loadout_current_ammo) ||
+				(ent->client->pers.loadout_current_ammo >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
@@ -515,8 +538,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
 
-			if ((!ent->client->ammo_index) ||
-				(ent->client->pers.inventory[ent->client->ammo_index] >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->pers.loadout_current_ammo) ||
+				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_SECONDARY;

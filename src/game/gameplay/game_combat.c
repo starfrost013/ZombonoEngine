@@ -186,14 +186,14 @@ dflags		these flags are used to control how T_Damage works
 */
 static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32_t damage, int32_t dflags)
 {
-	gclient_t	*client;
-	int			save;
-	int			power_armor_type;
-	int			index = 0;
-	int			damagePerCell;
-	int			pa_te_type;
-	int			power = 0;
-	int			power_used;
+	gclient_t*	client;
+	int32_t		save;
+	int32_t		power_armor_type;
+	loadout_entry_t*	loadout_ptr_cells = Loadout_GetItem(ent, "cells");
+	int32_t		damage_per_cell;
+	int32_t		temp_entity_type;
+	int32_t		power = 0;
+	int32_t		power_used;
 
 	if (!damage)
 		return 0;
@@ -205,11 +205,11 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 
 	if (client)
 	{
-		power_armor_type = PowerArmorType (ent);
+		power_armor_type = GetCurrentPowerArmor (ent);
 		if (power_armor_type != POWER_ARMOR_NONE)
 		{
-			index = ITEM_INDEX(FindItem("Cells"));
-			power = client->pers.inventory[index];
+
+			power = loadout_ptr_cells->amount;
 		}
 	}
 	else if (ent->svflags & SVF_MONSTER)
@@ -239,30 +239,30 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 		if (dot <= 0.3)
 			return 0;
 
-		damagePerCell = 1;
-		pa_te_type = TE_SCREEN_SPARKS;
+		damage_per_cell = 1;
+		temp_entity_type = TE_SCREEN_SPARKS;
 		damage = damage / 3;
 	}
 	else
 	{
-		damagePerCell = 2;
-		pa_te_type = TE_SHIELD_SPARKS;
+		damage_per_cell = 2;
+		temp_entity_type = TE_SHIELD_SPARKS;
 		damage = (2 * damage) / 3;
 	}
 
-	save = power * damagePerCell;
+	save = power * damage_per_cell;
 	if (!save)
 		return 0;
 	if (save > damage)
 		save = damage;
 
-	SpawnDamage (pa_te_type, point, normal, save);
+	SpawnDamage (temp_entity_type, point, normal, save);
 	ent->powerarmor_time = level.time + 0.2;
 
-	power_used = save / damagePerCell;
+	power_used = save / damage_per_cell;
 
 	if (client)
-		client->pers.inventory[index] -= power_used;
+		loadout_ptr_cells -= power_used;
 	else
 		ent->monsterinfo.power_armor_power -= power_used;
 	return save;
@@ -271,8 +271,8 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 static int32_t CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int32_t damage, int32_t te_sparks, int32_t dflags)
 {
 	gclient_t	*client;
-	int			save;
-	int			index;
+	int32_t		save;
+	loadout_entry_t*	current_armor = GetCurrentArmor(ent);
 	gitem_t		*armor;
 
 	if (!damage)
@@ -286,23 +286,22 @@ static int32_t CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int32_t da
 	if (dflags & DAMAGE_NO_ARMOR)
 		return 0;
 
-	index = ArmorIndex (ent);
-	if (!index)
+	if (!current_armor)
 		return 0;
 
-	armor = GetItemByIndex (index);
+	armor = GetItemByIndex (current_armor);
 
 	if (dflags & DAMAGE_ENERGY)
 		save = ceil(((gitem_armor_t *)armor->info)->energy_protection*damage);
 	else
 		save = ceil(((gitem_armor_t *)armor->info)->normal_protection*damage);
-	if (save >= client->pers.inventory[index])
-		save = client->pers.inventory[index];
+	if (save >= current_armor->amount)
+		save = current_armor->amount;
 
 	if (!save)
 		return 0;
 
-	client->pers.inventory[index] -= save;
+	current_armor->amount -= save;
 	SpawnDamage (te_sparks, point, normal, save);
 
 	return save;
@@ -382,11 +381,11 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int32_t damage, int32_t knockback, int32_t dflags, int32_t mod)
 {
 	gclient_t	*client;
-	int			take;
-	int			save;
-	int			asave;
-	int			psave;
-	int			te_sparks;
+	int32_t		take;
+	int32_t		save;
+	int32_t		asave;
+	int32_t		psave;
+	int32_t		te_sparks;
 
 	if (!targ->takedamage)
 		return;
@@ -669,9 +668,9 @@ bool IsNeutral(edict_t* ent)
 
 void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 {
-	int			mod;
-	char* message;
-	char* message2;
+	int		mod;
+	char*	message;
+	char*	message2;
 	bool	ff;
 
 	if ((!(int32_t)(gameflags->value) & GF_NO_FRIENDLY_FIRE) && attacker->client)
@@ -868,13 +867,13 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 
 void TossClientWeapon(edict_t* self)
 {
-	gitem_t* item;
-	edict_t* drop;
-	bool	quad;
+	gitem_t*	item;
+	edict_t*	drop;
+	bool		quad;
 	float		spread;
 
 	item = self->client->pers.weapon;
-	if (!self->client->pers.inventory[self->client->ammo_index])
+	if (!self->client->pers.loadout_current_ammo)
 		item = NULL;
 	if (item && (strcmp(item->pickup_name, "Blaster") == 0))
 		item = NULL;
@@ -1049,7 +1048,7 @@ P_FallingDamage
 void P_FallingDamage(edict_t* ent)
 {
 	float	delta;
-	int		damage;
+	int32_t	damage;
 	vec3_t	dir;
 
 	if (ent->s.modelindex != 255)

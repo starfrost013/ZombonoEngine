@@ -317,9 +317,11 @@ G_SetStats
 */
 void G_SetStats (edict_t *ent)
 {
-	gitem_t		*item;
-	int			index = 0, cells = 0;
-	int			power_armor_type;
+	gitem_t			*item;
+	loadout_entry_t* cells = Loadout_GetItem(ent, "cells");
+	loadout_entry_t* armor = GetCurrentArmor(ent);
+
+	int32_t			power_armor_type;
 
 	//
 	// health
@@ -330,44 +332,43 @@ void G_SetStats (edict_t *ent)
 	//
 	// ammo
 	//
-	if (!ent->client->ammo_index /* || !ent->client->pers.inventory[ent->client->Ammo_index] */)
+	if (!ent->client->pers.loadout_current_ammo->item_name)
 	{
 		ent->client->ps.stats[STAT_AMMO_ICON] = 0;
 		ent->client->ps.stats[STAT_AMMO] = 0;
 	}
 	else
 	{
-		item = &itemlist[ent->client->ammo_index];
+		item = FindItem(ent->client->pers.loadout_current_ammo->item_name);
 		ent->client->ps.stats[STAT_AMMO_ICON] = gi.imageindex (item->icon);
-		ent->client->ps.stats[STAT_AMMO] = ent->client->pers.inventory[ent->client->ammo_index];
+		ent->client->ps.stats[STAT_AMMO] = ent->client->pers.loadout_current_ammo->amount;
 	}
 	
 	//
 	// armor
 	//
-	power_armor_type = PowerArmorType (ent);
+	power_armor_type = GetCurrentPowerArmor (ent);
 	if (power_armor_type)
 	{
-		cells = ent->client->pers.inventory[ITEM_INDEX(FindItem ("cells"))];
-		if (cells == 0)
-		{	// ran out of cells for power armor
+		if (cells == NULL
+			|| cells->amount == 0)
+		{	
+			// we have run out of cells for power armor
 			ent->flags &= ~FL_POWER_ARMOR;
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/power2.wav"), 1, ATTN_NORM, 0);
 			power_armor_type = 0;;
 		}
 	}
 
-	index = ArmorIndex (ent);
-	if (power_armor_type && (!index || (level.framenum & 8) ) )
+	if (power_armor_type && (!armor || (level.framenum & 8) ) )
 	{	// flash between power armor and other armor icon
 		ent->client->ps.stats[STAT_ARMOR_ICON] = gi.imageindex ("pics/i_powershield");
 		ent->client->ps.stats[STAT_ARMOR] = cells;
 	}
-	else if (index)
+	else if (armor)
 	{
-		item = GetItemByIndex (index);
 		ent->client->ps.stats[STAT_ARMOR_ICON] = gi.imageindex (item->icon);
-		ent->client->ps.stats[STAT_ARMOR] = ent->client->pers.inventory[index];
+		ent->client->ps.stats[STAT_ARMOR] = armor->amount;
 	}
 	else
 	{
