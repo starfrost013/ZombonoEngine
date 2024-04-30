@@ -266,10 +266,9 @@ typedef struct gitem_armor_s
 #define WEAP_ROCKETLAUNCHER			8 
 #define WEAP_HYPERBLASTER			9 
 #define WEAP_RAILGUN				10
-#define WEAP_BFG					11
-#define WEAP_BAMFUSLICATOR			12
-#define WEAP_PLANFUSLICATOR			13		// Materialiser
-#define WEAP_TANGFUSLICATOR			14		// Fuslicator 3: Zombie Edition
+#define WEAP_BAMFUSLICATOR			11
+#define WEAP_PLANFUSLICATOR			12		// Materialiser
+#define WEAP_TANGFUSLICATOR			13		// Fuslicator 3: Zombie Edition
 
 typedef struct gitem_s
 {
@@ -506,11 +505,6 @@ extern	spawn_temp_t	st;
 extern	int	sm_meat_index;
 extern	int	snd_fry;
 
-extern	int	jacket_armor_index;
-extern	int	combat_armor_index;
-extern	int	body_armor_index;
-
-
 // means of death
 #define MOD_UNKNOWN			0
 #define MOD_BLASTER			1
@@ -524,9 +518,6 @@ extern	int	body_armor_index;
 #define MOD_R_SPLASH		9
 #define MOD_HYPERBLASTER	10
 #define MOD_RAILGUN			11
-#define MOD_BFG_LASER		12
-#define MOD_BFG_BLAST		13
-#define MOD_BFG_EFFECT		14
 #define MOD_HANDGRENADE		15
 #define MOD_HG_SPLASH		16
 #define MOD_WATER			17
@@ -787,7 +778,6 @@ void Ammo_Blaster_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t dama
 void Ammo_Grenade_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t flashtype);
 void Ammo_Rocket_monster (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, int32_t flashtype);
 void Ammo_Rail_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick, int32_t flashtype);
-void Ammo_BFG_monster (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, int32_t kick, float damage_radius, int32_t flashtype);
 void M_droptofloor (edict_t *ent);
 void monster_think (edict_t *self);
 void monster_check_dodge(edict_t* self, vec3_t start, vec3_t dir, int32_t speed);
@@ -846,7 +836,6 @@ void Ammo_Grenade (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, i
 void Ammo_Grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t speed, float timer, float damage_radius, bool held);
 void Ammo_Rocket (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius, int32_t radius_damage);
 void Ammo_Rail (edict_t *self, vec3_t start, vec3_t aimdir, int32_t damage, int32_t kick);
-void Ammo_BFG (edict_t *self, vec3_t start, vec3_t dir, int32_t damage, int32_t speed, float damage_radius);
 void Ammo_Bamfuslicator (edict_t* self, vec3_t start, vec3_t aimdir, zombie_type zombie_type);
 void Ammo_Tangfuslicator (edict_t* self, vec3_t start, vec3_t aimdir); //todo: recoil
 

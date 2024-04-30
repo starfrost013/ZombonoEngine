@@ -5044,31 +5044,6 @@
 }
 // entity 80
 {
-"classname" "weapon_bfg"
-"origin" "48 -176 -16"
-}
-// entity 81
-{
-"classname" "ammo_cells"
-"origin" "64 -96 -16"
-}
-// entity 82
-{
-"classname" "ammo_cells"
-"origin" "48 -256 -16"
-}
-// entity 83
-{
-"classname" "ammo_cells"
-"origin" "112 -144 -16"
-}
-// entity 84
-{
-"classname" "ammo_cells"
-"origin" "144 -224 -16"
-}
-// entity 85
-{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "triggers"
@@ -5076,7 +5051,7 @@
 "_tb_layer_sort_index" "0"
 "_tb_layer_hidden" "1"
 }
-// entity 86
+// entity 81
 {
 "classname" "trigger_once"
 "target" "help_fuckyou"
@@ -5092,13 +5067,13 @@
 ( -404 412 128 ) ( -404 412 130 ) ( -404 412.22727272727275 128 ) e1u1/trigger 0 0 0 0.25 0.25
 }
 }
-// entity 87
+// entity 82
 {
 "classname" "ammo_shells"
 "origin" "464 360 -16"
 "_tb_layer" "3"
 }
-// entity 88
+// entity 83
 {
 "classname" "trigger_hurt"
 "dmg" "200"
@@ -5113,7 +5088,7 @@
 ( 320 -448 984 ) ( 320 -32 984 ) ( 320 -32 928 ) e1u1/trigger 0 0 0 1 1
 }
 }
-// entity 89
+// entity 84
 {
 "classname" "func_door"
 "angle" "0"
@@ -5131,7 +5106,7 @@
 ( 792 -208 936 ) ( 792 -448 936 ) ( 792 -448 1064 ) e2u1/cindr8_2 0 0 0 1 1
 }
 }
-// entity 90
+// entity 85
 {
 "classname" "func_door"
 "angle" "180"

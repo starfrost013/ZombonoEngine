@@ -666,8 +666,6 @@ void SP_worldspawn (edict_t *ent)
 	gi.modelindex ("#w_rlauncher.md2");
 	gi.modelindex ("#w_hyperblaster.md2");
 	gi.modelindex ("#w_railgun.md2");
-	gi.modelindex ("#w_bfg.md2");
-
 	//-------------------
 
 	gi.soundindex ("player/gasp1.wav");		// gasping for air

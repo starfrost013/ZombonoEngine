@@ -35,19 +35,12 @@ void Weapon_RocketLauncher(edict_t *ent);
 void Weapon_Grenade(edict_t *ent);
 void Weapon_GrenadeLauncher(edict_t *ent);
 void Weapon_Railgun(edict_t *ent);
-void Weapon_BFG(edict_t *ent);
 void Weapon_Bamfuslicator(edict_t *ent);
 void Weapon_Tangfuslicator(edict_t* ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
 gitem_armor_t bodyarmor_info	= {100, 200, .80, .60, ARMOR_BODY};
-
-int	jacket_armor_index;
-int	combat_armor_index;
-int	body_armor_index;
-int	power_screen_index;
-int	power_shield_index;
 
 #define HEALTH_IGNORE_MAX	1
 #define HEALTH_TIMED		2
@@ -593,6 +586,7 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 {
 	loadout_entry_t*	loadout_ptr_old = GetCurrentArmor(other);
 	loadout_entry_t*	loadout_ptr_jacket = Loadout_GetItem(ent, "Jacket Armor");
+	loadout_entry_t*	loadout_ptr_combat = Loadout_GetItem(ent, "Combat Armor");
 	loadout_entry_t*	loadout_ptr_new = Loadout_GetItem(ent, ent->item->pickup_name);
 	gitem_armor_t*		oldinfo;
 	gitem_armor_t*		newinfo;
@@ -622,9 +616,9 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 	else
 	{
 		// get info on old armor
-		if (loadout_ptr_old == jacket_armor_index)
+		if (loadout_ptr_old == loadout_ptr_jacket)
 			oldinfo = &jacketarmor_info;
-		else if (loadout_ptr_old == combat_armor_index)
+		else if (loadout_ptr_old == loadout_ptr_combat)
 			oldinfo = &combatarmor_info;
 		else // (old_armor_index == body_armor_index)
 			oldinfo = &bodyarmor_info;
@@ -1082,7 +1076,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 	}
 	if ((int32_t)gameflags->value & GF_INFINITE_AMMO)
 	{
-		if ((item->flags == IT_AMMO) || (strcmp(ent->classname, "Weapon_bfg") == 0))
+		if ((item->flags == IT_AMMO))
 		{
 			G_FreeEdict(ent);
 			return;
@@ -1486,31 +1480,8 @@ always owned, never in the world
 /* precache */ "weapons/rg_hum.wav"
 	},
 
-/*QUAKED Weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
-*/
-	{
-		"weapon_bfg",
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
-		Weapon_BFG,
-		"misc/w_pkup.wav",
-		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
-		"models/weapons/v_bfg/tris.md2",
-/* icon */		"pics/w_bfg",
-/* pickup */	"BFG10K",
-		0,
-		50,
-		"Cells",
-		IT_WEAPON,
-		WEAP_BFG,
-		NULL,
-		0,
-/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
-	},
-
 	// 
-	// Director team weapons: Bamfuslicator
+	// Director team weapons start here
 	//
 
 	{
@@ -2043,10 +2014,4 @@ void SetItemNames (void)
 		it = &itemlist[i];
 		gi.configstring (CS_ITEMS+i, it->pickup_name);
 	}
-
-	jacket_armor_index = ITEM_INDEX(FindItem("Jacket Armor"));
-	combat_armor_index = ITEM_INDEX(FindItem("Combat Armor"));
-	body_armor_index   = ITEM_INDEX(FindItem("Body Armor"));
-	power_screen_index = ITEM_INDEX(FindItem("Power Screen"));
-	power_shield_index = ITEM_INDEX(FindItem("Power Shield"));
 }

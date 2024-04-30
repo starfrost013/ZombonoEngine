@@ -114,7 +114,7 @@ void SelectPrevItem (edict_t *ent, int32_t itflags)
 			if (new_item_num < 0) new_item_num = cl->pers.loadout.num_items;
 
 			// get the current weapon
-			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num];
+			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num]; 
 			return;	// successful
 		}
 	}
@@ -389,7 +389,6 @@ void Cmd_Use_f (edict_t *ent)
 {
 	char*	 s = gi.args();
 	gitem_t* it = FindItem(s);
-	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 	if (!it)
 	{
@@ -401,6 +400,8 @@ void Cmd_Use_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Item is not usable.\n");
 		return;
 	}
+
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 	if (loadout_entry_ptr == NULL
 		|| !loadout_entry_ptr->amount)

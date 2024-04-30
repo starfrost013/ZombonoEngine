@@ -72,7 +72,6 @@ extern void CL_TeleportParticles (vec3_t org);
 
 void CL_BlasterParticles (vec3_t org, vec3_t dir);
 void CL_ExplosionParticles (vec3_t org);
-void CL_BFGExplosionParticles (vec3_t org);
 
 struct sfx_s	*cl_sfx_ric1;
 struct sfx_s	*cl_sfx_ric2;
@@ -95,7 +94,6 @@ struct model_s	*cl_mod_parasite_segment;
 struct model_s	*cl_mod_grapple_cable;
 struct model_s	*cl_mod_parasite_tip;
 struct model_s	*cl_mod_explo4;
-struct model_s	*cl_mod_bfg_explo;
 struct model_s	*cl_mod_powerscreen;
 struct model_s	*cl_mod_plasmaexplo;
 
@@ -147,7 +145,6 @@ void CL_RegisterTEntModels (void)
 	cl_mod_grapple_cable = re.RegisterModel ("models/ctf/segment/tris.md2");
 	cl_mod_parasite_tip = re.RegisterModel ("models/monsters/parasite/tip/tris.md2");
 	cl_mod_explo4 = re.RegisterModel ("models/objects/r_explode/tris.md2");
-	cl_mod_bfg_explo = re.RegisterModel ("sprites/s_bfg2.sp2");
 	cl_mod_powerscreen = re.RegisterModel ("models/items/armor/effect/tris.md2");
 
 re.RegisterModel ("models/objects/laser/tris.md2");
@@ -726,32 +723,6 @@ void CL_ParseTEnt (void)
 			S_StartSound (pos, 0, 0, cl_sfx_watrexp, 1, ATTN_NORM, 0);
 		else
 			S_StartSound (pos, 0, 0, cl_sfx_rockexp, 1, ATTN_NORM, 0);
-		break;
-
-	case TE_BFG_EXPLOSION:
-		MSG_ReadPos (&net_message, pos);
-		ex = CL_AllocExplosion ();
-		VectorCopy (pos, ex->ent.origin);
-		ex->type = ex_poly;
-		ex->ent.flags = RF_FULLBRIGHT;
-		ex->start = cl.frame.servertime - 100;
-		ex->light = 350;
-		ex->lightcolor[0] = 0.0;
-		ex->lightcolor[1] = 1.0;
-		ex->lightcolor[2] = 0.0;
-		ex->ent.model = cl_mod_bfg_explo;
-		ex->ent.flags |= RF_TRANSLUCENT;
-		ex->ent.alpha = 0.30;
-		ex->frames = 4;
-		break;
-
-	case TE_BFG_BIGEXPLOSION:
-		MSG_ReadPos (&net_message, pos);
-		CL_BFGExplosionParticles (pos);
-		break;
-
-	case TE_BFG_LASER:
-		CL_ParseLaser (0xd0d1d2d3);
 		break;
 
 	case TE_BUBBLETRAIL:

@@ -763,8 +763,6 @@ void G_SetClientSound (edict_t *ent)
 	// stupid hack
 	else if (strcmp(weap, "weapon_railgun") == 0)
 		ent->s.sound = gi.soundindex("weapons/rg_hum.wav");
-	else if (strcmp(weap, "weapon_bfg") == 0)
-		ent->s.sound = gi.soundindex("weapons/bfg_hum.wav");
 	else if (ent->client->weapon_sound)
 		ent->s.sound = ent->client->weapon_sound;
 	else

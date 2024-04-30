@@ -284,7 +284,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ammunition\ammo_bamfuslicator.c" />
-    <ClCompile Include="ammunition\ammo_bfg.c" />
     <ClCompile Include="ammunition\ammo_blaster.c" />
     <ClCompile Include="ammunition\ammo_bullet.c" />
     <ClCompile Include="ammunition\ammo_grenade.c" />
@@ -323,7 +322,6 @@
     <ClCompile Include="q_shared.c" />
     <ClCompile Include="weapons\weapon_bamfuslicator.c" />
     <ClCompile Include="weapons\weapon_base.c" />
-    <ClCompile Include="weapons\weapon_bfg.c" />
     <ClCompile Include="weapons\weapon_blaster.c" />
     <ClCompile Include="weapons\weapon_blaster_hyper.c" />
     <ClCompile Include="weapons\weapon_chaingun.c" />

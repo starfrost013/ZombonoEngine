@@ -542,7 +542,7 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
 
-			if ((!ent->client->pers.loadout_current_ammo->amount) ||
+			if ((!ent->client->pers.loadout_current_ammo) ||
 				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;

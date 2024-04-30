@@ -94,13 +94,17 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 
 	// completed, too far away to spawn a monster
 	if (trace.fraction == 1.0f)
+	{
+		gi.sound(self, CHAN_VOICE, gi.soundindex("weapons/bamfuslicator/spawn_failed.wav"), 1, ATTN_NORM, 0);
 		return;
+	}
 
 	// can't spawn if inside a player
 	if (trace.ent != NULL)
 	{
 		if (!strncmp(trace.ent->classname, "player", 6))
 		{
+			gi.sound(self, CHAN_VOICE, gi.soundindex("weapons/bamfuslicator/spawn_failed.wav"), 1, ATTN_NORM, 0);
 			G_FreeEdict(monster);
 
 			return;
@@ -135,12 +139,13 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 
 	// see if we are trying to spawn inside of the player
 	// 64 to limit time this function takes as it's recursive (also would there really be more than 64 in a 64x64 box around the player???)
-	int num_within_player_bounds = gi.BoxEdicts( vec_absmin, vec_absmax, &within_player_bounds, 64, AREA_SOLID);
+	int32_t num_within_player_bounds = gi.BoxEdicts( vec_absmin, vec_absmax, &within_player_bounds, 64, AREA_SOLID);
 
-	for (int edict = 0; edict < num_within_player_bounds; edict++)
+	for (int32_t edict = 0; edict < num_within_player_bounds; edict++)
 	{
 		if (!strncmp(within_player_bounds[edict]->classname, "monster_", 8)) // check for any monster
 		{
+			gi.sound(self, CHAN_VOICE, gi.soundindex("weapons/bamfuslicator/spawn_failed.wav"), 1, ATTN_NORM, 0);
 			//todo: push out
 			G_FreeEdict(monster);
 			return;
@@ -152,13 +157,13 @@ void Ammo_Bamfuslicator(edict_t* self, vec3_t start, vec3_t aimdir, zombie_type 
 	VectorAdd(monster->absmax, min_dist, vec_absmax);
 
 	// now see if we are tyrign 
-	int num_within_monster_bounds = gi.BoxEdicts(vec_absmin, vec_absmax, &within_monster_bounds, 64, AREA_SOLID);
+	int32_t num_within_monster_bounds = gi.BoxEdicts(vec_absmin, vec_absmax, &within_monster_bounds, 64, AREA_SOLID);
 
-	for (int edict = 0; edict < num_within_monster_bounds; edict++)
+	for (int32_t edict = 0; edict < num_within_monster_bounds; edict++)
 	{
 		if (!strncmp(within_monster_bounds[edict]->classname, "worldspawn", 11))
 		{
-			//todo: play a rejection sound
+			gi.sound(self, CHAN_VOICE, gi.soundindex("weapons/bamfuslicator/spawn_failed.wav"), 1, ATTN_NORM, 0);
 			G_FreeEdict(monster);
 			return;
 		}

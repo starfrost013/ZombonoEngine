@@ -865,12 +865,6 @@ void CL_AddPacketEntities (frame_t *frame)
 		if (!s1->modelindex)
 			continue;
 
-		if (effects & EF_BFG)
-		{
-			ent.flags |= RF_TRANSLUCENT;
-			ent.alpha = 0.30;
-		}
-
 		if (effects & EF_PLASMA)
 		{
 			ent.flags |= RF_TRANSLUCENT;
@@ -998,21 +992,6 @@ void CL_AddPacketEntities (frame_t *frame)
 			else if (effects & EF_FLIES)
 			{
 				CL_FlyEffect (cent, ent.origin);
-			}
-			else if (effects & EF_BFG)
-			{
-				static int32_t bfg_lightramp[6] = {300, 400, 600, 300, 150, 75};
-
-				if (effects & EF_ANIM_ALLFAST)
-				{
-					CL_BfgParticles (&ent);
-					i = 200;
-				}
-				else
-				{
-					i = bfg_lightramp[s1->frame];
-				}
-				V_AddLight (ent.origin, i, 0, 1, 0);
 			}
 			else if (effects & EF_TRAP)
 			{

@@ -749,9 +749,6 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			else
 				message = "blew himself up";
 			break;
-		case MOD_BFG_BLAST:
-			message = "should have used a smaller gun";
-			break;
 		default:
 			if (IsNeutral(self))
 				message = "killed itself";
@@ -817,18 +814,6 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			break;
 		case MOD_RAILGUN:
 			message = "was railed by";
-			break;
-		case MOD_BFG_LASER:
-			message = "saw the pretty lights from";
-			message2 = "'s BFG";
-			break;
-		case MOD_BFG_BLAST:
-			message = "was disintegrated by";
-			message2 = "'s BFG blast";
-			break;
-		case MOD_BFG_EFFECT:
-			message = "couldn't hide from";
-			message2 = "'s BFG";
 			break;
 		case MOD_HANDGRENADE:
 			message = "caught";

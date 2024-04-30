@@ -108,9 +108,6 @@
     <ClCompile Include="ammunition\ammo_melee.c">
       <Filter>Source Files\Ammunition</Filter>
     </ClCompile>
-    <ClCompile Include="ammunition\ammo_bfg.c">
-      <Filter>Source Files\Ammunition</Filter>
-    </ClCompile>
     <ClCompile Include="ammunition\ammo_bullet.c">
       <Filter>Source Files\Ammunition</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
     <ClCompile Include="weapons\weapon_railgun.c">
       <Filter>Source Files\Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="weapons\weapon_bfg.c">
-      <Filter>Source Files\Weapons</Filter>
-    </ClCompile>
     <ClCompile Include="weapons\weapon_bamfuslicator.c">
       <Filter>Source Files\Weapons</Filter>
     </ClCompile>
@@ -187,6 +181,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ammunition\ammo_tangfuslicator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameplay\game_loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

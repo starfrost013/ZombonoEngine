@@ -523,7 +523,6 @@ typedef struct
 #define	EF_ROCKET			0x00000010		// redlight + trail
 #define	EF_GRENADE			0x00000020
 #define	EF_HYPERBLASTER		0x00000040
-#define	EF_BFG				0x00000080
 #define EF_COLOR_SHELL		0x00000100
 #define EF_POWERSCREEN		0x00000200
 #define	EF_ANIM01			0x00000400		// automatically cycle between frames 0 and 1 at 2 hz
@@ -589,7 +588,6 @@ typedef struct
 #define	MZ_LOGIN			9
 #define	MZ_LOGOUT			10
 #define	MZ_RESPAWN			11
-#define	MZ_BFG				12
 #define	MZ_SSHOTGUN			13
 #define	MZ_HYPERBLASTER		14
 #define	MZ_ITEMRESPAWN		15
@@ -637,10 +635,7 @@ typedef enum
 	TE_ROCKET_EXPLOSION_WATER,
 	TE_GRENADE_EXPLOSION_WATER,
 	TE_MEDIC_CABLE_ATTACK,
-	TE_BFG_EXPLOSION,
-	TE_BFG_BIGEXPLOSION,
 	TE_BOSSTPORT,			// used as '22' in a map, so DON'T RENUMBER!!!
-	TE_BFG_LASER,
 	TE_GRAPPLE_CABLE,
 	TE_WELDING_SPARKS,
 	TE_GREENBLOOD,

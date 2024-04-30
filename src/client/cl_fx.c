@@ -341,11 +341,6 @@ void CL_ParseMuzzleFlash (void)
 		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/grenlf1a.wav"), volume, ATTN_NORM, 0);
 		S_StartSound (NULL, i, CHAN_AUTO,   S_RegisterSound("weapons/grenlr1b.wav"), volume, ATTN_NORM, 0.1);
 		break;
-	case MZ_BFG:
-		dl->color[0] = 0;dl->color[1] = 1;dl->color[2] = 0;
-		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/bfg__f1y.wav"), volume, ATTN_NORM, 0);
-		break;
-
 	case MZ_LOGIN:
 		dl->color[0] = 0;dl->color[1] = 1; dl->color[2] = 0;
 		dl->die = cl.time + 1.0;
@@ -1593,89 +1588,6 @@ void CL_FlyEffect (centity_t *ent, vec3_t origin)
 
 /*
 ===============
-CL_BfgParticles
-===============
-*/
-
-#define	BEAMLENGTH			16
-void CL_BfgParticles (entity_t *ent)
-{
-	int32_t 		i;
-	cparticle_t	*p;
-	float		angle;
-	float		sr, sp, sy, cr, cp, cy;
-	vec3_t		forward;
-	float		dist = 64;
-	vec3_t		v;
-	float		ltime;
-	
-	if (!avelocities[0][0])
-	{
-		for (i=0 ; i<NUMVERTEXNORMALS ; i++)
-		{
-			avelocities[i][0] = (rand()&255) * 0.01;
-			avelocities[i][1] = (rand()&255) * 0.01;
-			avelocities[i][2] = (rand()&255) * 0.01;
-		}
-	}
-
-
-	ltime = (float)cl.time / 1000.0;
-	for (i=0 ; i<NUMVERTEXNORMALS ; i++)
-	{
-		angle = ltime * avelocities[i][0];
-		sy = sin(angle);
-		cy = cos(angle);
-		angle = ltime * avelocities[i][1];
-		sp = sin(angle);
-		cp = cos(angle);
-		angle = ltime * avelocities[i][2];
-		sr = sin(angle);
-		cr = cos(angle);
-	
-		forward[0] = cp*cy;
-		forward[1] = cp*sy;
-		forward[2] = -sp;
-
-		if (!free_particles)
-			return;
-		p = free_particles;
-		free_particles = p->next;
-		p->next = active_particles;
-		active_particles = p;
-
-		p->time = cl.time;
-
-		dist = sin(ltime + i)*64;
-		p->org[0] = ent->origin[0] + bytedirs[i][0]*dist + forward[0]*BEAMLENGTH;
-		p->org[1] = ent->origin[1] + bytedirs[i][1]*dist + forward[1]*BEAMLENGTH;
-		p->org[2] = ent->origin[2] + bytedirs[i][2]*dist + forward[2]*BEAMLENGTH;
-
-		VectorClear (p->vel);
-		VectorClear (p->accel);
-
-		VectorSubtract (p->org, ent->origin, v);
-		dist = VectorLength(v) / 90.0;
-
-		// i changed it to just generate a random colour with a=255, because (0xd0 + dist * 7) doesn't map
-		// well to 32-bit color
-		// bfg will be removed anyway !!!
-
-		p->color[0] = rand() % 256;
-		p->color[1] = rand() % 256;
-		p->color[2] = rand() % 256;
-		p->color[3] = 255;
-
-		p->colorvel = 0;
-
-		p->alpha = 1.0 - dist;
-		p->alphavel = -100;
-	}
-}
-
-
-/*
-===============
 CL_TrapParticles
 ===============
 */
@@ -1789,50 +1701,6 @@ void CL_TrapParticles (entity_t *ent)
 			}
 	}
 }
-
-
-/*
-===============
-CL_BFGExplosionParticles
-===============
-*/
-//FIXME combined with CL_ExplosionParticles
-void CL_BFGExplosionParticles (vec3_t org)
-{
-	int32_t 		i, j;
-	cparticle_t	*p;
-
-	for (i=0 ; i<256 ; i++)
-	{
-		if (!free_particles)
-			return;
-		p = free_particles;
-		free_particles = p->next;
-		p->next = active_particles;
-		active_particles = p;
-
-		p->time = cl.time;
-		// legacy colour 208-214
-
-		p->color[0] = 0 + (rand() % 84);
-		p->color[1] = 255 - (rand() % 69);
-		p->color[2] = 0 + (rand() % 51);
-		p->color[3] = 255;
-
-		for (j=0 ; j<3 ; j++)
-		{
-			p->org[j] = org[j] + ((rand()%32)-16);
-			p->vel[j] = (rand()%384)-192;
-		}
-
-		p->accel[0] = p->accel[1] = 0;
-		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
-
-		p->alphavel = -0.8 / (0.5 + frand()*0.3);
-	}
-}
-
 
 /*
 ===============
