@@ -238,17 +238,17 @@ void ChangeWeapon(edict_t* ent)
 	{
 		gitem_t* item_ammo = FindItem(ent->client->pers.weapon->ammo);
 
-		item_ammo = Loadout_GetItem(ent, item_ammo->pickup_name);
+		loadout_entry_t* item_ammo_loadout_ptr = Loadout_GetItem(ent, item_ammo->pickup_name);
 
 		// if the ammo is not already there, add it (failsafe, really shouldn't happen)
-		if (!item_ammo)
+		if (!item_ammo_loadout_ptr)
 		{
 			gi.dprintf("Somehow we lost the ammo...giving you 1 :(");
 			item_ammo = Loadout_AddItem(ent, ent->client->pers.weapon->ammo, 1);
 		}
 
 		// add it to the loadout
-		ent->client->pers.loadout_current_ammo = item_ammo;
+		ent->client->pers.loadout_current_ammo = item_ammo_loadout_ptr;
 	}
 	else
 	{
@@ -366,8 +366,7 @@ Make the weapon ready if there is ammo
 */
 void Use_Weapon(edict_t* ent, gitem_t* item)
 {
-	int			ammo_index;
-	gitem_t* Ammo_item;
+	gitem_t* ammo_item;
 
 	// see if we're already using it
 	if (item == ent->client->pers.weapon)
@@ -375,18 +374,19 @@ void Use_Weapon(edict_t* ent, gitem_t* item)
 
 	if (item->ammo && !g_select_empty->value && !(item->flags & IT_AMMO))
 	{
-		Ammo_item = FindItem(item->ammo);
-		ammo_index = ITEM_INDEX(Ammo_item);
+		ammo_item = FindItem(item->ammo);
+		loadout_entry_t* ammo_item_loadout_ptr = Loadout_GetItem(ent, ammo_item->pickup_name);
 
-		if (!ent->client->pers.loadout_current_ammo)
+		if (ammo_item_loadout_ptr == NULL
+			|| ammo_item_loadout_ptr->amount == 0)
 		{
-			gi.cprintf(ent, PRINT_HIGH, "No %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
+			gi.cprintf(ent, PRINT_HIGH, "No %s for %s.\n", ammo_item->pickup_name, item->pickup_name);
 			return;
 		}
 
-		if (ent->client->pers.loadout_current_ammo < item->quantity)
+		if (ammo_item_loadout_ptr->amount < item->quantity)
 		{
-			gi.cprintf(ent, PRINT_HIGH, "Not enough %s for %s.\n", Ammo_item->pickup_name, item->pickup_name);
+			gi.cprintf(ent, PRINT_HIGH, "Not enough %s for %s.\n", ammo_item->pickup_name, item->pickup_name);
 			return;
 		}
 	}

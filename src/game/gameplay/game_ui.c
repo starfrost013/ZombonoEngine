@@ -340,8 +340,17 @@ void G_SetStats (edict_t *ent)
 	else
 	{
 		item = FindItem(ent->client->pers.loadout_current_ammo->item_name);
-		ent->client->ps.stats[STAT_AMMO_ICON] = gi.imageindex (item->icon);
-		ent->client->ps.stats[STAT_AMMO] = ent->client->pers.loadout_current_ammo->amount;
+		
+		if (!item)
+		{
+			ent->client->ps.stats[STAT_AMMO_ICON] = 0;
+			ent->client->ps.stats[STAT_AMMO] = 0;
+		}
+		else
+		{
+			ent->client->ps.stats[STAT_AMMO_ICON] = gi.imageindex(item->icon);
+			ent->client->ps.stats[STAT_AMMO] = ent->client->pers.loadout_current_ammo->amount;
+		}
 	}
 	
 	//

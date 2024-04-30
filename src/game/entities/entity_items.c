@@ -462,8 +462,8 @@ bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count)
 bool Pickup_Ammo (edict_t *ent, edict_t *other)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(other, ent->item->pickup_name);
-	int		oldcount;
-	int		count;
+	int32_t	oldcount;
+	int32_t	count;
 	bool	weapon;
 
 	weapon = (ent->item->flags & IT_WEAPON);

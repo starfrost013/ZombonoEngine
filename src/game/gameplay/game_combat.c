@@ -189,7 +189,7 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 	gclient_t*	client;
 	int32_t		save;
 	int32_t		power_armor_type;
-	loadout_entry_t*	loadout_ptr_cells = Loadout_GetItem(ent, "cells");
+	loadout_entry_t* loadout_ptr_cells = NULL;
 	int32_t		damage_per_cell;
 	int32_t		temp_entity_type;
 	int32_t		power = 0;
@@ -205,10 +205,11 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 
 	if (client)
 	{
+		loadout_ptr_cells = Loadout_GetItem(ent, "cells");
+
 		power_armor_type = GetCurrentPowerArmor (ent);
 		if (power_armor_type != POWER_ARMOR_NONE)
 		{
-
 			power = loadout_ptr_cells->amount;
 		}
 	}
@@ -227,7 +228,7 @@ static int32_t CheckPowerArmor (edict_t *ent, vec3_t point, vec3_t normal, int32
 
 	if (power_armor_type == POWER_ARMOR_SCREEN)
 	{
-		vec3_t		vec;
+		vec3_t		vec = { 0 };
 		float		dot;
 		vec3_t		forward;
 
