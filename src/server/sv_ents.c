@@ -250,9 +250,9 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	//
 	if (pflags & PS_VIEWOFFSET)
 	{
-		MSG_WriteByte (msg, ps->viewoffset[0]*4);
-		MSG_WriteByte (msg, ps->viewoffset[1]*4);
-		MSG_WriteByte (msg, ps->viewoffset[2]*4);
+		MSG_WriteChar (msg, ps->viewoffset[0]*4);
+		MSG_WriteChar (msg, ps->viewoffset[1]*4);
+		MSG_WriteChar (msg, ps->viewoffset[2]*4);
 	}
 
 	if (pflags & PS_VIEWANGLES)
@@ -264,9 +264,9 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 
 	if (pflags & PS_KICKANGLES)
 	{
-		MSG_WriteByte (msg, ps->kick_angles[0]*4);
-		MSG_WriteByte (msg, ps->kick_angles[1]*4);
-		MSG_WriteByte (msg, ps->kick_angles[2]*4);
+		MSG_WriteChar (msg, ps->kick_angles[0]*4);
+		MSG_WriteChar (msg, ps->kick_angles[1]*4);
+		MSG_WriteChar (msg, ps->kick_angles[2]*4);
 	}
 
 	if (pflags & PS_WEAPONINDEX)
@@ -277,12 +277,12 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	if (pflags & PS_WEAPONFRAME)
 	{
 		MSG_WriteByte (msg, ps->gunframe);
-		MSG_WriteByte (msg, ps->gunoffset[0]*4);
-		MSG_WriteByte (msg, ps->gunoffset[1]*4);
-		MSG_WriteByte (msg, ps->gunoffset[2]*4);
-		MSG_WriteByte (msg, ps->gunangles[0]*4);
-		MSG_WriteByte (msg, ps->gunangles[1]*4);
-		MSG_WriteByte (msg, ps->gunangles[2]*4);
+		MSG_WriteChar (msg, ps->gunoffset[0]*4);
+		MSG_WriteChar (msg, ps->gunoffset[1]*4);
+		MSG_WriteChar (msg, ps->gunoffset[2]*4);
+		MSG_WriteChar (msg, ps->gunangles[0]*4);
+		MSG_WriteChar (msg, ps->gunangles[1]*4);
+		MSG_WriteChar (msg, ps->gunangles[2]*4);
 	}
 
 	if (pflags & PS_BLEND)

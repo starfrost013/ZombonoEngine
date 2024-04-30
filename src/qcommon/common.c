@@ -288,10 +288,18 @@ vec3_t	bytedirs[NUMVERTEXNORMALS] =
 // writing functions
 //
 
-void MSG_WriteByte (sizebuf_t *sb, int32_t c)
+void MSG_WriteChar (sizebuf_t *sb, int32_t c)
 {
 	uint8_t* buf;
 	
+	buf = SZ_GetSpace (sb, 1);
+	buf[0] = c;
+}
+
+void MSG_WriteByte (sizebuf_t *sb, int32_t c)
+{
+	uint8_t* buf;
+
 	buf = SZ_GetSpace (sb, 1);
 	buf[0] = c;
 }
