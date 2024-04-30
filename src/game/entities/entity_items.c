@@ -414,19 +414,19 @@ void	Use_Silencer (edict_t *ent, gitem_t *item)
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
 	loadout_entry_ptr->amount--;
 	ValidateSelectedItem (ent);
-	ent->client->silencer_shots += 30;
-
-//	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage.wav"), 1, ATTN_NORM, 0);
-}
+	ent->client->silencer_shots += 30;}
 
 //======================================================================
 
 bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count)
 {
-	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
+	int32_t		index;
+	int32_t		max;
 
-	int			index;
-	int			max;
+	loadout_entry_t* ammo_ptr = Loadout_GetItem(ent, item->pickup_name);
+
+	if (ammo_ptr == NULL)
+		ammo_ptr = Loadout_AddItem(ent, item->pickup_name, 0); // amount is added later
 
 	if (!ent->client)
 		return false;
@@ -448,21 +448,20 @@ bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count)
 
 	index = ITEM_INDEX(item);
 
-	if (loadout_entry_ptr->amount == max)
+	if (ammo_ptr->amount == max)
 		return false;
 
-	loadout_entry_ptr->amount += count;
+	ammo_ptr->amount += count;
 
-	if (loadout_entry_ptr->amount > max)
-		loadout_entry_ptr->amount = max;
+	if (ammo_ptr->amount > max)
+		ammo_ptr->amount = max;
 
 	return true;
 }
 
 bool Pickup_Ammo (edict_t *ent, edict_t *other)
 {
-	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, ent->item->pickup_name);
-
+	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 	int		oldcount;
 	int		count;
 	bool	weapon;
@@ -475,7 +474,14 @@ bool Pickup_Ammo (edict_t *ent, edict_t *other)
 	else
 		count = ent->item->quantity;
 
-	oldcount = loadout_entry_ptr->amount;
+	if (loadout_entry_ptr != NULL)
+	{
+		oldcount = loadout_entry_ptr->amount;
+	}
+	else
+	{
+		oldcount = 0;
+	}
 
 	if (!Add_Ammo (other, ent->item, count))
 		return false;

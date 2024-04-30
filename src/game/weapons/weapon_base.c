@@ -130,6 +130,9 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 	gitem_t*	ammo;
 	loadout_entry_t* loadout_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
+	if (!loadout_ptr)
+		loadout_ptr = Loadout_AddItem(other, ent->item->pickup_name, 1);
+
 	index = ITEM_INDEX(ent->item);
 
 	if ((((int32_t)(gameflags->value) & GF_WEAPONS_STAY))
@@ -212,7 +215,8 @@ void ChangeWeapon(edict_t* ent)
 			ent->client->pers.weapon->spawn_type = -1; // another hack, settype increments it so it will be set to 0
 			Weapon_Bamfuslicator_SetType(ent);
 		}
-		else if (!strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator")) // switching out
+		else if (ent->client->pers.lastweapon != NULL
+			&& !strcmp(ent->client->pers.lastweapon->classname, "weapon_bamfuslicator")) // switching out
 		{
 			G_UISend(ent, "BamfuslicatorUI", false, false, false);
 		}

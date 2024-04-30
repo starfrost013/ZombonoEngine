@@ -274,13 +274,13 @@ typedef struct gitem_armor_s
 typedef struct gitem_s
 {
 	char		*classname;	// spawning name
-	bool	(*pickup)(struct edict_s *ent, struct edict_s *other);
+	bool		(*pickup)(struct edict_s *ent, struct edict_s *other);
 	void		(*use)(struct edict_s *ent, struct gitem_s *item);
 	void		(*drop)(struct edict_s *ent, struct gitem_s *item);
 	void		(*weaponthink)(struct edict_s *ent);
 	char		*pickup_sound;
 	char		*world_model;
-	int32_t			world_model_flags;
+	int32_t		world_model_flags;
 	char		*view_model;
 
 	// client side info
@@ -354,7 +354,7 @@ typedef struct level_locals_s
 	// intermission state
 	float		intermissiontime;		// time the intermission was started
 	char		*changemap;
-	int32_t			exitintermission;
+	int32_t		exitintermission;
 	vec3_t		intermission_origin;
 	vec3_t		intermission_angle;
 

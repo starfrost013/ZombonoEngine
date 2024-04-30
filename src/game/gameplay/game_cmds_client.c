@@ -399,12 +399,10 @@ Use an inventory item
 */
 void Cmd_Use_f (edict_t *ent)
 {
-	gitem_t		*it;
-	char		*s;
+	char*	 s = gi.args();
+	gitem_t* it = FindItem(s);
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, it->pickup_name);
 
-	s = gi.args();
-	it = FindItem (s);
 	if (!it)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "unknown item: %s\n", s);
@@ -416,7 +414,8 @@ void Cmd_Use_f (edict_t *ent)
 		return;
 	}
 
-	if (!loadout_entry_ptr->amount)
+	if (loadout_entry_ptr == NULL
+		|| !loadout_entry_ptr->amount)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;

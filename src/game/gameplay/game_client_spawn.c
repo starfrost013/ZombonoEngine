@@ -72,10 +72,16 @@ void GiveBaseWeaponForTeam(edict_t* client_edict)
 	{
 		Loadout_AddItem(client_edict, "Director - Bamfuslicator", 1);
 		Loadout_AddItem(client_edict, "Director - Tangfuslicator", 1);
+
+		client->newweapon = FindItem("Director - Bamfuslicator");
+		ChangeWeapon(client_edict);
+
 	}
 	else
 	{
 		Loadout_AddItem(client_edict, "Blaster", 1);
+		client->newweapon = FindItem("Blaster");
+		ChangeWeapon(client_edict);
 	}
 }
 
