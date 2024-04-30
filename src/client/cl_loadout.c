@@ -44,7 +44,9 @@ void Loadout_Add()
 			&& !strncmp(str, current_loadout_entry.item_name, LOADOUT_MAX_STRLEN))
 		{
 			//autoswitching is governed by server
-			MSG_ReadInt(&net_message); // we have to read this otherwise the protocol gets out of sync with the message and the game dies
+			// we have to read this otherwise the protocol gets out of sync with the message and the game dies
+			MSG_ReadString(&net_message);
+			MSG_ReadInt(&net_message); 
 			return;
 		}
 	}
@@ -86,10 +88,30 @@ void Loadout_Draw()
 	}
 }
 
-// Removes the most recently added item.
-void Loadout_Remove()
+// Removes the item with the name item_name.
+void Loadout_Remove(char* item_name)
 {
-	memset(&cl.loadout.items[cl.loadout.num_items], 0x00, sizeof(loadout_entry_t));
+	// see if we already have it
+	for (int32_t item_num = 0; item_num < cl.loadout.num_items; item_num++)
+	{
+		loadout_entry_t* current_loadout_item_ptr = &cl.loadout.items[item_num];
+
+		// if we already have it...don't bother adding it 
+		if (current_loadout_item_ptr->item_name != NULL
+			&& !strncmp(item_name, current_loadout_item_ptr->item_name, LOADOUT_MAX_STRLEN))
+		{
+			// delete the item
+
+			// if its the last item also decrement num_items (we just ignore null ones otherwise)
+			if (item_num == (cl.loadout.num_items))
+				cl.loadout.num_items--;
+
+			memset(&cl.loadout.items[item_num], 0x00, sizeof(loadout_entry_t));
+			return;
+		}
+	}
+
+
 	cl.loadout.num_items--;
 }
 

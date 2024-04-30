@@ -57,38 +57,6 @@ static cvar_t *cd_loopcount;
 static cvar_t *cd_looptrack;
 static cvar_t *no_music;
 
-#ifdef __APPLE__
-static ma_uint32 periodSizeInFrames;
-
-static UInt32 GetBytesPerSampleFrame()
-{
-	AudioDeviceID outputDeviceID;
-	AudioStreamBasicDescription outputStreamBasicDescription;
-	AudioObjectPropertyAddress propertyAddress = {
-		kAudioHardwarePropertyDefaultOutputDevice,
-		kAudioObjectPropertyScopeOutput,
-		kAudioObjectPropertyElementMaster
-	};
-
-	UInt32 propertySize = sizeof(outputDeviceID);
-	OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, NULL, &propertySize, &outputDeviceID);
-	if (status != kAudioHardwareNoError) {
-		Com_Printf("AudioHardwareGetProperty returned %d\n", status);
-		return 8;
-	}
-
-	propertySize = sizeof(outputStreamBasicDescription);
-	propertyAddress.mSelector = kAudioDevicePropertyStreamFormat;
-	status = AudioObjectGetPropertyData(outputDeviceID, &propertyAddress, 0, NULL, &propertySize, &outputStreamBasicDescription);
-	if (status != kAudioHardwareNoError) {
-		Com_Printf("AudioDeviceGetProperty: returned %d when getting kAudioDevicePropertyStreamFormat\n", status);
-		return 8;
-	}
-
-	return outputStreamBasicDescription.mBytesPerFrame;
-}
-#endif
-
 static void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
 {
 	ma_decoder* pDecoder = (ma_decoder*)pDevice->pUserData;
@@ -201,10 +169,6 @@ void Miniaudio_Init(void)
 	no_music = Cvar_Get("no_music", "0", 0);
 	enabled = no_music->value == 0;
 	paused = false;
-
-#ifdef __APPLE__
-	periodSizeInFrames = Cvar_VariableValue("s_chunksize") * sizeof(float) / GetBytesPerSampleFrame();
-#endif
 	Cmd_AddCommand("miniaudio", Miniaudio_f);
 }
 
@@ -258,10 +222,6 @@ void Miniaudio_Play(int32_t track, bool looping)
 	deviceConfig.sampleRate = decoder.outputSampleRate;
 	deviceConfig.dataCallback = data_callback;
 	deviceConfig.pUserData = &decoder;
-#ifdef __APPLE__
-	deviceConfig.periodSizeInFrames = periodSizeInFrames;
-	deviceConfig.periods = 1;
-#endif
 
 	if (ma_device_init(NULL, &deviceConfig, &device) != MA_SUCCESS) {
 		Com_Printf("Failed to open playback device: error %i\n", result);

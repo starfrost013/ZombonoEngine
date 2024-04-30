@@ -189,6 +189,9 @@ void Drop_General (edict_t *ent, gitem_t *item)
 	Drop_Item (ent, item);
 	
 	loadout_entry->amount--;
+
+	if (loadout_entry->amount == 0)
+		Loadout_DeleteItem(ent, item->pickup_name);
 }
 
 
@@ -512,6 +515,16 @@ void Drop_Ammo (edict_t *ent, gitem_t *item)
 	}
 
 	loadout_entry_ptr->amount -= dropped->count;
+
+	// Remove the ammo if we don't have it
+	if (loadout_entry_ptr->amount == 0)
+	{
+		Loadout_DeleteItem(ent, item->pickup_name);
+
+		gi.WriteByte(svc_loadout_remove);
+		gi.WriteString(item->pickup_name);
+	}
+
 }
 
 

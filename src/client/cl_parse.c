@@ -788,7 +788,7 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_loadout_remove:
-			Loadout_Remove();
+			Loadout_Remove(MSG_ReadString(&net_message));
 			break;
 
 		case svc_loadout_update:

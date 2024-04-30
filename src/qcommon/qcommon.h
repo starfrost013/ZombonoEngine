@@ -540,9 +540,9 @@ NET
 #define	MAX_MSGLEN		16384		// max length of a message (Quake 3)
 #define	PACKET_HEADER	10			// two ints and a short
 
-typedef enum {NA_LOOPBACK, NA_BROADCAST, NA_IP } netadrtype_t;
+typedef enum { NA_LOOPBACK, NA_BROADCAST, NA_IP } netadrtype_t;
 
-typedef enum {NS_CLIENT, NS_SERVER} netsrc_t;
+typedef enum { NS_CLIENT, NS_SERVER} netsrc_t;
 
 typedef struct
 {
@@ -553,20 +553,20 @@ typedef struct
 	uint16_t	port;
 } netadr_t;
 
-void		NET_Init (void);
-void		NET_Shutdown (void);
+void	NET_Init (void);
+void	NET_Shutdown (void);
 
-void		NET_Config (bool multiplayer);
+void	NET_Config (bool multiplayer);
 
 bool	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message);
-void		NET_SendPacket (netsrc_t sock, int32_t length, void *data, netadr_t to);
+void	NET_SendPacket (netsrc_t sock, int32_t length, void *data, netadr_t to);
 
 bool	NET_CompareAdr (netadr_t a, netadr_t b);
 bool	NET_CompareBaseAdr (netadr_t a, netadr_t b);
 bool	NET_IsLocalAddress (netadr_t adr);
-char		*NET_AdrToString (netadr_t a);
+char	*NET_AdrToString (netadr_t a);
 bool	NET_StringToAdr (char *s, netadr_t *a);
-void		NET_Sleep(int32_t msec);
+void	NET_Sleep(int32_t msec);
 
 //============================================================================
 

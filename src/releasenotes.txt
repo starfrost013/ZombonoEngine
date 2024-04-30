@@ -15,7 +15,7 @@ BUG FIXES:
 * Fixed maps without skyboxes trying to load a nonexistent skybox by loading a sane defualt
 
 OTHER ENHANCEMENTS AND CHANGES:
-* Changed the bamfuslicator texture to distinguish it from the shotgun.
+* Changed the bamfuslicator texture to have a green tint in order to distinguish it from the supershotgun's model.
 * Play a fail sound when the Bamfuslicator fails to spawn an enemy
 * Renamed S_RegisterSexedModel -> S_RegisterPlayerModel
 

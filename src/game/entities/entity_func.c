@@ -1441,9 +1441,9 @@ void SP_func_water (edict_t *self)
 }
 
 
-#define TRAInput_START_ON		1
-#define TRAInput_TOGGLE		2
-#define TRAInput_BLOCK_STOPS	4
+#define TRAIN_START_ON		1
+#define TRAIN_TOGGLE		2
+#define TRAIN_BLOCK_STOPS	4
 
 /*QUAKED func_train (0 .5 .8) ? START_ON TOGGLE BLOCK_STOPS
 Trains are moving platforms that players can ride.
@@ -1455,9 +1455,9 @@ dmg		default	2
 noise	looping sound to play when the train is in motion
 
 */
-void traInput_next (edict_t *self);
+void train_next (edict_t *self);
 
-void traInput_blocked (edict_t *self, edict_t *other)
+void train_blocked (edict_t *self, edict_t *other)
 {
 	if (!(other->svflags & SVF_MONSTER) && (!other->client) )
 	{
@@ -1478,7 +1478,7 @@ void traInput_blocked (edict_t *self, edict_t *other)
 	T_Damage (other, self, self, vec3_origin, other->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH);
 }
 
-void traInput_wait (edict_t *self)
+void train_wait (edict_t *self)
 {
 	if (self->target_ent->pathtarget)
 	{
@@ -1501,12 +1501,12 @@ void traInput_wait (edict_t *self)
 		if (self->moveinfo.wait > 0)
 		{
  			self->nextthink = level.time + self->moveinfo.wait;
- 			self->think = traInput_next;
+ 			self->think = train_next;
 		}
-		else if (self->spawnflags & TRAInput_TOGGLE)  // && wait < 0
+		else if (self->spawnflags & TRAIN_TOGGLE)  // && wait < 0
 		{
-			traInput_next (self);
-			self->spawnflags &= ~TRAInput_START_ON;
+			train_next (self);
+			self->spawnflags &= ~TRAIN_START_ON;
 			VectorClear (self->velocity);
 			self->nextthink = 0;
 		}
@@ -1520,12 +1520,12 @@ void traInput_wait (edict_t *self)
 	}
 	else
 	{
-		traInput_next (self);
+		train_next (self);
 	}
 	
 }
 
-void traInput_next (edict_t *self)
+void train_next (edict_t *self)
 {
 	edict_t		*ent;
 	vec3_t		dest;
@@ -1535,20 +1535,20 @@ void traInput_next (edict_t *self)
 again:
 	if (!self->target)
 	{
-//		gi.dprintf ("traInput_next: no next target\n");
+//		gi.dprintf ("train_next: no next target\n");
 		return;
 	}
 
 	ent = G_PickTarget (self->target);
 	if (!ent)
 	{
-		gi.dprintf ("traInput_next: bad target %s\n", self->target);
+		gi.dprintf ("train_next: bad target %s\n", self->target);
 		return;
 	}
 
 	if (ent->target == ent->targetname)
 	{
-		gi.dprintf("traInput_next: target for %s same as targetname\n", ent->target);
+		gi.dprintf("train_next: target for %s same as targetname\n", ent->target);
 		return;
 	}
 
@@ -1584,11 +1584,11 @@ again:
 	self->moveinfo.state = STATE_TOP;
 	VectorCopy (self->s.origin, self->moveinfo.start_origin);
 	VectorCopy (dest, self->moveinfo.end_origin);
-	Move_Calc (self, dest, traInput_wait);
-	self->spawnflags |= TRAInput_START_ON;
+	Move_Calc (self, dest, train_wait);
+	self->spawnflags |= TRAIN_START_ON;
 }
 
-void traInput_resume (edict_t *self)
+void train_resume (edict_t *self)
 {
 	edict_t	*ent;
 	vec3_t	dest;
@@ -1599,23 +1599,23 @@ void traInput_resume (edict_t *self)
 	self->moveinfo.state = STATE_TOP;
 	VectorCopy (self->s.origin, self->moveinfo.start_origin);
 	VectorCopy (dest, self->moveinfo.end_origin);
-	Move_Calc (self, dest, traInput_wait);
-	self->spawnflags |= TRAInput_START_ON;
+	Move_Calc (self, dest, train_wait);
+	self->spawnflags |= TRAIN_START_ON;
 }
 
-void func_traInput_find (edict_t *self)
+void func_train_find (edict_t *self)
 {
 	edict_t *ent;
 
 	if (!self->target)
 	{
-		gi.dprintf ("traInput_find: no target\n");
+		gi.dprintf ("train_find: no target\n");
 		return;
 	}
 	ent = G_PickTarget (self->target);
 	if (!ent)
 	{
-		gi.dprintf ("traInput_find: target %s not found\n", self->target);
+		gi.dprintf ("train_find: target %s not found\n", self->target);
 		return;
 	}
 	self->target = ent->target;
@@ -1625,34 +1625,34 @@ void func_traInput_find (edict_t *self)
 
 	// if not triggered, start immediately
 	if (!self->targetname)
-		self->spawnflags |= TRAInput_START_ON;
+		self->spawnflags |= TRAIN_START_ON;
 
-	if (self->spawnflags & TRAInput_START_ON)
+	if (self->spawnflags & TRAIN_START_ON)
 	{
 		self->nextthink = level.time + FRAMETIME;
-		self->think = traInput_next;
+		self->think = train_next;
 		self->activator = self;
 	}
 }
 
-void traInput_use (edict_t *self, edict_t *other, edict_t *activator)
+void train_use (edict_t *self, edict_t *other, edict_t *activator)
 {
 	self->activator = activator;
 
-	if (self->spawnflags & TRAInput_START_ON)
+	if (self->spawnflags & TRAIN_START_ON)
 	{
-		if (!(self->spawnflags & TRAInput_TOGGLE))
+		if (!(self->spawnflags & TRAIN_TOGGLE))
 			return;
-		self->spawnflags &= ~TRAInput_START_ON;
+		self->spawnflags &= ~TRAIN_START_ON;
 		VectorClear (self->velocity);
 		self->nextthink = 0;
 	}
 	else
 	{
 		if (self->target_ent)
-			traInput_resume(self);
+			train_resume(self);
 		else
-			traInput_next(self);
+			train_next(self);
 	}
 }
 
@@ -1661,8 +1661,8 @@ void SP_func_train (edict_t *self)
 	self->movetype = MOVETYPE_PUSH;
 
 	VectorClear (self->s.angles);
-	self->blocked = traInput_blocked;
-	if (self->spawnflags & TRAInput_BLOCK_STOPS)
+	self->blocked = train_blocked;
+	if (self->spawnflags & TRAIN_BLOCK_STOPS)
 		self->dmg = 0;
 	else
 	{
@@ -1681,7 +1681,7 @@ void SP_func_train (edict_t *self)
 	self->moveinfo.speed = self->speed;
 	self->moveinfo.accel = self->moveinfo.decel = self->moveinfo.speed;
 
-	self->use = traInput_use;
+	self->use = train_use;
 
 	gi.linkentity (self);
 
@@ -1690,7 +1690,7 @@ void SP_func_train (edict_t *self)
 		// start trains on the second frame, to make sure their targets have had
 		// a chance to spawn
 		self->nextthink = level.time + FRAMETIME;
-		self->think = func_traInput_find;
+		self->think = func_train_find;
 	}
 	else
 	{
@@ -1724,7 +1724,7 @@ void trigger_elevator_use (edict_t *self, edict_t *other, edict_t *activator)
 	}
 
 	self->movetarget->target_ent = target;
-	traInput_resume (self->movetarget);
+	train_resume (self->movetarget);
 }
 
 void trigger_elevator_init (edict_t *self)

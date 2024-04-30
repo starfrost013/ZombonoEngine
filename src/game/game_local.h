@@ -238,11 +238,11 @@ MOVETYPE_BOUNCE
 
 typedef struct gitem_armor_s
 {
-	int32_t		base_count;
-	int32_t		max_count;
+	int32_t	base_count;
+	int32_t	max_count;
 	float	normal_protection;
 	float	energy_protection;
-	int32_t		armor;
+	int32_t	armor;
 } gitem_armor_t;
 
 
@@ -285,21 +285,21 @@ typedef struct gitem_s
 	// client side info
 	char		*icon;
 	char		*pickup_name;	// for printing on pickup
-	int32_t			count_width;		// number of digits to display by icon
+	int32_t		count_width;		// number of digits to display by icon
 
-	int32_t			quantity;		// for ammo how much, for weapons how much is used per shot
+	int32_t		quantity;		// for ammo how much, for weapons how much is used per shot
 	char		*ammo;			// for weapons
-	int32_t			flags;			// IT_* flags
+	int32_t		flags;			// IT_* flags
 
-	int32_t			weapmodel;		// weapon model index (for weapons)
+	int32_t		weapmodel;		// weapon model index (for weapons)
 
 	void		*info;
-	int32_t			tag;
+	int32_t		tag;
 
 	char		*precaches;		// string of all models, sounds, and images this item will use
 
-	int32_t			allowed_teams;	// The teams that are allowed for this item.
-	int32_t			spawn_type;		// Type of entity to spawn (item-specific)
+	int32_t		allowed_teams;	// The teams that are allowed for this item.
+	int32_t		spawn_type;		// Type of entity to spawn (item-specific)
 } gitem_t;
 
 #define SPEED_DIRECTOR			0.75			// Speed multiplier for director team. 
@@ -314,7 +314,7 @@ typedef struct game_locals_s
 {
 	char		helpmessage1[512];
 	char		helpmessage2[512];
-	int32_t			helpchanged;	// flash F1 icon if non 0, play sound
+	int32_t		helpchanged;	// flash F1 icon if non 0, play sound
 								// and increment only if 1, 2, or 3
 
 	gclient_t	*clients;		// [maxclients]
@@ -343,7 +343,7 @@ typedef struct game_locals_s
 //
 typedef struct level_locals_s
 {
-	int32_t			framenum;				// controls level time
+	int32_t		framenum;				// controls level time
 	float		time;					// level time is incremented by framenum*(frametime in seconds) - - 1 instance of level time = 1 tick (10Hz)
 
 	char		level_name[MAX_QPATH];	// the descriptive name (Outer Base, etc)
@@ -360,27 +360,27 @@ typedef struct level_locals_s
 	edict_t		*sight_client;	// changed once each frame for coop games
 
 	edict_t		*sight_entity;
-	int32_t			sight_entity_framenum;
+	int32_t		sight_entity_framenum;
 	edict_t		*sound_entity;
-	int32_t			sound_entity_framenum;
+	int32_t		sound_entity_framenum;
 	edict_t		*sound2_entity;
-	int32_t			sound2_entity_framenum;
+	int32_t		sound2_entity_framenum;
 
-	int32_t			pic_health;
+	int32_t		pic_health;
 
-	int32_t			total_secrets;
-	int32_t			found_secrets;
+	int32_t		total_secrets;
+	int32_t		found_secrets;
 
-	int32_t			total_goals;
-	int32_t			found_goals;
+	int32_t		total_goals;
+	int32_t		found_goals;
 
-	int32_t			total_monsters;
-	int32_t			killed_monsters;
+	int32_t		total_monsters;
+	int32_t		killed_monsters;
 
 	edict_t		*current_entity;	// entity running from G_RunFrame
-	int32_t			body_que;			// dead bodies
+	int32_t		body_que;			// dead bodies
 
-	int32_t			power_cubes;		// ugly necessity for coop
+	int32_t		power_cubes;		// ugly necessity for coop
 } level_locals_t;
 
 
@@ -395,9 +395,9 @@ typedef struct spawn_temp_s
 	vec3_t		skyaxis;
 	char		*nextmap;
 
-	int32_t			lip;
-	int32_t			distance;
-	int32_t			height;
+	int32_t		lip;
+	int32_t		distance;
+	int32_t		height;
 	char		*noise;
 	float		pausetime;
 	char		*item;
@@ -418,9 +418,9 @@ typedef struct moveinfo_s
 	vec3_t		end_origin;
 	vec3_t		end_angles;
 
-	int32_t			sound_start;
-	int32_t			sound_middle;
-	int32_t			sound_end;
+	int32_t		sound_start;
+	int32_t		sound_middle;
+	int32_t		sound_end;
 
 	float		accel;
 	float		speed;
@@ -430,7 +430,7 @@ typedef struct moveinfo_s
 	float		wait;
 
 	// state data
-	int32_t			state;
+	int32_t		state;
 	vec3_t		dir;
 	float		current_speed;
 	float		move_speed;
@@ -450,50 +450,50 @@ typedef struct mframe_s
 
 typedef struct mmove_s
 {
-	int32_t			firstframe;
-	int32_t			lastframe;
+	int32_t		firstframe;
+	int32_t		lastframe;
 	mframe_t	*frame;
 	void		(*endfunc)(edict_t *self);
 } mmove_t;
 
 typedef struct monsterinfo_s
 {
-	mmove_t		*currentmove;
-	int32_t			aiflags;
-	int32_t			nextframe;
-	float		scale;
+	mmove_t	*currentmove;
+	int32_t	aiflags;
+	int32_t	nextframe;
+	float	scale;
 
-	void		(*stand)(edict_t *self);
-	void		(*idle)(edict_t *self);
-	void		(*search)(edict_t *self);
-	void		(*walk)(edict_t *self);
-	void		(*run)(edict_t *self);
-	void		(*dodge)(edict_t *self, edict_t *other, float eta);
-	void		(*attack)(edict_t *self);
-	void		(*melee)(edict_t *self);
-	void		(*sight)(edict_t *self, edict_t *other);
+	void	(*stand)(edict_t *self);
+	void	(*idle)(edict_t *self);
+	void	(*search)(edict_t *self);
+	void	(*walk)(edict_t *self);
+	void	(*run)(edict_t *self);
+	void	(*dodge)(edict_t *self, edict_t *other, float eta);
+	void	(*attack)(edict_t *self);
+	void	(*melee)(edict_t *self);
+	void	(*sight)(edict_t *self, edict_t *other);
 	bool	(*checkattack)(edict_t *self);
 
-	float		pausetime;
-	float		attack_finished;
+	float	pausetime;
+	float	attack_finished;
 
-	vec3_t		saved_goal;
-	float		search_time;
-	float		trail_time;
-	vec3_t		last_sighting;
-	int32_t			attack_state;
-	int32_t			lefty;
-	float		idle_time;
-	int32_t			linkcount;
+	vec3_t	saved_goal;
+	float	search_time;
+	float	trail_time;
+	vec3_t	last_sighting;
+	int32_t	attack_state;
+	int32_t	lefty;
+	float	idle_time;
+	int32_t	linkcount;
 
-	int32_t			power_armor_type;
-	int32_t			power_armor_power;
+	int32_t	power_armor_type;
+	int32_t	power_armor_power;
 
 	// AI_Wander only.
-	int32_t			wander_steps_min;		// The minimum number of wander steps.
-	int32_t			wander_steps_max;		// The maximum number of wander steps.
-	int32_t			wander_steps;			// The current number of wander steps.
-	int32_t			wander_steps_total;		// The current total number of wander steps.
+	int32_t	wander_steps_min;		// The minimum number of wander steps.
+	int32_t	wander_steps_max;		// The maximum number of wander steps.
+	int32_t	wander_steps;			// The current number of wander steps.
+	int32_t	wander_steps_total;		// The current total number of wander steps.
 } monsterinfo_t;
 
 extern	game_locals_t	game;
