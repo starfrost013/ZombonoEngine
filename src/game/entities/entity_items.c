@@ -188,8 +188,6 @@ void Drop_General (edict_t *ent, gitem_t *item)
 	Drop_Item (ent, item);
 	
 	loadout_entry->amount--;
-
-	ValidateSelectedItem (ent);
 }
 
 
@@ -339,8 +337,6 @@ void Use_Quad (edict_t *ent, gitem_t *item)
 	loadout_entry_t* entry_ptr = Loadout_GetItem(ent, "quad");
 	entry_ptr->amount--;
 
-	ValidateSelectedItem (ent);
-
 	if (quad_drop_timeout_hack)
 	{
 		timeout = quad_drop_timeout_hack;
@@ -365,14 +361,11 @@ void Use_Breather (edict_t *ent, gitem_t *item)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
 	loadout_entry_ptr->amount--;
-	ValidateSelectedItem (ent);
 
 	if (ent->client->breather_framenum > level.framenum)
 		ent->client->breather_framenum += 300;
 	else
 		ent->client->breather_framenum = level.framenum + 300;
-
-//	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage.wav"), 1, ATTN_NORM, 0);
 }
 
 //======================================================================
@@ -381,14 +374,11 @@ void Use_Envirosuit (edict_t *ent, gitem_t *item)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
 	loadout_entry_ptr->amount--;
-	ValidateSelectedItem (ent);
 
 	if (ent->client->enviro_framenum > level.framenum)
 		ent->client->enviro_framenum += 300;
 	else
 		ent->client->enviro_framenum = level.framenum + 300;
-
-//	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage.wav"), 1, ATTN_NORM, 0);
 }
 
 //======================================================================
@@ -397,7 +387,6 @@ void	Use_Invulnerability (edict_t *ent, gitem_t *item)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
 	loadout_entry_ptr->amount--;
-	ValidateSelectedItem (ent);
 
 	if (ent->client->invincible_framenum > level.framenum)
 		ent->client->invincible_framenum += 300;
@@ -413,7 +402,6 @@ void	Use_Silencer (edict_t *ent, gitem_t *item)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
 	loadout_entry_ptr->amount--;
-	ValidateSelectedItem (ent);
 	ent->client->silencer_shots += 30;}
 
 //======================================================================
@@ -519,7 +507,6 @@ void Drop_Ammo (edict_t *ent, gitem_t *item)
 	}
 
 	loadout_entry_ptr->amount -= dropped->count;
-	ValidateSelectedItem (ent);
 }
 
 

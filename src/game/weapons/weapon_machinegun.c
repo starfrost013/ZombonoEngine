@@ -94,7 +94,7 @@ void Weapon_Machinegun_Fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.loadout_current_ammo--;
+		ent->client->pers.loadout_current_ammo->amount--;
 
 	ent->client->anim_priority = ANIM_ATTACK;
 	if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)

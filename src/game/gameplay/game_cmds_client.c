@@ -120,18 +120,6 @@ void SelectPrevItem (edict_t *ent, int32_t itflags)
 	}
 }
 
-void ValidateSelectedItem (edict_t *ent)
-{
-	gclient_t	*cl;
-
-	cl = ent->client;
-
-	if (cl->pers.loadout_current_weapon == NULL)
-		return;		// valid
-
-	SelectNextItem (ent, -1);
-}
-
 
 //=================================================================================
 
@@ -475,8 +463,6 @@ void Cmd_InvUse_f (edict_t *ent)
 {
 	gitem_t		*it;
 
-	ValidateSelectedItem (ent);
-
 	if (ent->client->pers.selected_item == -1)
 	{
 		gi.cprintf (ent, PRINT_HIGH, "No item to use.\n");
@@ -621,8 +607,6 @@ Cmd_InvDrop_f
 void Cmd_InvDrop_f (edict_t *ent)
 {
 	gitem_t		*it;
-
-	ValidateSelectedItem (ent);
 
 	if (ent->client->pers.selected_item == -1)
 	{
