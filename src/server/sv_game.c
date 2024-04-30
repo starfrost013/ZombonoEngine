@@ -216,7 +216,7 @@ void PF_Configstring (int32_t index, char *val)
 	if (sv.state != ss_loading)
 	{	// send the update to everyone
 		SZ_Clear (&sv.multicast);
-		MSG_WriteChar (&sv.multicast, svc_configstring);
+		MSG_WriteByte (&sv.multicast, svc_configstring);
 		MSG_WriteShort (&sv.multicast, index);
 		MSG_WriteString (&sv.multicast, val);
 
@@ -226,7 +226,7 @@ void PF_Configstring (int32_t index, char *val)
 
 
 
-void PF_WriteChar (int32_t c) {MSG_WriteChar (&sv.multicast, c);}
+void PF_WriteChar (int32_t c) {MSG_WriteByte (&sv.multicast, c);}
 void PF_WriteByte (int32_t c) {MSG_WriteByte (&sv.multicast, c);}
 void PF_WriteShort (int32_t c) {MSG_WriteShort (&sv.multicast, c);}
 void PF_WriteInt (int32_t c) {MSG_WriteInt (&sv.multicast, c);}

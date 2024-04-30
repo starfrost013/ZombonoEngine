@@ -96,7 +96,7 @@ void SZ_Print (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
 struct usercmd_s;
 struct entity_state_s;
 
-void MSG_WriteChar (sizebuf_t *sb, int32_t c);
+void MSG_WriteByte (sizebuf_t *sb, int32_t c);
 void MSG_WriteByte (sizebuf_t *sb, int32_t c);
 void MSG_WriteShort (sizebuf_t *sb, int32_t c);
 void MSG_WriteInt (sizebuf_t *sb, int32_t c);

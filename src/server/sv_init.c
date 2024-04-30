@@ -54,7 +54,7 @@ int32_t SV_FindIndex (char *name, int32_t start, int32_t max, bool create)
 	if (sv.state != ss_loading)
 	{	// send the update to everyone
 		SZ_Clear (&sv.multicast);
-		MSG_WriteChar (&sv.multicast, svc_configstring);
+		MSG_WriteByte (&sv.multicast, svc_configstring);
 		MSG_WriteShort (&sv.multicast, start+i);
 		MSG_WriteString (&sv.multicast, name);
 		SV_Multicast (vec3_origin, MULTICAST_ALL_R);

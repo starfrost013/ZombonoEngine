@@ -590,7 +590,7 @@ void SP_worldspawn (edict_t *ent)
 	if (st.sky && st.sky[0])
 		gi.configstring (CS_SKY, st.sky);
 	else
-		gi.configstring (CS_SKY, "unit1_");
+		gi.configstring (CS_SKY, "subway/sky_");
 
 	gi.configstring (CS_SKYROTATE, va("%f", st.skyrotate) );
 
