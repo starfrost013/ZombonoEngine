@@ -172,19 +172,17 @@ typedef struct dsprite_s
 */
 
 #define ZBSP_HEADER	(('P'<<24)+('S'<<16)+('B'<<8)+'Z')
-		// little-endian "IBSP"
+		// little-endian "ZBSP"
 
 #define ZBSP_VERSION	2
 
 // maximum allocation sizes for various models
 // boosted by 4x to account for 32-bit texturing
-#define MAX_SP2_ALLOC		0x40000	  // 256KB (from 64) 		
-#define MAX_MD2_ALLOC		0x800000  // 8MB (from 4)
-#define MAX_BSP_ALLOC		0x4000000 // 64MB (from 16)
+#define MAX_SP2_ALLOC			0x100000  // 1MB (from 64KB) 		
+#define MAX_MD2_ALLOC			0x1000000 // 16MB (from 4)
+#define MAX_BSP_ALLOC			0x4000000 // 64MB (from 16)
 
-// upper design bounds
-// leaffaces, leafbrushes, planes, and verts are still bounded by
-// 16 bit int16_t limits
+// Limit are based on QBISM QBSP format, with some modification for Zombono
 
 // Zombono BSP limits
 #define MAX_MAP_AREAS           256
