@@ -38,7 +38,8 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 	}
 	else
 	{
-		if (!ent->client->pers.loadout_current_ammo)
+		if (!ent->client->pers.loadout_current_ammo
+			|| ent->client->pers.loadout_current_ammo->amount = 0)
 		{
 			if (level.time >= ent->pain_debounce_time)
 			{

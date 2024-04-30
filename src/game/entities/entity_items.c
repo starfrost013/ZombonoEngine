@@ -563,12 +563,12 @@ bool Pickup_Health (edict_t *ent, edict_t *other)
 
 loadout_entry_t* GetCurrentArmor(edict_t* ent)
 {
+	if (!ent->client)
+		return 0;
+
 	loadout_entry_t* loadout_ptr_jacket = Loadout_GetItem(ent, "Jacket Armor");
 	loadout_entry_t* loadout_ptr_combat = Loadout_GetItem(ent, "Combat Armor");
 	loadout_entry_t* loadout_ptr_body = Loadout_GetItem(ent, "Body Armor");
-
-	if (!ent->client)
-		return 0;
 
 	if (loadout_ptr_jacket == NULL
 		|| loadout_ptr_combat == NULL

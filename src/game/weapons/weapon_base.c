@@ -313,7 +313,7 @@ void NoAmmoWeaponChange(edict_t* ent)
 	loadout_entry_t* bullets = Loadout_GetItem(ent, "bullets");
 
 	if (bullets != NULL
-		&& bullets->amount >= 1
+		&& bullets->amount >= 2
 		&& Loadout_GetItem(ent, "super shotgun"))
 	{
 		ent->client->newweapon = FindItem("super shotgun");
@@ -514,7 +514,7 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
 			if ((!ent->client->pers.loadout_current_ammo) ||
-				(ent->client->pers.loadout_current_ammo >= ent->client->pers.weapon->quantity))
+				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
@@ -542,7 +542,7 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
 
-			if ((!ent->client->pers.loadout_current_ammo) ||
+			if ((!ent->client->pers.loadout_current_ammo->amount) ||
 				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
