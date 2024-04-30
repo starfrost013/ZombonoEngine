@@ -2,23 +2,28 @@ Zombono
 Release Notes:
 
 Version 0.0.8
-May XX, 2024
+May 4, 2024
 
 NEW FEATURES:
 * Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
-* Added the ability for the engine to get the nanoseconds since start as well as milliseconds
+* Added the ability for the engine to get the total number of nanoseconds since the engine started as well as milliseconds
 	* log_stats now uses more precise frametime measurement for high fps
 * Added an FPS meter to cl_showinfo
 
 BUG FIXES:
 * Fixed hover and clicked UI images not scaling with the hudscale cvar
-OTHER ENHANCEMENTS AND CHANGES:
+* Fixed maps without skyboxes trying to load a nonexistent skybox by loading a sane defualt
 
+OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to distinguish it from the shotgun.
 * Play a fail sound when the Bamfuslicator fails to spawn an enemy
+* Renamed S_RegisterSexedModel -> S_RegisterPlayerModel
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)
+* Removed the BFG
+	* It's an iconic quake weapon and can't really be used in Zombono
+	* It was broken anyway due to using SP2s (the only thing that used them at all!)
 
 Version 0.0.7.299 (Build 299)
 April 20, 2024

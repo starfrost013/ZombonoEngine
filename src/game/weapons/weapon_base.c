@@ -155,22 +155,27 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 	{
 		// give them some ammo with it
 		ammo = FindItem(ent->item->ammo);
-		if ((int32_t)gameflags->value & GF_INFINITE_AMMO)
-			Add_Ammo(other, ammo, 1000);
-		else
-			Add_Ammo(other, ammo, ammo->quantity);
 
-		if (!(ent->spawnflags & DROPPED_PLAYER_ITEM))
+		if (ammo)
 		{
-			if ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)
-				ent->flags |= FL_RESPAWN;
+			if ((int32_t)gameflags->value & GF_INFINITE_AMMO)
+				Add_Ammo(other, ammo, 1000);
 			else
-				SetRespawn(ent, 30);
+				Add_Ammo(other, ammo, ammo->quantity);
+
+			if (!(ent->spawnflags & DROPPED_PLAYER_ITEM))
+			{
+				if ((int32_t)(gameflags->value) & GF_WEAPONS_STAY)
+					ent->flags |= FL_RESPAWN;
+				else
+					SetRespawn(ent, 30);
+			}
 		}
 	}
 	// new system
 	gi.WriteByte(svc_loadout_add);
 	gi.WriteString(ent->item->pickup_name);
+	gi.WriteString(ent->item->icon);
 	gi.WriteInt(1);
 
 	// wtf does this do?

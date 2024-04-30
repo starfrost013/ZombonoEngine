@@ -123,11 +123,11 @@ SV_WritePlayerstateToClient
 */
 void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, sizebuf_t *msg)
 {
-	int32_t 			i;
-	int32_t 			pflags;
+	int32_t 		i;
+	int32_t 		pflags;
 	player_state_t	*ps, *ops;
 	player_state_t	dummy;
-	int32_t 			statbits;
+	int32_t 		statbits;
 
 	ps = &to->ps;
 	if (!from)
@@ -213,12 +213,12 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	// write the pmove_state_t
 	//
 	if (pflags & PS_M_TYPE)
-		MSG_WriteByte (msg, ps->pmove.pm_type);
+		MSG_WriteByte(msg, ps->pmove.pm_type);
 
 	if (pflags & PS_M_ORIGIN)
 	{
-		MSG_WriteFloat (msg, ps->pmove.origin[0]);
-		MSG_WriteFloat (msg, ps->pmove.origin[1]);
+		MSG_WriteFloat(msg, ps->pmove.origin[0]);
+		MSG_WriteFloat(msg, ps->pmove.origin[1]);
 		MSG_WriteFloat(msg, ps->pmove.origin[2]);
 	}
 
@@ -230,19 +230,19 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	}
 
 	if (pflags & PS_M_TIME)
-		MSG_WriteByte (msg, ps->pmove.pm_time);
+		MSG_WriteByte(msg, ps->pmove.pm_time);
 
 	if (pflags & PS_M_FLAGS)
-		MSG_WriteByte (msg, ps->pmove.pm_flags);
+		MSG_WriteByte(msg, ps->pmove.pm_flags);
 
 	if (pflags & PS_M_GRAVITY)
-		MSG_WriteShort (msg, ps->pmove.gravity);
+		MSG_WriteShort(msg, ps->pmove.gravity);
 
 	if (pflags & PS_M_DELTA_ANGLES)
 	{
-		MSG_WriteShort (msg, ps->pmove.delta_angles[0]);
-		MSG_WriteShort (msg, ps->pmove.delta_angles[1]);
-		MSG_WriteShort (msg, ps->pmove.delta_angles[2]);
+		MSG_WriteShort(msg, ps->pmove.delta_angles[0]);
+		MSG_WriteShort(msg, ps->pmove.delta_angles[1]);
+		MSG_WriteShort(msg, ps->pmove.delta_angles[2]);
 	}
 
 	//
@@ -250,52 +250,52 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	//
 	if (pflags & PS_VIEWOFFSET)
 	{
-		MSG_WriteChar (msg, ps->viewoffset[0]*4);
-		MSG_WriteChar (msg, ps->viewoffset[1]*4);
-		MSG_WriteChar (msg, ps->viewoffset[2]*4);
+		MSG_WriteChar(msg, ps->viewoffset[0]*4);
+		MSG_WriteChar(msg, ps->viewoffset[1]*4);
+		MSG_WriteChar(msg, ps->viewoffset[2]*4);
 	}
 
 	if (pflags & PS_VIEWANGLES)
 	{
-		MSG_WriteAngle16 (msg, ps->viewangles[0]);
-		MSG_WriteAngle16 (msg, ps->viewangles[1]);
-		MSG_WriteAngle16 (msg, ps->viewangles[2]);
+		MSG_WriteAngle16(msg, ps->viewangles[0]);
+		MSG_WriteAngle16(msg, ps->viewangles[1]);
+		MSG_WriteAngle16(msg, ps->viewangles[2]);
 	}
 
 	if (pflags & PS_KICKANGLES)
 	{
-		MSG_WriteChar (msg, ps->kick_angles[0]*4);
-		MSG_WriteChar (msg, ps->kick_angles[1]*4);
-		MSG_WriteChar (msg, ps->kick_angles[2]*4);
+		MSG_WriteChar(msg, ps->kick_angles[0]*4);
+		MSG_WriteChar(msg, ps->kick_angles[1]*4);
+		MSG_WriteChar(msg, ps->kick_angles[2]*4);
 	}
 
 	if (pflags & PS_WEAPONINDEX)
 	{
-		MSG_WriteByte (msg, ps->gunindex);
+		MSG_WriteByte(msg, ps->gunindex);
 	}
 
 	if (pflags & PS_WEAPONFRAME)
 	{
-		MSG_WriteByte (msg, ps->gunframe);
-		MSG_WriteChar (msg, ps->gunoffset[0]*4);
-		MSG_WriteChar (msg, ps->gunoffset[1]*4);
-		MSG_WriteChar (msg, ps->gunoffset[2]*4);
-		MSG_WriteChar (msg, ps->gunangles[0]*4);
-		MSG_WriteChar (msg, ps->gunangles[1]*4);
-		MSG_WriteChar (msg, ps->gunangles[2]*4);
+		MSG_WriteByte(msg, ps->gunframe);
+		MSG_WriteByte(msg, ps->gunoffset[0]*4);
+		MSG_WriteByte(msg, ps->gunoffset[1]*4);
+		MSG_WriteByte(msg, ps->gunoffset[2]*4);
+		MSG_WriteByte(msg, ps->gunangles[0]*4);
+		MSG_WriteByte(msg, ps->gunangles[1]*4);
+		MSG_WriteByte(msg, ps->gunangles[2]*4);
 	}
 
 	if (pflags & PS_BLEND)
 	{
-		MSG_WriteByte (msg, ps->blend[0]*255);
-		MSG_WriteByte (msg, ps->blend[1]*255);
-		MSG_WriteByte (msg, ps->blend[2]*255);
-		MSG_WriteByte (msg, ps->blend[3]*255);
+		MSG_WriteByte(msg, ps->blend[0]*255);
+		MSG_WriteByte(msg, ps->blend[1]*255);
+		MSG_WriteByte(msg, ps->blend[2]*255);
+		MSG_WriteByte(msg, ps->blend[3]*255);
 	}
 	if (pflags & PS_FOV)
-		MSG_WriteByte (msg, ps->fov);
+		MSG_WriteByte(msg, ps->fov);
 	if (pflags & PS_RDFLAGS)
-		MSG_WriteByte (msg, ps->rdflags);
+		MSG_WriteByte(msg, ps->rdflags);
 
 	// send stats
 	statbits = 0;
@@ -573,10 +573,10 @@ Used for recording footage for merged or assembled demos
 void SV_RecordDemoMessage (void)
 {
 	int32_t 		e;
-	edict_t		*ent;
+	edict_t			*ent;
 	entity_state_t	nostate;
-	sizebuf_t	buf;
-	uint8_t		buf_data[32768];
+	sizebuf_t		buf;
+	uint8_t			buf_data[32768];
 	int32_t 		len;
 
 	if (!svs.demofile)

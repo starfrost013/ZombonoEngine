@@ -608,7 +608,7 @@ INTERPOLATE BETWEEN FRAMES TO GET RENDERING PARMS
 ==========================================================================
 */
 
-struct model_s *S_RegisterSexedModel (entity_state_t *ent, char *base)
+struct model_s *S_RegisterPlayerModel (entity_state_t *ent, char *base)
 {
 	int32_t 			n;
 	char			*p;

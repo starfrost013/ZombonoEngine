@@ -5,7 +5,7 @@
 // Originally written by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/04/22 version
+// 2024/04/30 version
 
 //
 // worldspawn
@@ -426,14 +426,6 @@
 @BaseClass base(Appearflags, Target) color(0 128 204) size(-16 -16 -16, 16 16 16) = Keys []
 
 // 0301 - added "targetname" key
-@PointClass base(Keys, Targetname) model({ "path": ":models/items/keys/power/tris.md2" }) = key_power_cube : "Warehouse circuits"
-[
-	spawnflags(Flags) =
-	[
-		1 : "Trigger Spawn" : 0
-		2 : "No Touch" : 0
-	]
-]
 
 @PointClass base( Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Pointlight"
 [
@@ -877,7 +869,6 @@
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_rocket/tris.md2" }) = weapon_rocketlauncher : "Rocket launcher" []
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_hyperb/tris.md2" }) = weapon_hyperblaster : "Hyperblaster" []
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_rail/tris.md2" }) = weapon_railgun : "Rail gun" []
-@PointClass base(Weapons) model({ "path": ":models/weapons/g_bfg/tris.md2" }) = weapon_bfg : "Big Freakin Gun!" []
 // Spawns zombies.
 @PointClass base(Weapons) model({ "path": ":models/weapons/g_shotg2/tris.md2" }) = weapon_bamfuslicator : "(Zombono Director) Bamfuslicator" []
 // Spawns things

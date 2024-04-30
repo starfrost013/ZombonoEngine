@@ -95,7 +95,10 @@ FindItem
 */
 gitem_t	*FindItem (char *pickup_name)
 {
-	int		i;
+	if (!pickup_name)
+		return NULL;
+
+	int32_t	i;
 	gitem_t	*it;
 
 	it = itemlist;
@@ -117,7 +120,7 @@ void DoRespawn (edict_t *ent)
 	if (ent->team)
 	{
 		edict_t	*master;
-		int	count;
+		int32_t	count;
 		int32_t choice;
 
 		master = ent->teammaster;
@@ -154,8 +157,13 @@ void SetRespawn (edict_t *ent, float delay)
 
 bool Pickup_Powerup (edict_t *ent, edict_t *other)
 {
-	loadout_entry_t* loadout_entry = Loadout_GetItem(ent, ent->item->pickup_name);
-	int			     quantity = loadout_entry->amount;
+	loadout_entry_t* loadout_entry = Loadout_GetItem(other, ent->item->pickup_name);
+
+	// if it's not there add it
+	if (!loadout_entry)
+		loadout_entry = Loadout_AddItem(other, ent->item->pickup_name, 1);
+
+	int32_t		     quantity = loadout_entry->amount;
 
 	if ((skill->value == 1 && quantity >= 2) || (skill->value >= 2 && quantity >= 1))
 		return false;
@@ -252,7 +260,11 @@ bool Pickup_Bandolier (edict_t *ent, edict_t *other)
 bool Pickup_Pack (edict_t *ent, edict_t *other)
 {
 	gitem_t* item = FindItem("Bullets");
-	loadout_entry_t* loadout_item = Loadout_GetItem(ent, "Bullets");
+	loadout_entry_t* loadout_item_ptr = Loadout_GetItem(other, "Bullets");
+
+	// quantity is later
+	if (!loadout_item_ptr)
+		loadout_item_ptr = Loadout_AddItem(other, "Bullets", 0);
 
 	if (other->client->pers.max_bullets < 300)
 		other->client->pers.max_bullets = 300;
@@ -270,49 +282,49 @@ bool Pickup_Pack (edict_t *ent, edict_t *other)
 	item = FindItem("Bullets");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_bullets)
-			loadout_item->amount = other->client->pers.max_bullets;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_bullets)
+			loadout_item_ptr->amount = other->client->pers.max_bullets;
 	}
 
 	item = FindItem("Shells");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_shells)
-			loadout_item->amount = other->client->pers.max_shells;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_shells)
+			loadout_item_ptr->amount = other->client->pers.max_shells;
 	}
 
 	item = FindItem("Cells");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_cells)
-			loadout_item->amount = other->client->pers.max_cells;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_cells)
+			loadout_item_ptr->amount = other->client->pers.max_cells;
 	}
 
 	item = FindItem("Grenades");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_grenades)
-			loadout_item->amount = other->client->pers.max_grenades;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_grenades)
+			loadout_item_ptr->amount = other->client->pers.max_grenades;
 	}
 
 	item = FindItem("Rockets");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_rockets)
-			loadout_item->amount = other->client->pers.max_rockets;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_rockets)
+			loadout_item_ptr->amount = other->client->pers.max_rockets;
 	}
 
 	item = FindItem("Slugs");
 	if (item)
 	{
-		loadout_item->amount += item->quantity;
-		if (loadout_item->amount > other->client->pers.max_slugs)
-			loadout_item->amount = other->client->pers.max_slugs;
+		loadout_item_ptr->amount += item->quantity;
+		if (loadout_item_ptr->amount > other->client->pers.max_slugs)
+			loadout_item_ptr->amount = other->client->pers.max_slugs;
 	}
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
@@ -327,7 +339,7 @@ void Use_Quad (edict_t *ent, gitem_t *item)
 {
 	int		timeout;
 
-	loadout_entry_t* entry_ptr = Loadout_GetItem(ent, "quad");
+	loadout_entry_t* entry_ptr = Loadout_GetItem(ent, "Quad Damage");
 	entry_ptr->amount--;
 
 	if (quad_drop_timeout_hack)
@@ -598,6 +610,9 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 	if (!loadout_ptr_new)
 		loadout_ptr_new = Loadout_AddItem(other, ent->item->pickup_name, 0); // amount is set later
 
+	if (!loadout_ptr_jacket)
+		loadout_ptr_jacket = Loadout_AddItem(other, "Jacket Armor", 0); // amount is set later
+
 	// get info on new armor
 	newinfo = (gitem_armor_t *)ent->item->info;
 
@@ -609,7 +624,6 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 		else
 			loadout_ptr_old->amount += 2;
 	}
-
 	// if player has no armor, just use it
 	else if (!loadout_ptr_old)
 	{
@@ -714,6 +728,9 @@ bool Pickup_PowerArmor (edict_t *ent, edict_t *other)
 {
 	loadout_entry_t*	loadout_entry_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
+	if (!loadout_entry_ptr)
+		loadout_entry_ptr = Loadout_AddItem(other, ent->item->pickup_name, 1);
+
 	loadout_entry_ptr->amount++;
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
@@ -728,6 +745,12 @@ bool Pickup_PowerArmor (edict_t *ent, edict_t *other)
 void Drop_PowerArmor (edict_t *ent, gitem_t *item)
 {
 	loadout_entry_t* loadout_entry_ptr = Loadout_GetItem(ent, item->pickup_name);
+
+	if (!loadout_entry_ptr)
+	{
+		Com_Printf("ERROR: Drop_PowerArmor: Tried to drop power armor we don't have???? Added to prevent a crash");
+		loadout_entry_ptr = Loadout_AddItem(ent, item->pickup_name, 1);
+	}
 
 	if ((ent->flags & FL_POWER_ARMOR) && (loadout_entry_ptr->amount == 1))
 		Use_PowerArmor (ent, item);
