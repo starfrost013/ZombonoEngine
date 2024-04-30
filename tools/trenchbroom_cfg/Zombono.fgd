@@ -56,7 +56,7 @@
 @PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
 @PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
 
-@PointClass base(PlayerClass) = info_team_door : "Team Door: An invisible entity that only allows certain teams to walk through."
+@SolidClass base(PlayerClass) = info_team_door : "Team Door: A brush that only allows certain teams to walk through."
 [
 	allowed_teams(Flags) =
 	[
@@ -551,10 +551,6 @@
 	item(string) : "Spawn Item"
 ]
 
-
-// Just fidgets in one spot and teleports away when triggered
-//
-// 0221 - removed Monsters class inheritance
 @PointClass base(Monsters) model({ "path": ":models/monsters/zombie/tris.md2", "skin": 2 }) = monster_zombie : "Basic Zombie (Zombono)" []
 @PointClass base(Monsters) model({ "path": ":models/monsters/zombie_fast/tris.md2", "skin": 2 }) = monster_zombie : "Fast Zombie (Zombono)" []
 @PointClass base(Monsters) model({ "path": ":models/monsters/ogre/tris.md2", "skin": 2 }) = monster_zombie : "Ogre (Zombono)" []
