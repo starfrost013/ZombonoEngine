@@ -585,14 +585,18 @@ loadout_entry_t* GetCurrentArmor(edict_t* ent)
 bool Pickup_Armor (edict_t *ent, edict_t *other)
 {
 	loadout_entry_t*	loadout_ptr_old = GetCurrentArmor(other);
-	loadout_entry_t*	loadout_ptr_jacket = Loadout_GetItem(ent, "Jacket Armor");
-	loadout_entry_t*	loadout_ptr_combat = Loadout_GetItem(ent, "Combat Armor");
-	loadout_entry_t*	loadout_ptr_new = Loadout_GetItem(ent, ent->item->pickup_name);
+	loadout_entry_t*	loadout_ptr_jacket = Loadout_GetItem(other, "Jacket Armor");
+	loadout_entry_t*	loadout_ptr_combat = Loadout_GetItem(other, "Combat Armor");
+	loadout_entry_t*	loadout_ptr_new = Loadout_GetItem(other, ent->item->pickup_name);
 	gitem_armor_t*		oldinfo;
 	gitem_armor_t*		newinfo;
 	int32_t				newcount;
 	float				salvage;
 	int32_t				salvagecount;
+
+	// add new armor to loadout if it exists
+	if (!loadout_ptr_new)
+		loadout_ptr_new = Loadout_AddItem(other, ent->item->pickup_name, 0); // amount is set later
 
 	// get info on new armor
 	newinfo = (gitem_armor_t *)ent->item->info;
