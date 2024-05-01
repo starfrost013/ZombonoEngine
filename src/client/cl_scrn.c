@@ -1068,9 +1068,9 @@ void SCR_DrawInfo()
 		return;
 	}
 
-	int x = (10 * vid_hudscale->value);
+	int32_t x = (10 * vid_hudscale->value);
 
-	int y = (viddef.height - (120 * vid_hudscale->value));
+	int32_t y = (viddef.height - (120 * vid_hudscale->value));
 	Text_Draw(cl_console_font->string, x, y,
 		"FPS: %.2f", cls.fps);
 	y += console_font_ptr->line_height * vid_hudscale->value;
@@ -1081,19 +1081,20 @@ void SCR_DrawInfo()
 		"Velocity: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.velocity[0], cl.frame.playerstate.pmove.velocity[1], cl.frame.playerstate.pmove.velocity[2]);
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
-		"Viewangle: X: %.2f  Y: %.2f  Z: %.2f", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2]);
-	y += console_font_ptr->line_height * vid_hudscale->value;
-	Text_Draw(cl_console_font->string, x, y,
-		"Refdef Viewangle: X: %.2f  Y: %.2f  Z: %.2f", cl.refdef.viewangles[0], cl.refdef.viewangles[1], cl.refdef.viewangles[2]);
+		"Viewangle: X: %.2f  Y: %.2f  Z: %.2f (Refdef: X: %.2f  Y: %.2f  Z: %.2f)", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2],
+		cl.refdef.viewangles[0], cl.refdef.viewangles[1], cl.refdef.viewangles[2]);
 	y += console_font_ptr->line_height * vid_hudscale->value * 2;
 	Text_Draw(cl_console_font->string, x, y,
-		"Entities: %d", r_numentities);
+		"Client Entities: %d/%d", r_numentities, MAX_ENTITIES);
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
-		"Dynamic Lights: %d", r_numdlights);
+		"Server Entities: %d/%d", CL_CountReceivedEntities(), MAX_EDICTS);
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
-		"Particles: %d", r_numparticles);
+		"Dynamic Lights: %d/%d", r_numdlights, MAX_DLIGHTS);
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y,
+		"Particles: %d/%d", r_numparticles, MAX_PARTICLES);
 }
 
 //=======================================================

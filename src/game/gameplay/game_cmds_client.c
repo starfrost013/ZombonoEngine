@@ -172,7 +172,7 @@ void Cmd_Give_f (edict_t *ent)
 			if (!(it->flags & IT_WEAPON))
 				continue;
 			
-			Loadout_AddItem(ent, it->pickup_name, 1);
+			Loadout_AddItem(ent, it->pickup_name, it->icon, 1);
 		}
 		if (!give_all)
 			return;
@@ -204,12 +204,12 @@ void Cmd_Give_f (edict_t *ent)
 		info = (gitem_armor_t *)it->info;
 
 		// see if you already have it
-		loadout_entry_t* body_armor_ptr = Loadout_GetItem(ent, "Body Armor");
+		loadout_entry_t* body_armor_ptr = Loadout_GetItem(ent, it->pickup_name);
 
 		// if its not there add it, otherwise set it to max_count
 		if (!body_armor_ptr)
 		{
-			body_armor_ptr = Loadout_AddItem(ent, "Body Armor", info->max_count);
+			body_armor_ptr = Loadout_AddItem(ent, it->pickup_name, it->icon, info->max_count);
 		}
 		else
 		{
@@ -244,7 +244,7 @@ void Cmd_Give_f (edict_t *ent)
 			if (it->flags & (IT_ARMOR|IT_WEAPON|IT_AMMO))
 				continue;
 
-			Loadout_AddItem(ent, it->pickup_name, 1);
+			Loadout_AddItem(ent, it->pickup_name, it->icon, 1);
 		}
 		return;
 	}

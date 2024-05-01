@@ -883,7 +883,6 @@ void CL_AddPacketEntities (frame_t *frame)
 		// add to refresh list
 		V_AddEntity (&ent);
 
-
 		// color shells generate a seperate entity for the main model
 		if (effects & EF_COLOR_SHELL)
 		{
@@ -1271,4 +1270,17 @@ void CL_GetEntitySoundOrigin (int32_t ent, vec3_t org)
 	VectorCopy (old->lerp_origin, org);
 
 	// FIXME: bmodel issues...
+}
+
+int32_t CL_CountReceivedEntities()
+{
+	int32_t num_edicts = 0;
+
+	for (int32_t edict_num = 0; edict_num < MAX_EDICTS; edict_num++)
+	{
+		if (cl_entities[edict_num].serverframe == cl.frame.serverframe)
+			num_edicts++;
+	}
+
+	return num_edicts;
 }

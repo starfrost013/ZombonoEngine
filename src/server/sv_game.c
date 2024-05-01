@@ -40,6 +40,9 @@ void PF_Unicast (edict_t *ent, bool reliable)
 	if (!ent)
 		return;
 
+	if (!ent->client)
+		Sys_Error("Tried to unicast data to a non-client?!");
+
 	p = NUM_FOR_EDICT(ent);
 	if (p < 1 || p > maxclients->value)
 		return;

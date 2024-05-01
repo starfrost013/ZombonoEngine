@@ -74,7 +74,11 @@ Adds an entity.
 void V_AddEntity (entity_t *ent)
 {
 	if (r_numentities >= MAX_ENTITIES)
+	{
+		Com_Printf("WARNING: Too many client entities!");
 		return;
+	}
+
 	r_entities[r_numentities++] = *ent;
 }
 

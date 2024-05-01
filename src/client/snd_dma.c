@@ -823,9 +823,9 @@ void S_AddLoopSounds (void)
 	int32_t 		i, j;
 	int32_t 		sounds[MAX_EDICTS];
 	int32_t 		left, right, left_total, right_total;
-	channel_t	*ch;
-	sfx_t		*sfx;
-	sfxcache_t	*sc;
+	channel_t		*ch;
+	sfx_t			*sfx;
+	sfxcache_t		*sc;
 	int32_t 		num;
 	entity_state_t	*ent;
 

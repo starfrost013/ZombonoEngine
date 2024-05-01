@@ -22,12 +22,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <game_local.h>
 
-loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, int32_t amount)
+loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* icon, int32_t amount)
 {
+	// don't crash if we're not connected
 	strncpy(ent->client->pers.loadout.items[ent->client->pers.loadout.num_items].item_name, name, LOADOUT_MAX_STRLEN);
 	ent->client->pers.loadout.items[ent->client->pers.loadout.num_items].amount = amount;
 
 	ent->client->pers.loadout.num_items++;
+
+	if (ent->client->pers.connected)
+	{
+		gi.WriteByte(svc_loadout_add);
+		gi.WriteString(name);
+		gi.WriteString(icon);
+		gi.WriteShort(amount);
+
+		// reliable for now
+		gi.unicast(ent, true);
+	}
 
 	return &ent->client->pers.loadout.items[ent->client->pers.loadout.num_items - 1];
 }
@@ -38,14 +50,22 @@ void Loadout_DeleteItem(edict_t* ent, const char* name)
 
 	if (loadout_entry_ptr == NULL)
 	{
-		gi.error("Tried to delete invalid loadout entry!");
+		gi.error("Tried to delete invalid loadout entry (name: %s)!", name);
 		return;
 	}
 
 	memset(loadout_entry_ptr->item_name, 0x00, strlen(loadout_entry_ptr->item_name));
 	loadout_entry_ptr->amount = 0;
 
-	ent->client->pers.loadout.num_items--;
+	// only decrement num_items if its the last item (empty items get skipped)
+	if (loadout_entry_ptr == &ent->client->pers.loadout.items[ent->client->pers.loadout.num_items - 1])
+		ent->client->pers.loadout.num_items--;
+
+	// tell the client
+	gi.WriteByte(svc_loadout_remove);
+	gi.WriteString(name);
+	
+	gi.unicast(ent, true);
 }
 
 loadout_entry_t* Loadout_GetItem(edict_t* ent, const char* name)

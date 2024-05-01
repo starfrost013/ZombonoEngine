@@ -45,12 +45,12 @@ int32_t		c_visible_textures;
 
 typedef struct
 {
-	int32_t internal_format;
-	int32_t	current_lightmap_texture;
+	int32_t		internal_format;
+	int32_t		current_lightmap_texture;
 
 	msurface_t	*lightmap_surfaces[MAX_LIGHTMAPS];
 
-	int32_t			allocated[BLOCK_WIDTH];
+	int32_t		allocated[BLOCK_WIDTH];
 
 	// the lightmap texture data needs to be kept in
 	// main memory so texsubimage can update properly

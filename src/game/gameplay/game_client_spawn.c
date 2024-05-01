@@ -70,17 +70,22 @@ void GiveBaseWeaponForTeam(edict_t* client_edict)
 
 	if (client_edict->team == team_director)
 	{
-		Loadout_AddItem(client_edict, "Director - Bamfuslicator", 1);
-		Loadout_AddItem(client_edict, "Director - Tangfuslicator", 1);
-
+		// add the bamfuslicator
 		client->newweapon = FindItem("Director - Bamfuslicator");
+		Loadout_AddItem(client_edict, client->newweapon->pickup_name, client->newweapon->icon, 1);
+		
+		// and the tangfuslicator...
+		gitem_t* tangfuslicator = FindItem("Director - Tangfuslicator");
+
+		Loadout_AddItem(client_edict, tangfuslicator->pickup_name, tangfuslicator->icon, 1);
+
 		ChangeWeapon(client_edict);
 
 	}
 	else
 	{
-		Loadout_AddItem(client_edict, "Blaster", 1);
 		client->newweapon = FindItem("Blaster");
+		Loadout_AddItem(client_edict, client->newweapon->pickup_name, client->newweapon->icon, 1);
 		ChangeWeapon(client_edict);
 	}
 }

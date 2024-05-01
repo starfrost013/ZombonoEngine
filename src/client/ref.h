@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <qcommon/qcommon.h>
 
-#define	MAX_DLIGHTS		32
-#define	MAX_ENTITIES	128
+#define	MAX_DLIGHTS		256
+#define	MAX_ENTITIES	2048
 #define	MAX_PARTICLES	4096
 #define	MAX_LIGHTSTYLES	256
 
@@ -48,32 +48,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct entity_s
 {
-	struct model_s		*model;			// opaque type outside refresh
-	float				angles[3];
+	struct model_s	*model;			// opaque type outside refresh
+	float			angles[3];
 
 	/*
 	** most recent data
 	*/
-	float				origin[3];		// also used as RF_BEAM's "from"
-	int32_t 				frame;			// also used as RF_BEAM's diameter
+	float			origin[3];		// also used as RF_BEAM's "from"
+	int32_t 		frame;			// also used as RF_BEAM's diameter
 
 	/*
 	** previous data for lerping
 	*/
-	float				oldorigin[3];	// also used as RF_BEAM's "to"
-	int32_t 				oldframe;
+	float			oldorigin[3];	// also used as RF_BEAM's "to"
+	int32_t 		oldframe;
 
 	/*
 	** misc
 	*/
-	float	backlerp;				// 0.0 = current, 1.0 = old
-	int32_t 	skinnum;				// also used as RF_BEAM's palette index
+	float			backlerp;				// 0.0 = current, 1.0 = old
+	int32_t 		skinnum;				// also used as RF_BEAM's palette index
 
-	int32_t 	lightstyle;				// for flashing entities
-	float	alpha;					// ignore if RF_TRANSLUCENT isn't set
+	int32_t 		lightstyle;				// for flashing entities
+	float			alpha;					// ignore if RF_TRANSLUCENT isn't set
 
 	struct image_s	*skin;			// NULL for inline skin
-	int32_t 	flags;
+	int32_t 		flags;
 
 } entity_t;
 

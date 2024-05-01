@@ -131,7 +131,7 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 	loadout_entry_t* loadout_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
 	if (!loadout_ptr)
-		loadout_ptr = Loadout_AddItem(other, ent->item->pickup_name, 1);
+		loadout_ptr = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, 1);
 
 	index = ITEM_INDEX(ent->item);
 
@@ -172,11 +172,6 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 			}
 		}
 	}
-	// new system
-	gi.WriteByte(svc_loadout_add);
-	gi.WriteString(ent->item->pickup_name);
-	gi.WriteString(ent->item->icon);
-	gi.WriteInt(1);
 
 	// wtf does this do?
 	if (other->client->pers.weapon != ent->item &&
@@ -247,10 +242,7 @@ void ChangeWeapon(edict_t* ent)
 
 		// if the ammo is not already there, add it (failsafe, really shouldn't happen)
 		if (!item_ammo_loadout_ptr)
-		{
-			gi.dprintf("Somehow we lost the ammo...giving you 1 :(");
-			item_ammo = Loadout_AddItem(ent, ent->client->pers.weapon->ammo, 1);
-		}
+			gi.error("The loadout is fucked");
 
 		// add it to the loadout
 		ent->client->pers.loadout_current_ammo = item_ammo_loadout_ptr;

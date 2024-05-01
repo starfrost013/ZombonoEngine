@@ -46,7 +46,7 @@ void Loadout_Add()
 			//autoswitching is governed by server
 			// we have to read this otherwise the protocol gets out of sync with the message and the game dies
 			MSG_ReadString(&net_message);
-			MSG_ReadInt(&net_message); 
+			MSG_ReadShort(&net_message); 
 			return;
 		}
 	}
@@ -55,7 +55,7 @@ void Loadout_Add()
 	str = MSG_ReadString(&net_message);
 	strncpy(&cl.loadout.items[cl.loadout.num_items].icon, str, LOADOUT_MAX_STRLEN);
 
-	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadInt(&net_message);
+	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadShort(&net_message);
 
 	// basically a stack
 	cl.loadout.num_items++;

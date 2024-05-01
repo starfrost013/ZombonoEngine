@@ -370,7 +370,7 @@ CL_LoadClientinfo
 void CL_LoadClientinfo (clientinfo_t *ci, char *s)
 {
 	int32_t i;
-	char		*t;
+	char*		t;
 	char		model_name[MAX_QPATH];
 	char		skin_name[MAX_QPATH];
 	char		model_filename[MAX_QPATH];

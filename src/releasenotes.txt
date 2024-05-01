@@ -13,10 +13,15 @@ NEW FEATURES:
 * Major change to z_tdm_subway:
 	- There are now two rails and trains
 	- Each train only goes one way
+* Increased client-side entity limits:
+	* MAX_ENTITIES 128->2048
+	* MAX_DLIGHTS 32->256
 
 BUG FIXES:
 * Fixed hover and clicked UI images not scaling with the hudscale cvar
 * Fixed maps without skyboxes trying to load a nonexistent skybox by loading a sane defualt
+* Fixed sending unicast data to a non-client not being properly detected
+* Fixed edicts beyond the 128th not rendering on the client
 
 OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to have a green tint in order to distinguish it from the supershotgun's model.
@@ -25,6 +30,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Changed func_team_door from being a point entity to a brush entity
 * Made MSG_WriteChar just call MSG_WriteByte rather than duplicate its functionality
 	* Change some MSG_WriteChar calls to MSG_WriteByte
+* Added the ability for UI controls to be made invisible using the invisible field of ui_control_t and the UI_SetInvisible function.
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)

@@ -161,7 +161,7 @@ bool Pickup_Powerup (edict_t *ent, edict_t *other)
 
 	// if it's not there add it
 	if (!loadout_entry)
-		loadout_entry = Loadout_AddItem(other, ent->item->pickup_name, 1);
+		loadout_entry = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, 1);
 
 	int32_t		     quantity = loadout_entry->amount;
 
@@ -267,7 +267,7 @@ bool Pickup_Pack (edict_t *ent, edict_t *other)
 
 	// quantity is later
 	if (!loadout_item_ptr)
-		loadout_item_ptr = Loadout_AddItem(other, "Bullets", 0);
+		loadout_item_ptr = Loadout_AddItem(other, item->pickup_name, item->icon, 0);
 
 	if (other->client->pers.max_bullets < 300)
 		other->client->pers.max_bullets = 300;
@@ -422,7 +422,7 @@ bool Add_Ammo (edict_t *ent, gitem_t *item, int32_t count)
 	loadout_entry_t* ammo_ptr = Loadout_GetItem(ent, item->pickup_name);
 
 	if (ammo_ptr == NULL)
-		ammo_ptr = Loadout_AddItem(ent, item->pickup_name, 0); // amount is added later
+		ammo_ptr = Loadout_AddItem(ent, item->pickup_name, item->icon, 0); // amount is added later
 
 	if (!ent->client)
 		return false;
@@ -610,8 +610,8 @@ loadout_entry_t* GetCurrentArmor(edict_t* ent)
 bool Pickup_Armor (edict_t *ent, edict_t *other)
 {
 	loadout_entry_t*	loadout_ptr_old = GetCurrentArmor(other);
-	loadout_entry_t*	loadout_ptr_jacket = Loadout_GetItem(other, "Jacket Armor");
-	loadout_entry_t*	loadout_ptr_combat = Loadout_GetItem(other, "Combat Armor");
+	gitem_t*			loadout_ptr_jacket = FindItem("Jacket Armor");
+	gitem_t*			loadout_ptr_combat = FindItem("Combat Armor");
 	loadout_entry_t*	loadout_ptr_new = Loadout_GetItem(other, ent->item->pickup_name);
 	gitem_armor_t*		oldinfo;
 	gitem_armor_t*		newinfo;
@@ -621,10 +621,7 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 
 	// add new armor to loadout if it exists
 	if (!loadout_ptr_new)
-		loadout_ptr_new = Loadout_AddItem(other, ent->item->pickup_name, 0); // amount is set later
-
-	if (!loadout_ptr_jacket)
-		loadout_ptr_jacket = Loadout_AddItem(other, "Jacket Armor", 0); // amount is set later
+		loadout_ptr_new = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, 0); // amount is set later
 
 	// get info on new armor
 	newinfo = (gitem_armor_t *)ent->item->info;
@@ -632,10 +629,7 @@ bool Pickup_Armor (edict_t *ent, edict_t *other)
 	// handle armor shards specially
 	if (ent->item->tag == ARMOR_SHARD)
 	{
-		if (!loadout_ptr_old)
-			loadout_ptr_jacket->amount = 2;
-		else
-			loadout_ptr_old->amount += 2;
+		loadout_ptr_old->amount += 2;	
 	}
 	// if player has no armor, just use it
 	else if (!loadout_ptr_old)
@@ -742,7 +736,7 @@ bool Pickup_PowerArmor (edict_t *ent, edict_t *other)
 	loadout_entry_t*	loadout_entry_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
 	if (!loadout_entry_ptr)
-		loadout_entry_ptr = Loadout_AddItem(other, ent->item->pickup_name, 1);
+		loadout_entry_ptr = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, 1);
 
 	loadout_entry_ptr->amount++;
 
@@ -762,7 +756,7 @@ void Drop_PowerArmor (edict_t *ent, gitem_t *item)
 	if (!loadout_entry_ptr)
 	{
 		Com_Printf("ERROR: Drop_PowerArmor: Tried to drop power armor we don't have???? Added to prevent a crash");
-		loadout_entry_ptr = Loadout_AddItem(ent, item->pickup_name, 1);
+		loadout_entry_ptr = Loadout_AddItem(ent, item->pickup_name, item->icon, 1);
 	}
 
 	if ((ent->flags & FL_POWER_ARMOR) && (loadout_entry_ptr->amount == 1))

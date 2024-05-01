@@ -254,14 +254,14 @@ extern	cvar_t* vid_gamma;
 
 extern	cvar_t* intensity;
 
-extern	int		gl_lightmap_format;
-extern	int		gl_solid_format;
-extern	int		gl_alpha_format;
-extern	int		gl_tex_solid_format;
-extern	int		gl_tex_alpha_format;
+extern	int32_t	gl_lightmap_format;
+extern	int32_t	gl_solid_format;
+extern	int32_t	gl_alpha_format;
+extern	int32_t	gl_tex_solid_format;
+extern	int32_t	gl_tex_alpha_format;
 
-extern	int		c_visible_lightmaps;
-extern	int		c_visible_textures;
+extern	int32_t	c_visible_lightmaps;
+extern	int32_t	c_visible_textures;
 
 extern	float	r_world_matrix[16];
 
