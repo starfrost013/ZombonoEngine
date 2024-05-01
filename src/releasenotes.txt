@@ -22,6 +22,7 @@ BUG FIXES:
 * Fixed maps without skyboxes trying to load a nonexistent skybox by loading a sane defualt
 * Fixed sending unicast data to a non-client not being properly detected
 * Fixed edicts beyond the 128th not rendering on the client
+	* Added warnings for when too many client entities (entity_t), dynamic lights and particles are spawned
 
 OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to have a green tint in order to distinguish it from the supershotgun's model.
@@ -31,6 +32,9 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Made MSG_WriteChar just call MSG_WriteByte rather than duplicate its functionality
 	* Change some MSG_WriteChar calls to MSG_WriteByte
 * Added the ability for UI controls to be made invisible using the invisible field of ui_control_t and the UI_SetInvisible function.
+* More improvements to cl_showinfo:
+	* Entities split into Server and Client Entities
+	* Maximum number of entities, particles and dynamic lights now shown
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)

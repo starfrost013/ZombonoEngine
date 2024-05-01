@@ -188,4 +188,16 @@ bool UI_LoadoutUICreate()
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "pics/i_fixme", x, y, 24, 24);
 	x += 24 * vid_hudscale->value;
 
+	// set everything except the box invisible to start with because you have no items
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Text", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option0", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option1", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option2", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option3", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option4", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option5", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option6", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option7", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option8", true);
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option9", true);
 }

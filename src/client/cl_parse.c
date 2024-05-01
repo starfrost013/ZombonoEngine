@@ -651,8 +651,8 @@ void CL_ParseServerMessage (void)
 {
 	int32_t 	cmd;
 	char		*s;
-	char		str_tempbuf[MAX_UI_STR_LENGTH];		// For multi-string messages
-	char		str_tempbuf2[MAX_UI_STR_LENGTH];		// For multi-string messages
+	char		str_tempbuf[MAX_UI_STRLEN];		// For multi-string messages
+	char		str_tempbuf2[MAX_UI_STRLEN];		// For multi-string messages
 	int32_t 	i = 0;
 
 //
@@ -791,10 +791,6 @@ void CL_ParseServerMessage (void)
 			Loadout_Remove(MSG_ReadString(&net_message));
 			break;
 
-		case svc_loadout_update:
-			Loadout_Update();
-			break;
-
 		case svc_loadout_setcurrent:
 			Loadout_SetCurrent(MSG_ReadInt(&net_message));
 			break;
@@ -818,9 +814,9 @@ void CL_ParseServerMessage (void)
 
 		case svc_uisettext:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // New Text
 
 			UI_SetText(&str_tempbuf, &str_tempbuf2, s);
@@ -829,9 +825,9 @@ void CL_ParseServerMessage (void)
 
 		case svc_uisetimage:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // New image path
 
 			UI_SetImage(&str_tempbuf, &str_tempbuf2, s);
@@ -840,11 +836,11 @@ void CL_ParseServerMessage (void)
 
 		case svc_drawtext:
 			s = MSG_ReadString(&net_message);
-			strncpy(&str_tempbuf, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
 			int32_t x = MSG_ReadShort(&net_message);
 			int32_t y = MSG_ReadShort(&net_message);
 			s = MSG_ReadString(&net_message);
-			strncpy(&str_tempbuf2, s, MAX_UI_STR_LENGTH);
+			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
 
 			Text_Draw(&str_tempbuf, x, y, &str_tempbuf2);
 		}

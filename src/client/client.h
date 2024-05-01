@@ -539,7 +539,7 @@ void CL_PredictMovement (void);
 
 #define CONTROLS_PER_UI			256
 #define MAX_UIS					32
-#define MAX_UI_STR_LENGTH		256
+#define MAX_UI_STRLEN		256
 
 // Defined her for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
@@ -564,17 +564,17 @@ typedef struct ui_control_s
 	char			font[MAX_FONT_FILENAME_LEN];
 	int32_t 		size_x;									// UI control size (x-component).
 	int32_t 		size_y;									// UI control size (y-component).
-	char			name[MAX_UI_STR_LENGTH];				// UI control name (for code)
+	char			name[MAX_UI_STRLEN];				// UI control name (for code)
 	bool			invisible;								// Is this UI control invisible?
 	bool			focused;								// Is this UI control focused?
 	bool			hovered;								// Is the mouse hovering over this UI control?
 
 	// text
-	char			text[MAX_UI_STR_LENGTH];				// Text UI control: Text to display.
+	char			text[MAX_UI_STRLEN];				// Text UI control: Text to display.
 	// image
-	char			image_path[MAX_UI_STR_LENGTH];			// Image path to display for Image controls
-	char			image_path_on_hover[MAX_UI_STR_LENGTH];	// Image path when the UI control has been hovered over.
-	char			image_path_on_click[MAX_UI_STR_LENGTH];	// Image path when the UI control clicked on.
+	char			image_path[MAX_UI_STRLEN];			// Image path to display for Image controls
+	char			image_path_on_hover[MAX_UI_STRLEN];	// Image path when the UI control has been hovered over.
+	char			image_path_on_click[MAX_UI_STRLEN];	// Image path when the UI control clicked on.
 	bool			image_is_stretched;						// Is this UI control's image stretched?
 	// slider
 	int32_t 		value_min;								// Slider UI control: minimum value.
@@ -593,7 +593,7 @@ typedef struct ui_control_s
 
 typedef struct ui_s
 {	int32_t 		num_controls;				// Number of controls in the UI.
-	char			name[MAX_UI_STR_LENGTH];	// UI name.			
+	char			name[MAX_UI_STRLEN];	// UI name.			
 	bool			(*on_create)();				// UI Create function for client
 	bool			enabled;					// True if the UI is currently being drawn.
 	bool			activated;					// True if the UI is currently interactable.

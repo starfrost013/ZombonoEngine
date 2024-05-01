@@ -221,7 +221,6 @@ typedef enum svc_ops_e
 	svc_drawtext,				// <font name> <x> <y> <text>
 	svc_loadout_add,			// <loadout_entry_t struct>
 	svc_loadout_remove,			// <index, or -1 for current>
-	svc_loadout_update,			// 
 	svc_loadout_setcurrent,		// <item id>
 
 	// the rest are private to the client and server

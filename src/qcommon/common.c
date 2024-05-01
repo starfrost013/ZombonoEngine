@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAX_NUM_ARGVS	50
 
-int32_t 	com_argc;
+int32_t com_argc;
 char	*com_argv[MAX_NUM_ARGVS+1];
 
-int32_t 	realtime;
+int32_t realtime;
 
 jmp_buf abortframe;		// an ERR_DROP occured, exit the entire frame
 static bool shutdown_game = false;
@@ -49,13 +49,13 @@ cvar_t* debug_console;		// debug console toggle for Windows
 
 FILE	*logfile;
 
-int32_t 		server_state;
+int32_t server_state;
 
 // host_speeds times
-int32_t 	time_before_game;
-int32_t 	time_after_game;
-int32_t 	time_before_ref;
-int32_t 	time_after_ref;
+int32_t time_before_game;
+int32_t time_after_game;
+int32_t time_before_ref;
+int32_t time_after_ref;
 
 /*
 ============================================================================
@@ -170,7 +170,6 @@ void Com_DPrintf (char *fmt, ...)
 	Com_Printf ("%s", msg);
 }
 
-
 /*
 =============
 Com_Error
@@ -224,7 +223,6 @@ void Com_Error (int32_t code, char *fmt, ...)
 	Sys_Error ("%s", msg);
 }
 
-
 /*
 =============
 Com_Quit
@@ -248,7 +246,6 @@ void Com_Quit (void)
 	Sys_Quit ();
 }
 
-
 /*
 ==================
 Com_ServerState
@@ -268,7 +265,6 @@ void Com_SetServerState (int32_t state)
 {
 	server_state = state;
 }
-
 
 /*
 ==============================================================================

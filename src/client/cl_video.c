@@ -47,7 +47,7 @@ cvar_t* viewsize;
 // Global variables used internally by this module
 viddef_t	viddef;				// global video state; used by other modules
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
-bool	reflib_active = 0;
+bool		reflib_active = 0;
 
 HWND        cl_hwnd;            // Main window handle for life of program
 

@@ -76,9 +76,9 @@ bool UI_AddUI(char* name, bool(*on_create)())
 
 	num_uis++;
 
-	if (strlen(name) > MAX_UI_STR_LENGTH)
+	if (strlen(name) > MAX_UI_STRLEN)
 	{
-		Sys_Error("Tried to create a UI with name more than %d characters!", MAX_UI_STR_LENGTH);
+		Sys_Error("Tried to create a UI with name more than %d characters!", MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -176,9 +176,9 @@ bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32
 	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	// not recommended to buffer overflow
-	if (strlen(text) > MAX_UI_STR_LENGTH)
+	if (strlen(text) > MAX_UI_STRLEN)
 	{
-		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!\n", name, text, MAX_UI_STR_LENGTH);
+		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!\n", name, text, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -202,9 +202,9 @@ bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x
 	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
 
 	// not recommended to buffer overflow
-	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("The UI control %s's image path %s is too long (max length %d)!\n", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("The UI control %s's image path %s is too long (max length %d)!\n", name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -337,9 +337,9 @@ bool UI_SetText(char* ui_name, char* name, char* text)
 		return false;
 	}
 
-	if (strlen(text) > MAX_UI_STR_LENGTH)
+	if (strlen(text) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", name, text, MAX_UI_STR_LENGTH);
+		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", name, text, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -358,9 +358,9 @@ bool UI_SetImage(char* ui_name, char* name, char* image_path)
 		return false;
 	}
 
-	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI image path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("UI image path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -394,9 +394,9 @@ bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path)
 		return false;
 	}
 
-	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI image on hover path for control %s, %s, was too long (max %d)\n", control_name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("UI image on hover path for control %s, %s, was too long (max %d)\n", control_name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -415,9 +415,9 @@ bool UI_SetImageOnClick(char* ui_name, char* name, char* image_path)
 		return false;
 	}
 
-	if (strlen(image_path) > MAX_UI_STR_LENGTH)
+	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI image on click path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("UI image on click path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 

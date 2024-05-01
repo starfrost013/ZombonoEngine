@@ -93,7 +93,11 @@ void V_AddParticle (vec3_t org, int32_t color, float alpha)
 	particle_t	*p;
 
 	if (r_numparticles >= MAX_PARTICLES)
+	{
+		Com_Printf("WARNING: Too many particles!");
 		return;
+	}
+
 	p = &r_particles[r_numparticles++];
 	VectorCopy (org, p->origin);
 	p->color = color;
@@ -111,7 +115,11 @@ void V_AddLight (vec3_t org, float intensity, float r, float g, float b)
 	dlight_t	*dl;
 
 	if (r_numdlights >= MAX_DLIGHTS)
+	{
+		Com_Printf("WARNING: Too many dynamic lights!");
 		return;
+	}
+
 	dl = &r_dlights[r_numdlights++];
 	VectorCopy (org, dl->origin);
 	dl->intensity = intensity;
@@ -133,6 +141,7 @@ void V_AddLightStyle (int32_t style, float r, float g, float b)
 
 	if (style < 0 || style > MAX_LIGHTSTYLES)
 		Com_Error (ERR_DROP, "Bad light style %i", style);
+
 	ls = &r_lightstyles[style];
 
 	ls->white = r+g+b;

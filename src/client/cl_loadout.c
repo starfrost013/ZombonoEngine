@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // cl_loadout.c: Clientside loadout system (April 12, 2024)
 
+void Loadout_UpdateUI();
+
 void Loadout_Add()
 {
 	if (cl.loadout.num_items >= LOADOUT_MAX_ITEMS)
@@ -57,38 +59,36 @@ void Loadout_Add()
 
 	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadShort(&net_message);
 
-	// basically a stack
 	cl.loadout.num_items++;
+	Loadout_UpdateUI();
 }
 
-void Loadout_Update()
+void Loadout_UpdateUI()
 {
-	int32_t index = MSG_ReadByte(&net_message);
+	// this is so items arent seen to "skip" if we lose one of the items in the middle
+	int32_t item_num_visual = 0; 
 
-	// we set everything to an empty string when the player joins...
-	// this means its not a valid item
-	if (strlen(cl.loadout.items[index].item_name) == 0)
-	{
-		Com_Printf("ERROR: Tried to set nonexistent loadout index %d", index);
-		return;
-	}
-
-	strncpy(&cl.loadout.items[cl.loadout.num_items].item_name, MSG_ReadString(&net_message), LOADOUT_MAX_STRLEN);
-	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadInt(&net_message);
-}
-
-// Draws the loadout UI
-void Loadout_Draw()
-{
 	for (int32_t item_num = 0; item_num < cl.loadout.num_items; item_num++)
 	{
 		loadout_entry_t* loadout_entry_ptr = &cl.loadout.items[item_num];
 
-		if (item_num <= 9) // TEMP
-		{
+		// turn on the parts of the UI...
+		char loadout_ui_buffer[MAX_UI_STRLEN] = { 0 };
 
+		if (item_num <= 9
+			&& loadout_entry_ptr->item_name[0]) // TEMP - what do we do for item 11+?
+		{
+			snprintf(loadout_ui_buffer, MAX_UI_STRLEN, "LoadoutUI_Option%d", item_num_visual);
+
+			// let it be visible and set the offer
+			UI_SetInvisible("LoadoutUI", loadout_ui_buffer, false);
+			UI_SetImage("LoadoutUI", loadout_ui_buffer, loadout_entry_ptr->icon);
+
+			item_num_visual++;
 		}
 	}
+
+
 }
 
 // Removes the item with the name item_name.
@@ -116,6 +116,7 @@ void Loadout_Remove(char* item_name)
 
 
 	cl.loadout.num_items--;
+	Loadout_UpdateUI();
 }
 
 void Loadout_SetCurrent(int32_t index)
