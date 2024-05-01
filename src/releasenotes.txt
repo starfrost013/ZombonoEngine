@@ -22,6 +22,9 @@ OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to have a green tint in order to distinguish it from the supershotgun's model.
 * Play a fail sound when the Bamfuslicator fails to spawn an enemy
 * Renamed S_RegisterSexedModel -> S_RegisterPlayerModel
+* Changed func_team_door from being a point entity to a brush entity
+* Made MSG_WriteChar just call MSG_WriteByte rather than duplicate its functionality
+	* Change some MSG_WriteChar calls to MSG_WriteByte
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)

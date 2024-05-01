@@ -1233,14 +1233,14 @@ static bool LM_AllocBlock (int32_t w, int32_t h, int32_t *x, int32_t *y)
 
 	// still not ENTIRELY sure what's going on with this bug (lightmap texture being too big causes texture corruption), but this prevents it from getting too big
 	// bit HACKey (it fucks up the lightmap)
-	if (w > 16
+	/*if (w > 16
 		&& h > 16)
 	{
 		ri.Con_Printf(PRINT_DEVELOPER, "Too many lightmap blocks). Please raise BLOCK_WIDTH, fix the code or make your map smaller. Your lightmap now looks fucked\n");
 		if (w > 16) w = 16;
 		if (h > 16) h = 16;
 	}
-
+	*/
 	best = BLOCK_HEIGHT;
 
 	for (i=0 ; i<BLOCK_WIDTH-w ; i++)

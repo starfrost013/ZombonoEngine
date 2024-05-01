@@ -758,7 +758,7 @@ void G_SetClientSound (edict_t *ent)
 	else
 		weap = "";
 
-	if (ent->waterlevel && (ent->watertype&(CONTENTS_LAVA|CONTENTS_SLIME)) )
+	if (ent->waterlevel && (ent->watertype&(CONTENTS_LAVA|CONTENTS_SLIME)))
 		ent->s.sound = snd_fry;
 	// stupid hack
 	else if (strcmp(weap, "weapon_railgun") == 0)
