@@ -68,7 +68,7 @@ void Weapon_railgun_fire(edict_t* ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.loadout_current_ammo->amount--;
+		ent->client->loadout_current_ammo->amount--;
 }
 
 

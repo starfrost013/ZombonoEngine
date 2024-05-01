@@ -935,9 +935,6 @@ typedef struct client_persistant_s
 	int32_t		savedFlags;
 
 	int32_t		selected_item;
-	loadout_t	loadout;
-	loadout_entry_t* loadout_current_weapon;
-	loadout_entry_t* loadout_current_ammo;
 
 	// ammo capacities
 	int32_t		max_bullets;
@@ -983,6 +980,10 @@ typedef struct gclient_s
 	client_persistant_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
+
+	loadout_t	loadout;
+	loadout_entry_t* loadout_current_weapon;
+	loadout_entry_t* loadout_current_ammo;
 
 	bool		showhelp;
 	bool		showhelpicon;

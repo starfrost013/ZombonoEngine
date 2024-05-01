@@ -25,10 +25,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* icon, int32_t amount)
 {
 	// don't crash if we're not connected
-	strncpy(ent->client->pers.loadout.items[ent->client->pers.loadout.num_items].item_name, name, LOADOUT_MAX_STRLEN);
-	ent->client->pers.loadout.items[ent->client->pers.loadout.num_items].amount = amount;
+	strncpy(ent->client->loadout.items[ent->client->loadout.num_items].item_name, name, LOADOUT_MAX_STRLEN);
+	ent->client->loadout.items[ent->client->loadout.num_items].amount = amount;
 
-	ent->client->pers.loadout.num_items++;
+	ent->client->loadout.num_items++;
 
 	if (ent->client->pers.connected)
 	{
@@ -41,7 +41,7 @@ loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* ico
 		gi.unicast(ent, true);
 	}
 
-	return &ent->client->pers.loadout.items[ent->client->pers.loadout.num_items - 1];
+	return &ent->client->loadout.items[ent->client->loadout.num_items - 1];
 }
 
 void Loadout_DeleteItem(edict_t* ent, const char* name)
@@ -58,8 +58,8 @@ void Loadout_DeleteItem(edict_t* ent, const char* name)
 	loadout_entry_ptr->amount = 0;
 
 	// only decrement num_items if its the last item (empty items get skipped)
-	if (loadout_entry_ptr == &ent->client->pers.loadout.items[ent->client->pers.loadout.num_items - 1])
-		ent->client->pers.loadout.num_items--;
+	if (loadout_entry_ptr == &ent->client->loadout.items[ent->client->loadout.num_items - 1])
+		ent->client->loadout.num_items--;
 
 	// tell the client
 	gi.WriteByte(svc_loadout_remove);
@@ -70,11 +70,11 @@ void Loadout_DeleteItem(edict_t* ent, const char* name)
 
 loadout_entry_t* Loadout_GetItem(edict_t* ent, const char* name)
 {
-	for (int32_t item_id = 0; item_id < ent->client->pers.loadout.num_items; item_id++)
+	for (int32_t item_id = 0; item_id < ent->client->loadout.num_items; item_id++)
 	{
-		if (!strncmp(ent->client->pers.loadout.items[item_id].item_name, name, LOADOUT_MAX_STRLEN))
+		if (!strncmp(ent->client->loadout.items[item_id].item_name, name, LOADOUT_MAX_STRLEN))
 		{
-			return &ent->client->pers.loadout.items[item_id];
+			return &ent->client->loadout.items[item_id];
 		}
 	}
 

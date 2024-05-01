@@ -245,11 +245,11 @@ void ChangeWeapon(edict_t* ent)
 			gi.error("The loadout is fucked");
 
 		// add it to the loadout
-		ent->client->pers.loadout_current_ammo = item_ammo_loadout_ptr;
+		ent->client->loadout_current_ammo = item_ammo_loadout_ptr;
 	}
 	else
 	{
-		ent->client->pers.loadout_current_ammo = NULL; // TEMP
+		ent->client->loadout_current_ammo = NULL; // TEMP
 	}
 
 	if (!ent->client->pers.weapon)
@@ -416,7 +416,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	}
 
 	Drop_Item(ent, item);
-	ent->client->pers.loadout.num_items--;
+	ent->client->loadout.num_items--;
 }
 
 
@@ -510,8 +510,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK1))
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
-			if ((!ent->client->pers.loadout_current_ammo) ||
-				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->loadout_current_ammo) ||
+				(ent->client->loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;
@@ -539,8 +539,8 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK2;
 
-			if ((!ent->client->pers.loadout_current_ammo) ||
-				(ent->client->pers.loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
+			if ((!ent->client->loadout_current_ammo) ||
+				(ent->client->loadout_current_ammo->amount >= ent->client->pers.weapon->quantity))
 			{
 				ent->client->ps.gunframe = FRAME_FIRE_FIRST;
 				ent->client->weaponstate = WEAPON_FIRING_SECONDARY;

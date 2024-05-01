@@ -41,11 +41,11 @@ void SelectNextItem(edict_t* ent, int32_t itflags)
 		return;
 
 	// new loadout system...
-	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+	loadout_entry_t* loadout_entry_ptr = &cl->loadout_current_weapon;
 
-	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
+	for (int32_t item_num = 0; item_num < cl->loadout.num_items; item_num++)
 	{
-		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+		loadout_entry_t* loadout_entry_ptr = &cl->loadout.items[item_num];
 
 		it = FindItem(loadout_entry_ptr->item_name);
 
@@ -62,10 +62,10 @@ void SelectNextItem(edict_t* ent, int32_t itflags)
 		if (cl->pers.selected_item == it)
 		{
 			int32_t new_item_num = item_num + 1;
-			if (new_item_num > cl->pers.loadout.num_items) new_item_num = 0;
+			if (new_item_num > cl->loadout.num_items) new_item_num = 0;
 
 			// get the current weapon
-			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num];
+			cl->pers.selected_item = &cl->loadout.items[new_item_num];
 			return;	// successful
 		}
 	}
@@ -90,11 +90,11 @@ void SelectPrevItem (edict_t *ent, int32_t itflags)
 		return;
 
 	// new loadout system...
-	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+	loadout_entry_t* loadout_entry_ptr = &cl->loadout_current_weapon;
 
-	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
+	for (int32_t item_num = 0; item_num < cl->loadout.num_items; item_num++)
 	{
-		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+		loadout_entry_t* loadout_entry_ptr = &cl->loadout.items[item_num];
 
 		it = FindItem(loadout_entry_ptr->item_name);
 
@@ -111,10 +111,10 @@ void SelectPrevItem (edict_t *ent, int32_t itflags)
 		if (cl->pers.selected_item == it)
 		{
 			int32_t new_item_num = item_num - 1;
-			if (new_item_num < 0) new_item_num = cl->pers.loadout.num_items;
+			if (new_item_num < 0) new_item_num = cl->loadout.num_items;
 
 			// get the current weapon
-			cl->pers.selected_item = &cl->pers.loadout.items[new_item_num]; 
+			cl->pers.selected_item = &cl->loadout.items[new_item_num]; 
 			return;	// successful
 		}
 	}
@@ -495,11 +495,11 @@ void Cmd_WeapPrev_f (edict_t *ent)
 		return;
 
 	// new loadout system...
-	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+	loadout_entry_t* loadout_entry_ptr = &cl->loadout_current_weapon;
 
-	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
+	for (int32_t item_num = 0; item_num < cl->loadout.num_items; item_num++)
 	{
-		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+		loadout_entry_t* loadout_entry_ptr = &cl->loadout.items[item_num];
 
 		it = FindItem(loadout_entry_ptr->item_name);
 
@@ -516,10 +516,10 @@ void Cmd_WeapPrev_f (edict_t *ent)
 		if (cl->pers.weapon == it)
 		{
 			int32_t new_item_num = item_num - 1;
-			if (new_item_num < 0) new_item_num = cl->pers.loadout.num_items - 1;
+			if (new_item_num < 0) new_item_num = cl->loadout.num_items - 1;
 
 			// get the current weapon
-			cl->pers.loadout_current_weapon = &cl->pers.loadout.items[new_item_num];
+			cl->loadout_current_weapon = &cl->loadout.items[new_item_num];
 
 			return;	// successful
 		}
@@ -543,11 +543,11 @@ void Cmd_WeapNext_f (edict_t *ent)
 		return;
 
 	// new loadout system...
-	loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout_current_weapon;
+	loadout_entry_t* loadout_entry_ptr = &cl->loadout_current_weapon;
 
-	for (int32_t item_num = 0; item_num < cl->pers.loadout.num_items; item_num++)
+	for (int32_t item_num = 0; item_num < cl->loadout.num_items; item_num++)
 	{
-		loadout_entry_t* loadout_entry_ptr = &cl->pers.loadout.items[item_num];
+		loadout_entry_t* loadout_entry_ptr = &cl->loadout.items[item_num];
 
 		it = FindItem(loadout_entry_ptr->item_name);
 
@@ -564,10 +564,10 @@ void Cmd_WeapNext_f (edict_t *ent)
 		if (cl->pers.weapon == it)
 		{
 			int32_t new_item_num = item_num + 1;
-			if (new_item_num > cl->pers.loadout.num_items) 0;
+			if (new_item_num > cl->loadout.num_items) 0;
 
 			// get the current weapon
-			cl->pers.loadout_current_weapon = &cl->pers.loadout.items[new_item_num];
+			cl->loadout_current_weapon = &cl->loadout.items[new_item_num];
 
 			return;	// successful
 		}

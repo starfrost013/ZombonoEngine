@@ -33,17 +33,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <io.h>
 #include <conio.h>
 #include <win32/conproc.h>
+
 int32_t 		starttime;
 
+static HANDLE	hinput, houtput;
 
-static HANDLE		hinput, houtput;
-
-uint32_t	sys_msg_time;
-uint32_t	sys_frame_time;
+uint32_t		sys_msg_time;
+uint32_t		sys_frame_time;
 
 #define	MAX_NUM_ARGVS	128
 int32_t 		argc;
-char		*argv[MAX_NUM_ARGVS];
+char*			argv[MAX_NUM_ARGVS];
+
+int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args);
+
 
 /*
 ===============================================================================
@@ -57,14 +60,19 @@ SYSTEM IO
 // this gets rid of RetardCompiler warnings
 __declspec(noreturn) void Sys_Error(char* error, ...);
 #else
-void Sys_Error(char* error, ...) __attribute__((noreturn));
+__attribute__((noreturn)) void Sys_Error(char* error, ...);
 #endif
 void Sys_Error (char *error, ...)
 {
-	CL_Shutdown ();
-	Qcommon_Shutdown ();
+	CL_Shutdown();
+	Qcommon_Shutdown();
 
-	Sys_Msgbox("Fatal Error", MB_OK, error);
+	va_list args;
+
+	va_start(args, error);
+
+	Sys_MsgboxV("Fatal Error", MB_OK, error, args);
+	va_end(args);
 
 // shut down QHOST hooks if necessary 
 	DeinitConProc ();
@@ -75,16 +83,25 @@ void Sys_Error (char *error, ...)
 // returns a value indicating which buttons were pressed
 int32_t Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 {
-	va_list		argptr;
+	va_list		args;
 
 	char		text_processed[1024] = { 0 };
 
-	va_start(argptr, text_processed);
+	va_start(args, text_processed);
 
-	vsnprintf(text_processed, 1024, text, argptr);
-	va_end(argptr);
+	vsnprintf(&text_processed, 1024, text, args);
+	va_end(args);
 
-	return MessageBox(NULL, text_processed, title, buttons);
+	return MessageBox(NULL, &text_processed, title, buttons);
+}
+
+int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
+{
+	char		text_processed[1024] = { 0 };
+
+	vsnprintf(&text_processed, 1024, text, args);
+
+	return MessageBox(NULL, &text_processed, title, buttons);
 }
 
 void

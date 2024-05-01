@@ -51,7 +51,7 @@ void Weapon_grenade_fire(edict_t* ent, bool held)
 	Ammo_Grenade2(ent, start, forward, damage, speed, timer, radius, held);
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
-		ent->client->pers.loadout_current_ammo->amount--;
+		ent->client->loadout_current_ammo->amount--;
 
 	ent->client->grenade_time = level.time + 1.0;
 
@@ -99,7 +99,7 @@ void Weapon_Grenade(edict_t* ent)
 		if (((ent->client->latched_buttons | ent->client->buttons) & BUTTON_ATTACK1))
 		{
 			ent->client->latched_buttons &= ~BUTTON_ATTACK1;
-			if (ent->client->pers.loadout_current_ammo->amount--)
+			if (ent->client->loadout_current_ammo->amount--)
 			{
 				ent->client->ps.gunframe = 1;
 				ent->client->weaponstate = WEAPON_FIRING_PRIMARY;

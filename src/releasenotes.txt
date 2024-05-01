@@ -23,6 +23,7 @@ BUG FIXES:
 * Fixed sending unicast data to a non-client not being properly detected
 * Fixed edicts beyond the 128th not rendering on the client
 	* Added warnings for when too many client entities (entity_t), dynamic lights and particles are spawned
+* Fixed Sys_Error not working
 
 OTHER ENHANCEMENTS AND CHANGES:
 * Changed the bamfuslicator texture to have a green tint in order to distinguish it from the supershotgun's model.

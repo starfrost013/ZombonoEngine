@@ -859,7 +859,7 @@ void TossClientWeapon(edict_t* self)
 	float		spread;
 
 	item = self->client->pers.weapon;
-	if (!self->client->pers.loadout_current_ammo)
+	if (!self->client->loadout_current_ammo)
 		item = NULL;
 	if (item && (strcmp(item->pickup_name, "Blaster") == 0))
 		item = NULL;

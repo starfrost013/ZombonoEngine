@@ -332,14 +332,14 @@ void G_SetStats (edict_t *ent)
 	//
 	// ammo
 	//
-	if (!ent->client->pers.loadout_current_ammo->item_name)
+	if (!ent->client->loadout_current_ammo->item_name)
 	{
 		ent->client->ps.stats[STAT_AMMO_ICON] = 0;
 		ent->client->ps.stats[STAT_AMMO] = 0;
 	}
 	else
 	{
-		item = FindItem(ent->client->pers.loadout_current_ammo->item_name);
+		item = FindItem(ent->client->loadout_current_ammo->item_name);
 		
 		if (!item)
 		{
@@ -349,7 +349,7 @@ void G_SetStats (edict_t *ent)
 		else
 		{
 			ent->client->ps.stats[STAT_AMMO_ICON] = gi.imageindex(item->icon);
-			ent->client->ps.stats[STAT_AMMO] = ent->client->pers.loadout_current_ammo->amount;
+			ent->client->ps.stats[STAT_AMMO] = ent->client->loadout_current_ammo->amount;
 		}
 	}
 	
