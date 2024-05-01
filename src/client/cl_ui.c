@@ -369,19 +369,34 @@ bool UI_SetImage(char* ui_name, char* name, char* image_path)
 	return true;
 }
 
-bool UI_SetImageOnHover(char* ui_name, char* name, char* image_path)
+bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control image on hover path %s to %s!\n", name, image_path);
+		Com_Printf("Tried to set NULL UI control image on hover path %s to %b!\n", control_name, invisible);
+		return false;
+	}
+
+	ui_control_ptr->invisible = invisible;
+
+	return true;
+}
+
+bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image on hover path %s to %s!\n", control_name, image_path);
 		return false;
 	}
 
 	if (strlen(image_path) > MAX_UI_STR_LENGTH)
 	{
-		Com_Printf("UI image on hover path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STR_LENGTH);
+		Com_Printf("UI image on hover path for control %s, %s, was too long (max %d)\n", control_name, image_path, MAX_UI_STR_LENGTH);
 		return false;
 	}
 
@@ -493,16 +508,18 @@ void UI_Draw()
 			for (int32_t ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
 			{
 				ui_control_t* current_ui_control = &current_ui->controls[ui_control_num];
-			
-				// toggle UI hover images if the mouse is within a UI
-				current_ui_control->hovered = 
-					(last_mouse_pos_x >= current_ui_control->position_x
-					&& last_mouse_pos_x <= (current_ui_control->position_x + (current_ui_control->size_x * vid_hudscale->value))
-					&& last_mouse_pos_y >= current_ui_control->position_y
-					&& last_mouse_pos_y <= (current_ui_control->position_y + (current_ui_control->size_y * vid_hudscale->value)));
 
-				switch (current_ui_control->type)
+				if (!current_ui_control->invisible)
 				{
+					// toggle UI hover images if the mouse is within a UI
+					current_ui_control->hovered =
+						(last_mouse_pos_x >= current_ui_control->position_x
+							&& last_mouse_pos_x <= (current_ui_control->position_x + (current_ui_control->size_x * vid_hudscale->value))
+							&& last_mouse_pos_y >= current_ui_control->position_y
+							&& last_mouse_pos_y <= (current_ui_control->position_y + (current_ui_control->size_y * vid_hudscale->value)));
+
+					switch (current_ui_control->type)
+					{
 					case ui_control_text:
 						UI_DrawText(current_ui_control);
 						break;
@@ -518,6 +535,7 @@ void UI_Draw()
 					case ui_control_box:
 						UI_DrawBox(current_ui_control);
 						break;
+					}
 				}
 			}
 		}

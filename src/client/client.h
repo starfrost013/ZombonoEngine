@@ -563,7 +563,7 @@ typedef struct ui_control_s
 	int32_t 		size_x;									// UI control size (x-component).
 	int32_t 		size_y;									// UI control size (y-component).
 	char			name[MAX_UI_STR_LENGTH];				// UI control name (for code)
-	bool			visible;								// Is this UI control visible?
+	bool			invisible;								// Is this UI control invisible?
 	bool			focused;								// Is this UI control focused?
 	bool			hovered;								// Is the mouse hovering over this UI control?
 
@@ -623,6 +623,7 @@ bool UI_SetPassive(char* name, bool passive);																// Sets a UI to pas
 // UI: Update Properties 
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
+bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible);									// Updates a UI control's invisibility.
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
 bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
 bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched);							// Updates a UI control's stretched status.

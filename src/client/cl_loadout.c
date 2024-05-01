@@ -84,7 +84,10 @@ void Loadout_Draw()
 	{
 		loadout_entry_t* loadout_entry_ptr = &cl.loadout.items[item_num];
 
+		if (item_num <= 9) // TEMP
+		{
 
+		}
 	}
 }
 

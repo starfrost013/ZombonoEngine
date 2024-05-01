@@ -149,6 +149,43 @@ bool UI_LoadoutUICreate()
 {
 	UI_SetPassive("LoadoutUI", true);
 
-	UI_AddBox("LoadoutUI", "LoadoutUI_Background", (10 * vid_hudscale->value), 30 * vid_hudscale->value, 325 * vid_hudscale->value, 50 * vid_hudscale->value,
-		127, 127, 127, 255);
+	// set up size
+	int32_t size_x = 325 * vid_hudscale->value;
+	int32_t size_y = 45 * vid_hudscale->value;
+
+	int32_t x = ((viddef.height / 2) - (size_x/8) * vid_hudscale->value); // WTF? Why is it not size_x/2
+	int32_t y = (viddef.height / 1.3f) * vid_hudscale->value;
+
+	UI_AddBox("LoadoutUI", "LoadoutUI_Background", x, y, size_x, size_y,
+		0, 0, 0, 127);
+
+	x = x + (((size_x - (float)(24 * 10)) / 2)) + 5 * vid_hudscale->value;
+
+	// create the text
+	y += 5 * vid_hudscale->value;
+	UI_AddText("LoadoutUI", "LoadoutUI_Text", "Test Text", x, y);
+
+	// create 10 placeholder icons
+	y += 15 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option2", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option3", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option4", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option5", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option6", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option7", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option8", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "pics/i_fixme", x, y, 24, 24);
+	x += 24 * vid_hudscale->value;
+
 }

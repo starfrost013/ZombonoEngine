@@ -750,7 +750,7 @@ void SP_info_player_start_player(edict_t* self)
 }
 
 /* Team door
-Must be implemented at runtime as there is no way during BSP compile proces to know what teams there are*/
+Must be implemented at runtime as there is no way during BSP compile process to know what teams there are*/
 void SP_info_team_door(edict_t* self)
 {
 
