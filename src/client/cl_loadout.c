@@ -73,22 +73,20 @@ void Loadout_UpdateUI()
 		loadout_entry_t* loadout_entry_ptr = &cl.loadout.items[item_num];
 
 		// turn on the parts of the UI...
-		char loadout_ui_buffer[MAX_UI_STRLEN] = { 0 };
+		char loadout_ui_name_buffer[MAX_UI_STRLEN] = { 0 };
 
 		if (item_num <= 9
 			&& loadout_entry_ptr->item_name[0]) // TEMP - what do we do for item 11+?
 		{
-			snprintf(loadout_ui_buffer, MAX_UI_STRLEN, "LoadoutUI_Option%d", item_num_visual);
+			snprintf(loadout_ui_name_buffer, MAX_UI_STRLEN, "LoadoutUI_Option%d", item_num_visual);
 
 			// let it be visible and set the offer
-			UI_SetInvisible("LoadoutUI", loadout_ui_buffer, false);
-			UI_SetImage("LoadoutUI", loadout_ui_buffer, loadout_entry_ptr->icon);
+			UI_SetInvisible("LoadoutUI", loadout_ui_name_buffer, false);
+			UI_SetImage("LoadoutUI", loadout_ui_name_buffer, loadout_entry_ptr->icon);
 
 			item_num_visual++;
 		}
 	}
-
-
 }
 
 // Removes the item with the name item_name.
@@ -103,12 +101,11 @@ void Loadout_Remove(char* item_name)
 		if (current_loadout_item_ptr->item_name != NULL
 			&& !strncmp(item_name, current_loadout_item_ptr->item_name, LOADOUT_MAX_STRLEN))
 		{
-			// delete the item
-
 			// if its the last item also decrement num_items (we just ignore null ones otherwise)
 			if (item_num == (cl.loadout.num_items))
 				cl.loadout.num_items--;
 
+			// delete the item
 			memset(&cl.loadout.items[item_num], 0x00, sizeof(loadout_entry_t));
 			return;
 		}
@@ -117,6 +114,28 @@ void Loadout_Remove(char* item_name)
 
 	cl.loadout.num_items--;
 	Loadout_UpdateUI();
+}
+
+void Loadout_Clear()
+{
+	// kill the UI items
+	memset(&cl.loadout.items, 0x00, sizeof(cl.loadout.items));
+
+	// set num_items and current item to 0
+	cl.loadout.num_items = 0;
+	cl.loadout.client_current_item = 0;
+#
+	// turn off the UI bits manually...
+	// I FUCKING HATE UI PROGRAMMING! FUCK THIS!
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Text", true);
+		
+	char loadout_ui_name_buffer[MAX_UI_STRLEN] = { 0 };
+
+	for (int32_t ui_ctrl_num = 0; ui_ctrl_num <= 9; ui_ctrl_num++)
+	{
+		snprintf(loadout_ui_name_buffer, MAX_UI_STRLEN, "LoadoutUI_Option%d", ui_ctrl_num);
+		UI_SetInvisible("LoadoutUI", loadout_ui_name_buffer, true);
+	}
 }
 
 void Loadout_SetCurrent(int32_t index)

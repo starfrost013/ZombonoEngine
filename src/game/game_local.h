@@ -49,8 +49,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_loadout_add			11
 #define svc_loadout_remove		12
 #define svc_loadout_setcurrent	13	
+#define svc_loadout_clear		14
 
-#define	svc_stufftext			18
+#define	svc_stufftext			19
 
 //==================================================================
 

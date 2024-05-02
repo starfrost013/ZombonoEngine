@@ -222,6 +222,7 @@ typedef enum svc_ops_e
 	svc_loadout_add,			// <loadout_entry_t struct>
 	svc_loadout_remove,			// <index, or -1 for current>
 	svc_loadout_setcurrent,		// <item id>
+	svc_loadout_clear,			// none
 
 	// the rest are private to the client and server
 	svc_disconnect,

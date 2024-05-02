@@ -39,6 +39,7 @@ char *svc_strings[256] =
 	"svc_loadout_add",
 	"svc_loadout_remove",
 	"svc_loadout_setcurrent", 
+	"svc_loadout_clear",
 
 	"svc_disconnect",
 	"svc_reconnect",
@@ -785,6 +786,10 @@ void CL_ParseServerMessage (void)
 
 		case svc_loadout_add:
 			Loadout_Add();
+			break;
+
+		case svc_loadout_clear:
+			Loadout_Clear();
 			break;
 
 		case svc_loadout_remove:
