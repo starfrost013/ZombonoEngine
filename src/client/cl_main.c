@@ -1398,7 +1398,11 @@ void CL_InitLocal (void)
 	cl_shownet = Cvar_Get ("cl_shownet", "0", 0);
 	cl_showmiss = Cvar_Get ("cl_showmiss", "0", 0);
 	cl_showclamp = Cvar_Get ("showclamp", "0", 0);
+#ifndef NDEBUG
+	cl_showinfo = Cvar_Get("cl_showinfo", "1", 0);
+#else
 	cl_showinfo = Cvar_Get("cl_showinfo", "0", 0);
+#endif
 	cl_timeout = Cvar_Get ("cl_timeout", "120", 0);
 	cl_paused = Cvar_Get ("paused", "0", 0);
 	cl_timedemo = Cvar_Get ("timedemo", "0", 0);

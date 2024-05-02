@@ -36,6 +36,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 * More improvements to cl_showinfo:
 	* Entities split into Server and Client Entities
 	* Maximum number of entities, particles and dynamic lights now shown
+* Force a variety of debug vars (cl_showinfo, developer, log_stats) on on debug builds
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)

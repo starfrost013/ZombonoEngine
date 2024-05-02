@@ -1357,15 +1357,14 @@ void Qcommon_Init (int32_t argc, char **argv)
     Cmd_AddCommand ("error", Com_Error_f);
 
 	host_speeds = Cvar_Get ("host_speeds", "0", 0);
-	log_stats = Cvar_Get ("log_stats", "0", 0);
-
-
-	developer = Cvar_Get("developer", "0", 0);
-
-	// force developer mode on on debug builds
 #ifndef NDEBUG
-	Cvar_Set("developer", "1");
+	log_stats = Cvar_Get("log_stats", "1", 0);
+	developer = Cvar_Get("developer", "1", 0);
+#else
+	log_stats = Cvar_Get("log_stats", "0", 0);
+	developer = Cvar_Get("developer", "0", 0);
 #endif
+	// force developer mode on on debug builds
 
 	timescale = Cvar_Get ("timescale", "1", 0);
 	fixedtime = Cvar_Get ("fixedtime", "0", 0);
