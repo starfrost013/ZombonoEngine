@@ -63,6 +63,8 @@ void Loadout_Add()
 	Loadout_UpdateUI();
 }
 
+// this function updates the loadout ui.
+// it's only called when it needs to actually change for performance
 void Loadout_UpdateUI()
 {
 	// this is so items arent seen to "skip" if we lose one of the items in the middle
@@ -86,6 +88,15 @@ void Loadout_UpdateUI()
 
 			item_num_visual++;
 		}
+	}
+
+	// set the text's visibility based on if there is a current item
+	UI_SetInvisible("LoadoutUI", "LoadoutUI_Text", cl.loadout.client_current_item == NULL);
+
+	// if there is one set the text
+	if (cl.loadout.client_current_item)
+	{
+		UI_SetText("LoadoutUI", "LoadoutUI_Text", cl.loadout.client_current_item->item_name);
 	}
 }
 
@@ -140,5 +151,15 @@ void Loadout_Clear()
 
 void Loadout_SetCurrent(int32_t index)
 {
-	cl.loadout.num_items = index;
+	if (index < 0
+		|| index > 9)
+		Com_Error(ERR_DROP, "Tried to set current client loadout item to invalid value %d!", index);
+
+	// valid value but we just don't have that many items
+	if (index >= cl.loadout.num_items)
+		return;
+
+	cl.loadout.client_current_item = &cl.loadout.items[index];
+
+	Loadout_UpdateUI();
 }

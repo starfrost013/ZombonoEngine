@@ -413,8 +413,38 @@ void Cmd_Use_f (edict_t *ent)
 	it->use (ent, it);
 }
 
+#define MAX_UI_STRLEN_GAME 256	// CHANGE!!!!
 void Cmd_Loadout_f(edict_t* ent)
 {
+	char* index_str = gi.argv(1);
+	char ui_name[MAX_UI_STRLEN_GAME] = { 0 };
+
+	// set the current loadout
+	if (index_str)
+	{
+		int32_t index = atoi(index_str);
+
+		// temp, clamp to available item range to absolutely MAKE SURE nothing invalid can be seleted
+		if (index < 0) index = 0;
+		if (index > 9) index = 9;
+
+		// now clamp to available items
+		if (index >= ent->client->loadout.num_items) index = ent->client->loadout.num_items - 1;
+
+		gi.WriteByte(svc_loadout_setcurrent);
+		gi.WriteByte(index);
+		gi.unicast(ent, true); // rare
+
+		// tell the server to give this client a new weapon if we aren't already selecting a new weapon
+		// we don't need to check if it already exists because we did it already
+		if (&ent->client->loadout.items[index] != ent->client->loadout_current_weapon)
+		{
+			ent->client->newweapon = FindItem(&ent->client->loadout.items[index].item_name);
+			ChangeWeapon(ent);
+		}
+	}
+
+
 	// tell the client to turn on the loadout UI
 	G_UISend(ent, "LoadoutUI", true, true, false);
 }
@@ -1076,6 +1106,7 @@ void ClientCommand (edict_t *ent)
 	else if (!Q_stricmp(cmd, "loadout"))
 	{
 		Cmd_Loadout_f(ent);
+		return;
 	}
 
 	// anything that doesn't match a command will be a chat

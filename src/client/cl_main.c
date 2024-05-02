@@ -1470,6 +1470,7 @@ void CL_InitLocal (void)
 	Cmd_AddCommand ("give", NULL);
 	Cmd_AddCommand ("god", NULL);
 	Cmd_AddCommand ("notarget", NULL);
+	Cmd_AddCommand ("loadout", NULL);
 	Cmd_AddCommand ("noclip", NULL);
 	Cmd_AddCommand ("invuse", NULL);
 	Cmd_AddCommand ("invprev", NULL);

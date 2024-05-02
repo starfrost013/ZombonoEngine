@@ -899,6 +899,6 @@ typedef struct loadout_entry_s
 typedef struct loadout_s
 {
 	int32_t				num_items;					// Number of items the user currently has.
-	int32_t				client_current_item;		// Current Item ID (client side)
+	loadout_entry_t*	client_current_item;		// A pointer to the currently equipped item (clientside).
 	loadout_entry_t		items[LOADOUT_MAX_ITEMS];	// The items within the loadout.
 } loadout_t;

@@ -797,7 +797,7 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_loadout_setcurrent:
-			Loadout_SetCurrent(MSG_ReadInt(&net_message));
+			Loadout_SetCurrent(MSG_ReadByte(&net_message));
 			break;
 
 		case svc_playerinfo:
