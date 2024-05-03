@@ -888,12 +888,30 @@ typedef struct leaderboard_s
 #define LOADOUT_MAX_ITEMS		32
 #define LOADOUT_MAX_STRLEN		48
 
+// Enumerates types of entries in the loadout system.
+typedef enum loadout_entry_type_e
+{
+	// Weapons
+	loadout_entry_type_weapon = 0,
+
+	// Ammunition
+	loadout_entry_type_ammo = 1,
+
+	// Armour
+	loadout_entry_type_armor = 2,
+
+	// Powerup
+	loadout_entry_type_powerup = 3,
+
+} loadout_entry_type;
+
 // Defines a loadout entry.
 typedef struct loadout_entry_s
 {
-	char			item_name[LOADOUT_MAX_STRLEN];	// The friendly name of the item (ammo, weapon...)
-	char			icon[MAX_QPATH];				// The icon to draw (since entities are defined on game side)
-	int32_t			amount;							// The amount (usually only used for the ammunition)
+	char				item_name[LOADOUT_MAX_STRLEN];	// The friendly name of the item (ammo, weapon...)
+	char				icon[MAX_QPATH];				// The icon to draw (since entities are defined on game side)
+	int32_t				amount;							// The amount (usually only used for the ammunition)
+	loadout_entry_type	type;						// The type of this loadout entry.
 } loadout_entry_t;
 
 typedef struct loadout_s

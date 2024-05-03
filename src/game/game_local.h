@@ -1223,7 +1223,7 @@ void Weapon_Generic(edict_t* ent, int32_t FRAME_ACTIVATE_LAST, int32_t FRAME_FIR
 	int32_t* pause_frames, int32_t* fire_frames_primary, int32_t* fire_frames_secondary, void (*fire_primary)(edict_t* ent), void(*fire_secondary)(edict_t* ent));
 
 // game_loadout.c
-loadout_entry_t* Loadout_AddItem(edict_t* ent, const char* item_name, const char* icon, int32_t amount);		// Adds the loadout item with the name name, the icon icon and the amount amount. Returns the new loadout item
+loadout_entry_t* Loadout_AddItem(edict_t* ent, const char* item_name, const char* icon, loadout_entry_type type, int32_t amount);		// Adds the loadout item with the name name, the icon icon and the amount amount. Returns the new loadout item
 void Loadout_DeleteItem(edict_t* ent, const char* item_name);				// Deletes the loadout item with the name name.
 loadout_entry_t* Loadout_GetItem(edict_t* ent, const char* item_name);		// Returns the loadout item with the name item_name.
 bool Loadout_EntryIsItem(loadout_entry_t* entry, const char* item_name);	// Determines if the loadout entry entry is the item with the name item_name.

@@ -172,7 +172,7 @@ void Cmd_Give_f (edict_t *ent)
 			if (!(it->flags & IT_WEAPON))
 				continue;
 			
-			Loadout_AddItem(ent, it->pickup_name, it->icon, 1);
+			Loadout_AddItem(ent, it->pickup_name, it->icon, loadout_entry_type_weapon, 1);
 		}
 		if (!give_all)
 			return;
@@ -209,7 +209,7 @@ void Cmd_Give_f (edict_t *ent)
 		// if its not there add it, otherwise set it to max_count
 		if (!body_armor_ptr)
 		{
-			body_armor_ptr = Loadout_AddItem(ent, it->pickup_name, it->icon, info->max_count);
+			body_armor_ptr = Loadout_AddItem(ent, it->pickup_name, it->icon, loadout_entry_type_armor, info->max_count);
 		}
 		else
 		{
@@ -244,7 +244,7 @@ void Cmd_Give_f (edict_t *ent)
 			if (it->flags & (IT_ARMOR|IT_WEAPON|IT_AMMO))
 				continue;
 
-			Loadout_AddItem(ent, it->pickup_name, it->icon, 1);
+			Loadout_AddItem(ent, it->pickup_name, it->icon, loadout_entry_type_armor, 1);
 		}
 		return;
 	}
@@ -424,13 +424,13 @@ void Cmd_Loadout_f(edict_t* ent)
 	{
 		// find the index of the current item
 		// we don't just use the index as part of the loadout so it can't desync
-		int32_t current_index = 0;
+		int32_t original_index = 0;
 
-		for (int32_t amount = 0; amount < ent->client->loadout.num_items; amount++)
+		for (int32_t loadout_index = 0; loadout_index < ent->client->loadout.num_items; loadout_index++)
 		{
-			if (&ent->client->loadout.items[amount] == ent->client->loadout_current_weapon)
+			if (&ent->client->loadout.items[loadout_index] == ent->client->loadout_current_weapon)
 			{
-				current_index = amount;
+				original_index = loadout_index;
 				break; // we don't need to continue since we already have the current index
 			}
 		}
@@ -439,16 +439,47 @@ void Cmd_Loadout_f(edict_t* ent)
 
 		if (!strcmp(index_str, "next")) // cycle to next
 		{
-			index = current_index + 1;
+			index = original_index + 1;
+
+			// make sure we have actually selected a weapon and not armour or somethnig else
+
+			if (ent->client->loadout.items[index].type != loadout_entry_type_weapon)
+			{
+				while (ent->client->loadout.items[index].type != loadout_entry_type_weapon
+					&& index < ent->client->loadout.num_items)
+				{
+					index++;
+				}
+
+			}
+
+			if (index >= ent->client->loadout.num_items) // "rollover" behaviour so we can nicely scroll through the list
+				index = 0;
 		}
 		else if (!strcmp(index_str, "prev")) // cycle to prev
 		{
-			index = current_index - 1;
+			index = original_index - 1;
+
+			// make sure we have actually selected a weapon and not armour or somethnig else
+			if (ent->client->loadout.items[index].type != loadout_entry_type_weapon)
+			{
+				while (ent->client->loadout.items[index].type != loadout_entry_type_weapon
+					&& index < ent->client->loadout.num_items)
+				{
+					index++;
+				}
+
+			}
+
+			if (index < 0) // "rollover" behaviour so we can nicely scroll through the list
+				index = ent->client->loadout.num_items - 1;
 		}
 		else // next part
 		{
 			index = atoi(index_str);
 		}
+
+
 
 		// temp, clamp to available item range to absolutely MAKE SURE nothing invalid can be seleted
 		if (index < 0) index = 0;
@@ -465,6 +496,7 @@ void Cmd_Loadout_f(edict_t* ent)
 		// we don't need to check if it already exists because we did it already
 		if (&ent->client->loadout.items[index] != ent->client->loadout_current_weapon)
 		{
+			ent->client->loadout_current_weapon = &ent->client->loadout.items[index];
 			ent->client->newweapon = FindItem(&ent->client->loadout.items[index].item_name);
 			ChangeWeapon(ent);
 		}

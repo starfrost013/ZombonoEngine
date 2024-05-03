@@ -22,10 +22,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <game_local.h>
 
-loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* icon, int32_t amount)
+loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* icon, loadout_entry_type type, int32_t amount)
 {
 	// don't crash if we're not connected
 	strncpy(ent->client->loadout.items[ent->client->loadout.num_items].item_name, name, LOADOUT_MAX_STRLEN);
+	strncpy(ent->client->loadout.items[ent->client->loadout.num_items].icon, icon, MAX_QPATH);
+	ent->client->loadout.items[ent->client->loadout.num_items].type = type;
 	ent->client->loadout.items[ent->client->loadout.num_items].amount = amount;
 
 	ent->client->loadout.num_items++;
@@ -35,6 +37,7 @@ loadout_entry_t* Loadout_AddItem(edict_t *ent, const char* name, const char* ico
 		gi.WriteByte(svc_loadout_add);
 		gi.WriteString(name);
 		gi.WriteString(icon);
+		gi.WriteByte(type);
 		gi.WriteShort(amount);
 
 		// reliable for now

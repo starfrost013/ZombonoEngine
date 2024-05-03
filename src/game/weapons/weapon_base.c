@@ -131,7 +131,7 @@ bool Pickup_Weapon(edict_t* ent, edict_t* other)
 	loadout_entry_t* loadout_ptr = Loadout_GetItem(other, ent->item->pickup_name);
 
 	if (!loadout_ptr)
-		loadout_ptr = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, 1);
+		loadout_ptr = Loadout_AddItem(other, ent->item->pickup_name, ent->item->icon, loadout_entry_type_weapon, 1);
 
 	index = ITEM_INDEX(ent->item);
 

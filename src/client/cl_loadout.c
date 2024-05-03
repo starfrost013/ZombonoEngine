@@ -48,6 +48,7 @@ void Loadout_Add()
 			//autoswitching is governed by server
 			// we have to read this otherwise the protocol gets out of sync with the message and the game dies
 			MSG_ReadString(&net_message);
+			MSG_ReadByte(&net_message);
 			MSG_ReadShort(&net_message); 
 			return;
 		}
@@ -57,6 +58,7 @@ void Loadout_Add()
 	str = MSG_ReadString(&net_message);
 	strncpy(&cl.loadout.items[cl.loadout.num_items].icon, str, LOADOUT_MAX_STRLEN);
 
+	cl.loadout.items[cl.loadout.num_items].type = MSG_ReadByte(&net_message);
 	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadShort(&net_message);
 
 	cl.loadout.num_items++;
@@ -78,7 +80,8 @@ void Loadout_UpdateUI()
 		char loadout_ui_name_buffer[MAX_UI_STRLEN] = { 0 };
 
 		if (item_num <= 9
-			&& loadout_entry_ptr->item_name[0]) // TEMP - what do we do for item 11+?
+			&& loadout_entry_ptr->item_name[0]
+			&& loadout_entry_ptr->type == loadout_entry_type_weapon) // TEMP - what do we do for item 11+?
 		{
 			snprintf(loadout_ui_name_buffer, MAX_UI_STRLEN, "LoadoutUI_Option%d", item_num_visual);
 
