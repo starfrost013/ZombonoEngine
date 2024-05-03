@@ -477,9 +477,20 @@ void Cmd_Loadout_f(edict_t* ent)
 		else // next part
 		{
 			index = atoi(index_str);
+
+			if (ent->client->loadout.items[index].type != loadout_entry_type_weapon)
+			{
+				while (ent->client->loadout.items[index].type != loadout_entry_type_weapon
+					&& index < ent->client->loadout.num_items)
+				{
+					index++;
+				}
+			}
+
+			//don't rollover if the user pressed an invalid key, just return
+			if (index >= ent->client->loadout.num_items)
+				return; 
 		}
-
-
 
 		// temp, clamp to available item range to absolutely MAKE SURE nothing invalid can be seleted
 		if (index < 0) index = 0;
