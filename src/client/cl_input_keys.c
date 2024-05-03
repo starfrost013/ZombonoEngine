@@ -192,20 +192,20 @@ keyname_t keynames[] =
 	{ "WORLD1", K_WORLD_1 },
 	{ "WORLD2", K_WORLD_2 },
 
-	{ "KP_HOME",			K_HOME },
-	{ "UPARROW",		K_UPARROW },
-	{ "KP_PGUP",			K_PAGE_UP },
+	{ "KP_HOME",	K_HOME },
+	{ "UPARROW",	K_UPARROW },
+	{ "KP_PGUP",	K_PAGE_UP },
 	{ "LEFTARROW",	K_LEFTARROW },
-	{ "KP_0",			K_KP_0 },
-	{ "KP_1",			K_KP_1 },
-	{ "KP_2",			K_KP_2 },
-	{ "KP_3",			K_KP_3 },
-	{ "KP_4",			K_KP_4 },
-	{ "KP_5",			K_KP_5 },
-	{ "KP_6",			K_KP_6 },
-	{ "KP_7",			K_KP_7 },
-	{ "KP_8",			K_KP_8 },
-	{ "KP_9",			K_KP_9 },
+	{ "KP_0",		K_KP_0 },
+	{ "KP_1",		K_KP_1 },
+	{ "KP_2",		K_KP_2 },
+	{ "KP_3",		K_KP_3 },
+	{ "KP_4",		K_KP_4 },
+	{ "KP_5",		K_KP_5 },
+	{ "KP_6",		K_KP_6 },
+	{ "KP_7",		K_KP_7 },
+	{ "KP_8",		K_KP_8 },
+	{ "KP_9",		K_KP_9 },
 	{ "RIGHTARROW",	K_RIGHTARROW },
 	{ "KP_END",			K_END },
 	{ "DOWNARROW",	K_DOWNARROW },
@@ -236,7 +236,7 @@ keyname_t keynames[] =
 	{ "MWHEELUP", K_MWHEELUP },
 	{ "MWHEELDOWN", K_MWHEELDOWN },
 
-	{ "SEMICOLON", ';' },	// because a raw semicolon seperates commands
+	{ "SEMICOLON", K_SEMICOLON},	// because a raw semicolon seperates commands
 
 	{NULL,0}
 };

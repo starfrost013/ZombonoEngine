@@ -422,7 +422,33 @@ void Cmd_Loadout_f(edict_t* ent)
 	// set the current loadout
 	if (index_str)
 	{
-		int32_t index = atoi(index_str);
+		// find the index of the current item
+		// we don't just use the index as part of the loadout so it can't desync
+		int32_t current_index = 0;
+
+		for (int32_t amount = 0; amount < ent->client->loadout.num_items; amount++)
+		{
+			if (&ent->client->loadout.items[amount] == ent->client->loadout_current_weapon)
+			{
+				current_index = amount;
+				break; // we don't need to continue since we already have the current index
+			}
+		}
+
+		int32_t index = 0;
+
+		if (!strcmp(index_str, "next")) // cycle to next
+		{
+			index = current_index + 1;
+		}
+		else if (!strcmp(index_str, "prev")) // cycle to prev
+		{
+			index = current_index - 1;
+		}
+		else // next part
+		{
+			index = atoi(index_str);
+		}
 
 		// temp, clamp to available item range to absolutely MAKE SURE nothing invalid can be seleted
 		if (index < 0) index = 0;
