@@ -454,32 +454,53 @@ Cvar_List_f
 void Cvar_List_f (void)
 {
 	cvar_t* var;
-	int32_t 	i;
+	int32_t i;
+	// Let the user search cvars.
+	// This idea was stolen from fitzquake/vkquake
+	char* search_str = Cmd_Argv(1);
+	int32_t search_str_len = 0;
+
+	if (search_str != NULL
+		&& strlen(search_str) > 0)
+	{
+		search_str_len = strlen(search_str);
+	}
 
 	i = 0;
 	for (var = cvar_vars ; var ; var = var->next, i++)
 	{
+		if (search_str != NULL
+			&& strstr(var->name, search_str) == NULL) // we didn't find the string in what the user wanted to see
+		{
+			i--;
+			continue;
+		}
+
 		if (var->flags & CVAR_ARCHIVE)
-			Com_Printf ("*");
+			Com_Printf("*");
 		else
-			Com_Printf (" ");
+			Com_Printf(" ");
 		if (var->flags & CVAR_USERINFO)
-			Com_Printf ("U");
+			Com_Printf("U");
 		else
-			Com_Printf (" ");
+			Com_Printf(" ");
 		if (var->flags & CVAR_SERVERINFO)
-			Com_Printf ("S");
+			Com_Printf("S");
 		else
-			Com_Printf (" ");
+			Com_Printf(" ");
 		if (var->flags & CVAR_NOSET)
-			Com_Printf ("-");
+			Com_Printf("-");
 		else if (var->flags & CVAR_LATCH)
-			Com_Printf ("L");
+			Com_Printf("L");
 		else
-			Com_Printf (" ");
-		Com_Printf (" %s \"%s\"\n", var->name, var->string);
+			Com_Printf(" ");
+		Com_Printf(" %s \"%s\"\n", var->name, var->string);
 	}
-	Com_Printf ("%i cvars\n", i);
+
+	if (search_str_len == 0)
+		Com_Printf("%i cvars\n", i);
+	else
+		Com_Printf("%i cvars matching the search string %s\n", i, search_str);
 }
 
 
@@ -524,5 +545,4 @@ void Cvar_Init (void)
 {
 	Cmd_AddCommand ("set", Cvar_Set_f);
 	Cmd_AddCommand ("cvarlist", Cvar_List_f);
-
 }

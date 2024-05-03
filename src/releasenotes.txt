@@ -23,6 +23,7 @@ BUG FIXES:
 * Fixed sending unicast data to a non-client not being properly detected
 * Fixed edicts beyond the 128th not rendering on the client
 	* Added warnings for when too many client entities (entity_t), dynamic lights and particles are spawned
+* Fixed train in z_tdm_subway ramming itself into the station
 * Fixed Sys_Error not working
 
 OTHER ENHANCEMENTS AND CHANGES:
@@ -37,6 +38,7 @@ OTHER ENHANCEMENTS AND CHANGES:
 	* Entities split into Server and Client Entities
 	* Maximum number of entities, particles and dynamic lights now shown
 * Force a variety of debug vars (cl_showinfo, developer, log_stats) on on debug builds
+* Added the ability to search for cvars using the cvarlist command and a search string
 
 REMOVALS:
 * Removed ValidateSelectedItem function (doesn't do anything???)
