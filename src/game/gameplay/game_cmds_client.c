@@ -464,9 +464,9 @@ void Cmd_Loadout_f(edict_t* ent)
 			if (ent->client->loadout.items[index].type != loadout_entry_type_weapon)
 			{
 				while (ent->client->loadout.items[index].type != loadout_entry_type_weapon
-					&& index < ent->client->loadout.num_items)
+					&& index >= 0)
 				{
-					index++;
+					index--;
 				}
 
 			}

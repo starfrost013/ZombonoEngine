@@ -502,6 +502,8 @@ char *dm_statusbar =
 
 "yb	-50 "
 
+/*
+// Removed May 3, 2024
 // picked up item
 "if 7 "
 "	xv	0 "
@@ -511,6 +513,7 @@ char *dm_statusbar =
 "	stat_string 8 "
 "	yb	-50 "
 "endif "
+*/
 
 // timer
 "if 9 "
