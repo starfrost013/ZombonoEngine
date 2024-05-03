@@ -877,10 +877,12 @@ void WindowFocus_Event(void* unused, int32_t focused)
 		|| (ui_active && current_ui->passive))
 	{
 		re.EnableCursor(!focused);
+		mouseactive = focused;
 	}
 	else
 	{
 		re.EnableCursor(true);
+		mouseactive = false;
 	}
 }
 

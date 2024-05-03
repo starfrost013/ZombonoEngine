@@ -5,6 +5,10 @@ Version 0.0.8
 May 4, 2024
 
 NEW FEATURES:
+* Completely replaced the loadout system:
+	* Weapons are now picked up in the order that you obtain them.
+	* You can scroll through or press 1-9 keys to select items.
+
 * Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
 * Added the ability for the engine to get the total number of nanoseconds since the engine started as well as milliseconds
 	* log_stats now uses more precise frametime measurement for high fps

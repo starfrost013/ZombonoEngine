@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 extern int32_t 	window_center_x, window_center_y;
+extern bool		mouseactive;
 
 void Input_Init();					
 void Input_StartupMouse();
