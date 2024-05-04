@@ -875,7 +875,7 @@ void MouseScroll_Event(void* unused, double xoffset, double yoffset)
 void WindowFocus_Event(void* unused, int32_t focused)
 {
 	if (!ui_active 
-		|| (ui_active && current_ui->passive))
+		|| (ui_active && current_ui != NULL && current_ui->passive))
 	{
 		re.EnableCursor(!focused);
 		mouseactive = focused;
@@ -890,7 +890,7 @@ void WindowFocus_Event(void* unused, int32_t focused)
 void WindowIconify_Event(void* unused, int32_t iconified)
 {
 	if (!ui_active
-		|| (ui_active && current_ui->passive))
+		|| (ui_active && current_ui != NULL && current_ui->passive))
 	{
 		re.EnableCursor(iconified);
 		mouseactive = !iconified;

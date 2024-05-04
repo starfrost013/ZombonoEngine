@@ -67,8 +67,8 @@ void Weapon_supershotgun_fire(edict_t* ent)
 
 	if (!((int32_t)gameflags->value & GF_INFINITE_AMMO))
 	{
-		loadout_entry_t* entry_ptr = Loadout_GetItem(ent, "bullets");
-		entry_ptr->amount -= 2;
+		ent->client->loadout_current_ammo->amount -= 2; 
+
 	}
 }
 

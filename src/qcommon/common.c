@@ -880,8 +880,12 @@ void *SZ_GetSpace (sizebuf_t *buf, int32_t length)
 	
 	if (buf->cursize + length > buf->maxsize)
 	{
-		if (!buf->allowoverflow)
-			Com_Error (ERR_FATAL, "SZ_GetSpace: overflow without allowoverflow set");
+		if (!buf->allowoverflow
+			&& buf != NULL
+			&& buf->cursize > 0)
+		{
+			Com_Error(ERR_FATAL, "SZ_GetSpace: overflow without allowoverflow set");
+		}
 		
 		if (length > buf->maxsize)
 			Com_Error (ERR_FATAL, "SZ_GetSpace: %i is > full buffer size", length);

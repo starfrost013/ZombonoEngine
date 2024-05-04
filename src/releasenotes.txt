@@ -1,6 +1,9 @@
 Zombono
 Release Notes:
 
+Version 0.0.8.377 (Build 377)
+* Fixed disconnect and reconnect crashing the server
+
 Version 0.0.8.371 (Build 371)
 May 4, 2024
 

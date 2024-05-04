@@ -40,6 +40,9 @@ void PF_Unicast (edict_t *ent, bool reliable)
 	if (!ent)
 		return;
 
+	if (!ent->inuse)
+		return;
+
 	if (!ent->client)
 		Sys_Error("Tried to unicast data to a non-client?!");
 
