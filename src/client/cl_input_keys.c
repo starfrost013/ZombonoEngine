@@ -837,6 +837,7 @@ void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int3
 
 void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods)
 {
+	// TODO: MUST DISABLE INPUT
 	// they are not contiguous numbers
 	if (button >= 4)
 	{
@@ -892,10 +893,12 @@ void WindowIconify_Event(void* unused, int32_t iconified)
 		|| (ui_active && current_ui->passive))
 	{
 		re.EnableCursor(iconified);
+		mouseactive = !iconified;
 	}
 	else
 	{
 		re.EnableCursor(true);
+		mouseactive = false;
 	}
 }
 

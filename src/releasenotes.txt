@@ -28,6 +28,7 @@ BUG FIXES:
 * Fixed edicts beyond the 128th not rendering on the client
 	* Added warnings for when too many client entities (entity_t), dynamic lights and particles are spawned
 * Fixed train in z_tdm_subway ramming itself into the station
+* Fixed mouse input still being sent to the game when alt+tabbed out
 * Fixed Sys_Error not working
 
 OTHER ENHANCEMENTS AND CHANGES:

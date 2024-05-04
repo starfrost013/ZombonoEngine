@@ -455,10 +455,14 @@ void Cmd_Loadout_f(edict_t* ent)
 
 			if (index >= ent->client->loadout.num_items) // "rollover" behaviour so we can nicely scroll through the list
 				index = 0;
+
 		}
 		else if (!strcmp(index_str, "prev")) // cycle to prev
 		{
 			index = original_index - 1;
+
+			if (index < 0) // "rollover" behaviour so we can nicely scroll through the list
+				index = ent->client->loadout.num_items - 1;
 
 			// make sure we have actually selected a weapon and not armour or somethnig else
 			if (ent->client->loadout.items[index].type != loadout_entry_type_weapon)
@@ -470,9 +474,6 @@ void Cmd_Loadout_f(edict_t* ent)
 				}
 
 			}
-
-			if (index < 0) // "rollover" behaviour so we can nicely scroll through the list
-				index = ent->client->loadout.num_items - 1;
 		}
 		else // next part
 		{
@@ -487,7 +488,7 @@ void Cmd_Loadout_f(edict_t* ent)
 				}
 			}
 
-			//don't rollover if the user pressed an invalid key, just return
+			//don't rollover if the user pressed an invalid key, just return...
 			if (index >= ent->client->loadout.num_items)
 				return; 
 		}
