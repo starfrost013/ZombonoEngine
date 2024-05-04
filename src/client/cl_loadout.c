@@ -96,11 +96,10 @@ void Loadout_UpdateUI()
 	// set the text's visibility based on if there is a current item
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Text", cl.loadout.client_current_item == NULL);
 
-	// if there is one set the text
+	// if there is a selected item, set the text to that item's description
 	if (cl.loadout.client_current_item)
-	{
 		UI_SetText("LoadoutUI", "LoadoutUI_Text", cl.loadout.client_current_item->item_name);
-	}
+
 }
 
 // Removes the item with the name item_name.

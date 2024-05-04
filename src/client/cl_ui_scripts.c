@@ -151,7 +151,7 @@ bool UI_LoadoutUICreate()
 
 	// set up size
 	int32_t size_x = 325 * vid_hudscale->value;
-	int32_t size_y = 45 * vid_hudscale->value;
+	int32_t size_y = 65 * vid_hudscale->value;
 
 	int32_t x = ((viddef.height / 2) - (size_x/8) * vid_hudscale->value); // WTF? Why is it not size_x/2
 	int32_t y = (viddef.height / 1.3f) * vid_hudscale->value;
@@ -168,24 +168,35 @@ bool UI_LoadoutUICreate()
 	// create 10 placeholder icons
 	y += 15 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "pics/i_fixme", x, y, 24, 24);
+	//TODO: get the size of these numbers
+	UI_AddText("LoadoutUI", "LoadoutUI_Text0", "0", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text1", "1", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option2", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text2", "2", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option3", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text3", "3", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option4", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text4", "4", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option5", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text5", "5", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option6", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text6", "6", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option7", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text7", "7", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option8", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text8", "8", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "pics/i_fixme", x, y, 24, 24);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text9", "9", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 
 	// set everything except the box invisible to start with because you have no items
