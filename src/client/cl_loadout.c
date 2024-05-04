@@ -23,7 +23,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // cl_loadout.c: Clientside loadout system (April 12, 2024)
 
+// CVars
+cvar_t* cl_loadout_fade;					// Determines if the LoadoutUI will fade after being toggled.
+cvar_t* cl_loadout_fade_time;				// Determines the time (in milliseconds) that Loadout UI will take to fade after being toggled.
+
+// Globals
+bool	loadout_is_displayed = false;
+int32_t	loadout_last_displayed_time = 0;
+
+// Functions only used within this file
 void Loadout_UpdateUI();
+
+// Initialises the loadout system
+void Loadout_Init()
+{
+	cl_loadout_fade = Cvar_Get("cl_loadout_fade", "1", CVAR_ARCHIVE);
+	cl_loadout_fade_time = Cvar_Get("cl_loadout_fade_time", "4000", CVAR_ARCHIVE);
+}
 
 void Loadout_Add()
 {
@@ -65,10 +81,35 @@ void Loadout_Add()
 	Loadout_UpdateUI();
 }
 
+void Loadout_Update()
+{
+	// do not interrupt teamui
+	if (current_ui == NULL || !strncmp(current_ui->name, "TeamUI", 7))
+		return;
+
+	// if the user wants the UI faded out...
+	if (cl_loadout_fade->value)
+	{
+		int32_t current_ms = Sys_Milliseconds();
+
+		// and there has been enough time to fade it out
+		if ((current_ms - loadout_last_displayed_time) > cl_loadout_fade_time->value)
+		{
+			loadout_is_displayed = false;
+		}
+
+		UI_SetEnabled("LoadoutUI", loadout_is_displayed);
+	}
+}
+
 // this function updates the loadout ui.
 // it's only called when it needs to actually change for performance
 void Loadout_UpdateUI()
 {
+	// make sure the loadout is displayed
+	loadout_is_displayed = true;
+	loadout_last_displayed_time = Sys_Milliseconds();
+
 	// this is so items arent seen to "skip" if we lose one of the items in the middle
 	int32_t item_num_visual = 0; 
 

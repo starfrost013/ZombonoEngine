@@ -32135,7 +32135,7 @@
 // entity 241
 {
 "classname" "path_corner"
-"origin" "56 -1536 792"
+"origin" "40 -1536 792"
 "wait" "0"
 "angle" "180"
 "target" "train_route02_stop13"
@@ -32145,7 +32145,7 @@
 // entity 242
 {
 "classname" "path_corner"
-"origin" "-88 -1536 792"
+"origin" "56 -1536 792"
 "wait" "10"
 "angle" "180"
 "target" "train_route02_stop14"
@@ -32156,7 +32156,7 @@
 // entity 243
 {
 "classname" "path_corner"
-"origin" "-88 -1536 792"
+"origin" "40 -1536 792"
 "wait" "0"
 "angle" "180"
 "target" "train_route02_stop01"
@@ -32266,7 +32266,7 @@
 // entity 256
 {
 "classname" "path_corner"
-"origin" "1720 376 792"
+"origin" "1472 376 792"
 "targetname" "train_stop11"
 "wait" "10"
 "target" "train_stop12"
@@ -32276,7 +32276,7 @@
 // entity 257
 {
 "classname" "path_corner"
-"origin" "1720 376 792"
+"origin" "1472 376 792"
 "targetname" "train_stop12"
 "wait" "0"
 "target" "train_stop01"

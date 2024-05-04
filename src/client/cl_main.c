@@ -1594,8 +1594,8 @@ void CL_SendCommand (void)
 {
 	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active
 	if (!ui_active
-		|| (ui_active && current_ui->passive)
-			|| (ui_active && !strncmp(current_ui->name, "LeaderboardUI", 14)))
+		|| (ui_active && current_ui != NULL && current_ui->passive)
+			|| (ui_active && current_ui != NULL && !strncmp(current_ui->name, "LeaderboardUI", 14)))
 	{
 		// get new key events
 		Sys_SendKeyEvents();
@@ -1682,6 +1682,9 @@ void CL_Frame (int32_t msec)
 	
 	Miniaudio_Update();
 
+	// update the loadout information
+	Loadout_Update();
+
 	// advance local effects for next frame
 	CL_RunDLights ();
 	CL_RunLightStyles ();
@@ -1700,7 +1703,6 @@ void CL_Frame (int32_t msec)
 			{
 				fprintf(log_stats_file, "0\n");
 			}
-
 		}
 		else
 		{
@@ -1722,14 +1724,14 @@ void CL_Frame (int32_t msec)
 }
 
 
-void AppActivate(bool fActive, bool minimize)
+void AppActivate(bool active, bool minimize)
 {
 	app_minimized = minimize;
 
 	Key_ClearStates();
 
 	// we don't want to act like we're active if we're minimized
-	if (fActive && !app_minimized)
+	if (active && !app_minimized)
 		app_active = true;
 	else
 		app_active = false;
@@ -1787,7 +1789,8 @@ void CL_Init (void)
 	CL_InitLocal();
 	Input_Init();
 	if (!Font_Init()) Sys_Error("Error initialising font engine");
-	UI_Init();
+	if (!UI_Init()) Sys_Error("Error initialising the user interface system");
+	Loadout_Init();
 
 	FS_ExecAutoexec();
 	Cbuf_Execute(); 

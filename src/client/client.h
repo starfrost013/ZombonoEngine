@@ -762,9 +762,15 @@ bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char t
 // cl_loadout.c
 // Client parts of the loadout system
 //
+
+//Cvars
+extern cvar_t*			cl_loadout_fade;
+extern cvar_t*			cl_loadout_fade_time;
+
+void Loadout_Init();																			// Initialises the loadout system.
 void Loadout_Add();																				// Parses a loadout add message
+void Loadout_Update();																			// Updates the loadout each frame.
 void Loadout_Remove(char* item_name);															// Parses a loadout remove message and removes the element with the name item_name.
 void Loadout_SetCurrent(int32_t index);															// Parses a loadout set current message
 void Loadout_Clear();																			// Clears the loadout
 
-void Loadout_Draw();																			// Draws the loadout.

@@ -416,6 +416,10 @@ void Cmd_Use_f (edict_t *ent)
 #define MAX_UI_STRLEN_GAME 256	// CHANGE!!!!
 void Cmd_Loadout_f(edict_t* ent)
 {
+	// don't bother if there are no items
+	if (ent->client->loadout.num_items == 0)
+		return; 
+
 	char* index_str = gi.argv(1);
 	char ui_name[MAX_UI_STRLEN_GAME] = { 0 };
 

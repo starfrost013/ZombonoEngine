@@ -168,7 +168,8 @@ bool UI_LoadoutUICreate()
 	// create 10 placeholder icons
 	y += 15 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "pics/i_fixme", x, y, 24, 24);
-	//TODO: get the size of these numbers
+
+	// some of these are manually tweaked because there is no point caling Text_GetSize for the numbers 0 to 9
 	UI_AddText("LoadoutUI", "LoadoutUI_Text0", "0", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "pics/i_fixme", x, y, 24, 24);
