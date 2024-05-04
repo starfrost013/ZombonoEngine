@@ -1,13 +1,16 @@
 Zombono
 Release Notes:
 
-Version 0.0.8
+Version 0.0.8.371 (Build 371)
 May 4, 2024
 
 NEW FEATURES:
 * Completely replaced the loadout system:
 	* Weapons are now picked up in the order that you obtain them.
 	* You can scroll through weapons, or press the 1-9 keys to select items.
+	* Added two new cvars:
+		* cl_loadout_fade controls if the loadout UI fades after it is displayed.
+		* cl_loadout_fade_time controls the amount of time (in milliseconds) the loadout UI takes to fade.
 * Added the ability to stretch a user interface's image to its specified size, using the UI_SetImageIsStretched function.
 * Added the ability for the engine to get the total number of nanoseconds since the engine started as well as milliseconds
 	* log_stats now uses more precise frametime measurement for high fps
@@ -15,7 +18,7 @@ NEW FEATURES:
 * Map fixes to z_tdm_labrats, z_tdm_warehouse (fixed brushes cutting into each other)
 * Major change to z_tdm_subway:
 	- There are now two rails and trains
-	- Each train only goes one way
+	- Each train only goes one way, so you have to be careful
 * Increased client-side entity limits:
 	* MAX_ENTITIES 128->2048
 	* MAX_DLIGHTS 32->256

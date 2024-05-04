@@ -38,7 +38,7 @@ void Loadout_UpdateUI();
 void Loadout_Init()
 {
 	cl_loadout_fade = Cvar_Get("cl_loadout_fade", "1", CVAR_ARCHIVE);
-	cl_loadout_fade_time = Cvar_Get("cl_loadout_fade_time", "4000", CVAR_ARCHIVE);
+	cl_loadout_fade_time = Cvar_Get("cl_loadout_fade_time", "7000", CVAR_ARCHIVE);
 }
 
 void Loadout_Add()
