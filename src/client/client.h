@@ -515,6 +515,7 @@ void CL_FlyEffect (centity_t *ent, vec3_t origin);
 void CL_AddParticles (void);
 void CL_EntityEvent (entity_state_t *ent);
 void CL_TrapParticles (entity_t *ent);
+void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 
 //
 // menus

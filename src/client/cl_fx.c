@@ -844,6 +844,52 @@ void CL_BigTeleportParticles (vec3_t org)
 	}
 }
 
+#define LIGHTNING_SPEED			100
+
+//
+// CL_LightningParticles: Lightning particles for the tangfuslicator
+//
+void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles)
+{
+	cparticle_t* particle;
+
+	vec3_t		 particle_movement = { 0 };
+	vec3_t		 particle_length = { 0 }; 
+
+	VectorSubtract(end, start, particle_length);
+
+	for (int32_t i = 0; i < 1024; i++)
+	{
+		// we're out of particles
+		if (!free_particles)
+			return;
+		particle = free_particles;
+		free_particles = particle->next;
+		particle->next = active_particles;
+		active_particles = particle;
+		particle->time = cl.time;
+
+		// all colours are whitish
+		particle->color[0] = 230 + rand() % 256;
+		particle->color[1] = 230 + rand() % 256;
+		particle->color[2] = 230 + rand() % 256;
+		particle->color[3] = 230 + rand() % 256;
+
+		particle->org[0] = start[0] + 3 + rand() % 5; //3-8 units forward
+		particle->org[1] = start[1] + 2 + rand() % 2; //2-4 units side
+		particle->org[2] = start[2] + 1 + rand() % 2; //1-3 units high
+
+		particle->vel[0] = (angles[0] * LIGHTNING_SPEED) + rand() % 5; // 100-105
+		particle->vel[1] = (angles[1] * LIGHTNING_SPEED) + rand() % 5; // 100-105
+		particle->vel[2] = (angles[2] * LIGHTNING_SPEED) + rand() % 5; // 100-105
+
+		particle->accel[0] = (angles[0]) * 5 + rand() % 5;
+		particle->accel[1] = (angles[1]) * 5 + rand() % 5;
+		particle->accel[2] = (angles[2]) * 5 + rand() % 5;
+
+		//particle->alphavel = -1.0 / (0.5 + frand() * 0.3);
+ 	}
+}
 
 /*
 ===============

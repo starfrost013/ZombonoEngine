@@ -797,6 +797,15 @@ void CL_ParseTEnt (void)
 
 		CL_TeleportParticles(pos);
 		break;
+
+	case TE_LIGHTNING:
+		MSG_ReadPos(&net_message, pos); // start
+		MSG_ReadPos(&net_message, pos2); // end
+		MSG_ReadDir(&net_message, dir);
+
+		CL_LightningParticles(pos, pos2, dir);
+		break;
+
 	default:
 		Com_Error (ERR_DROP, "CL_ParseTEnt: bad type");
 	}

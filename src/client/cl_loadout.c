@@ -94,11 +94,10 @@ void Loadout_Update()
 
 		// and there has been enough time to fade it out
 		if ((current_ms - loadout_last_displayed_time) > cl_loadout_fade_time->value)
-		{
 			loadout_is_displayed = false;
-		}
 
 		UI_SetEnabled("LoadoutUI", loadout_is_displayed);
+		UI_SetActivated("LoadoutUI", loadout_is_displayed);
 	}
 }
 
