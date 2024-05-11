@@ -181,7 +181,7 @@ void GL_LerpVerts( int32_t nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t 
 {
 	int32_t i;
 
-	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
+	if (currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 	{
 		for (i=0 ; i < nverts; i++, v++, ov++, lerp+=4 )
 		{
@@ -242,7 +242,7 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 	else
 		alpha = 1.0;
 
-	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
+	if (currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 		glDisable( GL_TEXTURE_2D );
 
 	frontlerp = 1.0 - backlerp;
@@ -279,7 +279,7 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 		glEnableClientState( GL_VERTEX_ARRAY );
 		glVertexPointer( 3, GL_FLOAT, 16, s_lerped );	// padded for SIMD
 
-		if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
+		if (currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 		{
 			glColor4f( shadelight[0], shadelight[1], shadelight[2], alpha );
 		}
@@ -320,7 +320,7 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 				glBegin (GL_TRIANGLE_STRIP);
 			}
 
-			if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
+			if (currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 			{
 				do
 				{
@@ -406,7 +406,7 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 		}
 	}
 
-	if ( currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM) )
+	if (currententity->flags & ( RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 		glEnable( GL_TEXTURE_2D );
 }
 
@@ -654,20 +654,9 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// get model lighting information
 	//
-	if ( currententity->flags & ( RF_SHELL_HALF_DAM | RF_SHELL_GREEN | RF_SHELL_RED | RF_SHELL_BLUE | RF_SHELL_DOUBLE ) )
+	if ( currententity->flags & (  RF_SHELL_GREEN | RF_SHELL_RED | RF_SHELL_BLUE ) )
 	{
 		VectorClear (shadelight);
-		if (currententity->flags & RF_SHELL_HALF_DAM)
-		{
-				shadelight[0] = 0.56;
-				shadelight[1] = 0.59;
-				shadelight[2] = 0.45;
-		}
-		if ( currententity->flags & RF_SHELL_DOUBLE )
-		{
-			shadelight[0] = 0.9;
-			shadelight[1] = 0.7;
-		}
 		if ( currententity->flags & RF_SHELL_RED )
 			shadelight[0] = 1.0;
 		if ( currententity->flags & RF_SHELL_GREEN )

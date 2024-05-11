@@ -1,6 +1,23 @@
 Zombono
 Release Notes:
 
+Version 0.0.9 
+May XX, 2024
+
+NEW FEATURES:
+
+OTHER CHANGES AND IMPROVEMENTS:
+* Added the ability to send 32-bit colour information over the network
+
+
+BUG FIXES:
+* Fixed super shotgun crashing server on fire
+* Fixed you not being able to move when the leaderboard UI faded out
+* Fixed the numbers in the leaderboard being 0-9 instead of 1-9, followed by a zero
+
+REMOVALS:
+
+
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server
 

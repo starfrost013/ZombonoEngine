@@ -109,7 +109,7 @@ void MSG_WriteAngle16 (sizebuf_t *sb, float f);
 void MSG_WriteDeltaUsercmd (sizebuf_t* buf, usercmd_t* from, usercmd_t* cmd);
 void MSG_WriteDeltaEntity (entity_state_t* from, entity_state_t* to, sizebuf_t* msg, bool force, bool newentity);
 void MSG_WriteDir (sizebuf_t *sb, vec3_t vector);
-
+void MSG_WriteColor(sizebuf_t* msg_read, vec4_t color);
 
 void	MSG_BeginReading (sizebuf_t *sb);
 
@@ -121,10 +121,12 @@ float	MSG_ReadFloat (sizebuf_t *sb);
 char*	MSG_ReadString (sizebuf_t *sb);
 char*	MSG_ReadStringLine (sizebuf_t *sb);
 
-float	MSG_ReadCoord (sizebuf_t *sb);
-void	MSG_ReadPos (sizebuf_t *sb, vec3_t pos);
-float	MSG_ReadAngle (sizebuf_t *sb);
-float	MSG_ReadAngle16 (sizebuf_t *sb);
+float	MSG_ReadCoord (sizebuf_t *msg_read);
+void	MSG_ReadPos (sizebuf_t *msg_read, vec3_t pos);
+float	MSG_ReadAngle (sizebuf_t *msg_read);
+float	MSG_ReadAngle16 (sizebuf_t *msg_read);
+void	MSG_ReadColor(sizebuf_t* msg_read, vec4_t color);
+
 void	MSG_ReadDeltaUsercmd (sizebuf_t* msg_read, usercmd_t* from, usercmd_t* move);
 
 void	MSG_ReadDir (sizebuf_t *sb, vec3_t vector);

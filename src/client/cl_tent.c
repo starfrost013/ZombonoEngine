@@ -91,7 +91,6 @@ struct model_s	*cl_mod_explode;
 struct model_s	*cl_mod_smoke;
 struct model_s	*cl_mod_flash;
 struct model_s	*cl_mod_parasite_segment;
-struct model_s	*cl_mod_grapple_cable;
 struct model_s	*cl_mod_parasite_tip;
 struct model_s	*cl_mod_explo4;
 struct model_s	*cl_mod_powerscreen;
@@ -142,25 +141,23 @@ void CL_RegisterTEntModels (void)
 	cl_mod_smoke = re.RegisterModel ("models/objects/smoke/tris.md2");
 	cl_mod_flash = re.RegisterModel ("models/objects/flash/tris.md2");
 	cl_mod_parasite_segment = re.RegisterModel ("models/monsters/parasite/segment/tris.md2");
-	cl_mod_grapple_cable = re.RegisterModel ("models/ctf/segment/tris.md2");
 	cl_mod_parasite_tip = re.RegisterModel ("models/monsters/parasite/tip/tris.md2");
 	cl_mod_explo4 = re.RegisterModel ("models/objects/r_explode/tris.md2");
 	cl_mod_powerscreen = re.RegisterModel ("models/items/armor/effect/tris.md2");
 
-re.RegisterModel ("models/objects/laser/tris.md2");
-re.RegisterModel ("models/objects/grenade2/tris.md2");
-re.RegisterModel ("models/weapons/v_machn/tris.md2");
-re.RegisterModel ("models/weapons/v_handgr/tris.md2");
-re.RegisterModel ("models/weapons/v_shotg2/tris.md2");
-re.RegisterModel ("models/objects/gibs/bone/tris.md2");
-re.RegisterModel ("models/objects/gibs/sm_meat/tris.md2");
-re.RegisterModel ("models/objects/gibs/bone2/tris.md2");
+	re.RegisterModel ("models/objects/laser/tris.md2");
+	re.RegisterModel ("models/objects/grenade2/tris.md2");
+	re.RegisterModel ("models/weapons/v_machn/tris.md2");
+	re.RegisterModel ("models/weapons/v_handgr/tris.md2");
+	re.RegisterModel ("models/weapons/v_shotg2/tris.md2");
+	re.RegisterModel ("models/objects/gibs/bone/tris.md2");
+	re.RegisterModel ("models/objects/gibs/sm_meat/tris.md2");
+	re.RegisterModel ("models/objects/gibs/bone2/tris.md2");
 
-re.RegisterPic ("w_machinegun");
-re.RegisterPic ("a_bullets");
-re.RegisterPic ("i_health");
-re.RegisterPic ("a_grenades");
-
+	re.RegisterPic ("w_machinegun");
+	re.RegisterPic ("a_bullets");
+	re.RegisterPic ("i_health");
+	re.RegisterPic ("a_grenades");
 }	
 
 /*
@@ -498,10 +495,9 @@ void CL_ParseTEnt (void)
 	int32_t 		type;
 	vec3_t			pos, pos2, dir;
 	explosion_t*	ex;
-	int32_t 		cnt;
 	vec4_t			color;
-	int32_t 		r;
-	int32_t 		ent;
+	int32_t			cnt = 0, r = 0, ent = 0, i1 = 0, i2 = 0, i3 = 0;
+	float			f1 = 0.0f, f2 = 0.0f, f3 = 0.0f;
 
 	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
 	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
@@ -514,6 +510,18 @@ void CL_ParseTEnt (void)
 
 	switch (type)
 	{
+	case TE_GENERIC:
+		MSG_ReadPos(&net_message, pos);
+		MSG_ReadDir(&net_message, dir);
+		MSG_ReadColor(&net_message, color);
+		MSG_ReadInt(&net_message, i1);
+		MSG_ReadPos(&net_message, pos2);
+		MSG_ReadInt(&net_message, i2);
+		MSG_ReadFloat(&net_message, f1);
+
+		CL_GenericParticleEffect(pos, dir, color, i1, pos2, i2, f1);
+		break; 
+
 	case TE_BLOOD:			// bullet hitting flesh
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
@@ -612,12 +620,6 @@ void CL_ParseTEnt (void)
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
 
-	case TE_BLUEHYPERBLASTER:
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadPos (&net_message, dir);
-		CL_BlasterParticles (pos, dir);
-		break;
-
 	case TE_BLASTER:			// blaster hitting wall
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
@@ -678,26 +680,6 @@ void CL_ParseTEnt (void)
 		else
 			S_StartSound (pos, 0, 0, cl_sfx_grenexp, 1, ATTN_NORM, 0);
 		break;
-
-	case TE_PLASMA_EXPLOSION:
-		MSG_ReadPos (&net_message, pos);
-		ex = CL_AllocExplosion ();
-		VectorCopy (pos, ex->ent.origin);
-		ex->type = ex_poly;
-		ex->ent.flags = RF_FULLBRIGHT;
-		ex->start = cl.frame.servertime - 100;
-		ex->light = 350;
-		ex->lightcolor[0] = 1.0; 
-		ex->lightcolor[1] = 0.5;
-		ex->lightcolor[2] = 0.5;
-		ex->ent.angles[1] = rand() % 360;
-		ex->ent.model = cl_mod_explo4;
-		if (frand() < 0.5)
-			ex->baseframe = 15;
-		ex->frames = 15;
-		CL_ExplosionParticles (pos);
-		S_StartSound (pos, 0, 0, cl_sfx_rockexp, 1, ATTN_NORM, 0);
-		break;
 	
 	case TE_EXPLOSION1:
 	case TE_ROCKET_EXPLOSION:
@@ -731,67 +713,6 @@ void CL_ParseTEnt (void)
 		CL_BubbleTrail (pos, pos2);
 		break;
 
-	case TE_PARASITE_ATTACK:
-	case TE_MEDIC_CABLE_ATTACK:
-		ent = CL_ParseBeam (cl_mod_parasite_segment);
-		break;
-
-	case TE_BOSSTPORT:			// boss teleporting to station
-		MSG_ReadPos (&net_message, pos);
-		CL_BigTeleportParticles (pos);
-		S_StartSound (pos, 0, 0, S_RegisterSound ("misc/bigtele.wav"), 1, ATTN_NONE, 0);
-		break;
-
-	case TE_GRAPPLE_CABLE:
-		ent = CL_ParseBeam2 (cl_mod_grapple_cable);
-		break;
-
-	case TE_WELDING_SPARKS:
-		cnt = MSG_ReadByte (&net_message);
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
-
-		color[0] = MSG_ReadByte(&net_message);
-		color[1] = MSG_ReadByte(&net_message);
-		color[2] = MSG_ReadByte(&net_message);
-		color[3] = MSG_ReadByte(&net_message);
-
-		CL_ParticleEffect2 (pos, dir, color, cnt);
-
-		ex = CL_AllocExplosion ();
-		VectorCopy (pos, ex->ent.origin);
-		ex->type = ex_flash;
-		// note to self
-		// we need a better no draw flag
-		ex->ent.flags = RF_BEAM;
-		ex->start = cl.frame.servertime - 0.1;
-		ex->light = 100 + (rand()%75);
-		ex->lightcolor[0] = 1.0;
-		ex->lightcolor[1] = 1.0;
-		ex->lightcolor[2] = 0.3;
-		ex->ent.model = cl_mod_flash;
-		ex->frames = 2;
-		break;
-
-	case TE_GREENBLOOD:
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
-		CL_ParticleEffect2 (pos, dir, legacy_colour_df, 30);
-		break;
-
-	case TE_TUNNEL_SPARKS:
-		cnt = MSG_ReadByte (&net_message);
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
-
-		color[0] = MSG_ReadByte(&net_message);
-		color[1] = MSG_ReadByte(&net_message);
-		color[2] = MSG_ReadByte(&net_message);
-		color[3] = MSG_ReadByte(&net_message);
-
-		CL_ParticleEffect2 (pos, dir, color, cnt);
-		break;
-
 	case TE_TELEPORT:
 		MSG_ReadPos(&net_message, pos);
 
@@ -804,6 +725,51 @@ void CL_ParseTEnt (void)
 		MSG_ReadDir(&net_message, dir);
 
 		CL_LightningParticles(pos, pos2, dir);
+		break;
+
+	case TE_SMOKE:
+		MSG_ReadPos(&net_message, pos);
+		MSG_ReadDir(&net_message, dir);
+		MSG_ReadColor(&net_message, color);
+		MSG_ReadInt(&net_message, i1);
+		MSG_ReadInt(&net_message, i2);
+
+		CL_ParticleSmokeEffect(pos, dir, color, i1, i2);
+		break;
+
+	case TE_STEAM:
+		MSG_ReadPos(&net_message, pos);
+		MSG_ReadDir(&net_message, dir);
+		MSG_ReadColor(&net_message, color);
+		MSG_ReadInt(&net_message, i1);
+		MSG_ReadInt(&net_message, i2);
+
+		CL_ParticleSteamEffect(pos, dir, color, i1, i2);
+		break;
+
+	case TE_FLAME:
+		MSG_ReadInt(&net_message, ent);
+		MSG_ReadPos(&net_message, pos);
+
+		CL_FlameEffects(ent, pos);
+		break;
+
+	case TE_FLASHLIGHT:
+		MSG_ReadInt(&net_message, ent);
+		MSG_ReadPos(&net_message, pos);
+
+		CL_Flashlight(ent, pos);
+		break;
+
+	case TE_FLASH: // e.g. Flashbang
+		MSG_ReadPos(&net_message, pos);
+		MSG_ReadInt(&net_message, ent);
+		MSG_ReadInt(&net_message, i1);
+		MSG_ReadFloat(&net_message, f1);
+		MSG_ReadFloat(&net_message, f2);
+		MSG_ReadFloat(&net_message, f3);
+
+		CL_ColorFlash(pos, ent, i1, f1, f2, f3);
 		break;
 
 	default:
