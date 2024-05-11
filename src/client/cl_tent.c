@@ -90,8 +90,6 @@ struct sfx_s	*cl_sfx_footsteps[4];
 struct model_s	*cl_mod_explode;
 struct model_s	*cl_mod_smoke;
 struct model_s	*cl_mod_flash;
-struct model_s	*cl_mod_parasite_segment;
-struct model_s	*cl_mod_parasite_tip;
 struct model_s	*cl_mod_explo4;
 struct model_s	*cl_mod_powerscreen;
 struct model_s	*cl_mod_plasmaexplo;
@@ -140,8 +138,6 @@ void CL_RegisterTEntModels (void)
 	cl_mod_explode = re.RegisterModel ("models/objects/explode/tris.md2");
 	cl_mod_smoke = re.RegisterModel ("models/objects/smoke/tris.md2");
 	cl_mod_flash = re.RegisterModel ("models/objects/flash/tris.md2");
-	cl_mod_parasite_segment = re.RegisterModel ("models/monsters/parasite/segment/tris.md2");
-	cl_mod_parasite_tip = re.RegisterModel ("models/monsters/parasite/tip/tris.md2");
 	cl_mod_explo4 = re.RegisterModel ("models/objects/r_explode/tris.md2");
 	cl_mod_powerscreen = re.RegisterModel ("models/items/armor/effect/tris.md2");
 
