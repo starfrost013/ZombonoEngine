@@ -8,15 +8,72 @@ NEW FEATURES:
 
 OTHER CHANGES AND IMPROVEMENTS:
 * Added the ability to send 32-bit colour information over the network
-
+* Particle system changes:
+	* Added ability to network generic, flame, smoke, flash, flashlight and steam particle effects
+		* These use the following TempEnt values:
+		* TE_GENERIC - Generic
+		* TE_FLAME - Flame
+		* TE_SMOKE - Smoke
+		* TE_STEAM - Steam
+		* TE_FLASHLIGHT - Flashlight
+		* TE_FLASH - Flash (always at the player's location)
+	* Removed many obsolete particle effects (see Removals section)
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
 * Fixed you not being able to move when the leaderboard UI faded out
 * Fixed the numbers in the leaderboard being 0-9 instead of 1-9, followed by a zero
+* Fixed nonexistent Quake2 CTF and monster models being precached
 
 REMOVALS:
-
+* Removed obsolete/Q2/Q2 Expansion only entity flags:
+	* EF_FLAG1
+	* EF_FLAG2
+	* EF_IONRIPPER
+	* EF_GREENGIB
+	* EF_BLUEHYPERBLASTER
+	* EF_SPINNINGLIGHTS
+	* EF_PLASMA
+	* EF_TRAP
+	* EF_TRACKER
+	* EF_DOUBLE
+	* EF_SPHERETRANS
+	* EF_TAGTRAIL
+	* EF_HALF_DAMAGE
+	* EF_TRACKERTRAIL
+* Removed obsolete/Q2/Q2 Expansion only render flags:
+	* RF_IR_VISIBLE
+	* RF_SHELL_DOUBLE
+	* RF_SHELL_HALF_DAM
+* Removed obsolete muzzle flashes for Quake2 expansion and CTF weapons
+	* MZ_IONRIPPER
+	* MZ_BLUEHYPERBLASTER
+	* MZ_PHALANX
+* Removed obsolete Q2/Q2 Expansion only temp entities:
+	* TE_PARASITE_ATTACK
+	* TE_MEDIC_CABLE_ATTACK
+	* TE_BOSSTPORT
+	* TE_GRAPPLE_CABLE
+	* TE_WELDING_SPARKS
+	* TE_GREENBLOOD
+	* TE_BLUEHYPERBLASTER
+	* TE_PLASMA_EXPLOSION
+	* TE_TUNNEL_SPARKS
+* Removed following particle effect functions (superseded by more generic alternatives)
+	* CL_FlagTrail
+	* CL_IonripperTrail
+	* CL_BlasterParticles2
+	* CL_BlasterTrail2
+	* CL_DebugTrail
+	* CL_SmokeTrail
+	* CL_BubbleTrail2
+	* CL_TrackerTrail
+	* CL_Tracker_Explode
+	* CL_TagTrail
+	* CL_Tracker_Shell
+	* CL_MonsterPlasma_Shell
+	* CL_ColorExplosionParticles
+	* CL_WidowSplash
 
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server

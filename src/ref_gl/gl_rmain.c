@@ -299,7 +299,7 @@ R_DrawParticles
 void R_DrawParticles (void)
 {
 	int32_t i;
-	uint8_t color[4];
+	uint8_t color[4] = { 0 };
 	const particle_t* p;
 
 	glDepthMask(GL_FALSE);
@@ -311,10 +311,7 @@ void R_DrawParticles (void)
 	glBegin(GL_POINTS);
 	for (i = 0, p = r_newrefdef.particles; i < r_newrefdef.num_particles; i++, p++)
 	{
-		*(int*)color = p->color;
-		color[3] = p->alpha * 255;
-
-		glColor4ubv(color);
+		glColor4f(p->color[0]/255.0f, p->color[1]/255.0f, p->color[2]/255.0f, p->color[3]/255.0f);
 
 		glVertex3fv(p->origin);
 	}

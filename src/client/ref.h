@@ -89,7 +89,7 @@ typedef struct dlight_s
 typedef struct
 {
 	vec3_t	origin;
-	int32_t 	color;
+	vec4_t 	color;
 	float	alpha;
 } particle_t;
 

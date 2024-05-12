@@ -527,7 +527,6 @@ void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*0.3);
 	}
@@ -569,7 +568,6 @@ void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int32_t count)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*0.3);
 	}
@@ -613,7 +611,6 @@ void CL_TeleporterParticles (entity_state_t *ent)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -0.5;
 	}
@@ -683,7 +680,6 @@ void CL_LogoutEffect (vec3_t org, int32_t type)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (1.0 + frand()*0.3);
 	}
@@ -726,7 +722,6 @@ void CL_ItemRespawnParticles (vec3_t org)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY*0.2;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (1.0 + frand()*0.3);
 	}
@@ -767,13 +762,12 @@ void CL_ExplosionParticles (vec3_t org)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -0.8 / (0.5 + frand()*0.3);
 	}
 }
 
-#define LIGHTNING_SPEED			100
+#define LIGHTNING_SPEED			700
 
 //
 // CL_LightningParticles: Lightning particles for the tangfuslicator
@@ -796,13 +790,13 @@ void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles)
 		free_particles = particle->next;
 		particle->next = active_particles;
 		active_particles = particle;
-		particle->time = cl.time;
+		particle->time = cl.time + rand() % 500;
 
 		// all colours are whitish
-		particle->color[0] = 230 + rand() % 256;
-		particle->color[1] = 230 + rand() % 256;
-		particle->color[2] = 230 + rand() % 256;
-		particle->color[3] = 230 + rand() % 256;
+		particle->color[0] = 230 + rand() % 26;
+		particle->color[1] = 230 + rand() % 26;
+		particle->color[2] = 230 + rand() % 26;
+		particle->color[3] = 230 + rand() % 26;
 
 		particle->org[0] = start[0] + 3 + rand() % 5; //3-8 units forward
 		particle->org[1] = start[1] + 2 + rand() % 2; //2-4 units side
@@ -860,7 +854,6 @@ void CL_BlasterParticles (vec3_t org, vec3_t dir)
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*0.3);
 	}
@@ -904,7 +897,6 @@ void CL_BlasterTrail (vec3_t start, vec3_t end)
 		
 		p->time = cl.time;
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (0.3+frand()*0.2);
 	
 		p->color[0] = 255 - (rand() & 80);
@@ -959,7 +951,6 @@ void CL_QuadTrail (vec3_t start, vec3_t end)
 		
 		p->time = cl.time;
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (0.8+frand()*0.2);
 		
 		p->color[0] = 47;
@@ -1038,7 +1029,6 @@ void CL_DiminishingTrail (vec3_t start, vec3_t end, centity_t *old, int32_t flag
 
 			if (flags & EF_GIB)
 			{
-				p->alpha = 1.0;
 				p->alphavel = -1.0 / (1+frand()*0.4);
 
 				p->color[0] = 154 - (rand() % 80);
@@ -1056,7 +1046,6 @@ void CL_DiminishingTrail (vec3_t start, vec3_t end, centity_t *old, int32_t flag
 			}
 			else
 			{
-				p->alpha = 1.0;
 				p->alphavel = -1.0 / (1+frand()*0.2);
 
 				p->color[0] = 63 + (rand() % 108);
@@ -1141,7 +1130,6 @@ void CL_RocketTrail (vec3_t start, vec3_t end, centity_t *old)
 			VectorClear (p->accel);
 			p->time = cl.time;
 
-			p->alpha = 1.0;
 			p->alphavel = -1.0 / (1+frand()*0.2);
 
 			p->color[0] = 255;
@@ -1205,7 +1193,6 @@ void CL_RailTrail (vec3_t start, vec3_t end)
 		VectorScale (right, c, dir);
 		VectorMA (dir, s, up, dir);
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (1+frand()*0.2);
 
 		p->color[0] = 23 - (rand() % 23);
@@ -1240,7 +1227,6 @@ void CL_RailTrail (vec3_t start, vec3_t end)
 		p->time = cl.time;
 		VectorClear (p->accel);
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (0.6+frand()*0.2);
 
 		// generate 0-255 gray
@@ -1295,7 +1281,6 @@ void CL_BubbleTrail (vec3_t start, vec3_t end)
 		VectorClear (p->accel);
 		p->time = cl.time;
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (1+frand()*0.2);
 
 		p->color[0] = 63 + (rand() % 108);
@@ -1388,7 +1373,6 @@ void CL_FlyParticles (vec3_t origin, int32_t count)
 
 		p->colorvel = 0;
 
-		p->alpha = 1;
 		p->alphavel = -100;
 	}
 }
@@ -1458,7 +1442,6 @@ void CL_TeleportParticles (vec3_t org)
 				p->color[2] = 107 + rand() % 148;
 				p->color[3] = 255;
 
-				p->alpha = 1.0;
 				p->alphavel = -1.0 / (0.3 + (rand() & 7) * 0.02);
 
 				p->org[0] = org[0] + i + (rand() & 3);
@@ -1489,10 +1472,8 @@ CL_AddParticles
 void CL_AddParticles (void)
 {
 	cparticle_t		*p, *next;
-	float			alpha;
 	float			time = 0, time2;
 	vec3_t			org;
-	int32_t 			color;
 	cparticle_t		*activated, *tail;
 
 	activated = NULL;
@@ -1506,17 +1487,16 @@ void CL_AddParticles (void)
 		if (p->alphavel != INSTANT_PARTICLE)
 		{
 			time = (cl.time - p->time)*0.001;
-			alpha = p->alpha + time*p->alphavel;
-			if (alpha <= 0)
-			{	// faded out
+
+			p->color[3] = p->color[3] + time * p->alphavel;
+
+			if (p->color[3] <= 0)
+			{	
+				// faded out, get rid of it
 				p->next = free_particles;
 				free_particles = p;
 				continue;
 			}
-		}
-		else
-		{
-			alpha = p->alpha;
 		}
 
 		p->next = NULL;
@@ -1528,9 +1508,10 @@ void CL_AddParticles (void)
 			tail = p;
 		}
 
-		if (alpha > 1.0)
-			alpha = 1;
-		color = p->color;
+		if (p->color[0] > 255) p->color[0] = 255;
+		if (p->color[1] > 255) p->color[1] = 255;
+		if (p->color[2] > 255) p->color[2] = 255;
+		if (p->color[3] > 255) p->color[3] = 255;
 
 		time2 = time*time;
 
@@ -1538,12 +1519,12 @@ void CL_AddParticles (void)
 		org[1] = p->org[1] + p->vel[1]*time + p->accel[1]*time2;
 		org[2] = p->org[2] + p->vel[2]*time + p->accel[2]*time2;
 
-		V_AddParticle (org, color, alpha);
+		V_AddParticle (org, p->color);
 	
 		if (p->alphavel == INSTANT_PARTICLE)
 		{
 			p->alphavel = 0.0;
-			p->alpha = 0.0;
+			p->color[3] = 0;
 		}
 	}
 

@@ -88,7 +88,7 @@ V_AddParticle
 
 =====================
 */
-void V_AddParticle (vec3_t org, int32_t color, float alpha)
+void V_AddParticle (vec3_t org, vec4_t color)
 {
 	particle_t	*p;
 
@@ -99,9 +99,13 @@ void V_AddParticle (vec3_t org, int32_t color, float alpha)
 	}
 
 	p = &r_particles[r_numparticles++];
-	VectorCopy (org, p->origin);
-	p->color = color;
-	p->alpha = alpha;
+	VectorCopy(org, p->origin);
+
+	// wtf is wrong with msvc vectorcopy does nothing. KILL THIS COMPILER! DO IT NOW!
+	p->color[0] = color[0];
+	p->color[1] = color[1];
+	p->color[2] = color[2];
+	p->color[3] = color[3];
 }
 
 /*

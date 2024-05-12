@@ -345,7 +345,6 @@ typedef struct particle_s
 	vec3_t		accel;
 	vec4_t		color;
 	float		colorvel;
-	float		alpha;		//todo: merge with color's alpha component
 	float		alphavel;
 } cparticle_t;
 
@@ -465,7 +464,7 @@ extern	struct model_s	*gun_model;
 void V_Init (void);
 void V_RenderView();
 void V_AddEntity (entity_t *ent);
-void V_AddParticle (vec3_t org, int32_t color, float alpha);
+void V_AddParticle (vec3_t org, vec4_t color);
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b);
 void V_AddLightStyle (int32_t style, float r, float g, float b);
 

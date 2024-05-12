@@ -85,7 +85,6 @@ void CL_FlameEffects (centity_t *ent, vec3_t origin)
 		VectorClear (p->accel);
 		p->time = cl.time;
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (1+frand()*0.2);
 		p->color[0] = 239 - (rand() % 56);
 		p->color[1] = 127 - (rand() % 68);
@@ -115,7 +114,6 @@ void CL_FlameEffects (centity_t *ent, vec3_t origin)
 		
 		p->time = cl.time;
 
-		p->alpha = 1.0;
 		p->alphavel = -1.0 / (1+frand()*0.5);
 
 		p->color[0] = 0 + (rand() % 63);
@@ -166,11 +164,8 @@ void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t cou
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-//		VectorCopy (accel, p->accel);
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*alphavel);
-//		p->alphavel = alphavel;
 	}
 }
 
@@ -187,9 +182,6 @@ void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 	cparticle_t	*p;
 	float		d;
 	vec3_t		r, u;
-
-//	vectoangles2 (dir, angle_dir);
-//	AngleVectors (angle_dir, f, r, u);
 
 	MakeNormalVectors (dir, r, u);
 
@@ -213,8 +205,8 @@ void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 		for (j=0 ; j<3 ; j++)
 		{
 			p->org[j] = org[j] + magnitude*0.1*crand();
-//			p->vel[j] = dir[j]*magnitude;
 		}
+
 		VectorScale (dir, magnitude, p->vel);
 		d = crand()*magnitude/3;
 		VectorMA (p->vel, d, r, p->vel);
@@ -223,7 +215,6 @@ void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY/2;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*0.3);
 	}
@@ -261,7 +252,6 @@ void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 		for (j=0 ; j<3 ; j++)
 		{
 			p->org[j] = org[j] + magnitude*0.1*crand();
-//			p->vel[j] = dir[j]*magnitude;
 		}
 		VectorScale (dir, magnitude, p->vel);
 		d = crand()*magnitude/3;
@@ -270,7 +260,6 @@ void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 		VectorMA (p->vel, d, u, p->vel);
 
 		p->accel[0] = p->accel[1] = p->accel[2] = 0;
-		p->alpha = 1.0;
 
 		p->alphavel = -1.0 / (0.5 + frand()*0.3);
 	}
