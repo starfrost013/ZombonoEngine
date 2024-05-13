@@ -5,8 +5,6 @@ Version 0.0.9
 May XX, 2024
 
 NEW FEATURES:
-
-OTHER CHANGES AND IMPROVEMENTS:
 * Added the ability to send 32-bit colour information over the network
 * Particle system changes:
 	* Added ability to network generic, flame, smoke, flash, flashlight and steam particle effects
@@ -24,6 +22,8 @@ BUG FIXES:
 * Fixed you not being able to move when the leaderboard UI faded out
 * Fixed the numbers in the leaderboard being 0-9 instead of 1-9, followed by a zero
 * Fixed nonexistent Quake2 CTF and monster models being precached
+* Fixed all particle effects having garbage colours
+	* Actually made 
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
@@ -74,6 +74,10 @@ REMOVALS:
 	* CL_MonsterPlasma_Shell
 	* CL_ColorExplosionParticles
 	* CL_WidowSplash
+* "Laser" specific effect
+
+OTHER CHANGES: 
+	* Reorganised effects code
 
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server

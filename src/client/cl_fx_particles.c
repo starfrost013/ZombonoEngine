@@ -31,207 +31,6 @@ extern	struct model_s	*cl_mod_smoke;
 extern	struct model_s	*cl_mod_flash;
 
 /*
-==============================================================
-
-LIGHT STYLE MANAGEMENT
-
-==============================================================
-*/
-
-typedef struct
-{
-	int32_t 	length;
-	float	value[3];
-	float	map[MAX_QPATH];
-} clightstyle_t;
-
-clightstyle_t	cl_lightstyle[MAX_LIGHTSTYLES];
-int32_t 		lastofs;
-
-/*
-================
-CL_ClearLightStyles
-================
-*/
-void CL_ClearLightStyles (void)
-{
-	memset (cl_lightstyle, 0, sizeof(cl_lightstyle));
-	lastofs = -1;
-}
-
-/*
-================
-CL_RunLightStyles
-================
-*/
-void CL_RunLightStyles (void)
-{
-	int32_t 	ofs;
-	int32_t 	i;
-	clightstyle_t	*ls;
-
-	ofs = cl.time / 100;
-	if (ofs == lastofs)
-		return;
-	lastofs = ofs;
-
-	for (i=0,ls=cl_lightstyle ; i<MAX_LIGHTSTYLES ; i++, ls++)
-	{
-		if (!ls->length)
-		{
-			ls->value[0] = ls->value[1] = ls->value[2] = 1.0;
-			continue;
-		}
-		if (ls->length == 1)
-			ls->value[0] = ls->value[1] = ls->value[2] = ls->map[0];
-		else
-			ls->value[0] = ls->value[1] = ls->value[2] = ls->map[ofs%ls->length];
-	}
-}
-
-
-void CL_SetLightstyle (int32_t i)
-{
-	char	*s;
-	int32_t 	j, k;
-
-	s = cl.configstrings[i+CS_LIGHTS];
-
-	j = (int32_t)strlen (s);
-	if (j >= MAX_QPATH)
-		Com_Error (ERR_DROP, "svc_lightstyle length=%i", j);
-
-	cl_lightstyle[i].length = j;
-
-	for (k=0 ; k<j ; k++)
-		cl_lightstyle[i].map[k] = (float)(s[k]-'a')/(float)('m'-'a');
-}
-
-/*
-================
-CL_AddLightStyles
-================
-*/
-void CL_AddLightStyles (void)
-{
-	int32_t 	i;
-	clightstyle_t	*ls;
-
-	for (i=0,ls=cl_lightstyle ; i<MAX_LIGHTSTYLES ; i++, ls++)
-		V_AddLightStyle (i, ls->value[0], ls->value[1], ls->value[2]);
-}
-
-/*
-==============================================================
-
-DLIGHT MANAGEMENT
-
-==============================================================
-*/
-
-cdlight_t		cl_dlights[MAX_DLIGHTS];
-
-/*
-================
-CL_ClearDlights
-================
-*/
-void CL_ClearDlights (void)
-{
-	memset (cl_dlights, 0, sizeof(cl_dlights));
-}
-
-/*
-===============
-CL_AllocDlight
-
-===============
-*/
-cdlight_t *CL_AllocDlight (int32_t key)
-{
-	int32_t 	i;
-	cdlight_t	*dl;
-
-// first look for an exact key match
-	if (key)
-	{
-		dl = cl_dlights;
-		for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
-		{
-			if (dl->key == key)
-			{
-				memset (dl, 0, sizeof(*dl));
-				dl->key = key;
-				return dl;
-			}
-		}
-	}
-
-// then look for anything else
-	dl = cl_dlights;
-	for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
-	{
-		if (dl->die < cl.time)
-		{
-			memset (dl, 0, sizeof(*dl));
-			dl->key = key;
-			return dl;
-		}
-	}
-
-	dl = &cl_dlights[0];
-	memset (dl, 0, sizeof(*dl));
-	dl->key = key;
-	return dl;
-}
-
-/*
-===============
-CL_NewDlight
-===============
-*/
-void CL_NewDlight (int32_t key, float x, float y, float z, float radius, float time)
-{
-	cdlight_t	*dl;
-
-	dl = CL_AllocDlight (key);
-	dl->origin[0] = x;
-	dl->origin[1] = y;
-	dl->origin[2] = z;
-	dl->radius = radius;
-	dl->die = cl.time + time;
-}
-
-
-/*
-===============
-CL_RunDLights
-
-===============
-*/
-void CL_RunDLights (void)
-{
-	int32_t 		i;
-	cdlight_t	*dl;
-
-	dl = cl_dlights;
-	for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
-	{
-		if (!dl->radius)
-			continue;
-		
-		if (dl->die < cl.time)
-		{
-			dl->radius = 0;
-			return;
-		}
-		dl->radius -= cls.frametime*dl->decay;
-		if (dl->radius < 0)
-			dl->radius = 0;
-	}
-}
-
-/*
 ==============
 CL_ParseMuzzleFlash
 ==============
@@ -410,50 +209,6 @@ void CL_ParseMuzzleFlash2 (void)
 	}
 }
 
-
-/*
-===============
-CL_AddDLights
-
-===============
-*/
-void CL_AddDLights (void)
-{
-	int32_t 		i;
-	cdlight_t	*dl;
-
-	dl = cl_dlights;
-
-	if(vidref_val == VIDREF_GL)
-	{
-		for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
-		{
-			if (!dl->radius)
-				continue;
-			V_AddLight (dl->origin, dl->radius,
-				dl->color[0], dl->color[1], dl->color[2]);
-		}
-	}
-	else
-	{
-		for (i=0 ; i<MAX_DLIGHTS ; i++, dl++)
-		{
-			if (!dl->radius)
-				continue;
-
-			// negative light in software. only black allowed
-			if ((dl->color[0] < 0) || (dl->color[1] < 0) || (dl->color[2] < 0))
-			{
-				dl->radius = -(dl->radius);
-				dl->color[0] = 1;
-				dl->color[1] = 1;
-				dl->color[2] = 1;
-			}
-			V_AddLight (dl->origin, dl->radius,
-				dl->color[0], dl->color[1], dl->color[2]);
-		}
-	}
-}
 
 
 
@@ -1529,6 +1284,242 @@ void CL_AddParticles (void)
 	}
 
 	active_particles = activated;
+}
+
+//=============
+//=============
+void CL_Flashlight(int32_t ent, vec3_t pos)
+{
+	cdlight_t* dl;
+
+	dl = CL_AllocDlight(ent);
+	VectorCopy(pos, dl->origin);
+	dl->radius = 400;
+	dl->minlight = 250;
+	dl->die = cl.time + 100;
+	dl->color[0] = 1;
+	dl->color[1] = 1;
+	dl->color[2] = 1;
+}
+
+/*
+======
+CL_ColorFlash - flash of light
+======
+*/
+void CL_ColorFlash(vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b)
+{
+	cdlight_t* dl;
+
+	dl = CL_AllocDlight(ent);
+	VectorCopy(pos, dl->origin);
+	dl->radius = intensity;
+	dl->minlight = 250;
+	dl->die = cl.time + 100;
+	dl->color[0] = r;
+	dl->color[1] = g;
+	dl->color[2] = b;
+}
+
+void CL_FlameEffects(centity_t* ent, vec3_t origin)
+{
+	int32_t 		n, count;
+	int32_t 		j;
+	cparticle_t* p;
+
+	count = rand() & 0xF;
+
+	for (n = 0; n < count; n++)
+	{
+		if (!free_particles)
+			return;
+
+		p = free_particles;
+		free_particles = p->next;
+		p->next = active_particles;
+		active_particles = p;
+
+		VectorClear(p->accel);
+		p->time = cl.time;
+
+		p->alphavel = -1.0 / (1 + frand() * 0.2);
+		p->color[0] = 239 - (rand() % 56);
+		p->color[1] = 127 - (rand() % 68);
+		p->color[2] = 1; // always 1 lmao
+		p->color[3] = 255;
+
+		for (j = 0; j < 3; j++)
+		{
+			p->org[j] = origin[j] + crand() * 5;
+			p->vel[j] = crand() * 5;
+		}
+		p->vel[2] = crand() * -10;
+		p->accel[2] = -PARTICLE_GRAVITY;
+	}
+
+	count = rand() & 0x7;
+
+	for (n = 0; n < count; n++)
+	{
+		if (!free_particles)
+			return;
+		p = free_particles;
+		free_particles = p->next;
+		p->next = active_particles;
+		active_particles = p;
+		VectorClear(p->accel);
+
+		p->time = cl.time;
+
+		p->alphavel = -1.0 / (1 + frand() * 0.5);
+
+		p->color[0] = 0 + (rand() % 63);
+		p->color[1] = 0 + (rand() % 63);
+		p->color[2] = 0 + (rand() % 63);
+		p->color[3] = 255;
+
+		for (j = 0; j < 3; j++)
+		{
+			p->org[j] = origin[j] + crand() * 3;
+		}
+		p->vel[2] = 20 + crand() * 5;
+	}
+
+}
+
+
+/*
+===============
+CL_GenericParticleEffect
+===============
+*/
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel)
+{
+	int32_t 		i, j;
+	cparticle_t* p;
+	float		d;
+
+	for (i = 0; i < count; i++)
+	{
+		if (!free_particles)
+			return;
+		p = free_particles;
+		free_particles = p->next;
+		p->next = active_particles;
+		active_particles = p;
+
+		p->time = cl.time;
+
+		VectorAdd(color, run, p->color);
+
+		d = rand() & dirspread;
+		for (j = 0; j < 3; j++)
+		{
+			p->org[j] = org[j] + ((rand() & 7) - 4) + d * dir[j];
+			p->vel[j] = crand() * 20;
+		}
+
+		p->accel[0] = p->accel[1] = 0;
+		p->accel[2] = -PARTICLE_GRAVITY;
+
+		p->alphavel = -1.0 / (0.5 + frand() * alphavel);
+	}
+}
+
+/*
+===============
+CL_ParticleSteamEffect
+
+Puffs with velocity along direction, with some randomness thrown in
+===============
+*/
+void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
+{
+	int32_t 		i, j;
+	cparticle_t* p;
+	float		d;
+	vec3_t		r, u;
+
+	MakeNormalVectors(dir, r, u);
+
+	for (i = 0; i < count; i++)
+	{
+		if (!free_particles)
+			return;
+		p = free_particles;
+		free_particles = p->next;
+		p->next = active_particles;
+		active_particles = p;
+
+		p->time = cl.time;
+
+		// works in most cases for now
+		p->color[0] = color[0] - (rand() & 50);
+		p->color[1] = color[1] - (rand() & 50);
+		p->color[2] = color[2] - (rand() & 50);
+		p->color[3] = 255;
+
+		for (j = 0; j < 3; j++)
+		{
+			p->org[j] = org[j] + magnitude * 0.1 * crand();
+		}
+
+		VectorScale(dir, magnitude, p->vel);
+		d = crand() * magnitude / 3;
+		VectorMA(p->vel, d, r, p->vel);
+		d = crand() * magnitude / 3;
+		VectorMA(p->vel, d, u, p->vel);
+
+		p->accel[0] = p->accel[1] = 0;
+		p->accel[2] = -PARTICLE_GRAVITY / 2;
+
+		p->alphavel = -1.0 / (0.5 + frand() * 0.3);
+	}
+}
+
+/*
+===============
+CL_ParticleSmokeEffect - like the steam effect, but unaffected by gravity
+===============
+*/
+void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
+{
+	int32_t 		i, j;
+	cparticle_t* p;
+	float		d;
+	vec3_t		r, u;
+
+	MakeNormalVectors(dir, r, u);
+
+	for (i = 0; i < count; i++)
+	{
+		if (!free_particles)
+			return;
+		p = free_particles;
+		free_particles = p->next;
+		p->next = active_particles;
+		active_particles = p;
+
+		p->time = cl.time;
+		p->color[0] = color[0] - rand() % 80;
+		p->color[1] = color[1] - rand() % 80;
+		p->color[2] = color[2] - rand() % 80;
+		p->color[3] = 255;
+
+		for (j = 0; j < 3; j++)
+		{
+			p->org[j] = org[j] + magnitude * 0.1 * crand();
+		}
+		VectorScale(dir, magnitude, p->vel);
+		d = crand() * magnitude / 3;
+		VectorMA(p->vel, d, r, p->vel);
+		d = crand() * magnitude / 3;
+		VectorMA(p->vel, d, u, p->vel);
+
+		p->accel[0] = p->accel[1] = p->accel[2] = 0;
+
+		p->alphavel = -1.0 / (0.5 + frand() * 0.3);
+	}
 }
 
 

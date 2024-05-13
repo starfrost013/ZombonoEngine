@@ -18,16 +18,13 @@
     <ClCompile Include="client\cl_ents.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx.c">
+    <ClCompile Include="client\cl_fx_particles.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_input.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="client\cl_newfx.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_parse.c">
@@ -178,6 +175,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_ui_mainmenu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\cl_fx_dlight.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\cl_fx_lightstyle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\cl_fx_beam.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\cl_fx_explosion.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

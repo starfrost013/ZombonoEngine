@@ -498,9 +498,55 @@ void CL_AddParticles (void);
 void CL_EntityEvent (entity_state_t *ent);
 void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 
+void CL_ClearDlights();
+void CL_ClearLightStyles();
+void CL_AddBeams();
+void CL_AddPlayerBeams();
+void CL_AddExplosions();
+
+// cl_fx_explosion.c
+
+typedef enum
+{
+	ex_free, ex_explosion, ex_misc, ex_flash, ex_mflash, ex_poly, ex_poly2
+} exptype_t;
+
+typedef struct
+{
+	exptype_t	type;
+	entity_t	ent;
+	int32_t 	frames;
+	float		light;
+	vec3_t		lightcolor;
+	float		start;
+	int32_t 	baseframe;
+} explosion_t;
+
+#define	MAX_EXPLOSIONS	32
+extern explosion_t	cl_explosions[MAX_EXPLOSIONS];
+
+// cl_fx_beam.c
+
+#define	MAX_BEAMS	32
+typedef struct
+{
+	int32_t 	entity;
+	int32_t 	dest_entity;
+	struct model_s* model;
+	int32_t 	endtime;
+	vec3_t	offset;
+	vec3_t	start, end;
+} beam_t;
+
+extern beam_t		cl_beams[MAX_BEAMS];
+
+//PMM - added this for player-linked beams.  Currently only used by the plasma beam
+extern beam_t		cl_playerbeams[MAX_BEAMS];
+
 //
-// menus
+// legacy menu system
 //
+
 void M_Init (void);
 void M_Keydown (int32_t key, int32_t mods);
 void M_Draw (void);
