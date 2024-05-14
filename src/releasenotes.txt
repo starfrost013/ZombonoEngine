@@ -23,7 +23,7 @@ BUG FIXES:
 * Fixed the numbers in the leaderboard being 0-9 instead of 1-9, followed by a zero
 * Fixed nonexistent Quake2 CTF and monster models being precached
 * Fixed all particle effects having garbage colours
-	* Actually made 
+	* Actually made them work...
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
@@ -74,7 +74,8 @@ REMOVALS:
 	* CL_MonsterPlasma_Shell
 	* CL_ColorExplosionParticles
 	* CL_WidowSplash
-* "Laser" specific effect
+	* "Laser" specific effect was removed
+* Removed gl_finish cvar (replaced with gl_vsync and simply reduced framerate by stalling until all effects were done)
 
 OTHER CHANGES: 
 	* Reorganised effects code

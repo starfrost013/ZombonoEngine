@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_fx_explosion.c - explod!
 #include "client.h"
 
+explosion_t	cl_explosions[MAX_EXPLOSIONS];
+
 /*
 =================
 CL_AddExplosions
@@ -141,7 +143,7 @@ explosion_t* CL_AllocExplosion(void)
 	{
 		if (cl_explosions[i].type == ex_free)
 		{
-			memset(&cl_explosions[i], 0, sizeof(cl_explosions[i]));
+			memset(&cl_explosions[i], 0, sizeof(explosion_t));
 			return &cl_explosions[i];
 		}
 	}

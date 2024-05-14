@@ -787,11 +787,11 @@ void R_DrawAliasModel (entity_t *e)
 	glShadeModel (GL_SMOOTH);
 
 	GL_TexEnv( GL_MODULATE );
+
 	if ( currententity->flags & RF_TRANSLUCENT )
 	{
 		glEnable (GL_BLEND);
 	}
-
 
 	if ( (currententity->frame >= paliashdr->num_frames) 
 		|| (currententity->frame < 0) )

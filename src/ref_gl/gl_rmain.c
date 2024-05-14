@@ -68,7 +68,7 @@ float	r_base_world_matrix[16];
 //
 refdef_t	r_newrefdef;
 
-int		r_viewcluster, r_viewcluster2, r_oldviewcluster, r_oldviewcluster2;
+int32_t	r_viewcluster, r_viewcluster2, r_oldviewcluster, r_oldviewcluster2;
 
 cvar_t* r_norefresh;
 cvar_t* r_drawentities;
@@ -110,7 +110,6 @@ cvar_t* gl_picmip;
 cvar_t* gl_skymip;
 cvar_t* gl_showtris;
 cvar_t* gl_ztrick;
-cvar_t* gl_finish;
 cvar_t* gl_clear;
 cvar_t* gl_cull;
 cvar_t* gl_polyblend;
@@ -630,9 +629,6 @@ void R_RenderView (refdef_t *fd)
 
 	R_PushDlights ();
 
-	if (gl_finish->value)
-		glFinish ();
-
 	R_SetupFrame ();
 
 	R_SetFrustum ();
@@ -775,7 +771,6 @@ void R_Register( void )
 	gl_skymip = ri.Cvar_Get ("gl_skymip", "0", 0);
 	gl_showtris = ri.Cvar_Get ("gl_showtris", "0", 0);
 	gl_ztrick = ri.Cvar_Get ("gl_ztrick", "0", 0);
-	gl_finish = ri.Cvar_Get ("gl_finish", "0", CVAR_ARCHIVE);
 	gl_clear = ri.Cvar_Get ("gl_clear", "0", 0);
 	gl_cull = ri.Cvar_Get ("gl_cull", "1", 0);
 	gl_polyblend = ri.Cvar_Get ("gl_polyblend", "1", 0);
@@ -904,18 +899,12 @@ bool R_Init()
 	strcpy( vendor_buffer, gl_config.vendor_string );
 	strlwr( vendor_buffer );
 
-
 	gl_config.renderer = GL_RENDERER_OTHER;
-
-#ifdef __linux__
-	ri.Cvar_SetValue( "gl_finish", 1 );
-#endif
 
 	/*
 	** grab extensions
 	*/
-	if ( strstr( gl_config.extensions_string, "GL_EXT_compiled_vertex_array" ) || 
-		 strstr( gl_config.extensions_string, "GL_SGI_compiled_vertex_array" ) )
+	if ( strstr( gl_config.extensions_string, "GL_EXT_compiled_vertex_array" ))
 	{
 		ri.Con_Printf( PRINT_ALL, "...enabling GL_EXT_compiled_vertex_array\n" );
 	}

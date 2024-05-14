@@ -5,7 +5,7 @@
 // Originally written by autolycus
 // Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
 //
-// 2024/04/30 version
+// 2024/05/13 version
 
 //
 // worldspawn
@@ -55,17 +55,6 @@
 
 @PointClass base(PlayerClass) = info_player_start_director : "Director team start" []
 @PointClass base(PlayerClass) = info_player_start_player : "Player team start" []
-
-@SolidClass base(PlayerClass) = info_team_door : "Team Door: A brush that only allows certain teams to walk through."
-[
-	allowed_teams(Flags) =
-	[
-		1 : "Director Team" : 0
-		2 : "Player Team" : 0
-		4 : "Unassigned" : 0
-	]
-	extents(Vector3) : "Extents" 
-]
 
 // Not sure if this works in Zombono, need to check.
 // Notes on the 'team' key: First of all, it creates a random respawn pattern.
@@ -173,6 +162,12 @@
 	]
 	killtarget(string) : "Kill Target"
 	team(integer) : "Team"
+	allowed_teams(Flags) =
+	[
+		1 : "Director Team" : 0
+		2 : "Player Team" : 0
+		4 : "Unassigned" : 0
+	]
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
 	speed(integer) : "Speed" : 100
@@ -214,6 +209,12 @@
 	]
 	killtarget(string) : "Kill Target"
 	team(integer) : "Team"
+	allowed_teams(Flags) =
+	[
+		1 : "Director Team" : 0
+		2 : "Player Team" : 0
+		4 : "Unassigned" : 0
+	]
 	distance(integer) : "Degrees of rotation" : 90
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
@@ -280,6 +281,41 @@
 		1 : "Trigger Spawn" : 0
 		2 : "Animated" : 0
 		4 : "Animated Fast" : 0
+	]
+]
+
+@SolidClass base(Appearflags, Targetname) color(0 128 204) = func_particle_effect : "Particle Effect"
+[
+	spawnflags(Flags) =
+	[
+		1 : "Start On" : 0
+		2 : "Permanent" : 0
+	]
+
+	effect(choices) : "Effect" : 0 =
+	[
+		0 : "Generic"
+		1 : "Gunshot"
+		2 : "Blood"
+		3 : "Blaster"
+		4 : "Railgun Trail"
+		5 : "Shotgun"
+		6 : "Generic Explosion 1"
+		7 : "Generic Explosion 2"
+		8 : "Rocket Explosion (Land)"
+		9 : "Grenade Explosion (Land)"
+		10 : "Rocket Explosion (Water)"
+		11 : "Generic Sparks"
+		12 : "Screen Sparks"
+		13 : "Shield Sparks"
+		14 : "Bullet Sparks"
+		15 : "Teleport Effect"
+		16 : "Lightning"
+		17 : "Flames"
+		18 : "Smoke"
+		19 : "Steam"
+		20 : "Flashlight"
+		21 : "Light"	
 	]
 ]
 
@@ -356,7 +392,6 @@
 	]
 ]
 
-// 0221 - added a "_minlight" key
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_wall : "Solid Wall"
 [
 	spawnflags(Flags) =
@@ -367,6 +402,14 @@
 		8 : "Animated" : 0
 		16 : "Animated Fast" : 0
 		32 : "Walkthrough" : 0
+	]
+
+	team(integer) : "Team"
+	allowed_teams(Flags) =
+	[
+		1 : "Director Team" : 0
+		2 : "Player Team" : 0
+		4 : "Unassigned" : 0
 	]
 ]
 

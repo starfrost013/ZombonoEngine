@@ -480,7 +480,6 @@ void CL_RegisterTEntSounds (void);
 void CL_RegisterTEntModels (void);
 void CL_SmokeAndFlash(vec3_t origin);
 
-
 //
 // cl_pred.c
 //
@@ -488,23 +487,20 @@ void CL_PredictMovement (void);
 void CL_CheckPredictionError (void);
 
 //
-// cl_fx.c
+// cl_fx_dlight.c
 //
-cdlight_t *CL_AllocDlight (int32_t key);
-void CL_RocketTrail (vec3_t start, vec3_t end, centity_t *old);
-void CL_DiminishingTrail (vec3_t start, vec3_t end, centity_t *old, int32_t flags);
-void CL_FlyEffect (centity_t *ent, vec3_t origin);
-void CL_AddParticles (void);
-void CL_EntityEvent (entity_state_t *ent);
-void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
-
+cdlight_t* CL_AllocDlight(int32_t key);
 void CL_ClearDlights();
-void CL_ClearLightStyles();
-void CL_AddBeams();
-void CL_AddPlayerBeams();
-void CL_AddExplosions();
 
+//
+// cl_fx_lightstyle.c
+//
+
+void CL_ClearLightStyles();
+
+//
 // cl_fx_explosion.c
+//
 
 typedef enum
 {
@@ -522,10 +518,15 @@ typedef struct
 	int32_t 	baseframe;
 } explosion_t;
 
-#define	MAX_EXPLOSIONS	32
+#define	MAX_EXPLOSIONS	128
 extern explosion_t	cl_explosions[MAX_EXPLOSIONS];
 
+explosion_t* CL_AllocExplosion();
+void CL_AddExplosions();
+
+//
 // cl_fx_beam.c
+//
 
 #define	MAX_BEAMS	32
 typedef struct
@@ -542,6 +543,22 @@ extern beam_t		cl_beams[MAX_BEAMS];
 
 //PMM - added this for player-linked beams.  Currently only used by the plasma beam
 extern beam_t		cl_playerbeams[MAX_BEAMS];
+
+void CL_AddBeams();
+void CL_AddPlayerBeams();
+
+//
+// cl_fx_particle.c
+//
+extern	struct model_s* cl_mod_smoke;
+extern	struct model_s* cl_mod_flash;
+
+void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old);
+void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags);
+void CL_FlyEffect(centity_t* ent, vec3_t origin);
+void CL_AddParticles(void);
+void CL_EntityEvent(entity_state_t* ent);
+void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 
 //
 // legacy menu system
