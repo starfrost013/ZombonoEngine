@@ -57,6 +57,13 @@ cvar_t* cl_shownet;
 cvar_t* cl_showmiss;
 cvar_t* cl_showclamp;
 cvar_t* cl_showinfo;
+
+
+cvar_t* cl_showintro; 
+// until UI scripts implemented
+cvar_t* cl_intro1; 
+cvar_t* cl_intro2;
+
 cvar_t* cl_paused;
 cvar_t* cl_timedemo;
 

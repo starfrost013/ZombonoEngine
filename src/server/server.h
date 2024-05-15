@@ -38,7 +38,7 @@ typedef enum {
 	ss_loading,			// spawning level edicts
 	ss_game,			// actively running
 	ss_demo,			// running demo
-	ss_pic
+	ss_image
 } server_state_t;
 // some qc commands are only valid before the server has finished
 // initializing (precache commands, static sounds / objects, etc)
@@ -53,7 +53,7 @@ typedef struct
 	uint32_t		time;				// always sv.framenum * 100 msec
 	int32_t 		framenum;
 
-	char			name[MAX_QPATH];			// map name, or cinematic name
+	char			name[MAX_QPATH];			// map name
 	struct cmodel_s	*models[MAX_MODELS];
 
 	char			configstrings[MAX_CONFIGSTRINGS][MAX_QPATH];

@@ -588,7 +588,7 @@ cmodel_t *Map_Load (char *name, bool clientload, uint32_t *checksum)
 		numclusters = 1;
 		numareas = 1;
 		*checksum = 0;
-		return &map_cmodels[0];			// cinematic servers won't have anything at all
+		return &map_cmodels[0];
 	}
 
 	//

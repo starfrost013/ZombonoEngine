@@ -3495,11 +3495,6 @@ void M_Draw ()
 	// repaint32_t everything next frame
 	SCR_DirtyScreen ();
 
-	// dim everything behind it down
-	/*
-	if (cl.cinematictime > 0)
-		re.DrawFill (0,0,viddef.width, viddef.height, 0);*/
-
 	re.DrawFadeScreen ();
 
 	m_drawfunc ();

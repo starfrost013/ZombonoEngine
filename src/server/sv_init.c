@@ -422,19 +422,14 @@ void SV_Map (bool attractloop, char *levelstring, bool loadgame)
 		--l;
 	}
 
+	// demo file
 	if (l > 4 && !strcmp (level+l-4, ".dm2") )
 	{
 		SCR_BeginLoadingPlaque ();			// for local system
 		SV_BroadcastCommand ("changing\n");
 		SV_SpawnServer (level, spawnpoint, ss_demo, attractloop, loadgame);
 	}
-	else if (l > 4 && !strcmp (level+l-4, ".tga") )
-	{
-		SCR_BeginLoadingPlaque ();			// for local system
-		SV_BroadcastCommand ("changing\n");
-		SV_SpawnServer (level, spawnpoint, ss_pic, attractloop, loadgame);
-	}
-	else
+	else // map
 	{
 		SCR_BeginLoadingPlaque ();			// for local system
 		SV_BroadcastCommand ("changing\n");

@@ -1068,6 +1068,9 @@ void SCR_DrawInfo()
 		return;
 	}
 
+	// target fps regardless fo 
+	int32_t target_fps = 60;
+
 	int32_t x = (10 * vid_hudscale->value);
 
 	int32_t y = (viddef.height - (120 * vid_hudscale->value));

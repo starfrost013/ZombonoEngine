@@ -90,10 +90,8 @@ void SV_New_f ()
 	MSG_WriteByte (&sv_client->netchan.message, sv.attractloop);
 	MSG_WriteString (&sv_client->netchan.message, gamedir);
 
-	if (sv.state == ss_pic)
-		playernum = -1;
-	else
-		playernum = sv_client - svs.clients;
+	playernum = sv_client - svs.clients;
+
 	MSG_WriteShort (&sv_client->netchan.message, playernum);
 
 	// send full levelname
@@ -407,8 +405,7 @@ void SV_Nextserver ()
 {
 	char	*v;
 
-	//ZOID, ss_pic can be nextserver'd in coop mode
-	if (sv.state == ss_game ||(sv.state == ss_pic))
+	if (sv.state == ss_game)
 		return;		// can't nextserver while playing a normal game
 
 	svs.spawncount++;	// make sure another doesn't sneak in
@@ -482,16 +479,17 @@ void SV_ExecuteUserCommand (char *s, bool no_console)
 	Cmd_TokenizeString (s, true);
 	sv_player = sv_client->edict;
 
-//	SV_BeginRedirect (RD_CLIENT);
-
-	for (u=ucmds ; u->name ; u++)
-		if (!strcmp (Cmd_Argv(0), u->name) )
+	for (u = ucmds; u->name; u++)
+	{
+		if (!strcmp(Cmd_Argv(0), u->name))
 		{
-			u->func ();
+			u->func();
 			break;
 		}
+	}
 
 	if (!u->name && sv.state == ss_game)
+	{
 		if (no_console)
 		{
 			ge->ClientCommand_NoConsole(sv_player);
@@ -500,9 +498,7 @@ void SV_ExecuteUserCommand (char *s, bool no_console)
 		{
 			ge->ClientCommand(sv_player);
 		}
-
-
-//	SV_EndRedirect ();
+	}
 }
 
 /*

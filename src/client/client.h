@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //=============================================================================
 
-typedef struct
+typedef struct frame_s
 {
 	bool				valid;			// cleared if delta parsing was invalid
 	int32_t 			serverframe;
@@ -51,7 +51,7 @@ typedef struct
 	int32_t 			parse_entities;	// non-masked index into cl_parse_entities array
 } frame_t;
 
-typedef struct
+typedef struct centity_s
 {
 	entity_state_t	baseline;		// delta from this if not from a previous frame
 	entity_state_t	current;
@@ -67,7 +67,7 @@ typedef struct
 
 #define MAX_CLIENTWEAPONMODELS		20
 
-typedef struct
+typedef struct clientinfo_s
 {
 	char	name[MAX_QPATH];
 	char	cinfo[MAX_QPATH];
@@ -285,9 +285,9 @@ extern	cvar_t* cl_timedemo;
 
 extern	cvar_t* cl_vwep;
 
-extern	cvar_t  *cl_drawhud;
+extern	cvar_t*	cl_drawhud;
 
-typedef struct
+typedef struct cdlight_s
 {
 	int32_t key;				// so entities can reuse same entry
 	vec3_t	color;
@@ -315,8 +315,6 @@ bool		app_active;
 bool		app_minimized;
 void AppActivate(bool fActive, bool minimize);
 
-
-
 //=============================================================================
 
 extern	netadr_t	net_from;
@@ -330,9 +328,7 @@ void CL_TeleporterParticles (entity_state_t *ent);
 void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
 void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
 
-
 //=============================================================================
-
 
 typedef struct particle_s
 {

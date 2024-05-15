@@ -354,7 +354,6 @@ void CL_AdjustAngles ()
 	else
 		speed = cls.frametime;
 
-
 	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&input_right);
 	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&input_left);
 
@@ -498,8 +497,6 @@ usercmd_t CL_CreateCmd ()
 
 	old_sys_frame_time = sys_frame_time;
 
-//cmd.impulse = cls.framecount;
-
 	return cmd;
 }
 
@@ -552,8 +549,6 @@ void CL_InitInput ()
 
 	cl_nodelta = Cvar_Get ("cl_nodelta", "0", 0);
 }
-
-
 
 /*
 =================
@@ -645,7 +640,6 @@ void CL_SendCmd ()
 	Netchan_Transmit (&cls.netchan, buf.cursize, buf.data);	
 }
 
-
 /*
 ============================================================
 
@@ -653,8 +647,6 @@ void CL_SendCmd ()
 
 ============================================================
 */
-
-
 
 /*
 ===========
@@ -702,8 +694,6 @@ void Input_DeactivateMouse()
 	re.EnableCursor(true);
 	mouseactive = false;
 }
-
-
 
 /*
 ===========

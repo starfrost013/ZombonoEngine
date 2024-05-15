@@ -93,7 +93,8 @@ OpenGL legacy code purge #49123712632:
 OTHER CHANGES: 
 	* Reorganised effects code
 	* Renamed "pics" folder to "2d"
-	
+	* Removed partially implemented ability to set map to a TGA file
+
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server
 

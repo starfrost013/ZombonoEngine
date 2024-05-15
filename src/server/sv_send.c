@@ -509,19 +509,12 @@ void SV_SendClientMessages ()
 			SV_DropClient (c);
 		}
 
-		if (sv.state == ss_demo
-			|| sv.state == ss_pic)
+		if (sv.state == ss_demo)
 		{
 			Netchan_Transmit(&c->netchan, msglen, msgbuf);
 		}
 		else if (c->state == cs_spawned)
 		{
-			/*
-			// don't overrun bandwidth
-			if (SV_RateDrop (c))
-				continue;
-			*/
-
 			SV_SendClientDatagram (c);
 		}
 		else
