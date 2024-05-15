@@ -36,11 +36,9 @@ BRUSH MODELS
 ==============================================================================
 */
 
-
 //
 // in memory representation
 //
-// !!! if this is changed, it must be changed in asm_draw.h too !!!
 typedef struct
 {
 	vec3_t		position;
@@ -78,7 +76,7 @@ typedef struct mtexinfo_s
 	float				vecs[2][4];
 	int32_t				flags;
 	int32_t				numframes;
-	struct mtexinfo_*	next;		// animation chain
+	struct mtexinfo_t*	next;		// animation chain
 	image_t*			image;
 } mtexinfo_t;
 
@@ -97,7 +95,7 @@ typedef struct msurface_s
 {
 	int32_t				visframe;		// should be drawn when node is crossed
 
-	cplane_t			*plane;
+	cplane_t*			plane;
 	int32_t				flags;
 
 	int32_t				firstedge;	// look up in model->surfedges[], negative numbers
@@ -109,9 +107,9 @@ typedef struct msurface_s
 	int32_t				light_s, light_t;	// gl lightmap coordinates
 	int32_t				dlight_s, dlight_t; // gl lightmap coordinates for dynamic lightmaps
 
-	glpoly_t			*polys;				// multiple if warped
-	struct	msurface_s	*texturechain;
-	struct  msurface_s	*lightmapchain;
+	glpoly_t*			polys;				// multiple if warped
+	struct msurface_s*	texturechain;
+	struct msurface_s*	lightmapchain;
 
 	mtexinfo_t	*texinfo;
 	
@@ -122,7 +120,7 @@ typedef struct msurface_s
 	int32_t				lightmaptexturenum;
 	uint8_t				styles[MAXLIGHTMAPS];
 	float				cached_light[MAXLIGHTMAPS];	// values currently used in lightmap
-	uint8_t				*samples;		// [numstyles*surfsize]
+	uint8_t*			samples;		// [numstyles*surfsize]
 } msurface_t;
 
 typedef struct mnode_s
@@ -133,11 +131,11 @@ typedef struct mnode_s
 	
 	float			minmaxs[6];		// for bounding box culling
 
-	struct mnode_s	*parent;
+	struct mnode_s*	parent;
 
 // node specific
-	cplane_t		*plane;
-	struct mnode_s	*children[2];	
+	cplane_t*		plane;
+	struct mnode_s*	children[2];	
 
 	uint32_t		firstsurface;
 	uint32_t		numsurfaces;
@@ -151,13 +149,13 @@ typedef struct mleaf_s
 
 	float			minmaxs[6];		// for bounding box culling
 
-	struct mnode_s	*parent;
+	struct mnode_s*	parent;
 
 // leaf specific
 	int32_t			cluster;
 	int32_t			area;
 
-	msurface_t		**firstmarksurface;
+	msurface_t**	firstmarksurface;
 	int32_t			nummarksurfaces;
 } mleaf_t;
 
@@ -168,7 +166,7 @@ typedef struct mleaf_s
 // Whole model
 //
 
-typedef enum {mod_bad, mod_brush, mod_sprite, mod_alias } modtype_t;
+typedef enum { mod_bad, mod_brush, mod_sprite, mod_alias } modtype_t;
 
 typedef struct model_s
 {
@@ -230,28 +228,28 @@ typedef struct model_s
 	int32_t			nummarksurfaces;
 	msurface_t**	marksurfaces;
 
-	dvis_t			*vis;
+	dvis_t*			*vis;
 
-	uint8_t			*lightdata;
+	uint8_t*		lightdata;
 
 	// for alias models and skins
-	image_t			*skins[MAX_MD2SKINS];
+	image_t*		skins[MAX_MD2SKINS];
 
 	int32_t			extradatasize;
-	void			*extradata;
+	void*			extradata;
 } model_t;
 
 //============================================================================
 
 void		Mod_Init (void);
 model_t*	Mod_ForName (char *name, bool crash);
-mleaf_t*	Mod_PointInLeaf (vec3_t *p, model_t *model);
+mleaf_t*	Mod_PointInLeaf (vec3_t p, model_t *model);
 uint8_t*	Mod_ClusterPVS (int32_t cluster, model_t *model);
 
 void		Mod_Modellist_f (void);
 
-void		*Hunk_Begin (int32_t maxsize);
-void		*Hunk_Alloc (int32_t size);
+void*		Hunk_Begin (int32_t maxsize);
+void*		Hunk_Alloc (int32_t size);
 int32_t		Hunk_End (void);
 void		Hunk_Free (void *base);
 
