@@ -82,8 +82,6 @@ cvar_t* r_lefthand;
 
 cvar_t* r_lightlevel;	// FIXME: This is a HACK to get the client's light level
 
-cvar_t* gl_nosubimage;
-
 cvar_t* gl_vertex_arrays;
 
 cvar_t* gl_particle_min_size;
@@ -104,12 +102,10 @@ cvar_t* gl_shadows;
 cvar_t* gl_mode;
 cvar_t* gl_dynamic;
 cvar_t* gl_modulate;
-cvar_t* gl_nobind;
 cvar_t* gl_round_down;
 cvar_t* gl_picmip;
 cvar_t* gl_skymip;
 cvar_t* gl_showtris;
-cvar_t* gl_ztrick;
 cvar_t* gl_clear;
 cvar_t* gl_cull;
 cvar_t* gl_polyblend;
@@ -563,40 +559,17 @@ R_Clear
 */
 void R_Clear (void)
 {
-	if (gl_ztrick->value)
-	{
-		static int32_t trickframe;
+	// gets rid of the hall of mirrors effect
 
-		if (gl_clear->value)
-			glClear (GL_COLOR_BUFFER_BIT);
-
-		trickframe++;
-		if (trickframe & 1)
-		{
-			gldepthmin = 0;
-			gldepthmax = 0.49999;
-			glDepthFunc (GL_LEQUAL);
-		}
-		else
-		{
-			gldepthmin = 1;
-			gldepthmax = 0.5;
-			glDepthFunc (GL_GEQUAL);
-		}
-	}
+	if (gl_clear->value)
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else
-	{
-		if (gl_clear->value)
-			glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		else
-			glClear (GL_DEPTH_BUFFER_BIT);
-		gldepthmin = 0;
-		gldepthmax = 1;
-		glDepthFunc (GL_LEQUAL);
-	}
+		glClear(GL_DEPTH_BUFFER_BIT);
+	gldepthmin = 0;
+	gldepthmax = 1;
+	glDepthFunc(GL_LEQUAL);
 
 	glDepthRange (gldepthmin, gldepthmax);
-
 }
 
 void R_Flash( void )
@@ -660,7 +633,7 @@ void R_RenderView (refdef_t *fd)
 }
 
 
-void	R_SetGL2D (void)
+void R_SetGL2D (void)
 {
 	// set 2D virtual screen size
 	glViewport (0,0, vid.width, vid.height);
@@ -674,16 +647,6 @@ void	R_SetGL2D (void)
 	glDisable (GL_BLEND);
 	glEnable (GL_ALPHA_TEST);
 	glColor4f (1,1,1,1);
-}
-
-static void GL_DrawColoredStereoLinePair( float r, float g, float b, float y )
-{
-	glColor3f( r, g, b );
-	glVertex2f( 0, y );
-	glVertex2f( vid.width, y );
-	glColor3f( 0, 0, 0 );
-	glVertex2f( 0, y + 1 );
-	glVertex2f( vid.width, y + 1 );
 }
 
 /*
@@ -750,8 +713,6 @@ void R_Register( void )
 
 	r_lightlevel = ri.Cvar_Get ("r_lightlevel", "0", 0);
 
-	gl_nosubimage = ri.Cvar_Get( "gl_nosubimage", "0", 0 );
-
 	gl_particle_min_size = ri.Cvar_Get( "gl_particle_min_size", "2", CVAR_ARCHIVE );
 	gl_particle_max_size = ri.Cvar_Get( "gl_particle_max_size", "40", CVAR_ARCHIVE );
 	gl_particle_size = ri.Cvar_Get( "gl_particle_size", "40", CVAR_ARCHIVE );
@@ -765,12 +726,10 @@ void R_Register( void )
 	gl_lightmap = ri.Cvar_Get ("gl_lightmap", "0", 0);
 	gl_shadows = ri.Cvar_Get ("gl_shadows", "0", CVAR_ARCHIVE );
 	gl_dynamic = ri.Cvar_Get ("gl_dynamic", "1", 0);
-	gl_nobind = ri.Cvar_Get ("gl_nobind", "0", 0);
 	gl_round_down = ri.Cvar_Get ("gl_round_down", "1", 0);
 	gl_picmip = ri.Cvar_Get ("gl_picmip", "0", 0);
 	gl_skymip = ri.Cvar_Get ("gl_skymip", "0", 0);
 	gl_showtris = ri.Cvar_Get ("gl_showtris", "0", 0);
-	gl_ztrick = ri.Cvar_Get ("gl_ztrick", "0", 0);
 	gl_clear = ri.Cvar_Get ("gl_clear", "0", 0);
 	gl_cull = ri.Cvar_Get ("gl_cull", "1", 0);
 	gl_polyblend = ri.Cvar_Get ("gl_polyblend", "1", 0);
@@ -860,8 +819,8 @@ bool R_Init()
 {	
 	char renderer_buffer[1000];
 	char vendor_buffer[1000];
-	int		err;
-	int		j;
+	int32_t	err;
+	int32_t	j;
 	extern float r_turbsin[256];
 
 	for ( j = 0; j < 256; j++ )
@@ -891,7 +850,7 @@ bool R_Init()
 
 	ri.Vid_MenuInit();
 
-	GL_TextureMode(gl_texturemode->string);
+	GL_SetTextureMode(gl_texturemode->string);
 
 	strcpy( renderer_buffer, gl_config.renderer_string );
 	strlwr( renderer_buffer );
@@ -972,9 +931,7 @@ void R_BeginFrame()
 	// make the gamma not modified
 	// TODO: test if this dies
 	if ( vid_gamma->modified )
-	{
 		vid_gamma->modified = false;
-	}
 
 	GL_BeginFrame();
 
@@ -1011,19 +968,19 @@ void R_BeginFrame()
 	*/
 	if ( gl_texturemode->modified )
 	{
-		GL_TextureMode( gl_texturemode->string );
+		GL_SetTextureMode( gl_texturemode->string );
 		gl_texturemode->modified = false;
 	}
 
 	if ( gl_texturealphamode->modified )
 	{
-		GL_TextureAlphaMode( gl_texturealphamode->string );
+		GL_SetTextureAlphaMode( gl_texturealphamode->string );
 		gl_texturealphamode->modified = false;
 	}
 
 	if ( gl_texturesolidmode->modified )
 	{
-		GL_TextureSolidMode( gl_texturesolidmode->string );
+		GL_SetTextureSolidMode( gl_texturesolidmode->string );
 		gl_texturesolidmode->modified = false;
 	}
 
@@ -1057,8 +1014,8 @@ void R_DrawBeam( entity_t *e )
 {
 #define NUM_BEAM_SEGS 6
 
-	int	i;
-	float r, g, b;
+	int32_t	i;
+	float	r, g, b;
 
 	vec3_t perpvec;
 	vec3_t direction, normalized_direction;
@@ -1128,20 +1085,20 @@ void R_DrawBeam( entity_t *e )
 //===================================================================
 
 
-void	R_BeginRegistration (char *map);
+void			R_BeginRegistration (char *map);
 struct model_s	*R_RegisterModel (char *name);
 struct image_s	*R_RegisterSkin (char *name);
-void R_SetSky (char *name, float rotate, vec3_t axis);
-void	R_EndRegistration (void);
+void			R_SetSky (char *name, float rotate, vec3_t axis);
+void			R_EndRegistration (void);
 
-void	R_RenderFrame (refdef_t *fd);
+void			R_RenderFrame (refdef_t *fd);
 
 struct image_s	*Draw_FindPic (char *name);
 
-void	Draw_Pic (int32_t x, int32_t y, char *name);
-void	Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
-void	Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
-void	Draw_FadeScreen (void);
+void			Draw_Pic (int32_t x, int32_t y, char *name);
+void			Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+void			Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
+void			Draw_FadeScreen (void);
 
 /*
 @@@@@@@@@@@@@@@@@@@@@

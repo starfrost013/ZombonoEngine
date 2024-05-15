@@ -247,7 +247,6 @@ void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 Draw_Fill
 
 Fills a box of pixels with a single color
-WHY DOES THE ALPHA NOT WORK???
 =============
 */
 void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a)

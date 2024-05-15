@@ -32,40 +32,41 @@ image_t	*sky_images[6];
 msurface_t	*warpface;
 
 #define	SUBDIVIDE_SIZE	64
-//#define	SUBDIVIDE_SIZE	1024
 
 void BoundPoly (int32_t numverts, float *verts, vec3_t mins, vec3_t maxs)
 {
-	int		i, j;
-	float	*v;
+	int32_t	i, j;
+	float*	v;
 
 	mins[0] = mins[1] = mins[2] = 9999;
 	maxs[0] = maxs[1] = maxs[2] = -9999;
 	v = verts;
-	for (i=0 ; i<numverts ; i++)
-		for (j=0 ; j<3 ; j++, v++)
+	for (i = 0; i < numverts; i++)
+	{
+		for (j = 0; j < 3; j++, v++)
 		{
 			if (*v < mins[j])
 				mins[j] = *v;
 			if (*v > maxs[j])
 				maxs[j] = *v;
 		}
+	}
 }
 
 void SubdividePolygon (int32_t numverts, float *verts)
 {
-	int		i, j, k;
-	vec3_t	mins, maxs;
-	float	m;
-	float	*v;
-	vec3_t	front[64], back[64];
-	int		f, b;
-	float	dist[64];
-	float	frac;
-	glpoly_t	*poly;
-	float	s, t;
-	vec3_t	total;
-	float	total_s, total_t;
+	int32_t		i, j, k;
+	vec3_t		mins, maxs;
+	float		m;
+	float*		v;
+	vec3_t		front[64] = { 0 }, back[64] = { 0 };
+	int32_t		f, b;
+	float		dist[64];
+	float		frac;
+	glpoly_t*	poly;
+	float		s, t;
+	vec3_t		total = { 0 };
+	float		total_s, total_t;
 
 	if (numverts > 60)
 		ri.Sys_Error (ERR_DROP, "numverts = %i", numverts);
@@ -165,10 +166,10 @@ can be done reasonably.
 void GL_SubdivideSurface (msurface_t *fa)
 {
 	vec3_t		verts[64];
-	int			numverts;
-	int			i;
-	int			lindex;
-	float		*vec;
+	int32_t		numverts;
+	int32_t		i;
+	int32_t		lindex;
+	float*		vec;
 
 	warpface = fa;
 
@@ -207,9 +208,9 @@ Does a water warp on the pre-fragmented glpoly_t chain
 */
 void EmitWaterPolys (msurface_t *fa)
 {
-	glpoly_t	*p, *bp;
-	float		*v;
-	int			i;
+	glpoly_t*	p, *bp;
+	float*		v;
+	int32_t		i;
 	float		s, t, os, ot;
 	float		scroll;
 	float		rdt = r_newrefdef.time;
@@ -254,10 +255,10 @@ vec3_t	skyclip[6] = {
 	{1,0,1},
 	{-1,0,1} 
 };
-int	c_sky;
+int32_t	c_sky;
 
 // 1 = s, 2 = t, 3 = 2048
-int	st_to_vec[6][3] =
+int32_t	st_to_vec[6][3] =
 {
 	{3,-1,2},
 	{-3,1,2},
@@ -267,13 +268,10 @@ int	st_to_vec[6][3] =
 
 	{-2,-1,3},		// 0 degrees yaw, look straight up
 	{2,-1,-3}		// look straight down
-
-//	{-1,2,3},
-//	{1,2,-3}
 };
 
 // s = [0]/[2], t = [1]/[2]
-int	vec_to_st[6][3] =
+int32_t	vec_to_st[6][3] =
 {
 	{-2,3,1},
 	{2,3,-1},
@@ -283,9 +281,6 @@ int	vec_to_st[6][3] =
 
 	{-2,-1,3},
 	{-2,1,-3}
-
-//	{-1,2,3},
-//	{1,2,-3}
 };
 
 float	skymins[2][6], skymaxs[2][6];
@@ -372,11 +367,11 @@ void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 	float	*v;
 	bool	front, back;
 	float	d, e;
-	float	dists[MAX_CLIP_VERTS];
-	int		sides[MAX_CLIP_VERTS];
-	vec3_t	newv[2][MAX_CLIP_VERTS];
-	int		newc[2];
-	int		i, j;
+	float	dists[MAX_CLIP_VERTS] = { 0 };
+	int32_t	sides[MAX_CLIP_VERTS] = { 0 };
+	vec3_t	newv[2][MAX_CLIP_VERTS] = { 0 };
+	int32_t newc[2];
+	int32_t	i, j;
 
 	if (nump > MAX_CLIP_VERTS-2)
 		ri.Sys_Error (ERR_DROP, "ClipSkyPolygon: MAX_CLIP_VERTS");
@@ -464,9 +459,9 @@ R_AddSkySurface
 */
 void R_AddSkySurface (msurface_t *fa)
 {
-	int			i;
+	int32_t		i;
 	vec3_t		verts[MAX_CLIP_VERTS];
-	glpoly_t	*p;
+	glpoly_t*	p;
 
 	// calculate vertex values for sky box
 	for (p=fa->polys ; p ; p=p->next)
@@ -487,7 +482,7 @@ R_ClearSkyBox
 */
 void R_ClearSkyBox (void)
 {
-	int		i;
+	int32_t		i;
 
 	for (i=0 ; i<6 ; i++)
 	{
@@ -500,7 +495,7 @@ void R_ClearSkyBox (void)
 void MakeSkyVec (float s, float t, int32_t axis)
 {
 	vec3_t		v, b;
-	int			j, k;
+	int32_t		j, k;
 
 	b[0] = (s*gl_drawdistance->value);
 	b[1] = (t* gl_drawdistance->value);
@@ -555,7 +550,7 @@ R_DrawSkyBox
 int	skytexorder[6] = {0,2,1,3,4,5};
 void R_DrawSkyBox (void)
 {
-	int		i;
+	int32_t		i;
 
 	if (skyrotate)
 	{	// check for no sky at all
@@ -567,9 +562,9 @@ void R_DrawSkyBox (void)
 			return;		// nothing visible
 	}
 
-glPushMatrix ();
-glTranslatef (r_origin[0], r_origin[1], r_origin[2]);
-glRotatef (r_newrefdef.time * skyrotate, skyaxis[0], skyaxis[1], skyaxis[2]);
+	glPushMatrix ();
+	glTranslatef (r_origin[0], r_origin[1], r_origin[2]);
+	glRotatef (r_newrefdef.time * skyrotate, skyaxis[0], skyaxis[1], skyaxis[2]);
 
 	for (i=0 ; i<6 ; i++)
 	{
@@ -594,7 +589,8 @@ glRotatef (r_newrefdef.time * skyrotate, skyaxis[0], skyaxis[1], skyaxis[2]);
 		MakeSkyVec (skymaxs[0][i], skymins[1][i], i);
 		glEnd ();
 	}
-glPopMatrix ();
+
+	glPopMatrix ();
 
 }
 
@@ -608,7 +604,7 @@ R_SetSky
 char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 void R_SetSky (char *name, float rotate, vec3_t axis)
 {
-	int		i;
+	int32_t	i;
 	char	pathname[MAX_QPATH];
 
 	strncpy (skyname, name, sizeof(skyname)-1);

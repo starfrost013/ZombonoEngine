@@ -63,7 +63,6 @@ void *Hunk_Alloc (int32_t size)
 
 #ifdef VIRTUAL_ALLOC
 	// commit pages as needed
-//	buf = VirtualAlloc (membase+cursize, size, MEM_COMMIT, PAGE_READWRITE);
 	buf = VirtualAlloc (membase, cursize+size, MEM_COMMIT, PAGE_READWRITE);
 	if (!buf)
 	{
@@ -72,8 +71,9 @@ void *Hunk_Alloc (int32_t size)
 	}
 #endif
 	cursize += size;
+
 	if (cursize > hunkmaxsize)
-		Sys_Error ("Hunk_Alloc overflow");
+		Sys_Error ("Hunk_Alloc: overflow");
 
 	return (void *)(membase+cursize-size);
 }

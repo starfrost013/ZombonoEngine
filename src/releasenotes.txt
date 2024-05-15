@@ -75,7 +75,19 @@ REMOVALS:
 	* CL_ColorExplosionParticles
 	* CL_WidowSplash
 	* "Laser" specific effect was removed
-* Removed gl_finish cvar (replaced with gl_vsync and simply reduced framerate by stalling until all effects were done)
+OpenGL legacy code purge #49123712632:
+	* Removed gl_finish cvar (replaced with gl_vsync and simply reduced framerate by stalling until all effects were done)
+	* Removed gl_ztrick cvar and ztrick code
+		* Had no effect on performance, was a method of not clearing the Z-buffer between frames, which made some very old (RIVA 128 and TNT) Nvidia cards faster. Since these GPUs
+		  are not even OpenGL 1.5 compatible, and it can cause problems on other hardware, there is no point keeping this.
+	* Removed more OpenGL cvars that did nothing
+		* gl_nosubimage
+		* gl_nobind
+	* stdint-ified ref_gl
+	* Renamed TargaHeader to targa_header_t
+	* Got rid of inconsistent syntax
+	* Renamed GL_TextureMode, GL_TextureAlphaMode, and GL_TextureSolidMode to GL_SetTextureMode, GL_SetTextureAlphaMode and GL_SetTextureSolidMode
+	* Removed GL_DrawColoredStereoLinePair (not used)
 
 OTHER CHANGES: 
 	* Reorganised effects code

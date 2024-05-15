@@ -41,8 +41,8 @@ uint8_t	dottexture[8][8] =
 
 void R_InitParticleTexture (void)
 {
-	int		x,y;
-	uint8_t	data[8][8][4];
+	int32_t	x,y;
+	uint8_t	data[8][8][4] = { 0 };
 
 	//
 	// particle texture
@@ -84,13 +84,14 @@ void R_InitParticleTexture (void)
 ============================================================================== 
 */ 
 
-typedef struct _TargaHeader {
+typedef struct targa_header_s 
+{
 	uint8_t 	id_length, colormap_type, image_type;
 	uint16_t	colormap_index, colormap_length;
-	uint8_t	colormap_size;
+	uint8_t		colormap_size;
 	uint16_t	x_origin, y_origin, width, height;
-	uint8_t	pixel_size, attributes;
-} TargaHeader;
+	uint8_t		pixel_size, attributes;
+} targa_header_t;
 
 #define SCREENSHOT_BPP			32									// Bits per pixel
 #define SCREENSHOT_BUFFER_SIZE	(4 * vid.width * vid.height) + 18	// Size of buffer to save screenshot into
@@ -102,11 +103,11 @@ GL_ScreenShot_f
 */  
 void GL_ScreenShot_f (void) 
 {
-	uint8_t		*buffer;
+	uint8_t*	buffer;
 	char		picname[MAX_OSPATH] = { 0 };
 	char		checkname[MAX_OSPATH] = { 0 };
-	int			i, c, temp;
-	FILE		*f;
+	int32_t		i, c, temp;
+	FILE*		f;
 
 	// create the scrnshots directory if it doesn't exist
 	Com_sprintf (checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
@@ -211,25 +212,25 @@ void GL_Strings_f( void )
 */
 void GL_SetDefaultState( void )
 {
-	glClearColor (1,0, 0.5 , 0.5);
+	glClearColor(1,0, 0.5 , 0.5);
 	glCullFace(GL_FRONT);
 	glEnable(GL_TEXTURE_2D);
 
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
 
-	glDisable (GL_DEPTH_TEST);
-	glDisable (GL_CULL_FACE);
-	glDisable (GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 
-	glColor4f (1,1,1,1);
+	glColor4f(1,1,1,1);
 
-	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-	glShadeModel (GL_FLAT);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glShadeModel(GL_FLAT);
 
-	GL_TextureMode( gl_texturemode->string );
-	GL_TextureAlphaMode( gl_texturealphamode->string );
-	GL_TextureSolidMode( gl_texturesolidmode->string );
+	GL_SetTextureMode(gl_texturemode->string);
+	GL_SetTextureAlphaMode(gl_texturealphamode->string);
+	GL_SetTextureSolidMode(gl_texturesolidmode->string);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_filter_min);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_filter_max);

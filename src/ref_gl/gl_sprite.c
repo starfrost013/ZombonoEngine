@@ -30,7 +30,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 =============================================================
 */
 
-
 /*
 =================
 R_DrawSpriteModel
@@ -39,11 +38,11 @@ R_DrawSpriteModel
 */
 void R_DrawSpriteModel (entity_t *e)
 {
-	float alpha = 1.0F;
-	vec3_t	point;
+	float		alpha = 1.0F;
+	vec3_t		point;
 	dsprframe_t	*frame;
 	float		*up, *right;
-	dsprite_t		*psprite;
+	dsprite_t	*psprite;
 
 	// don't even bother culling, because it's just a single
 	// polygon without a surface cache
@@ -116,7 +115,7 @@ Mod_LoadSpriteModel
 void Mod_LoadSpriteModel(model_t* mod, void* buffer)
 {
 	dsprite_t* sprin, * sprout;
-	int			i;
+	int32_t    i;
 
 	sprin = (dsprite_t*)buffer;
 	sprout = Hunk_Alloc(modfilelen);

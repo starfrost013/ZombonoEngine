@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gl_local.h"
 
 model_t	*loadmodel;
-int		modfilelen;
+int32_t	modfilelen;
 
 float	map_radius;
 
@@ -36,12 +36,12 @@ uint8_t	mod_novis[MAX_MAP_LEAFS/8];
 
 #define	MAX_MOD_KNOWN	512
 model_t	mod_known[MAX_MOD_KNOWN];
-int		mod_numknown;
+int32_t	mod_numknown;
 
 // the inline * models from the current map are kept seperate
 model_t	mod_inline[MAX_MOD_KNOWN];
 
-int		registration_sequence;
+int32_t	registration_sequence;
 
 /*
 ===============
@@ -82,9 +82,9 @@ Mod_DecompressVis
 uint8_t *Mod_DecompressVis (uint8_t *in, model_t *model)
 {
 	static byte	decompressed[MAX_MAP_LEAFS/8];
-	int		c;
-	uint8_t* out;
-	int		row;
+	int32_t		c;
+	uint8_t*	out;
+	int32_t		row;
 
 	row = (model->vis->numclusters+7)>>3;	
 	out = decompressed;
@@ -142,9 +142,9 @@ Mod_Modellist_f
 */
 void Mod_Modellist_f (void)
 {
-	int		i;
-	model_t	*mod;
-	int		total;
+	int32_t		i;
+	model_t*	mod;
+	int32_t		total;
 
 	total = 0;
 	ri.Con_Printf (PRINT_ALL,"Loaded models:\n");
@@ -179,9 +179,9 @@ Loads in a model for the given name
 */
 model_t *Mod_ForName (char *name, bool crash)
 {
-	model_t	*mod;
-	uint32_t *buf;
-	int		i;
+	model_t*	mod;
+	uint32_t*	buf;
+	int32_t		i;
 	
 	if (!name[0])
 		ri.Sys_Error (ERR_DROP, "Mod_ForName: NULL name");
@@ -238,11 +238,6 @@ model_t *Mod_ForName (char *name, bool crash)
 	
 	loadmodel = mod;
 
-	//
-	// fill it in
-	//
-
-
 	// call the apropriate loader
 	
 	switch (LittleInt(*(uint32_t *)buf))
@@ -284,7 +279,6 @@ model_t *Mod_ForName (char *name, bool crash)
 
 uint8_t* mod_base;
 
-
 /*
 =================
 Mod_LoadLighting
@@ -309,7 +303,7 @@ Mod_LoadVisibility
 */
 void MapRenderer_LoadVisibility (lump_t *l)
 {
-	int		i;
+	int32_t	i;
 
 	if (!l->filelen)
 	{
@@ -337,7 +331,7 @@ void MapRenderer_LoadVertexes (lump_t *l)
 {
 	dvertex_t	*in;
 	mvertex_t	*out;
-	int			i, count;
+	int32_t		i, count;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -363,7 +357,7 @@ RadiusFromBounds
 */
 float RadiusFromBounds (vec3_t mins, vec3_t maxs)
 {
-	int		i;
+	int32_t	i;
 	vec3_t	corner;
 
 	for (i=0 ; i<3 ; i++)
@@ -384,7 +378,7 @@ void MapRenderer_LoadSubmodels (lump_t *l)
 {
 	dmodel_t	*in;
 	mmodel_t	*out;
-	int			i, j, count;
+	int32_t		i, j, count;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -419,7 +413,7 @@ void MapRenderer_LoadEdges (lump_t *l)
 {
 	dedge_t *in;
 	medge_t *out;
-	int32_t 	i, count;
+	int32_t i, count;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -444,10 +438,10 @@ Mod_LoadTexinfo
 */
 void MapRenderer_LoadTexinfo (lump_t *l)
 {
-	texinfo_t *in;
-	mtexinfo_t *out, *step;
+	texinfo_t*	in;
+	mtexinfo_t* out, *step;
 	int32_t 	i, j, count;
-	char	name[MAX_QPATH];
+	char		name[MAX_QPATH];
 	int32_t		next;
 
 	in = (void *)(mod_base + l->fileofs);
@@ -502,11 +496,11 @@ Fills in s->texturemins[] and s->extents[]
 */
 void CalcSurfaceExtents (msurface_t *s)
 {
-	float	mins[2], maxs[2], val;
-	int		i,j, e;
+	float		mins[2], maxs[2], val;
+	int32_t		i,j, e;
 	mvertex_t	*v;
 	mtexinfo_t	*tex;
-	int		bmins[2], bmaxs[2];
+	int32_t		bmins[2], bmaxs[2];
 
 	mins[0] = mins[1] = 999999;
 	maxs[0] = maxs[1] = -99999;
@@ -541,9 +535,6 @@ void CalcSurfaceExtents (msurface_t *s)
 
 		s->texturemins[i] = bmins[i] * 16;
 		s->extents[i] = (bmaxs[i] - bmins[i]) * 16;
-
-//		if ( !(tex->flags & TEX_SPECIAL) && s->extents[i] > 512 /* 256 */ )
-//			ri.Sys_Error (ERR_DROP, "Bad surface extents");
 	}
 }
 
@@ -560,8 +551,8 @@ Mod_LoadFaces
 */
 void MapRenderer_LoadFaces (lump_t *l)
 {
-	dface_t		*in;
-	msurface_t 	*out;
+	dface_t*	in;
+	msurface_t* out;
 	int32_t		i, count, surfnum;
 	int32_t		planenum, side;
 	int32_t		ti;
@@ -658,8 +649,8 @@ Mod_LoadNodes
 void MapRenderer_LoadNodes (lump_t *l)
 {
 	int32_t		i, j, count, p;
-	dnode_t		*in;
-	mnode_t 	*out;
+	dnode_t*	in;
+	mnode_t*	out;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -705,10 +696,9 @@ Mod_LoadLeafs
 */
 void MapRenderer_LoadLeafs (lump_t *l)
 {
-	dleaf_t 	*in;
-	mleaf_t 	*out;
-	int			i, j, count, p;
-//	glpoly_t	*poly;
+	dleaf_t*	in;
+	mleaf_t*	out;
+	int32_t		i, j, count, p;
 
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -776,8 +766,8 @@ Mod_LoadSurfedges
 */
 void MapRenderer_LoadSurfedges (lump_t *l)
 {	
-	int		i, count;
-	int		*in, *out;
+	int32_t		i, count;
+	int32_t*	in, *out;
 	
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -804,11 +794,11 @@ Mod_LoadPlanes
 */
 void MapRenderer_LoadPlanes (lump_t *l)
 {
-	int			i, j;
-	cplane_t	*out;
-	dplane_t 	*in;
-	int			count;
-	int			bits;
+	int32_t		i, j;
+	cplane_t*	out;
+	dplane_t*	in;
+	int32_t		count;
+	int32_t		bits;
 	
 	in = (void *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -842,9 +832,9 @@ Mod_LoadBrushModel
 */
 void MapRenderer_Load (model_t *mod, void *buffer)
 {
-	int			i;
-	dheader_t	*header;
-	mmodel_t 	*bm;
+	int32_t		i;
+	dheader_t*	header;
+	mmodel_t*	bm;
 	
 	loadmodel->type = mod_brush;
 	if (loadmodel != mod_known)
@@ -948,10 +938,10 @@ R_RegisterModel
 */
 struct model_s *R_RegisterModel (char *name)
 {
-	model_t	*mod;
-	int		i;
-	dsprite_t	*sprout;
-	dmdl_t		*pheader;
+	model_t*	mod;
+	int32_t		i;
+	dsprite_t*	sprout;
+	dmdl_t*		pheader;
 
 	mod = Mod_ForName (name, false);
 	if (mod)
@@ -978,6 +968,7 @@ struct model_s *R_RegisterModel (char *name)
 				mod->texinfo[i].image->registration_sequence = registration_sequence;
 		}
 	}
+
 	return mod;
 }
 
@@ -990,13 +981,14 @@ R_EndRegistration
 */
 void R_EndRegistration (void)
 {
-	int		i;
-	model_t	*mod;
+	int32_t		i;
+	model_t*	mod;
 
 	for (i=0, mod=mod_known ; i<mod_numknown ; i++, mod++)
 	{
 		if (!mod->name[0])
 			continue;
+
 		if (mod->registration_sequence != registration_sequence)
 		{	// don't need this model
 			Mod_Free (mod);
@@ -1028,7 +1020,7 @@ Mod_FreeAll
 */
 void Mod_FreeAll (void)
 {
-	int		i;
+	int32_t		i;
 
 	for (i=0 ; i<mod_numknown ; i++)
 	{

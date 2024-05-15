@@ -233,7 +233,6 @@ void GL_Shutdown(void)
 	GL_DestroyWindow();
 	glfwTerminate(gl_state.window);
 	gl_state.window = NULL;
-
 }
 
 // This routine initialises GLAD and GLFW, and gets an OpenGL context.

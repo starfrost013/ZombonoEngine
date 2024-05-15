@@ -105,7 +105,7 @@ DrawGLPoly
 */
 void DrawGLPoly (glpoly_t *p)
 {
-	int32_t		i;
+	int32_t	i;
 	float	*v;
 
 	glBegin (GL_POLYGON);
@@ -538,7 +538,6 @@ void DrawTextureChains (void)
 
 	c_visible_textures = 0;
 
-//	GL_TexEnv( GL_REPLACE );
 	for (i = 0, image = gltextures; i < numgltextures; i++, image++)
 	{
 		if (!image->registration_sequence)
@@ -706,6 +705,7 @@ dynamic:
 			if(scroll == 0.0)
 				scroll = -64.0;
 
+			// scroll the texture
 			for ( p = surf->polys; p; p = p->chain )
 			{
 				v = p->verts[0];
@@ -721,8 +721,7 @@ dynamic:
 		}
 		else
 		{
-//PGM
-//==========
+			// non-flowing textures
 			for ( p = surf->polys; p; p = p->chain )
 			{
 				v = p->verts[0];
@@ -868,11 +867,13 @@ void R_DrawBrushModel (entity_t *e)
 	}
 
     glPushMatrix ();
-e->angles[0] = -e->angles[0];	// stupid quake bug
-e->angles[2] = -e->angles[2];	// stupid quake bug
+	
+	// TODO: figure out what is causing this and fix it for zombono engine
+	e->angles[0] = -e->angles[0];	// stupid quake bug
+	e->angles[2] = -e->angles[2];	// stupid quake bug
 	R_RotateForEntity (e);
-e->angles[0] = -e->angles[0];	// stupid quake bug
-e->angles[2] = -e->angles[2];	// stupid quake bug
+	e->angles[0] = -e->angles[0];	// stupid quake bug
+	e->angles[2] = -e->angles[2];	// stupid quake bug
 
 	GL_EnableMultitexture( true );
 	GL_SelectTexture( GL_TEXTURE0);
@@ -1421,8 +1422,6 @@ void GL_BeginBuildingLightmaps (model_t *m)
 	if (!gl_state.lightmap_textures)
 	{
 		gl_state.lightmap_textures	= TEXNUM_LIGHTMAPS;
-//		gl_state.lightmap_textures	= gl_state.texture_extension_number;
-//		gl_state.texture_extension_number = gl_state.lightmap_textures + MAX_LIGHTMAPS;
 	}
 
 	gl_lms.current_lightmap_texture = 1;
@@ -1455,4 +1454,3 @@ void GL_EndBuildingLightmaps (void)
 	LM_UploadBlock( false );
 	GL_EnableMultitexture( false );
 }
-

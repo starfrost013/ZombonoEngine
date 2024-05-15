@@ -22,6 +22,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gl_local.h"
 
+// Why does this code compile?
+#define NUMVERTEXNORMALS	162
+
+float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
+#include "anorms.h"
+};
+
+static	vec4_t	s_lerped[MAX_VERTS];
+
+vec3_t	shadevector;
+float	shadelight[3];
+
+// precalculated dot products for quantized angles
+#define SHADEDOT_QUANT 16
+float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
+#include "anormtab.h"
+;
+
+float* shadedots = r_avertexnormal_dots[0];
 
 /*
 ==============================================================================
@@ -38,13 +57,13 @@ Mod_LoadAliasModel
 */
 void Mod_LoadAliasModel(model_t* mod, void* buffer)
 {
-	int					i, j;
-	dmdl_t* pinmodel, * pheader;
-	dstvert_t* pinst, * poutst;
-	dtriangle_t* pintri, * pouttri;
-	daliasframe_t* pinframe, * poutframe;
-	int* pincmd, * poutcmd;
-	int					version;
+	int32_t			i, j;
+	dmdl_t*			pinmodel, *pheader;
+	dstvert_t*		pinst, *poutst;
+	dtriangle_t*	pintri, *pouttri;
+	daliasframe_t*	pinframe, *poutframe;
+	int32_t*		pincmd, * poutcmd;
+	int32_t			version;
 
 	pinmodel = (dmdl_t*)buffer;
 
@@ -156,27 +175,6 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 }
 
 
-#define NUMVERTEXNORMALS	162
-
-float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
-#include "anorms.h"
-};
-
-
-static	vec4_t	s_lerped[MAX_VERTS];
-//static	vec3_t	lerped[MAX_VERTS];
-
-vec3_t	shadevector;
-float	shadelight[3];
-
-// precalculated dot products for quantized angles
-#define SHADEDOT_QUANT 16
-float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
-#include "anormtab.h"
-;
-
-float	*shadedots = r_avertexnormal_dots[0];
-
 void GL_LerpVerts( int32_t nverts, dtrivertx_t *v, dtrivertx_t *ov, dtrivertx_t *verts, float *lerp, float move[3], float frontv[3], float backv[3] )
 {
 	int32_t i;
@@ -214,18 +212,18 @@ FIXME: batch lerp all vertexes
 */
 void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 {
-	float 	l;
-	daliasframe_t	*frame, *oldframe;
-	dtrivertx_t	*v, *ov, *verts;
-	int		*order;
-	int		count;
-	float	frontlerp;
-	float	alpha;
-	vec3_t	move, delta, vectors[3];
-	vec3_t	frontv, backv;
-	int		i;
-	int		index_xyz;
-	float	*lerp;
+	float 			l;
+	daliasframe_t*	frame, *oldframe;
+	dtrivertx_t*	v, *ov, *verts;
+	int32_t*		order;
+	int32_t			count;
+	float			frontlerp;
+	float			alpha;
+	vec3_t			move, delta, vectors[3];
+	vec3_t			frontv, backv;
+	int32_t			i;
+	int32_t			index_xyz;
+	float*			lerp;
 
 	frame = (daliasframe_t *)((uint8_t *)paliashdr + paliashdr->ofs_frames
 		+ currententity->frame * paliashdr->framesize);
@@ -341,10 +339,6 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 
 					order += 3;
 
-					// normals and vertexes come from the frame list
-//					l = shadedots[verts[index_xyz].lightnormalindex];
-					
-//					glColor4f (l* shadelight[0], l*shadelight[1], l*shadelight[2], alpha);
 					glArrayElement( index_xyz );
 
 				} while (--count);
@@ -410,7 +404,6 @@ void GL_DrawAliasFrameLerp (dmdl_t *paliashdr, float backlerp)
 		glEnable( GL_TEXTURE_2D );
 }
 
-
 /*
 =============
 GL_DrawAliasShadow
@@ -420,11 +413,11 @@ extern	vec3_t			lightspot;
 
 void GL_DrawAliasShadow (dmdl_t *paliashdr, int32_t posenum)
 {
-	dtrivertx_t	*verts;
-	int		*order;
-	vec3_t	point;
-	float	height, lheight;
-	int		count;
+	dtrivertx_t*	verts;
+	int32_t*		order;
+	vec3_t			point;
+	float			height, lheight;
+	int32_t			count;
 	daliasframe_t	*frame;
 
 	lheight = currententity->origin[2] - lightspot[2];
@@ -445,34 +438,27 @@ void GL_DrawAliasShadow (dmdl_t *paliashdr, int32_t posenum)
 		count = *order++;
 		if (!count)
 			break;		// done
+
 		if (count < 0)
 		{
 			count = -count;
 			glBegin (GL_TRIANGLE_FAN);
 		}
 		else
-			glBegin (GL_TRIANGLE_STRIP);
+		{
+			glBegin(GL_TRIANGLE_STRIP);
+		}
 
 		do
 		{
-			// normals and vertexes come from the frame list
-/*
-			point[0] = verts[order[2]].v[0] * frame->scale[0] + frame->translate[0];
-			point[1] = verts[order[2]].v[1] * frame->scale[1] + frame->translate[1];
-			point[2] = verts[order[2]].v[2] * frame->scale[2] + frame->translate[2];
-*/
-
 			memcpy( point, s_lerped[order[2]], sizeof( point )  );
 
 			point[0] -= shadevector[0]*(point[2]+lheight);
 			point[1] -= shadevector[1]*(point[2]+lheight);
 			point[2] = height;
-//			height -= 0.001;
 			glVertex3fv (point);
 
 			order += 3;
-
-//			verts++;
 
 		} while (--count);
 
@@ -631,11 +617,11 @@ R_DrawAliasModel
 */
 void R_DrawAliasModel (entity_t *e)
 {
-	int			i;
-	dmdl_t		*paliashdr;
+	int32_t		i;
+	dmdl_t*		paliashdr;
 	float		an;
 	vec3_t		bbox[8];
-	image_t		*skin;
+	image_t*	skin;
 
 	if ( !( e->flags & RF_WEAPONMODEL ) )
 	{

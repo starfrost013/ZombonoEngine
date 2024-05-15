@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gl_local.h"
 
-int	r_dlightframecount;
+int32_t	r_dlightframecount;
 
 #define	DLIGHT_CUTOFF	64
 
@@ -36,7 +36,7 @@ DYNAMIC LIGHTS BLEND RENDERING
 
 void R_RenderDlight (dlight_t *light)
 {
-	int		i, j;
+	int32_t	i, j;
 	float	a;
 	vec3_t	v;
 	float	rad;
@@ -69,8 +69,8 @@ R_RenderDlights
 */
 void R_RenderDlights (void)
 {
-	int		i;
-	dlight_t	*l;
+	int32_t		i;
+	dlight_t*	l;
 
 	if (!gl_flashblend->value)
 		return;
@@ -113,7 +113,7 @@ void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node)
 	cplane_t	*splitplane;
 	float		dist;
 	msurface_t	*surf;
-	int			i;
+	int32_t		i;
 	
 	if (node->contents != -1)
 		return;
@@ -156,8 +156,8 @@ R_PushDlights
 */
 void R_PushDlights (void)
 {
-	int		i;
-	dlight_t	*l;
+	int32_t		i;
+	dlight_t*	l;
 
 	if (gl_flashblend->value)
 		return;
@@ -179,22 +179,22 @@ LIGHT SAMPLING
 */
 
 vec3_t			pointcolor;
-cplane_t		*lightplane;		// used as shadow plane
+cplane_t*		lightplane;		// used as shadow plane
 vec3_t			lightspot;
 
 int32_t RecursiveLightPoint (mnode_t *node, vec3_t start, vec3_t end)
 {
 	float		front, back, frac;
-	int			side;
-	cplane_t	*plane;
-	vec3_t		mid;
-	msurface_t	*surf;
-	int			s, t, ds, dt;
-	int			i;
-	mtexinfo_t	*tex;
-	uint8_t		*lightmap;
-	int			maps;
-	int			r;
+	int32_t		side;
+	cplane_t*	plane;
+	vec3_t		mid = { 0 };
+	msurface_t*	surf;
+	int32_t		s, t, ds, dt;
+	int32_t		i;
+	mtexinfo_t* tex;
+	uint8_t*	lightmap;
+	int32_t		maps;
+	int32_t		r;
 
 	if (node->contents != -1)
 		return -1;		// didn't hit anything
@@ -290,12 +290,12 @@ R_LightPoint
 */
 void R_LightPoint (vec3_t p, vec3_t color)
 {
-	vec3_t		end;
+	vec3_t		end = { 0 };
 	float		r;
-	int			lnum;
-	dlight_t	*dl;
+	int32_t		lnum;
+	dlight_t*	dl;
 	float		light;
-	vec3_t		dist;
+	vec3_t		dist = { 0 };
 	float		add;
 	
 	if (!r_worldmodel->lightdata)
@@ -326,15 +326,13 @@ void R_LightPoint (vec3_t p, vec3_t color)
 	dl = r_newrefdef.dlights;
 	for (lnum=0 ; lnum<r_newrefdef.num_dlights ; lnum++, dl++)
 	{
-		VectorSubtract (currententity->origin,
-						dl->origin,
-						dist);
+		VectorSubtract (currententity->origin, dl->origin, dist);
+
 		add = dl->intensity - VectorLength(dist);
 		add *= (1.0/256);
+
 		if (add > 0)
-		{
-			VectorMA (color, add, dl->color, color);
-		}
+			VectorMA(color, add, dl->color, color);
 	}
 
 	VectorScale (color, gl_modulate->value, color);
@@ -351,16 +349,16 @@ R_AddDynamicLights
 */
 void R_AddDynamicLights (msurface_t *surf)
 {
-	int			lnum;
-	int			sd, td;
+	int32_t		lnum;
+	int32_t		sd, td;
 	float		fdist, frad, fminlight;
-	vec3_t		impact, local;
-	int			s, t;
-	int			i;
-	int			smax, tmax;
-	mtexinfo_t	*tex;
-	dlight_t	*dl;
-	float		*pfBL;
+	vec3_t		impact = { 0 }, local = { 0 };
+	int32_t		s, t;
+	int32_t		i;
+	int32_t		smax, tmax;
+	mtexinfo_t* tex;
+	dlight_t*	dl;
+	float*		pfBL;
 	float		fsacc, ftacc;
 
 	smax = (surf->extents[0]>>4)+1;
@@ -447,14 +445,14 @@ Combine and scale multiple lightmaps into the floating format in blocklights
 */
 void R_BuildLightMap (msurface_t *surf, uint8_t *dest, int32_t stride)
 {
-	int			smax, tmax;
-	int			r, g, b, a, max;
-	int			i, j, size;
-	uint8_t		*lightmap;
-	float		scale[4];
-	int			nummaps;
-	float		*bl;
-	lightstyle_t	*style;
+	int32_t			smax, tmax;
+	int32_t			r, g, b, a, max;
+	int32_t			i, j, size;
+	uint8_t*		lightmap;
+	float			scale[4] = { 0 };
+	int32_t			nummaps;
+	float*			bl;
+	lightstyle_t*	style;
 
 	if ( surf->texinfo->flags & (SURF_SKY|SURF_TRANS33|SURF_TRANS66|SURF_WARP) )
 		ri.Sys_Error (ERR_DROP, "R_BuildLightMap called for non-lit surface");
@@ -574,7 +572,6 @@ store:
 	{
 		for (j = 0; j < smax; j++)
 		{
-
 			r = Q_ftol(bl[0]);
 			g = Q_ftol(bl[1]);
 			b = Q_ftol(bl[2]);

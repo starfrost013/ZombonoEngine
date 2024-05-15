@@ -30,14 +30,14 @@ typedef struct gl_state_s
 {
 	GLFWwindow* window;					// The GLFW window
 
-	float inverse_intensity;
-	bool fullscreen;					// Are we in fullscreen?
+	float		inverse_intensity;
+	bool		fullscreen;				// Are we in fullscreen?
 
-	int32_t     prev_mode;
+	int32_t		prev_mode;				// Previous GL mode
 
-	int32_t lightmap_textures;
+	int32_t		lightmap_textures;
 
-	int	currenttextures[2];
-	int32_t currenttmu;
+	int32_t		currenttextures[2];
+	int32_t		currenttmu;
 
 } gl_state_t;
