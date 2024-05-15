@@ -128,8 +128,8 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	// move the window if the user specified 
 	if (!fullscreen)
 	{
-		int vid_xpos = ri.Cvar_Get("vid_xpos", "0", 0)->value;
-		int vid_ypos = ri.Cvar_Get("vid_ypos", "0", 0)->value;
+		int32_t vid_xpos = ri.Cvar_Get("vid_xpos", "0", 0)->value;
+		int32_t vid_ypos = ri.Cvar_Get("vid_ypos", "0", 0)->value;
 
 		glfwSetWindowPos(gl_state.window, vid_xpos, vid_ypos);
 	}
@@ -142,6 +142,10 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height)
 {
 	glViewport(0, 0, width, height);
+	vid.width = width;
+	vid.height = height;
+	// tell the client/server about it
+	ri.Vid_NewWindow(width, height);
 }
 
 /*
@@ -170,11 +174,11 @@ rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, int32_t mode, bool fullsc
 	}
 
 	// do a CDS if needed
-	if ( fullscreen )
+	if (fullscreen)
 	{
 		ri.Con_Printf( PRINT_ALL, "...attempting fullscreen\n" );
-
 		ri.Con_Printf( PRINT_ALL, "...calling CDS: " );
+
 		if ( VID_CreateWindow(width, height, true) )
 		{
 			*pwidth = width;
@@ -195,7 +199,9 @@ rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, int32_t mode, bool fullsc
 
 			*pwidth = width;
 			*pheight = height;
+
 			gl_state.fullscreen = false;
+			
 			return rserr_invalid_fullscreen;
 		}
 	}
@@ -205,7 +211,9 @@ rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, int32_t mode, bool fullsc
 
 		*pwidth = width;
 		*pheight = height;
+		
 		gl_state.fullscreen = false;
+		
 		if ( !VID_CreateWindow (width, height, false) )
 			return rserr_invalid_mode;
 	}
@@ -255,9 +263,7 @@ bool GL_Init()
 void GL_BeginFrame()
 {
 	if (gl_state.window == NULL)
-	{
 		return;
-	}
 
 	if ( gl_bitdepth->modified )
 	{
@@ -278,11 +284,9 @@ void GL_EndFrame()
 {
 	// if the window closed exit
 	if (gl_state.window == NULL)
-	{
 		return;
-	}
 
-	int		err;
+	int32_t	err;
 
 	err = glGetError();
 	assert(err == GL_NO_ERROR);

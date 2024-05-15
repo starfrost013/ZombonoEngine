@@ -378,17 +378,15 @@ int32_t SignbitsForPlane (cplane_t *out)
 
 void R_SetFrustum ()
 {
-	int		i;
-	int		base = 90;
+	int32_t	i;
+	int32_t	base = 90;
 
 	// HACK: silly hack to not cull outside the box 
 	// TODO: This code is fundamentally broken and does not care about aspect ratio, but it's hacked to work.
 
 	if ((float)r_newrefdef.width / (float)r_newrefdef.height > 1.4f) // 16:9 widescreen
-	{
 		base = 75;
-	}
-
+	
 	// rotate VPN right by FOV_X/2 degrees
 	RotatePointAroundVector( frustum[0].normal, vup, vpn, -(base-r_newrefdef.fov_x / 2 ) );
 	// rotate VPN left by FOV_X/2 degrees
@@ -500,8 +498,7 @@ R_SetupGL
 void R_SetupGL ()
 {
 	float	screenaspect;
-//	float	yfov;
-	int		x, x2, y2, y, w, h;
+	int32_t	x, x2, y2, y, w, h;
 
 	//
 	// set up viewport
@@ -697,7 +694,6 @@ void R_RenderFrame (refdef_t *fd)
 	R_SetLightLevel ();
 	R_SetGL2D ();
 }
-
 
 void R_Register( void )
 {
