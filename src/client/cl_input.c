@@ -36,8 +36,8 @@ cvar_t* m_filter;
 
 bool	mlooking;
 
-void Input_MLookDown(void) { mlooking = true; }
-void Input_MLookUp(void) {
+void Input_MLookDown() { mlooking = true; }
+void Input_MLookUp() {
 	mlooking = false;
 	if (!freelook->value && lookspring->value)
 		Input_CenterView();
@@ -91,7 +91,7 @@ void Input_Activate(bool activated)
 Input_Shutdown
 ===========
 */
-void Input_Shutdown(void)
+void Input_Shutdown()
 {
 	Input_DeactivateMouse();
 }
@@ -103,7 +103,7 @@ Input_Frame
 Called every frame, even if not generating commands
 ==================
 */
-void Input_Frame(void)
+void Input_Frame()
 {
 	if (!mouseinitialized)
 		return;
@@ -254,41 +254,41 @@ void Input_KeyUp (kbutton_t *b)
 	b->state |= 4; 		// impulse up
 }
 
-void Input_KLookDown (void) {Input_KeyDown(&input_klook);}
-void Input_KLookUp (void) {Input_KeyUp(&input_klook);}
-void Input_UpDown(void) {Input_KeyDown(&input_up);}
-void Input_UpUp(void) {Input_KeyUp(&input_up);}
-void Input_DownDown(void) {Input_KeyDown(&input_down);}
-void Input_DownUp(void) {Input_KeyUp(&input_down);}
-void Input_LeftDown(void) {Input_KeyDown(&input_left);}
-void Input_LeftUp(void) {Input_KeyUp(&input_left);}
-void Input_RightDown(void) {Input_KeyDown(&input_right);}
-void Input_RightUp(void) {Input_KeyUp(&input_right);}
-void Input_ForwardDown(void) {Input_KeyDown(&input_forward);}
-void Input_ForwardUp(void) {Input_KeyUp(&input_forward);}
-void Input_BackDown(void) {Input_KeyDown(&input_back);}
-void Input_BackUp(void) {Input_KeyUp(&input_back);}
-void Input_LookupDown(void) {Input_KeyDown(&input_lookup);}
-void Input_LookupUp(void) {Input_KeyUp(&input_lookup);}
-void Input_LookdownDown(void) {Input_KeyDown(&input_lookdown);}
-void Input_LookdownUp(void) {Input_KeyUp(&input_lookdown);}
-void Input_MoveleftDown(void) {Input_KeyDown(&input_moveleft);}
-void Input_MoveleftUp(void) {Input_KeyUp(&input_moveleft);}
-void Input_MoverightDown(void) {Input_KeyDown(&input_moveright);}
-void Input_MoverightUp(void) {Input_KeyUp(&input_moveright);}
+void Input_KLookDown () {Input_KeyDown(&input_klook);}
+void Input_KLookUp () {Input_KeyUp(&input_klook);}
+void Input_UpDown() {Input_KeyDown(&input_up);}
+void Input_UpUp() {Input_KeyUp(&input_up);}
+void Input_DownDown() {Input_KeyDown(&input_down);}
+void Input_DownUp() {Input_KeyUp(&input_down);}
+void Input_LeftDown() {Input_KeyDown(&input_left);}
+void Input_LeftUp() {Input_KeyUp(&input_left);}
+void Input_RightDown() {Input_KeyDown(&input_right);}
+void Input_RightUp() {Input_KeyUp(&input_right);}
+void Input_ForwardDown() {Input_KeyDown(&input_forward);}
+void Input_ForwardUp() {Input_KeyUp(&input_forward);}
+void Input_BackDown() {Input_KeyDown(&input_back);}
+void Input_BackUp() {Input_KeyUp(&input_back);}
+void Input_LookupDown() {Input_KeyDown(&input_lookup);}
+void Input_LookupUp() {Input_KeyUp(&input_lookup);}
+void Input_LookdownDown() {Input_KeyDown(&input_lookdown);}
+void Input_LookdownUp() {Input_KeyUp(&input_lookdown);}
+void Input_MoveleftDown() {Input_KeyDown(&input_moveleft);}
+void Input_MoveleftUp() {Input_KeyUp(&input_moveleft);}
+void Input_MoverightDown() {Input_KeyDown(&input_moveright);}
+void Input_MoverightUp() {Input_KeyUp(&input_moveright);}
 
-void Input_SpeedDown(void) {Input_KeyDown(&input_speed);}
-void Input_SpeedUp(void) {Input_KeyUp(&input_speed);}
+void Input_SpeedDown() {Input_KeyDown(&input_speed);}
+void Input_SpeedUp() {Input_KeyUp(&input_speed);}
 
-void Input_Attack1Down(void) {Input_KeyDown(&input_attack1);}
-void Input_Attack1Up(void) {Input_KeyUp(&input_attack1);}
-void Input_Attack2Down(void) { Input_KeyDown(&input_attack2); }
-void Input_Attack2Up(void) { Input_KeyUp(&input_attack2); }
+void Input_Attack1Down() {Input_KeyDown(&input_attack1);}
+void Input_Attack1Up() {Input_KeyUp(&input_attack1);}
+void Input_Attack2Down() { Input_KeyDown(&input_attack2); }
+void Input_Attack2Up() { Input_KeyUp(&input_attack2); }
 
-void Input_UseDown (void) {Input_KeyDown(&input_use);}
-void Input_UseUp (void) {Input_KeyUp(&input_use);}
+void Input_UseDown () {Input_KeyDown(&input_use);}
+void Input_UseUp () {Input_KeyUp(&input_use);}
 
-void Input_Impulse (void) {input_impulse=atoi(Cmd_Argv(1));}
+void Input_Impulse () {input_impulse=atoi(Cmd_Argv(1));}
 
 /*
 ===============
@@ -344,7 +344,7 @@ CL_AdjustAngles
 Moves the local angle positions
 ================
 */
-void CL_AdjustAngles (void)
+void CL_AdjustAngles ()
 {
 	float	speed;
 	float	up, down;
@@ -409,7 +409,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	}	
 }
 
-void CL_ClampPitch (void)
+void CL_ClampPitch ()
 {
 	float	pitch;
 
@@ -478,7 +478,7 @@ void CL_FinishMove (usercmd_t *cmd)
 CL_CreateCmd
 =================
 */
-usercmd_t CL_CreateCmd (void)
+usercmd_t CL_CreateCmd ()
 {
 	usercmd_t	cmd;
 
@@ -504,7 +504,7 @@ usercmd_t CL_CreateCmd (void)
 }
 
 
-void Input_CenterView (void)
+void Input_CenterView ()
 {
 	cl.viewangles[PITCH] = -SHORT2ANGLE(cl.frame.playerstate.pmove.delta_angles[PITCH]);
 }
@@ -514,7 +514,7 @@ void Input_CenterView (void)
 CL_InitInput
 ============
 */
-void CL_InitInput (void)
+void CL_InitInput ()
 {
 	Cmd_AddCommand ("centerview",Input_CenterView);
 
@@ -560,7 +560,7 @@ void CL_InitInput (void)
 CL_SendCmd
 =================
 */
-void CL_SendCmd (void)
+void CL_SendCmd ()
 {
 	sizebuf_t	buf;
 	uint8_t		data[128];
@@ -663,7 +663,7 @@ Input_ActivateMouse
 Called when the window gains focus or changes in some way
 ===========
 */
-void Input_ActivateMouse(void)
+void Input_ActivateMouse()
 {
 	if (!mouseinitialized)
 		return;
@@ -692,7 +692,7 @@ Input_DeactivateMouse
 Called when the window loses focus
 ===========
 */
-void Input_DeactivateMouse(void)
+void Input_DeactivateMouse()
 {
 	if (!mouseinitialized)
 		return;
@@ -710,7 +710,7 @@ void Input_DeactivateMouse(void)
 Input_StartupMouse
 ===========
 */
-void Input_StartupMouse(void)
+void Input_StartupMouse()
 {
 	cvar_t* cv;
 

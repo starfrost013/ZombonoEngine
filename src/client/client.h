@@ -324,7 +324,7 @@ extern	sizebuf_t	net_message;
 
 bool CL_CheckOrDownloadFile (char *filename);
 
-void CL_AddNetgraph (void);
+void CL_AddNetgraph ();
 
 void CL_TeleporterParticles (entity_state_t *ent);
 void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
@@ -353,8 +353,8 @@ typedef struct particle_s
 #define BLASTER_PARTICLE_COLOR		0xe0
 #define INSTANT_PARTICLE	-10000.0
 
-void CL_ClearEffects (void);
-void CL_ClearTEnts (void);
+void CL_ClearEffects ();
+void CL_ClearTEnts ();
 void CL_BlasterTrail (vec3_t start, vec3_t end);
 void CL_QuadTrail (vec3_t start, vec3_t end);
 void CL_RailTrail (vec3_t start, vec3_t end);
@@ -369,43 +369,43 @@ void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count
 
 int32_t CL_ParseEntityBits (uint32_t *bits);
 void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int32_t number, int32_t bits);
-void CL_ParseFrame (void);
+void CL_ParseFrame ();
 
-void CL_ParseTEnt (void);
-void CL_ParseConfigString (void);
-void CL_ParseMuzzleFlash (void);
-void CL_ParseMuzzleFlash2 (void);
+void CL_ParseTEnt ();
+void CL_ParseConfigString ();
+void CL_ParseMuzzleFlash ();
+void CL_ParseMuzzleFlash2 ();
 
 void CL_SetLightstyle (int32_t i);
 
-void CL_RunDLights (void);
-void CL_RunLightStyles (void);
+void CL_RunDLights ();
+void CL_RunLightStyles ();
 
-void CL_AddEntities (void);
-void CL_AddDLights (void);
-void CL_AddTEnts (void);
-void CL_AddLightStyles (void);
+void CL_AddEntities ();
+void CL_AddDLights ();
+void CL_AddTEnts ();
+void CL_AddLightStyles ();
 
 //=================================================
 
-void CL_PrepRefresh (void);
-void CL_RegisterSounds (void);
+void CL_PrepRefresh ();
+void CL_RegisterSounds ();
 
-void CL_Quit_f (void);
+void CL_Quit_f ();
 
 //
 // cl_main
 //
 extern	refexport_t	re;		// interface to refresh .dll
 
-void CL_Init (void);
+void CL_Init ();
 
-void CL_FixUpGender(void);
-void CL_Disconnect (void);
-void CL_Disconnect_f (void);
-void CL_PingServers_f (void);
-void CL_Snd_Restart_f (void);
-void CL_RequestNextDownload (void);
+void CL_FixUpGender();
+void CL_Disconnect ();
+void CL_Disconnect_f ();
+void CL_PingServers_f ();
+void CL_Snd_Restart_f ();
+void CL_RequestNextDownload ();
 
 //
 // cl_input
@@ -421,16 +421,16 @@ typedef struct
 extern	kbutton_t	Input_mlook, input_klook;
 extern 	kbutton_t 	input_speed;
 
-void CL_InitInput (void);
-void CL_SendCmd (void);
+void CL_InitInput ();
+void CL_SendCmd ();
 
-void CL_ClearState (void);
+void CL_ClearState ();
 
-void CL_ReadPackets (void);
+void CL_ReadPackets ();
 
 void CL_BaseMove (usercmd_t *cmd);
 
-void Input_CenterView (void);
+void Input_CenterView ();
 
 extern double last_mouse_pos_x, last_mouse_pos_y;
 
@@ -440,20 +440,20 @@ char *Key_KeynumToString (int32_t keynum, bool shift);
 //
 // cl_demo.c
 //
-void CL_WriteDemoMessage (void);
-void CL_Stop_f (void);
-void CL_Record_f (void);
+void CL_WriteDemoMessage ();
+void CL_Stop_f ();
+void CL_Record_f ();
 
 //
 // cl_parse.c
 //
 extern	char *svc_strings[256];
 
-void CL_ParseServerMessage (void);
+void CL_ParseServerMessage ();
 void CL_LoadClientinfo (clientinfo_t *ci, char *s);
 void ShowNet(char *s);
 void CL_ParseClientinfo (int32_t player);
-void CL_Download_f (void);
+void CL_Download_f ();
 
 //
 // cl_view.c
@@ -461,7 +461,7 @@ void CL_Download_f (void);
 extern	int32_t 		gun_frame;
 extern	struct model_s	*gun_model;
 
-void V_Init (void);
+void V_Init ();
 void V_RenderView();
 void V_AddEntity (entity_t *ent);
 void V_AddParticle (vec3_t org, vec4_t color);
@@ -476,15 +476,15 @@ extern int32_t r_numparticles;
 //
 // cl_tent.c
 //
-void CL_RegisterTEntSounds (void);
-void CL_RegisterTEntModels (void);
+void CL_RegisterTEntSounds ();
+void CL_RegisterTEntModels ();
 void CL_SmokeAndFlash(vec3_t origin);
 
 //
 // cl_pred.c
 //
-void CL_PredictMovement (void);
-void CL_CheckPredictionError (void);
+void CL_PredictMovement ();
+void CL_CheckPredictionError ();
 
 //
 // cl_fx_dlight.c
@@ -556,7 +556,7 @@ extern	struct model_s* cl_mod_flash;
 void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old);
 void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags);
 void CL_FlyEffect(centity_t* ent, vec3_t origin);
-void CL_AddParticles(void);
+void CL_AddParticles();
 void CL_EntityEvent(entity_state_t* ent);
 void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 
@@ -564,17 +564,17 @@ void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 // legacy menu system
 //
 
-void M_Init (void);
+void M_Init ();
 void M_Keydown (int32_t key, int32_t mods);
-void M_Draw (void);
-void M_Menu_Main_f (void);
-void M_ForceMenuOff (void);
+void M_Draw ();
+void M_Menu_Main_f ();
+void M_ForceMenuOff ();
 void M_AddToServerList (netadr_t adr, char *info);
 
 //
 // cl_pred.c
 //
-void CL_PredictMovement (void);
+void CL_PredictMovement ();
 
 //
 // cl_ui.c

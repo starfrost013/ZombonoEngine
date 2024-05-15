@@ -36,7 +36,7 @@ cdlight_t		cl_dlights[MAX_DLIGHTS];
 CL_ClearDlights
 ================
 */
-void CL_ClearDlights(void)
+void CL_ClearDlights()
 {
 	memset(cl_dlights, 0, sizeof(cl_dlights));
 }
@@ -109,7 +109,7 @@ CL_RunDLights
 
 ===============
 */
-void CL_RunDLights(void)
+void CL_RunDLights()
 {
 	int32_t 		i;
 	cdlight_t* dl;
@@ -138,7 +138,7 @@ CL_AddDLights
 
 ===============
 */
-void CL_AddDLights(void)
+void CL_AddDLights()
 {
 	int32_t 		i;
 	cdlight_t* dl;

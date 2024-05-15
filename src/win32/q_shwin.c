@@ -78,7 +78,7 @@ void *Hunk_Alloc (int32_t size)
 	return (void *)(membase+cursize-size);
 }
 
-int32_t Hunk_End (void)
+int32_t Hunk_End ()
 {
 	// free the remaining unused virtual memory
 
@@ -226,7 +226,7 @@ char *Sys_FindNext (uint32_t musthave, uint32_t canthave)
 	return findpath;
 }
 
-void Sys_FindClose (void)
+void Sys_FindClose ()
 {
 	if (findhandle != -1)
 		_findclose (findhandle);

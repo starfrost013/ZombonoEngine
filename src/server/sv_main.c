@@ -53,7 +53,7 @@ cvar_t* public_server;			// should heartbeats be sent
 
 cvar_t* sv_reconnect_limit;	// minimum seconds between connect messages
 
-void Master_Shutdown (void);
+void Master_Shutdown ();
 
 
 //============================================================================
@@ -107,7 +107,7 @@ SV_StatusString
 Builds the string that is sent as heartbeats and status replies
 ===============
 */
-char	*SV_StatusString (void)
+char	*SV_StatusString ()
 {
 	char	player[1024];
 	static char	status[MAX_MSGLEN - 16];
@@ -145,7 +145,7 @@ SVC_Status
 Responds with all the info that qplug or qspy can see
 ================
 */
-void SVC_Status (void)
+void SVC_Status ()
 {
 	Netchan_OutOfBandPrint (NS_SERVER, net_from, "print\n%s", SV_StatusString());
 }
@@ -156,7 +156,7 @@ SVC_Ack
 
 ================
 */
-void SVC_Ack (void)
+void SVC_Ack ()
 {
 	Com_Printf ("Ping acknowledge from %s\n", NET_AdrToString(net_from));
 }
@@ -169,7 +169,7 @@ Responds with int16_t info for broadcast scans
 The second parameter should be the current protocol version number.
 ================
 */
-void SVC_Info (void)
+void SVC_Info ()
 {
 	char	string[64];
 	int32_t 	i, count;
@@ -202,7 +202,7 @@ SVC_Ping
 Just responds with an acknowledgement
 ================
 */
-void SVC_Ping (void)
+void SVC_Ping ()
 {
 	Netchan_OutOfBandPrint (NS_SERVER, net_from, "ack");
 }
@@ -219,7 +219,7 @@ flood the server with invalid connection IPs.  With a
 challenge, they must give a valid IP address.
 =================
 */
-void SVC_GetChallenge (void)
+void SVC_GetChallenge ()
 {
 	int32_t 	i;
 	int32_t 	oldest;
@@ -260,7 +260,7 @@ SVC_DirectConnect
 A connection request that did not come from the master
 ==================
 */
-void SVC_DirectConnect (void)
+void SVC_DirectConnect ()
 {
 	char		userinfo[MAX_INFO_STRING];
 	netadr_t	adr;
@@ -406,7 +406,7 @@ gotnewcl:
 	newcl->lastconnect = svs.realtime;
 }
 
-int32_t Rcon_Validate (void)
+int32_t Rcon_Validate ()
 {
 	if (!strlen (rcon_password->string))
 		return 0;
@@ -426,7 +426,7 @@ Shift down the remaining args
 Redirect all printfs
 ===============
 */
-void SVC_RemoteCommand (void)
+void SVC_RemoteCommand ()
 {
 	int32_t 	i;
 	char	remaining[1024];
@@ -470,7 +470,7 @@ Clients that are in the game can still send
 connectionless packets.
 =================
 */
-void SV_ConnectionlessPacket (void)
+void SV_ConnectionlessPacket ()
 {
 	char	*s;
 	char	*c;
@@ -514,7 +514,7 @@ SV_CalcPings
 Updates the cl->ping variables
 ===================
 */
-void SV_CalcPings (void)
+void SV_CalcPings ()
 {
 	int32_t 		i, j;
 	client_t	*cl;
@@ -556,7 +556,7 @@ Every few frames, gives all clients an allotment of milliseconds
 for their command moves.  If they exceed it, assume cheating.
 ===================
 */
-void SV_GiveMsec (void)
+void SV_GiveMsec ()
 {
 	int32_t 		i;
 	client_t	*cl;
@@ -580,7 +580,7 @@ void SV_GiveMsec (void)
 SV_ReadPackets
 =================
 */
-void SV_ReadPackets (void)
+void SV_ReadPackets ()
 {
 	int32_t 		i;
 	client_t	*cl;
@@ -646,7 +646,7 @@ for a few seconds to make sure any final reliable message gets resent
 if necessary
 ==================
 */
-void SV_CheckTimeouts (void)
+void SV_CheckTimeouts ()
 {
 	int32_t 	i;
 	client_t	*cl;
@@ -686,7 +686,7 @@ This has to be done before the world logic, because
 player processing happens outside RunWorldFrame
 ================
 */
-void SV_PrepWorldFrame (void)
+void SV_PrepWorldFrame ()
 {
 	edict_t	*ent;
 	int32_t 	i;
@@ -706,7 +706,7 @@ void SV_PrepWorldFrame (void)
 SV_RunGameFrame
 =================
 */
-void SV_RunGameFrame (void)
+void SV_RunGameFrame ()
 {
 	if (host_speeds->value)
 		time_before_game = Sys_Milliseconds ();
@@ -809,7 +809,7 @@ let it know we are alive, and log information
 ================
 */
 #define	HEARTBEAT_SECONDS	300
-void Master_Heartbeat (void)
+void Master_Heartbeat ()
 {
 	char		*string;
 	int32_t 		i;
@@ -850,7 +850,7 @@ Master_Shutdown
 Informs all masters that this server is going down
 =================
 */
-void Master_Shutdown (void)
+void Master_Shutdown ()
 {
 	int32_t 		i;
 
@@ -916,7 +916,7 @@ SV_Init
 Only called at zombono.exe startup, not for each game
 ===============
 */
-void SV_Init (void)
+void SV_Init ()
 {
 	SV_InitOperatorCommands	();
 

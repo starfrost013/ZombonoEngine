@@ -87,7 +87,7 @@ Netchan_Init
 
 ===============
 */
-void Netchan_Init (void)
+void Netchan_Init ()
 {
 	int32_t 	port;
 

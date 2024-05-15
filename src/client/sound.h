@@ -22,21 +22,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct sfx_s;
 
-void S_Init (void);
-void S_Shutdown (void);
+void S_Init ();
+void S_Shutdown ();
 
 // if origin is NULL, the sound will be dynamically sourced from the entity
 void S_StartSound (vec3_t origin, int32_t entnum, int32_t entchannel, struct sfx_s *sfx, float fvol,  float attenuation, float timeofs);
 void S_StartLocalSound (char *s);
 
-void S_StopAllSounds(void);
+void S_StopAllSounds();
 void S_Update (vec3_t origin, vec3_t v_forward, vec3_t v_right, vec3_t v_up);
 
 void S_Activate (bool activated);
 
-void S_BeginRegistration (void);
+void S_BeginRegistration ();
 struct sfx_s *S_RegisterSound (char *sample);
-void S_EndRegistration (void);
+void S_EndRegistration ();
 
 struct sfx_s *S_FindName (char *name, bool create);
 

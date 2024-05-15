@@ -140,7 +140,7 @@ uint8_t *Mod_ClusterPVS (int32_t cluster, model_t *model)
 Mod_Modellist_f
 ================
 */
-void Mod_Modellist_f (void)
+void Mod_Modellist_f ()
 {
 	int32_t		i;
 	model_t*	mod;
@@ -163,7 +163,7 @@ void Mod_Modellist_f (void)
 Mod_Init
 ===============
 */
-void Mod_Init (void)
+void Mod_Init ()
 {
 	memset (mod_novis, 0xff, sizeof(mod_novis));
 }
@@ -541,7 +541,7 @@ void CalcSurfaceExtents (msurface_t *s)
 
 void GL_BuildPolygonFromSurface(msurface_t *fa);
 void GL_CreateSurfaceLightmap (msurface_t *surf);
-void GL_EndBuildingLightmaps (void);
+void GL_EndBuildingLightmaps ();
 void GL_BeginBuildingLightmaps (model_t *m);
 
 /*
@@ -979,7 +979,7 @@ R_EndRegistration
 
 @@@@@@@@@@@@@@@@@@@@@
 */
-void R_EndRegistration (void)
+void R_EndRegistration ()
 {
 	int32_t		i;
 	model_t*	mod;
@@ -1018,7 +1018,7 @@ void Mod_Free (model_t *mod)
 Mod_FreeAll
 ================
 */
-void Mod_FreeAll (void)
+void Mod_FreeAll ()
 {
 	int32_t		i;
 

@@ -57,7 +57,7 @@ V_ClearScene
 Specifies the model that will be used as the world
 ====================
 */
-void V_ClearScene (void)
+void V_ClearScene ()
 {
 	r_numdlights = 0;
 	r_numentities = 0;
@@ -161,7 +161,7 @@ CL_PrepRefresh
 Call before entering a new level, or after changing dlls
 =================
 */
-void CL_PrepRefresh (void)
+void CL_PrepRefresh ()
 {
 	char		mapname[32];
 	int32_t 		i;
@@ -305,13 +305,13 @@ float CalcFov (float fov_x, float width, float height)
 //============================================================================
 
 // gun frame debugging functions
-void V_Gun_Next_f (void)
+void V_Gun_Next_f ()
 {
 	gun_frame++;
 	Com_Printf ("frame %i\n", gun_frame);
 }
 
-void V_Gun_Prev_f (void)
+void V_Gun_Prev_f ()
 {
 	gun_frame--;
 	if (gun_frame < 0)
@@ -319,7 +319,7 @@ void V_Gun_Prev_f (void)
 	Com_Printf ("frame %i\n", gun_frame);
 }
 
-void V_Gun_Model_f (void)
+void V_Gun_Model_f ()
 {
 	char	name[MAX_QPATH];
 
@@ -340,7 +340,7 @@ void V_Gun_Model_f (void)
 SCR_DrawCrosshair
 =================
 */
-void SCR_DrawCrosshair (void)
+void SCR_DrawCrosshair ()
 {
 	if (!crosshair->value)
 		return;
@@ -461,7 +461,7 @@ void V_RenderView()
 V_Init
 =============
 */
-void V_Init (void)
+void V_Init ()
 {
 	Cmd_AddCommand ("gun_next", V_Gun_Next_f);
 	Cmd_AddCommand ("gun_prev", V_Gun_Prev_f);

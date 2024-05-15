@@ -241,17 +241,17 @@ typedef struct model_s
 
 //============================================================================
 
-void		Mod_Init (void);
+void		Mod_Init ();
 model_t*	Mod_ForName (char *name, bool crash);
 mleaf_t*	Mod_PointInLeaf (vec3_t p, model_t *model);
 uint8_t*	Mod_ClusterPVS (int32_t cluster, model_t *model);
 
-void		Mod_Modellist_f (void);
+void		Mod_Modellist_f ();
 
 void*		Hunk_Begin (int32_t maxsize);
 void*		Hunk_Alloc (int32_t size);
-int32_t		Hunk_End (void);
+int32_t		Hunk_End ();
 void		Hunk_Free (void *base);
 
-void		Mod_FreeAll (void);
+void		Mod_FreeAll ();
 void		Mod_Free (model_t *mod);

@@ -38,7 +38,7 @@ sv_client and sv_player will be valid.
 SV_BeginDemoServer
 ==================
 */
-void SV_BeginDemoserver (void)
+void SV_BeginDemoserver ()
 {
 	char		name[MAX_OSPATH];
 
@@ -56,7 +56,7 @@ Sends the first message from the server to a connected client.
 This will be sent on the initial connection and upon each server load.
 ================
 */
-void SV_New_f (void)
+void SV_New_f ()
 {
 	char		*gamedir;
 	int32_t 		playernum;
@@ -122,7 +122,7 @@ void SV_New_f (void)
 SV_Configstrings_f
 ==================
 */
-void SV_Configstrings_f (void)
+void SV_Configstrings_f ()
 {
 	int32_t 		start;
 
@@ -177,7 +177,7 @@ void SV_Configstrings_f (void)
 SV_Baselines_f
 ==================
 */
-void SV_Baselines_f (void)
+void SV_Baselines_f ()
 {
 	int32_t 	start;
 	entity_state_t	nullstate;
@@ -236,7 +236,7 @@ void SV_Baselines_f (void)
 SV_Begin_f
 ==================
 */
-void SV_Begin_f (void)
+void SV_Begin_f ()
 {
 	Com_DPrintf ("Begin() from %s\n", sv_client->name);
 
@@ -263,7 +263,7 @@ void SV_Begin_f (void)
 SV_NextDownload_f
 ==================
 */
-void SV_NextDownload_f (void)
+void SV_NextDownload_f ()
 {
 	int32_t 	r;
 	int32_t 	percent;
@@ -300,7 +300,7 @@ void SV_NextDownload_f (void)
 SV_BeginDownload_f
 ==================
 */
-void SV_BeginDownload_f(void)
+void SV_BeginDownload_f()
 {
 	char	*name;
 	extern	cvar_t *allow_download;
@@ -383,7 +383,7 @@ SV_Disconnect_f
 The client is going to disconnect, so remove the connection immediately
 =================
 */
-void SV_Disconnect_f (void)
+void SV_Disconnect_f ()
 {
 //	SV_EndRedirect ();
 	SV_DropClient (sv_client);	
@@ -397,13 +397,13 @@ SV_ShowServerinfo_f
 Dumps the serverinfo info string
 ==================
 */
-void SV_ShowServerinfo_f (void)
+void SV_ShowServerinfo_f ()
 {
 	Info_Print (Cvar_Serverinfo());
 }
 
 
-void SV_Nextserver (void)
+void SV_Nextserver ()
 {
 	char	*v;
 
@@ -431,7 +431,7 @@ A cinematic has completed or been aborted by a client, so move
 to the next server,
 ==================
 */
-void SV_Nextserver_f (void)
+void SV_Nextserver_f ()
 {
 	if ( atoi(Cmd_Argv(1)) != svs.spawncount ) {
 		Com_DPrintf ("Nextserver() from wrong level, from %s\n", sv_client->name);
@@ -446,7 +446,7 @@ void SV_Nextserver_f (void)
 typedef struct
 {
 	char	*name;
-	void	(*func) (void);
+	void	(*func) ();
 } ucmd_t;
 
 ucmd_t ucmds[] =

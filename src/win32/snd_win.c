@@ -64,7 +64,7 @@ WAVEOUTCAPS	wavecaps;
 
 DWORD	gSndBufSize;
 
-bool SNDDMA_InitWav (void);
+bool SNDDMA_InitWav ();
 
 void FreeSound( void );
 
@@ -73,7 +73,7 @@ void FreeSound( void );
 FreeSound
 ==================
 */
-void FreeSound (void)
+void FreeSound ()
 {
 	int32_t 	i;
 
@@ -126,7 +126,7 @@ SNDDM_InitWav
 Crappy windows multimedia base
 ==================
 */
-bool SNDDMA_InitWav (void)
+bool SNDDMA_InitWav ()
 {
 	WAVEFORMATEX  format; 
 	int32_t 			i;
@@ -275,7 +275,7 @@ Try to find a sound device to mix for.
 Returns false if nothing is found.
 ==================
 */
-bool SNDDMA_Init(void)
+bool SNDDMA_Init()
 {
 	sndinitstat	stat;
 
@@ -328,7 +328,7 @@ inside the recirculating dma buffer, so the mixing code will know
 how many sample are required to fill it up.
 ===============
 */
-int32_t SNDDMA_GetDMAPos(void)
+int32_t SNDDMA_GetDMAPos()
 {
 	int32_t 	s;
 	s = snd_sent * WAV_BUFFER_SIZE;
@@ -348,7 +348,7 @@ Send sound to device if buffer isn't really the dma buffer
 Also unlocks the dsound buffer
 ===============
 */
-void SNDDMA_Submit(void)
+void SNDDMA_Submit()
 {
 	LPWAVEHDR	h;
 	int32_t 		wResult;
@@ -412,7 +412,7 @@ SNDDMA_Shutdown
 Reset the sound device for exiting
 ===============
 */
-void SNDDMA_Shutdown(void)
+void SNDDMA_Shutdown()
 {
 	FreeSound ();
 }

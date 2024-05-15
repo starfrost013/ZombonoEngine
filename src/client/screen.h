@@ -21,19 +21,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // screen.h
 #pragma once
 
-void	SCR_Init (void);
+void	SCR_Init ();
 
-void	SCR_UpdateScreen (void);
+void	SCR_UpdateScreen ();
 
 void	SCR_CenterPrint (char *str);
-void	SCR_BeginLoadingPlaque (void);
-void	SCR_EndLoadingPlaque (void);
+void	SCR_BeginLoadingPlaque ();
+void	SCR_EndLoadingPlaque ();
 
 void	SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
-void	SCR_TouchPics (void);
+void	SCR_TouchPics ();
 
-void	SCR_RunConsole (void);
+void	SCR_RunConsole ();
 
 extern	float		scr_con_current;
 extern	float		scr_conlines;		// lines of console to display
@@ -49,4 +49,4 @@ extern	char		crosshair_pic[MAX_QPATH];
 extern	int32_t 		crosshair_width, crosshair_height;
 
 void SCR_AddDirtyPoint (int32_t x, int32_t y);
-void SCR_DirtyScreen (void);
+void SCR_DirtyScreen ();

@@ -34,7 +34,7 @@ extern	char	key_lines[128][MAXCMDLINE];
 extern	int32_t 	edit_line;
 extern	int32_t 	key_linepos;
 
-void Key_ClearTyping (void)
+void Key_ClearTyping ()
 {
 	key_lines[edit_line][1] = 0;	// clear any typing
 	key_linepos = 1;
@@ -45,7 +45,7 @@ void Key_ClearTyping (void)
 Con_ToggleConsole_f
 ================
 */
-void Con_ToggleConsole_f (void)
+void Con_ToggleConsole_f ()
 {
 	SCR_EndLoadingPlaque ();	// get rid of loading plaque
 
@@ -85,7 +85,7 @@ void Con_ToggleConsole_f (void)
 Con_ToggleChat_f
 ================
 */
-void Con_ToggleChat_f (void)
+void Con_ToggleChat_f ()
 {
 	Key_ClearTyping ();
 
@@ -108,7 +108,7 @@ void Con_ToggleChat_f (void)
 Con_Clear_f
 ================
 */
-void Con_Clear_f (void)
+void Con_Clear_f ()
 {
 	memset (con.text, ' ', CON_TEXTSIZE);
 }
@@ -121,7 +121,7 @@ Con_Dump_f
 Save the console contents out to a file
 ================
 */
-void Con_Dump_f (void)
+void Con_Dump_f ()
 {
 	int32_t 	l, x;
 	char	*line;
@@ -185,7 +185,7 @@ void Con_Dump_f (void)
 Con_ClearNotify
 ================
 */
-void Con_ClearNotify (void)
+void Con_ClearNotify ()
 {
 	int32_t 	i;
 	
@@ -199,7 +199,7 @@ void Con_ClearNotify (void)
 Con_MessageMode_f
 ================
 */
-void Con_MessageMode_f (void)
+void Con_MessageMode_f ()
 {
 	chat_team = false;
 	cls.key_dest = key_message;
@@ -210,7 +210,7 @@ void Con_MessageMode_f (void)
 Con_MessageMode2_f
 ================
 */
-void Con_MessageMode2_f (void)
+void Con_MessageMode2_f ()
 {
 	chat_team = true;
 	cls.key_dest = key_message;
@@ -223,7 +223,7 @@ Con_CheckResize
 If the line width has changed, reformat the buffer.
 ================
 */
-void Con_CheckResize (void)
+void Con_CheckResize ()
 {
 	int32_t 	i, j, width, oldwidth, oldtotallines, numlines, numchars;
 	char	tbuf[CON_TEXTSIZE];
@@ -282,7 +282,7 @@ void Con_CheckResize (void)
 Con_Init
 ================
 */
-void Con_Init (void)
+void Con_Init ()
 {
 	con.linewidth = -1;
 
@@ -313,7 +313,7 @@ void Con_Init (void)
 Con_Linefeed
 ===============
 */
-void Con_Linefeed (void)
+void Con_Linefeed ()
 {
 	con.x = 0;
 	if (con.display == con.current)
@@ -429,7 +429,7 @@ Con_DrawInput
 The input line scrolls horizontally if typing goes beyond the right edge
 ================
 */
-void Con_DrawInput (void)
+void Con_DrawInput ()
 {
 	int32_t 	y;
 	int32_t 	i;
@@ -473,7 +473,7 @@ Con_DrawNotify
 Draws the last few lines of output transparently over the game top
 ================
 */
-void Con_DrawNotify (void)
+void Con_DrawNotify ()
 {
 	int32_t 	x, v = 0;
 	int32_t 	skip_size_x = 0, skip_size_y = 0;

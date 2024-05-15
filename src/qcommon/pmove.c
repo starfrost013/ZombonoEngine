@@ -105,7 +105,7 @@ Does not modify any world state?
 */
 #define	MIN_STEP_NORMAL	0.7		// can't step up onto very steep slopes
 #define	MAX_CLIP_PLANES	5
-void PM_StepSlideMove_ (void)
+void PM_StepSlideMove_ ()
 {
 	int32_t 		bumpcount, numbumps;
 	vec3_t		dir;
@@ -221,7 +221,7 @@ PM_StepSlideMove
 
 ==================
 */
-void PM_StepSlideMove (void)
+void PM_StepSlideMove ()
 {
 	vec3_t		start_o, start_v;
 	vec3_t		down_o, down_v;
@@ -287,7 +287,7 @@ PM_Friction
 Handles both ground friction and water friction
 ==================
 */
-void PM_Friction (void)
+void PM_Friction ()
 {
 	float	*vel;
 	float	speed, newspeed, control;
@@ -475,7 +475,7 @@ PM_WaterMove
 
 ===================
 */
-void PM_WaterMove (void)
+void PM_WaterMove ()
 {
 	int32_t 	i;
 	vec3_t	wishvel;
@@ -517,7 +517,7 @@ PM_AirMove
 
 ===================
 */
-void PM_AirMove (void)
+void PM_AirMove ()
 {
 	int32_t 		i;
 	vec3_t		wishvel;
@@ -605,7 +605,7 @@ void PM_AirMove (void)
 PM_CatagorizePosition
 =============
 */
-void PM_CatagorizePosition (void)
+void PM_CatagorizePosition ()
 {
 	vec3_t		point;
 	int32_t 		cont;
@@ -710,7 +710,7 @@ void PM_CatagorizePosition (void)
 PM_CheckJump
 =============
 */
-void PM_CheckJump (void)
+void PM_CheckJump ()
 {
 	if (pm->s.pm_flags & PMF_TIME_LAND)
 	{	// hasn't been long enough since landing to jump again
@@ -763,7 +763,7 @@ void PM_CheckJump (void)
 PM_CheckSpecialMovement
 =============
 */
-void PM_CheckSpecialMovement (void)
+void PM_CheckSpecialMovement ()
 {
 	vec3_t	spot;
 	int32_t 	cont;
@@ -908,7 +908,7 @@ PM_CheckDuck
 Sets mins, maxs, and pm->viewheight
 ==============
 */
-void PM_CheckDuck (void)
+void PM_CheckDuck ()
 {
 	trace_t	trace;
 
@@ -966,7 +966,7 @@ void PM_CheckDuck (void)
 PM_DeadMove
 ==============
 */
-void PM_DeadMove (void)
+void PM_DeadMove ()
 {
 	float	forward;
 
@@ -989,7 +989,7 @@ void PM_DeadMove (void)
 }
 
 
-bool	PM_GoodPosition (void)
+bool	PM_GoodPosition ()
 {
 	trace_t	trace;
 	vec3_t	origin, end;
@@ -1013,7 +1013,7 @@ On exit, the origin will have a value that is pre-quantized to the 0.125
 precision of the network channel and in a valid position.
 ================
 */
-void PM_SnapPosition (void)
+void PM_SnapPosition ()
 {
 	int32_t 	sign[3];
 	int32_t 	i, j, bits;
@@ -1061,7 +1061,7 @@ PM_InitialSnapPosition
 
 ================
 */
-void PM_InitialSnapPosition(void)
+void PM_InitialSnapPosition()
 {
 	int32_t        x, y, z;
 	int16_t      base[3];
@@ -1095,7 +1095,7 @@ PM_ClampAngles
 
 ================
 */
-void PM_ClampAngles (void)
+void PM_ClampAngles ()
 {
 	short	temp;
 	int32_t 	i;

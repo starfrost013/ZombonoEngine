@@ -239,9 +239,9 @@ void WindowIconify_Event(void* unused, int32_t iconified);
 
 // zombono events
 void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x, int32_t y);
-void Key_Init (void);
+void Key_Init ();
 void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int32_t keynum, char *binding);
-void Key_ClearStates (void);
-int32_t Key_GetKey (void);
+void Key_ClearStates ();
+int32_t Key_GetKey ();
 

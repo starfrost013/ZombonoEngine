@@ -39,7 +39,7 @@ uint8_t	dottexture[8][8] =
 	{0,0,0,0,0,0,0,0},
 };
 
-void R_InitParticleTexture (void)
+void R_InitParticleTexture ()
 {
 	int32_t	x,y;
 	uint8_t	data[8][8][4] = { 0 };
@@ -101,7 +101,7 @@ typedef struct targa_header_s
 GL_ScreenShot_f
 ================== 
 */  
-void GL_ScreenShot_f (void) 
+void GL_ScreenShot_f () 
 {
 	uint8_t*	buffer;
 	char		picname[MAX_OSPATH] = { 0 };

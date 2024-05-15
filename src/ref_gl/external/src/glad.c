@@ -55,12 +55,12 @@ static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
 static
-int open_gl(void) {
+int open_gl() {
 #ifndef IS_UWP
     libGL = LoadLibraryW(L"opengl32.dll");
     if(libGL != NULL) {
-        void (* tmp)(void);
-        tmp = (void(*)(void)) GetProcAddress(libGL, "wglGetProcAddress");
+        void (* tmp)();
+        tmp = (void(*)()) GetProcAddress(libGL, "wglGetProcAddress");
         gladGetProcAddressPtr = (PFNWGLGETPROCADDRESSPROC_PRIVATE) tmp;
         return gladGetProcAddressPtr != NULL;
     }
@@ -70,7 +70,7 @@ int open_gl(void) {
 }
 
 static
-void close_gl(void) {
+void close_gl() {
     if(libGL != NULL) {
         FreeLibrary((HMODULE) libGL);
         libGL = NULL;
@@ -86,7 +86,7 @@ static PFNGLXGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
 static
-int open_gl(void) {
+int open_gl() {
 #ifdef __APPLE__
     static const char *NAMES[] = {
         "../Frameworks/OpenGL.framework/OpenGL",
@@ -117,7 +117,7 @@ int open_gl(void) {
 }
 
 static
-void close_gl(void) {
+void close_gl() {
     if(libGL != NULL) {
         dlclose(libGL);
         libGL = NULL;
@@ -146,7 +146,7 @@ void* get_proc(const char *namez) {
     return result;
 }
 
-int gladLoadGL(void) {
+int gladLoadGL() {
     int status = 0;
 
     if(open_gl()) {
@@ -170,7 +170,7 @@ static const char *exts = NULL;
 static int num_exts_i = 0;
 static char **exts_i = NULL;
 
-static int get_exts(void) {
+static int get_exts() {
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     if(max_loaded_major < 3) {
 #endif
@@ -204,7 +204,7 @@ static int get_exts(void) {
     return 1;
 }
 
-static void free_exts(void) {
+static void free_exts() {
     if (exts_i != NULL) {
         int index;
         for(index = 0; index < num_exts_i; index++) {
@@ -1204,7 +1204,7 @@ static void load_GL_EXT_compiled_vertex_array(GLADloadproc load) {
 	glad_glLockArraysEXT = (PFNGLLOCKARRAYSEXTPROC)load("glLockArraysEXT");
 	glad_glUnlockArraysEXT = (PFNGLUNLOCKARRAYSEXTPROC)load("glUnlockArraysEXT");
 }
-static int find_extensionsGL(void) {
+static int find_extensionsGL() {
 	if (!get_exts()) return 0;
 	GLAD_GL_ARB_debug_output = has_ext("GL_ARB_debug_output");
 	GLAD_GL_EXT_compiled_vertex_array = has_ext("GL_EXT_compiled_vertex_array");
@@ -1212,7 +1212,7 @@ static int find_extensionsGL(void) {
 	return 1;
 }
 
-static void find_coreGL(void) {
+static void find_coreGL() {
 
     /* Thank you @elmindreda
      * https://github.com/elmindreda/greg/blob/master/templates/greg.c.in#L176

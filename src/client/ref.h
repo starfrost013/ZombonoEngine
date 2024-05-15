@@ -137,7 +137,7 @@ typedef struct refexport_s
 	bool	(*Init) ();
 
 	// called before the library is unloaded
-	void	(*Shutdown) (void);
+	void	(*Shutdown) ();
 
 	// All data that will be used in a level should be
 	// registered before rendering any frames to prevent disk hits,
@@ -156,7 +156,7 @@ typedef struct refexport_s
 	struct image_s *(*RegisterSkin) (char *name);
 	struct image_s *(*RegisterPic) (char *name);
 	void	(*SetSky) (char *name, float rotate, vec3_t axis);
-	void	(*EndRegistration) (void);
+	void	(*EndRegistration) ();
 
 	void	(*RenderFrame) (refdef_t *fd);
 
@@ -167,13 +167,13 @@ typedef struct refexport_s
 	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
 	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
-	void	(*DrawFadeScreen) (void);
+	void	(*DrawFadeScreen) ();
 	/*
 	** video mode and refresh state management entry points
 	*/
 	void	(*BeginFrame)();
-	void	(*EndFrame) (void);
-	void	(*EndWorldRenderpass) (void); // finish world rendering, apply postprocess and switch to UI render pass
+	void	(*EndFrame) ();
+	void	(*EndWorldRenderpass) (); // finish world rendering, apply postprocess and switch to UI render pass
 
 	// void* here is a kludge for GLFW's windowing ptr so we can use other windowing apis in the future
 
@@ -196,9 +196,9 @@ typedef struct
 {
 	void	(*Sys_Error) (int32_t err_level, char *str, ...);
 
-	void	(*Cmd_AddCommand) (char *name, void(*cmd)(void));
+	void	(*Cmd_AddCommand) (char *name, void(*cmd)());
 	void	(*Cmd_RemoveCommand) (char *name);
-	int32_t (*Cmd_Argc) (void);
+	int32_t (*Cmd_Argc) ();
 	char*	(*Cmd_Argv) (int32_t i);
 	void	(*Cmd_ExecuteText) (int32_t exec_when, char *text);
 
@@ -214,7 +214,7 @@ typedef struct
 
 	// gamedir will be the current directory that generated
 	// files should be stored to, ie: "f:\quake\id1"
-	char*	(*FS_Gamedir) (void);
+	char*	(*FS_Gamedir) ();
 
 	cvar_t*	(*Cvar_Get) (char *name, char *value, int32_t flags);
 	cvar_t*	(*Cvar_Set)( char *name, char *value );

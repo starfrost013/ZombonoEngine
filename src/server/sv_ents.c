@@ -570,7 +570,7 @@ Save everything in the world out without deltas.
 Used for recording footage for merged or assembled demos
 ==================
 */
-void SV_RecordDemoMessage (void)
+void SV_RecordDemoMessage ()
 {
 	int32_t 		e;
 	edict_t			*ent;

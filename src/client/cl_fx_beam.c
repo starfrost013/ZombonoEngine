@@ -31,7 +31,7 @@ beam_t		cl_playerbeams[MAX_BEAMS];
 CL_AddBeams
 =================
 */
-void CL_AddBeams(void)
+void CL_AddBeams()
 {
 	int32_t 		i, j;
 	beam_t* b;
@@ -125,7 +125,7 @@ ROGUE - draw player locked beams
 CL_AddPlayerBeams
 =================
 */
-void CL_AddPlayerBeams(void)
+void CL_AddPlayerBeams()
 {
 	int32_t 		i, j;
 	beam_t* b;

@@ -110,7 +110,7 @@ simply by setting the modified flag for the vid_ref variable, which will
 cause the entire video mode and refresh DLL to be reset on the next frame.
 ============
 */
-void VID_Restart_f(void)
+void VID_Restart_f()
 {
 	vid_ref->modified = true;
 }
@@ -188,7 +188,7 @@ void VID_NewWindow(int32_t width, int32_t height)
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
 }
 
-void VID_FreeReflib(void)
+void VID_FreeReflib()
 {
 	if (!FreeLibrary(reflib_library))
 		Com_Error(ERR_FATAL, "Reflib FreeLibrary failed");
@@ -286,7 +286,7 @@ is to check to see if any of the video mode parameters have changed, and if they
 update the rendering DLL and/or video mode to match.
 ============
 */
-void VID_CheckChanges(void)
+void VID_CheckChanges()
 {
 	char name[100];
 
@@ -362,7 +362,7 @@ void VID_CheckChanges(void)
 VID_Init
 ============
 */
-void VID_Init(void)
+void VID_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
 	vid_ref = Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
@@ -388,7 +388,7 @@ void VID_Init(void)
 VID_Shutdown
 ============
 */
-void VID_Shutdown(void)
+void VID_Shutdown()
 {
 	if (reflib_active)
 	{

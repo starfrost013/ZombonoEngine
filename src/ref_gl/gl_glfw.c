@@ -33,13 +33,13 @@ bool GL_Init();
 
 void GLFW_Error(const char* error);
 void GL_DestroyWindow();
-void GL_WindowSizeChanged(GLFWwindow* window, int width, int height); 
+void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height); 
 
 extern cvar_t* vid_fullscreen;
 extern cvar_t* vid_borderless;
 extern cvar_t* vid_ref;
 
-static bool VerifyDriver( void )
+static bool VerifyDriver()
 {
 	char buffer[1024];
 
@@ -56,8 +56,7 @@ static bool VerifyDriver( void )
 ** VID_CreateWindow
 */
 
-
-bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
+bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 {
 	// Monitor is NULL for windowed mode,
 	// non-NULL for fullscreen
@@ -140,7 +139,7 @@ bool VID_CreateWindow( int32_t width, int32_t height, bool fullscreen)
 	return true;
 }
 
-void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
+void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height)
 {
 	glViewport(0, 0, width, height);
 }
@@ -148,7 +147,7 @@ void GL_WindowSizeChanged(GLFWwindow* window, int width, int height)
 /*
 ** GL_SetMode
 */
-rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen )
+rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, int32_t mode, bool fullscreen )
 {
 	int32_t width, height;
 	const char *window_modes[] = { "Windowed", "Fullscreen"};
@@ -228,7 +227,7 @@ void GL_DestroyWindow()
 ** for the window.  The state structure is also nulled out.
 **
 */
-void GL_Shutdown(void)
+void GL_Shutdown()
 {
 	GL_DestroyWindow();
 	glfwTerminate(gl_state.window);
@@ -236,7 +235,7 @@ void GL_Shutdown(void)
 }
 
 // This routine initialises GLAD and GLFW, and gets an OpenGL context.
-bool GL_Init (void)
+bool GL_Init()
 {
 	if (glfwInit() == GLFW_FALSE)
 	{
@@ -275,7 +274,7 @@ void GL_BeginFrame()
 ** as yet to be determined.  Probably better not to make this a GLimp
 ** function and instead do a call to GLimp_SwapBuffers.
 */
-void GL_EndFrame(void)
+void GL_EndFrame()
 {
 	// if the window closed exit
 	if (gl_state.window == NULL)

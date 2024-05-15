@@ -44,7 +44,7 @@ static cvar_t* noudp;
 loopback_t	loopbacks[2];
 int32_t 		ip_sockets[2];
 
-char *NET_ErrorString (void);
+char *NET_ErrorString ();
 
 //=============================================================================
 
@@ -451,7 +451,7 @@ int32_t NET_IPSocket (char *net_interface, int32_t port)
 NET_OpenIP
 ====================
 */
-void NET_OpenIP (void)
+void NET_OpenIP ()
 {
 	cvar_t* ip;
 	int32_t 	port;
@@ -565,7 +565,7 @@ static WSADATA		winsockdata;
 NET_Init
 ====================
 */
-void NET_Init (void)
+void NET_Init ()
 {
 	WORD	wVersionRequested; 
 	int32_t 	r;
@@ -590,7 +590,7 @@ void NET_Init (void)
 NET_Shutdown
 ====================
 */
-void	NET_Shutdown (void)
+void	NET_Shutdown ()
 {
 	NET_Config (false);	// close sockets
 
@@ -603,7 +603,7 @@ void	NET_Shutdown (void)
 NET_ErrorString
 ====================
 */
-char *NET_ErrorString (void)
+char *NET_ErrorString ()
 {
 	int32_t 	code;
 

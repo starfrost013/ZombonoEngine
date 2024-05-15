@@ -139,7 +139,7 @@ CL_Download_f
 Request a download from the server
 ===============
 */
-void	CL_Download_f (void)
+void	CL_Download_f ()
 {
 	char filename[MAX_OSPATH];
 
@@ -183,7 +183,7 @@ void	CL_Download_f (void)
 CL_RegisterSounds
 ======================
 */
-void CL_RegisterSounds (void)
+void CL_RegisterSounds ()
 {
 	int32_t 	i;
 
@@ -207,7 +207,7 @@ CL_ParseDownload
 A download message has been received from the server
 =====================
 */
-void CL_ParseDownload (void)
+void CL_ParseDownload ()
 {
 	int32_t 	size, percent;
 	char	name[MAX_OSPATH];
@@ -296,7 +296,7 @@ void CL_ParseDownload (void)
 CL_ParseServerData
 ==================
 */
-void CL_ParseServerData (void)
+void CL_ParseServerData ()
 {
 	extern cvar_t* fs_gamedirvar;
 	char	*str;
@@ -347,7 +347,7 @@ void CL_ParseServerData (void)
 CL_ParseBaseline
 ==================
 */
-void CL_ParseBaseline (void)
+void CL_ParseBaseline ()
 {
 	entity_state_t	*es;
 	int32_t 			bits;
@@ -507,7 +507,7 @@ void CL_ParseClientinfo (int32_t player)
 CL_ParseConfigString
 ================
 */
-void CL_ParseConfigString (void)
+void CL_ParseConfigString ()
 {
 	int32_t 	i;
 	char	*s;
@@ -577,7 +577,7 @@ ACTION MESSAGES
 CL_ParseStartSoundPacket
 ==================
 */
-void CL_ParseStartSoundPacket(void)
+void CL_ParseStartSoundPacket()
 {
     vec3_t  pos_v;
 	float	*pos;
@@ -648,7 +648,7 @@ void ShowNet(char *s)
 CL_ParseServerMessage
 =====================
 */
-void CL_ParseServerMessage (void)
+void CL_ParseServerMessage ()
 {
 	int32_t 	cmd;
 	char		*s;

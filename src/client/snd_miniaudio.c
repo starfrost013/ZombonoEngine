@@ -70,10 +70,10 @@ static void data_callback(ma_device* pDevice, void* pOutput, const void* pInput,
 		trackFinished = true;
 	}
 
-	(void)pInput;
+	()pInput;
 }
 
-static void Miniaudio_Pause(void)
+static void Miniaudio_Pause()
 {
 	if (!enabled || !ma_device_is_started(&device) || paused)
 		return;
@@ -82,7 +82,7 @@ static void Miniaudio_Pause(void)
 	paused = true;
 }
 
-static void Miniaudio_Resume(void)
+static void Miniaudio_Resume()
 {
 	if (!enabled || !paused)
 		return;
@@ -91,7 +91,7 @@ static void Miniaudio_Resume(void)
 	paused = false;
 }
 
-static void Miniaudio_f(void)
+static void Miniaudio_f()
 {
 	char	*command;
 
@@ -161,7 +161,7 @@ static void Miniaudio_f(void)
 }
 
 
-void Miniaudio_Init(void)
+void Miniaudio_Init()
 {
 	cd_volume = Cvar_Get("cd_volume", "1", CVAR_ARCHIVE);
 	cd_loopcount = Cvar_Get("cd_loopcount", "4", 0);
@@ -248,7 +248,7 @@ void Miniaudio_Play(int32_t track, bool looping)
 	ma_device_set_master_volume(&device, cd_volume->value);
 }
 
-void Miniaudio_Stop(void)
+void Miniaudio_Stop()
 {
 	if (!enabled || !ma_device_is_started(&device))
 		return;
@@ -260,7 +260,7 @@ void Miniaudio_Stop(void)
 	ma_decoder_uninit(&decoder);
 }
 
-void Miniaudio_Update(void)
+void Miniaudio_Update()
 {
 	if (no_music->value != 0)
 		return;
@@ -328,7 +328,7 @@ void Miniaudio_Update(void)
 	}
 }
 
-void Miniaudio_Shutdown(void)
+void Miniaudio_Shutdown()
 {
 	Miniaudio_Stop();
 	Cmd_RemoveCommand("miniaudio");

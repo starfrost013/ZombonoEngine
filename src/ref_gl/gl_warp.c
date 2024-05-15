@@ -480,7 +480,7 @@ void R_AddSkySurface (msurface_t *fa)
 R_ClearSkyBox
 ==============
 */
-void R_ClearSkyBox (void)
+void R_ClearSkyBox ()
 {
 	int32_t		i;
 
@@ -548,7 +548,7 @@ R_DrawSkyBox
 ==============
 */
 int	skytexorder[6] = {0,2,1,3,4,5};
-void R_DrawSkyBox (void)
+void R_DrawSkyBox ()
 {
 	int32_t		i;
 

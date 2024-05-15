@@ -70,8 +70,8 @@ dirty_t		scr_dirty, scr_old_dirty[2];
 char		crosshair_pic[MAX_QPATH];
 int32_t 		crosshair_width, crosshair_height;
 
-void SCR_TimeRefresh_f (void);
-void SCR_Loading_f (void);
+void SCR_TimeRefresh_f ();
+void SCR_Loading_f ();
 
 
 /*
@@ -89,7 +89,7 @@ CL_AddNetgraph
 A new packet was just parsed
 ==============
 */
-void CL_AddNetgraph (void)
+void CL_AddNetgraph ()
 {
 	int32_t 	in;
 	int32_t 	ping;
@@ -137,7 +137,7 @@ void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
 SCR_DrawDebugGraph
 ==============
 */
-void SCR_DrawDebugGraph (void)
+void SCR_DrawDebugGraph ()
 {
 	int32_t 	a, x, y, w, i, h;
 	float	v;
@@ -216,7 +216,7 @@ void SCR_CenterPrint (char *str)
 }
 
 
-void SCR_DrawCenterString (void)
+void SCR_DrawCenterString ()
 {
 	char	*start;
 	int32_t 	x, y;
@@ -241,7 +241,7 @@ void SCR_DrawCenterString (void)
 	SCR_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
 }
 
-void SCR_CheckDrawCenterString (void)
+void SCR_CheckDrawCenterString ()
 {
 	scr_centertime_off -= cls.frametime;
 	
@@ -260,7 +260,7 @@ SCR_CalcVrect
 Sets scr_vrect, the coordinates of the rendered window
 =================
 */
-static void SCR_CalcVrect (void)
+static void SCR_CalcVrect ()
 {
 	int32_t 	size;
 
@@ -287,7 +287,7 @@ SCR_SizeUp_f
 Keybinding command
 =================
 */
-void SCR_SizeUp_f (void)
+void SCR_SizeUp_f ()
 {
 	Cvar_SetValue ("viewsize",scr_viewsize->value+10);
 }
@@ -300,7 +300,7 @@ SCR_SizeDown_f
 Keybinding command
 =================
 */
-void SCR_SizeDown_f (void)
+void SCR_SizeDown_f ()
 {
 	Cvar_SetValue ("viewsize",scr_viewsize->value-10);
 }
@@ -312,7 +312,7 @@ SCR_Sky_f
 Set a specific sky and rotation speed
 =================
 */
-void SCR_Sky_f (void)
+void SCR_Sky_f ()
 {
 	float	rotate;
 	vec3_t	axis;
@@ -349,7 +349,7 @@ void SCR_Sky_f (void)
 SCR_Init
 ==================
 */
-void SCR_Init (void)
+void SCR_Init ()
 {
 	scr_viewsize = Cvar_Get ("viewsize", "100", CVAR_ARCHIVE);
 	scr_conspeed = Cvar_Get ("scr_conspeed", "3", 0);
@@ -379,7 +379,7 @@ void SCR_Init (void)
 SCR_DrawNet
 ==============
 */
-void SCR_DrawNet (void)
+void SCR_DrawNet ()
 {
 	if (cls.netchan.outgoing_sequence - cls.netchan.incoming_acknowledged 
 		< CMD_BACKUP-1)
@@ -393,7 +393,7 @@ void SCR_DrawNet (void)
 SCR_DrawPause
 ==============
 */
-void SCR_DrawPause (void)
+void SCR_DrawPause ()
 {
 	int32_t 	w, h;
 
@@ -412,7 +412,7 @@ void SCR_DrawPause (void)
 SCR_DrawLoading
 ==============
 */
-void SCR_DrawLoading (void)
+void SCR_DrawLoading ()
 {
 	int32_t 	w, h;
 		
@@ -433,7 +433,7 @@ SCR_RunConsole
 Scroll it up or down
 ==================
 */
-void SCR_RunConsole (void)
+void SCR_RunConsole ()
 {
 // decide on the height of the console
 	if (cls.key_dest == key_console)
@@ -462,7 +462,7 @@ void SCR_RunConsole (void)
 SCR_DrawConsole
 ==================
 */
-void SCR_DrawConsole (void)
+void SCR_DrawConsole ()
 {
 	Con_CheckResize ();
 	
@@ -497,7 +497,7 @@ void SCR_DrawConsole (void)
 SCR_BeginLoadingPlaque
 ================
 */
-void SCR_BeginLoadingPlaque (void)
+void SCR_BeginLoadingPlaque ()
 {
 	S_StopAllSounds ();
 	cl.sound_prepped = false;		// don't play ambients
@@ -523,7 +523,7 @@ void SCR_BeginLoadingPlaque (void)
 SCR_EndLoadingPlaque
 ================
 */
-void SCR_EndLoadingPlaque (void)
+void SCR_EndLoadingPlaque ()
 {
 	cls.disable_screen = 0;
 	Con_ClearNotify ();
@@ -534,7 +534,7 @@ void SCR_EndLoadingPlaque (void)
 SCR_Loading_f
 ================
 */
-void SCR_Loading_f (void)
+void SCR_Loading_f ()
 {
 	SCR_BeginLoadingPlaque ();
 }
@@ -559,7 +559,7 @@ int32_t entitycmpfnc( const entity_t *a, const entity_t *b )
 	}
 }
 
-void SCR_TimeRefresh_f (void)
+void SCR_TimeRefresh_f ()
 {
 	int32_t 	i;
 	int32_t 	start, stop;
@@ -614,7 +614,7 @@ void SCR_AddDirtyPoint (int32_t x, int32_t y)
 		scr_dirty.y2 = y;
 }
 
-void SCR_DirtyScreen (void)
+void SCR_DirtyScreen ()
 {
 	SCR_AddDirtyPoint (0, 0);
 	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
@@ -627,7 +627,7 @@ SCR_TileClear
 Clear any parts of the tiled background that were drawn on last frame
 ==============
 */
-void SCR_TileClear (void)
+void SCR_TileClear ()
 {
 	if (scr_con_current == 1.0)
 		return;		// full screen console
@@ -795,7 +795,7 @@ SCR_TouchPics
 Allows rendering code to cache all needed sbar graphics
 ===============
 */
-void SCR_TouchPics (void)
+void SCR_TouchPics ()
 {
 	int32_t 	i, j;
 
@@ -1037,7 +1037,7 @@ The status bar is a small layout program that
 is based on the stats array
 ================
 */
-void SCR_DrawStats (void)
+void SCR_DrawStats ()
 {
 	SCR_ExecuteLayoutString (cl.configstrings[CS_STATUSBAR]);
 }
@@ -1051,7 +1051,7 @@ SCR_DrawLayout
 */
 #define	STAT_LAYOUTS		13
 
-void SCR_DrawLayout (void)
+void SCR_DrawLayout ()
 {
 	if (!cl.frame.playerstate.stats[STAT_LAYOUTS])
 		return;
@@ -1107,7 +1107,7 @@ This is called every frame, and can also be called explicitly to flush
 text to the screen.
 ==================
 */
-void SCR_UpdateScreen (void)
+void SCR_UpdateScreen ()
 {
 	int32_t numframes;
 	int32_t i;

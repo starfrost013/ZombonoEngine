@@ -112,8 +112,8 @@ bool	portalopen[MAX_MAP_AREAPORTALS];
 
 cvar_t		*map_noareas;
 
-void	Map_InitBoxHull (void);
-void	Map_FloodAreaConnections (void);
+void	Map_InitBoxHull ();
+void	Map_FloodAreaConnections ();
 
 
 int32_t 	c_pointcontents;
@@ -655,17 +655,17 @@ cmodel_t*	Map_LoadInlineModel (char *name)
 	return &map_cmodels[num];
 }
 
-int32_t 	Map_GetNumClusters (void)
+int32_t 	Map_GetNumClusters ()
 {
 	return numclusters;
 }
 
-int32_t 	Map_NumInlineModels (void)
+int32_t 	Map_NumInlineModels ()
 {
 	return numcmodels;
 }
 
-char*	Map_GetEntityString (void)
+char*	Map_GetEntityString ()
 {
 	return map_entitystring;
 }
@@ -707,7 +707,7 @@ Set up the planes and nodes so that the six floats of a bounding box
 can just be stored out and get a proper clipping hull structure.
 ===================
 */
-void Map_InitBoxHull (void)
+void Map_InitBoxHull ()
 {
 	int32_t 		i;
 	int32_t 		side;
@@ -1622,7 +1622,7 @@ FloodAreaConnections
 Flood fills connections between map areas
 ====================
 */
-void	Map_FloodAreaConnections (void)
+void	Map_FloodAreaConnections ()
 {
 	int32_t i;
 	carea_t	*area;

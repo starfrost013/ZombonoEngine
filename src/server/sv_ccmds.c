@@ -37,7 +37,7 @@ SV_SetMaster_f
 Specify a list of master servers
 ====================
 */
-void SV_SetMaster_f (void)
+void SV_SetMaster_f ()
 {
 	int32_t 	i, slot;
 
@@ -89,7 +89,7 @@ SV_SetPlayer
 Sets sv_client and sv_player to the player with idnum Cmd_Argv(1)
 ==================
 */
-bool SV_SetPlayer (void)
+bool SV_SetPlayer ()
 {
 	client_t	*cl;
 	int32_t 		i;
@@ -276,7 +276,7 @@ SV_WriteLevelFile
 
 ==============
 */
-void SV_WriteLevelFile (void)
+void SV_WriteLevelFile ()
 {
 	char	name[MAX_OSPATH];
 	FILE	*f;
@@ -304,7 +304,7 @@ SV_ReadLevelFile
 
 ==============
 */
-void SV_ReadLevelFile (void)
+void SV_ReadLevelFile ()
 {
 	char	name[MAX_OSPATH];
 	FILE	*f;
@@ -405,7 +405,7 @@ SV_ReadServerFile
 
 ==============
 */
-void SV_ReadServerFile (void)
+void SV_ReadServerFile ()
 {
 	FILE	*f;
 	char	name[MAX_OSPATH], string[128];
@@ -463,7 +463,7 @@ SV_DemoMap_f
 Puts the server in demo mode on a specific map/cinematic
 ==================
 */
-void SV_DemoMap_f (void)
+void SV_DemoMap_f ()
 {
 	SV_Map (true, Cmd_Argv(1), false );
 }
@@ -486,7 +486,7 @@ Clears the archived maps, plays the inter.cin cinematic, then
 goes to map jail.bsp.
 ==================
 */
-void SV_GameMap_f (void)
+void SV_GameMap_f ()
 {
 	char		*map;
 	int32_t 		i;
@@ -556,7 +556,7 @@ Goes directly to a given map without any savegame archiving.
 For development work
 ==================
 */
-void SV_Map_f (void)
+void SV_Map_f ()
 {
 	char	*map;
 	char	expanded[MAX_QPATH];
@@ -601,7 +601,7 @@ SV_Loadgame_f
 
 ==============
 */
-void SV_Loadgame_f (void)
+void SV_Loadgame_f ()
 {
 	char	name[MAX_OSPATH];
 	FILE	*f;
@@ -648,7 +648,7 @@ SV_Savegame_f
 
 ==============
 */
-void SV_Savegame_f (void)
+void SV_Savegame_f ()
 {
 	char	*dir;
 
@@ -714,7 +714,7 @@ SV_Kick_f
 Kick a user off of the server
 ==================
 */
-void SV_Kick_f (void)
+void SV_Kick_f ()
 {
 	if (!svs.initialized)
 	{
@@ -745,7 +745,7 @@ void SV_Kick_f (void)
 SV_Status_f
 ================
 */
-void SV_Status_f (void)
+void SV_Status_f ()
 {
 	int32_t 		i, j, l;
 	client_t	*cl;
@@ -802,7 +802,7 @@ void SV_Status_f (void)
 SV_ConSay_f
 ==================
 */
-void SV_ConSay_f(void)
+void SV_ConSay_f()
 {
 	client_t *client;
 	int32_t 	j;
@@ -837,7 +837,7 @@ void SV_ConSay_f(void)
 SV_Heartbeat_f
 ==================
 */
-void SV_Heartbeat_f (void)
+void SV_Heartbeat_f ()
 {
 	svs.last_heartbeat = -9999999;
 }
@@ -850,7 +850,7 @@ SV_Serverinfo_f
   Examine or change the serverinfo string
 ===========
 */
-void SV_Serverinfo_f (void)
+void SV_Serverinfo_f ()
 {
 	Com_Printf ("Server info settings:\n");
 	Info_Print (Cvar_Serverinfo());
@@ -864,7 +864,7 @@ SV_DumpUser_f
 Examine all a users info strings
 ===========
 */
-void SV_DumpUser_f (void)
+void SV_DumpUser_f ()
 {
 	if (Cmd_Argc() != 2)
 	{
@@ -890,7 +890,7 @@ Begins server demo recording.  Every entity and every message will be
 recorded, but no playerinfo will be stored.  Primarily for demo merging.
 ==============
 */
-void SV_ServerRecord_f (void)
+void SV_ServerRecord_f ()
 {
 	char	name[MAX_OSPATH];
 	char	buf_data[32768];
@@ -978,7 +978,7 @@ SV_ServerStop_f
 Ends server demo recording
 ==============
 */
-void SV_ServerStop_f (void)
+void SV_ServerStop_f ()
 {
 	if (!svs.demofile)
 	{
@@ -999,7 +999,7 @@ Kick everyone off, possibly in preparation for a new game
 
 ===============
 */
-void SV_KillServer_f (void)
+void SV_KillServer_f ()
 {
 	if (!svs.initialized)
 		return;
@@ -1015,7 +1015,7 @@ SV_ServerCommand_f
 Let the game dll handle a command
 ===============
 */
-void SV_ServerCommand_f (void)
+void SV_ServerCommand_f ()
 {
 	if (!ge)
 	{
@@ -1033,7 +1033,7 @@ void SV_ServerCommand_f (void)
 SV_InitOperatorCommands
 ==================
 */
-void SV_InitOperatorCommands (void)
+void SV_InitOperatorCommands ()
 {
 	Cmd_AddCommand ("heartbeat", SV_Heartbeat_f);
 	Cmd_AddCommand ("kick", SV_Kick_f);

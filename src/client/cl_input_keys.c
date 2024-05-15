@@ -249,7 +249,7 @@ keyname_t keynames[] =
 ==============================================================================
 */
 
-void CompleteCommand (void)
+void CompleteCommand ()
 {
 	char	*cmd, *s;
 
@@ -618,7 +618,7 @@ void Key_SetBinding (int32_t keynum, char *binding)
 Key_Unbind_f
 ===================
 */
-void Key_Unbind_f (void)
+void Key_Unbind_f ()
 {
 	int32_t 	b;
 
@@ -638,7 +638,7 @@ void Key_Unbind_f (void)
 	Key_SetBinding (b, "");
 }
 
-void Key_Unbindall_f (void)
+void Key_Unbindall_f ()
 {
 	int32_t 	i;
 	
@@ -653,7 +653,7 @@ void Key_Unbindall_f (void)
 Key_Bind_f
 ===================
 */
-void Key_Bind_f (void)
+void Key_Bind_f ()
 {
 	int32_t 		i, c, b;
 	char			cmd[1024];
@@ -716,7 +716,7 @@ Key_Bindlist_f
 
 ============
 */
-void Key_Bindlist_f (void)
+void Key_Bindlist_f ()
 {
 	int32_t 	i;
 
@@ -731,7 +731,7 @@ void Key_Bindlist_f (void)
 Key_Init
 ===================
 */
-void Key_Init (void)
+void Key_Init ()
 {
 	int32_t 	i;
 
@@ -1184,7 +1184,7 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 Key_ClearStates
 ===================
 */
-void Key_ClearStates (void)
+void Key_ClearStates ()
 {
 	int32_t 	i;
 
@@ -1205,7 +1205,7 @@ void Key_ClearStates (void)
 Key_GetKey
 ===================
 */
-int32_t Key_GetKey (void)
+int32_t Key_GetKey ()
 {
 	key_waiting = -1;
 

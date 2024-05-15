@@ -134,7 +134,7 @@ SV_ClearWorld
 
 ===============
 */
-void SV_ClearWorld (void)
+void SV_ClearWorld ()
 {
 	memset (sv_areanodes, 0, sizeof(sv_areanodes));
 	sv_numareanodes = 0;

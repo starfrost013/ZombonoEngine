@@ -99,7 +99,7 @@ extern	cvar_t *allow_download_models;
 extern	cvar_t *allow_download_sounds;
 extern	cvar_t *allow_download_maps;
 
-extern void SV_ShutdownGameProgs(void);
+extern void SV_ShutdownGameProgs();
 
 //======================================================================
 
@@ -111,7 +111,7 @@ CL_WriteDemoMessage
 Dumps the current net message, prefixed by the length
 ====================
 */
-void CL_WriteDemoMessage (void)
+void CL_WriteDemoMessage ()
 {
 	int32_t 	len, swlen;
 
@@ -130,7 +130,7 @@ CL_Stop_f
 stop recording a demo
 ====================
 */
-void CL_Stop_f (void)
+void CL_Stop_f ()
 {
 	int32_t 	len;
 
@@ -158,7 +158,7 @@ record <demoname>
 Begins recording a demo from the current position
 ====================
 */
-void CL_Record_f (void)
+void CL_Record_f ()
 {
 	char	name[MAX_OSPATH];
 	char	buf_data[MAX_MSGLEN];
@@ -282,7 +282,7 @@ things like godmode, noclip, etc, are commands directed to the server,
 so when they are typed in at the console, they will need to be forwarded.
 ===================
 */
-void Cmd_ForwardToServer (void)
+void Cmd_ForwardToServer ()
 {
 	char	*cmd;
 
@@ -343,7 +343,7 @@ void CL_Setenv_f( void )
 CL_ForwardToServer_f
 ==================
 */
-void CL_ForwardToServer_f (void)
+void CL_ForwardToServer_f ()
 {
 	if (cls.state != ca_connected && cls.state != ca_active)
 	{
@@ -365,7 +365,7 @@ void CL_ForwardToServer_f (void)
 CL_Pause_f
 ==================
 */
-void CL_Pause_f (void)
+void CL_Pause_f ()
 {
 	// never pause in multiplayer
 	if (Cvar_VariableValue ("maxclients") > 1 || !Com_ServerState ())
@@ -382,7 +382,7 @@ void CL_Pause_f (void)
 CL_Quit_f
 ==================
 */
-void CL_Quit_f (void)
+void CL_Quit_f ()
 {
 	CL_Disconnect ();
 	Com_Quit ();
@@ -395,7 +395,7 @@ CL_Drop
 Called after an ERR_DROP was thrown
 ================
 */
-void CL_Drop (void)
+void CL_Drop ()
 {
 	if (cls.state == ca_uninitialized)
 		return;
@@ -418,7 +418,7 @@ We have gotten a challenge from the server, so try and
 connect.
 ======================
 */
-void CL_SendConnectPacket (void)
+void CL_SendConnectPacket ()
 {
 	netadr_t	adr;
 	int32_t 	port;
@@ -446,7 +446,7 @@ CL_CheckForResend
 Resend a connect message if the last one has timed out
 =================
 */
-void CL_CheckForResend (void)
+void CL_CheckForResend ()
 {
 	netadr_t	adr;
 
@@ -492,7 +492,7 @@ CL_Connect_f
 
 ================
 */
-void CL_Connect_f (void)
+void CL_Connect_f ()
 {
 	char	*server;
 
@@ -532,7 +532,7 @@ CL_Rcon_f
   an unconnected command.
 =====================
 */
-void CL_Rcon_f (void)
+void CL_Rcon_f ()
 {
 	char	message[1024];
 	int32_t 	i;
@@ -591,7 +591,7 @@ CL_ClearState
 
 =====================
 */
-void CL_ClearState (void)
+void CL_ClearState ()
 {
 	S_StopAllSounds ();
 	CL_ClearEffects ();
@@ -616,7 +616,7 @@ Sends a disconnect message to the server
 This is also called on Com_Error, so it shouldn't cause any errors
 =====================
 */
-void CL_Disconnect (void)
+void CL_Disconnect ()
 {
 	uint8_t	final[32];
 
@@ -660,7 +660,7 @@ void CL_Disconnect (void)
 	cls.state = ca_disconnected;
 }
 
-void CL_Disconnect_f (void)
+void CL_Disconnect_f ()
 {
 	Com_Error (ERR_DROP, "Disconnected from server");
 }
@@ -673,7 +673,7 @@ Just sent as a hint to the client that they should
 drop to full console
 =================
 */
-void CL_Changing_f (void)
+void CL_Changing_f ()
 {
 	//ZOID
 	//if we are downloading, we don't change!  This so we don't suddenly stop downloading a map
@@ -693,7 +693,7 @@ CL_Reconnect_f
 The server is changing levels
 =================
 */
-void CL_Reconnect_f (void)
+void CL_Reconnect_f ()
 {
 	//ZOID
 	//if we are downloading, we don't change!  This so we don't suddenly stop downloading a map
@@ -728,7 +728,7 @@ CL_ParseStatusMessage
 Handle a reply from a ping
 =================
 */
-void CL_ParseStatusMessage (void)
+void CL_ParseStatusMessage ()
 {
 	char	*s;
 
@@ -744,7 +744,7 @@ void CL_ParseStatusMessage (void)
 CL_PingServers_f
 =================
 */
-void CL_PingServers_f (void)
+void CL_PingServers_f ()
 {
 	int32_t 		i;
 	netadr_t	adr;
@@ -792,7 +792,7 @@ CL_Skins_f
 Load or download any custom player skins and models
 =================
 */
-void CL_Skins_f (void)
+void CL_Skins_f ()
 {
 	int32_t 	i;
 
@@ -815,7 +815,7 @@ CL_ConnectionlessPacket
 Responses to broadcasts, etc
 =================
 */
-void CL_ConnectionlessPacket (void)
+void CL_ConnectionlessPacket ()
 {
 	char	*s;
 	char	*c;
@@ -908,7 +908,7 @@ A vain attempt to help bad TCP stacks that cause problems
 when they overflow
 =================
 */
-void CL_DumpPackets (void)
+void CL_DumpPackets ()
 {
 	while (NET_GetPacket (NS_CLIENT, &net_from, &net_message))
 	{
@@ -921,7 +921,7 @@ void CL_DumpPackets (void)
 CL_ReadPackets
 =================
 */
-void CL_ReadPackets (void)
+void CL_ReadPackets ()
 {
 	while (NET_GetPacket (NS_CLIENT, &net_from, &net_message))
 	{
@@ -985,7 +985,7 @@ void CL_ReadPackets (void)
 CL_FixUpGender_f
 ==============
 */
-void CL_FixUpGender(void)
+void CL_FixUpGender()
 {
 	char *p;
 	char sk[80];
@@ -1018,7 +1018,7 @@ void CL_FixUpGender(void)
 CL_Userinfo_f
 ==============
 */
-void CL_Userinfo_f (void)
+void CL_Userinfo_f ()
 {
 	Com_Printf ("User info settings:\n");
 	Info_Print (Cvar_Userinfo());
@@ -1032,7 +1032,7 @@ Restart the sound subsystem so it can pick up
 new parameters and flush all sounds
 =================
 */
-void CL_Snd_Restart_f (void)
+void CL_Snd_Restart_f ()
 {
 	S_Shutdown ();
 	S_Init ();
@@ -1055,7 +1055,7 @@ uint8_t *precache_model; // used for skin checking in alias models
 // Suffixes for skybox names.
 static const char *env_suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 
-void CL_RequestNextDownload (void)
+void CL_RequestNextDownload ()
 {
 	uint32_t	map_checksum;		// for detecting cheater maps
 	char fn[MAX_OSPATH];
@@ -1317,7 +1317,7 @@ The server will send this command right
 before allowing the client into the server
 =================
 */
-void CL_Precache_f (void)
+void CL_Precache_f ()
 {
 	//Yet another hack to let old demos work
 	//the old precache sequence
@@ -1345,7 +1345,7 @@ void CL_Precache_f (void)
 CL_InitLocal
 =================
 */
-void CL_InitLocal (void)
+void CL_InitLocal ()
 {
 	cls.state = ca_disconnected;
 	cls.realtime = Sys_Milliseconds ();
@@ -1492,7 +1492,7 @@ CL_WriteConfiguration
 Writes key bindings and archived cvars to config.cfg
 ===============
 */
-void CL_WriteConfiguration (void)
+void CL_WriteConfiguration ()
 {
 	FILE	*f;
 	char	path[MAX_QPATH];
@@ -1552,7 +1552,7 @@ cheatvar_t	cheatvars[] = {
 
 int32_t 	numcheatvars;
 
-void CL_FixCvarCheats (void)
+void CL_FixCvarCheats ()
 {
 	int32_t 		i;
 	cheatvar_t	*var;
@@ -1590,7 +1590,7 @@ CL_SendCommand
 
 ==================
 */
-void CL_SendCommand (void)
+void CL_SendCommand ()
 {
 	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active
 	if (!ui_active
@@ -1759,7 +1759,7 @@ void AppActivate(bool active, bool minimize)
 CL_Init
 ====================
 */
-void CL_Init (void)
+void CL_Init ()
 {
 	if (dedicated->value)
 		return;		// nothing running on the client
@@ -1813,7 +1813,7 @@ FIXME: this is a callback from Sys_Quit and Com_Error.  It would be better
 to run quit through here before the final handoff to the sys code.
 ===============
 */
-void CL_Shutdown(void)
+void CL_Shutdown()
 {
 	static bool isdown = false;
 	

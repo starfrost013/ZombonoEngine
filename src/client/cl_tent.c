@@ -53,7 +53,7 @@ struct model_s	*cl_mod_plasmaexplo;
 CL_RegisterTEntSounds
 =================
 */
-void CL_RegisterTEntSounds (void)
+void CL_RegisterTEntSounds ()
 {
 	int32_t 	i;
 	char	name[MAX_QPATH];
@@ -87,7 +87,7 @@ void CL_RegisterTEntSounds (void)
 CL_RegisterTEntModels
 =================
 */
-void CL_RegisterTEntModels (void)
+void CL_RegisterTEntModels ()
 {
 	cl_mod_explode = re.RegisterModel ("models/objects/explode/tris.md2");
 	cl_mod_smoke = re.RegisterModel ("models/objects/smoke/tris.md2");
@@ -115,7 +115,7 @@ void CL_RegisterTEntModels (void)
 CL_ClearTEnts
 =================
 */
-void CL_ClearTEnts (void)
+void CL_ClearTEnts ()
 {
 	memset (cl_beams, 0, sizeof(cl_beams));
 	memset (cl_explosions, 0, sizeof(cl_explosions));
@@ -139,7 +139,7 @@ static vec4_t splash_color[] =
 	{ 156, 31, 1, 255 },	
 };
 
-void CL_ParseTEnt (void)
+void CL_ParseTEnt ()
 {
 	int32_t 		type;
 	vec3_t			pos, pos2, dir;
@@ -433,7 +433,7 @@ void CL_ParseTEnt (void)
 CL_AddTEnts
 =================
 */
-void CL_AddTEnts (void)
+void CL_AddTEnts ()
 {
 	CL_AddBeams ();
 	CL_AddPlayerBeams ();

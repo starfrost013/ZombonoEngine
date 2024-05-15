@@ -105,7 +105,7 @@ int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
 }
 
 void
-Sys_Quit (void)
+Sys_Quit ()
 {
 	timeEndPeriod( 1 );
 
@@ -124,7 +124,7 @@ Sys_Quit (void)
 }
 
 
-void WinError (void)
+void WinError ()
 {
 	LPVOID lpMsgBuf;
 
@@ -157,7 +157,7 @@ typedef enum { dpi_unaware = 0, dpi_system_aware = 1, dpi_monitor_aware = 2 } dp
 typedef BOOL(WINAPI *SetProcessDPIAwareFunc)();
 typedef HRESULT(WINAPI *SetProcessDPIAwarenessFunc)(dpi_awareness value);
 
-void	Sys_SetDPIAwareness(void)
+void	Sys_SetDPIAwareness()
 {
 	HMODULE hShcore = LoadLibraryA("Shcore.dll");
 	HMODULE hUser32 = LoadLibraryA("user32.dll");
@@ -183,7 +183,7 @@ void	Sys_SetDPIAwareness(void)
 Sys_Init
 ================
 */
-void Sys_Init (void)
+void Sys_Init ()
 {
 	OSVERSIONINFO	vinfo;
 
@@ -229,7 +229,7 @@ static int32_t console_textlen;
 Sys_ConsoleInput
 ================
 */
-char *Sys_ConsoleInput (void)
+char *Sys_ConsoleInput ()
 {
 	INPUT_RECORD	recs[1024];
 	int32_t 	dummy;
@@ -347,7 +347,7 @@ Sys_SendKeyEvents
 Send Key_Event calls
 ================
 */
-void Sys_SendKeyEvents (void)
+void Sys_SendKeyEvents ()
 {
 	// grab frame time 
 	sys_frame_time = timeGetTime();	// FIXME: should this be at start?
@@ -400,7 +400,7 @@ static HINSTANCE	game_library;
 Sys_UnloadGame
 =================
 */
-void Sys_UnloadGame (void)
+void Sys_UnloadGame ()
 {
 	if (!FreeLibrary (game_library))
 		Com_Error (ERR_FATAL, "FreeLibrary failed for game library");

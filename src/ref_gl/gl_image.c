@@ -256,7 +256,7 @@ void GL_SetTextureSolidMode( char *string )
 GL_ImageList_f
 ===============
 */
-void	GL_ImageList_f (void)
+void	GL_ImageList_f ()
 {
 	int32_t		i;
 	image_t*	image;
@@ -907,7 +907,7 @@ Any image that was not touched on this registration sequence
 will be freed.
 ================
 */
-void GL_FreeUnusedImages (void)
+void GL_FreeUnusedImages ()
 {
 	int32_t		i;
 	image_t*	image;
@@ -936,7 +936,7 @@ void GL_FreeUnusedImages (void)
 GL_InitImages
 ===============
 */
-void	GL_InitImages (void)
+void	GL_InitImages ()
 {
 	int32_t	i, j;
 	float	g = vid_gamma->value;
@@ -984,7 +984,7 @@ void	GL_InitImages (void)
 GL_ShutdownImages
 ===============
 */
-void	GL_ShutdownImages (void)
+void	GL_ShutdownImages ()
 {
 	int32_t		i;
 	image_t*	image;

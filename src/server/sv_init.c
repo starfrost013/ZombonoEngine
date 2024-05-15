@@ -89,7 +89,7 @@ to the clients -- only the fields that differ from the
 baseline will be transmitted
 ================
 */
-void SV_CreateBaseline (void)
+void SV_CreateBaseline ()
 {
 	edict_t			*svent;
 	int32_t 			entnum;	
@@ -117,7 +117,7 @@ void SV_CreateBaseline (void)
 SV_CheckForSavegame
 =================
 */
-void SV_CheckForSavegame (void)
+void SV_CheckForSavegame ()
 {
 	char		name[MAX_OSPATH];
 	FILE		*f;
@@ -292,7 +292,7 @@ SV_InitGame
 A brand new game has been started
 ==============
 */
-void SV_InitGame (void)
+void SV_InitGame ()
 {
 	int32_t 	i;
 	edict_t	*ent;

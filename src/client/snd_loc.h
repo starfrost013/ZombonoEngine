@@ -111,15 +111,15 @@ typedef struct
 */
 
 // initializes cycling through a DMA buffer and returns information on it
-bool SNDDMA_Init(void);
+bool SNDDMA_Init();
 
 // gets the current DMA position
-int32_t 	SNDDMA_GetDMAPos(void);
+int32_t 	SNDDMA_GetDMAPos();
 
 // shutdown the DMA xfer.
-void	SNDDMA_Shutdown(void);
+void	SNDDMA_Shutdown();
 
-void	SNDDMA_Submit(void);
+void	SNDDMA_Submit();
 
 //====================================================================
 
@@ -149,7 +149,7 @@ extern cvar_t* s_primary;
 
 wavinfo_t GetWavinfo (char *name, uint8_t *wav, int32_t wavlength);
 
-void S_InitScaletable (void);
+void S_InitScaletable ();
 
 sfxcache_t *S_LoadSound (sfx_t *s);
 

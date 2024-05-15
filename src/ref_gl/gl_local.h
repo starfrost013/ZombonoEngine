@@ -249,7 +249,7 @@ void GL_EnableMultitexture( bool enable );
 void GL_SelectTexture( GLenum );
 
 void R_LightPoint (vec3_t p, vec3_t color);
-void R_PushDlights (void);
+void R_PushDlights ();
 
 //====================================================================
 
@@ -261,26 +261,26 @@ bool R_Init();
 void R_Shutdown( void );
 
 void R_RenderView (refdef_t *fd);
-void GL_ScreenShot_f (void);
+void GL_ScreenShot_f ();
 void R_DrawAliasModel (entity_t *e);
 void R_DrawBrushModel (entity_t *e);
 void R_DrawSpriteModel (entity_t *e);
 void R_DrawBeam( entity_t *e );
-void R_DrawWorld (void);
-void R_RenderDlights (void);
-void R_DrawAlphaSurfaces (void);
+void R_DrawWorld ();
+void R_RenderDlights ();
+void R_DrawAlphaSurfaces ();
 void R_RenderBrushPoly (msurface_t *fa);
-void R_InitParticleTexture (void);
-void Draw_InitLocal (void);
+void R_InitParticleTexture ();
+void Draw_InitLocal ();
 void GL_SubdivideSurface (msurface_t *fa);
 bool R_CullBox (vec3_t mins, vec3_t maxs);
 void R_RotateForEntity (entity_t *e);
-void R_MarkLeaves (void);
+void R_MarkLeaves ();
 
 void EmitWaterPolys (msurface_t *fa);
 void R_AddSkySurface (msurface_t *fa);
-void R_ClearSkyBox (void);
-void R_DrawSkyBox (void);
+void R_ClearSkyBox ();
+void R_DrawSkyBox ();
 void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node);
 
 void COM_StripExtension (char *in, char *out);
@@ -293,7 +293,7 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 void Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
-void Draw_FadeScreen (void);
+void Draw_FadeScreen ();
 void R_BeginFrame();
 
 void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32_t *out,  int32_t outwidth, int32_t outheight);
@@ -303,12 +303,12 @@ struct image_s *R_RegisterSkin (char *name);
 image_t*	GL_LoadPic (char *name, uint8_t *pic, int32_t width, int32_t height, imagetype_t type);
 image_t*	GL_FindImage (char *name, imagetype_t type);
 void		GL_SetTextureMode( char *string );
-void		GL_ImageList_f (void);
+void		GL_ImageList_f ();
 
-void GL_InitImages (void);
-void GL_ShutdownImages (void);
+void GL_InitImages ();
+void GL_ShutdownImages ();
 
-void GL_FreeUnusedImages (void);
+void GL_FreeUnusedImages ();
 
 void GL_SetTextureAlphaMode( char *string );
 void GL_SetTextureSolidMode( char *string );

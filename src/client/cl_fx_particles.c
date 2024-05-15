@@ -32,7 +32,7 @@ static vec3_t avelocities [NUMVERTEXNORMALS];
 CL_ParseMuzzleFlash
 ==============
 */
-void CL_ParseMuzzleFlash (void)
+void CL_ParseMuzzleFlash ()
 {
 	vec3_t		fv, rv;
 	cdlight_t	*dl;
@@ -154,7 +154,7 @@ void CL_ParseMuzzleFlash (void)
 CL_ParseMuzzleFlash2
 ==============
 */
-void CL_ParseMuzzleFlash2 (void) 
+void CL_ParseMuzzleFlash2 () 
 {
 	int32_t 		ent;
 	vec3_t		origin;
@@ -228,7 +228,7 @@ int32_t 		cl_numparticles = MAX_PARTICLES;
 CL_ClearParticles
 ===============
 */
-void CL_ClearParticles (void)
+void CL_ClearParticles ()
 {
 	int32_t 	i;
 	
@@ -1221,7 +1221,7 @@ void CL_TeleportParticles (vec3_t org)
 CL_AddParticles
 ===============
 */
-void CL_AddParticles (void)
+void CL_AddParticles ()
 {
 	cparticle_t		*p, *next;
 	float			time = 0, time2;
@@ -1566,7 +1566,7 @@ CL_ClearEffects
 
 ==============
 */
-void CL_ClearEffects (void)
+void CL_ClearEffects ()
 {
 	CL_ClearParticles ();
 	CL_ClearDlights ();

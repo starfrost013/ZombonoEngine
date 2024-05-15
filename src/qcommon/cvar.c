@@ -334,7 +334,7 @@ Cvar_GetLatchedVars
 Any variables with latched values will now be updated
 ============
 */
-void Cvar_GetLatchedVars (void)
+void Cvar_GetLatchedVars ()
 {
 	cvar_t* var;
 
@@ -361,7 +361,7 @@ Cvar_Command
 Handles variable inspection and changing from the console
 ============
 */
-bool Cvar_Command (void)
+bool Cvar_Command ()
 {
 	cvar_t			*v;
 
@@ -389,7 +389,7 @@ Cvar_Set_f
 Allows setting and defining of arbitrary cvars from console
 ============
 */
-void Cvar_Set_f (void)
+void Cvar_Set_f ()
 {
 	int32_t 	c;
 	int32_t 	flags;
@@ -451,7 +451,7 @@ Cvar_List_f
 
 ============
 */
-void Cvar_List_f (void)
+void Cvar_List_f ()
 {
 	cvar_t* var;
 	int32_t i;
@@ -523,13 +523,13 @@ char	*Cvar_BitInfo (int32_t bit)
 }
 
 // returns an info string containing all the CVAR_USERINFO cvars
-char	*Cvar_Userinfo (void)
+char	*Cvar_Userinfo ()
 {
 	return Cvar_BitInfo (CVAR_USERINFO);
 }
 
 // returns an info string containing all the CVAR_SERVERINFO cvars
-char	*Cvar_Serverinfo (void)
+char	*Cvar_Serverinfo ()
 {
 	return Cvar_BitInfo (CVAR_SERVERINFO);
 }
@@ -541,7 +541,7 @@ Cvar_Init
 Reads in all archived cvars
 ============
 */
-void Cvar_Init (void)
+void Cvar_Init ()
 {
 	Cmd_AddCommand ("set", Cvar_Set_f);
 	Cmd_AddCommand ("cvarlist", Cvar_List_f);

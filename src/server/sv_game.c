@@ -321,7 +321,7 @@ Called when either the entire server is being killed, or
 it is changing to a different game directory.
 ===============
 */
-void SV_ShutdownGameProgs (void)
+void SV_ShutdownGameProgs ()
 {
 	if (!ge)
 		return;
@@ -339,7 +339,7 @@ Init the game subsystem for a new map
 */
 void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
-void SV_InitGameProgs (void)
+void SV_InitGameProgs ()
 {
 	game_import_t	import;
 

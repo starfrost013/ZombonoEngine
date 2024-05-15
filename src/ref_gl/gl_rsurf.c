@@ -149,7 +149,7 @@ void DrawGLFlowingPoly (msurface_t *fa)
 /*
 ** R_DrawTriangleOutlines
 */
-void R_DrawTriangleOutlines (void)
+void R_DrawTriangleOutlines ()
 {
 	int32_t			i, j;
 	glpoly_t	*p;
@@ -234,7 +234,7 @@ void DrawGLPolyChain( glpoly_t *p, float soffset, float toffset )
 ** This routine takes all the given light mapped surfaces in the world and
 ** blends them into the framebuffer.
 */
-void R_BlendLightmaps (void)
+void R_BlendLightmaps ()
 {
 	int32_t			i;
 	msurface_t	*surf, *newdrawsurf = 0;
@@ -483,7 +483,7 @@ The BSP tree is waled front to back, so unwinding the chain
 of alpha_surfaces will draw back to front, giving proper ordering.
 ================
 */
-void R_DrawAlphaSurfaces (void)
+void R_DrawAlphaSurfaces ()
 {
 	msurface_t	*s;
 	float		inverse_intensity;
@@ -530,7 +530,7 @@ void R_DrawAlphaSurfaces (void)
 DrawTextureChains
 ================
 */
-void DrawTextureChains (void)
+void DrawTextureChains ()
 {
 	int32_t		i;
 	msurface_t	*s;
@@ -743,7 +743,7 @@ dynamic:
 R_DrawInlineBModel
 =================
 */
-void R_DrawInlineBModel (void)
+void R_DrawInlineBModel ()
 {
 	int32_t			i, k;
 	cplane_t	*pplane;
@@ -1026,7 +1026,7 @@ void R_RecursiveWorldNode (mnode_t *node)
 R_DrawWorld
 =============
 */
-void R_DrawWorld (void)
+void R_DrawWorld ()
 {
 	entity_t	ent;
 
@@ -1099,7 +1099,7 @@ Mark the leaves and nodes that are in the PVS for the current
 cluster
 ===============
 */
-void R_MarkLeaves (void)
+void R_MarkLeaves ()
 {
 	uint8_t* vis;
 	byte	fatvis[MAX_MAP_LEAFS/8];
@@ -1449,7 +1449,7 @@ void GL_BeginBuildingLightmaps (model_t *m)
 GL_EndBuildingLightmaps
 =======================
 */
-void GL_EndBuildingLightmaps (void)
+void GL_EndBuildingLightmaps ()
 {
 	LM_UploadBlock( false );
 	GL_EnableMultitexture( false );

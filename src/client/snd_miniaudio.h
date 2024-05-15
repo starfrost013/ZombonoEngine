@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #pragma once
-void	Miniaudio_Init(void);
+void	Miniaudio_Init();
 void	Miniaudio_Play(int32_t track, bool looping);
-void	Miniaudio_Stop(void);
-void	Miniaudio_Update(void);
-void	Miniaudio_Shutdown(void);
+void	Miniaudio_Stop();
+void	Miniaudio_Update();
+void	Miniaudio_Shutdown();

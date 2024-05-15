@@ -215,23 +215,23 @@ int32_t SV_SoundIndex (char *name);
 int32_t SV_ImageIndex (char *name);
 
 void SV_ExecuteUserCommand (char *s, bool no_console);
-void SV_InitOperatorCommands (void);
+void SV_InitOperatorCommands ();
 
 void SV_UserinfoChanged (client_t *cl);
 
-void Master_Heartbeat (void);
+void Master_Heartbeat ();
 
 //
 // sv_init.c
 //
-void SV_InitGame (void);
+void SV_InitGame ();
 void SV_Map (bool attractloop, char *levelstring, bool loadgame);
 
 
 //
 // sv_phys.c
 //
-void SV_PrepWorldFrame (void);
+void SV_PrepWorldFrame ();
 
 //
 // sv_send.c
@@ -243,8 +243,8 @@ extern	char	sv_outputbuf[SV_OUTPUTBUF_LENGTH];
 
 void SV_FlushRedirect (int32_t sv_redirected, char *outputbuf);
 
-void SV_DemoCompleted (void);
-void SV_SendClientMessages (void);
+void SV_DemoCompleted ();
+void SV_SendClientMessages ();
 
 void SV_Multicast (vec3_t origin, multicast_t to);
 void SV_StartSound (vec3_t origin, edict_t *entity, int32_t channel,
@@ -257,20 +257,20 @@ void SV_BroadcastCommand (char *fmt, ...);
 //
 // sv_user.c
 //
-void SV_Nextserver (void);
+void SV_Nextserver ();
 void SV_ExecuteClientMessage (client_t *cl);
 
 //
 // sv_ccmds.c
 //
-void SV_ReadLevelFile (void);
-void SV_Status_f (void);
+void SV_ReadLevelFile ();
+void SV_Status_f ();
 
 //
 // sv_ents.c
 //
 void SV_WriteFrameToClient (client_t *client, sizebuf_t *msg);
-void SV_RecordDemoMessage (void);
+void SV_RecordDemoMessage ();
 void SV_BuildClientFrame (client_t *client);
 
 //
@@ -278,8 +278,8 @@ void SV_BuildClientFrame (client_t *client);
 //
 extern	game_export_t	*ge;
 
-void SV_InitGameProgs (void);
-void SV_ShutdownGameProgs (void);
+void SV_InitGameProgs ();
+void SV_ShutdownGameProgs ();
 
 //============================================================
 
@@ -287,7 +287,7 @@ void SV_ShutdownGameProgs (void);
 // high level object sorting to reduce interaction tests
 //
 
-void SV_ClearWorld (void);
+void SV_ClearWorld ();
 // called after the world model has been loaded, before linking any entities
 
 void SV_UnlinkEdict (edict_t *ent);

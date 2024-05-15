@@ -504,7 +504,7 @@ void CL_FireEntityEvents (frame_t *frame)
 CL_ParseFrame
 ================
 */
-void CL_ParseFrame (void)
+void CL_ParseFrame ()
 {
 	int32_t 		cmd;
 	int32_t 		len;
@@ -997,7 +997,7 @@ CL_CalcViewValues
 Sets cl.refdef view values
 ===============
 */
-void CL_CalcViewValues (void)
+void CL_CalcViewValues ()
 {
 	int32_t 		i;
 	float		lerp, backlerp;
@@ -1083,7 +1083,7 @@ CL_AddEntities
 Emits all entities, particles, and lights to the refresh
 ===============
 */
-void CL_AddEntities (void)
+void CL_AddEntities ()
 {
 	if (cls.state != ca_active)
 		return;

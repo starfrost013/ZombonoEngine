@@ -29,9 +29,9 @@ int32_t 	snd_scaletable[32][256];
 int32_t 	*snd_p, snd_linear_count, snd_vol;
 short	*snd_out;
 
-void S_WriteLinearBlastStereo16 (void);
+void S_WriteLinearBlastStereo16 ();
 
-void S_WriteLinearBlastStereo16 (void)
+void S_WriteLinearBlastStereo16 ()
 {
 	int32_t 	i;
 	int32_t 	val;
@@ -297,7 +297,7 @@ void S_PaintChannels(int32_t endtime)
 	}
 }
 
-void S_InitScaletable (void)
+void S_InitScaletable ()
 {
 	int32_t 	i, j;
 	int32_t 	scale;

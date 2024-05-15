@@ -70,7 +70,7 @@ static char	*rd_buffer;
 static int32_t rd_buffersize;
 static void	(*rd_flush)(int32_t target, char *buffer);
 
-extern void SV_ShutdownGameProgs(void);
+extern void SV_ShutdownGameProgs();
 
 void Com_BeginRedirect (int32_t target, char *buffer, int32_t buffersize, void (*flush))
 {
@@ -84,7 +84,7 @@ void Com_BeginRedirect (int32_t target, char *buffer, int32_t buffersize, void (
 	*rd_buffer = 0;
 }
 
-void Com_EndRedirect (void)
+void Com_EndRedirect ()
 {
 	rd_flush(rd_target, rd_buffer);
 
@@ -231,7 +231,7 @@ Both client and server can use this, and it will
 do the apropriate things.
 =============
 */
-void Com_Quit (void)
+void Com_Quit ()
 {
 	SV_Shutdown ("Server quit\n", false);
 	SV_ShutdownGameProgs();
@@ -251,7 +251,7 @@ void Com_Quit (void)
 Com_ServerState
 ==================
 */
-int32_t Com_ServerState (void)
+int32_t Com_ServerState ()
 {
 	return server_state;
 }
@@ -964,7 +964,7 @@ int32_t COM_CheckParm (char *parm)
 	return 0;
 }
 
-int32_t COM_Argc (void)
+int32_t COM_Argc ()
 {
 	return com_argc;
 }
@@ -1125,7 +1125,7 @@ void Z_Free (void *ptr)
 Z_Stats_f
 ========================
 */
-void Z_Stats_f (void)
+void Z_Stats_f ()
 {
 	Com_Printf ("%i bytes in %i blocks\n", z_bytes, z_count);
 }
@@ -1297,18 +1297,18 @@ uint8_t	Com_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequenc
 
 //========================================================
 
-float	frand(void)
+float	frand()
 {
 	return (rand()&32767)* (1.0/32767);
 }
 
-float	crand(void)
+float	crand()
 {
 	return (rand()&32767)* (2.0/32767) - 1;
 }
 
-void Key_Init (void);
-void SCR_EndLoadingPlaque (void);
+void Key_Init ();
+void SCR_EndLoadingPlaque ();
 
 /*
 =============
@@ -1318,7 +1318,7 @@ Just throw a fatal error to
 test error shutdown procedures
 =============
 */
-void Com_Error_f (void)
+void Com_Error_f ()
 {
 	Com_Error (ERR_FATAL, "%s", Cmd_Argv(1));
 }
@@ -1570,6 +1570,6 @@ void Qcommon_Frame (int32_t msec)
 Qcommon_Shutdown
 =================
 */
-void Qcommon_Shutdown (void)
+void Qcommon_Shutdown ()
 {
 }

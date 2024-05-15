@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 #include "snd_loc.h"
 
-void S_Play(void);
-void S_SoundList(void);
-void S_Update_(void);
-void S_StopAllSounds(void);
+void S_Play();
+void S_SoundList();
+void S_Update_();
+void S_StopAllSounds();
 
 
 // =======================================================================
@@ -90,7 +90,7 @@ portable_samplepair_t	s_rawsamples[MAX_RAW_SAMPLES];
 // ====================================================================
 
 
-void S_SoundInfo_f(void)
+void S_SoundInfo_f()
 {
 	if (!sound_started)
 	{
@@ -114,7 +114,7 @@ void S_SoundInfo_f(void)
 S_Init
 ================
 */
-void S_Init (void)
+void S_Init ()
 {
 	cvar_t* cv;
 
@@ -162,7 +162,7 @@ void S_Init (void)
 // Shutdown sound engine
 // =======================================================================
 
-void S_Shutdown(void)
+void S_Shutdown()
 {
 	int32_t 	i;
 	sfx_t	*sfx;
@@ -291,7 +291,7 @@ S_BeginRegistration
 
 =====================
 */
-void S_BeginRegistration (void)
+void S_BeginRegistration ()
 {
 	s_registration_sequence++;
 	s_registering = true;
@@ -326,7 +326,7 @@ S_EndRegistration
 
 =====================
 */
-void S_EndRegistration (void)
+void S_EndRegistration ()
 {
 	int32_t 	i;
 	sfx_t	*sfx;
@@ -503,7 +503,7 @@ void S_Spatialize(channel_t *ch)
 S_AllocPlaysound
 =================
 */
-playsound_t *S_AllocPlaysound (void)
+playsound_t *S_AllocPlaysound ()
 {
 	playsound_t	*ps;
 
@@ -759,7 +759,7 @@ void S_StartLocalSound (char *sound)
 S_ClearBuffer
 ==================
 */
-void S_ClearBuffer (void)
+void S_ClearBuffer ()
 {
 	int32_t 	clear;
 		
@@ -783,7 +783,7 @@ void S_ClearBuffer (void)
 S_StopAllSounds
 ==================
 */
-void S_StopAllSounds(void)
+void S_StopAllSounds()
 {
 	int32_t 	i;
 
@@ -818,7 +818,7 @@ that are automatically started, stopped, and merged together
 as the entities are sent to the client
 ==================
 */
-void S_AddLoopSounds (void)
+void S_AddLoopSounds ()
 {
 	int32_t 		i, j;
 	int32_t 		sounds[MAX_EDICTS];
@@ -979,7 +979,7 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 	S_Update_();
 }
 
-void GetSoundtime(void)
+void GetSoundtime()
 {
 	int32_t 	samplepos;
 	static	int32_t 	buffers;
@@ -1009,7 +1009,7 @@ void GetSoundtime(void)
 }
 
 
-void S_Update_(void)
+void S_Update_()
 {
 	uint32_t        endtime;
 	int32_t 			samps;
@@ -1054,7 +1054,7 @@ console functions
 ===============================================================================
 */
 
-void S_Play(void)
+void S_Play()
 {
 	int32_t 	i;
 	char name[256];
@@ -1076,7 +1076,7 @@ void S_Play(void)
 	}
 }
 
-void S_SoundList(void)
+void S_SoundList()
 {
 	int32_t 	i;
 	sfx_t	*sfx;

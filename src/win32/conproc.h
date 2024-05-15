@@ -21,4 +21,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // conproc.h -- support for qhost
 
 void InitConProc (int32_t argc, char **argv);
-void DeinitConProc (void);
+void DeinitConProc ();

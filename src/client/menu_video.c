@@ -38,7 +38,7 @@ static cvar_t* gl_picmip;
 static cvar_t* gl_vsync;
 static cvar_t* gl_texturemode;
 
-extern void M_ForceMenuOff(void);
+extern void M_ForceMenuOff();
 
 /*
 ====================================================================
@@ -190,7 +190,7 @@ static void ApplyChanges(void* unused)
 
 static void CancelChanges(void* unused)
 {
-	extern void M_PopMenu(void);
+	extern void M_PopMenu();
 
 	M_PopMenu();
 }
@@ -198,7 +198,7 @@ static void CancelChanges(void* unused)
 /*
 ** VID_MenuInit
 */
-void VID_MenuInit(void)
+void VID_MenuInit()
 {
 	// THIS LIST **MUST** CORRESPOND EXACTLY WITH THE LIST IN VID_DLL.C!!!
 	static const char* resolutions[] =
@@ -402,7 +402,7 @@ void VID_MenuInit(void)
 VID_MenuDraw
 ================
 */
-void VID_MenuDraw(void)
+void VID_MenuDraw()
 {
 	int32_t w, h;
 

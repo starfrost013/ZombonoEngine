@@ -438,7 +438,7 @@ bool SV_SendClientDatagram (client_t *client)
 SV_DemoCompleted
 ==================
 */
-void SV_DemoCompleted (void)
+void SV_DemoCompleted ()
 {
 	if (sv.demofile)
 	{
@@ -453,7 +453,7 @@ void SV_DemoCompleted (void)
 SV_SendClientMessages
 =======================
 */
-void SV_SendClientMessages (void)
+void SV_SendClientMessages ()
 {
 	int32_t 		i;
 	client_t	*c;

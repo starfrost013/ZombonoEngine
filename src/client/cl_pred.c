@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 CL_CheckPredictionError
 ===================
 */
-void CL_CheckPredictionError (void)
+void CL_CheckPredictionError ()
 {
 	int32_t 	frame;
 	int32_t 	delta[3];
@@ -197,7 +197,7 @@ CL_PredictMovement
 Sets cl.predicted_origin and cl.predicted_angles
 =================
 */
-void CL_PredictMovement (void)
+void CL_PredictMovement ()
 {
 	int32_t 		ack, current;
 	int32_t 		frame;

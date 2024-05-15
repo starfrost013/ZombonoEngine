@@ -44,7 +44,7 @@ int32_t 		lastofs;
 CL_ClearLightStyles
 ================
 */
-void CL_ClearLightStyles(void)
+void CL_ClearLightStyles()
 {
 	memset(cl_lightstyle, 0, sizeof(cl_lightstyle));
 	lastofs = -1;
@@ -55,7 +55,7 @@ void CL_ClearLightStyles(void)
 CL_RunLightStyles
 ================
 */
-void CL_RunLightStyles(void)
+void CL_RunLightStyles()
 {
 	int32_t 	ofs;
 	int32_t 	i;
@@ -103,7 +103,7 @@ void CL_SetLightstyle(int32_t i)
 CL_AddLightStyles
 ================
 */
-void CL_AddLightStyles(void)
+void CL_AddLightStyles()
 {
 	int32_t 	i;
 	clightstyle_t* ls;

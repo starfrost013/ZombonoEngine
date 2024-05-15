@@ -28,7 +28,7 @@ explosion_t	cl_explosions[MAX_EXPLOSIONS];
 CL_AddExplosions
 =================
 */
-void CL_AddExplosions(void)
+void CL_AddExplosions()
 {
 	entity_t* ent;
 	int32_t 		i;
@@ -133,7 +133,7 @@ void CL_AddExplosions(void)
 CL_AllocExplosion
 =================
 */
-explosion_t* CL_AllocExplosion(void)
+explosion_t* CL_AllocExplosion()
 {
 	int32_t 	i;
 	int32_t 	time;

@@ -447,7 +447,7 @@ FS_Gamedir
 Called to find where to write a file (demos, savegames, etc)
 ============
 */
-char *FS_Gamedir (void)
+char *FS_Gamedir ()
 {
 	if (*fs_gamedir)
 		return fs_gamedir;
@@ -460,7 +460,7 @@ char *FS_Gamedir (void)
 FS_ExecAutoexec
 =============
 */
-void FS_ExecAutoexec (void)
+void FS_ExecAutoexec ()
 {
 	char *dir;
 	char name [MAX_QPATH];
@@ -538,7 +538,7 @@ FS_Link_f
 Creates a filelink_t
 ================
 */
-void FS_Link_f (void)
+void FS_Link_f ()
 {
 	filelink_t	*l, **prev;
 
@@ -679,7 +679,7 @@ FS_Path_f
 
 ============
 */
-void FS_Path_f (void)
+void FS_Path_f ()
 {
 	searchpath_t	*s;
 	filelink_t		*l;
@@ -734,7 +734,7 @@ char *FS_NextPath (char *prevpath)
 FS_InitFilesystem
 ================
 */
-void FS_InitFilesystem (void)
+void FS_InitFilesystem ()
 {
 	Cmd_AddCommand ("path", FS_Path_f);
 	Cmd_AddCommand ("link", FS_Link_f);

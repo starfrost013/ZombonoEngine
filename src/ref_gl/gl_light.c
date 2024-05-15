@@ -67,7 +67,7 @@ void R_RenderDlight (dlight_t *light)
 R_RenderDlights
 =============
 */
-void R_RenderDlights (void)
+void R_RenderDlights ()
 {
 	int32_t		i;
 	dlight_t*	l;
@@ -154,7 +154,7 @@ void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node)
 R_PushDlights
 =============
 */
-void R_PushDlights (void)
+void R_PushDlights ()
 {
 	int32_t		i;
 	dlight_t*	l;

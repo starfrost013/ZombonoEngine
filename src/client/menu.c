@@ -39,27 +39,27 @@ static char *menu_Input_sound		= "misc/menu1.wav";
 static char *menu_move_sound	= "misc/menu2.wav";
 static char *menu_out_sound		= "misc/menu3.wav";
 
-void M_Menu_Main_f (void);
-	void M_Menu_Game_f (void);
-		void M_Menu_LoadGame_f (void);
-		void M_Menu_SaveGame_f (void);
-		void M_Menu_PlayerConfig_f (void);
-			void M_Menu_DownloadOptions_f (void);
+void M_Menu_Main_f ();
+	void M_Menu_Game_f ();
+		void M_Menu_LoadGame_f ();
+		void M_Menu_SaveGame_f ();
+		void M_Menu_PlayerConfig_f ();
+			void M_Menu_DownloadOptions_f ();
 		void M_Menu_Credits_f( void );
 	void M_Menu_Multiplayer_f( void );
-		void M_Menu_JoinServer_f (void);
+		void M_Menu_JoinServer_f ();
 			void M_Menu_AddressBook_f( void );
-		void M_Menu_StartServer_f (void);
-			void M_Menu_GameOptions_f (void);
-	void M_Menu_Video_f (void);
-	void M_Menu_Options_f (void);
-		void M_Menu_Keys_f (void);
-	void M_Menu_Quit_f (void);
+		void M_Menu_StartServer_f ();
+			void M_Menu_GameOptions_f ();
+	void M_Menu_Video_f ();
+	void M_Menu_Options_f ();
+		void M_Menu_Keys_f ();
+	void M_Menu_Quit_f ();
 
 bool	m_entersound;		// play after drawing a frame, so caching
 								// won't disrupt the sound
 
-void	(*m_drawfunc) (void);
+void	(*m_drawfunc) ();
 const char *(*m_keyfunc) (int32_t key);
 
 //=============================================================================
@@ -70,7 +70,7 @@ const char *(*m_keyfunc) (int32_t key);
 
 typedef struct
 {
-	void	(*draw) (void);
+	void	(*draw) ();
 	const char *(*key) (int32_t k);
 } menulayer_t;
 
@@ -85,7 +85,7 @@ static void M_Banner( char *name )
 	re.DrawPic( viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, name );
 }
 
-void M_PushMenu ( void (*draw) (void), const char *(*key) (int32_t k) )
+void M_PushMenu ( void (*draw) (), const char *(*key) (int32_t k) )
 {
 	int32_t 	i;
 
@@ -119,7 +119,7 @@ void M_PushMenu ( void (*draw) (void), const char *(*key) (int32_t k) )
 	cls.key_dest = key_menu;
 }
 
-void M_ForceMenuOff (void)
+void M_ForceMenuOff ()
 {
 	m_drawfunc = 0;
 	m_keyfunc = 0;
@@ -129,7 +129,7 @@ void M_ForceMenuOff (void)
 	Cvar_Set ("paused", "0");
 }
 
-void M_PopMenu (void)
+void M_PopMenu ()
 {
 	S_StartLocalSound( menu_out_sound );
 	if (m_menudepth < 1)
@@ -360,7 +360,7 @@ MAIN MENU
 #define	Main_ITEMS	5
 
 
-void M_Main_Draw (void)
+void M_Main_Draw ()
 {
 	int32_t i;
 	int32_t w, h;
@@ -464,7 +464,7 @@ const char *M_Main_Key (int32_t key)
 }
 
 
-void M_Menu_Main_f (void)
+void M_Menu_Main_f ()
 {
 
 	M_PushMenu (M_Main_Draw, M_Main_Key);
@@ -483,7 +483,7 @@ static menuaction_t		s_direct_connect_action;
 static menuaction_t		s_start_server_action;
 static menuaction_t		s_player_setup_action;
 
-static void Multiplayer_MenuDraw (void)
+static void Multiplayer_MenuDraw ()
 {
 	M_Banner( "pics/m_banner_multiplayer" );
 
@@ -973,7 +973,7 @@ static void Keys_MenuInit( void )
 	Menu_Center( &s_keys_menu );
 }
 
-static void Keys_MenuDraw (void)
+static void Keys_MenuDraw ()
 {
 	Menu_AdjustCursor( &s_keys_menu, 1 );
 	Menu_Draw( &s_keys_menu );
@@ -1013,7 +1013,7 @@ static const char *Keys_MenuKey( int32_t key )
 	}
 }
 
-void M_Menu_Keys_f (void)
+void M_Menu_Keys_f ()
 {
 	Keys_MenuInit();
 	M_PushMenu( Keys_MenuDraw, Keys_MenuKey );
@@ -1328,7 +1328,7 @@ void Options_MenuInit( void )
 	Menu_AddItem( &s_options_menu, ( void * ) &s_options_console_action );
 }
 
-void Options_MenuDraw (void)
+void Options_MenuDraw ()
 {
 	M_Banner( "pics/m_banner_options" );
 	Menu_AdjustCursor( &s_options_menu, 1 );
@@ -1357,7 +1357,7 @@ const char *Options_MenuKey( int32_t key )
 	return Default_MenuKey( &s_options_menu, key );
 }
 
-void M_Menu_Options_f (void)
+void M_Menu_Options_f ()
 {
 	Options_MenuInit();
 	M_PushMenu ( Options_MenuDraw, Options_MenuKey );
@@ -1371,7 +1371,7 @@ VIDEO MENU
 =======================================================================
 */
 
-void M_Menu_Video_f (void)
+void M_Menu_Video_f ()
 {
 	VID_MenuInit();
 	M_PushMenu( VID_MenuDraw, VID_MenuKey );
@@ -1691,7 +1691,7 @@ const char *Game_MenuKey( int32_t key )
 #endif
 }
 
-void M_Menu_Game_f (void)
+void M_Menu_Game_f ()
 {
 	Game_MenuInit();
 	M_PushMenu( Game_MenuDraw, Game_MenuKey );
@@ -1716,7 +1716,7 @@ static menuaction_t		s_loadgame_actions[MAX_SAVEGAMES];
 char		m_savestrings[MAX_SAVEGAMES][32];
 bool	m_savevalid[MAX_SAVEGAMES];
 
-void Create_Savestrings (void)
+void Create_Savestrings ()
 {
 	int32_t 	i;
 	FILE	*f;
@@ -1795,7 +1795,7 @@ const char *LoadGame_MenuKey( int32_t key )
 	return Default_MenuKey( &s_loadgame_menu, key );
 }
 
-void M_Menu_LoadGame_f (void)
+void M_Menu_LoadGame_f ()
 {
 	LoadGame_MenuInit();
 	M_PushMenu( LoadGame_MenuDraw, LoadGame_MenuKey );
@@ -1865,7 +1865,7 @@ const char *SaveGame_MenuKey( int32_t key )
 	return Default_MenuKey( &s_savegame_menu, key );
 }
 
-void M_Menu_SaveGame_f (void)
+void M_Menu_SaveGame_f ()
 {
 	if (!Com_ServerState())
 		return;		// not playing a game
@@ -2014,7 +2014,7 @@ void JoinServer_MenuInit( void )
 	SearchLocalGames();
 }
 
-void JoinServer_MenuDraw(void)
+void JoinServer_MenuDraw()
 {
 	M_Banner( "pics/m_banner_join_server" );
 	Menu_Draw( &s_joinserver_menu );
@@ -2043,7 +2043,7 @@ const char *JoinServer_MenuKey( int32_t key )
 	return Default_MenuKey( &s_joinserver_menu, key );
 }
 
-void M_Menu_JoinServer_f (void)
+void M_Menu_JoinServer_f ()
 {
 	JoinServer_MenuInit();
 	M_PushMenu( JoinServer_MenuDraw, JoinServer_MenuKey );
@@ -2326,7 +2326,7 @@ void StartServer_MenuInit( void )
 	RulesChangeFunc ( NULL );
 }
 
-void StartServer_MenuDraw(void)
+void StartServer_MenuDraw()
 {
 #ifdef PLAYTEST
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
@@ -2362,7 +2362,7 @@ const char *StartServer_MenuKey( int32_t key )
 #endif
 }
 
-void M_Menu_StartServer_f (void)
+void M_Menu_StartServer_f ()
 {
 	StartServer_MenuInit();
 	M_PushMenu( StartServer_MenuDraw, StartServer_MenuKey );
@@ -2664,7 +2664,7 @@ void GameOptions_MenuInit( void )
 	Menu_SetStatusBar( &s_gameoptions_menu, gameoptions_statusbar );
 }
 
-void GameOptions_MenuDraw(void)
+void GameOptions_MenuDraw()
 {
 	Menu_Draw( &s_gameoptions_menu );
 }
@@ -2674,7 +2674,7 @@ const char *GameOptions_MenuKey( int32_t key )
 	return Default_MenuKey( &s_gameoptions_menu, key );
 }
 
-void M_Menu_GameOptions_f (void)
+void M_Menu_GameOptions_f ()
 {
 	GameOptions_MenuInit();
 	M_PushMenu( GameOptions_MenuDraw, GameOptions_MenuKey );
@@ -2796,7 +2796,7 @@ void DownloadOptions_MenuInit( void )
 		s_downloadoptions_menu.cursor = 1;
 }
 
-void DownloadOptions_MenuDraw(void)
+void DownloadOptions_MenuDraw()
 {
 	Menu_Draw( &s_downloadoptions_menu );
 }
@@ -2806,7 +2806,7 @@ const char *DownloadOptions_MenuKey( int32_t key )
 	return Default_MenuKey( &s_downloadoptions_menu, key );
 }
 
-void M_Menu_DownloadOptions_f (void)
+void M_Menu_DownloadOptions_f ()
 {
 	DownloadOptions_MenuInit();
 	M_PushMenu( DownloadOptions_MenuDraw, DownloadOptions_MenuKey );
@@ -2872,13 +2872,13 @@ const char *AddressBook_MenuKey( int32_t key )
 	return Default_MenuKey( &s_addressbook_menu, key );
 }
 
-void AddressBook_MenuDraw(void)
+void AddressBook_MenuDraw()
 {
 	M_Banner( "pics/m_banner_addressbook" );
 	Menu_Draw( &s_addressbook_menu );
 }
 
-void M_Menu_AddressBook_f(void)
+void M_Menu_AddressBook_f()
 {
 	AddressBook_MenuInit();
 	M_PushMenu( AddressBook_MenuDraw, AddressBook_MenuKey );
@@ -3393,7 +3393,7 @@ const char *PlayerConfig_MenuKey (int32_t key)
 }
 
 
-void M_Menu_PlayerConfig_f (void)
+void M_Menu_PlayerConfig_f ()
 {
 	if (!PlayerConfig_MenuInit())
 	{
@@ -3436,7 +3436,7 @@ const char *M_Quit_Key (int32_t key)
 }
 
 
-void M_Quit_Draw (void)
+void M_Quit_Draw ()
 {
 	int32_t 	w, h;
 
@@ -3445,7 +3445,7 @@ void M_Quit_Draw (void)
 }
 
 
-void M_Menu_Quit_f (void)
+void M_Menu_Quit_f ()
 {
 	M_PushMenu (M_Quit_Draw, M_Quit_Key);
 }
@@ -3461,7 +3461,7 @@ void M_Menu_Quit_f (void)
 M_Init
 =================
 */
-void M_Init (void)
+void M_Init ()
 {
 	Cmd_AddCommand ("menu_main", M_Menu_Main_f);
 	Cmd_AddCommand ("menu_game", M_Menu_Game_f);
@@ -3487,7 +3487,7 @@ void M_Init (void)
 M_Draw
 =================
 */
-void M_Draw (void)
+void M_Draw ()
 {
 	if (cls.key_dest != key_menu)
 		return;

@@ -189,7 +189,7 @@ uint8_t *iff_data;
 uint8_t	iff_chunk_len;
 
 
-int16_t GetLittleShort(void)
+int16_t GetLittleShort()
 {
 	int16_t val = 0;
 	val = *data_p;
@@ -198,7 +198,7 @@ int16_t GetLittleShort(void)
 	return val;
 }
 
-int32_t GetLittleLong(void)
+int32_t GetLittleLong()
 {
 	int32_t val = 0;
 	val = *data_p;
@@ -244,7 +244,7 @@ void FindChunk(char *name)
 }
 
 
-void DumpChunks(void)
+void DumpChunks()
 {
 	char	str[5];
 	

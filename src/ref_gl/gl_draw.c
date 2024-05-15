@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 Draw_InitLocal
 ===============
 */
-void Draw_InitLocal (void)
+void Draw_InitLocal ()
 {
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -295,7 +295,7 @@ Draw_FadeScreen
 
 ================
 */
-void Draw_FadeScreen (void)
+void Draw_FadeScreen ()
 {
 	glEnable (GL_BLEND);
 	glDisable (GL_TEXTURE_2D);

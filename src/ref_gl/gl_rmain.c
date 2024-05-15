@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gl_local.h"
 #include <ctype.h>
 
-void R_Clear (void);
+void R_Clear ();
 
 viddef_t	vid;
 
@@ -161,7 +161,7 @@ void R_RotateForEntity (entity_t *e)
 R_DrawNullModel
 =============
 */
-void R_DrawNullModel (void)
+void R_DrawNullModel ()
 {
 	vec3_t	shadelight;
 	int		i;
@@ -199,7 +199,7 @@ void R_DrawNullModel (void)
 R_DrawEntitiesOnList
 =============
 */
-void R_DrawEntitiesOnList (void)
+void R_DrawEntitiesOnList ()
 {
 	int		i;
 
@@ -291,7 +291,7 @@ void R_DrawEntitiesOnList (void)
 R_DrawParticles
 ===============
 */
-void R_DrawParticles (void)
+void R_DrawParticles ()
 {
 	int32_t i;
 	uint8_t color[4] = { 0 };
@@ -323,7 +323,7 @@ void R_DrawParticles (void)
 R_PolyBlend
 ============
 */
-void R_PolyBlend (void)
+void R_PolyBlend ()
 {
 	if (!gl_polyblend->value)
 		return;
@@ -376,7 +376,7 @@ int32_t SignbitsForPlane (cplane_t *out)
 }
 
 
-void R_SetFrustum (void)
+void R_SetFrustum ()
 {
 	int		i;
 	int		base = 90;
@@ -413,7 +413,7 @@ void R_SetFrustum (void)
 R_SetupFrame
 ===============
 */
-void R_SetupFrame (void)
+void R_SetupFrame ()
 {
 	int32_t i;
 	mleaf_t	*leaf;
@@ -497,7 +497,7 @@ void GL_SetPerspective( GLdouble fovy, GLdouble aspect,
 R_SetupGL
 =============
 */
-void R_SetupGL (void)
+void R_SetupGL ()
 {
 	float	screenaspect;
 //	float	yfov;
@@ -557,7 +557,7 @@ void R_SetupGL (void)
 R_Clear
 =============
 */
-void R_Clear (void)
+void R_Clear ()
 {
 	// gets rid of the hall of mirrors effect
 
@@ -633,7 +633,7 @@ void R_RenderView (refdef_t *fd)
 }
 
 
-void R_SetGL2D (void)
+void R_SetGL2D ()
 {
 	// set 2D virtual screen size
 	glViewport (0,0, vid.width, vid.height);
@@ -655,7 +655,7 @@ R_SetLightLevel
 
 ====================
 */
-void R_SetLightLevel (void)
+void R_SetLightLevel ()
 {
 	vec3_t		shadelight;
 
@@ -768,7 +768,7 @@ void R_Register( void )
 R_SetMode
 ==================
 */
-bool R_SetMode (void)
+bool R_SetMode ()
 {
 	rserr_t err;
 	bool fullscreen;
@@ -891,7 +891,7 @@ bool R_Init()
 R_Shutdown
 ===============
 */
-void R_Shutdown (void)
+void R_Shutdown ()
 {	
 	ri.Cmd_RemoveCommand ("modellist");
 	ri.Cmd_RemoveCommand ("screenshot");
@@ -1089,7 +1089,7 @@ void			R_BeginRegistration (char *map);
 struct model_s	*R_RegisterModel (char *name);
 struct image_s	*R_RegisterSkin (char *name);
 void			R_SetSky (char *name, float rotate, vec3_t axis);
-void			R_EndRegistration (void);
+void			R_EndRegistration ();
 
 void			R_RenderFrame (refdef_t *fd);
 
@@ -1098,7 +1098,7 @@ struct image_s	*Draw_FindPic (char *name);
 void			Draw_Pic (int32_t x, int32_t y, char *name);
 void			Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void			Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
-void			Draw_FadeScreen (void);
+void			Draw_FadeScreen ();
 
 /*
 @@@@@@@@@@@@@@@@@@@@@

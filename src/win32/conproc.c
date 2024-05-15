@@ -152,7 +152,7 @@ void InitConProc (int32_t argc, char **argv)
 }
 
 
-void DeinitConProc (void)
+void DeinitConProc ()
 {
 	//if (heventDone)
 		//SetEvent (heventDone);
