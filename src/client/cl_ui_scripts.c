@@ -30,12 +30,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 bool UI_TeamUICreate()
 {
 	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - (48 * vid_hudscale->value), (viddef.height / 2) - (80 * vid_hudscale->value));
-	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director", (viddef.width / 2) - (256 * vid_hudscale->value), (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
-	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "pics/ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director", (viddef.width / 2) - (256 * vid_hudscale->value), (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
 
 	// set on hover images 
-	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "pics/ui/teamui_btn_director_hover");
-	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "pics/ui/teamui_btn_player_hover");
+	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director_hover");
+	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player_hover");
 
 	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7 creatures. Slow running speed.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value));
 	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Fast running speed.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value));
@@ -167,36 +167,36 @@ bool UI_LoadoutUICreate()
 
 	// create 10 placeholder icons
 	y += 15 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "2d/i_fixme", x, y, 24, 24);
 
 	// some of these are manually tweaked because there is no point caling Text_GetSize for the numbers 0 to 9
 	UI_AddText("LoadoutUI", "LoadoutUI_Text1", "1", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text2", "2", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option2", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option2", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text3", "3", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option3", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option3", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text4", "4", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option4", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option4", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text5", "5", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option5", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option5", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text6", "6", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option6", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option6", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text7", "7", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option7", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option7", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text8", "8", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option8", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option8", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text9", "9", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
-	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "pics/i_fixme", x, y, 24, 24);
+	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text9", "0", x + 10, y + 30);
 	x += 24 * vid_hudscale->value;
 

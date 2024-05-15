@@ -294,14 +294,14 @@ void M_DrawCursor( int32_t x, int32_t y, int32_t f )
 
 		for ( i = 0; i < NUM_CURSOR_FRAMES; i++ )
 		{
-			Com_sprintf( cursorname, sizeof( cursorname ), "pics/m_cursor%d", i );
+			Com_sprintf( cursorname, sizeof( cursorname ), "2d/m_cursor%d", i );
 
 			re.RegisterPic( cursorname );
 		}
 		cached = true;
 	}
 
-	Com_sprintf( cursorname, sizeof(cursorname), "pics/m_cursor%d", f );
+	Com_sprintf( cursorname, sizeof(cursorname), "2d/m_cursor%d", f );
 	re.DrawPic( x, y, cursorname );
 }
 
@@ -314,39 +314,39 @@ void Menu_DrawTextBox (int32_t x, int32_t y, int32_t width, int32_t lines)
 	// draw left side
 	cx = x;
 	cy = y;
-	Menu_DrawCenteredImage(cx, cy, "pics/textbox_top_01");
+	Menu_DrawCenteredImage(cx, cy, "2d/textbox_top_01");
 	for (n = 0; n < lines; n++)
 	{
 		cy += 8 * vid_hudscale->value;
-		Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_01");
+		Menu_DrawCenteredImage (cx, cy, "2d/textbox_middle_01");
 	}
-	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_01");
+	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "2d/textbox_bottom_01");
 
 	// draw middle
 	cx += 8 * vid_hudscale->value;
 	while (width > 0)
 	{
 		cy = y;
-		Menu_DrawCenteredImage (cx, cy, "pics/textbox_top_02");
+		Menu_DrawCenteredImage (cx, cy, "2d/textbox_top_02");
 		for (n = 0; n < lines; n++)
 		{
 			cy += 8 * vid_hudscale->value;
-			Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_02");
+			Menu_DrawCenteredImage (cx, cy, "2d/textbox_middle_02");
 		}
-		Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_02");
+		Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "2d/textbox_bottom_02");
 		width -= 1;
 		cx += 8 * vid_hudscale->value;
 	}
 
 	// draw right side
 	cy = y;
-	Menu_DrawCenteredImage (cx, cy, "pics/textbox_top_03");
+	Menu_DrawCenteredImage (cx, cy, "2d/textbox_top_03");
 	for (n = 0; n < lines; n++)
 	{
 		cy += 8 * vid_hudscale->value;
-		Menu_DrawCenteredImage (cx, cy, "pics/textbox_middle_03");
+		Menu_DrawCenteredImage (cx, cy, "2d/textbox_middle_03");
 	}
-	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "pics/textbox_bottom_03");
+	Menu_DrawCenteredImage (cx, cy + 8 * vid_hudscale->value, "2d/textbox_bottom_03");
 }
 
 		
@@ -374,11 +374,11 @@ void M_Main_Draw ()
 	// menu options name
 	char *names[] =
 	{
-		"pics/m_main_game",
-		"pics/m_main_multiplayer",
-		"pics/m_main_options",
-		"pics/m_main_video",
-		"pics/m_main_quit",
+		"2d/m_main_game",
+		"2d/m_main_multiplayer",
+		"2d/m_main_options",
+		"2d/m_main_video",
+		"2d/m_main_quit",
 		0
 	};
 
@@ -485,7 +485,7 @@ static menuaction_t		s_player_setup_action;
 
 static void Multiplayer_MenuDraw ()
 {
-	M_Banner( "pics/m_banner_multiplayer" );
+	M_Banner( "2d/m_banner_multiplayer" );
 
 	Menu_AdjustCursor( &s_multiplayer_menu, 1 );
 	Menu_Draw( &s_multiplayer_menu );
@@ -690,7 +690,7 @@ static void KeyCursorDrawFunc( menuframework_t *menu )
 	{
 		if ((int32_t)(Sys_Milliseconds() / 250) & 1)
 		{
-			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "pics/menu_cursor_on");
+			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "2d/menu_cursor_on");
 		}
 	}
 }
@@ -1330,7 +1330,7 @@ void Options_MenuInit( void )
 
 void Options_MenuDraw ()
 {
-	M_Banner( "pics/m_banner_options" );
+	M_Banner( "2d/m_banner_options" );
 	Menu_AdjustCursor( &s_options_menu, 1 );
 	Menu_Draw( &s_options_menu );
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string); // get pointer to system font
@@ -1676,7 +1676,7 @@ void Game_MenuDraw( void )
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
 	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
-	M_Banner("pics/m_banner_game");
+	M_Banner("2d/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
 	Menu_Draw(&s_game_menu);
 #endif
@@ -1779,7 +1779,7 @@ void LoadGame_MenuInit( void )
 
 void LoadGame_MenuDraw( void )
 {
-	M_Banner( "pics/m_banner_load_game" );
+	M_Banner( "2d/m_banner_load_game" );
 //	Menu_AdjustCursor( &s_loadgame_menu, 1 );
 	Menu_Draw( &s_loadgame_menu );
 }
@@ -1822,7 +1822,7 @@ void SaveGameCallback( void *self )
 
 void SaveGame_MenuDraw( void )
 {
-	M_Banner( "pics/m_banner_save_game" );
+	M_Banner( "2d/m_banner_save_game" );
 	Menu_AdjustCursor( &s_savegame_menu, 1 );
 	Menu_Draw( &s_savegame_menu );
 }
@@ -2016,7 +2016,7 @@ void JoinServer_MenuInit( void )
 
 void JoinServer_MenuDraw()
 {
-	M_Banner( "pics/m_banner_join_server" );
+	M_Banner( "2d/m_banner_join_server" );
 	Menu_Draw( &s_joinserver_menu );
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
@@ -2874,7 +2874,7 @@ const char *AddressBook_MenuKey( int32_t key )
 
 void AddressBook_MenuDraw()
 {
-	M_Banner( "pics/m_banner_addressbook" );
+	M_Banner( "2d/m_banner_addressbook" );
 	Menu_Draw( &s_addressbook_menu );
 }
 
@@ -3440,8 +3440,8 @@ void M_Quit_Draw ()
 {
 	int32_t 	w, h;
 
-	re.DrawGetPicSize (&w, &h, "pics/quit");
-	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "pics/quit");
+	re.DrawGetPicSize (&w, &h, "2d/quit");
+	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "2d/quit");
 }
 
 

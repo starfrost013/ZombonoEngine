@@ -385,7 +385,7 @@ void SCR_DrawNet ()
 		< CMD_BACKUP-1)
 		return;
 
-	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "pics/net");
+	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "2d/net");
 }
 
 /*
@@ -403,8 +403,8 @@ void SCR_DrawPause ()
 	if (!cl_paused->value)
 		return;
 
-	re.DrawGetPicSize (&w, &h, "pics/pause");
-	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "pics/pause");
+	re.DrawGetPicSize (&w, &h, "2d/pause");
+	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "2d/pause");
 }
 
 /*
@@ -420,8 +420,8 @@ void SCR_DrawLoading ()
 		return;
 
 	scr_draw_loading = false;
-	re.DrawGetPicSize (&w, &h, "pics/loading");
-	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "pics/loading");
+	re.DrawGetPicSize (&w, &h, "2d/loading");
+	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading");
 }
 
 //=============================================================================
@@ -637,19 +637,19 @@ void SCR_TileClear ()
 	if (scr_vrect.y > 0)
 	{	// clear above view screen
 		re.DrawTileClear (scr_vrect.x , 0,
-			scr_vrect.width, scr_vrect.y, "pics/backtile");
+			scr_vrect.width, scr_vrect.y, "2d/backtile");
 
 		// clear below view screen
 		re.DrawTileClear(scr_vrect.x, scr_vrect.y + scr_vrect.height,
-			scr_vrect.width, viddef.height - scr_vrect.height - scr_vrect.y, "pics/backtile");
+			scr_vrect.width, viddef.height - scr_vrect.height - scr_vrect.y, "2d/backtile");
 	}
 
 	if (scr_vrect.x > 0)
 	{	// clear left of view screen
-		re.DrawTileClear (0, 0, scr_vrect.x, viddef.height, "pics/backtile");
+		re.DrawTileClear (0, 0, scr_vrect.x, viddef.height, "2d/backtile");
 
 		// clear right of view screen
-		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, viddef.height, "pics/backtile");
+		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, viddef.height, "2d/backtile");
 	}
 }
 
@@ -661,8 +661,8 @@ void SCR_TileClear ()
 char		*sb_nums[2][11] = 
 {
 	// 2 sets of big numbers
-	{"pics/num_0", "pics/num_1", "pics/num_2", "pics/num_3", "pics/num_4", "pics/num_5", "pics/num_6", "pics/num_7", "pics/num_8", "pics/num_9", "pics/num_minus"},
-	{"pics/anum_0", "pics/anum_1", "pics/anum_2", "pics/anum_3", "pics/anum_4", "pics/anum_5", "pics/anum_6", "pics/anum_7", "pics/anum_8", "pics/anum_9", "pics/anum_minus"}
+	{"2d/num_0", "2d/num_1", "2d/num_2", "2d/num_3", "2d/num_4", "2d/num_5", "2d/num_6", "2d/num_7", "2d/num_8", "2d/num_9", "2d/num_minus"},
+	{"2d/anum_0", "2d/anum_1", "2d/anum_2", "2d/anum_3", "2d/anum_4", "2d/anum_5", "2d/anum_6", "2d/anum_7", "2d/anum_8", "2d/anum_9", "2d/anum_minus"}
 };
 
 #define	ICON_WIDTH	24
@@ -810,7 +810,7 @@ void SCR_TouchPics ()
 		if (crosshair->value > 3 || crosshair->value < 0)
 			crosshair->value = 3;
 
-		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "pics/ch%i", (int32_t)(crosshair->value));
+		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "2d/ch%i", (int32_t)(crosshair->value));
 		re.DrawGetPicSize (&crosshair_width, &crosshair_height, crosshair_pic);
 
 		// remove scaling - it will be applied during draw with proper screen centering
@@ -939,7 +939,7 @@ void SCR_ExecuteLayoutString (char *s)
 				color = 1;
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
-				re.DrawPic (x, y, "pics/field_3");
+				re.DrawPic (x, y, "2d/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -959,7 +959,7 @@ void SCR_ExecuteLayoutString (char *s)
 				continue;	// negative number = don't show
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
-				re.DrawPic (x, y, "pics/field_3");
+				re.DrawPic (x, y, "2d/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -977,7 +977,7 @@ void SCR_ExecuteLayoutString (char *s)
 			color = 0;	// green
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
-				re.DrawPic (x, y, "pics/field_3");
+				re.DrawPic (x, y, "2d/field_3");
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -1146,8 +1146,8 @@ void SCR_UpdateScreen ()
 
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
-			re.DrawGetPicSize (&w, &h, "pics/loading");
-			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "pics/loading");
+			re.DrawGetPicSize (&w, &h, "2d/loading");
+			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading");
 //			re.EndFrame();
 //			return;
 		} 

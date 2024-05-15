@@ -35,7 +35,7 @@ bool UI_LeaderboardUICreate()
 		640 * vid_hudscale->value, 384 * vid_hudscale->value, 0, 0, 0, 150); 
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
-	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "pics/ui/leaderboardui_header", (viddef.width / 2) - 160 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 320, 64);
+	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", (viddef.width / 2) - 160 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 320, 64);
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - (304 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - (144 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
 	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - (64 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));

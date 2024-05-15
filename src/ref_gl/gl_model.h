@@ -228,7 +228,7 @@ typedef struct model_s
 	int32_t			nummarksurfaces;
 	msurface_t**	marksurfaces;
 
-	dvis_t*			*vis;
+	dvis_t*			vis;
 
 	uint8_t*		lightdata;
 

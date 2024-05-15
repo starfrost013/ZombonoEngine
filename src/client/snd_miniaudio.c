@@ -66,11 +66,7 @@ static void data_callback(ma_device* pDevice, void* pOutput, const void* pInput,
 
 	// playback completed
 	if (!ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount))
-	{
 		trackFinished = true;
-	}
-
-	()pInput;
 }
 
 static void Miniaudio_Pause()
