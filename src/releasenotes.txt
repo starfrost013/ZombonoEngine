@@ -20,6 +20,7 @@ NEW FEATURES:
 * Rendering API version 9:
 	* Rename DrawStretchPic to DrawPicStretch
 	* Rename Vid_NewWindow to VidChangeResolution
+	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
