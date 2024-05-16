@@ -123,7 +123,7 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	glfwSetErrorCallback(gl_state.window, GLFW_Error);
 	
 	// let the sound and input subsystems know about the new window
-	ri.Vid_NewWindow (width, height);
+	ri.Vid_ChangeResolution (width, height);
 
 	// move the window if the user specified 
 	if (!fullscreen)
@@ -145,7 +145,7 @@ void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height)
 	vid.width = width;
 	vid.height = height;
 	// tell the client/server about it
-	ri.Vid_NewWindow(width, height);
+	ri.Vid_ChangeResolution(width, height);
 }
 
 /*
@@ -292,6 +292,10 @@ void GL_EndFrame()
 	assert(err == GL_NO_ERROR);
 
 	glfwPollEvents();
+
+	// if the window closed *AFTER* events were polled (e.g. the user pressed X on the window), do nothing
+	if (gl_state.window == NULL)
+		return;
 
 	if (!stricmp(gl_drawbuffer->string, "GL_BACK"))
 	{

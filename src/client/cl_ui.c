@@ -576,7 +576,7 @@ void UI_DrawImage(ui_control_t* image)
 
 	if (image->image_is_stretched)
 	{
-		re.DrawStretchPic(image->position_x, image->position_y, image->size_x, image->size_y, image_path);
+		re.DrawPicStretch(image->position_x, image->position_y, image->size_x, image->size_y, image_path);
 	}
 	else
 	{

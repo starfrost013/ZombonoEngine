@@ -289,8 +289,8 @@ void COM_StripExtension (char *in, char *out);
 void Draw_GetPicSize (int32_t *w, int32_t *h, char *name);
 void Load_Pic(char *name); // load but don't draw a pic.
 void Draw_Pic(int32_t x, int32_t y, char *name);
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, float color[4]);
-void Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, vec4_t color);
+void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
 void Draw_FadeScreen ();

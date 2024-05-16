@@ -54,7 +54,7 @@ int32_t num_cl_weaponmodels;
 ====================
 V_ClearScene
 
-Specifies the model that will be used as the world
+Clears the scene of all entities, dynamic lights and particles 
 ====================
 */
 void V_ClearScene ()

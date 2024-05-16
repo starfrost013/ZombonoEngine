@@ -1123,7 +1123,7 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.DrawPic = Draw_Pic;
 	re.LoadPic = Load_Pic;
 	re.DrawPicRegion = Draw_PicRegion;
-	re.DrawStretchPic = Draw_StretchPic;
+	re.DrawPicStretch = Draw_PicStretch;
 	re.DrawTileClear = Draw_TileClear;
 	re.DrawFill = Draw_Fill;
 	re.DrawFadeScreen = Draw_FadeScreen;

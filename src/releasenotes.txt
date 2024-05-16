@@ -17,6 +17,9 @@ NEW FEATURES:
 		* TE_FLASH - Flash (always at the player's location)
 	* Removed many obsolete particle effects (see Removals section)
 * Made the game window resizable
+* Rendering API version 9:
+	* Rename DrawStretchPic to DrawPicStretch
+	* Rename Vid_NewWindow to VidChangeResolution
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire

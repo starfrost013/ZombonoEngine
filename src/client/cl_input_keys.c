@@ -22,9 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "client.h"
 
 /*
-
 key up events are sent even if in console mode
-
 */
 
 #define		MAXCMDLINE	256

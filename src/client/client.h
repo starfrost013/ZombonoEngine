@@ -240,52 +240,60 @@ extern client_static_t	cls;
 // cvars
 //
 
-extern	cvar_t* cl_gun;
-extern	cvar_t* cl_add_blend;
-extern	cvar_t* cl_add_lights;
-extern	cvar_t* cl_add_particles;
-extern	cvar_t* cl_add_entities;
-extern	cvar_t* cl_predict;
-extern	cvar_t* cl_footsteps;
-extern	cvar_t* cl_noskins;
-extern	cvar_t* cl_autoskins;
-extern  cvar_t* ui_newmenu;
+extern cvar_t* cl_gun;
+extern cvar_t* cl_add_blend;
+extern cvar_t* cl_add_lights;
+extern cvar_t* cl_add_particles;
+extern cvar_t* cl_add_entities;
+extern cvar_t* cl_predict;
+extern cvar_t* cl_footsteps;
+extern cvar_t* cl_noskins;
+extern cvar_t* cl_autoskins;
+extern cvar_t* ui_newmenu;
 
-extern	cvar_t* cl_upspeed;
-extern	cvar_t* cl_forwardspeed;
-extern	cvar_t* cl_sidespeed;
+extern cvar_t* cl_upspeed;
+extern cvar_t* cl_forwardspeed;
+extern cvar_t* cl_sidespeed;
 
-extern	cvar_t* cl_yawspeed;
-extern	cvar_t* cl_pitchspeed;
+extern cvar_t* cl_yawspeed;
+extern cvar_t* cl_pitchspeed;
 
-extern	cvar_t* cl_run;
+extern cvar_t* cl_run;
 
-extern	cvar_t* cl_anglespeedkey;
+extern cvar_t* cl_anglespeedkey;
 
-extern	cvar_t* cl_shownet;
-extern	cvar_t* cl_showmiss;
-extern	cvar_t* cl_showclamp;
-extern	cvar_t* cl_showinfo;
+extern cvar_t* cl_shownet;
+extern cvar_t* cl_showmiss;
+extern cvar_t* cl_showclamp;
+extern cvar_t* cl_showinfo;
 
-extern	cvar_t* lookspring;
-extern	cvar_t* lookstrafe;
-extern	cvar_t* sensitivity;
+extern cvar_t* lookspring;
+extern cvar_t* lookstrafe;
+extern cvar_t* sensitivity;
 
-extern	cvar_t* m_pitch;
-extern	cvar_t* m_yaw;
-extern	cvar_t* m_forward;
-extern	cvar_t* m_side;
+extern cvar_t* m_pitch;
+extern cvar_t* m_yaw;
+extern cvar_t* m_forward;
+extern cvar_t* m_side;
 
-extern	cvar_t* freelook;
+extern cvar_t* freelook;
 
-extern	cvar_t* cl_lightlevel;	// FIXME HACK
+extern cvar_t* cl_lightlevel;	// FIXME HACK
 
-extern	cvar_t* cl_paused;
-extern	cvar_t* cl_timedemo;
+extern cvar_t* cl_paused;
+extern cvar_t* cl_timedemo;
 
-extern	cvar_t* cl_vwep;
+extern cvar_t* cl_vwep;
 
-extern	cvar_t*	cl_drawhud;
+extern cvar_t* cl_drawhud;
+
+// these ones are temporary until UI scripts implemented
+extern cvar_t* cl_showintro;
+
+extern cvar_t* cl_intro1;
+extern cvar_t* cl_intro2;
+extern cvar_t* cl_intro1_time;
+extern cvar_t* cl_intro2_time;
 
 typedef struct cdlight_s
 {
@@ -815,3 +823,12 @@ void Loadout_Remove(char* item_name);															// Parses a loadout remove m
 void Loadout_SetCurrent(int32_t index);															// Parses a loadout set current message
 void Loadout_Clear();																			// Clears the loadout
 
+//
+// cl_intro.c
+// Game intro stuff
+//
+
+extern bool intro_running;																		// Is the intro running/
+
+void Intro_Start();																				// Start the intro
+void Intro_Update();																			// Update the intro

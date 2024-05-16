@@ -1195,6 +1195,10 @@ void SCR_UpdateScreen ()
 				M_Draw ();
 
 			SCR_DrawLoading ();
+
+			// play the game intro
+			if (intro_running)
+				Intro_Update();
 			
 		}
 	}

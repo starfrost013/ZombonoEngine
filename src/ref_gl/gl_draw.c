@@ -82,7 +82,7 @@ void Draw_GetPicSize (int32_t *w, int32_t *h, char *pic)
 Draw_StretchPic
 =============
 */
-void Draw_StretchPic (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
+void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 {
 	image_t *gl;
 
@@ -144,7 +144,7 @@ void Draw_Pic (int32_t x, int32_t y, char *pic)
 Draw_PicRegion
 ================
 */
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, float color[4])
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, vec4_t color)
 {
 	image_t* gl;
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);

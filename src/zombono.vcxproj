@@ -32,6 +32,7 @@
     <ClCompile Include="client\cl_fx_dlight.c" />
     <ClCompile Include="client\cl_fx_explosion.c" />
     <ClCompile Include="client\cl_fx_lightstyle.c" />
+    <ClCompile Include="client\cl_intro.c" />
     <ClCompile Include="client\cl_loadout.c" />
     <ClCompile Include="client\cl_ui_mainmenu.c" />
     <ClCompile Include="client\cl_text.c" />

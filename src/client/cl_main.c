@@ -58,11 +58,12 @@ cvar_t* cl_showmiss;
 cvar_t* cl_showclamp;
 cvar_t* cl_showinfo;
 
-
 cvar_t* cl_showintro; 
 // until UI scripts implemented
 cvar_t* cl_intro1; 
 cvar_t* cl_intro2;
+cvar_t* cl_intro1_time;
+cvar_t* cl_intro2_time;
 
 cvar_t* cl_paused;
 cvar_t* cl_timedemo;
@@ -1414,6 +1415,13 @@ void CL_InitLocal ()
 	cl_paused = Cvar_Get ("paused", "0", 0);
 	cl_timedemo = Cvar_Get ("timedemo", "0", 0);
 
+	cl_showintro = Cvar_Get("cl_showintro", "1", 0);
+	cl_intro1 = Cvar_Get("cl_intro1", "2d/ui/introui_background2", 0);
+	cl_intro2 = Cvar_Get("cl_intro2", "2d/ui/introui_background", 0);
+
+	cl_intro1_time = Cvar_Get("cl_intro1_time", "3000", 0);
+	cl_intro2_time = Cvar_Get("cl_intro2_time", "3000", 0);
+
 	rcon_client_password = Cvar_Get ("rcon_password", "", 0);
 	rcon_address = Cvar_Get ("rcon_address", "", 0);
 
@@ -1625,7 +1633,6 @@ void CL_SendCommand ()
 /*
 ==================
 CL_Frame
-
 ==================
 */
 void CL_Frame (int32_t msec)
@@ -1645,6 +1652,7 @@ void CL_Frame (int32_t msec)
 		if (extratime < 1000/cl_maxfps->value)
 			return;			// framerate is too high
 	}
+
 
 	// let the mouse activate or deactivate
 	Input_Frame ();
@@ -1697,6 +1705,7 @@ void CL_Frame (int32_t msec)
 	CL_RunLightStyles ();
 
 	SCR_RunConsole ();
+
 
 	cls.framecount++;
 
@@ -1810,6 +1819,9 @@ void CL_Init ()
 
 	// let's go!
 	AppActivate(true, false);
+
+	if (cl_showintro->value)
+		Intro_Start();
 }
 
 /*
