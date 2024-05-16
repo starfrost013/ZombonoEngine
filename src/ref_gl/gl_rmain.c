@@ -469,7 +469,7 @@ void R_SetupFrame ()
 		glClearColor( 0.3, 0.3, 0.3, 1 );
 		glScissor( r_newrefdef.x, vid.height - r_newrefdef.height - r_newrefdef.y, r_newrefdef.width, r_newrefdef.height );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		glClearColor( 1, 0, 0.5, 0.5 );
+		glClearColor( 0.0f, 0.0f, 0.0f, 1.0f ); // changed from eye-searing hot pink
 		glDisable( GL_SCISSOR_TEST );
 	}
 }
@@ -559,9 +559,15 @@ void R_Clear ()
 	// gets rid of the hall of mirrors effect
 
 	if (gl_clear->value)
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // changed from eye-searing hot pink
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
 	else
+	{
 		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
 	gldepthmin = 0;
 	gldepthmax = 1;
 	glDepthFunc(GL_LEQUAL);
@@ -726,7 +732,7 @@ void R_Register( void )
 	gl_picmip = ri.Cvar_Get ("gl_picmip", "0", 0);
 	gl_skymip = ri.Cvar_Get ("gl_skymip", "0", 0);
 	gl_showtris = ri.Cvar_Get ("gl_showtris", "0", 0);
-	gl_clear = ri.Cvar_Get ("gl_clear", "0", 0);
+	gl_clear = ri.Cvar_Get ("gl_clear", "1", 0);
 	gl_cull = ri.Cvar_Get ("gl_cull", "1", 0);
 	gl_polyblend = ri.Cvar_Get ("gl_polyblend", "1", 0);
 	gl_flashblend = ri.Cvar_Get ("gl_flashblend", "0", 0);
@@ -916,7 +922,9 @@ void R_BeginFrame()
 	/*
 	** change modes if necessary
 	*/
-	if ( gl_mode->modified || vid_borderless->modified || vid_fullscreen->modified)
+	if ( gl_mode->modified 
+		|| vid_borderless->modified 
+		|| vid_fullscreen->modified)
 	{	// FIXME: only restart if CDS is required
 		cvar_t* ref;
 

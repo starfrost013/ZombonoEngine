@@ -5,6 +5,9 @@ Version 0.0.9
 May XX, 2024
 
 NEW FEATURES:
+* Added a nice animated intro to the game - you can turn it off with cl_showintro 0
+	* You can change the first and second intro images with the cl_intro1 and cl_intro2 cvars, and change the time (in milliseconds) they take to display with cl_intro1_time and cl_intro2_time cvars
+* Made the game window resizable
 * Added the ability to send 32-bit colour information over the network
 * Particle system changes:
 	* Added ability to network generic, flame, smoke, flash, flashlight and steam particle effects
@@ -16,11 +19,13 @@ NEW FEATURES:
 		* TE_FLASHLIGHT - Flashlight
 		* TE_FLASH - Flash (always at the player's location)
 	* Removed many obsolete particle effects (see Removals section)
-* Made the game window resizable
+
 * Rendering API version 9:
 	* Rename DrawStretchPic to DrawPicStretch
-	* Rename Vid_NewWindow to VidChangeResolution
+	* Rename Vid_NewWindow to Vid_ChangeResolution
 	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
+* Added disable_input field to client_static_t so the client can disable input whenever it wants
+* Changed the default OpenGL clear colour from eye-searing hot pink to black
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
@@ -29,6 +34,7 @@ BUG FIXES:
 * Fixed nonexistent Quake2 CTF and monster models being precached
 * Fixed all particle effects having garbage colours
 	* Actually made them work...
+* Fixed default OpenGL clear colour being searingly hot pink instead of just a normal black
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:

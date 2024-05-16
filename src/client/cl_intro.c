@@ -26,6 +26,7 @@ bool	intro_running;
 void Intro_Start()
 {
 	intro_running = true; 
+	cls.disable_input = true;
 
 	intro_start_time = Sys_Milliseconds();
 }
@@ -36,22 +37,39 @@ void Intro_Update()
 		return;
 
 	int32_t current_time = Sys_Milliseconds();
+	int32_t current_time_intro = (current_time - intro_start_time);
+
 	int32_t end_time = intro_start_time + cl_intro1_time->value + cl_intro2_time->value;
 	
 	// end the intro if we reached the end time
 	if (current_time > end_time)
+	{
+		cls.disable_input = false;
 		intro_running = false;
+	}
 
-	// todo: fade
+	// 255,255,255 = multiply by 1
+	vec4_t fade_colour = { 255, 255, 255, 0 };
+
+	float start_fade = 0.4;
+	float end_fade = 0.6;
 
 	// show first image
-	if ((current_time - intro_start_time) <= cl_intro1_time->value)
+	if (current_time_intro <= cl_intro1_time->value)
 	{
-		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro1->string, NULL);
+		// make it fade
+		fade_colour[3] = 255 * sin(M_PI * (current_time_intro / cl_intro1_time->value));
+
+		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro1->string, fade_colour);
 	}
 	else // show second image
 	{
-		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro2->string, NULL);
+		// for sine function
+		int32_t current_time_intro2 = (current_time - (intro_start_time + cl_intro1_time->value));
+
+		fade_colour[3] = 255 * sin(M_PI * (current_time_intro2 / cl_intro2_time->value));
+
+		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro2->string, fade_colour);
 	}
 }
 

@@ -311,7 +311,7 @@ void CL_ParseServerData ()
 
 // parse protocol version number
 	i = MSG_ReadInt (&net_message);
-	cls.serverProtocol = i;
+	cls.server_protocol = i;
 
 	if (i != PROTOCOL_VERSION)
 		Com_Error (ERR_DROP,

@@ -260,7 +260,7 @@ SCR_CalcVrect
 Sets scr_vrect, the coordinates of the rendered window
 =================
 */
-static void SCR_CalcVrect ()
+void SCR_CalcVrect ()
 {
 	int32_t 	size;
 
@@ -1136,9 +1136,19 @@ void SCR_UpdateScreen ()
 	for ( i = 0; i < numframes; i++ )
 	{
 		re.BeginFrame();
+
 		// end frame and force video restart if swapchain is out of date
 		if (vid_ref->modified)
 		{
+			re.EndWorldRenderpass();
+			re.EndFrame();
+			return;
+		}
+
+		// play the game intro if we are commanded to and don't do anything else
+		if (intro_running)
+		{
+			Intro_Update();
 			re.EndWorldRenderpass();
 			re.EndFrame();
 			return;
@@ -1157,7 +1167,6 @@ void SCR_UpdateScreen ()
 		} 
 		else 
 		{
-		
 			// do 3D refresh drawing, and then update the screen
 			SCR_CalcVrect ();
 
@@ -1196,11 +1205,6 @@ void SCR_UpdateScreen ()
 				M_Draw ();
 
 			SCR_DrawLoading ();
-
-			// play the game intro
-			if (intro_running)
-				Intro_Update();
-			
 		}
 	}
 	re.EndFrame();

@@ -1419,8 +1419,8 @@ void CL_InitLocal ()
 	cl_intro1 = Cvar_Get("cl_intro1", "2d/ui/introui_background2", 0);
 	cl_intro2 = Cvar_Get("cl_intro2", "2d/ui/introui_background", 0);
 
-	cl_intro1_time = Cvar_Get("cl_intro1_time", "3000", 0);
-	cl_intro2_time = Cvar_Get("cl_intro2_time", "3000", 0);
+	cl_intro1_time = Cvar_Get("cl_intro1_time", "7500", 0);
+	cl_intro2_time = Cvar_Get("cl_intro2_time", "7500", 0);
 
 	rcon_client_password = Cvar_Get ("rcon_password", "", 0);
 	rcon_address = Cvar_Get ("rcon_address", "", 0);
@@ -1655,7 +1655,8 @@ void CL_Frame (int32_t msec)
 
 
 	// let the mouse activate or deactivate
-	Input_Frame ();
+	if (!cls.disable_input)
+		Input_Frame ();
 
 	// decide the simulation time
 	cls.frametime = extratime/1000.0;
@@ -1705,7 +1706,6 @@ void CL_Frame (int32_t msec)
 	CL_RunLightStyles ();
 
 	SCR_RunConsole ();
-
 
 	cls.framecount++;
 

@@ -19,11 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// If we need it anywhere else we can move it
+// If we need this string helper macro anywhere else we can move it
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
 #define ZOMBONO_VERSION_MAJOR 0
 #define ZOMBONO_VERSION_MINOR 0
 #define ZOMBONO_VERSION_REVISION 9
-#define ZOMBONO_VERSION_BUILD 413
+#define ZOMBONO_VERSION_BUILD 420
