@@ -576,11 +576,11 @@ void UI_DrawImage(ui_control_t* image)
 
 	if (image->image_is_stretched)
 	{
-		re.DrawPicStretch(image->position_x, image->position_y, image->size_x, image->size_y, image_path);
+		re.DrawPicStretch(image->position_x, image->position_y, image->size_x, image->size_y, image_path, NULL);
 	}
 	else
 	{
-		re.DrawPic(image->position_x, image->position_y, image_path);
+		re.DrawPic(image->position_x, image->position_y, image_path, NULL);
 	}
 
 }
@@ -597,5 +597,5 @@ void UI_DrawCheckbox(ui_control_t* checkbox)
 
 void UI_DrawBox(ui_control_t* box)
 {
-	re.DrawFill(box->position_x, box->position_y, box->size_x, box->size_y, box->color[0], box->color[1], box->color[2], box->color[3]);
+	re.DrawFill(box->position_x, box->position_y, box->size_x, box->size_y, box->color);
 }

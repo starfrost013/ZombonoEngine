@@ -162,7 +162,7 @@ void SCR_DrawDebugGraph ()
 		if (v < 0)
 			v += scr_graphheight->value * (1+(int32_t)(-v/scr_graphheight->value));
 		h = (int32_t)v % (int32_t)scr_graphheight->value;
-		re.DrawFill (x+w-1-a, y - h, 1,	h, values[i].color[0], values[i].color[1], values[i].color[2], values[i].color[3]);
+		re.DrawFill (x+w-1-a, y - h, 1,	h, values[i].color);
 	}
 }
 
@@ -385,7 +385,7 @@ void SCR_DrawNet ()
 		< CMD_BACKUP-1)
 		return;
 
-	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "2d/net");
+	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "2d/net", NULL);
 }
 
 /*
@@ -404,7 +404,7 @@ void SCR_DrawPause ()
 		return;
 
 	re.DrawGetPicSize (&w, &h, "2d/pause");
-	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "2d/pause");
+	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "2d/pause", NULL);
 }
 
 /*
@@ -421,7 +421,7 @@ void SCR_DrawLoading ()
 
 	scr_draw_loading = false;
 	re.DrawGetPicSize (&w, &h, "2d/loading");
-	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading");
+	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading", NULL);
 }
 
 //=============================================================================
@@ -475,7 +475,8 @@ void SCR_DrawConsole ()
 	if (cls.state != ca_active || !cl.refresh_prepped)
 	{	// connected, but can't render
 		Con_DrawConsole (0.5);
-		re.DrawFill (0, viddef.height/2, viddef.width, viddef.height/2, 0, 0, 0, 255);
+		vec4_t colour = { 0, 0, 0, 255 };
+		re.DrawFill(0, viddef.height/2, viddef.width, viddef.height/2, colour);
 		return;
 	}
 
@@ -780,7 +781,7 @@ void SCR_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t 
 		else
 			frame = *ptr -'0';
 
-		re.DrawPic (x,y,sb_nums[color][frame]);
+		re.DrawPic (x,y,sb_nums[color][frame], NULL);
 		x += CHAR_WIDTH;
 		ptr++;
 		l--;
@@ -901,7 +902,7 @@ void SCR_ExecuteLayoutString (char *s)
 			{
 				SCR_AddDirtyPoint (x, y);
 				SCR_AddDirtyPoint (x+23, y+23);
-				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value]);
+				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value], NULL);
 			}
 			continue;
 		}
@@ -911,7 +912,7 @@ void SCR_ExecuteLayoutString (char *s)
 			token = COM_Parse (&s);
 			SCR_AddDirtyPoint (x, y);
 			SCR_AddDirtyPoint (x+23, y+23);
-			re.DrawPic (x, y, token);
+			re.DrawPic (x, y, token, NULL);
 			continue;
 		}
 
@@ -939,7 +940,7 @@ void SCR_ExecuteLayoutString (char *s)
 				color = 1;
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
-				re.DrawPic (x, y, "2d/field_3");
+				re.DrawPic (x, y, "2d/field_3", NULL);
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -959,7 +960,7 @@ void SCR_ExecuteLayoutString (char *s)
 				continue;	// negative number = don't show
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
-				re.DrawPic (x, y, "2d/field_3");
+				re.DrawPic (x, y, "2d/field_3", NULL);
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -977,7 +978,7 @@ void SCR_ExecuteLayoutString (char *s)
 			color = 0;	// green
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
-				re.DrawPic (x, y, "2d/field_3");
+				re.DrawPic (x, y, "2d/field_3", NULL);
 
 			SCR_DrawField (x, y, color, width, value);
 			continue;
@@ -1150,7 +1151,7 @@ void SCR_UpdateScreen ()
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
 			re.DrawGetPicSize (&w, &h, "2d/loading");
-			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading");
+			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading", NULL);
 //			re.EndFrame();
 //			return;
 		} 

@@ -592,30 +592,30 @@ void Con_DrawConsole (float frac)
 	{
 		if (viddef.width >= 1920)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9", NULL);
 		}
 		else if (viddef.width >= 960)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.5x");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.25x");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.25x", NULL);
 		}
 	}
 	else
 	{
 		if (viddef.width >= 1440)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback", NULL);
 		}
 		else if (viddef.width >= 720)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.5x");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.25x");
+			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.25x", NULL);
 		}
 	}
 

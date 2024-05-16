@@ -93,16 +93,16 @@ void Field_Draw( menufield_t *f )
 	
 	strncpy( tempbuffer, f->buffer + f->visible_offset, f->visible_length );
 
-	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_01" );
-	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_01" );
+	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_01", NULL);
+	re.DrawPic(f->generic.x + f->generic.parent->x + 16 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL);
 
-	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_03");
-	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_03");
+	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_03", NULL);
+	re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + f->visible_length * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL);
 
 	for ( i = 0; i < f->visible_length; i++ )
 	{
-		re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_02");
-		re.DrawPic( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_02");
+		re.DrawPic(f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y - 4 * vid_hudscale->value, "2d/field_top_02", NULL);
+		re.DrawPic( f->generic.x + f->generic.parent->x + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, f->generic.y + f->generic.parent->y + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL);
 	}
 
 	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
@@ -122,7 +122,7 @@ void Field_Draw( menufield_t *f )
 			// 8x8 is cursor size
 			re.DrawPic(f->generic.x + f->generic.parent->x + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
 					   f->generic.y + f->generic.parent->y,
-						"2d/field_cursor_on");
+						"2d/field_cursor_on", NULL);
 		}
 	}
 }
@@ -144,8 +144,8 @@ bool Field_Key( menufield_t *f, int32_t key )
 	/*
 	** support pasting from the clipboard
 	*/
-	if ( ( toupper( key ) == 'V' && keydown[K_CTRL] ) ||
-		 ( ( ( key == K_INSERT ) || ( key == K_INSERT ) ) && keydown[K_SHIFT] ) )
+	if ((toupper(key) == 'V' && keydown[K_CTRL]) ||
+		(((key == K_INSERT)) && keydown[K_SHIFT]))
 	{
 		char *cbd;
 		
@@ -339,11 +339,11 @@ void Menu_Draw( menuframework_t *menu )
 		{
 			if (item->flags & QMF_LEFT_JUSTIFY)
 			{
-				re.DrawPic(menu->x + item->x - 24 * vid_hudscale->value + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "2d/menu_cursor_on");
+				re.DrawPic(menu->x + item->x - 24 * vid_hudscale->value + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "2d/menu_cursor_on", NULL);
 			}
 			else
 			{
-				re.DrawPic(menu->x + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "2d/menu_cursor_on");
+				re.DrawPic(menu->x + item->cursor_offset * vid_hudscale->value, menu->y + item->y, "2d/menu_cursor_on", NULL);
 			}
 		}
 
@@ -370,6 +370,8 @@ void Menu_DrawStatusBar( const char *string )
 	int32_t size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
+	vec4_t colour = { 0 };
+
 	if ( string )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, string);
@@ -377,13 +379,15 @@ void Menu_DrawStatusBar( const char *string )
 		int32_t maxcol = viddef.width / (8*vid_hudscale->value);
 		int32_t col = maxcol / 2 - l / 2;
 
-		re.DrawFill( 0, (viddef.height-system_font_ptr->line_height)*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, 63, 63, 63, 255 );
+		vec4_t colour = { 63, 63, 63, 255 };
+		re.DrawFill( 0, (viddef.height-system_font_ptr->line_height)*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, colour );
 
 		Text_Draw(cl_system_font->string, col*size_x*vid_hudscale->value, viddef.height - size_y*vid_hudscale->value, string );
 	}
 	else
 	{
-		re.DrawFill( 0, viddef.height-8*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, 0, 0, 0, 255 );
+		vec4_t colour = { 0, 0, 0, 255 };
+		re.DrawFill( 0, viddef.height-8*vid_hudscale->value, viddef.width, 8*vid_hudscale->value, colour);
 	}
 }
 
@@ -484,7 +488,9 @@ void MenuList_Draw( menulist_t *l )
 
 	n = l->itemnames;
 
-	re.DrawFill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, 99, 76, 35, 255);
+	vec4_t menulist_colour = { 99, 76, 35, 255 };
+
+	re.DrawFill( l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue*10 + 10, 128, 10, menulist_colour);
 	while ( *n )
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, *n);
@@ -538,11 +544,11 @@ void Slider_Draw( menuslider_t *s )
 		s->range = 0;
 	if ( s->range > 1)
 		s->range = 1;
-	re.DrawPic( s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, "2d/slider_01");
+	re.DrawPic( s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, "2d/slider_01", NULL);
 	for ( i = 0; i < SLIDER_RANGE; i++ )
-		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_02");
-	re.DrawPic( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_03");
-	re.DrawPic( ( int32_t ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, "2d/slider_value");
+		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_02", NULL);
+	re.DrawPic( RCOLUMN_OFFSET + s->generic.x + i*8*vid_hudscale->value + s->generic.parent->x + 8*vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_03", NULL);
+	re.DrawPic( ( int32_t ) ( 8*vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE-1)*8*vid_hudscale->value * s->range ), s->generic.y + s->generic.parent->y, "2d/slider_value", NULL);
 }
 
 void SpinControl_DoEnter( menulist_t *s )

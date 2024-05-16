@@ -82,7 +82,7 @@ void Draw_GetPicSize (int32_t *w, int32_t *h, char *pic)
 Draw_StretchPic
 =============
 */
-void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
+void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic, vec4_t color)
 {
 	image_t *gl;
 
@@ -94,6 +94,14 @@ void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 	}
 
 	GL_Bind (gl->texnum);
+
+	if (color != NULL)
+	{
+		glEnable(GL_BLEND);
+		GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
+		glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+	}
+
 	glBegin (GL_QUADS);
 	glTexCoord2f (gl->sl, gl->tl);
 	glVertex2f (x, y);
@@ -104,6 +112,12 @@ void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 	glTexCoord2f (gl->sl, gl->th);
 	glVertex2f (x, y+h);
 	glEnd ();
+
+	if (color != NULL)
+	{
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glDisable(GL_BLEND);
+	}
 }
 
 
@@ -112,7 +126,7 @@ void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic)
 Draw_Pic
 =============
 */
-void Draw_Pic (int32_t x, int32_t y, char *pic)
+void Draw_Pic (int32_t x, int32_t y, char *pic, vec4_t color)
 {
 	image_t *gl;
 	cvar_t *scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -125,6 +139,14 @@ void Draw_Pic (int32_t x, int32_t y, char *pic)
 	}
 
 	GL_Bind (gl->texnum);
+
+	if (color != NULL)
+	{
+		glEnable(GL_BLEND);
+		GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
+		glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+	}
+
 	glBegin (GL_QUADS);
 	glTexCoord2f (gl->sl, gl->tl);
 	glVertex2f (x, y);
@@ -136,6 +158,11 @@ void Draw_Pic (int32_t x, int32_t y, char *pic)
 	glVertex2f (x, y+gl->height*scale->value);
 	glEnd ();
 
+	if (color != NULL)
+	{
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glDisable(GL_BLEND);
+	}
 }
 
 
@@ -170,9 +197,14 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 
 	// draw it
 	// set up the colour as well
-	glEnable(GL_BLEND);
-	GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
-	glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+
+	if (color != NULL)
+	{
+		glEnable(GL_BLEND);
+		GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
+		glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+	}
+
  	glBegin(GL_QUADS);
 	glTexCoord2f(coord_begin_x, coord_begin_y);
 	glVertex2f(x, y);
@@ -183,8 +215,13 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 	glTexCoord2f(coord_begin_x, coord_end_y);
 	glVertex2f(x, y + size_y * scale->value);
 	glEnd();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glDisable(GL_BLEND);
+
+	if (color != NULL)
+	{
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glDisable(GL_BLEND);
+	}
+
 }
 
 /*
@@ -249,29 +286,15 @@ Draw_Fill
 Fills a box of pixels with a single color
 =============
 */
-void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a)
+void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, vec4_t color)
 {
-	union color_u
-	{
-		byte		v[4];
-	} color;
-
-	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
 	glEnable (GL_BLEND);
 	glDisable (GL_TEXTURE_2D);
 
-	// set up RGBA colors
-	color.v[0] = r;
-	color.v[1] = g;
-	color.v[2] = b;
-	color.v[3] = a;
-
-	float alpha = (float)color.v[3] / 255.0f;
-
-	glColor4f (color.v[0]/255.0,
-		color.v[1]/255.0,
-		color.v[2]/255.0,
-		alpha);
+	glColor4f (color[0]/255.0,
+		color[1]/255.0,
+		color[2]/255.0,
+		color[3]/255.0);
 
 	glBegin (GL_QUADS);
 

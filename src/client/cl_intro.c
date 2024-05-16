@@ -47,11 +47,11 @@ void Intro_Update()
 	// show first image
 	if ((current_time - intro_start_time) <= cl_intro1_time->value)
 	{
-		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro1->string);
+		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro1->string, NULL);
 	}
 	else // show second image
 	{
-		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro2->string);
+		re.DrawPicStretch(0, 0, viddef.width, viddef.height, cl_intro2->string, NULL);
 	}
 }
 

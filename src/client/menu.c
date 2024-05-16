@@ -82,7 +82,7 @@ static void M_Banner( char *name )
 	int32_t w, h;
 
 	re.DrawGetPicSize (&w, &h, name );
-	re.DrawPic( viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, name );
+	re.DrawPic( viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, name, NULL);
 }
 
 void M_PushMenu ( void (*draw) (), const char *(*key) (int32_t k) )
@@ -271,7 +271,7 @@ higher res screens.
 */
 void Menu_DrawCenteredImage (int32_t cx, int32_t cy, char* image)
 {
-	re.DrawPic ( cx + ((viddef.width - 320)>>1) * vid_hudscale->value, cy + ((viddef.height - 240)>>1) * vid_hudscale->value, image);
+	re.DrawPic ( cx + ((viddef.width - 320)>>1) * vid_hudscale->value, cy + ((viddef.height - 240)>>1) * vid_hudscale->value, image, NULL);
 }
 
 /*
@@ -302,7 +302,7 @@ void M_DrawCursor( int32_t x, int32_t y, int32_t f )
 	}
 
 	Com_sprintf( cursorname, sizeof(cursorname), "2d/m_cursor%d", f );
-	re.DrawPic( x, y, cursorname );
+	re.DrawPic( x, y, cursorname, NULL);
 }
 
 // uses 320*240 coords
@@ -397,11 +397,11 @@ void M_Main_Draw ()
 	for ( i = 0; names[i] != 0; i++ )
 	{
 		if ( i != m_main_cursor )
-			re.DrawPic( xoffset, ystart + (i * 40 + 13)*vid_hudscale->value, names[i] );
+			re.DrawPic( xoffset, ystart + (i * 40 + 13)*vid_hudscale->value, names[i], NULL);
 	}
 	strcpy( litname, names[m_main_cursor] );
 	strcat( litname, "_sel" );
-	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname );
+	re.DrawPic( xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname, NULL);
 
 	M_DrawCursor( xoffset - (25 * vid_hudscale->value), ystart + (m_main_cursor * 40 + 11)*vid_hudscale->value, (int32_t)(cls.realtime / 100)%NUM_CURSOR_FRAMES );
 
@@ -690,7 +690,7 @@ static void KeyCursorDrawFunc( menuframework_t *menu )
 	{
 		if ((int32_t)(Sys_Milliseconds() / 250) & 1)
 		{
-			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "2d/menu_cursor_on");
+			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "2d/menu_cursor_on", NULL);
 		}
 	}
 }
@@ -3354,7 +3354,7 @@ void PlayerConfig_MenuDraw( void )
 		Com_sprintf( scratch, sizeof( scratch ), "/players/%s/%s_i.tga", 
 			s_pmi[s_player_model_box.curvalue].directory,
 			s_pmi[s_player_model_box.curvalue].skindisplaynames[s_player_skin_box.curvalue] );
-		re.DrawPic( s_player_config_menu.x - 40 * vid_hudscale->value, refdef.y, scratch );
+		re.DrawPic( s_player_config_menu.x - 40 * vid_hudscale->value, refdef.y, scratch, NULL);
 	}
 }
 
@@ -3441,7 +3441,7 @@ void M_Quit_Draw ()
 	int32_t 	w, h;
 
 	re.DrawGetPicSize (&w, &h, "2d/quit");
-	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "2d/quit");
+	re.DrawPic ( (viddef.width-w)/2, (viddef.height-h)/2, "2d/quit", NULL);
 }
 
 

@@ -357,7 +357,7 @@ void SCR_DrawCrosshair ()
 	cvar_t *scale = Cvar_Get("hudscale", "1", 0);
 
 	re.DrawPic (scr_vrect.x + ((scr_vrect.width - (int32_t)scale->value * crosshair_width) >> 1)
-	, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic);
+	, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic, NULL);
 }
 
 /*
