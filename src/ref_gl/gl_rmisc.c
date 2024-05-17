@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -39,52 +39,52 @@ uint8_t	dottexture[8][8] =
 	{0,0,0,0,0,0,0,0},
 };
 
-void R_InitParticleTexture ()
+void R_InitParticleTexture()
 {
-	int32_t	x,y;
+	int32_t	x, y;
 	uint8_t	data[8][8][4] = { 0 };
 
 	//
 	// particle texture
 	//
-	for (x=0 ; x<8 ; x++)
+	for (x = 0; x < 8; x++)
 	{
-		for (y=0 ; y<8 ; y++)
+		for (y = 0; y < 8; y++)
 		{
 			data[y][x][0] = 255;
 			data[y][x][1] = 255;
 			data[y][x][2] = 255;
-			data[y][x][3] = dottexture[x][y]*255;
+			data[y][x][3] = dottexture[x][y] * 255;
 		}
 	}
-	r_particletexture = GL_LoadPic ("***particle***", (uint8_t *)data, 8, 8, it_sprite);
+	r_particletexture = GL_LoadPic("***particle***", (uint8_t*)data, 8, 8, it_sprite);
 
 	//
 	// also use this for bad textures, but without alpha
 	//
-	for (x=0 ; x<8 ; x++)
+	for (x = 0; x < 8; x++)
 	{
-		for (y=0 ; y<8 ; y++)
+		for (y = 0; y < 8; y++)
 		{
-			data[y][x][0] = dottexture[x&3][y&3]*255;
+			data[y][x][0] = dottexture[x & 3][y & 3] * 255;
 			data[y][x][1] = 0; // dottexture[x&3][y&3]*255;
 			data[y][x][2] = 0; //dottexture[x&3][y&3]*255;
 			data[y][x][3] = 255;
 		}
 	}
-	r_notexture = GL_LoadPic ("***r_notexture***", (uint8_t* )data, 8, 8, it_wall);
+	r_notexture = GL_LoadPic("***r_notexture***", (uint8_t*)data, 8, 8, it_wall);
 }
 
 
-/* 
-============================================================================== 
- 
-						SCREEN SHOTS 
- 
-============================================================================== 
-*/ 
+/*
+==============================================================================
 
-typedef struct targa_header_s 
+						SCREEN SHOTS
+
+==============================================================================
+*/
+
+typedef struct targa_header_s
 {
 	uint8_t 	id_length, colormap_type, image_type;
 	uint16_t	colormap_index, colormap_length;
@@ -96,29 +96,29 @@ typedef struct targa_header_s
 #define SCREENSHOT_BPP			32									// Bits per pixel
 #define SCREENSHOT_BUFFER_SIZE	(4 * vid.width * vid.height) + 18	// Size of buffer to save screenshot into
 
-/* 
-================== 
+/*
+==================
 GL_ScreenShot_f
-================== 
-*/  
-void GL_ScreenShot_f () 
+==================
+*/
+void GL_ScreenShot_f()
 {
-	uint8_t*	buffer;
+	uint8_t* buffer;
 	char		picname[MAX_OSPATH] = { 0 };
 	char		checkname[MAX_OSPATH] = { 0 };
 	int32_t		i, c, temp;
-	FILE*		f;
+	FILE* f;
 
 	// create the scrnshots directory if it doesn't exist
-	Com_sprintf (checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
-	Sys_Mkdir (checkname);
+	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
+	Sys_Mkdir(checkname);
 
-// 
-// find a file name to save it to 
-// 
+	// 
+	// find a file name to save it to 
+	// 
 
-// get the time
-// TODO: sys_time function
+	// get the time
+	// TODO: sys_time function
 	time_t time_unix;
 	struct tm* time_now;
 	time(&time_unix);
@@ -167,52 +167,52 @@ void GL_ScreenShot_f ()
 
 	assert(buffer != NULL);
 
-	memset (buffer, 0, 18);
+	memset(buffer, 0, 18);
 	buffer[2] = 2;		// uncompressed type
-	buffer[12] = vid.width&255;
-	buffer[13] = vid.width>>8;
-	buffer[14] = vid.height&255;
-	buffer[15] = vid.height>>8;
+	buffer[12] = vid.width & 255;
+	buffer[13] = vid.width >> 8;
+	buffer[14] = vid.height & 255;
+	buffer[15] = vid.height >> 8;
 	buffer[16] = 32;	// pixel size
 
-	glReadPixels (0, 0, vid.width, vid.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer+18 ); 
+	glReadPixels(0, 0, vid.width, vid.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer + 18);
 
 	// swap rgba to bgra
 	// OpenGL2+ supports BGRA, but to be safe on all GL 1.1 drivers that may not implement the extension,
 	// we swap
 	c = SCREENSHOT_BUFFER_SIZE;
-	for (i=18 ; i<c ; i+=4)
+	for (i = 18; i < c; i += 4)
 	{
 		temp = buffer[i];
-		buffer[i] = buffer[i+2];
-		buffer[i+2] = temp;
+		buffer[i] = buffer[i + 2];
+		buffer[i + 2] = temp;
 	}
 
-	f = fopen (checkname, "wb");
-	fwrite (buffer, 1, c, f);
-	fclose (f);
+	f = fopen(checkname, "wb");
+	fwrite(buffer, 1, c, f);
+	fclose(f);
 
-	free (buffer);
-	ri.Con_Printf (PRINT_ALL, "Saved screenshot to %s\n", checkname);
-} 
+	free(buffer);
+	ri.Con_Printf(PRINT_ALL, "Saved screenshot to %s\n", checkname);
+}
 
 /*
 ** GL_Strings_f
 */
-void GL_Strings_f( void )
+void GL_Strings_f(void)
 {
-	ri.Con_Printf (PRINT_ALL, "GL_VENDOR: %s\n", gl_config.vendor_string );
-	ri.Con_Printf (PRINT_ALL, "GL_RENDERER: %s\n", gl_config.renderer_string );
-	ri.Con_Printf (PRINT_ALL, "GL_VERSION: %s\n", gl_config.version_string );
-	ri.Con_Printf (PRINT_ALL, "GL_EXTENSIONS: %s\n", gl_config.extensions_string );
+	ri.Con_Printf(PRINT_ALL, "GL_VENDOR: %s\n", gl_config.vendor_string);
+	ri.Con_Printf(PRINT_ALL, "GL_RENDERER: %s\n", gl_config.renderer_string);
+	ri.Con_Printf(PRINT_ALL, "GL_VERSION: %s\n", gl_config.version_string);
+	ri.Con_Printf(PRINT_ALL, "GL_EXTENSIONS: %s\n", gl_config.extensions_string);
 }
 
 /*
 ** GL_SetDefaultState
 */
-void GL_SetDefaultState( void )
+void GL_SetDefaultState(void)
 {
-	glClearColor(1,0, 0.5 , 0.5);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glCullFace(GL_FRONT);
 	glEnable(GL_TEXTURE_2D);
 
@@ -223,7 +223,7 @@ void GL_SetDefaultState( void )
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 
-	glColor4f(1,1,1,1);
+	glColor4f(1, 1, 1, 1);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glShadeModel(GL_FLAT);
@@ -238,9 +238,9 @@ void GL_SetDefaultState( void )
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GL_TexEnv( GL_REPLACE );
+	GL_TexEnv(GL_REPLACE);
 
 	float attenuations[3];
 

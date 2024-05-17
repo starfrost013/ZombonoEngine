@@ -63,7 +63,7 @@ DLL GLUE
 */
 
 #define	MAXPRINTMSG	8192
-void VID_Printf(int32_t print_level, char* fmt, ...)
+void Vid_Printf(int32_t print_level, char* fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
@@ -88,7 +88,7 @@ void VID_Printf(int32_t print_level, char* fmt, ...)
 	}
 }
 
-void VID_Error(int32_t err_level, char* fmt, ...)
+void Vid_Error(int32_t err_level, char* fmt, ...)
 {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
@@ -110,7 +110,7 @@ simply by setting the modified flag for the vid_ref variable, which will
 cause the entire video mode and refresh DLL to be reset on the next frame.
 ============
 */
-void VID_Restart_f()
+void Vid_Restart_f()
 {
 	vid_ref->modified = true;
 }
@@ -147,7 +147,7 @@ vidmode_t vid_modes[] =
 	{ "Mode 17: 3840x2160", 3840, 2160, 16 },
 };
 
-bool VID_GetModeInfo(int32_t* width, int32_t* height, int32_t mode)
+bool Vid_GetModeInfo(int32_t* width, int32_t* height, int32_t mode)
 {
 	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
 	{
@@ -168,24 +168,30 @@ bool VID_GetModeInfo(int32_t* width, int32_t* height, int32_t mode)
 /*
 ** VID_NewWindow
 */
-void VID_NewWindow(int32_t width, int32_t height)
+void Vid_ChangeResolution(int32_t width, int32_t height)
 {
+	int32_t old_width = viddef.width;
+	int32_t old_height = viddef.height;
+
 	viddef.width = width;
 	viddef.height = height;
 
 	cl.force_refdef = true;		// can't use a paused refdef
 
-	char hudscale[4];
+	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	int32_t wscale = viddef.width / 800;
-	int32_t hscale = viddef.height / 480;
+	float wscale = (float)viddef.width / 960.0f;
+	float hscale = (float)viddef.height / 480.0f;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;
 
-	snprintf(hudscale, 4, "%2d", wscale);
+	snprintf(hudscale, 4, "%2f", wscale);
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
+
+	// rescale the UI
+	//UI_Rescale(old_width, old_height, viddef.width, viddef.height);
 }
 
 void VID_FreeReflib()
@@ -202,7 +208,7 @@ void VID_FreeReflib()
 VID_LoadRefresh
 ==============
 */
-bool VID_LoadRefresh(char* name)
+bool Vid_LoadRefresh(char* name)
 {
 	refimport_t	ri = { 0 };
 	GetRefAPI_t	GetRefAPI;
@@ -227,17 +233,17 @@ bool VID_LoadRefresh(char* name)
 	ri.Cmd_Argc = Cmd_Argc;
 	ri.Cmd_Argv = Cmd_Argv;
 	ri.Cmd_ExecuteText = Cbuf_ExecuteText;
-	ri.Con_Printf = VID_Printf;
-	ri.Sys_Error = VID_Error;
+	ri.Con_Printf = Vid_Printf;
+	ri.Sys_Error = Vid_Error;
 	ri.FS_LoadFile = FS_LoadFile;
 	ri.FS_FreeFile = FS_FreeFile;
 	ri.FS_Gamedir = FS_Gamedir;
 	ri.Cvar_Get = Cvar_Get;
 	ri.Cvar_Set = Cvar_Set;
 	ri.Cvar_SetValue = Cvar_SetValue;
-	ri.Vid_GetModeInfo = VID_GetModeInfo;
-	ri.Vid_MenuInit = VID_MenuInit;
-	ri.Vid_ChangeResolution = VID_NewWindow;
+	ri.Vid_GetModeInfo = Vid_GetModeInfo;
+	ri.Vid_MenuInit = Vid_MenuInit;
+	ri.Vid_ChangeResolution = Vid_ChangeResolution;
 
 	if ((GetRefAPI = (void*)GetProcAddress(reflib_library, "GetRefAPI")) == 0)
 		Com_Error(ERR_FATAL, "GetProcAddress failed on %s", name);
@@ -286,7 +292,7 @@ is to check to see if any of the video mode parameters have changed, and if they
 update the rendering DLL and/or video mode to match.
 ============
 */
-void VID_CheckChanges()
+void Vid_CheckChanges()
 {
 	char name[100];
 
@@ -295,6 +301,7 @@ void VID_CheckChanges()
 		cl.force_refdef = true;		// can't use a paused refdef
 		S_StopAllSounds();
 	}
+
 	while (vid_ref->modified)
 	{
 		/*
@@ -307,7 +314,7 @@ void VID_CheckChanges()
 		cls.disable_screen = true;
 
 		Com_sprintf(name, sizeof(name), "ref_%s.dll", vid_ref->string);
-		if (!VID_LoadRefresh(name))
+		if (!Vid_LoadRefresh(name))
 		{
 			Com_Error(ERR_FATAL, "Failed to initialise renderer. Renderer name: %s", vid_ref->string);
 
@@ -320,8 +327,7 @@ void VID_CheckChanges()
 			}
 		}
 
-		// reload UIs so that their positions are relative to the new refdef
-		// this also requires a font reload
+		// reinitialise fonts and UI so we know how to scale the UI
 		Font_Init();
 		UI_Init();
 
@@ -362,7 +368,7 @@ void VID_CheckChanges()
 VID_Init
 ============
 */
-void VID_Init()
+void Vid_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
 	vid_ref = Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
@@ -377,10 +383,10 @@ void VID_Init()
 	viewsize = Cvar_Get("viewsize", "100", CVAR_ARCHIVE);
 
 	/* Add some console commands that we want to handle */
-	Cmd_AddCommand("vid_restart", VID_Restart_f);
+	Cmd_AddCommand("vid_restart", Vid_Restart_f);
 
 	/* Start the graphics mode and load refresh DLL */
-	VID_CheckChanges();
+	Vid_CheckChanges();
 }
 
 /*
@@ -388,7 +394,7 @@ void VID_Init()
 VID_Shutdown
 ============
 */
-void VID_Shutdown()
+void Vid_Shutdown()
 {
 	if (reflib_active)
 	{

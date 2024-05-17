@@ -31,17 +31,16 @@ bool UI_LeaderboardUICreate()
 {
 	UI_SetPassive("LeaderboardUI", true);
 	// SIZE SHOULDN'T HAVE TO BE MULTIPLIED BY VID_HUDSCALE
-	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value,
-		640 * vid_hudscale->value, 384 * vid_hudscale->value, 0, 0, 0, 150); 
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", (viddef.width / 2) - 320, (viddef.height / 2) - 192, 640, 384, 0, 0, 0, 150); 
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
-	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", (viddef.width / 2) - 160 * vid_hudscale->value, (viddef.height / 2) - 192 * vid_hudscale->value, 320, 64);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - (304 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - (144 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - (64 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + (32 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + (112 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + (192 * vid_hudscale->value), (viddef.height / 2) - (108 * vid_hudscale->value));
+	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", (viddef.width / 2) - 160, (viddef.height / 2) - 192, 320, 64);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", (viddef.width / 2) - (304), (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", (viddef.width / 2) - (144), (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", (viddef.width / 2) - (64), (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", (viddef.width / 2) + (32), (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", (viddef.width / 2) + (112), (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", (viddef.width / 2) + (192), (viddef.height / 2) - (108));
 	return true;
 }
 
@@ -96,13 +95,13 @@ void UI_LeaderboardUIUpdate()
 	// byte to reduce net usage
 	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
 
-	y = (viddef.height / 2) - (108 * vid_hudscale->value);
+	y = (viddef.height / 2) - (108);
 
 	// update all the data here so we don't need to clear it
 	for (int32_t client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
 	{
 		// reset x
-		x = (viddef.width / 2) - (304 * vid_hudscale->value);
+		x = (viddef.width / 2) - (304);
 
 		leaderboard_entry_t leaderboard_entry = cl.leaderboard.entries[client_num];
 		strncpy(leaderboard_entry.name, MSG_ReadString(&net_message), PLAYER_NAME_LENGTH);
@@ -117,22 +116,22 @@ void UI_LeaderboardUIUpdate()
 		// todo: boxes and headers (headers in cl_ui_scripts)
 		
 		// move downward by one line from the header
-		y += (system_font_ptr->line_height - 1) * vid_hudscale->value; // safety
+		y += (system_font_ptr->line_height - 1); // safety
 
 		// draw name
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempName", leaderboard_entry.name, x, y);
 
-		x += (8 * 20) * vid_hudscale->value;
+		x += (8 * 20);
 		
 		// ping
 		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.ping);
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPing", text, x, y);
 
-		x += (8 * 10) * vid_hudscale->value;
+		x += (8 * 10);
 
 		//team
-		int32_t box_size_x = 8 * 11 * vid_hudscale->value; // a bit of padding
-		int32_t box_size_y = (system_font_ptr->line_height - 1) * vid_hudscale->value; // -1 because it looks weird with noen
+		int32_t box_size_x = 8 * 11; // a bit of padding
+		int32_t box_size_y = (system_font_ptr->line_height - 1); // -1 because it looks weird with noen
 
 		if (leaderboard_entry.team == team_director)
 		{
@@ -153,18 +152,18 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Unassigned", x, y);
 		}
 
-		x += (8 * 12) * vid_hudscale->value;
+		x += (8 * 12);
 		
 		// score
 		snprintf(text, TEXT_BUF_LENGTH, "%d", leaderboard_entry.score);
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempScore", text, x, y);
 
 		// time
-		x += (8 * 10) * vid_hudscale->value;
+		x += (8 * 10);
 		snprintf(text, TEXT_BUF_LENGTH, "%d minutes", leaderboard_entry.time);
 		UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", text, x, y);
 
-		x += (8 * 10) * vid_hudscale->value;
+		x += (8 * 10);
 
 		// are they spectating?
 		if (leaderboard_entry.is_spectator)
@@ -180,8 +179,8 @@ void UI_LeaderboardUIUpdate()
 
 		if (client_num == 0)
 		{
-			x = (viddef.width / 2) - (320 * vid_hudscale->value);
-			y = (viddef.height / 2) + (168 * vid_hudscale->value);
+			x = (viddef.width / 2) - (320);
+			y = (viddef.height / 2) + (168);
 
 			// 38 map name length + 7 for "Time: " and optional 0
 			char map_buf[TEXT_BUF_LENGTH_LONG];
@@ -191,7 +190,7 @@ void UI_LeaderboardUIUpdate()
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_buf, x, y);
 
-			y += system_font_ptr->line_height * vid_hudscale->value;
+			y += system_font_ptr->line_height;
 
 			int32_t seconds = leaderboard_entry.time_remaining % 60;
 
@@ -207,11 +206,11 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 
-		y = ((viddef.height / 2) - (108 * vid_hudscale->value) + ((system_font_ptr->line_height * (client_num + 1) * vid_hudscale->value)));
+		y = ((viddef.height / 2) - (108) + ((system_font_ptr->line_height * (client_num + 1))));
 	}
 	
-	x = (viddef.width / 2) - (160 * vid_hudscale->value);
-	y = (viddef.height / 2) - (124 * vid_hudscale->value);
+	x = (viddef.width / 2) - (160);
+	y = (viddef.height / 2) - (124);
 
 	// "Director: " + 4 numbers + 1 for safety
 	char director_text[TEXT_BUF_LENGTH];
@@ -223,12 +222,12 @@ void UI_LeaderboardUIUpdate()
 	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
 	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
 
-	int32_t box_size_large = (8 * 14) * vid_hudscale->value;
+	int32_t box_size_large = (8 * 14);
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1) * vid_hudscale->value, 87, 0, 127, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 
-	x = (viddef.width / 2) + (48 * vid_hudscale->value);
+	x = (viddef.width / 2) + (48);
 
 	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1)* vid_hudscale->value, 219, 87, 0, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);

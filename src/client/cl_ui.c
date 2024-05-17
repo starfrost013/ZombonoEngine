@@ -27,20 +27,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 int32_t num_uis;																					
 ui_t	ui_list[MAX_UIS];
 bool	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
+bool	ui_initialised = false;
 
 // Current UI. A non-null value is enforced.
 // Editing functions apply to this UI, as well as functions that are run on UI elements.
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
-bool	UI_AddControl(ui_t* ui, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
+bool UI_AddControl(ui_t* ui, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
 // Draw methods
-void	UI_DrawText(ui_control_t* text);															// Draws a text control.
-void	UI_DrawImage(ui_control_t* image);															// Draws an image control.
-void	UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
-void	UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
-void	UI_DrawBox(ui_control_t* box);
+void UI_DrawText(ui_control_t* text);															// Draws a text control.
+void UI_DrawImage(ui_control_t* image);															// Draws an image control.
+void UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
+void UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
+void UI_DrawBox(ui_control_t* box);																// Draws a box control.
 
 bool UI_Init()
 {
@@ -60,6 +61,7 @@ bool UI_Init()
 	if (successful) successful = UI_AddUI("ScoreUI", UI_ScoreUICreate);
 	if (successful) successful = UI_AddUI("LoadoutUI", UI_LoadoutUICreate);
 	if (successful) successful = UI_AddUI("MainMenuUI", UI_MainMenuUICreate);
+	ui_initialised = true;
 	return successful;
 }
 
@@ -134,15 +136,14 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 		ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
 		if (!stricmp(ui_control_ptr->name, name))
-		{
 			return ui_control_ptr;
-		}
+
 	}
 
 	return NULL;
 }
 
-bool UI_AddControl(ui_t* ui_ptr, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y)
+bool UI_AddControl(ui_t* ui_ptr, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y)
 {
 	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
@@ -163,17 +164,14 @@ bool UI_AddControl(ui_t* ui_ptr, char* name, int32_t position_x, int32_t positio
 	return true;
 }
 
-bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32_t position_y)
+bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float position_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
 	if (!ui_ptr)
-	{
-		// message already printed
 		return false;
-	}
 
-	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
+	ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_ptr->num_controls];
 
 	// not recommended to buffer overflow
 	if (strlen(text) > MAX_UI_STRLEN)
@@ -182,14 +180,20 @@ bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32
 		return false;
 	}
 
-	strcpy(ui_control->text, text);
+	strcpy(ui_control_ptr->text, text);
 
-	ui_control->type = ui_control_text;
+	ui_control_ptr->type = ui_control_text;
+
+	if (strlen(ui_control_ptr->font) == 0)
+		Text_GetSize(cl_system_font->string, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
+	else
+		Text_GetSize(ui_control_ptr->font, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
+
 
 	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
 }
 
-bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y)
+bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, float position_y, int32_t size_x, int32_t size_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -215,7 +219,7 @@ bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddSlider(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max)
+bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -234,7 +238,7 @@ bool UI_AddSlider(char* ui_name, char* name, int32_t position_x, int32_t positio
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, bool checked)
+bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -252,7 +256,7 @@ bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t posit
 	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
+bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -327,21 +331,26 @@ bool UI_SetPassive(char* ui_name, bool passive)
 }
 
 
-bool UI_SetText(char* ui_name, char* name, char* text)
+bool UI_SetText(char* ui_name, char* control_name, char* text)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Couldn't find UI control %s to set text to %s!\n", name, text);
+		Com_Printf("Couldn't find UI control %s to set text to %s!\n", control_name, text);
 		return false;
 	}
 
 	if (strlen(text) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", name, text, MAX_UI_STRLEN);
+		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", control_name, text, MAX_UI_STRLEN);
 		return false;
 	}
+
+	if (strlen(ui_control_ptr->font) == 0)
+		Text_GetSize(cl_system_font->string, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
+	else
+		Text_GetSize(ui_control_ptr->font, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
 
 	strcpy(ui_control_ptr->text, text);
 
@@ -544,20 +553,29 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t* text)
 {
+	int32_t final_pos_x = text->position_x * viddef.width * vid_hudscale->value;
+	int32_t final_pos_y = text->position_y * viddef.height * vid_hudscale->value;
+
 	// initialised to 0
 	// if the font is not set use the system font
 	if (strlen(text->font) == 0)
 	{
-		Text_Draw(cl_system_font->string, text->position_x, text->position_y, text->text);
+		Text_Draw(cl_system_font->string, final_pos_x, final_pos_y, text->text);
 	}
 	else
 	{
-		Text_Draw(text->font, text->position_x, text->position_y, text->text);
+		Text_Draw(text->font, final_pos_x, final_pos_y, text->text);
 	}
 }
 
 void UI_DrawImage(ui_control_t* image)
 {
+	int32_t final_pos_x = image->position_x * viddef.width * vid_hudscale->value;
+	int32_t final_pos_y = image->position_y * viddef.height * vid_hudscale->value;
+
+	int32_t final_size_x = image->size_x * vid_hudscale->value;
+	int32_t final_size_y = image->size_y * vid_hudscale->value;
+
 	char* image_path = image->image_path;
 
 	if (image->focused
@@ -576,11 +594,11 @@ void UI_DrawImage(ui_control_t* image)
 
 	if (image->image_is_stretched)
 	{
-		re.DrawPicStretch(image->position_x, image->position_y, image->size_x, image->size_y, image_path, NULL);
+		re.DrawPicStretch(final_pos_x, final_pos_y, final_size_x, final_size_y, image_path, NULL);
 	}
 	else
 	{
-		re.DrawPic(image->position_x, image->position_y, image_path, NULL);
+		re.DrawPic(final_pos_x, final_pos_y, image_path, NULL);
 	}
 
 }
@@ -597,5 +615,35 @@ void UI_DrawCheckbox(ui_control_t* checkbox)
 
 void UI_DrawBox(ui_control_t* box)
 {
-	re.DrawFill(box->position_x, box->position_y, box->size_x, box->size_y, box->color);
+	int32_t final_pos_x = box->position_x * viddef.width * vid_hudscale->value;
+	int32_t final_pos_y = box->position_y * viddef.height * vid_hudscale->value;
+
+	int32_t final_size_x = box->size_x * vid_hudscale->value;
+	int32_t final_size_y = box->size_y * vid_hudscale->value;
+
+	re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
+}
+
+void UI_Rescale(int32_t old_width, int32_t old_height, int32_t new_width, int32_t new_height)
+{
+	float factor_width = (float)((float)new_width / (float)old_width);
+	float factor_height = (float)((float)new_height / (float)old_height);
+
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
+	{
+		ui_t* current_ui = &ui_list[ui_num];
+
+		for (int32_t control_num = 0; control_num < current_ui->num_controls; control_num++)
+		{
+			ui_control_t* current_ui_control = &current_ui->controls[control_num];
+
+			current_ui_control->position_x -= (current_ui_control->position_x * factor_width);
+			current_ui_control->position_y *= factor_height;
+
+			// already scales with hudscale
+			
+			//current_ui_control->size_x *= factor_width;
+			//current_ui_control->size_y *= factor_height;
+		}
+	}
 }

@@ -1682,7 +1682,7 @@ void CL_Frame (int32_t msec)
 	CL_PredictMovement ();
 
 	// allow rendering DLL change
-	VID_CheckChanges ();
+	Vid_CheckChanges ();
 	if (!cl.refresh_prepped && cls.state == ca_active)
 		CL_PrepRefresh ();
 
@@ -1787,7 +1787,7 @@ void CL_Init ()
 	S_Init();	
 	VID_Init();
 #else
-	VID_Init();
+	Vid_Init();
 	S_Init();	// sound must be initialized after window is created
 #endif
 	
@@ -1847,5 +1847,5 @@ void CL_Shutdown()
 	Miniaudio_Shutdown ();
 	S_Shutdown();
 	Input_Shutdown ();
-	VID_Shutdown();
+	Vid_Shutdown();
 }

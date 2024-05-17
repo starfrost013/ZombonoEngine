@@ -124,7 +124,7 @@ static void TextureFilteringCallback(void* unused)
 
 static void ResetDefaults(void* unused)
 {
-	VID_MenuInit();
+	Vid_MenuInit();
 }
 
 static void ApplyChanges(void* unused)
@@ -198,7 +198,7 @@ static void CancelChanges(void* unused)
 /*
 ** VID_MenuInit
 */
-void VID_MenuInit()
+void Vid_MenuInit()
 {
 	// THIS LIST **MUST** CORRESPOND EXACTLY WITH THE LIST IN VID_DLL.C!!!
 	static const char* resolutions[] =

@@ -25,10 +25,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Globals
 
-font_t			fonts[MAX_FONTS] = { 0 };
+font_t			fonts[MAX_FONTS] = { 0 };		// The fonts loaded.
 cvar_t*			cl_system_font;					// The font used for in-game text.
 cvar_t*			cl_console_font;				// The font used for the console.
 int32_t 		num_fonts;						// The number of loaded fonts.
+bool			fonts_initialised = false;		// Determines if the font engine is initialised.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
@@ -156,6 +157,8 @@ bool Font_Init()
 	}
 
 	Com_Printf("Successfully loaded %d fonts!\n", num_fonts);
+
+	fonts_initialised = true;
 	return true; 
 }
 

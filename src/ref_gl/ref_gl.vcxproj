@@ -302,7 +302,6 @@
     <None Include="ref_gl.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\client\qmenu.h" />
     <ClInclude Include="..\client\ref.h" />
     <ClInclude Include="..\game\q_shared.h" />
     <ClInclude Include="..\qcommon\qcommon.h" />

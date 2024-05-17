@@ -29,16 +29,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 bool UI_TeamUICreate()
 {
-	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", viddef.width / 2 - (48 * vid_hudscale->value), (viddef.height / 2) - (80 * vid_hudscale->value));
-	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director", (viddef.width / 2) - (256 * vid_hudscale->value), (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
-	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player", viddef.width / 2, (viddef.height / 2) - (64 * vid_hudscale->value), 256, 128);
+	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", 0.435f, 0.375f);
+	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director", 0.25f, 0.4f, 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player", 0.5f, 0.4f, 256, 128);
 
 	// set on hover images 
 	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director_hover");
 	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player_hover");
 
-	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7 creatures. Slow running speed.", viddef.width / 2 - (256 * vid_hudscale->value), (viddef.height / 2) + (70 * vid_hudscale->value));
-	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Fast running speed.", viddef.width / 2, (viddef.height / 2) + (70 * vid_hudscale->value));
+	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7 creatures. Slow running speed.", 0.25f, 0.6f);
+	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Fast running speed.", 0.5f, 0.6f);
 
 	UI_SetEventOnClickDown("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
 	UI_SetEventOnClickDown("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
@@ -83,14 +83,14 @@ bool UI_BamfuslicatorUICreate()
 	// as all the text actually being drawn is smaller than the temp text, this positions it in the middle
 	const char* temp_text = "Zombie Type: **** UNKNOWN ZOMBIE TYPE ****"; 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
-	int32_t x = (viddef.width / 2) - (120 * vid_hudscale->value);
+	int32_t x = (viddef.width / 2) - (120);
 	int32_t y = (viddef.height / 1.15);
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
-		y, 240 * vid_hudscale->value, size_y * vid_hudscale->value, 232, 96, 0, 127);
+		y, 240, size_y, 232, 96, 0, 127);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
-	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70 * vid_hudscale->value)), y);
+	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + (70)), y);
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_TextHelp", "Right click to change type of monster to spawn",
-		x + (5 * vid_hudscale->value), y + (size_y * vid_hudscale->value) + (3 * vid_hudscale->value)); // lazy way of centering it lol
+		x + (5), y + (size_y) + (3)); // lazy way of centering it lol
 	return true; 
 }
 
@@ -107,11 +107,11 @@ bool UI_TimeUICreate()
 	const char* temp_text = "Time: x:xx";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 
-	UI_AddBox("TimeUI", "TimeUI_TextBox", (viddef.width / 2) - (size_x / 2) - (36 * vid_hudscale->value), 10 * vid_hudscale->value,
-		size_x * vid_hudscale->value + (72 * vid_hudscale->value), size_y * vid_hudscale->value, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
+	UI_AddBox("TimeUI", "TimeUI_TextBox", (viddef.width / 2) - (size_x / 2) - (36), 10,
+		size_x + (72), size_y, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("TimeUI", "TimeUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 11 * vid_hudscale->value); //+1 for padding/advance reasons
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 11); //+1 for padding/advance reasons
 
 	return true; 
 }
@@ -129,14 +129,14 @@ bool UI_ScoreUICreate()
 	const char* temp_text = "Directors 0 : Players 0";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	//87, 0, 127, 255
-	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", (viddef.width / 2) - (size_x / 2) - (24 * vid_hudscale->value), 30 * vid_hudscale->value,
-		(size_x * vid_hudscale->value + (24 * vid_hudscale->value) / 2), size_y * vid_hudscale->value, 87, 0, 127, 255); // add a buffer of 10 pixels for larger numbers 
-	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", (viddef.width / 2) - (size_x / 2) + (62 * vid_hudscale->value), 30 * vid_hudscale->value,
-		(size_x * vid_hudscale->value - (70 * vid_hudscale->value) / 2), size_y * vid_hudscale->value, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", (viddef.width / 2) - (size_x / 2) - (24), 30,
+		(size_x + (24) / 2), size_y, 87, 0, 127, 255); // add a buffer of 10 pixels for larger numbers 
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", (viddef.width / 2) - (size_x / 2) + (62), 30,
+		(size_x - (70) / 2), size_y, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
 	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", (viddef.width / 2) - (size_x / 2), 
-		(30 * vid_hudscale->value) + (1 * vid_hudscale->value));
+		(30) + (1));
 
 	return true; 
 }
@@ -150,55 +150,55 @@ bool UI_LoadoutUICreate()
 	UI_SetPassive("LoadoutUI", true);
 
 	// set up size
-	int32_t size_x = 325 * vid_hudscale->value;
-	int32_t size_y = 65 * vid_hudscale->value;
+	int32_t size_x = 325;
+	int32_t size_y = 65;
 
-	int32_t x = ((viddef.height / 2) - (size_x/8) * vid_hudscale->value); // WTF? Why is it not size_x/2
-	int32_t y = (viddef.height / 1.3f) * vid_hudscale->value;
+	int32_t x = ((viddef.height / 2) - (size_x/8)); // WTF? Why is it not size_x/2
+	int32_t y = (viddef.height / 1.3f);
 
 	UI_AddBox("LoadoutUI", "LoadoutUI_Background", x, y, size_x, size_y,
 		0, 0, 0, 127);
 
-	x = x + (((size_x - (float)(24 * 10)) / 2)) + 5 * vid_hudscale->value;
+	x = x + (((size_x - (float)(24 * 10)) / 2)) + 5;
 
 	// create the text
-	y += 5 * vid_hudscale->value;
+	y += 5;
 	UI_AddText("LoadoutUI", "LoadoutUI_Text", "Test Text", x, y);
 
 	// create 10 placeholder icons
-	y += 15 * vid_hudscale->value;
+	y += 15;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option0", "2d/i_fixme", x, y, 24, 24);
 
 	// some of these are manually tweaked because there is no point caling Text_GetSize for the numbers 0 to 9
 	UI_AddText("LoadoutUI", "LoadoutUI_Text1", "1", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option1", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text2", "2", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option2", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text3", "3", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option3", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text4", "4", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option4", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text5", "5", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option5", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text6", "6", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option6", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text7", "7", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option7", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text8", "8", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option8", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text9", "9", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 	UI_AddImage("LoadoutUI", "LoadoutUI_Option9", "2d/i_fixme", x, y, 24, 24);
 	UI_AddText("LoadoutUI", "LoadoutUI_Text9", "0", x + 10, y + 30);
-	x += 24 * vid_hudscale->value;
+	x += 24;
 
 	// set everything except the box invisible to start with because you have no items
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Text", true);

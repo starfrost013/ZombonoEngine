@@ -591,7 +591,7 @@ void CL_PredictMovement ();
 
 #define CONTROLS_PER_UI			256
 #define MAX_UIS					32
-#define MAX_UI_STRLEN		256
+#define MAX_UI_STRLEN			256
 
 // Defined her for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
@@ -603,23 +603,23 @@ typedef enum ui_control_type_e
 	ui_control_slider = 2,									// A slider between different values.
 	ui_control_checkbox = 3,								// A checkable box.
 	ui_control_box = 4,										// A simple box.
-	ui_control_spincontrol = 5,								// A "spinnable" set of options
+	ui_control_spincontrol = 5,								// A "spinnable" set of options.
 	ui_control_entry = 6,									// A textbox that can have text entered into it.
 } ui_control_type;
 
 typedef struct ui_control_s
 {
 	// general
-	ui_control_type	type;									// Type of this UI control.
-	int32_t 		position_x;								// UI control position (x-component).
-	int32_t 		position_y;								// UI control position (y-component).
+	ui_control_type	type;								// Type of this UI control.
+	float 			position_x;							// UI control position (x-component).
+	float			position_y;							// UI control position (y-component).
 	char			font[MAX_FONT_FILENAME_LEN];
-	int32_t 		size_x;									// UI control size (x-component).
-	int32_t 		size_y;									// UI control size (y-component).
+	int32_t 		size_x;								// UI control size (x-component).
+	int32_t  		size_y;								// UI control size (y-component).
 	char			name[MAX_UI_STRLEN];				// UI control name (for code)
-	bool			invisible;								// Is this UI control invisible?
-	bool			focused;								// Is this UI control focused?
-	bool			hovered;								// Is the mouse hovering over this UI control?
+	bool			invisible;							// Is this UI control invisible?
+	bool			focused;							// Is this UI control focused?
+	bool			hovered;							// Is the mouse hovering over this UI control?
 
 	// text
 	char			text[MAX_UI_STRLEN];				// Text UI control: Text to display.
@@ -627,14 +627,14 @@ typedef struct ui_control_s
 	char			image_path[MAX_UI_STRLEN];			// Image path to display for Image controls
 	char			image_path_on_hover[MAX_UI_STRLEN];	// Image path when the UI control has been hovered over.
 	char			image_path_on_click[MAX_UI_STRLEN];	// Image path when the UI control clicked on.
-	bool			image_is_stretched;						// Is this UI control's image stretched?
+	bool			image_is_stretched;					// Is this UI control's image stretched?
 	// slider
-	int32_t 		value_min;								// Slider UI control: minimum value.
-	int32_t 		value_max;								// Slider UI control: maximum value.
+	int32_t 		value_min;							// Slider UI control: minimum value.
+	int32_t 		value_max;							// Slider UI control: maximum value.
 	// checkbox
-	bool			checked;								// Checkbox UI control: Is it checked?
+	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
-	vec4_t			color;									// The color of this UI element.
+	vec4_t			color;								// The color of this UI element.
 
 	// events
 	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
@@ -645,8 +645,8 @@ typedef struct ui_control_s
 
 typedef struct ui_s
 {	int32_t 		num_controls;				// Number of controls in the UI.
-	char			name[MAX_UI_STRLEN];	// UI name.			
-	bool			(*on_create)();				// UI Create function for client
+	char			name[MAX_UI_STRLEN];		// The name of this UI	
+	bool			(*on_create)();				// A function to call when creating this UI.
 	bool			enabled;					// True if the UI is currently being drawn.
 	bool			activated;					// True if the UI is currently interactable.
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
@@ -654,20 +654,21 @@ typedef struct ui_s
 } ui_t;
 
 extern ui_t			ui_list[MAX_UIS];	// The list of UIs.
-extern ui_t*		current_ui;			// the current UI being displayed
-extern int32_t 		num_uis;			// the current number of UIs
+extern ui_t*		current_ui;			// The current UI being displayed
+extern int32_t 		num_uis;			// The current number of UIs
 extern bool			ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern bool			ui_initialised;		// Determines if the UI engine has been initialised or not.
 
 // UI: Init
 bool UI_Init();
 bool UI_AddUI(char* name, bool (*on_create)());
 
 // UI: Init Controls
-bool UI_AddText(char* ui_name, char* name, char* text, int32_t position_x, int32_t position_y);												// Draws text.
-bool UI_AddImage(char* ui_name, char* name, char* image_path, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y);				// Draws an image.
-bool UI_AddSlider(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max);	// Draws a slider.
-bool UI_AddCheckbox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
-bool UI_AddBox(char* ui_name, char* name, int32_t position_x, int32_t position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
+bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float position_y);												// Draws text.
+bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, float position_y, int32_t size_x, int32_t size_y);				// Draws an image.
+bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max);	// Draws a slider.
+bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
+bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
 // UI: Toggle
 bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to enabled (visible).
@@ -696,6 +697,9 @@ void UI_HandleEventOnKeyUp(int32_t btn);																	// Handles key up event
 
 // UI: Draw
 void UI_Draw();																								// Draws a UI.
+
+// UI: Rescale
+void UI_Rescale(int32_t old_width, int32_t old_height, int32_t new_width, int32_t new_height);				// Rescale all user interfaces to the new UI size.
 
 // UI: Clear
 void UI_Clear(char* name);																					// Removes all the controls in a UI.
@@ -790,13 +794,14 @@ typedef enum font_json_section_e
 	font_json_symbols = 2,
 } font_json_section;
 
-extern font_t			fonts[MAX_FONTS];			// Global object containing all loaded fonts.
+extern font_t	fonts[MAX_FONTS];			// Global object containing all loaded fonts.
 
-extern cvar_t*			cl_system_font;				// The font used for the game's text (chat, et cetera).
-extern cvar_t*			cl_console_font;			// The font used for the console.
-extern int32_t 			num_fonts;					// The number of loaded fonts.
+extern cvar_t*	cl_system_font;				// The font used for the game's text (chat, et cetera).
+extern cvar_t*	cl_console_font;			// The font used for the console.
+extern int32_t 	num_fonts;					// The number of loaded fonts.
+extern bool		fonts_initialised;			// Indicates if the font engine has been initialised or not.
 
-bool Font_Init();								// Initialises the font subsystem.
+bool Font_Init();									// Initialises the font subsystem.
 font_t* Font_GetByName(const char* name);			// Returns a pointer to the font with name name, or NULL.
 glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a glyph with char code glyph, or NULL if it does not exist.
 
@@ -816,8 +821,8 @@ bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char t
 //
 
 //Cvars
-extern cvar_t*			cl_loadout_fade;
-extern cvar_t*			cl_loadout_fade_time;
+extern cvar_t*	cl_loadout_fade;
+extern cvar_t*	cl_loadout_fade_time;
 
 void Loadout_Init();																			// Initialises the loadout system.
 void Loadout_Add();																				// Parses a loadout add message

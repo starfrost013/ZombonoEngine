@@ -119,8 +119,8 @@ void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 			// TODO: Scaling
 			if (x >= ui_control_ptr->position_x
 				&& y >= ui_control_ptr->position_y
-				&& x <= ui_control_ptr->position_x + (ui_control_ptr->size_x * vid_hudscale->value)
-				&& y <= ui_control_ptr->position_y + (ui_control_ptr->size_y * vid_hudscale->value)
+				&& x <= ui_control_ptr->position_x + (ui_control_ptr->size_x)
+				&& y <= ui_control_ptr->position_y + (ui_control_ptr->size_y)
 				&& ui_ptr == current_ui)
 			{
 				ui_control_ptr->focused = true; 
@@ -156,8 +156,8 @@ void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 			// TODO: Scaling
 			if (x >= ui_control_ptr->position_x
 				&& y >= ui_control_ptr->position_y
-				&& x <= ui_control_ptr->position_x + (ui_control_ptr->size_x * vid_hudscale->value)
-				&& y <= ui_control_ptr->position_y + (ui_control_ptr->size_y * vid_hudscale->value)
+				&& x <= ui_control_ptr->position_x + (ui_control_ptr->size_x)
+				&& y <= ui_control_ptr->position_y + (ui_control_ptr->size_y)
 				&& ui_ptr == current_ui)
 			{
 				ui_control_ptr->focused = true;

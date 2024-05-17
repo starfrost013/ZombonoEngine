@@ -34,10 +34,10 @@ typedef struct
 extern	viddef_t	viddef;				// global video state
 
 // Video module initialisation etc
-void	VID_Init ();
-void	VID_Shutdown ();
-void	VID_CheckChanges ();
+void	Vid_Init ();
+void	Vid_Shutdown ();
+void	Vid_CheckChanges ();
 
-void	VID_MenuInit( void );
+void	Vid_MenuInit( void );
 void	VID_MenuDraw( void );
 const char *VID_MenuKey( int32_t );

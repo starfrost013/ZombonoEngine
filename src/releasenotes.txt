@@ -19,13 +19,13 @@ NEW FEATURES:
 		* TE_FLASHLIGHT - Flashlight
 		* TE_FLASH - Flash (always at the player's location)
 	* Removed many obsolete particle effects (see Removals section)
-
 * Rendering API version 9:
 	* Rename DrawStretchPic to DrawPicStretch
 	* Rename Vid_NewWindow to Vid_ChangeResolution
 	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
 * Added disable_input field to client_static_t so the client can disable input whenever it wants
 * Changed the default OpenGL clear colour from eye-searing hot pink to black
+* Added walls to both stations of z_tdm_subway
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
@@ -99,11 +99,11 @@ OpenGL legacy code purge #49123712632:
 	* Got rid of inconsistent syntax
 	* Renamed GL_TextureMode, GL_TextureAlphaMode, and GL_TextureSolidMode to GL_SetTextureMode, GL_SetTextureAlphaMode and GL_SetTextureSolidMode
 	* Removed GL_DrawColoredStereoLinePair (not used)
-
+	* Removed partially implemented ability to set map to a TGA file
 OTHER CHANGES: 
 	* Reorganised effects code
 	* Renamed "pics" folder to "2d"
-	* Removed partially implemented ability to set map to a TGA file
+	* Renamed "VID" functions in engine to "Vid" to be consistent with OpenGL renderer
 
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server

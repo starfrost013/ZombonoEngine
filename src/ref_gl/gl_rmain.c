@@ -560,7 +560,6 @@ void R_Clear ()
 
 	if (gl_clear->value)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // changed from eye-searing hot pink
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	else
