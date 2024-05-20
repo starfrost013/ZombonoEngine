@@ -166,7 +166,7 @@ bool Vid_GetModeInfo(int32_t* width, int32_t* height, int32_t mode)
 }
 
 /*
-** VID_NewWindow
+** VID_ChangeResolution
 */
 void Vid_ChangeResolution(int32_t width, int32_t height)
 {
@@ -189,9 +189,6 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 
 	snprintf(hudscale, 4, "%2f", wscale);
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
-
-	// rescale the UI
-	//UI_Rescale(old_width, old_height, viddef.width, viddef.height);
 }
 
 void VID_FreeReflib()

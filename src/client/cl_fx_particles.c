@@ -519,7 +519,7 @@ void CL_ExplosionParticles (vec3_t org)
 	}
 }
 
-#define LIGHTNING_SPEED			700
+#define LIGHTNING_SPEED			1600
 
 //
 // CL_LightningParticles: Lightning particles for the tangfuslicator

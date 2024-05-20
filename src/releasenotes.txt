@@ -7,6 +7,7 @@ May XX, 2024
 NEW FEATURES:
 * Added a nice animated intro to the game - you can turn it off with cl_showintro 0
 	* You can change the first and second intro images with the cl_intro1 and cl_intro2 cvars, and change the time (in milliseconds) they take to display with cl_intro1_time and cl_intro2_time cvars
+* Changed 
 * Made the game window resizable
 * Added the ability to send 32-bit colour information over the network
 * Particle system changes:

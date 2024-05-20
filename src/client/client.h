@@ -596,6 +596,9 @@ void CL_PredictMovement ();
 // Defined her for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
 
+#define UI_SCALE_BASE_X			960.0f			// Horizontal resolution used as the base for UI scaling.
+#define UI_SCALE_BASE_Y			480.0f			// Vertical resolution used as the base for UI scaling.
+
 typedef enum ui_control_type_e
 {
 	ui_control_text = 0,									// Simple text.
@@ -697,9 +700,6 @@ void UI_HandleEventOnKeyUp(int32_t btn);																	// Handles key up event
 
 // UI: Draw
 void UI_Draw();																								// Draws a UI.
-
-// UI: Rescale
-void UI_Rescale(int32_t old_width, int32_t old_height, int32_t new_width, int32_t new_height);				// Rescale all user interfaces to the new UI size.
 
 // UI: Clear
 void UI_Clear(char* name);																					// Removes all the controls in a UI.

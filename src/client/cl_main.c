@@ -1016,7 +1016,8 @@ void CL_FixUpGender()
 		else if (Q_stricmp(sk, "other") == 0)
 			Cvar_Set("gender", "other");
 		else
-			Cvar_Set ("gender", "none");
+			Cvar_Set("gender", "none");
+
 		gender->modified = false;
 	}
 }
@@ -1415,12 +1416,12 @@ void CL_InitLocal ()
 	cl_paused = Cvar_Get ("paused", "0", 0);
 	cl_timedemo = Cvar_Get ("timedemo", "0", 0);
 
-	cl_showintro = Cvar_Get("cl_showintro", "1", 0);
-	cl_intro1 = Cvar_Get("cl_intro1", "2d/ui/introui_background2", 0);
-	cl_intro2 = Cvar_Get("cl_intro2", "2d/ui/introui_background", 0);
+	cl_showintro = Cvar_Get("cl_showintro", "1", CVAR_ARCHIVE);
+	cl_intro1 = Cvar_Get("cl_intro1", "2d/ui/introui_background2", CVAR_ARCHIVE);
+	cl_intro2 = Cvar_Get("cl_intro2", "2d/ui/introui_background", CVAR_ARCHIVE);
 
-	cl_intro1_time = Cvar_Get("cl_intro1_time", "7500", 0);
-	cl_intro2_time = Cvar_Get("cl_intro2_time", "7500", 0);
+	cl_intro1_time = Cvar_Get("cl_intro1_time", "7500", CVAR_ARCHIVE);
+	cl_intro2_time = Cvar_Get("cl_intro2_time", "7500", CVAR_ARCHIVE);
 
 	rcon_client_password = Cvar_Get ("rcon_password", "", 0);
 	rcon_address = Cvar_Get ("rcon_address", "", 0);

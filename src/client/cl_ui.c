@@ -520,12 +520,15 @@ void UI_Draw()
 
 				if (!current_ui_control->invisible)
 				{
+					float final_pos_x = current_ui_control->position_x * viddef.width;
+					float final_pos_y = current_ui_control->position_y * viddef.height;
+
 					// toggle UI hover images if the mouse is within a UI
 					current_ui_control->hovered =
-						(last_mouse_pos_x >= current_ui_control->position_x
-							&& last_mouse_pos_x <= (current_ui_control->position_x + (current_ui_control->size_x * vid_hudscale->value))
-							&& last_mouse_pos_y >= current_ui_control->position_y
-							&& last_mouse_pos_y <= (current_ui_control->position_y + (current_ui_control->size_y * vid_hudscale->value)));
+						(last_mouse_pos_x >= final_pos_x
+							&& last_mouse_pos_x <= (final_pos_x + (current_ui_control->size_x * vid_hudscale->value))
+							&& last_mouse_pos_y >= final_pos_y
+							&& last_mouse_pos_y <= (final_pos_y + (current_ui_control->size_y * vid_hudscale->value)));
 
 					switch (current_ui_control->type)
 					{
@@ -553,8 +556,8 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t* text)
 {
-	int32_t final_pos_x = text->position_x * viddef.width * vid_hudscale->value;
-	int32_t final_pos_y = text->position_y * viddef.height * vid_hudscale->value;
+	int32_t final_pos_x = text->position_x * viddef.width;
+	int32_t final_pos_y = text->position_y * viddef.height;
 
 	// initialised to 0
 	// if the font is not set use the system font
@@ -570,8 +573,8 @@ void UI_DrawText(ui_control_t* text)
 
 void UI_DrawImage(ui_control_t* image)
 {
-	int32_t final_pos_x = image->position_x * viddef.width * vid_hudscale->value;
-	int32_t final_pos_y = image->position_y * viddef.height * vid_hudscale->value;
+	int32_t final_pos_x = image->position_x * viddef.width;
+	int32_t final_pos_y = image->position_y * viddef.height;
 
 	int32_t final_size_x = image->size_x * vid_hudscale->value;
 	int32_t final_size_y = image->size_y * vid_hudscale->value;
@@ -615,35 +618,11 @@ void UI_DrawCheckbox(ui_control_t* checkbox)
 
 void UI_DrawBox(ui_control_t* box)
 {
-	int32_t final_pos_x = box->position_x * viddef.width * vid_hudscale->value;
-	int32_t final_pos_y = box->position_y * viddef.height * vid_hudscale->value;
+	int32_t final_pos_x = box->position_x * viddef.width;
+	int32_t final_pos_y = box->position_y * viddef.height;
 
 	int32_t final_size_x = box->size_x * vid_hudscale->value;
 	int32_t final_size_y = box->size_y * vid_hudscale->value;
 
 	re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
-}
-
-void UI_Rescale(int32_t old_width, int32_t old_height, int32_t new_width, int32_t new_height)
-{
-	float factor_width = (float)((float)new_width / (float)old_width);
-	float factor_height = (float)((float)new_height / (float)old_height);
-
-	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
-	{
-		ui_t* current_ui = &ui_list[ui_num];
-
-		for (int32_t control_num = 0; control_num < current_ui->num_controls; control_num++)
-		{
-			ui_control_t* current_ui_control = &current_ui->controls[control_num];
-
-			current_ui_control->position_x -= (current_ui_control->position_x * factor_width);
-			current_ui_control->position_y *= factor_height;
-
-			// already scales with hudscale
-			
-			//current_ui_control->size_x *= factor_width;
-			//current_ui_control->size_y *= factor_height;
-		}
-	}
 }
