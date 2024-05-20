@@ -324,10 +324,6 @@ void Vid_CheckChanges()
 			}
 		}
 
-		// reinitialise fonts and UI so we know how to scale the UI
-		Font_Init();
-		UI_Init();
-
 		// turn off the cursor if we are switching into fullscreen mode
 		if (vid_fullscreen->value
 			|| vid_borderless->value)
