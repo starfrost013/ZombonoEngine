@@ -490,7 +490,7 @@ int32_t chat_bufferlen = 0;
 void Key_Message (int32_t key, int mods)
 {
 
-	if ( key == K_ENTER || key == K_KP_ENTER )
+	if (key == K_ENTER || key == K_KP_ENTER)
 	{
 		if (chat_team)
 			Cbuf_AddText ("say_team \"");
@@ -513,9 +513,6 @@ void Key_Message (int32_t key, int mods)
 		return;
 	}
 
-	if (key < 32 || key > 127)
-		return;	// non printable
-
 	if (key == K_BACKSPACE)
 	{
 		if (chat_bufferlen)
@@ -526,13 +523,15 @@ void Key_Message (int32_t key, int mods)
 		return;
 	}
 
+	if (key < 32 || key > 127)
+		return;	// non printable
+
 	if (chat_bufferlen == sizeof(chat_buffer)-1)
 		return; // all full
 
 	// caps lock only affects A-Z keys
 	bool perform_shift = ((caps_lock && (key >= K_A && key <= K_Z)) || shift_down) 
 		&& !(caps_lock && shift_down);
-
 
 	//TODO: FIX WHEN KEYNUMTOSTRING is actually a string
 	key = Key_KeynumToString(key, perform_shift)[0];
