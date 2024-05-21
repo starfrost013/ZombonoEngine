@@ -35,12 +35,12 @@ bool UI_LeaderboardUICreate()
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
 	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", 0.333f, 0.10f, 320, 64);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", 0.183f, (viddef.height / 2) - (108));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", 0.35f, (viddef.height / 2) - (108));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", 0.433f, (viddef.height / 2) - (108));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", 0.533f, (viddef.height / 2) - (108));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", 0.616f, (viddef.height / 2) - (108));
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", 0.70f, (viddef.height / 2) - (108));
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", 0.183f, 0.275f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", 0.35f, 0.275f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", 0.433f, 0.275f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", 0.533f, 0.275f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", 0.616f, 0.275f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", 0.70f, 0.275f);
 	return true;
 }
 

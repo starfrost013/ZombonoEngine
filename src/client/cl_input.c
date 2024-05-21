@@ -482,6 +482,7 @@ usercmd_t CL_CreateCmd ()
 	usercmd_t	cmd;
 
 	frame_msec = sys_frame_time - old_sys_frame_time;
+
 	if (frame_msec < 1)
 		frame_msec = 1;
 	if (frame_msec > 200)

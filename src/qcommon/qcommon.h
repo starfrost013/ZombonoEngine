@@ -806,7 +806,6 @@ void	*Sys_GetGameAPI(void *parms);
 
 char	*Sys_ConsoleInput();
 void	Sys_ConsoleOutput(char *string);
-void	Sys_SendKeyEvents();
 void	Sys_Error(char* error, ...);
 int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit();

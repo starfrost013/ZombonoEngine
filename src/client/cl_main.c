@@ -542,7 +542,7 @@ CL_Rcon_f
 */
 void CL_Rcon_f ()
 {
-	char	message[1024];
+	char		message[1024];
 	int32_t 	i;
 	netadr_t	to;
 
@@ -605,7 +605,7 @@ void CL_ClearState ()
 	CL_ClearEffects ();
 	CL_ClearTEnts ();
 
-// wipe the entire cl structure
+	// wipe the entire cl structure
 	memset (&cl, 0, sizeof(cl));
 	memset (&cl_entities, 0, sizeof(cl_entities));
 	
@@ -683,7 +683,6 @@ drop to full console
 */
 void CL_Changing_f ()
 {
-	//ZOID
 	//if we are downloading, we don't change!  This so we don't suddenly stop downloading a map
 	if (cls.download)
 		return;
@@ -709,7 +708,9 @@ void CL_Reconnect_f ()
 		return;
 
 	S_StopAllSounds ();
-	if (cls.state == ca_connected) {
+
+	if (cls.state == ca_connected)
+	{
 		Com_Printf ("reconnecting...\n");
 		cls.state = ca_connected;
 		MSG_WriteChar (&cls.netchan.message, clc_stringcmd);
@@ -754,11 +755,11 @@ CL_PingServers_f
 */
 void CL_PingServers_f ()
 {
-	int32_t 		i;
+	int32_t 	i;
 	netadr_t	adr;
 	char		name[PLAYER_NAME_LENGTH];
-	char		*adrstring;
-	cvar_t		*noudp;
+	char*		adrstring;
+	cvar_t*		noudp;
 
 	NET_Config (true);		// allow remote
 
@@ -810,7 +811,6 @@ void CL_Skins_f ()
 			continue;
 		Com_Printf ("client %i: %s\n", i, cl.configstrings[CS_PLAYERSKINS+i]); 
 		SCR_UpdateScreen ();
-		Sys_SendKeyEvents ();	// pump message loop
 		CL_ParseClientinfo (i);
 	}
 }
@@ -1608,13 +1608,14 @@ CL_SendCommand
 */
 void CL_SendCommand ()
 {
-	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active
+	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active.
+	// sys_frame_time being frozen effectively breaks input
 	if (!ui_active
 		|| (ui_active && current_ui != NULL && current_ui->passive)
-			|| (ui_active && current_ui != NULL && !strncmp(current_ui->name, "LeaderboardUI", 14)))
+		|| (ui_active && current_ui != NULL && !strncmp(current_ui->name, "LeaderboardUI", 14)))
 	{
 		// get new key events
-		Sys_SendKeyEvents();
+		sys_frame_time = Sys_Milliseconds();
 	}
 
 	// process console commands

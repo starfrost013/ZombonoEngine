@@ -353,6 +353,7 @@ typedef struct particle_s
 	vec4_t		color;
 	float		colorvel;
 	float		alphavel;
+	bool		permanent; // used for func_particle_effect
 } cparticle_t;
 
 
@@ -415,7 +416,7 @@ void CL_Snd_Restart_f ();
 void CL_RequestNextDownload ();
 
 //
-// cl_input
+// cl_input.c
 //
 typedef struct
 {
@@ -443,6 +444,8 @@ extern double last_mouse_pos_x, last_mouse_pos_y;
 
 float CL_KeyState (kbutton_t *key);
 char *Key_KeynumToString (int32_t keynum, bool shift);
+
+extern uint32_t		sys_frame_time;
 
 //
 // cl_demo.c

@@ -37,6 +37,7 @@ BUG FIXES:
 * Fixed all particle effects having garbage colours
 	* Actually made them work...
 * Fixed default OpenGL clear colour being searingly hot pink instead of just a normal black
+* Fixed pressing non-alpha keys with capslock enabled
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:

@@ -181,8 +181,8 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	float wscale = (float)viddef.width / 960.0f;
-	float hscale = (float)viddef.height / 480.0f;
+	float wscale = (float)viddef.width / UI_SCALE_BASE_X;
+	float hscale = (float)viddef.height / UI_SCALE_BASE_Y;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;

@@ -194,7 +194,6 @@ void CL_RegisterSounds ()
 		if (!cl.configstrings[CS_SOUNDS+i][0])
 			break;
 		cl.sound_precache[i] = S_RegisterSound (cl.configstrings[CS_SOUNDS+i]);
-		Sys_SendKeyEvents ();	// pump message loop
 	}
 	S_EndRegistration ();
 }
