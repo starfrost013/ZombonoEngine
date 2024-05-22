@@ -31,16 +31,16 @@ bool UI_LeaderboardUICreate()
 {
 	UI_SetPassive("LeaderboardUI", true);
 	// SIZE SHOULDN'T HAVE TO BE MULTIPLIED BY VID_HUDSCALE
-	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", 0.17f, 0.1f, 640, 384, 0, 0, 0, 150); 
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", 0.17f, 0.2f, 640, 384, 0, 0, 0, 150); 
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
-	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", 0.333f, 0.10f, 320, 64);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", 0.183f, 0.275f);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", 0.35f, 0.275f);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", 0.433f, 0.275f);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", 0.533f, 0.275f);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", 0.616f, 0.275f);
-	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", 0.70f, 0.275f);
+	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", 0.333f, 0.2f, 320, 64);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Name", "Name", 0.183f, 0.308f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Ping", "Ping", 0.35f, 0.308f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Team", "Team", 0.433f, 0.308f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Score", "Score", 0.533f, 0.308f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Time", "Time", 0.616f, 0.308f);
+	UI_AddText("LeaderboardUI", "LeaderboardUI_Subheader_Spectating", "Spectating?", 0.70f, 0.308f);
 	return true;
 }
 
@@ -95,7 +95,7 @@ void UI_LeaderboardUIUpdate()
 	// byte to reduce net usage
 	cl.leaderboard.num_clients = MSG_ReadByte(&net_message);
 
-	y = 0.275f;
+	y = 0.302f;
 
 	// update all the data here so we don't need to clear it
 	for (int32_t client_num = 0; client_num < cl.leaderboard.num_clients; client_num++)
@@ -206,11 +206,11 @@ void UI_LeaderboardUIUpdate()
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);
 		}
 
-		y = (0.3875f + (((system_font_ptr->line_height/UI_SCALE_BASE_Y) * (client_num + 1))));
+		y = (0.302f + (((system_font_ptr->line_height/UI_SCALE_BASE_Y) * (client_num + 1))));
 	}
 	
-	x = 0.333f;
-	y = 0.2416f;
+	x = 0.35f;
+	y = 0.287f;
 
 	// "Director: " + 4 numbers + 1 for safety
 	char director_text[TEXT_BUF_LENGTH];
@@ -227,7 +227,7 @@ void UI_LeaderboardUIUpdate()
 	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), 87, 0, 127, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 
-	x = 0.45f;
+	x = 0.50f;
 
 	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), 219, 87, 0, 255); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);

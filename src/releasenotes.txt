@@ -38,6 +38,7 @@ BUG FIXES:
 	* Actually made them work...
 * Fixed default OpenGL clear colour being searingly hot pink instead of just a normal black
 * Fixed pressing non-alpha keys with capslock enabled
+* Fixed pressing backspace in chat
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
