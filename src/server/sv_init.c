@@ -25,7 +25,7 @@ server_static_t	svs;				// persistant server info
 server_t		sv;					// local server
 
 const char* master_base = "servers.zombono.com";
-const char* master_alternative = "iswearimnotanazi.bjornhocke.com"; // temp
+const char* master_alternative = "servers-alt.zombono.com"; // temp
 
 /*
 ================

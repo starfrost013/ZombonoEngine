@@ -219,9 +219,8 @@ typedef struct
 
 	cvar_t*	(*Cvar_Get) (char *name, char *value, int32_t flags);
 	cvar_t*	(*Cvar_Set)( char *name, char *value );
-	void	 (*Cvar_SetValue)( char *name, float value );
+	void	(*Cvar_SetValue)( char *name, float value );
 
-	bool	(*Vid_GetModeInfo)( int32_t *width, int32_t *height, int32_t mode );
 	void	(*Vid_MenuInit)( void );
 	void	(*Vid_ChangeResolution)( int32_t width, int32_t height );
 } refimport_t;

@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 // =============================================
-// gl_init.c - Contains GLAD and GLFW glue stuff
+// gl_glfw.c - Contains GLAD and GLFW glue stuff
 // =============================================
 
 
@@ -39,24 +39,11 @@ extern cvar_t* vid_fullscreen;
 extern cvar_t* vid_borderless;
 extern cvar_t* vid_ref;
 
-static bool VerifyDriver()
-{
-	char buffer[1024];
-
-	if (!glGetString)
-		return false;
-
-	strcpy( buffer, glGetString( GL_RENDERER ) );
-	strlwr( buffer );
-
-	return (buffer == NULL);
-}
-
 /*
 ** VID_CreateWindow
 */
 
-bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
+bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 {
 	// Monitor is NULL for windowed mode,
 	// non-NULL for fullscreen
@@ -103,6 +90,8 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 		return false;
 	}
 
+	GL_SetResolution(gl_width->value, gl_height->value);
+
 	// set up callbacks
 	glfwSetWindowSizeCallback(gl_state.window, GL_WindowSizeChanged);
 	glfwSetWindowCloseCallback(gl_state.window, GL_Shutdown);
@@ -121,7 +110,7 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	ri.Con_Printf(PRINT_ALL, "GL_EXTENSIONS: %s\n", gl_config.extensions_string);
 
 	glfwSetErrorCallback(gl_state.window, GLFW_Error);
-	
+
 	// let the sound and input subsystems know about the new window
 	ri.Vid_ChangeResolution (width, height);
 
@@ -141,89 +130,101 @@ bool VID_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height)
 {
+	GL_SetResolution(width, height);
+}
+
+void GL_SetResolution(int32_t width, int32_t height)
+{
 	glViewport(0, 0, width, height);
 	vid.width = width;
 	vid.height = height;
-	// tell the client/server about it
-	ri.Vid_ChangeResolution(width, height);
+	// this will change the resolution
+	ri.Cvar_SetValue("gl_width", width);
+	ri.Cvar_SetValue("gl_height", height);
+	glfwSetWindowSize(gl_state.window, width, height);
 }
 
 /*
 ** GL_SetMode
 */
-rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, int32_t mode, bool fullscreen )
+rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, bool fullscreen )
 {
-	int32_t width, height;
+	int32_t width = (int32_t)gl_width->value, height = (int32_t)gl_height->value;
 	const char *window_modes[] = { "Windowed", "Fullscreen"};
-
-	ri.Con_Printf(PRINT_ALL, "Initializing OpenGL display\n");
-
-	ri.Con_Printf(PRINT_ALL, "...setting mode %d:", mode );
-
-	if ( !ri.Vid_GetModeInfo( &width, &height, mode ) )
-	{
-		ri.Con_Printf( PRINT_ALL, " invalid mode\n" );
-		return rserr_invalid_mode;
-	}
 
 	// destroy the existing window
 	if (gl_state.window)
 	{
-		GL_DestroyWindow ();
-		gl_state.window = NULL;
-	}
+		bool need_to_destroy = (vid_borderless->modified
+			|| vid_fullscreen->modified);
 
-	// do a CDS if needed
-	if (fullscreen)
-	{
-		ri.Con_Printf( PRINT_ALL, "...attempting fullscreen\n" );
-		ri.Con_Printf( PRINT_ALL, "...calling CDS: " );
-
-		if ( VID_CreateWindow(width, height, true) )
+		if (!need_to_destroy)
 		{
-			*pwidth = width;
-			*pheight = height;
-
-			gl_state.fullscreen = true;
-
-			ri.Con_Printf( PRINT_ALL, "ok\n" );
-			return rserr_ok;
+			GL_SetResolution(width, height);
 		}
 		else
 		{
-			ri.Con_Printf( PRINT_ALL, " failed\n" );
-			ri.Con_Printf( PRINT_ALL, "...setting windowed mode\n" );
+			GL_DestroyWindow();
+		}
+	}
 
-			// gl_state.window is already null
-			VID_CreateWindow(width, height, false);
+	// if the window has been destroyed,
+	// or it hasn't been created yet
+	if (!gl_state.window)
+	{
+		// do a CDS if needed
+		if (fullscreen)
+		{
+			ri.Con_Printf(PRINT_ALL, "...attempting fullscreen\n");
+			ri.Con_Printf(PRINT_ALL, "...calling CDS: ");
+
+			if (Vid_CreateWindow(width, height, true))
+			{
+				*pwidth = width;
+				*pheight = height;
+
+				gl_state.fullscreen = true;
+
+				ri.Con_Printf(PRINT_ALL, "ok\n");
+				return rserr_ok;
+			}
+			else
+			{
+				ri.Con_Printf(PRINT_ALL, " failed\n");
+				ri.Con_Printf(PRINT_ALL, "...setting windowed mode\n");
+
+				// gl_state.window is already null
+				Vid_CreateWindow(width, height, false);
+
+				*pwidth = width;
+				*pheight = height;
+
+				gl_state.fullscreen = false;
+
+				return rserr_invalid_fullscreen;
+			}
+		}
+		else
+		{
+			ri.Con_Printf(PRINT_ALL, "...setting windowed mode\n");
 
 			*pwidth = width;
 			*pheight = height;
 
 			gl_state.fullscreen = false;
-			
-			return rserr_invalid_fullscreen;
+
+			if (!Vid_CreateWindow(width, height, false))
+				return rserr_invalid_mode;
 		}
-	}
-	else
-	{
-		ri.Con_Printf( PRINT_ALL, "...setting windowed mode\n" );
 
-		*pwidth = width;
-		*pheight = height;
-		
-		gl_state.fullscreen = false;
-		
-		if ( !VID_CreateWindow (width, height, false) )
-			return rserr_invalid_mode;
+		return rserr_ok;
 	}
-
-	return rserr_ok;
 }
 
 void GL_DestroyWindow()
 {
 	glfwDestroyWindow(gl_state.window);
+	gl_state.window = NULL;
 }
 
 /*
@@ -238,8 +239,7 @@ void GL_DestroyWindow()
 void GL_Shutdown()
 {
 	GL_DestroyWindow();
-	glfwTerminate(gl_state.window);
-	gl_state.window = NULL;
+	glfwTerminate();
 }
 
 // This routine initialises GLAD and GLFW, and gets an OpenGL context.
@@ -304,53 +304,53 @@ void GL_EndFrame()
 	}
 }
 
-void	GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))
+void GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))
 {
 	glfwSetMouseButtonCallback(gl_state.window, proc);
 }
 
-void	GL_SetMouseScrollProc(void proc(void* unused, double xoffset, double yoffset))
+void GL_SetMouseScrollProc(void proc(void* unused, double xoffset, double yoffset))
 {
 	glfwSetScrollCallback(gl_state.window, proc);
 }
 
-void	GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods))
+void GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods))
 {
 	glfwSetKeyCallback(gl_state.window, proc);
 }
 
-void	GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos))
+void GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos))
 {
 	glfwSetCursorPosCallback(gl_state.window, proc);
 }
 
-void	GL_SetWindowFocusProc(void proc(void* unused, int32_t focused))
+void GL_SetWindowFocusProc(void proc(void* unused, int32_t focused))
 {
 	glfwSetWindowFocusCallback(gl_state.window, proc);
 }
 
-void	GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified))
+void GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified))
 {
 	glfwSetWindowIconifyCallback(gl_state.window, proc);
 }
 
-void	GL_GetCursorPosition(double* x, double* y)
+void GL_GetCursorPosition(double* x, double* y)
 {
 	glfwGetCursorPos(gl_state.window, x, y);
 }
 
 // RELATIVE TO THE WINDOW
-void	GL_SetCursorPosition(double x, double y)
+void GL_SetCursorPosition(double x, double y)
 {
 	glfwSetCursorPos(gl_state.window, x, y);
 }
 
-void	GL_SetWindowPosition(double x, double y)
+void GL_SetWindowPosition(double x, double y)
 {
 	glfwSetWindowPos(gl_state.window, x, y);
 }
 
-void	GL_EnableCursor(bool enabled)
+void GL_EnableCursor(bool enabled)
 {
 	if (!enabled)
 	{

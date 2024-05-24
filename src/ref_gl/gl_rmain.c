@@ -96,10 +96,10 @@ cvar_t* gl_ext_compiled_vertex_array;
 
 cvar_t* gl_bitdepth;
 cvar_t* gl_drawbuffer;
-cvar_t* gl_driver;
 cvar_t* gl_lightmap;
 cvar_t* gl_shadows;
-cvar_t* gl_mode;
+cvar_t* gl_width;
+cvar_t* gl_height;
 cvar_t* gl_dynamic;
 cvar_t* gl_modulate;
 cvar_t* gl_round_down;
@@ -638,17 +638,17 @@ void R_RenderView (refdef_t *fd)
 void R_SetGL2D ()
 {
 	// set 2D virtual screen size
-	glViewport (0,0, vid.width, vid.height);
+	glViewport(0, 0, vid.width, vid.height);
 	glMatrixMode(GL_PROJECTION);
-    glLoadIdentity ();
-	glOrtho  (0, vid.width, vid.height, 0, -99999, 99999);
+	glLoadIdentity();
+	glOrtho(0, vid.width, vid.height, 0, -99999, 99999);
 	glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity ();
-	glDisable (GL_DEPTH_TEST);
-	glDisable (GL_CULL_FACE);
-	glDisable (GL_BLEND);
-	glEnable (GL_ALPHA_TEST);
-	glColor4f (1,1,1,1);
+	glLoadIdentity();
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
+	glEnable(GL_ALPHA_TEST);
+	glColor4f(1, 1, 1, 1);
 }
 
 /*
@@ -723,7 +723,8 @@ void R_Register( void )
 
 	gl_modulate = ri.Cvar_Get ("gl_modulate", "1", CVAR_ARCHIVE );
 	gl_bitdepth = ri.Cvar_Get( "gl_bitdepth", "0", 0 );
-	gl_mode = ri.Cvar_Get( "gl_mode", "3", CVAR_ARCHIVE );
+	gl_width = ri.Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
+	gl_height = ri.Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
 	gl_lightmap = ri.Cvar_Get ("gl_lightmap", "0", 0);
 	gl_shadows = ri.Cvar_Get ("gl_shadows", "0", CVAR_ARCHIVE );
 	gl_dynamic = ri.Cvar_Get ("gl_dynamic", "1", 0);
@@ -735,7 +736,6 @@ void R_Register( void )
 	gl_cull = ri.Cvar_Get ("gl_cull", "1", 0);
 	gl_polyblend = ri.Cvar_Get ("gl_polyblend", "1", 0);
 	gl_flashblend = ri.Cvar_Get ("gl_flashblend", "0", 0);
-	gl_playermip = ri.Cvar_Get ("gl_playermip", "0", 0);
 	gl_texturemode = ri.Cvar_Get( "gl_texturemode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
 	gl_texturealphamode = ri.Cvar_Get( "gl_texturealphamode", "default", CVAR_ARCHIVE );
 	gl_texturesolidmode = ri.Cvar_Get( "gl_texturesolidmode", "default", CVAR_ARCHIVE );
@@ -777,37 +777,36 @@ bool R_SetMode ()
 	fullscreen = vid_borderless->value || vid_fullscreen->value;
 	vid_borderless->modified = false;
 	vid_fullscreen->modified = false;
-	gl_mode->modified = false;
 
-	if ( ( err = GL_SetMode( &vid.width, &vid.height, gl_mode->value, fullscreen ) ) == rserr_ok )
+	// vid.width = gl_width->value
+	// vid.height = gl_height->value
+	err = GL_SetMode(&vid.width, &vid.height, fullscreen);
+
+	if (err != rserr_ok)
 	{
-		gl_state.prev_mode = gl_mode->value;
-	}
-	else
-	{
-		if ( err == rserr_invalid_fullscreen )
+		if (err == rserr_invalid_fullscreen)
 		{
-			ri.Cvar_SetValue( "vid_borderless", 0);
+			ri.Cvar_SetValue("vid_borderless", 0);
 			vid_borderless->modified = false;
 			vid_fullscreen->modified = false;
-			ri.Con_Printf( PRINT_ALL, "ref_gl::R_SetMode() - fullscreen unavailable in this mode\n" );
-			if ( ( err = GL_SetMode( &vid.width, &vid.height, gl_mode->value, false ) ) == rserr_ok )
+			ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - fullscreen unavailable in this mode\n");
+
+			if ((err = GL_SetMode(&vid.width, &vid.height, false)) == rserr_ok)
 				return true;
 		}
-		else if ( err == rserr_invalid_mode )
+		else if (err == rserr_invalid_mode)
 		{
-			ri.Cvar_SetValue( "gl_mode", gl_state.prev_mode );
-			gl_mode->modified = false;
-			ri.Con_Printf( PRINT_ALL, "ref_gl::R_SetMode() - invalid mode\n" );
+			ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - invalid mode\n");
 		}
 
 		// try setting it back to something safe
-		if ( ( err = GL_SetMode( &vid.width, &vid.height, gl_state.prev_mode, false ) ) != rserr_ok )
+		if ((err = GL_SetMode(&vid.width, &vid.height, false)) != rserr_ok)
 		{
-			ri.Con_Printf( PRINT_ALL, "ref_gl::R_SetMode() - could not revert to safe mode\n" );
+			ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - could not revert to safe mode\n");
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -835,12 +834,7 @@ bool R_Init()
 	
 	// initialise GLAD and GLFW
 	if (!GL_Init())
-	{
 		return false;
-	}
-
-	// set our "safe" modes
-	gl_state.prev_mode = 3;
 
 	// create the window and set up the context
 	if ( !R_SetMode () )
@@ -921,14 +915,23 @@ void R_BeginFrame()
 	/*
 	** change modes if necessary
 	*/
-	if ( gl_mode->modified 
-		|| vid_borderless->modified 
+	if (vid_borderless->modified 
 		|| vid_fullscreen->modified)
 	{	// FIXME: only restart if CDS is required
 		cvar_t* ref;
 
 		ref = ri.Cvar_Get ("vid_ref", "gl", 0);
 		ref->modified = true;
+	}
+
+	if (gl_width->modified
+		|| gl_height->modified)
+	{
+		GL_SetResolution(gl_width->value, gl_height->value);
+		// tell the client/server about it
+		ri.Vid_ChangeResolution(gl_width->value, gl_height->value);
+		gl_width->modified = false;
+		gl_height->modified = false;
 	}
 
 	// make the gamma not modified

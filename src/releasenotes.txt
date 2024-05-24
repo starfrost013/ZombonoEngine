@@ -7,6 +7,10 @@ May XX, 2024
 NEW FEATURES:
 * Added a nice animated intro to the game - you can turn it off with cl_showintro 0
 	* You can change the first and second intro images with the cl_intro1 and cl_intro2 cvars, and change the time (in milliseconds) they take to display with cl_intro1_time and cl_intro2_time cvars
+* GL modes are now removed. The game can run at any resolution, and only destroys the window if switching in or out of fullscreen.
+	* This is controlled with the new gl_width and gl_height cvars
+	* The video menu will display "custom" if a nonstandard height is selected.
+
 * Changed UI coordinate system from pixels to a normalised (base size is 960*480) 0-1 coordinate system. Size is still in pixels for now
 	* This makes the UI system resolution independent
 * Made the game window resizable
@@ -22,6 +26,7 @@ NEW FEATURES:
 		* TE_FLASH - Flash (always at the player's location)
 	* Removed many obsolete particle effects (see Removals section)
 * Rendering API version 9:
+	* Remove Vid_GetModeInfo
 	* Rename DrawStretchPic to DrawPicStretch
 	* Rename Vid_NewWindow to Vid_ChangeResolution
 	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
@@ -39,6 +44,8 @@ BUG FIXES:
 * Fixed default OpenGL clear colour being searingly hot pink instead of just a normal black
 * Fixed pressing non-alpha keys with capslock enabled
 * Fixed pressing backspace in chat
+* Fixed 1600x1200 resolution being skipped (was defined as same mode ID as 1600x900)
+* Fixed the game window not resizing properly
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
@@ -102,8 +109,10 @@ OpenGL legacy code purge #49123712632:
 	* Renamed TargaHeader to targa_header_t
 	* Got rid of inconsistent syntax
 	* Renamed GL_TextureMode, GL_TextureAlphaMode, and GL_TextureSolidMode to GL_SetTextureMode, GL_SetTextureAlphaMode and GL_SetTextureSolidMode
-	* Removed GL_DrawColoredStereoLinePair (not used)
+	* Removed GL_DrawColoredStereoLinePair (not used, was used for stereoscopic 3D support)
 	* Removed partially implemented ability to set map to a TGA file
+	* Removed gl_mode (see above)
+	* Removed gl_playermip (nonfunctional)
 OTHER CHANGES: 
 	* Reorganised effects code
 	* Renamed "pics" folder to "2d"

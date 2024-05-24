@@ -39,8 +39,6 @@ cvar_t* vid_ypos;			// Y coordinate of window position
 cvar_t* vid_borderless;
 cvar_t* vid_fullscreen;
 cvar_t* vid_refresh;
-cvar_t* r_customwidth;
-cvar_t* r_customheight;
 cvar_t* viewsize;
 
 // Global variables used internally by this module
@@ -48,11 +46,7 @@ viddef_t	viddef;				// global video state; used by other modules
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
 bool		reflib_active = 0;
 
-#define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
-
-static bool s_alttab_disabled;
-
-extern	uint32_t	sys_msg_time;
+extern uint32_t	sys_msg_time;
 
 /*
 ==========================================================================
@@ -118,52 +112,8 @@ void Vid_Restart_f()
 /*
 ** VID_GetModeInfo
 */
-typedef struct vidmode_s
-{
-	const char* description;
-	int32_t         width, height;
-	int32_t         mode;
-} vidmode_t;
 
-vidmode_t vid_modes[] =
-{
-	{ "Mode 0: 320x240",   320, 240,   0 },
-	{ "Mode 1: 400x300",   400, 300,   1 },
-	{ "Mode 2: 512x384",   512, 384,   2 },
-	{ "Mode 3: 640x480",   640, 480,   3 },
-	{ "Mode 4: 800x600",   800, 600,   4 },
-	{ "Mode 5: 960x720",   960, 720,   5 },
-	{ "Mode 6: 1024x768",  1024, 768,  6 },
-	{ "Mode 7: 1152x864",  1152, 864,  7 },
-	{ "Mode 8: 1280x960",  1280, 960,  8 },
-	{ "Mode 9: 1366x768",  1366, 768,  9 },
-	{ "Mode 10: 1440x900", 1440, 900,  10},
-	{ "Mode 11: 1600x900", 1600, 900,  11},
-	{ "Mode 12: 1600x1200", 1600, 1200, 11 },
-	{ "Mode 13: 1920x1080", 1920, 1080, 12 },
-	{ "Mode 14: 1920x1200", 1920, 1200, 13 },
-	{ "Mode 15: 2048x1536", 2048, 1536, 14 },
-	{ "Mode 16: 2560x1440", 2560, 1440, 15 },
-	{ "Mode 17: 3840x2160", 3840, 2160, 16 },
-};
 
-bool Vid_GetModeInfo(int32_t* width, int32_t* height, int32_t mode)
-{
-	if (mode == -1) // custom mode (using r_customwidth and r_customheight)
-	{
-		*width = r_customwidth->value;
-		*height = r_customheight->value;
-		return true;
-	}
-
-	if (mode < 0 || mode >= VID_NUM_MODES)
-		return false;
-
-	*width = vid_modes[mode].width;
-	*height = vid_modes[mode].height;
-
-	return true;
-}
 
 /*
 ** VID_ChangeResolution
@@ -181,13 +131,13 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	float wscale = (float)viddef.width / UI_SCALE_BASE_X;
-	float hscale = (float)viddef.height / UI_SCALE_BASE_Y;
+	int32_t wscale = viddef.width / UI_SCALE_BASE_X;
+	int32_t hscale = viddef.height / UI_SCALE_BASE_Y;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;
 
-	snprintf(hudscale, 4, "%2f", wscale);
+	snprintf(hudscale, 4, "%d", wscale);
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
 }
 
@@ -238,7 +188,6 @@ bool Vid_LoadRefresh(char* name)
 	ri.Cvar_Get = Cvar_Get;
 	ri.Cvar_Set = Cvar_Set;
 	ri.Cvar_SetValue = Cvar_SetValue;
-	ri.Vid_GetModeInfo = Vid_GetModeInfo;
 	ri.Vid_MenuInit = Vid_MenuInit;
 	ri.Vid_ChangeResolution = Vid_ChangeResolution;
 
@@ -371,8 +320,6 @@ void Vid_Init()
 	vid_fullscreen = Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
 	vid_refresh = Cvar_Get("vid_refresh", "0", CVAR_NOSET);
 	vid_gamma = Cvar_Get("vid_gamma", "1", CVAR_ARCHIVE);
-	r_customwidth = Cvar_Get("r_customwidth", "1024", CVAR_ARCHIVE);
-	r_customheight = Cvar_Get("r_customheight", "768", CVAR_ARCHIVE);
 	viewsize = Cvar_Get("viewsize", "100", CVAR_ARCHIVE);
 
 	/* Add some console commands that we want to handle */

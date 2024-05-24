@@ -574,12 +574,12 @@ void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
 // legacy menu system
 //
 
-void M_Init ();
-void M_Keydown (int32_t key, int32_t mods);
-void M_Draw ();
-void M_Menu_Main_f ();
-void M_ForceMenuOff ();
-void M_AddToServerList (netadr_t adr, char *info);
+void M_Init();
+void M_Keydown(int32_t key, int32_t mods);
+void M_Draw();
+void M_Menu_Main_f();
+void M_ForceMenuOff();
+void M_AddToServerList(netadr_t adr, char* info);
 
 //
 // cl_pred.c

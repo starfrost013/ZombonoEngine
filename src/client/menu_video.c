@@ -33,7 +33,8 @@ extern cvar_t* vid_gamma;
 extern cvar_t* vid_hudscale;
 extern cvar_t* scr_viewsize;
 
-static cvar_t* gl_mode;
+static cvar_t* gl_width;
+static cvar_t* gl_height;
 static cvar_t* gl_picmip;
 static cvar_t* gl_vsync;
 static cvar_t* gl_texturemode;
@@ -69,6 +70,39 @@ static menulist_t		s_vsync_box;
 static menuaction_t		s_apply_action[NUM_REF_MENUS];
 static menuaction_t		s_cancel_action[NUM_REF_MENUS];
 static menuaction_t		s_defaults_action[NUM_REF_MENUS];
+
+// These are not real video modes, these are used so the user can select sane resolutions in the menu
+typedef struct vidmode_s
+{
+	const char* description;
+	int32_t     width, height;
+	int32_t     mode;
+} vidmode_t;
+
+// These are strictly virtual modes and the driver only cares about gl_width and gl_height so we don't bother with them
+vidmode_t vid_modes[] =
+{
+	{ "Mode 0: 320x240",   320, 240,   0 },
+	{ "Mode 1: 400x300",   400, 300,   1 },
+	{ "Mode 2: 512x384",   512, 384,   2 },
+	{ "Mode 3: 640x480",   640, 480,   3 },
+	{ "Mode 4: 800x600",   800, 600,   4 },
+	{ "Mode 5: 960x720",   960, 720,   5 },
+	{ "Mode 6: 1024x768",  1024, 768,  6 },
+	{ "Mode 7: 1152x864",  1152, 864,  7 },
+	{ "Mode 8: 1280x960",  1280, 960,  8 },
+	{ "Mode 9: 1366x768",  1366, 768,  9 },
+	{ "Mode 10: 1440x900", 1440, 900,  10 },
+	{ "Mode 11: 1600x900", 1600, 900,  11 },
+	{ "Mode 12: 1600x1200", 1600, 1200, 12 },
+	{ "Mode 13: 1920x1080", 1920, 1080, 13 },
+	{ "Mode 14: 1920x1200", 1920, 1200, 14 },
+	{ "Mode 15: 2048x1536", 2048, 1536, 15 },
+	{ "Mode 16: 2560x1440", 2560, 1440, 16 },
+	{ "Mode 17: 3840x2160", 3840, 2160, 17 },
+};
+
+#define VID_NUM_MODES ( sizeof( vid_modes ) / sizeof( vid_modes[0] ) )
 
 static void VidMenu_DriverCallback(void* unused)
 {
@@ -163,13 +197,18 @@ static void ApplyChanges(void* unused)
 	}
 
 	Cvar_SetValue("gl_vsync", s_vsync_box.curvalue);
-	Cvar_SetValue("gl_mode", s_mode_list[OPENGL_MENU].curvalue == 0 ? -1 : s_mode_list[OPENGL_MENU].curvalue - 1);
+
+	// "custom" menu option doesn't resize
+	if (s_mode_list[OPENGL_MENU].curvalue > 0)
+	{
+		Cvar_SetValue("gl_width", vid_modes[s_mode_list[OPENGL_MENU].curvalue].width);
+		Cvar_SetValue("gl_height", vid_modes[s_mode_list[OPENGL_MENU].curvalue].height);
+	}
 
 	switch (s_ref_list[s_current_menu_index].curvalue)
 	{
 	case REF_OPENGL:
 		Cvar_Set("vid_ref", "gl");
-		Cvar_Set("gl_driver", "opengl32");
 		break;
 	}
 
@@ -180,9 +219,7 @@ static void ApplyChanges(void* unused)
 	if (stricmp(vid_ref->string, "gl") == 0)
 	{
 		if (vid_gamma->modified)
-		{
 			vid_ref->modified = true;
-		}
 	}
 
 	M_ForceMenuOff();
@@ -200,7 +237,7 @@ static void CancelChanges(void* unused)
 */
 void Vid_MenuInit()
 {
-	// THIS LIST **MUST** CORRESPOND EXACTLY WITH THE LIST IN VID_DLL.C!!!
+	// THIS LIST **MUST** CORRESPOND EXACTLY WITH THE LIST IN VID_DLL.C!!! (except custom)
 	static const char* resolutions[] =
 	{
 		"[custom   ]",
@@ -248,14 +285,28 @@ void Vid_MenuInit()
 
 	if (!gl_picmip)
 		gl_picmip = Cvar_Get("gl_picmip", "0", 0);
-	if (!gl_mode)
-		gl_mode = Cvar_Get("gl_mode", "6", 0, CVAR_ARCHIVE);
+	if (!gl_width)
+		gl_width = Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
+	if (!gl_height)
+		gl_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
 	if (!gl_vsync)
 		gl_vsync = Cvar_Get("gl_vsync", "0", CVAR_ARCHIVE);
 	if (!gl_texturemode)
 		gl_texturemode = Cvar_Get("gl_texturemode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE);
 
-	s_mode_list[OPENGL_MENU].curvalue = gl_mode->value < 0 ? 0 : gl_mode->value + 1;
+	// default to the first item
+	s_mode_list[OPENGL_MENU].curvalue = 0; 	// by default it will display "custom"
+
+	// since modes don't actually exist now and the game can run at an arbitrary resolution we have to search for the correct item
+	for (int32_t mode_num = 0; mode_num < VID_NUM_MODES; mode_num++)
+	{
+		if (vid_modes[mode_num].width == gl_width->value)
+		{
+			s_mode_list[OPENGL_MENU].curvalue = mode_num + 1; // +1 for "custom" option
+			break;
+		}
+
+	}
 
 	if (!scr_viewsize)
 		scr_viewsize = Cvar_Get("viewsize", "100", CVAR_ARCHIVE);
@@ -341,7 +392,6 @@ void Vid_MenuInit()
 		{
 			s_texture_filtering_box->curvalue = 2;
 		}
-
 
 		s_apply_action[i].generic.type = MTYPE_ACTION;
 		s_apply_action[i].generic.name = "^5Apply Changes";

@@ -200,7 +200,8 @@ extern cvar_t* gl_particle_att_b;
 extern cvar_t* gl_particle_att_c;
 
 extern cvar_t* gl_bitdepth;
-extern cvar_t* gl_mode;
+extern cvar_t* gl_width;
+extern cvar_t* gl_height;
 extern cvar_t* gl_lightmap;
 extern cvar_t* gl_shadows;
 extern cvar_t* gl_dynamic;
@@ -211,12 +212,9 @@ extern cvar_t* gl_showtris;
 extern cvar_t* gl_clear;
 extern cvar_t* gl_cull;
 extern cvar_t* gl_poly;
-extern cvar_t* gl_texsort;
 extern cvar_t* gl_polyblend;
 extern cvar_t* gl_flashblend;
-extern cvar_t* gl_lightmaptype;
 extern cvar_t* gl_modulate;
-extern cvar_t* gl_playermip;
 extern cvar_t* gl_drawbuffer;
 extern cvar_t* gl_texturemode;
 extern cvar_t* gl_texturealphamode;
@@ -331,6 +329,8 @@ void GL_GetCursorPosition(double* x, double* y);
 void GL_SetCursorPosition(double x, double y);
 void GL_SetWindowPosition(double x, double y);
 void GL_EnableCursor(bool enabled);
+void GL_SetResolution(int32_t x, int32_t y);
+
 
 /*
 ====================================================================
@@ -353,4 +353,4 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 void	GL_BeginFrame();
 void	GL_EndFrame( void );
 void	GL_Shutdown( void );
-int32_t GL_SetMode( int32_t *pwidth, int32_t *pheight, int32_t mode, bool fullscreen );
+rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, bool fullscreen );

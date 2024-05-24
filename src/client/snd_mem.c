@@ -24,9 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "snd_loc.h"
 #include <inttypes.h>
 
-int32_t 		cache_full_cycle;
-
-uint8_t *S_Alloc (int32_t size);
+int32_t cache_full_cycle;
 
 /*
 ================
@@ -64,10 +62,10 @@ void ResampleSfx (sfx_t *sfx, int32_t inrate, int32_t inwidth, uint8_t *data)
 
 	if (stepscale == 1 && inwidth == 1 && sc->width == 1)
 	{
-// fast special case
-		for (i=0 ; i<outcount ; i++)
-			((signed char *)sc->data)[i]
-			= (int32_t)( (uint8_t)(data[i]) - 128);
+		// fast special case
+		for (i = 0; i < outcount; i++)
+			((signed char*)sc->data)[i]
+			= (int32_t)((data[i]) - 128);
 	}
 	else
 	{
@@ -79,13 +77,13 @@ void ResampleSfx (sfx_t *sfx, int32_t inrate, int32_t inwidth, uint8_t *data)
 			srcsample = samplefrac >> 8;
 			samplefrac += fracstep;
 			if (inwidth == 2)
-				sample = LittleShort ( ((int16_t *)data)[srcsample] );
+				sample = LittleShort(((int16_t*)data)[srcsample]);
 			else
-				sample = (int32_t)( (uint8_t)(data[srcsample]) - 128) << 8;
+				sample = (int32_t)((data[srcsample]) - 128) << 8;
 			if (sc->width == 2)
-				((int16_t *)sc->data)[i] = sample;
+				((int16_t*)sc->data)[i] = sample;
 			else
-				((signed char *)sc->data)[i] = sample >> 8;
+				((int8_t*)sc->data)[i] = sample >> 8;
 		}
 	}
 }
@@ -257,7 +255,8 @@ void DumpChunks()
 		iff_chunk_len = GetLittleLong();
 		Com_Printf ("0x"PRIxPTR" : %s (%d)\n", (intptr_t)(data_p - 4), str, iff_chunk_len);
 		data_p += (iff_chunk_len + 1) & ~1;
-	} while (data_p < iff_end);
+	} 
+	while (data_p < iff_end);
 }
 
 /*

@@ -121,6 +121,7 @@ int32_t Sys_Milliseconds()
 		base = timeGetTime() & 0xffff0000;
 		initialized = true;
 	}
+
 	curtime = timeGetTime() - base; 
 
 	return curtime;
