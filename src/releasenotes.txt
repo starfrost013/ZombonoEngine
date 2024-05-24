@@ -46,6 +46,9 @@ BUG FIXES:
 * Fixed pressing backspace in chat
 * Fixed 1600x1200 resolution being skipped (was defined as same mode ID as 1600x900)
 * Fixed the game window not resizing properly
+* Fixed the game not exiting when run as a client
+	* It appeared to be exiting before, but it was actually crashing due to trying to use the window after it was terminated. 
+	* Exiting was terminating OpenGL, but keeping the client and Qcommon running. Oops.
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
@@ -102,9 +105,11 @@ OpenGL legacy code purge #49123712632:
 	* Removed gl_ztrick cvar and ztrick code
 		* Had no effect on performance, was a method of not clearing the Z-buffer between frames, which made some very old (RIVA 128 and TNT) Nvidia cards faster. Since these GPUs
 		  are not even OpenGL 1.5 compatible, and it can cause problems on other hardware, there is no point keeping this.
-	* Removed more OpenGL cvars that did nothing
+	* Removed more OpenGL cvars that did nothing, or had their functionality otherwise removed
 		* gl_nosubimage
 		* gl_nobind
+		* gl_playermip
+		* r_customwidth and r_customheight (technically renderer-independent but whatever, also nonfunctional))
 	* stdint-ified ref_gl
 	* Renamed TargaHeader to targa_header_t
 	* Got rid of inconsistent syntax
@@ -118,7 +123,8 @@ OTHER CHANGES:
 	* Renamed "pics" folder to "2d"
 	* Renamed "VID" functions in engine to "Vid" to be consistent with OpenGL renderer
 	* Recoloured Tangfuslicator viewmodel to green, made Bamfuslicator pink so they look different
-
+	* Added more testers to the credits
+		
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server
 

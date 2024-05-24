@@ -131,7 +131,7 @@ typedef struct refdef_s
 typedef struct refexport_s
 {
 	// if api_version is different, the dll cannot be used
-	int32_t 	api_version;
+	int32_t api_version;
 
 	// called when the library is loaded
 	bool	(*Init) ();
@@ -195,34 +195,36 @@ typedef struct refexport_s
 //
 typedef struct
 {
-	void	(*Sys_Error) (int32_t err_level, char *str, ...);
+	void	(*Sys_Error)(int32_t err_level, char* str, ...);
 
-	void	(*Cmd_AddCommand) (char *name, void(*cmd)());
-	void	(*Cmd_RemoveCommand) (char *name);
-	int32_t (*Cmd_Argc) ();
-	char*	(*Cmd_Argv) (int32_t i);
-	void	(*Cmd_ExecuteText) (int32_t exec_when, char *text);
+	void	(*Cmd_AddCommand)(char* name, void(*cmd)());
+	void	(*Cmd_RemoveCommand)(char* name);
+	int32_t	(*Cmd_Argc)();
+	char*	(*Cmd_Argv)(int32_t i);
+	void	(*Cmd_ExecuteText)(int32_t exec_when, char* text);
 
-	void	(*Con_Printf) (int32_t print32_t_level, char *str, ...);
+	void	(*Con_Printf) (int32_t print_level, char* str, ...);
 
 	// files will be memory mapped read only
 	// the returned buffer may be part of a larger pak file,
 	// or a discrete file from anywhere in the quake search path
 	// a -1 return means the file does not exist
 	// NULL can be passed for buf to just determine existance
-	int32_t (*FS_LoadFile) (char *name, void **buf);
-	void	(*FS_FreeFile) (void *buf);
+	int32_t	(*FS_LoadFile)(char* name, void** buf);
+	void	(*FS_FreeFile)(void* buf);
 
 	// gamedir will be the current directory that generated
 	// files should be stored to, ie: "f:\quake\id1"
-	char*	(*FS_Gamedir) ();
+	char*	(*FS_Gamedir)();
 
-	cvar_t*	(*Cvar_Get) (char *name, char *value, int32_t flags);
-	cvar_t*	(*Cvar_Set)( char *name, char *value );
-	void	(*Cvar_SetValue)( char *name, float value );
+	cvar_t* (*Cvar_Get)(char* name, char* value, int32_t flags);
+	cvar_t* (*Cvar_Set)(char* name, char* value);
+	void	(*Cvar_SetValue)(char* name, float value);
 
-	void	(*Vid_MenuInit)( void );
-	void	(*Vid_ChangeResolution)( int32_t width, int32_t height );
+	void	(*Vid_MenuInit)(void);
+	void	(*Vid_ChangeResolution)(int32_t width, int32_t height);
+
+	void	(*Com_Quit)(void);
 } refimport_t;
 
 

@@ -351,6 +351,7 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 */
 
 void	GL_BeginFrame();
-void	GL_EndFrame( void );
-void	GL_Shutdown( void );
+void	GL_EndFrame(void);
+void	GL_Shutdown(void);
+void	GL_ShutdownEverything(void);
 rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, bool fullscreen );

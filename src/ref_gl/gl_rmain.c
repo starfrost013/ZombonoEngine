@@ -29,17 +29,17 @@ viddef_t	vid;
 
 refimport_t	ri;
 
-model_t		*r_worldmodel;
+model_t*	r_worldmodel;
 
 float		gldepthmin, gldepthmax;
 
 gl_config_t	gl_config;
 
-image_t		*r_notexture;		// use for bad textures
-image_t		*r_particletexture;	// little dot for particles
+image_t*	r_notexture;		// use for bad textures
+image_t*	r_particletexture;	// little dot for particles
 
-entity_t	*currententity;
-model_t		*currentmodel;
+entity_t*	currententity;
+model_t*	currentmodel;
 
 cplane_t	frustum[4];
 
@@ -1013,12 +1013,13 @@ R_SetPalette
 */
 uint32_t r_rawpalette[256];
 
+#define NUM_BEAM_SEGS 6
 /*
 ** R_DrawBeam
 */
 void R_DrawBeam( entity_t *e )
 {
-#define NUM_BEAM_SEGS 6
+
 
 	int32_t	i;
 	float	r, g, b;
@@ -1101,15 +1102,11 @@ void			R_RenderFrame (refdef_t *fd);
 
 struct image_s	*Draw_FindPic (char *name);
 
-void			Draw_Pic (int32_t x, int32_t y, char *name);
-void			Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
-void			Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t a);
-void			Draw_FadeScreen ();
-
 /*
 @@@@@@@@@@@@@@@@@@@@@
 GetRefAPI
 
+Returns the functions exported to other dlls
 @@@@@@@@@@@@@@@@@@@@@
 */
 refexport_t GetRefAPI (refimport_t rimp )

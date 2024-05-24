@@ -94,7 +94,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 	// set up callbacks
 	glfwSetWindowSizeCallback(gl_state.window, GL_WindowSizeChanged);
-	glfwSetWindowCloseCallback(gl_state.window, GL_Shutdown);
+	glfwSetWindowCloseCallback(gl_state.window, GL_ShutdownEverything);
 
 	//TODO: vid_xpos, vid_ypos...
 	/*
@@ -231,15 +231,20 @@ void GL_DestroyWindow()
 ** GLimp_Shutdown
 **
 ** This routine does all OS specific shutdown procedures for the OpenGL
-** subsystem.  Under OpenGL this means NULLing out the current DC and
-** HGLRC, deleting the rendering context, and releasing the DC acquired
-** for the window.  The state structure is also nulled out.
+** subsystem.  Under OpenGL this deleting the rendering context, and killing the window.
+** The state structure is also nulled out.
 **
 */
 void GL_Shutdown()
 {
 	GL_DestroyWindow();
 	glfwTerminate();
+}
+
+// This routine tells the engine to shut down. Calls GL_Shutdown in the process of doing so
+void GL_ShutdownEverything()
+{
+	ri.Com_Quit();
 }
 
 // This routine initialises GLAD and GLFW, and gets an OpenGL context.
@@ -265,10 +270,8 @@ void GL_BeginFrame()
 	if (gl_state.window == NULL)
 		return;
 
-	if ( gl_bitdepth->modified )
-	{
+	if (gl_bitdepth->modified)
 		gl_bitdepth->modified = false;
-	}
 
 	glDrawBuffer(GL_BACK);
 }

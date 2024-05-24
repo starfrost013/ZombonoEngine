@@ -190,6 +190,7 @@ bool Vid_LoadRefresh(char* name)
 	ri.Cvar_SetValue = Cvar_SetValue;
 	ri.Vid_MenuInit = Vid_MenuInit;
 	ri.Vid_ChangeResolution = Vid_ChangeResolution;
+	ri.Com_Quit = Com_Quit;
 
 	if ((GetRefAPI = (void*)GetProcAddress(reflib_library, "GetRefAPI")) == 0)
 		Com_Error(ERR_FATAL, "GetProcAddress failed on %s", name);
