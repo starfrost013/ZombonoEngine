@@ -609,7 +609,7 @@ typedef enum ui_control_type_e
 	ui_control_slider = 2,									// A slider between different values.
 	ui_control_checkbox = 3,								// A checkable box.
 	ui_control_box = 4,										// A simple box.
-	ui_control_spincontrol = 5,								// A "spinnable" set of options.
+	ui_control_spin = 5,								// A "spinnable" set of options.
 	ui_control_entry = 6,									// A textbox that can have text entered into it.
 } ui_control_type;
 

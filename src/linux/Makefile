@@ -7,11 +7,12 @@
 # Dec '23-Jan '24 by starfrost
 #
 # Mar 10, 2024: Remove all sorts of legacy nonsense
+# May 24, 2024: Make it actually work after modernising the codebase
 
 # ELF only
 #
 
-VERSION=0.05
+VERSION=0.09
 VERSION_FN=$(VERSION)$(GLIBC)
 RPM_RELEASE=6
 
@@ -149,8 +150,14 @@ ZOMBONO_OBJS = \
 	$(BUILDDIR)/qcommon/common.o \
 	$(BUILDDIR)/client/cl_ents.o \
 	$(BUILDDIR)/client/cl_font.o \
-	$(BUILDDIR)/client/cl_fx.o \
+	$(BUILDDIR)/client/cl_fx_beam.o \
+	$(BUILDDIR)/client/cl_fx_dlight.o \
+	$(BUILDDIR)/client/cl_fx_explosion.o \
+	$(BUILDDIR)/client/cl_fx_lightstyle.o \
+	$(BUILDDIR)/client/cl_fx_particles.o \
+	$(BUILDDIR)/client/cl_loadout.o \
 	$(BUILDDIR)/client/cl_input.o \
+	$(BUILDDIR)/client/cl_input_keys.o \
 	$(BUILDDIR)/client/cl_inv.o \
 	$(BUILDDIR)/client/cl_main.o \
 	$(BUILDDIR)/client/cl_newfx.o \
@@ -248,10 +255,28 @@ $(BUILDDIR)/client/cl_ents.o :    $(CLIENT_DIR)/cl_ents.c
 $(BUILDDIR)/client/cl_font.o :      $(CLIENT_DIR)/cl_font.c
 	$(DO_CC)
 
-$(BUILDDIR)/client/cl_fx.o :      $(CLIENT_DIR)/cl_fx.c
+$(BUILDDIR)/client/cl_fx_beam.o :      $(CLIENT_DIR)/cl_fx_beam.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_fx_dlight.o :      $(CLIENT_DIR)/cl_fx_dlight.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_fx_explosion.o :      $(CLIENT_DIR)/cl_fx_explosion.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_fx_lightstyle.o :      $(CLIENT_DIR)/cl_fx_lightstyle.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_fx_particles.o :      $(CLIENT_DIR)/cl_fx_particles.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_loadout.o :   $(CLIENT_DIR)/cl_loadout.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_input.o :   $(CLIENT_DIR)/cl_input.c
+	$(DO_CC)
+
+$(BUILDDIR)/client/cl_input_keys.o :   $(CLIENT_DIR)/cl_input_keys.c
 	$(DO_CC)
 
 $(BUILDDIR)/client/cl_inv.o :     $(CLIENT_DIR)/cl_inv.c
@@ -289,7 +314,6 @@ $(BUILDDIR)/client/cl_ui_leaderboard.o :    $(CLIENT_DIR)/cl_ui_leaderboard.c
 	
 $(BUILDDIR)/client/cl_ui_scripts.o :    $(CLIENT_DIR)/cl_ui_scripts.c
 	$(DO_CC)
-	
 
 $(BUILDDIR)/client/cl_view.o :    $(CLIENT_DIR)/cl_view.c
 	$(DO_CC)
@@ -320,8 +344,6 @@ $(BUILDDIR)/client/qmenu.o :      $(CLIENT_DIR)/qmenu.c
 
 $(BUILDDIR)/client/m_flash.o :    $(GAME_DIR)/m_flash.c
 	$(DO_CC)
-
-
 
 $(BUILDDIR)/client/q_shared.o :   $(GAME_DIR)/q_shared.c
 	$(DO_CC)
@@ -499,9 +521,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/game/g_svcmds.o \
 	$(BUILDDIR)/game/g_chase.o \
 	$(BUILDDIR)/game/g_combat.o \
-
 	$(BUILDDIR)/game/g_main.o \
-
 	$(BUILDDIR)/game/g_monster.o \
 	$(BUILDDIR)/game/g_phys.o \
 	$(BUILDDIR)/game/g_save.o \

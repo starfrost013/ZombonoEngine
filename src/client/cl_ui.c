@@ -42,6 +42,8 @@ void UI_DrawImage(ui_control_t* image);															// Draws an image control.
 void UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
 void UI_DrawCheckbox(ui_control_t* checkbox);													// Draws a checkbox control.
 void UI_DrawBox(ui_control_t* box);																// Draws a box control.
+void UI_DrawSpinControl(ui_control_t* spin_control);											// Draws a spin control.
+void UI_DrawEntry(ui_control_t* entry);															// Draws an entry control.
 
 bool UI_Init()
 {
@@ -547,6 +549,12 @@ void UI_Draw()
 					case ui_control_box:
 						UI_DrawBox(current_ui_control);
 						break;
+					case ui_control_spin:
+						UI_DrawSpinControl(current_ui_control);
+						break;
+					case ui_control_entry:
+						UI_DrawEntry(current_ui_control);
+						break;
 					}
 				}
 			}
@@ -625,4 +633,14 @@ void UI_DrawBox(ui_control_t* box)
 	int32_t final_size_y = box->size_y * vid_hudscale->value;
 
 	re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
+}
+
+void UI_DrawSpinControl(ui_control_t* spin_control)
+{
+	Com_Printf("UI: Spin controls aren't implemented yet!\n");
+}
+
+void UI_DrawEntry(ui_control_t* entry)
+{
+	Com_Printf("UI: Entries aren't implemented yet!\n");
 }

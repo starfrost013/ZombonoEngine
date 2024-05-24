@@ -2,7 +2,7 @@ Zombono
 Release Notes:
 
 Version 0.0.9 
-May XX, 2024
+May 25?, 2024
 
 NEW FEATURES:
 * Added a nice animated intro to the game - you can turn it off with cl_showintro 0
@@ -10,7 +10,6 @@ NEW FEATURES:
 * GL modes are now removed. The game can run at any resolution, and only destroys the window if switching in or out of fullscreen.
 	* This is controlled with the new gl_width and gl_height cvars
 	* The video menu will display "custom" if a nonstandard height is selected.
-
 * Changed UI coordinate system from pixels to a normalised (base size is 960*480) 0-1 coordinate system. Size is still in pixels for now
 	* This makes the UI system resolution independent
 * Made the game window resizable
@@ -26,13 +25,15 @@ NEW FEATURES:
 		* TE_FLASH - Flash (always at the player's location)
 	* Removed many obsolete particle effects (see Removals section)
 * Rendering API version 9:
+	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
 	* Remove Vid_GetModeInfo
 	* Rename DrawStretchPic to DrawPicStretch
 	* Rename Vid_NewWindow to Vid_ChangeResolution
-	* Made the blending capability available to all pic drawing functions - DrawPic, DrawPicStretch, DrawPicRegion and DrawFill now take an optional (can be NULL) "color" parameter (vec4_t)
+	* The GL renderer now imports Com_Quit, so the window can tell the engine to quit when the user closes the game (using GL_ShutdownEverything)
 * Added disable_input field to client_static_t so the client can disable input whenever it wants
 * Changed the default OpenGL clear colour from eye-searing hot pink to black
 * Added walls to both stations of z_tdm_subway
+* Minor improvements to z_tdm_labrats
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
@@ -49,6 +50,7 @@ BUG FIXES:
 * Fixed the game not exiting when run as a client
 	* It appeared to be exiting before, but it was actually crashing due to trying to use the window after it was terminated. 
 	* Exiting was terminating OpenGL, but keeping the client and Qcommon running. Oops.
+* Fixed shotguns not working (the classname somehow ended up as "wapon_shotgun" in the item list)
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:

@@ -477,10 +477,10 @@ void VID_MenuDraw()
 
 /*
 ================
-VID_MenuKey
+Vid_MenuKey
 ================
 */
-const char* VID_MenuKey(int32_t key)
+const char* Vid_MenuKey(int32_t key)
 {
 	menuframework_t* m = s_current_menu;
 	static const char* sound = "misc/menu1.wav";

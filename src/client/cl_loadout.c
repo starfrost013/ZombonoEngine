@@ -195,7 +195,9 @@ void Loadout_SetCurrent(int32_t index)
 {
 	if (index < 0
 		|| index > 9)
+	{
 		Com_Error(ERR_DROP, "Tried to set current client loadout item to invalid value %d!", index);
+	}
 
 	// valid value but we just don't have that many items
 	if (index >= cl.loadout.num_items)

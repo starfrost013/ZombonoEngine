@@ -97,7 +97,7 @@ void Vid_Error(int32_t err_level, char* fmt, ...)
 
 /*
 ============
-VID_Restart_f
+Vid_Restart_f
 
 Console command to re-start the video mode and refresh DLL. We do this
 simply by setting the modified flag for the vid_ref variable, which will
@@ -110,13 +110,7 @@ void Vid_Restart_f()
 }
 
 /*
-** VID_GetModeInfo
-*/
-
-
-
-/*
-** VID_ChangeResolution
+** Vid_ChangeResolution
 */
 void Vid_ChangeResolution(int32_t width, int32_t height)
 {
@@ -141,7 +135,7 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
 }
 
-void VID_FreeReflib()
+void Vid_FreeReflib()
 {
 	if (!FreeLibrary(reflib_library))
 		Com_Error(ERR_FATAL, "Reflib FreeLibrary failed");
@@ -152,7 +146,7 @@ void VID_FreeReflib()
 
 /*
 ==============
-VID_LoadRefresh
+Vid_LoadRefresh
 ==============
 */
 bool Vid_LoadRefresh(char* name)
@@ -163,7 +157,7 @@ bool Vid_LoadRefresh(char* name)
 	if (reflib_active)
 	{
 		re.Shutdown();
-		VID_FreeReflib();
+		Vid_FreeReflib();
 	}
 
 	Com_Printf("------- Loading %s -------\n", name);
@@ -199,14 +193,14 @@ bool Vid_LoadRefresh(char* name)
 
 	if (re.api_version != API_VERSION)
 	{
-		VID_FreeReflib();
+		Vid_FreeReflib();
 		Com_Error(ERR_FATAL, "%s has incompatible api_version", name);
 	}
 
 	if (re.Init() == false)
 	{
 		re.Shutdown();
-		VID_FreeReflib();
+		Vid_FreeReflib();
 		return false;
 	}
 
@@ -232,7 +226,7 @@ bool Vid_LoadRefresh(char* name)
 
 /*
 ============
-VID_CheckChanges
+Vid_CheckChanges
 
 This function gets called once just before drawing each frame, and it's sole purpose in life
 is to check to see if any of the video mode parameters have changed, and if they have to
@@ -308,7 +302,9 @@ void Vid_CheckChanges()
 
 /*
 ============
-VID_Init
+Vid_Init
+
+Initialises the video/rendering subsystem
 ============
 */
 void Vid_Init()
@@ -332,7 +328,7 @@ void Vid_Init()
 
 /*
 ============
-VID_Shutdown
+Vid_Shutdown
 ============
 */
 void Vid_Shutdown()
@@ -340,6 +336,6 @@ void Vid_Shutdown()
 	if (reflib_active)
 	{
 		re.Shutdown();
-		VID_FreeReflib();
+		Vid_FreeReflib();
 	}
 }

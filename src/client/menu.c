@@ -1374,7 +1374,7 @@ VIDEO MENU
 void M_Menu_Video_f ()
 {
 	Vid_MenuInit();
-	M_PushMenu( VID_MenuDraw, VID_MenuKey );
+	M_PushMenu( VID_MenuDraw, Vid_MenuKey );
 }
 
 /*

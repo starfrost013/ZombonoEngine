@@ -40,4 +40,4 @@ void	Vid_CheckChanges ();
 
 void	Vid_MenuInit( void );
 void	VID_MenuDraw( void );
-const char *VID_MenuKey( int32_t );
+const char *Vid_MenuKey( int32_t );

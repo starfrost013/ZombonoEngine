@@ -40,7 +40,7 @@ extern cvar_t* vid_borderless;
 extern cvar_t* vid_ref;
 
 /*
-** VID_CreateWindow
+** Vid_CreateWindow
 */
 
 bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
@@ -63,7 +63,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 			if (!monitor)
 			{
-				ri.Con_Printf(PRINT_ALL, "Failed to obtain the primary monitor for dedicated fullscreen!");
+				ri.Con_Printf(PRINT_ALL, "ref_gl::Vid_CreateWindow: Failed to obtain the primary monitor for dedicated fullscreen!");
 				return false;
 			}
 		}
@@ -77,7 +77,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 	if (!gl_state.window)
 	{
-		ri.Con_Printf(PRINT_ALL, "GLFW failed to create a window\n");
+		ri.Con_Printf(PRINT_ALL, "ref_gl::Vid_CreateWindow: GLFW failed to create a window\n");
 		return false;
 	}
 	
@@ -86,7 +86,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		ri.Con_Printf(PRINT_ALL, "GL_Init: Failed to initialise GLAD\n");
+		ri.Con_Printf(PRINT_ALL, "ref_gl::Vid_CreateWindow: Failed to initialise GLAD\n");
 		return false;
 	}
 

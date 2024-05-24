@@ -1787,7 +1787,7 @@ void CL_Init ()
 	Con_Init();	
 #if defined __linux__
 	S_Init();	
-	VID_Init();
+	Vid_Init();
 #else
 	Vid_Init();
 	S_Init();	// sound must be initialized after window is created
