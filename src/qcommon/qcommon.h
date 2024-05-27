@@ -21,6 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 // qcommon.h -- definitions common between client and server, but not game*.dll
+#include <qcommon/formats/pak.h>
+#include <qcommon/formats/bsp.h>
+#include <qcommon/formats/md2.h>
+#include <qcommon/formats/sp2.h>
 #include <game/q_shared.h>
 #include "netservices/netservices.h" // hmm
 #include "pdjson.h"
@@ -184,7 +188,7 @@ PROTOCOL
 // 36 - Zombono with larger map bounds
 // 37 - Zombono 0.04 final
 // Then incremented by one for each version.
-#define	PROTOCOL_VERSION	42
+#define	PROTOCOL_VERSION	43
 
 //=========================================
 
@@ -633,7 +637,7 @@ Map Loader
 ==============================================================
 */
 
-#include <qcommon/qfiles.h>
+
 cmodel_t	*Map_Load (char *name, bool clientload, uint32_t *checksum);
 cmodel_t	*Map_LoadInlineModel (char *name);	// *1, *2, etc
 

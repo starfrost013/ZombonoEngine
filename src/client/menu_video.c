@@ -201,8 +201,9 @@ static void ApplyChanges(void* unused)
 	// "custom" menu option doesn't resize
 	if (s_mode_list[OPENGL_MENU].curvalue > 0)
 	{
-		Cvar_SetValue("gl_width", vid_modes[s_mode_list[OPENGL_MENU].curvalue].width);
-		Cvar_SetValue("gl_height", vid_modes[s_mode_list[OPENGL_MENU].curvalue].height);
+		// -1 for the "custom" option
+		Cvar_SetValue("gl_width", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].width);
+		Cvar_SetValue("gl_height", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].height);
 	}
 
 	switch (s_ref_list[s_current_menu_index].curvalue)

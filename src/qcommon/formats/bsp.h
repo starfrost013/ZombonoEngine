@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -18,150 +18,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-
-#pragma once 
-
-//
-// qfiles.h: quake file formats
-// This file must be identical in the quake and utils directories
-//
-
-/*
-========================================================================
-
-The .pak files are just a linear collapse of a directory tree
-
-========================================================================
-*/
-
-#define IDPAKHEADER		(('K'<<24)+('C'<<16)+('A'<<8)+'P')
-#define MAX_PAKFILE		256
-
-typedef struct
-{
-	char	name[MAX_PAKFILE];
-	int32_t 	filepos, filelen;
-} dpackfile_t;
-
-typedef struct
-{
-	int32_t 	ident;		// == IDPAKHEADER
-	int32_t 	dirofs;
-	int32_t 	dirlen;
-} dpackheader_t;
-
-#define	MAX_FILES_IN_PACK	4096
-/*
-========================================================================
-
-.MD2 triangle model file format
-
-========================================================================
-*/
-
-#define IDALIASHEADER	(('2'<<24)+('P'<<16)+('D'<<8)+'I')
-#define ALIAS_VERSION	8
-
-#define	MAX_TRIANGLES	4096
-#define MAX_VERTS		2048
-#define MAX_FRAMES		512
-#define MAX_MD2SKINS	32
-#define	MAX_SKINNAME	64
-
-typedef struct dstvert_s
-{
-	short	s;
-	short	t;
-} dstvert_t;
-
-typedef struct dtriangle_s
-{
-	short	index_xyz[3];
-	short	index_st[3];
-} dtriangle_t;
-
-typedef struct dtrivertx_s
-{
-	uint8_t	v[3];			// scaled byte to fit in frame mins/maxs
-	uint8_t	lightnormalindex;
-} dtrivertx_t;
-
-#define DTRIVERTX_V0   0
-#define DTRIVERTX_V1   1
-#define DTRIVERTX_V2   2
-#define DTRIVERTX_LNI  3
-#define DTRIVERTX_SIZE 4
-
-typedef struct daliasframe_s
-{
-	float		scale[3];	// multiply byte verts by this
-	float		translate[3];	// then add this
-	char		name[16];	// frame name from grabbing
-	dtrivertx_t	verts[1];	// variable sized
-} daliasframe_t;
-
-
-// the glcmd format:
-// a positive integer starts a tristrip command, followed by that many
-// vertex structures.
-// a negative integer starts a trifan command, followed by -x vertexes
-// a zero indicates the end of the command list.
-// a vertex consists of a floating point s, a floating point t,
-// and an integer vertex index.
-
-
-typedef struct dmdl_s
-{
-	int32_t 		ident;
-	int32_t 		version;
-
-	int32_t 		skinwidth;
-	int32_t 		skinheight;
-	int32_t 		framesize;		// byte size of each frame
-
-	int32_t 		num_skins;
-	int32_t 		num_xyz;
-	int32_t 		num_st;			// greater than num_xyz for seams
-	int32_t 		num_tris;
-	int32_t 		num_glcmds;		// dwords in strip/fan command list
-	int32_t 		num_frames;
-
-	int32_t 		ofs_skins;		// each skin is a MAX_SKINNAME string
-	int32_t 		ofs_st;			// byte offset from start for stverts
-	int32_t 		ofs_tris;		// offset for dtriangles
-	int32_t 		ofs_frames;		// offset for first frame
-	int32_t 		ofs_glcmds;	
-	int32_t 		ofs_end;		// end of file
-
-} dmdl_t;
-
-/*
-========================================================================
-
-.SP2 sprite file format
-
-========================================================================
-*/
-
-#define IDSPRITEHEADER	(('2'<<24)+('S'<<16)+('D'<<8)+'I')
-		// little-endian "IDS2"
-#define SPRITE_VERSION	2
-
-typedef struct dsprframe_s
-{
-	int32_t 	width, height;
-	int32_t 	origin_x, origin_y;		// raster coordinates inside pic
-	char	name[MAX_SKINNAME];		// name of tga file
-} dsprframe_t;
-
-typedef struct dsprite_s
-{
-	int32_t 		ident;
-	int32_t 		version;
-	int32_t 		numframes;
-	dsprframe_t	frames[1];			// variable sized
-} dsprite_t;
-
+#pragma once
+#include <stdint.h>
 
 /*
 ==============================================================================
@@ -172,7 +30,7 @@ typedef struct dsprite_s
 */
 
 #define ZBSP_HEADER	(('P'<<24)+('S'<<16)+('B'<<8)+'Z')
-		// little-endian "ZBSP"
+// little-endian "ZBSP"
 
 #define ZBSP_VERSION	2
 
@@ -244,7 +102,7 @@ typedef struct lump_s
 typedef struct dheader_s
 {
 	int32_t 	ident;
-	int32_t 	version;	
+	int32_t 	version;
 	lump_t		lumps[HEADER_LUMPS];
 } dheader_t;
 
@@ -254,7 +112,7 @@ typedef struct dmodel_s
 	float		origin[3];		// for sounds or lights
 	int32_t 	headnode;
 	int32_t 	firstface, numfaces;	// submodels just draw faces
-										// without walking the bsp tree
+	// without walking the bsp tree
 } dmodel_t;
 
 
@@ -368,10 +226,10 @@ typedef struct dface_s
 	int32_t 			side;
 
 	int32_t 			firstedge;		// we must support > 64k edges
-	int32_t 			numedges;	
+	int32_t 			numedges;
 	int32_t 			texinfo;
 
-// lighting info
+	// lighting info
 	uint8_t			styles[MAXLIGHTMAPS];
 	int32_t 			lightofs;		// start of [numstyles*surfsize] samples
 } dface_t;
@@ -396,7 +254,7 @@ typedef struct dleaf_s
 typedef struct dbrushside_s
 {
 	uint32_t	planenum;		// facing out of the leaf
-	int32_t texinfo;
+	int32_t		texinfo;
 } dbrushside_t;
 
 typedef struct dbrush_s

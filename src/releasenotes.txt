@@ -1,8 +1,8 @@
 Zombono
 Release Notes:
 
-Version 0.0.9 
-May 25?, 2024
+Version 0.0.9 (Build 480)
+May 25, 2024
 
 NEW FEATURES:
 * Added a nice animated intro to the game - you can turn it off with cl_showintro 0
@@ -10,6 +10,7 @@ NEW FEATURES:
 * GL modes are now removed. The game can run at any resolution, and only destroys the window if switching in or out of fullscreen.
 	* This is controlled with the new gl_width and gl_height cvars
 	* The video menu will display "custom" if a nonstandard height is selected.
+* New machine gun weapon model from JV_726 (as a test, no textures yet)
 * Changed UI coordinate system from pixels to a normalised (base size is 960*480) 0-1 coordinate system. Size is still in pixels for now
 	* This makes the UI system resolution independent
 * Made the game window resizable
@@ -33,7 +34,8 @@ NEW FEATURES:
 * Added disable_input field to client_static_t so the client can disable input whenever it wants
 * Changed the default OpenGL clear colour from eye-searing hot pink to black
 * Added walls to both stations of z_tdm_subway
-* Minor improvements to z_tdm_labrats
+* Made some walls in z_tdm_labrats curved
+* Made the dark blue flashing lights room in z_tdm_labrats brighter
 
 BUG FIXES:
 * Fixed super shotgun crashing server on fire
@@ -51,6 +53,7 @@ BUG FIXES:
 	* It appeared to be exiting before, but it was actually crashing due to trying to use the window after it was terminated. 
 	* Exiting was terminating OpenGL, but keeping the client and Qcommon running. Oops.
 * Fixed shotguns not working (the classname somehow ended up as "wapon_shotgun" in the item list)
+* (Hopefully) fixed ogres not firing rockets outside of their melee range and instead using their own range
 
 REMOVALS:
 * Removed obsolete/Q2/Q2 Expansion only entity flags:
@@ -125,8 +128,11 @@ OTHER CHANGES:
 	* Renamed "pics" folder to "2d"
 	* Renamed "VID" functions in engine to "Vid" to be consistent with OpenGL renderer
 	* Recoloured Tangfuslicator viewmodel to green, made Bamfuslicator pink so they look different
-	* Added more testers to the credits
-		
+	* Added more testers to the credits as well as JV_726
+	* Increased engine limitations
+		* MAX_TRIANGLES (MD2) 4096 -> 8192
+		* MAX_VERTS (MD2) 2048 -> 8192
+
 Version 0.0.8.377 (Build 377)
 * Fixed disconnect and reconnect crashing the server
 

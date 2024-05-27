@@ -18,12 +18,33 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+#pragma once
+#include <stdint.h>
 
-// If we need this string helper macro anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
 
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 0
-#define ZOMBONO_VERSION_REVISION 10
-#define ZOMBONO_VERSION_BUILD 483
+/*
+========================================================================
+
+.SP2 sprite file format
+
+========================================================================
+*/
+
+#define IDSPRITEHEADER	(('2'<<24)+('S'<<16)+('D'<<8)+'I')
+// little-endian "IDS2"
+#define SPRITE_VERSION	2
+
+typedef struct dsprframe_s
+{
+	int32_t 	width, height;
+	int32_t 	origin_x, origin_y;		// raster coordinates inside pic
+	char	name[MAX_SKINNAME];		// name of tga file
+} dsprframe_t;
+
+typedef struct dsprite_s
+{
+	int32_t 		ident;
+	int32_t 		version;
+	int32_t 		numframes;
+	dsprframe_t		frames[1];			// variable sized
+} dsprite_t;

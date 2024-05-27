@@ -19,11 +19,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// If we need this string helper macro anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+#pragma once
+#include <stdint.h>
 
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 0
-#define ZOMBONO_VERSION_REVISION 10
-#define ZOMBONO_VERSION_BUILD 483
+//
+// pak.h : The PAK file format
+//
+
+/*
+========================================================================
+
+The .pak files are just a linear collapse of a directory tree
+
+========================================================================
+*/
+
+#define IDPAKHEADER		(('K'<<24)+('C'<<16)+('A'<<8)+'P')
+#define MAX_PAKFILE		256
+
+typedef struct
+{
+	char	name[MAX_PAKFILE];
+	int32_t 	filepos, filelen;
+} dpackfile_t;
+
+typedef struct
+{
+	int32_t 	ident;		// == IDPAKHEADER
+	int32_t 	dirofs;
+	int32_t 	dirlen;
+} dpackheader_t;
+
+#define	MAX_FILES_IN_PACK	4096

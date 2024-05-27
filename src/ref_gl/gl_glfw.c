@@ -216,9 +216,9 @@ rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, bool fullscreen )
 			if (!Vid_CreateWindow(width, height, false))
 				return rserr_invalid_mode;
 		}
-
-		return rserr_ok;
 	}
+
+	return rserr_ok;
 }
 
 void GL_DestroyWindow()

@@ -902,12 +902,12 @@ R_RecursiveWorldNode
 */
 void R_RecursiveWorldNode (mnode_t *node)
 {
-	int32_t			c, side, sidebit;
-	cplane_t	*plane;
-	msurface_t	*surf, **mark;
-	mleaf_t		*pleaf;
+	int32_t		c, side, sidebit;
+	cplane_t*	plane;
+	msurface_t* surf, ** mark;
+	mleaf_t*	pleaf;
 	float		dot;
-	image_t		*image;
+	image_t*	image;
 
 	if (node->contents == CONTENTS_SOLID)
 		return;		// solid
@@ -988,6 +988,9 @@ void R_RecursiveWorldNode (mnode_t *node)
 
 		if ( (surf->flags & SURF_PLANEBACK) != sidebit )
 			continue;		// wrong side
+
+		if (surf->flags & SURF_NODRAW)
+			continue;		// don't draw
 
 		if (surf->texinfo->flags & SURF_SKY)
 		{	// just adds to visible sky bounds

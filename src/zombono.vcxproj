@@ -106,6 +106,7 @@
     <ClInclude Include="client\vid.h" />
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\q_shared.h" />
+    <ClInclude Include="qcommon\formats\bsp.h" />
     <ClInclude Include="qcommon\curl\curl.h" />
     <ClInclude Include="qcommon\curl\curlver.h" />
     <ClInclude Include="qcommon\curl\easy.h" />
@@ -118,10 +119,12 @@
     <ClInclude Include="qcommon\curl\typecheck-gcc.h" />
     <ClInclude Include="qcommon\curl\urlapi.h" />
     <ClInclude Include="qcommon\curl\websockets.h" />
+    <ClInclude Include="qcommon\formats\md2.h" />
     <ClInclude Include="qcommon\netservices\netservices.h" />
+    <ClInclude Include="qcommon\formats\pak.h" />
     <ClInclude Include="qcommon\pdjson.h" />
     <ClInclude Include="qcommon\qcommon.h" />
-    <ClInclude Include="qcommon\qfiles.h" />
+    <ClInclude Include="qcommon\formats\sp2.h" />
     <ClInclude Include="qcommon\version.h" />
     <ClInclude Include="server\server.h" />
     <ClInclude Include="win32\conproc.h" />
