@@ -194,10 +194,10 @@ Cbuf_Execute
 */
 void Cbuf_Execute ()
 {
-	int32_t 	i;
-	char	*text;
+	int32_t i;
+	char*	text;
 	char	line[1024];
-	int32_t 	quotes;
+	int32_t quotes;
 
 	alias_count = 0;		// don't allow infinite alias loops
 

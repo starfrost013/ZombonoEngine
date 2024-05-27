@@ -1610,13 +1610,15 @@ void CL_SendCommand ()
 {
 	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active.
 	// sys_frame_time being frozen effectively breaks input
-	if (!ui_active
-		|| (ui_active && current_ui != NULL && current_ui->passive)
-		|| (ui_active && current_ui != NULL && !strncmp(current_ui->name, "LeaderboardUI", 14)))
+
+	if (ui_active
+		&& !(ui_active && current_ui != NULL && current_ui->passive))
 	{
-		// get new key events
-		sys_frame_time = Sys_Milliseconds();
+		// disable movement
+		return;
 	}
+
+	sys_frame_time = Sys_Milliseconds();
 
 	// process console commands
 	Cbuf_Execute ();
@@ -1765,6 +1767,7 @@ void AppActivate(bool active, bool minimize)
 		// ZombonoUI controls this in the case a UI is active
 		if (!ui_active
 			|| ui_active && current_ui->passive) Input_Activate(true);
+
 		S_Activate(true);
 	}
 }
