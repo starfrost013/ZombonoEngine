@@ -1,6 +1,16 @@
 Zombono
 Release Notes:
 
+Version 0.0.10
+June XX, 2024
+NEW FEATURES:
+
+BUG FIXES:
+
+REMOVALS:
+
+OTHER CHANGES:
+
 Version 0.0.9 (Build 480)
 May 25, 2024
 
@@ -123,6 +133,7 @@ OpenGL legacy code purge #49123712632:
 	* Removed partially implemented ability to set map to a TGA file
 	* Removed gl_mode (see above)
 	* Removed gl_playermip (nonfunctional)
+
 OTHER CHANGES: 
 	* Reorganised effects code
 	* Renamed "pics" folder to "2d"

@@ -208,7 +208,11 @@ typedef struct
 	
 	bool		disable_input;		// turns off input
 
-	int32_t 	disable_servercount;	// when we receive a frame and cl.servercount
+	// Disable individual elements of input
+	bool		disable_keyboard;	// turns off keyboard events
+	bool		disable_mouse;		// turns off mouse events
+
+	int32_t 	disable_servercount;// when we receive a frame and cl.servercount
 									// > cls.disable_servercount, clear disable_screen
 
 // connection information

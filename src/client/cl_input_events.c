@@ -843,11 +843,18 @@ double last_mouse_pos_x = 0, last_mouse_pos_y = 0;
 
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
+	// if the keyboard is disabled, returned
+	if (cls.disable_keyboard)
+		return; 
+
 	Input_Event(key, mods, (action == KEY_PRESSED || action == KEY_REPEAT), 0, 0, 0);
 }
 
 void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods)
 {
+	if (cls.disable_mouse)
+		return;
+
 	// TODO: MUST DISABLE INPUT
 	// they are not contiguous numbers
 	if (button >= 4)
@@ -862,12 +869,18 @@ void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods
 
 void MouseMove_Event(void* unused, double xpos, double ypos)
 {
+	if (cls.disable_mouse)
+		return;
+
 	last_mouse_pos_x = xpos;
 	last_mouse_pos_y = ypos;
 }
 
 void MouseScroll_Event(void* unused, double xoffset, double yoffset)
 {
+	if (cls.disable_mouse)
+		return;
+
 	// original does not care about speed
 	// TODO: mouse speed
 	if (yoffset > 0)

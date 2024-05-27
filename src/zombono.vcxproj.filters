@@ -45,7 +45,7 @@
     <ClCompile Include="client\console.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_input_keys.c">
+    <ClCompile Include="client\cl_input_events.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\menu.c">

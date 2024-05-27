@@ -50,7 +50,7 @@
     <ClCompile Include="client\cl_ui_scripts.c" />
     <ClCompile Include="client\cl_view.c" />
     <ClCompile Include="client\console.c" />
-    <ClCompile Include="client\cl_input_keys.c" />
+    <ClCompile Include="client\cl_input_events.c" />
     <ClCompile Include="client\menu.c" />
     <ClCompile Include="client\menu_video.c" />
     <ClCompile Include="client\menu_framework.c" />
