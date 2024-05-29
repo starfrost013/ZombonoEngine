@@ -369,19 +369,19 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_LIGHTNING:
-		MSG_ReadPos(&net_message, pos); // start
-		MSG_ReadPos(&net_message, pos2); // end
+		MSG_ReadPos(&net_message, pos);
+		f1 = MSG_ReadFloat(&net_message);
 		MSG_ReadDir(&net_message, dir);
 
-		CL_LightningParticles(pos, pos2, dir);
+		CL_LightningParticles(pos, f1, dir);
 		break;
 
 	case TE_SMOKE:
 		MSG_ReadPos(&net_message, pos);
 		MSG_ReadDir(&net_message, dir);
 		MSG_ReadColor(&net_message, color);
-		MSG_ReadInt(&net_message, i1);
-		MSG_ReadInt(&net_message, i2);
+		i1 = MSG_ReadInt(&net_message);
+		i2 = MSG_ReadInt(&net_message);
 
 		CL_ParticleSmokeEffect(pos, dir, color, i1, i2);
 		break;
@@ -390,21 +390,21 @@ void CL_ParseTEnt ()
 		MSG_ReadPos(&net_message, pos);
 		MSG_ReadDir(&net_message, dir);
 		MSG_ReadColor(&net_message, color);
-		MSG_ReadInt(&net_message, i1);
-		MSG_ReadInt(&net_message, i2);
+		i1 = MSG_ReadInt(&net_message);
+		i2 = MSG_ReadInt(&net_message);
 
 		CL_ParticleSteamEffect(pos, dir, color, i1, i2);
 		break;
 
 	case TE_FLAME:
-		MSG_ReadInt(&net_message, ent);
+		ent = MSG_ReadInt(&net_message);
 		MSG_ReadPos(&net_message, pos);
 
 		CL_FlameEffects(ent, pos);
 		break;
 
 	case TE_FLASHLIGHT:
-		MSG_ReadInt(&net_message, ent);
+		ent = MSG_ReadInt(&net_message);
 		MSG_ReadPos(&net_message, pos);
 
 		CL_Flashlight(ent, pos);
@@ -412,11 +412,11 @@ void CL_ParseTEnt ()
 
 	case TE_FLASH: // e.g. Flashbang
 		MSG_ReadPos(&net_message, pos);
-		MSG_ReadInt(&net_message, ent);
-		MSG_ReadInt(&net_message, i1);
-		MSG_ReadFloat(&net_message, f1);
-		MSG_ReadFloat(&net_message, f2);
-		MSG_ReadFloat(&net_message, f3);
+		ent = MSG_ReadInt(&net_message);
+		i1 = MSG_ReadInt(&net_message);
+		f1 = MSG_ReadFloat(&net_message);
+		f2 = MSG_ReadFloat(&net_message);
+		f3 = MSG_ReadFloat(&net_message);
 
 		CL_ColorFlash(pos, ent, i1, f1, f2, f3);
 		break;

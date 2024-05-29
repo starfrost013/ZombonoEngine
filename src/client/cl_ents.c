@@ -824,8 +824,8 @@ void CL_AddPacketEntities (frame_t *frame)
 		}
 
 		// if set to invisible, skip
-		if (!s1->modelindex)
-			continue;
+		//if (!s1->modelindex)
+			//continue;
 
 		// add to refresh list
 		V_AddEntity (&ent);
@@ -927,6 +927,11 @@ void CL_AddPacketEntities (frame_t *frame)
 			else if (effects & EF_FLIES)
 			{
 				CL_FlyEffect (cent, ent.origin);
+			}
+			else if (effects & EF_LIGHTNING)
+			{
+				CL_LightningParticlesAttachedToEntity(ent.origin, ent.angles);
+				V_AddLight(ent.origin, 400, 1, 1, 1);
 			}
 		}
 

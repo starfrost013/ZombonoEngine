@@ -572,7 +572,8 @@ void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags
 void CL_FlyEffect(centity_t* ent, vec3_t origin);
 void CL_AddParticles();
 void CL_EntityEvent(entity_state_t* ent);
-void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles);
+void CL_LightningParticles(vec3_t start, float velocity, vec3_t angles);
+void CL_LightningParticlesAttachedToEntity(vec3_t start, vec3_t angles);
 
 //
 // legacy menu system

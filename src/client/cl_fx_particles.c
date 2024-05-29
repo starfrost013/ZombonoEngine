@@ -519,21 +519,19 @@ void CL_ExplosionParticles (vec3_t org)
 	}
 }
 
-#define LIGHTNING_SPEED			1600
+// Maybe make this configurable?
+#define NUM_LIGHTNING_PARTICLES	1024
 
 //
 // CL_LightningParticles: Lightning particles for the tangfuslicator
 //
-void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles)
+void CL_LightningParticles(vec3_t start, float velocity, vec3_t angles)
 {
 	cparticle_t* particle;
 
 	vec3_t		 particle_movement = { 0 };
-	vec3_t		 particle_length = { 0 }; 
 
-	VectorSubtract(end, start, particle_length);
-
-	for (int32_t i = 0; i < 1024; i++)
+	for (int32_t i = 0; i < NUM_LIGHTNING_PARTICLES; i++)
 	{
 		// we're out of particles
 		if (!free_particles)
@@ -554,16 +552,20 @@ void CL_LightningParticles(vec3_t start, vec3_t end, vec3_t angles)
 		particle->org[1] = start[1] + 2 + rand() % 2; //2-4 units side
 		particle->org[2] = start[2] + 1 + rand() % 2; //1-3 units high
 
-		particle->vel[0] = (angles[0] * LIGHTNING_SPEED) + rand() % 5; // 100-105
-		particle->vel[1] = (angles[1] * LIGHTNING_SPEED) + rand() % 5; // 100-105
-		particle->vel[2] = (angles[2] * LIGHTNING_SPEED) + rand() % 5; // 100-105
+		particle->vel[0] = (angles[0] * velocity) + rand() % 5; // 100-105
+		particle->vel[1] = (angles[1] * velocity) + rand() % 5; // 100-105
+		particle->vel[2] = (angles[2] * velocity) + rand() % 5; // 100-105
 
 		particle->accel[0] = (angles[0]) * 5 + rand() % 5;
 		particle->accel[1] = (angles[1]) * 5 + rand() % 5;
 		particle->accel[2] = (angles[2]) * 5 + rand() % 5;
-
 		//particle->alphavel = -1.0 / (0.5 + frand() * 0.3);
  	}
+}
+
+void CL_LightningParticlesAttachedToEntity(vec3_t start, vec3_t angles)
+{
+	CL_LightningParticles(start, 0, angles);
 }
 
 /*
@@ -850,7 +852,7 @@ void CL_RocketTrail (vec3_t start, vec3_t end, centity_t *old)
 	vec3_t		move;
 	vec3_t		vec;
 	float		len;
-	int32_t 		j;
+	int32_t 	j;
 	cparticle_t	*p;
 	float		dec;
 

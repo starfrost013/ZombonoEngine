@@ -5,14 +5,17 @@ Version 0.0.10
 June XX, 2024
 
 NEW FEATURES:
-
 * Added the ability to independently disable the keyboard and mouse using the cls.disable_keyboard and cls.disable_mouse properties (overridden by cls.disable_input)
+* Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
+* Added the EF_LIGHTNING entity effect
+
+BUG FIXES:
 * Various map fixes
 	* Fixed a misaligned light switch on z_tdm_subway
 	* Fixed one of the roofs of the bases on z_tdm_subway being 8 units off
 	* Added a clip brush to some of the stairs on z_tdm_labrats
-
-BUG FIXES:
+* Fixed the networking of generic, flame, smoke, flash, flashlight and steam particle effects
+* Fixed server crash that could happen in rare cases if the Bamfuslicator failed to spawn a zombie (it was trying to free the zombie edict before creaitng it)
 
 REMOVALS:
 
@@ -599,7 +602,7 @@ January 14, 2024
 * Fixed zombie animations, changed zombie speed a bit.
 * Ported particle engine to 32-bit colour
 * Changed conback and made a 16*9 widescreen conback.
-* Better integrated new UI -you won't slide around anymore, and you still can't input commands to the player while a UI is active.
+* Better integrated new UI - you won't slide around anymore, and you still can't input commands to the player while a UI is active.
 * Changed zombies to be a green colour.
 * Fixed zombie gibs - they were pointing to the wrong model path, and those models were pointing to the wrong textures.
 * Default intensity convar value changed from 2 to 1.2. Is it too dark?
