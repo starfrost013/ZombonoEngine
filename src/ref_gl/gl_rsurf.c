@@ -253,18 +253,7 @@ void R_BlendLightmaps ()
 	** lightmaps.
 	*/
 	if (!gl_lightmap->value)
-	{
-		glEnable (GL_BLEND);
-
-		if ( gl_saturatelighting->value )
-		{
-			glBlendFunc( GL_ONE, GL_ONE );
-		}
-		else
-		{
-			glBlendFunc(GL_ZERO, GL_SRC_COLOR);
-		}
-	}
+		glBlendFunc(GL_ZERO, GL_SRC_COLOR);
 
 	if ( currentmodel == r_worldmodel )
 		c_visible_lightmaps = 0;

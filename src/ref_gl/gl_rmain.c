@@ -111,7 +111,6 @@ cvar_t* gl_cull;
 cvar_t* gl_polyblend;
 cvar_t* gl_flashblend;
 cvar_t* gl_playermip;
-cvar_t* gl_saturatelighting;
 cvar_t* gl_drawdistance;
 cvar_t* gl_skyboxepsilon;
 cvar_t* gl_texturemode;
@@ -747,8 +746,6 @@ void R_Register( void )
 	gl_ext_compiled_vertex_array = ri.Cvar_Get( "gl_ext_compiled_vertex_array", "1", CVAR_ARCHIVE );
 
 	gl_drawbuffer = ri.Cvar_Get( "gl_drawbuffer", "GL_BACK", 0 );
-
-	gl_saturatelighting = ri.Cvar_Get( "gl_saturatelighting", "0", 0 );
 
 	gl_drawdistance = ri.Cvar_Get("gl_drawdistance", "8192", CVAR_ARCHIVE);
 	gl_skyboxepsilon = ri.Cvar_Get("gl_skyboxepsilon", "725", CVAR_ARCHIVE);

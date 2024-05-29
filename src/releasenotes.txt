@@ -22,10 +22,13 @@ BUG FIXES:
 * Fixed potential memory corruption and exploit issue involving calling CL_ClearParticles with no particles. You would be able to set the four bytes at [80..76] bytes (cl_particles->next) before the 
 first particle to NULL
 * Fixed a bug where particles could never despawn and would always take up particle slots if alphavel was 0 
+* Fixed unusual spacing of "select team" text in TeamUI
 
 REMOVALS:
+* gl_saturatelighting cvar (does nothing)
 
 OTHER CHANGES:
+* Enable sv_cheats always on debug builds
 
 Version 0.0.9 (Build 480)
 May 25, 2024

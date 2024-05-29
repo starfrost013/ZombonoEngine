@@ -219,7 +219,6 @@ extern cvar_t* gl_drawbuffer;
 extern cvar_t* gl_texturemode;
 extern cvar_t* gl_texturealphamode;
 extern cvar_t* gl_texturesolidmode;
-extern cvar_t* gl_saturatelighting;
 extern cvar_t* gl_drawdistance;
 extern cvar_t* gl_skyboxepsilon;
 extern cvar_t* gl_lockpvs;

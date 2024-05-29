@@ -1070,13 +1070,25 @@ void SCR_DrawInfo()
 	}
 
 	// target fps regardless fo 
-	int32_t target_fps = 60;
+	float target_fps = 60;
+
+	if (cl_maxfps->value < target_fps) target_fps = cl_maxfps->value;
 
 	int32_t x = (10 * vid_hudscale->value);
 
 	int32_t y = (viddef.height - (120 * vid_hudscale->value));
-	Text_Draw(cl_console_font->string, x, y,
-		"FPS: %.2f", cls.fps);
+
+	if (cls.fps < target_fps)
+	{
+		Text_Draw(cl_console_font->string, x, y,
+			"FPS: ^1%.2f(Below target FPS %.1f)^7", cls.fps, target_fps);
+	}
+	else
+	{
+		Text_Draw(cl_console_font->string, x, y,
+			"FPS: %.2f", cls.fps);
+	}
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Position: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);

@@ -253,6 +253,8 @@ extern client_static_t	cls;
 // cvars
 //
 
+extern cvar_t* cl_maxfps;
+
 extern cvar_t* cl_gun;
 extern cvar_t* cl_add_blend;
 extern cvar_t* cl_add_lights;

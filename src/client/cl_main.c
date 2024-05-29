@@ -1067,8 +1067,8 @@ static const char *env_suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 void CL_RequestNextDownload ()
 {
 	uint32_t	map_checksum;		// for detecting cheater maps
-	char fn[MAX_OSPATH];
-	dmdl_t *pheader;
+	char		fn[MAX_OSPATH];
+	dmdl_t*		pheader;
 
 	if (cls.state != ca_connected)
 		return;
@@ -1076,24 +1076,33 @@ void CL_RequestNextDownload ()
 	if (!allow_download->value && precache_check < ENV_CNT)
 		precache_check = ENV_CNT;
 
-//ZOID
-	if (precache_check == CS_MODELS) { // confirm map
-		precache_check = CS_MODELS+2; // 0 isn't used
+	//ZOID
+	if (precache_check == CS_MODELS) 
+	{ // confirm map
+		precache_check = CS_MODELS + 2; // 0 isn't used
 		if (allow_download_maps->value)
-			if (!CL_CheckOrDownloadFile(cl.configstrings[CS_MODELS+1]))
+		{
+			if (!CL_CheckOrDownloadFile(cl.configstrings[CS_MODELS + 1]))
 				return; // started a download
+		}
 	}
-	if (precache_check >= CS_MODELS && precache_check < CS_MODELS+MAX_MODELS) {
-		if (allow_download_models->value) {
-			while (precache_check < CS_MODELS+MAX_MODELS &&
-				cl.configstrings[precache_check][0]) {
+	if (precache_check >= CS_MODELS && precache_check < CS_MODELS + MAX_MODELS)
+	{
+		if (allow_download_models->value)
+		{
+			while (precache_check < CS_MODELS + MAX_MODELS &&
+				cl.configstrings[precache_check][0]) 
+			{
 				if (cl.configstrings[precache_check][0] == '*' ||
-					cl.configstrings[precache_check][0] == '#') {
+					cl.configstrings[precache_check][0] == '#') 
+				{
 					precache_check++;
 					continue;
 				}
+
 				if (precache_model_skin == 0) {
-					if (!CL_CheckOrDownloadFile(cl.configstrings[precache_check])) {
+					if (!CL_CheckOrDownloadFile(cl.configstrings[precache_check])) 
+					{
 						precache_model_skin = 1;
 						return; // started a download
 					}
@@ -1101,15 +1110,17 @@ void CL_RequestNextDownload ()
 				}
 
 				// checking for skins in the model
-				if (!precache_model) {
+				if (!precache_model)
+				{
 
-					FS_LoadFile (cl.configstrings[precache_check], (void **)&precache_model);
+					FS_LoadFile(cl.configstrings[precache_check], (void**)&precache_model);
 					if (!precache_model) {
 						precache_model_skin = 0;
 						precache_check++;
 						continue; // couldn't load it
 					}
-					if (LittleInt(*(uint32_t *)precache_model) != IDALIASHEADER) {
+					if (LittleInt(*(uint32_t*)precache_model) != IDALIASHEADER)
+					{
 						// not an alias model
 						FS_FreeFile(precache_model);
 						precache_model = 0;
@@ -1117,95 +1128,127 @@ void CL_RequestNextDownload ()
 						precache_check++;
 						continue;
 					}
-					pheader = (dmdl_t *)precache_model;
-					if (LittleInt (pheader->version) != ALIAS_VERSION) {
+					pheader = (dmdl_t*)precache_model;
+					if (LittleInt(pheader->version) != ALIAS_VERSION) 
+					{
 						precache_check++;
 						precache_model_skin = 0;
 						continue; // couldn't load it
 					}
 				}
 
-				pheader = (dmdl_t *)precache_model;
+				pheader = (dmdl_t*)precache_model;
 
-				while (precache_model_skin - 1 < LittleInt(pheader->num_skins)) {
-					if (!CL_CheckOrDownloadFile((char *)precache_model +
-						LittleInt(pheader->ofs_skins) + 
-						(precache_model_skin - 1)*MAX_SKINNAME)) {
+				while (precache_model_skin - 1 < LittleInt(pheader->num_skins)) 
+				{
+					if (!CL_CheckOrDownloadFile((char*)precache_model +
+						LittleInt(pheader->ofs_skins) +
+						(precache_model_skin - 1) * MAX_SKINNAME)) {
 						precache_model_skin++;
 						return; // started a download
 					}
 					precache_model_skin++;
 				}
-				if (precache_model) { 
+
+				if (precache_model)
+				{
 					FS_FreeFile(precache_model);
 					precache_model = 0;
 				}
+
 				precache_model_skin = 0;
 				precache_check++;
 			}
 		}
 		precache_check = CS_SOUNDS;
 	}
-	if (precache_check >= CS_SOUNDS && precache_check < CS_SOUNDS+MAX_SOUNDS) { 
-		if (allow_download_sounds->value) {
+
+	if (precache_check >= CS_SOUNDS && precache_check < CS_SOUNDS + MAX_SOUNDS) 
+	{
+		if (allow_download_sounds->value)
+		{
 			if (precache_check == CS_SOUNDS)
 				precache_check++; // zero is blank
-			while (precache_check < CS_SOUNDS+MAX_SOUNDS &&
-				cl.configstrings[precache_check][0]) {
-				if (cl.configstrings[precache_check][0] == '*') {
+
+			while (precache_check < CS_SOUNDS + MAX_SOUNDS &&
+				cl.configstrings[precache_check][0])
+			{
+				if (cl.configstrings[precache_check][0] == '*')
+				{
 					precache_check++;
 					continue;
 				}
+
 				Com_sprintf(fn, sizeof(fn), "sound/%s", cl.configstrings[precache_check++]);
+
 				if (!CL_CheckOrDownloadFile(fn))
 					return; // started a download
 			}
 		}
+
 		precache_check = CS_IMAGES;
 	}
-	if (precache_check >= CS_IMAGES && precache_check < CS_IMAGES+MAX_IMAGES) {
+
+	if (precache_check >= CS_IMAGES && precache_check < CS_IMAGES + MAX_IMAGES) 
+	{
 		if (precache_check == CS_IMAGES)
 			precache_check++; // zero is blank
-		while (precache_check < CS_IMAGES+MAX_IMAGES &&
-			cl.configstrings[precache_check][0]) {
+
+		while (precache_check < CS_IMAGES + MAX_IMAGES &&
+			cl.configstrings[precache_check][0])
+		{
 			Com_sprintf(fn, sizeof(fn), "%s.tga", cl.configstrings[precache_check++]);
 			if (!CL_CheckOrDownloadFile(fn))
 				return; // started a download
 		}
+
 		precache_check = CS_PLAYERSKINS;
 	}
-	// skins are special, since a player has three things to download:
+
+	// skins
+//  are special, since a player has three things to download:
 	// model, weapon model and skin
 	// so precache_check is now *3
-	if (precache_check >= CS_PLAYERSKINS && precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) {
-		if (allow_download_players->value) {
-			while (precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) {
+	if (precache_check >= CS_PLAYERSKINS && precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) 
+	{
+		if (allow_download_players->value) 
+		{
+			while (precache_check < CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT) 
+			{
 				int32_t i, n;
-				char model[MAX_QPATH], skin[MAX_QPATH], *p;
+				char model[MAX_QPATH], skin[MAX_QPATH], * p;
 
-				i = (precache_check - CS_PLAYERSKINS)/PLAYER_MULT;
-				n = (precache_check - CS_PLAYERSKINS)%PLAYER_MULT;
+				i = (precache_check - CS_PLAYERSKINS) / PLAYER_MULT;
+				n = (precache_check - CS_PLAYERSKINS) % PLAYER_MULT;
 
-				if (!cl.configstrings[CS_PLAYERSKINS+i][0]) {
+				if (!cl.configstrings[CS_PLAYERSKINS + i][0]) {
 					precache_check = CS_PLAYERSKINS + (i + 1) * PLAYER_MULT;
 					continue;
 				}
 
-				if ((p = strchr(cl.configstrings[CS_PLAYERSKINS+i], '\\')) != NULL)
+				if ((p = strchr(cl.configstrings[CS_PLAYERSKINS + i], '\\')) != NULL)
 					p++;
 				else
-					p = cl.configstrings[CS_PLAYERSKINS+i];
+					p = cl.configstrings[CS_PLAYERSKINS + i];
 				strcpy(model, p);
 				p = strchr(model, '/');
+
 				if (!p)
 					p = strchr(model, '\\');
-				if (p) {
+
+				if (p)
+				{
 					*p++ = 0;
 					strcpy(skin, p);
-				} else
+				}
+				else
+				{
 					*skin = 0;
+				}
+					
 
-				switch (n) {
+				switch (n) 
+				{
 				case 0: // model
 					Com_sprintf(fn, sizeof(fn), "players/%s/tris.md2", model);
 					if (!CL_CheckOrDownloadFile(fn)) {
@@ -1257,29 +1300,34 @@ void CL_RequestNextDownload ()
 		precache_check = ENV_CNT;
 	}
 
-	if (precache_check == ENV_CNT) {
+	if (precache_check == ENV_CNT)
+	{
 		precache_check = ENV_CNT + 1;
 
-		Map_Load (cl.configstrings[CS_MODELS+1], true, &map_checksum);
+		Map_Load(cl.configstrings[CS_MODELS + 1], true, &map_checksum);
 
-		if (map_checksum != atoi(cl.configstrings[CS_MAPCHECKSUM])) {
-			Com_Error (ERR_DROP, "Local map version differs from server: %i != '%s'\n",
+		if (map_checksum != atoi(cl.configstrings[CS_MAPCHECKSUM]))
+		{
+			Com_Error(ERR_DROP, "Local map version differs from server: %i != '%s'\n",
 				map_checksum, cl.configstrings[CS_MAPCHECKSUM]);
 			return;
 		}
 	}
 
-	if (precache_check > ENV_CNT && precache_check < TEXTURE_CNT) {
-		if (allow_download->value && allow_download_maps->value) {
-			while (precache_check < TEXTURE_CNT) {
+	if (precache_check > ENV_CNT && precache_check < TEXTURE_CNT) 
+	{
+		if (allow_download->value && allow_download_maps->value)
+		{
+			while (precache_check < TEXTURE_CNT)
+			{
 				int32_t n = precache_check++ - ENV_CNT - 1;
 
 				if (n & 1)
-					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga", 
-						cl.configstrings[CS_SKY], env_suf[n/2]);
+					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga",
+						cl.configstrings[CS_SKY], env_suf[n / 2]);
 				else
-					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga", 
-						cl.configstrings[CS_SKY], env_suf[n/2]);
+					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga",
+						cl.configstrings[CS_SKY], env_suf[n / 2]);
 				if (!CL_CheckOrDownloadFile(fn))
 					return; // started a download
 			}
@@ -1287,19 +1335,23 @@ void CL_RequestNextDownload ()
 		precache_check = TEXTURE_CNT;
 	}
 
-	if (precache_check == TEXTURE_CNT) {
-		precache_check = TEXTURE_CNT+1;
+	if (precache_check == TEXTURE_CNT) 
+	{
+		precache_check = TEXTURE_CNT + 1;
 		precache_tex = 0;
 	}
 
 	// confirm existance of textures, download any that don't exist
-	if (precache_check == TEXTURE_CNT+1) {
+	if (precache_check == TEXTURE_CNT + 1) 
+	{
 		// from qcommon/cmodel.c
 		extern int32_t 		numtexinfo;
 		extern mapsurface_t	map_surfaces[];
 
-		if (allow_download->value && allow_download_maps->value) {
-			while (precache_tex < numtexinfo) {
+		if (allow_download->value && allow_download_maps->value)
+		{
+			while (precache_tex < numtexinfo) 
+			{
 				char fn[MAX_OSPATH];
 
 				sprintf(fn, "textures/%s.tga", map_surfaces[precache_tex++].rname);
@@ -1307,15 +1359,15 @@ void CL_RequestNextDownload ()
 					return; // started a download
 			}
 		}
-		precache_check = TEXTURE_CNT+999;
+		precache_check = TEXTURE_CNT + 999;
 	}
 
-//ZOID
-	CL_RegisterSounds ();
-	CL_PrepRefresh ();
+	//ZOID
+	CL_RegisterSounds();
+	CL_PrepRefresh();
 
-	MSG_WriteByte (&cls.netchan.message, clc_stringcmd);
-	MSG_WriteString (&cls.netchan.message, va("begin %i\n", precache_spawncount) );
+	MSG_WriteByte(&cls.netchan.message, clc_stringcmd);
+	MSG_WriteString(&cls.netchan.message, va("begin %i\n", precache_spawncount));
 }
 
 /*
@@ -1521,7 +1573,9 @@ void CL_WriteConfiguration ()
 #else
 	Com_sprintf(path, sizeof(path), "%s/config.cfg", FS_Gamedir());
 #endif
+	
 	f = fopen (path, "w");
+
 	if (!f)
 	{
 		Com_Printf ("Couldn't write config.cfg.\n");
