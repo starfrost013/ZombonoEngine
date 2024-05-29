@@ -518,7 +518,13 @@ void CL_ClearLightStyles();
 
 typedef enum
 {
-	ex_free, ex_explosion, ex_misc, ex_flash, ex_mflash, ex_poly, ex_poly2
+	ex_free, 
+	ex_explosion, 
+	ex_misc, 
+	ex_flash, 
+	ex_mflash, 
+	ex_poly, 
+	ex_poly2
 } exptype_t;
 
 typedef struct

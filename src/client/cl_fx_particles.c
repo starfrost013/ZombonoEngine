@@ -206,9 +206,6 @@ void CL_ParseMuzzleFlash2 ()
 	}
 }
 
-
-
-
 /*
 ==============================================================
 
@@ -220,7 +217,7 @@ PARTICLE MANAGEMENT
 cparticle_t	*active_particles, *free_particles;
 
 cparticle_t	particles[MAX_PARTICLES];
-int32_t 		cl_numparticles = MAX_PARTICLES;
+int32_t 	cl_numparticles = MAX_PARTICLES;
 
 
 /*
@@ -232,6 +229,9 @@ void CL_ClearParticles ()
 {
 	int32_t 	i;
 	
+	if (cl_numparticles == 0)
+		return; 
+
 	free_particles = &particles[0];
 	active_particles = NULL;
 
