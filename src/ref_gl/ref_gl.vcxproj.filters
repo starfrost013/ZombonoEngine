@@ -85,9 +85,6 @@
     <ClInclude Include="..\qcommon\qcommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\qcommon\qfiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\client\ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -41,14 +41,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct frame_s
 {
-	bool				valid;			// cleared if delta parsing was invalid
-	int32_t 			serverframe;
-	int32_t 			servertime;		// server time the message is valid for (in msec)
-	int32_t 			deltaframe;
-	uint8_t				areabits[MAX_MAP_AREAS/8];		// portalarea visibility bits
-	player_state_t		playerstate;
-	int32_t 			num_entities;
-	int32_t 			parse_entities;	// non-masked index into cl_parse_entities array
+	bool			valid;			// cleared if delta parsing was invalid
+	int32_t 		serverframe;
+	int32_t 		servertime;		// server time the message is valid for (in msec)
+	int32_t 		deltaframe;
+	uint8_t			areabits[MAX_MAP_AREAS / 8];		// portalarea visibility bits
+	player_state_t	playerstate;
+	int32_t 		num_entities;
+	int32_t 		parse_entities;	// non-masked index into cl_parse_entities array
 } frame_t;
 
 typedef struct centity_s
@@ -69,13 +69,13 @@ typedef struct centity_s
 
 typedef struct clientinfo_s
 {
-	char	name[MAX_QPATH];
-	char	cinfo[MAX_QPATH];
-	struct image_s	*skin;
-	struct image_s	*icon;
-	char	iconname[MAX_QPATH];
-	struct model_s	*model;
-	struct model_s	*weaponmodel[MAX_CLIENTWEAPONMODELS];
+	char			name[MAX_QPATH];
+	char			cinfo[MAX_QPATH];
+	struct image_s* skin;
+	struct image_s* icon;
+	char			iconname[MAX_QPATH];
+	struct model_s* model;
+	struct model_s* weaponmodel[MAX_CLIENTWEAPONMODELS];
 } clientinfo_t;
 
 extern char cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
@@ -123,7 +123,7 @@ typedef struct client_state_s
 	vec3_t			viewangles;
 
 	int32_t 		time;			// this is the time value that the client
-								// is rendering at.  always <= cls.realtime
+	// is rendering at.  always <= cls.realtime
 	float			lerpfrac;		// between oldframe and frame
 
 	refdef_t		refdef;
@@ -152,11 +152,11 @@ typedef struct client_state_s
 	//
 	// locally derived information from server state
 	//
-	struct model_s	*model_draw[MAX_MODELS];
-	struct cmodel_s	*model_clip[MAX_MODELS];
+	struct model_s*	 model_draw[MAX_MODELS];
+	struct cmodel_s* model_clip[MAX_MODELS];
 
-	struct sfx_s	*sound_precache[MAX_SOUNDS];
-	struct image_s	*image_precache[MAX_IMAGES];
+	struct sfx_s*	sound_precache[MAX_SOUNDS];
+	struct image_s* image_precache[MAX_IMAGES];
 
 	clientinfo_t	clientinfo[MAX_CLIENTS];
 	clientinfo_t	baseclientinfo;
@@ -189,7 +189,13 @@ typedef enum {
 	dl_single
 } dltype_t;		// download type
 
-typedef enum {key_game, key_console, key_message, key_menu} keydest_t;
+typedef enum 
+{ 
+	key_game, 
+	key_console, 
+	key_message, 
+	key_menu 
+} keydest_t;
 
 typedef struct
 {
@@ -201,11 +207,11 @@ typedef struct
 	float		frametime;			// seconds since last frame
 	float		fps;				// most recent framerate
 
-// screen rendering information
+	// screen rendering information
 	float		disable_screen;		// showing loading plaque between levels
-									// or changing rendering dlls
-									// if time gets > 30 seconds ahead, break it
-	
+	// or changing rendering dlls
+	// if time gets > 30 seconds ahead, break it
+
 	bool		disable_input;		// turns off input
 
 	// Disable individual elements of input
@@ -213,30 +219,30 @@ typedef struct
 	bool		disable_mouse;		// turns off mouse events
 
 	int32_t 	disable_servercount;// when we receive a frame and cl.servercount
-									// > cls.disable_servercount, clear disable_screen
+	// > cls.disable_servercount, clear disable_screen
 
 // connection information
 	char		servername[MAX_OSPATH];	// name of server from original connect
 	float		connect_time;		// for connection retransmits
 
 	int32_t 	netchan_port;		// a 16 bit value that allows quake servers
-									// to work around address translating routers
+	// to work around address translating routers
 	netchan_t	netchan;
 	int32_t 	server_protocol;	// in case we are doing some kind of version hack
 
 	int32_t 	challenge;			// from the server to use for connecting
 
-	FILE		*download;			// file transfer from server
+	FILE* download;			// file transfer from server
 	char		downloadtempname[MAX_OSPATH];
 	char		downloadname[MAX_OSPATH];
 	int32_t 	downloadnumber;
 	dltype_t	downloadtype;
 	int32_t 	downloadpercent;
 
-// demo recording info must be here, so it isn't cleared on level change
+	// demo recording info must be here, so it isn't cleared on level change
 	bool		demorecording;
 	bool		demowaiting;	// don't record until a non-delta message is received
-	FILE		*demofile;
+	FILE* demofile;
 } client_static_t;
 
 extern client_static_t	cls;
@@ -326,8 +332,8 @@ extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 
 // App activation
 
-bool		app_active;
-bool		app_minimized;
+bool app_active;
+bool app_minimized;
 void AppActivate(bool fActive, bool minimize);
 
 //=============================================================================
@@ -335,89 +341,88 @@ void AppActivate(bool fActive, bool minimize);
 extern	netadr_t	net_from;
 extern	sizebuf_t	net_message;
 
-bool CL_CheckOrDownloadFile (char *filename);
+bool CL_CheckOrDownloadFile(char* filename);
 
-void CL_AddNetgraph ();
+void CL_AddNetgraph();
 
-void CL_TeleporterParticles (entity_state_t *ent);
-void CL_ParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
-void CL_ParticleEffect2 (vec3_t org, vec3_t dir, vec4_t color, int32_t count);
+void CL_TeleporterParticles(entity_state_t* ent);
+void CL_ParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count);
+void CL_ParticleEffect2(vec3_t org, vec3_t dir, vec4_t color, int32_t count);
 
 //=============================================================================
 
 typedef struct particle_s
 {
-	struct particle_s	*next;
-
+	struct particle_s* next;
 	float		time;
-
 	vec3_t		org;
 	vec3_t		vel;
 	vec3_t		accel;
 	vec4_t		color;
 	float		colorvel;
 	float		alphavel;
+	int32_t		lifetime; // alternative way of having particles die without fading away
 	bool		permanent; // used for func_particle_effect
 } cparticle_t;
 
 
-#define	PARTICLE_GRAVITY	40
-#define BLASTER_PARTICLE_COLOR		0xe0
-#define INSTANT_PARTICLE	-10000.0
+#define	PARTICLE_GRAVITY		40
+#define BLASTER_PARTICLE_COLOR	0xe0
+#define INSTANT_PARTICLE		-10000.0
 
-void CL_ClearEffects ();
-void CL_ClearTEnts ();
-void CL_BlasterTrail (vec3_t start, vec3_t end);
-void CL_QuadTrail (vec3_t start, vec3_t end);
-void CL_RailTrail (vec3_t start, vec3_t end);
-void CL_BubbleTrail (vec3_t start, vec3_t end);
+void CL_ClearEffects();
+void CL_ClearTEnts();
+void CL_BlasterTrail(vec3_t start, vec3_t end);
+void CL_QuadTrail(vec3_t start, vec3_t end);
+void CL_RailTrail(vec3_t start, vec3_t end);
+void CL_BubbleTrail(vec3_t start, vec3_t end);
 
-void CL_Flashlight (int32_t ent, vec3_t pos);
-void CL_FlameEffects (centity_t *ent, vec3_t origin);
-void CL_GenericParticleEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel);
-void CL_ParticleSteamEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
-void CL_ColorFlash (vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b);
-void CL_ParticleSmokeEffect (vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
+void CL_Flashlight(int32_t ent, vec3_t pos);
+void CL_FlameEffects(centity_t* ent, vec3_t origin);
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel);
+void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
+void CL_ColorFlash(vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b);
+void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
 
-int32_t CL_ParseEntityBits (uint32_t *bits);
-void CL_ParseDelta (entity_state_t *from, entity_state_t *to, int32_t number, int32_t bits);
-void CL_ParseFrame ();
+int32_t CL_ParseEntityBits(uint32_t* bits);
+void CL_ParseDelta(entity_state_t* from, entity_state_t* to, int32_t number, int32_t bits);
+void CL_ParseFrame();
 
-void CL_ParseTEnt ();
-void CL_ParseConfigString ();
-void CL_ParseMuzzleFlash ();
-void CL_ParseMuzzleFlash2 ();
+void CL_ParseTEnt();
+void CL_ParseConfigString();
+void CL_ParseMuzzleFlash();
+void CL_ParseMuzzleFlash2();
 
-void CL_SetLightstyle (int32_t i);
+void CL_SetLightstyle(int32_t i);
 
-void CL_RunDLights ();
-void CL_RunLightStyles ();
+void CL_RunDLights();
+void CL_RunLightStyles();
 
-void CL_AddEntities ();
-void CL_AddDLights ();
-void CL_AddTEnts ();
-void CL_AddLightStyles ();
+void CL_AddEntities();
+void CL_AddDLights();
+void CL_AddTEnts();
+void CL_AddLightStyles();
 
 //=================================================
 
-void CL_PrepRefresh ();
-void CL_RegisterSounds ();
+void CL_PrepRefresh();
+void CL_RegisterSounds();
 
-void CL_Quit_f ();
+void CL_Quit_f();
 
 //
 // cl_main
 //
 extern	refexport_t	re;		// interface to refresh .dll
 
-void CL_Init ();
+void CL_Init();
 
 void CL_FixUpGender();
-void CL_Disconnect ();
-void CL_Disconnect_f ();
-void CL_PingServers_f ();
-void CL_Snd_Restart_f ();
-void CL_RequestNextDownload ();
+void CL_Disconnect();
+void CL_Disconnect_f();
+void CL_PingServers_f();
+void CL_Snd_Restart_f();
+void CL_RequestNextDownload();
 
 //
 // cl_input.c
@@ -427,60 +432,60 @@ typedef struct
 	int32_t 		down[2];		// key nums holding it down
 	uint32_t		downtime;		// msec timestamp
 	uint32_t		msec;			// msec down this frame
-	int32_t 		state;
+	int32_t 		state;			// state of this key
 } kbutton_t;
 
-extern	kbutton_t	Input_mlook, input_klook;
-extern 	kbutton_t 	input_speed;
+extern kbutton_t	input_mlook, input_klook;
+extern kbutton_t 	input_speed;
 
-void CL_InitInput ();
-void CL_SendCmd ();
+void CL_InitInput();
+void CL_SendCmd();
 
-void CL_ClearState ();
+void CL_ClearState();
 
-void CL_ReadPackets ();
+void CL_ReadPackets();
 
-void CL_BaseMove (usercmd_t *cmd);
+void CL_BaseMove(usercmd_t* cmd);
 
-void Input_CenterView ();
+void Input_CenterView();
 
 extern double last_mouse_pos_x, last_mouse_pos_y;
 
-float CL_KeyState (kbutton_t *key);
-char *Key_KeynumToString (int32_t keynum, bool shift);
+float CL_KeyState(kbutton_t* key);
+char* Key_KeynumToString(int32_t keynum, bool shift);
 
 extern uint32_t		sys_frame_time;
 
 //
 // cl_demo.c
 //
-void CL_WriteDemoMessage ();
-void CL_Stop_f ();
-void CL_Record_f ();
+void CL_WriteDemoMessage();
+void CL_Stop_f();
+void CL_Record_f();
 
 //
 // cl_parse.c
 //
-extern	char *svc_strings[256];
+extern	char* svc_strings[256];
 
-void CL_ParseServerMessage ();
-void CL_LoadClientinfo (clientinfo_t *ci, char *s);
-void ShowNet(char *s);
-void CL_ParseClientinfo (int32_t player);
-void CL_Download_f ();
+void CL_ParseServerMessage();
+void CL_LoadClientinfo(clientinfo_t* ci, char* s);
+void ShowNet(char* s);
+void CL_ParseClientinfo(int32_t player);
+void CL_Download_f();
 
 //
 // cl_view.c
 //
 extern	int32_t 		gun_frame;
-extern	struct model_s	*gun_model;
+extern	struct model_s* gun_model;
 
-void V_Init ();
+void V_Init();
 void V_RenderView();
-void V_AddEntity (entity_t *ent);
-void V_AddParticle (vec3_t org, vec4_t color);
-void V_AddLight (vec3_t org, float intensity, float r, float g, float b);
-void V_AddLightStyle (int32_t style, float r, float g, float b);
+void V_AddEntity(entity_t* ent);
+void V_AddParticle(vec3_t org, vec4_t color);
+void V_AddLight(vec3_t org, float intensity, float r, float g, float b);
+void V_AddLightStyle(int32_t style, float r, float g, float b);
 
 // Debug stuff for cl_showinfo
 extern int32_t r_numdlights;
@@ -490,15 +495,15 @@ extern int32_t r_numparticles;
 //
 // cl_tent.c
 //
-void CL_RegisterTEntSounds ();
-void CL_RegisterTEntModels ();
+void CL_RegisterTEntSounds();
+void CL_RegisterTEntModels();
 void CL_SmokeAndFlash(vec3_t origin);
 
 //
 // cl_pred.c
 //
-void CL_PredictMovement ();
-void CL_CheckPredictionError ();
+void CL_PredictMovement();
+void CL_CheckPredictionError();
 
 //
 // cl_fx_dlight.c
@@ -518,12 +523,12 @@ void CL_ClearLightStyles();
 
 typedef enum
 {
-	ex_free, 
-	ex_explosion, 
-	ex_misc, 
-	ex_flash, 
-	ex_mflash, 
-	ex_poly, 
+	ex_free,
+	ex_explosion,
+	ex_misc,
+	ex_flash,
+	ex_mflash,
+	ex_poly,
 	ex_poly2
 } exptype_t;
 
@@ -551,12 +556,12 @@ void CL_AddExplosions();
 #define	MAX_BEAMS	32
 typedef struct
 {
-	int32_t 	entity;
-	int32_t 	dest_entity;
+	int32_t 		entity;
+	int32_t 		dest_entity;
 	struct model_s* model;
-	int32_t 	endtime;
-	vec3_t	offset;
-	vec3_t	start, end;
+	int32_t 		endtime;
+	vec3_t			offset;
+	vec3_t			start, end;
 } beam_t;
 
 extern beam_t		cl_beams[MAX_BEAMS];
@@ -570,8 +575,8 @@ void CL_AddPlayerBeams();
 //
 // cl_fx_particle.c
 //
-extern	struct model_s* cl_mod_smoke;
-extern	struct model_s* cl_mod_flash;
+extern struct model_s* cl_mod_smoke;
+extern struct model_s* cl_mod_flash;
 
 void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old);
 void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags);
@@ -595,7 +600,7 @@ void M_AddToServerList(netadr_t adr, char* info);
 //
 // cl_pred.c
 //
-void CL_PredictMovement ();
+void CL_PredictMovement();
 
 //
 // cl_ui.c
@@ -661,7 +666,8 @@ typedef struct ui_control_s
 } ui_control_t;
 
 typedef struct ui_s
-{	int32_t 		num_controls;				// Number of controls in the UI.
+{
+	int32_t 		num_controls;				// Number of controls in the UI.
 	char			name[MAX_UI_STRLEN];		// The name of this UI	
 	bool			(*on_create)();				// A function to call when creating this UI.
 	bool			enabled;					// True if the UI is currently being drawn.
@@ -671,7 +677,7 @@ typedef struct ui_s
 } ui_t;
 
 extern ui_t			ui_list[MAX_UIS];	// The list of UIs.
-extern ui_t*		current_ui;			// The current UI being displayed
+extern ui_t* current_ui;			// The current UI being displayed
 extern int32_t 		num_uis;			// The current number of UIs
 extern bool			ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
 extern bool			ui_initialised;		// Determines if the UI engine has been initialised or not.
@@ -810,8 +816,8 @@ typedef enum font_json_section_e
 
 extern font_t	fonts[MAX_FONTS];			// Global object containing all loaded fonts.
 
-extern cvar_t*	cl_system_font;				// The font used for the game's text (chat, et cetera).
-extern cvar_t*	cl_console_font;			// The font used for the console.
+extern cvar_t* cl_system_font;				// The font used for the game's text (chat, et cetera).
+extern cvar_t* cl_console_font;			// The font used for the console.
 extern int32_t 	num_fonts;					// The number of loaded fonts.
 extern bool		fonts_initialised;			// Indicates if the font engine has been initialised or not.
 
@@ -826,7 +832,7 @@ glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a 
 
 void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...);					// Draws text using font font.
 void Text_DrawChar(const char* font, int32_t x, int32_t y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
-bool Text_GetSize(const char* font, int32_t *size_x, int32_t *size_y, const char* text, ...);	// Gets the size of the text text.#
+bool Text_GetSize(const char* font, int32_t* size_x, int32_t* size_y, const char* text, ...);	// Gets the size of the text text.#
 bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
 
 //
@@ -835,8 +841,8 @@ bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char t
 //
 
 //Cvars
-extern cvar_t*	cl_loadout_fade;
-extern cvar_t*	cl_loadout_fade_time;
+extern cvar_t* cl_loadout_fade;
+extern cvar_t* cl_loadout_fade_time;
 
 void Loadout_Init();																			// Initialises the loadout system.
 void Loadout_Add();																				// Parses a loadout add message
