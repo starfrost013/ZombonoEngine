@@ -6,10 +6,10 @@
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.6c"; // Version
+const string ASSETBUILD_VERSION = "2.0.7"; // Version
 const string DEFAULT_GAME_NAME = "zombonogame"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
-string gameDir = $@"..\..\..\..\..\game\{gameName}"; // Complete relative path to game dir
+string gameDir = $@"..\..\..\..\..\assets\{gameName}"; // Complete relative path to game dir
 string outputDirectory = string.Empty; //set later
 
 bool quietMode = false; // If true, everything except errors are hushed
@@ -19,10 +19,10 @@ bool quietMode = false; // If true, everything except errors are hushed
 // Localise here!
 #region Strings
 const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
-     string STRING_DESCRIPTION = $"Builds assets for {gameName}";
+      string STRING_DESCRIPTION = $"Builds assets for {gameName}";
 const string STRING_USAGE = "Assetbuild <game> [release cfg] [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
-    "[directory]: Optional - base directory (default is ../../../../../game/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
+    "[directory]: Optional - base directory (default is ../../../../../assets/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
     "[-q]: Optional - quiets everything except errors";
       string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
       string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
@@ -118,18 +118,17 @@ try
     Console.ResetColor();
     #endregion
 
-    #region Utility functions
-
-    void PrintHelpAndExit(int exitCode)
-    {
-        Console.WriteLine(STRING_USAGE);
-        Environment.Exit(exitCode);
-    }
-    #endregion
 }
 catch (Exception ex)
 {
     PrintErrorAndExit($"{STRING_ERROR_GENERIC} \n\n{ex}", 8);
+}
+
+#region Utility functions
+void PrintHelpAndExit(int exitCode)
+{
+    Console.WriteLine(STRING_USAGE);
+    Environment.Exit(exitCode);
 }
 
 void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
@@ -152,3 +151,5 @@ void PrintErrorAndExit(string errorString, int errorId)
     Environment.Exit(errorId);
 }
 
+
+#endregion

@@ -1,5 +1,5 @@
-[submodule "game"]
-	path = game
+[submodule "assets"]
+	path = assets
 	url = https://github.com/starfrost013/ZombonoAssets.git
 [submodule "engine/game"]
 	path = engine/game
