@@ -45,7 +45,7 @@ static bool Cvar_InfoValidate (char *s)
 Cvar_FindVar
 ============
 */
-static cvar_t *Cvar_FindVar (char *var_name)
+static cvar_t* Cvar_FindVar (char *var_name)
 {
 	cvar_t* var;
 	
@@ -77,7 +77,7 @@ float Cvar_VariableValue (char *var_name)
 Cvar_VariableString
 ============
 */
-char *Cvar_VariableString (char *var_name)
+char* Cvar_VariableString (char *var_name)
 {
 	cvar_t *var;
 	
@@ -93,9 +93,9 @@ char *Cvar_VariableString (char *var_name)
 Cvar_CompleteVariable
 ============
 */
-char *Cvar_CompleteVariable (char *partial)
+char* Cvar_CompleteVariable (char *partial)
 {
-	cvar_t	*cvar;
+	cvar_t* cvar;
 	int32_t len;
 	
 	len = (int32_t)strlen(partial);
@@ -177,7 +177,7 @@ cvar_t* Cvar_Get (char *var_name, char *var_value, int32_t flags)
 Cvar_Set2
 ============
 */
-cvar_t *Cvar_Set2 (char *var_name, char *value, bool force)
+cvar_t* Cvar_Set2 (char *var_name, char *value, bool force)
 {
 	cvar_t* var;
 
@@ -266,7 +266,7 @@ cvar_t *Cvar_Set2 (char *var_name, char *value, bool force)
 Cvar_ForceSet
 ============
 */
-cvar_t *Cvar_ForceSet (char *var_name, char *value)
+cvar_t* Cvar_ForceSet (char *var_name, char *value)
 {
 	return Cvar_Set2 (var_name, value, true);
 }
@@ -276,7 +276,7 @@ cvar_t *Cvar_ForceSet (char *var_name, char *value)
 Cvar_Set
 ============
 */
-cvar_t *Cvar_Set (char *var_name, char *value)
+cvar_t* Cvar_Set (char *var_name, char *value)
 {
 	return Cvar_Set2 (var_name, value, false);
 }
@@ -286,7 +286,7 @@ cvar_t *Cvar_Set (char *var_name, char *value)
 Cvar_FullSet
 ============
 */
-cvar_t *Cvar_FullSet (char *var_name, char *value, int32_t flags)
+cvar_t* Cvar_FullSet (char *var_name, char *value, int32_t flags)
 {
 	cvar_t* var;
 	
@@ -434,6 +434,7 @@ void Cvar_WriteVariables (char *path)
 	FILE	*f;
 
 	f = fopen (path, "a");
+
 	for (var = cvar_vars ; var ; var = var->next)
 	{
 		if (var->flags & CVAR_ARCHIVE)
@@ -442,6 +443,7 @@ void Cvar_WriteVariables (char *path)
 			fprintf (f, "%s", buffer);
 		}
 	}
+
 	fclose (f);
 }
 
@@ -467,6 +469,7 @@ void Cvar_List_f ()
 	}
 
 	i = 0;
+
 	for (var = cvar_vars ; var ; var = var->next, i++)
 	{
 		if (search_str != NULL
@@ -503,11 +506,9 @@ void Cvar_List_f ()
 		Com_Printf("%i cvars matching the search string %s\n", i, search_str);
 }
 
-
 bool userinfo_modified;
 
-
-char	*Cvar_BitInfo (int32_t bit)
+char* Cvar_BitInfo (int32_t bit)
 {
 	static char	info[MAX_INFO_STRING];
 	cvar_t* var;
@@ -523,13 +524,13 @@ char	*Cvar_BitInfo (int32_t bit)
 }
 
 // returns an info string containing all the CVAR_USERINFO cvars
-char	*Cvar_Userinfo ()
+char* Cvar_Userinfo ()
 {
 	return Cvar_BitInfo (CVAR_USERINFO);
 }
 
 // returns an info string containing all the CVAR_SERVERINFO cvars
-char	*Cvar_Serverinfo ()
+char* Cvar_Serverinfo ()
 {
 	return Cvar_BitInfo (CVAR_SERVERINFO);
 }

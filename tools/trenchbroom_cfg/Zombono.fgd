@@ -1,7 +1,7 @@
 // Zombono game definition file (.fgd)
 // Copyright © 2023-2024 starfrost
 //
-// Last updated: 29 May 2024
+// Last updated: 30 May 2024
 
 //
 // worldspawn
@@ -277,7 +277,7 @@
 		2 : "Permanent" : 0
 	]
 
-	effect(choices) : "Effect" : 0 =
+	particle_effect(choices) : "Effect" : 0 =
 	[
 		0 : "Generic"
 		1 : "Gunshot"
@@ -302,6 +302,8 @@
 		20 : "Flashlight"
 		21 : "Light"	
 	]
+	
+	lifetime(integer) : "Lifetime (milliseconds)" : 1000
 ]
 
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_plat : "Platform"
@@ -437,7 +439,6 @@
 ]
 
 @PointClass base(Items) model({ "path": ":models/items/adrenal/tris.md2" }) = item_adrenaline : "+1 to max health" []
-@PointClass base(Items) model({ "path": ":models/items/c_head/tris.md2" }) = item_ancient_head : "+2 to max health" []
 @PointClass base(Items) model({ "path": ":models/items/armor/body/tris.md2" }) = item_armor_body : "Body armor" []
 @PointClass base(Items) model({ "path": ":models/items/armor/combat/tris.md2" }) = item_armor_combat : "Combat armor" []
 @PointClass base(Items) model({ "path": ":models/items/armor/jacket/tris.md2" }) = item_armor_jacket : "Jacket armor" []
@@ -452,7 +453,6 @@
 @PointClass base(Items) model({ "path": ":models/items/mega_h/tris.md2" }) = item_health_mega : "+100 health" []
 @PointClass base(Items) model({ "path": ":models/items/invulner/tris.md2" }) = item_invulnerability : "Invulnerability" []
 @PointClass base(Items) model({ "path": ":models/items/pack/tris.md2" }) = item_pack : "Heavy backpack" []
-@PointClass base(Items) model({ "path": ":models/items/armor/screen/tris.md2" }) = item_power_screen : "Power screen" []
 @PointClass base(Items) model({ "path": ":models/items/armor/shield/tris.md2" }) = item_power_shield : "Power shield" []
 @PointClass base(Items) model({ "path": ":models/items/quaddama/tris.md2" }) = item_quad : "Quad damage" []
 @PointClass base(Items) model({ "path": ":models/items/silencer/tris.md2" }) = item_silencer : "Silencer" []

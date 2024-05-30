@@ -587,7 +587,7 @@ void CL_ParseFrame ()
 			VectorCopy (cl.frame.playerstate.viewangles, cl.predicted_angles);
 			if (cls.disable_servercount != cl.servercount
 				&& cl.refresh_prepped)
-				SCR_EndLoadingPlaque ();	// get rid of loading plaque
+				Render2D_EndLoadingPlaque ();	// get rid of loading plaque
 		}
 		cl.sound_prepped = true;	// can start mixing ambient sounds
 	
@@ -826,14 +826,14 @@ void CL_AddPacketEntities (frame_t *frame)
 			//continue;
 
 		// add to refresh list
-		V_AddEntity (&ent);
+		Render3D_AddEntity (&ent);
 
 		// color shells generate a seperate entity for the main model
 		if (effects & EF_COLOR_SHELL)
 		{
 			ent.flags = renderfx | RF_TRANSLUCENT;
 			ent.alpha = 0.30;
-			V_AddEntity (&ent);
+			Render3D_AddEntity (&ent);
 		}
 
 		ent.skin = NULL;		// never use a custom skin on others
@@ -869,7 +869,7 @@ void CL_AddPacketEntities (frame_t *frame)
 				ent.flags = RF_TRANSLUCENT;
 			}
 
-			V_AddEntity (&ent);
+			Render3D_AddEntity (&ent);
 
 			ent.flags = 0;
 			ent.alpha = 0;
@@ -877,12 +877,12 @@ void CL_AddPacketEntities (frame_t *frame)
 		if (s1->modelindex3)
 		{
 			ent.model = cl.model_draw[s1->modelindex3];
-			V_AddEntity (&ent);
+			Render3D_AddEntity (&ent);
 		}
 		if (s1->modelindex4)
 		{
 			ent.model = cl.model_draw[s1->modelindex4];
-			V_AddEntity (&ent);
+			Render3D_AddEntity (&ent);
 		}
 
 		// add automatic particle trails
@@ -891,18 +891,18 @@ void CL_AddPacketEntities (frame_t *frame)
 			if (effects & EF_ROCKET)
 			{
 				CL_RocketTrail (cent->lerp_origin, ent.origin, cent);
-				V_AddLight (ent.origin, 200, 1, 1, 0);
+				Render3D_AddLight (ent.origin, 200, 1, 1, 0);
 			}
 			// PGM - Do not reorder EF_BLASTER and EF_HYPERBLASTER. 
 			// EF_BLASTER | EF_TRACKER is a special case for EF_BLASTER2... Cheese!
 			else if (effects & EF_BLASTER)
 			{
 				CL_BlasterTrail(cent->lerp_origin, ent.origin);
-				V_AddLight(ent.origin, 200, 1, 1, 0);
+				Render3D_AddLight(ent.origin, 200, 1, 1, 0);
 			}
 			else if (effects & EF_HYPERBLASTER)
 			{
-				V_AddLight(ent.origin, 200, 1, 1, 0);
+				Render3D_AddLight(ent.origin, 200, 1, 1, 0);
 			}
 			else if (effects & EF_GIB)
 			{
@@ -919,7 +919,7 @@ void CL_AddPacketEntities (frame_t *frame)
 			else if (effects & EF_LIGHTNING)
 			{
 				CL_LightningParticlesAttachedToEntity(ent.origin, ent.angles);
-				V_AddLight(ent.origin, 400, 1, 1, 1);
+				Render3D_AddLight(ent.origin, 400, 1, 1, 1);
 			}
 		}
 
@@ -978,7 +978,7 @@ void CL_AddViewWeapon (player_state_t *ps, player_state_t *ops)
 	gun.flags = RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL;
 	gun.backlerp = 1.0 - cl.lerpfrac;
 	VectorCopy (gun.origin, gun.oldorigin);	// don't lerp at all
-	V_AddEntity (&gun);
+	Render3D_AddEntity (&gun);
 }
 
 

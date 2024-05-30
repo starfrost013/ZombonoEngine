@@ -337,7 +337,7 @@ SV_InitGameProgs
 Init the game subsystem for a new map
 ===============
 */
-void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
+void Render2D_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
 void SV_InitGameProgs ()
 {
@@ -398,7 +398,7 @@ void SV_InitGameProgs ()
 	import.args = Cmd_Args;
 	import.AddCommandString = Cbuf_AddText;
 
-	import.DebugGraph = SCR_DebugGraph;
+	import.DebugGraph = Render2D_DebugGraph;
 	import.SetAreaPortalState = Map_SetAreaPortalState;
 	import.AreasConnected = Map_AreasConnected;
 

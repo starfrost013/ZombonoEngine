@@ -151,7 +151,7 @@ void CL_AddDLights()
 		{
 			if (!dl->radius)
 				continue;
-			V_AddLight(dl->origin, dl->radius,
+			Render3D_AddLight(dl->origin, dl->radius,
 				dl->color[0], dl->color[1], dl->color[2]);
 		}
 	}
@@ -170,7 +170,7 @@ void CL_AddDLights()
 				dl->color[1] = 1;
 				dl->color[2] = 1;
 			}
-			V_AddLight(dl->origin, dl->radius,
+			Render3D_AddLight(dl->origin, dl->radius,
 				dl->color[0], dl->color[1], dl->color[2]);
 		}
 	}

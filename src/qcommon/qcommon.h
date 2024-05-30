@@ -774,7 +774,7 @@ void Qcommon_Shutdown();
 extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
 
 // this is in the client code, but can be used for debugging from server
-void SCR_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a);
+void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a);
 
 
 /*
@@ -811,7 +811,7 @@ void CL_Drop();
 void CL_Shutdown();
 void CL_Frame(int32_t msec);
 void Con_Print(char* text);
-void SCR_BeginLoadingPlaque();
+void Render2D_BeginLoadingPlaque();
 
 void SV_Init();
 void SV_Shutdown(char* finalmsg, bool reconnect);

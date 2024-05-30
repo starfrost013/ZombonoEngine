@@ -108,7 +108,7 @@ void CL_AddBeams()
 			ent.angles[2] = rand() % 360;
 
 			//			Com_Printf("B: %d -> %d\n", b->entity, b->dest_entity);
-			V_AddEntity(&ent);
+			Render3D_AddEntity(&ent);
 
 			for (j = 0; j < 3; j++)
 				org[j] += dist[j] * len;
@@ -223,7 +223,7 @@ void CL_AddPlayerBeams()
 			ent.angles[0] = pitch;
 			ent.angles[1] = yaw;
 			ent.angles[2] = rand() % 360;
-			V_AddEntity(&ent);
+			Render3D_AddEntity(&ent);
 			return;
 		}
 		while (d > 0)
@@ -236,7 +236,7 @@ void CL_AddPlayerBeams()
 			ent.angles[2] = rand() % 360;
 
 			//			Com_Printf("B: %d -> %d\n", b->entity, b->dest_entity);
-			V_AddEntity(&ent);
+			Render3D_AddEntity(&ent);
 
 			for (j = 0; j < 3; j++)
 				org[j] += dist[j] * len;

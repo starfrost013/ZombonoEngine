@@ -414,7 +414,7 @@ void CL_Drop ()
 
 	// drop loading plaque unless this is the initial game start
 	if (cls.disable_servercount != -1)
-		SCR_EndLoadingPlaque ();	// get rid of loading plaque
+		Render2D_EndLoadingPlaque ();	// get rid of loading plaque
 }
 
 
@@ -687,7 +687,7 @@ void CL_Changing_f ()
 	if (cls.download)
 		return;
 
-	SCR_BeginLoadingPlaque ();
+	Render2D_BeginLoadingPlaque ();
 	cls.state = ca_connected;	// not active anymore, but not disconnected
 	Com_Printf ("\nChanging map...\n");
 }
@@ -810,7 +810,7 @@ void CL_Skins_f ()
 		if (!cl.configstrings[CS_PLAYERSKINS+i][0])
 			continue;
 		Com_Printf ("client %i: %s\n", i, cl.configstrings[CS_PLAYERSKINS+i]); 
-		SCR_UpdateScreen ();
+		Render_UpdateScreen ();
 		CL_ParseClientinfo (i);
 	}
 }
@@ -1364,7 +1364,7 @@ void CL_RequestNextDownload ()
 
 	//ZOID
 	CL_RegisterSounds();
-	CL_PrepRefresh();
+	Render3D_PrepRefresh();
 
 	MSG_WriteByte(&cls.netchan.message, clc_stringcmd);
 	MSG_WriteString(&cls.netchan.message, va("begin %i\n", precache_spawncount));
@@ -1388,7 +1388,7 @@ void CL_Precache_f ()
 
 		Map_Load (cl.configstrings[CS_MODELS+1], true, &map_checksum);
 		CL_RegisterSounds ();
-		CL_PrepRefresh ();
+		Render3D_PrepRefresh ();
 		return;
 	}
 
@@ -1741,12 +1741,12 @@ void CL_Frame (int32_t msec)
 	// allow rendering DLL change
 	Vid_CheckChanges ();
 	if (!cl.refresh_prepped && cls.state == ca_active)
-		CL_PrepRefresh ();
+		Render3D_PrepRefresh ();
 
 	// update the screen
 	if (host_speeds->value)
 		time_before_ref = Sys_Milliseconds ();
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	if (host_speeds->value)
 		time_after_ref = Sys_Milliseconds ();
 
@@ -1762,7 +1762,7 @@ void CL_Frame (int32_t msec)
 	CL_RunDLights ();
 	CL_RunLightStyles ();
 
-	SCR_RunConsole ();
+	Render2D_RunConsole ();
 
 	cls.framecount++;
 
@@ -1849,14 +1849,14 @@ void CL_Init ()
 	S_Init();	// sound must be initialized after window is created
 #endif
 	
-	V_Init();
+	Render3D_Init();
 	
 	net_message.data = net_message_buffer;
 	net_message.maxsize = sizeof(net_message_buffer);
 
 	M_Init();	
 	
-	SCR_Init();
+	Render2D_Init();
 	cls.disable_screen = true;	// don't draw yet
 
 	Miniaudio_Init();

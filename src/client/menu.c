@@ -3306,7 +3306,7 @@ bool PlayerConfig_MenuInit( void )
 
 void PlayerConfig_MenuDraw( void )
 {
-	extern float CalcFov( float fov_x, float w, float h );
+	extern float Render3D_CalcFov( float fov_x, float w, float h );
 	refdef_t refdef;
 	char scratch[MAX_QPATH];
 
@@ -3317,7 +3317,7 @@ void PlayerConfig_MenuDraw( void )
 	refdef.width = 144 * vid_hudscale->value;
 	refdef.height = 168 * vid_hudscale->value;
 	refdef.fov_x = 40;
-	refdef.fov_y = CalcFov( refdef.fov_x, refdef.width, refdef.height );
+	refdef.fov_y = Render3D_CalcFov( refdef.fov_x, refdef.width, refdef.height );
 	refdef.time = cls.realtime*0.001;
 
 	if ( s_pmi[s_player_model_box.curvalue].skindisplaynames )
@@ -3498,7 +3498,7 @@ void M_Draw ()
 		return;
 
 	// repaint32_t everything next frame
-	SCR_DirtyScreen ();
+	Render2D_DirtyScreen ();
 
 	re.DrawFadeScreen ();
 

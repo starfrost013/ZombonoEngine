@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// cl_scrn.c -- master for refresh, status bar, console, chat, notify, etc
+// cl_render_2d.c -- 2d parts of rendering: refresh, status bar, console, chat, notify, etc
 // This sucks ass get rid of it
 
 /*
@@ -40,27 +40,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 float		scr_con_current;	// aproaches scr_conlines at scr_conspeed
 float		scr_conlines;		// 0.0 to 1.0 lines of console to display
 
-bool	scr_initialized;		// ready to draw
+bool		scr_initialized;		// ready to draw
 
-int32_t 		scr_draw_loading;
+int32_t 	scr_draw_loading;
 
 vrect_t		scr_vrect;		// position of render window on screen
 
-cvar_t		*scr_viewsize;
-cvar_t		*scr_conspeed;
-cvar_t		*scr_centertime;
-cvar_t		*scr_showpause;
+cvar_t*		scr_viewsize;
+cvar_t*		scr_conspeed;
+cvar_t*		scr_centertime;
+cvar_t*		scr_showpause;
 
-cvar_t		*scr_timegraph;
-cvar_t		*scr_debuggraph;
-cvar_t		*scr_graphheight;
-cvar_t		*scr_graphscale;
-cvar_t		*scr_graphshift;
+cvar_t*		scr_timegraph;
+cvar_t*		scr_debuggraph;
+cvar_t*		scr_graphheight;
+cvar_t*		scr_graphscale;
+cvar_t*		scr_graphshift;
 
-cvar_t* vid_hudscale;
+cvar_t*		vid_hudscale;
 extern cvar_t* vid_ref;
 
-typedef struct
+typedef struct dirty_s
 {
 	int32_t 	x1, y1, x2, y2;
 } dirty_t;
@@ -68,10 +68,10 @@ typedef struct
 dirty_t		scr_dirty, scr_old_dirty[2];
 
 char		crosshair_pic[MAX_QPATH];
-int32_t 		crosshair_width, crosshair_height;
+int32_t 	crosshair_width, crosshair_height;
 
-void SCR_TimeRefresh_f ();
-void SCR_Loading_f ();
+void Render2D_TimeRefresh_f ();
+void Render2D_Loading_f ();
 
 
 /*
@@ -89,10 +89,10 @@ CL_AddNetgraph
 A new packet was just parsed
 ==============
 */
-void CL_AddNetgraph ()
+void Render2D_AddNetgraph ()
 {
-	int32_t 	in;
-	int32_t 	ping;
+	int32_t in;
+	int32_t ping;
 
 	// if using the debuggraph for something else, don't
 	// add the net lines
@@ -104,7 +104,7 @@ void CL_AddNetgraph ()
 	ping /= 30;
 	if (ping > 30)
 		ping = 30;
-	SCR_DebugGraph (ping, 18, 15, 22, 255);
+	Render2D_DebugGraph (ping, 18, 15, 22, 255);
 }
 
 
@@ -122,7 +122,7 @@ static	graphsamp_t	values[1024];
 SCR_DebugGraph
 ==============
 */
-void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
+void Render2D_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	values[current & 1023].value = value;
 	values[current & 1023].color[0] = r;
@@ -137,11 +137,10 @@ void SCR_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
 SCR_DrawDebugGraph
 ==============
 */
-void SCR_DrawDebugGraph ()
+void Render2D_DrawDebugGraph ()
 {
-	int32_t 	a, x, y, w, i, h;
+	int32_t a, x, y, w, i, h;
 	float	v;
-	vec_t	color[4];
 
 	//
 	// draw the graph
@@ -174,11 +173,11 @@ CENTER PRINTING
 ===============================================================================
 */
 
-char		scr_centerstring[1024];
-float		scr_centertime_start;	// for slow victory printing
-float		scr_centertime_off;
-int32_t 		scr_center_lines;
-int32_t 		scr_erase_center;
+char	scr_centerstring[1024];
+float	scr_centertime_start;	// for slow victory printing
+float	scr_centertime_off;
+int32_t scr_center_lines;
+int32_t scr_erase_center;
 
 /*
 ==============
@@ -188,9 +187,9 @@ Called for important messages that should stay in the center of the screen
 for a few moments
 ==============
 */
-void SCR_CenterPrint (char *str)
+void Render2D_CenterPrint (char *str)
 {
-	char	*s;
+	char* s;
 
 	strncpy (scr_centerstring, str, sizeof(scr_centerstring));
 	scr_centertime_off = scr_centertime->value;
@@ -216,13 +215,14 @@ void SCR_CenterPrint (char *str)
 }
 
 
-void SCR_DrawCenterString ()
+void Render2D_DrawCenterString ()
 {
-	char	*start;
-	int32_t 	x, y;
-	int32_t 	remaining;
-	int32_t 	size_x = 0, size_y = 0;
+	char*	start;
+	int32_t x, y;
+	int32_t remaining;
+	int32_t size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
+
 // the finale prints the characters one at a time
 	remaining = 9999;
 
@@ -236,19 +236,19 @@ void SCR_DrawCenterString ()
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
 	x = (viddef.width - size_x * vid_hudscale->value) / 2;
-	SCR_AddDirtyPoint(x, y);
+	Render2D_AddDirtyPoint(x, y);
 	Text_Draw(cl_system_font->string, x, y, start);
-	SCR_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
+	Render2D_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
 }
 
-void SCR_CheckDrawCenterString ()
+void Render2D_CheckDrawCenterString ()
 {
 	scr_centertime_off -= cls.frametime;
 	
 	if (scr_centertime_off <= 0)
 		return;
 
-	SCR_DrawCenterString ();
+	Render2D_DrawCenterString ();
 }
 
 //=============================================================================
@@ -260,7 +260,7 @@ SCR_CalcVrect
 Sets scr_vrect, the coordinates of the rendered window
 =================
 */
-void SCR_CalcVrect ()
+void Render2D_CalcVrect ()
 {
 	int32_t 	size;
 
@@ -287,7 +287,7 @@ SCR_SizeUp_f
 Keybinding command
 =================
 */
-void SCR_SizeUp_f ()
+void Render2D_SizeUp_f ()
 {
 	Cvar_SetValue ("viewsize",scr_viewsize->value+10);
 }
@@ -300,7 +300,7 @@ SCR_SizeDown_f
 Keybinding command
 =================
 */
-void SCR_SizeDown_f ()
+void Render2D_SizeDown_f ()
 {
 	Cvar_SetValue ("viewsize",scr_viewsize->value-10);
 }
@@ -312,7 +312,7 @@ SCR_Sky_f
 Set a specific sky and rotation speed
 =================
 */
-void SCR_Sky_f ()
+void Render2D_Sky_f ()
 {
 	float	rotate;
 	vec3_t	axis;
@@ -322,10 +322,12 @@ void SCR_Sky_f ()
 		Com_Printf ("Usage: sky <basename> <rotate> <axis x y z>\n");
 		return;
 	}
+
 	if (Cmd_Argc() > 2)
 		rotate = atof(Cmd_Argv(2));
 	else
 		rotate = 0;
+
 	if (Cmd_Argc() == 6)
 	{
 		axis[0] = atof(Cmd_Argv(3));
@@ -349,7 +351,7 @@ void SCR_Sky_f ()
 SCR_Init
 ==================
 */
-void SCR_Init ()
+void Render2D_Init ()
 {
 	scr_viewsize = Cvar_Get ("viewsize", "100", CVAR_ARCHIVE);
 	scr_conspeed = Cvar_Get ("scr_conspeed", "3", 0);
@@ -364,11 +366,11 @@ void SCR_Init ()
 //
 // register our commands
 //
-	Cmd_AddCommand ("timerefresh",SCR_TimeRefresh_f);
-	Cmd_AddCommand ("loading",SCR_Loading_f);
-	Cmd_AddCommand ("sizeup",SCR_SizeUp_f);
-	Cmd_AddCommand ("sizedown",SCR_SizeDown_f);
-	Cmd_AddCommand ("sky",SCR_Sky_f);
+	Cmd_AddCommand ("timerefresh",Render2D_TimeRefresh_f);
+	Cmd_AddCommand ("loading",Render2D_Loading_f);
+	Cmd_AddCommand ("sizeup",Render2D_SizeUp_f);
+	Cmd_AddCommand ("sizedown",Render2D_SizeDown_f);
+	Cmd_AddCommand ("sky",Render2D_Sky_f);
 
 	scr_initialized = true;
 }
@@ -379,7 +381,7 @@ void SCR_Init ()
 SCR_DrawNet
 ==============
 */
-void SCR_DrawNet ()
+void Render2D_DrawNet ()
 {
 	if (cls.netchan.outgoing_sequence - cls.netchan.incoming_acknowledged 
 		< CMD_BACKUP-1)
@@ -393,9 +395,9 @@ void SCR_DrawNet ()
 SCR_DrawPause
 ==============
 */
-void SCR_DrawPause ()
+void Render2D_DrawPause ()
 {
-	int32_t 	w, h;
+	int32_t w, h;
 
 	if (!scr_showpause->value)		// turn off for screenshots
 		return;
@@ -412,9 +414,9 @@ void SCR_DrawPause ()
 SCR_DrawLoading
 ==============
 */
-void SCR_DrawLoading ()
+void Render2D_DrawLoading ()
 {
-	int32_t 	w, h;
+	int32_t w, h;
 		
 	if (!scr_draw_loading)
 		return;
@@ -433,7 +435,7 @@ SCR_RunConsole
 Scroll it up or down
 ==================
 */
-void SCR_RunConsole ()
+void Render2D_RunConsole ()
 {
 // decide on the height of the console
 	if (cls.key_dest == key_console)
@@ -462,7 +464,7 @@ void SCR_RunConsole ()
 SCR_DrawConsole
 ==================
 */
-void SCR_DrawConsole ()
+void Render2D_DrawConsole ()
 {
 	Con_CheckResize ();
 	
@@ -498,7 +500,7 @@ void SCR_DrawConsole ()
 SCR_BeginLoadingPlaque
 ================
 */
-void SCR_BeginLoadingPlaque ()
+void Render2D_BeginLoadingPlaque ()
 {
 	S_StopAllSounds ();
 	cl.sound_prepped = false;		// don't play ambients
@@ -514,7 +516,7 @@ void SCR_BeginLoadingPlaque ()
 
 	scr_draw_loading = 1;
 
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	cls.disable_screen = Sys_Milliseconds ();
 	cls.disable_servercount = cl.servercount;
 }
@@ -524,7 +526,7 @@ void SCR_BeginLoadingPlaque ()
 SCR_EndLoadingPlaque
 ================
 */
-void SCR_EndLoadingPlaque ()
+void Render2D_EndLoadingPlaque ()
 {
 	cls.disable_screen = 0;
 	Con_ClearNotify ();
@@ -535,9 +537,9 @@ void SCR_EndLoadingPlaque ()
 SCR_Loading_f
 ================
 */
-void SCR_Loading_f ()
+void Render2D_Loading_f ()
 {
-	SCR_BeginLoadingPlaque ();
+	Render2D_BeginLoadingPlaque ();
 }
 
 /*
@@ -545,7 +547,7 @@ void SCR_Loading_f ()
 SCR_TimeRefresh_f
 ================
 */
-int32_t entitycmpfnc( const entity_t *a, const entity_t *b )
+int32_t CompareEntities( const entity_t *a, const entity_t *b )
 {
 	/*
 	** all other models are sorted by model then skin
@@ -560,42 +562,42 @@ int32_t entitycmpfnc( const entity_t *a, const entity_t *b )
 	}
 }
 
-void SCR_TimeRefresh_f ()
+void Render2D_TimeRefresh_f ()
 {
-	int32_t 	i;
-	int32_t 	start, stop;
+	int32_t i;
+	int32_t start, stop;
 	float	time;
 
-	if ( cls.state != ca_active )
+	if (cls.state != ca_active)
 		return;
 
-	start = Sys_Milliseconds ();
+	start = Sys_Milliseconds();
 
 	if (Cmd_Argc() == 2)
 	{	// run without page flipping
-		re.BeginFrame( 0 );
-		for (i=0 ; i<128 ; i++)
+		re.BeginFrame(0);
+		for (i = 0; i < 128; i++)
 		{
-			cl.refdef.viewangles[1] = i/128.0*360.0;
-			re.RenderFrame (&cl.refdef);
+			cl.refdef.viewangles[1] = i / 128.0 * 360.0;
+			re.RenderFrame(&cl.refdef);
 		}
 		re.EndFrame();
 	}
 	else
 	{
-		for (i=0 ; i<128 ; i++)
+		for (i = 0; i < 128; i++)
 		{
-			cl.refdef.viewangles[1] = i/128.0*360.0;
+			cl.refdef.viewangles[1] = i / 128.0 * 360.0;
 
-			re.BeginFrame( 0 );
-			re.RenderFrame (&cl.refdef);
+			re.BeginFrame(0);
+			re.RenderFrame(&cl.refdef);
 			re.EndFrame();
 		}
 	}
 
-	stop = Sys_Milliseconds ();
-	time = (stop-start)/1000.0;
-	Com_Printf ("%f seconds (%f fps)\n", time, 128/time);
+	stop = Sys_Milliseconds();
+	time = (stop - start) / 1000.0;
+	Com_Printf("%f seconds (%f fps)\n", time, 128 / time);
 }
 
 /*
@@ -603,7 +605,7 @@ void SCR_TimeRefresh_f ()
 SCR_AddDirtyPoint
 =================
 */
-void SCR_AddDirtyPoint (int32_t x, int32_t y)
+void Render2D_AddDirtyPoint (int32_t x, int32_t y)
 {
 	if (x < scr_dirty.x1)
 		scr_dirty.x1 = x;
@@ -615,10 +617,10 @@ void SCR_AddDirtyPoint (int32_t x, int32_t y)
 		scr_dirty.y2 = y;
 }
 
-void SCR_DirtyScreen ()
+void Render2D_DirtyScreen ()
 {
-	SCR_AddDirtyPoint (0, 0);
-	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
+	Render2D_AddDirtyPoint (0, 0);
+	Render2D_AddDirtyPoint (viddef.width-1, viddef.height-1);
 }
 
 /*
@@ -628,7 +630,7 @@ SCR_TileClear
 Clear any parts of the tiled background that were drawn on last frame
 ==============
 */
-void SCR_TileClear ()
+void Render2D_TileClear ()
 {
 	if (scr_con_current == 1.0)
 		return;		// full screen console
@@ -671,42 +673,7 @@ char		*sb_nums[2][11] =
 #define	CHAR_WIDTH	16 * vid_hudscale->value
 #define	ICON_SPACE	8
 
-/*
-================
-SizeHUDString
-
-Allow embedded \n in the string
-================
-*/
-void SizeHUDString (char *string, int32_t *w, int32_t *h)
-{
-	int32_t 	lines, width, current;
-
-	lines = 1;
-	width = 0;
-
-	current = 0;
-	while (*string)
-	{
-		if (*string == '\n')
-		{
-			lines++;
-			current = 0;
-		}
-		else
-		{
-			current++;
-			if (current > width)
-				width = current;
-		}
-		string++;
-	}
-
-	*w = width * 8 * vid_hudscale->value;
-	*h = lines * 8 * vid_hudscale->value;
-}
-
-void DrawCenteredString (char *string, int32_t x, int32_t y, int32_t centerwidth)
+void Render2DDrawCenteredString (char *string, int32_t x, int32_t y, int32_t centerwidth)
 {
 	int32_t 	margin;
 	char	line[1024];
@@ -751,7 +718,7 @@ void DrawCenteredString (char *string, int32_t x, int32_t y, int32_t centerwidth
 SCR_DrawField
 ==============
 */
-void SCR_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t value)
+void Render2D_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t value)
 {
 	char	num[16], *ptr;
 	int32_t 	l;
@@ -764,8 +731,8 @@ void SCR_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t 
 	if (width > 5)
 		width = 5;
 
-	SCR_AddDirtyPoint (x, y);
-	SCR_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
+	Render2D_AddDirtyPoint (x, y);
+	Render2D_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
 
 	Com_sprintf (num, sizeof(num), "%i", value);
 	l = (int32_t)strlen(num);
@@ -796,7 +763,7 @@ SCR_TouchPics
 Allows rendering code to cache all needed sbar graphics
 ===============
 */
-void SCR_TouchPics ()
+void Render2D_TouchPics ()
 {
 	int32_t 	i, j;
 
@@ -832,11 +799,11 @@ SCR_ExecuteLayoutString
 
 ================
 */
-void SCR_ExecuteLayoutString (char *s)
+void Render2D_ExecuteLayoutString (char *s)
 {
 	int32_t 	x, y;
 	int32_t 	value;
-	char	*token;
+	char*	token;
 	int32_t 	width;
 	int32_t 	index;
 	clientinfo_t	*ci;
@@ -900,8 +867,8 @@ void SCR_ExecuteLayoutString (char *s)
 				Com_Error (ERR_DROP, "Pic >= MAX_IMAGES");
 			if (cl.configstrings[CS_IMAGES+value])
 			{
-				SCR_AddDirtyPoint (x, y);
-				SCR_AddDirtyPoint (x+23, y+23);
+				Render2D_AddDirtyPoint (x, y);
+				Render2D_AddDirtyPoint (x+23, y+23);
 				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value], NULL);
 			}
 			continue;
@@ -910,8 +877,8 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "picn"))
 		{	// draw a pic from a name
 			token = COM_Parse (&s);
-			SCR_AddDirtyPoint (x, y);
-			SCR_AddDirtyPoint (x+23, y+23);
+			Render2D_AddDirtyPoint (x, y);
+			Render2D_AddDirtyPoint (x+23, y+23);
 			re.DrawPic (x, y, token, NULL);
 			continue;
 		}
@@ -922,7 +889,7 @@ void SCR_ExecuteLayoutString (char *s)
 			width = atoi(token);
 			token = COM_Parse (&s);
 			value = cl.frame.playerstate.stats[atoi(token)];
-			SCR_DrawField (x, y, 0, width, value);
+			Render2D_DrawField (x, y, 0, width, value);
 			continue;
 		}
 
@@ -942,7 +909,7 @@ void SCR_ExecuteLayoutString (char *s)
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
 				re.DrawPic (x, y, "2d/field_3", NULL);
 
-			SCR_DrawField (x, y, color, width, value);
+			Render2D_DrawField (x, y, color, width, value);
 			continue;
 		}
 
@@ -962,7 +929,7 @@ void SCR_ExecuteLayoutString (char *s)
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
 				re.DrawPic (x, y, "2d/field_3", NULL);
 
-			SCR_DrawField (x, y, color, width, value);
+			Render2D_DrawField (x, y, color, width, value);
 			continue;
 		}
 
@@ -980,7 +947,7 @@ void SCR_ExecuteLayoutString (char *s)
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
 				re.DrawPic (x, y, "2d/field_3", NULL);
 
-			SCR_DrawField (x, y, color, width, value);
+			Render2D_DrawField (x, y, color, width, value);
 			continue;
 		}
 
@@ -1001,7 +968,7 @@ void SCR_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "cstring"))
 		{
 			token = COM_Parse (&s);
-			DrawCenteredString (token, x, y, 320);
+			Render2DDrawCenteredString (token, x, y, 320);
 			continue;
 		}
 
@@ -1038,9 +1005,9 @@ The status bar is a small layout program that
 is based on the stats array
 ================
 */
-void SCR_DrawStats ()
+void Render2D_DrawStats ()
 {
-	SCR_ExecuteLayoutString (cl.configstrings[CS_STATUSBAR]);
+	Render2D_ExecuteLayoutString (cl.configstrings[CS_STATUSBAR]);
 }
 
 
@@ -1052,14 +1019,14 @@ SCR_DrawLayout
 */
 #define	STAT_LAYOUTS		13
 
-void SCR_DrawLayout ()
+void Render2D_DrawLayout ()
 {
 	if (!cl.frame.playerstate.stats[STAT_LAYOUTS])
 		return;
-	SCR_ExecuteLayoutString (cl.layout);
+	Render2D_ExecuteLayoutString (cl.layout);
 }
 
-void SCR_DrawInfo()
+void Render2D_DrawInfo()
 {
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
@@ -1124,7 +1091,30 @@ void SCR_DrawInfo()
 	Text_Draw(cl_console_font->string, x, y, "Map: %s", map_name);
 }
 
-//=======================================================
+/*
+=================
+SCR_DrawCrosshair
+=================
+*/
+void Render2D_DrawCrosshair()
+{
+	if (!crosshair->value)
+		return;
+
+	if (crosshair->modified)
+	{
+		crosshair->modified = false;
+		Render2D_TouchPics();
+	}
+
+	if (!crosshair_pic[0])
+		return;
+
+	cvar_t* scale = Cvar_Get("hudscale", "1", 0);
+
+	re.DrawPic(scr_vrect.x + ((scr_vrect.width - (int32_t)scale->value * crosshair_width) >> 1)
+		, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic, NULL);
+}
 
 /*
 ==================
@@ -1134,7 +1124,7 @@ This is called every frame, and can also be called explicitly to flush
 text to the screen.
 ==================
 */
-void SCR_UpdateScreen ()
+void Render_UpdateScreen()
 {
 	int32_t numframes;
 	int32_t i;
@@ -1185,49 +1175,47 @@ void SCR_UpdateScreen ()
 			scr_draw_loading = false;
 			re.DrawGetPicSize (&w, &h, "2d/loading");
 			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading", NULL);
-//			re.EndFrame();
-//			return;
 		} 
 		else 
 		{
 			// do 3D refresh drawing, and then update the screen
-			SCR_CalcVrect ();
+			Render2D_CalcVrect ();
 
-			V_RenderView ();
+			Render3D_RenderView ();
 
 			// clear any dirty part of the background
-			SCR_TileClear ();
+			Render2D_TileClear ();
 
 			// still draw console if cl_drawhud is 0
 			if (cl_drawhud->value)
 			{
-				SCR_DrawStats();
+				Render2D_DrawStats();
 				if (cl.frame.playerstate.stats[STAT_LAYOUTS] & 1)
-					SCR_DrawLayout();
+					Render2D_DrawLayout();
 
-				SCR_DrawNet();
-				SCR_CheckDrawCenterString();
+				Render2D_DrawNet();
+				Render2D_CheckDrawCenterString();
 
 				if (scr_timegraph->value)
-					SCR_DebugGraph(cls.frametime * 300, 0, 0, 0, 255);
+					Render2D_DebugGraph(cls.frametime * 300, 0, 0, 0, 255);
 
 				if (scr_debuggraph->value || scr_timegraph->value)
-					SCR_DrawDebugGraph();
+					Render2D_DrawDebugGraph();
 
-				SCR_DrawPause();
+				Render2D_DrawPause();
 
 				UI_Draw();
 			}
 
 			if (cl_showinfo->value)
-				SCR_DrawInfo();
+				Render2D_DrawInfo();
 
-			SCR_DrawConsole ();
+			Render2D_DrawConsole ();
 
 			if (!ui_newmenu->value)
 				M_Draw ();
 
-			SCR_DrawLoading ();
+			Render2D_DrawLoading ();
 		}
 	}
 	re.EndFrame();

@@ -226,7 +226,7 @@
     <ClInclude Include="client\ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="client\screen.h">
+    <ClInclude Include="client\render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\snd_loc.h">

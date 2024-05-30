@@ -1308,7 +1308,7 @@ float	crand()
 }
 
 void Key_Init ();
-void SCR_EndLoadingPlaque ();
+void Render2D_EndLoadingPlaque ();
 
 /*
 =============
@@ -1457,7 +1457,7 @@ void Qcommon_Init (int32_t argc, char **argv)
 	else
 	{	// the user asked for something explicit
 		// so drop the loading plaque
-		SCR_EndLoadingPlaque ();
+		Render2D_EndLoadingPlaque ();
 	}
 	Com_Printf ("====== Zombono Initialized ======\n\n");	
 

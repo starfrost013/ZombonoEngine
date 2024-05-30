@@ -57,7 +57,7 @@ V_ClearScene
 Clears the scene of all entities, dynamic lights and particles 
 ====================
 */
-void V_ClearScene ()
+void Render3D_ClearScene ()
 {
 	r_numdlights = 0;
 	r_numentities = 0;
@@ -71,7 +71,7 @@ V_AddEntity
 Adds an entity.
 =====================
 */
-void V_AddEntity (entity_t *ent)
+void Render3D_AddEntity (entity_t *ent)
 {
 	if (r_numentities >= MAX_ENTITIES)
 	{
@@ -88,7 +88,7 @@ V_AddParticle
 
 =====================
 */
-void V_AddParticle (vec3_t org, vec4_t color)
+void Render3D_AddParticle (vec3_t org, vec4_t color)
 {
 	particle_t	*p;
 
@@ -114,7 +114,7 @@ V_AddLight
 
 =====================
 */
-void V_AddLight (vec3_t org, float intensity, float r, float g, float b)
+void Render3D_AddLight (vec3_t org, float intensity, float r, float g, float b)
 {
 	dlight_t* dl;
 
@@ -139,7 +139,7 @@ V_AddLightStyle
 
 =====================
 */
-void V_AddLightStyle (int32_t style, float r, float g, float b)
+void Render3D_AddLightStyle (int32_t style, float r, float g, float b)
 {
 	lightstyle_t	*ls;
 
@@ -161,7 +161,7 @@ CL_PrepRefresh
 Call before entering a new level, or after changing dlls
 =================
 */
-void CL_PrepRefresh ()
+void Render3D_PrepRefresh ()
 {
 	char		mapname[32];
 	int32_t 		i;
@@ -172,8 +172,8 @@ void CL_PrepRefresh ()
 	if (!cl.configstrings[CS_MODELS+1][0])
 		return;		// no map loaded
 
-	SCR_AddDirtyPoint (0, 0);
-	SCR_AddDirtyPoint (viddef.width-1, viddef.height-1);
+	Render2D_AddDirtyPoint (0, 0);
+	Render2D_AddDirtyPoint (viddef.width-1, viddef.height-1);
 
 	// let the render dll load the map
 	strcpy (mapname, cl.configstrings[CS_MODELS+1] + 5);	// skip "maps/"
@@ -181,14 +181,14 @@ void CL_PrepRefresh ()
 
 	// register models, pics, and skins
 	Com_Printf ("Map: %s\r", mapname); 
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	re.BeginRegistration (mapname);
 	Com_Printf ("                                     \r");
 
 	// precache status bar pics
 	Com_Printf ("pics\r"); 
-	SCR_UpdateScreen ();
-	SCR_TouchPics ();
+	Render_UpdateScreen ();
+	Render2D_TouchPics ();
 	Com_Printf ("                                     \r");
 
 	CL_RegisterTEntModels ();
@@ -203,7 +203,7 @@ void CL_PrepRefresh ()
 		name[37] = 0;	// never go beyond one line
 		if (name[0] != '*')
 			Com_Printf ("%s\r", name); 
-		SCR_UpdateScreen ();
+		Render_UpdateScreen ();
 		if (name[0] == '#')
 		{
 			// special player weapon model
@@ -227,7 +227,7 @@ void CL_PrepRefresh ()
 	}
 	
 	Com_Printf ("images\r", i); 
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	for (i=1 ; i<MAX_IMAGES && cl.configstrings[CS_IMAGES+i][0] ; i++)
 	{
 		cl.image_precache[i] = re.RegisterPic (cl.configstrings[CS_IMAGES+i]);
@@ -239,7 +239,7 @@ void CL_PrepRefresh ()
 		if (!cl.configstrings[CS_PLAYERSKINS+i][0])
 			continue;
 		Com_Printf ("client %i\r", i); 
-		SCR_UpdateScreen ();
+		Render_UpdateScreen ();
 		CL_ParseClientinfo (i);
 		Com_Printf ("                                     \r");
 	}
@@ -248,7 +248,7 @@ void CL_PrepRefresh ()
 
 	// set sky textures and speed
 	Com_Printf ("sky\r", i); 
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	rotate = atof (cl.configstrings[CS_SKYROTATE]);
 	sscanf (cl.configstrings[CS_SKYAXIS], "%f %f %f", 
 		&axis[0], &axis[1], &axis[2]);
@@ -261,8 +261,7 @@ void CL_PrepRefresh ()
 	// clear any lines of console text
 	Con_ClearNotify ();
 
-
-	SCR_UpdateScreen ();
+	Render_UpdateScreen ();
 	cl.refresh_prepped = true;
 	cl.force_refdef = true;	// make sure we have a valid refdef
 
@@ -276,7 +275,7 @@ void CL_PrepRefresh ()
 CalcFov
 ====================
 */
-float CalcFov (float fov_x, float width, float height)
+float Render3D_CalcFov (float fov_x, float width, float height)
 {
 	float	a;
 	float	x;
@@ -302,13 +301,13 @@ float CalcFov (float fov_x, float width, float height)
 //============================================================================
 
 // gun frame debugging functions
-void V_Gun_Next_f ()
+void Render3D_Gun_Next_f ()
 {
 	gun_frame++;
 	Com_Printf ("frame %i\n", gun_frame);
 }
 
-void V_Gun_Prev_f ()
+void Render3D_Gun_Prev_f ()
 {
 	gun_frame--;
 	if (gun_frame < 0)
@@ -316,7 +315,7 @@ void V_Gun_Prev_f ()
 	Com_Printf ("frame %i\n", gun_frame);
 }
 
-void V_Gun_Model_f ()
+void Render3D_Gun_Model_f ()
 {
 	char	name[MAX_QPATH];
 
@@ -329,43 +328,15 @@ void V_Gun_Model_f ()
 	gun_model = re.RegisterModel (name);
 }
 
-//============================================================================
-
-
-/*
-=================
-SCR_DrawCrosshair
-=================
-*/
-void SCR_DrawCrosshair ()
-{
-	if (!crosshair->value)
-		return;
-
-	if (crosshair->modified)
-	{
-		crosshair->modified = false;
-		SCR_TouchPics ();
-	}
-
-	if (!crosshair_pic[0])
-		return;
-
-	cvar_t *scale = Cvar_Get("hudscale", "1", 0);
-
-	re.DrawPic (scr_vrect.x + ((scr_vrect.width - (int32_t)scale->value * crosshair_width) >> 1)
-	, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic, NULL);
-}
-
 /*
 ==================
 V_RenderView
 
 ==================
 */
-void V_RenderView()
+void Render3D_RenderView()
 {
-	extern int32_t entitycmpfnc( const entity_t *, const entity_t * );
+	extern int32_t CompareEntities( const entity_t *, const entity_t * );
 
 	if (cls.state != ca_active)
 	{
@@ -393,7 +364,7 @@ void V_RenderView()
 		cl.force_refdef = false;
 		viewsize->modified = false;
 
-		V_ClearScene ();
+		Render3D_ClearScene ();
 
 		// build a refresh entity list and calc cl.sim*
 		// this also calls CL_CalcViewValues which loads
@@ -411,7 +382,7 @@ void V_RenderView()
 		cl.refdef.y = scr_vrect.y;
 		cl.refdef.width = scr_vrect.width;
 		cl.refdef.height = scr_vrect.height;
-		cl.refdef.fov_y = CalcFov (cl.refdef.fov_x, cl.refdef.width, cl.refdef.height);
+		cl.refdef.fov_y = Render3D_CalcFov (cl.refdef.fov_x, cl.refdef.width, cl.refdef.height);
 		cl.refdef.time = cl.time*0.001;
 
 		cl.refdef.areabits = cl.frame.areabits;
@@ -438,7 +409,7 @@ void V_RenderView()
 		cl.refdef.rdflags = cl.frame.playerstate.rdflags;
 
 		// sort entities for better cache locality
-        qsort( cl.refdef.entities, cl.refdef.num_entities, sizeof( cl.refdef.entities[0] ), (int32_t (*)(const void *, const void *))entitycmpfnc );
+        qsort( cl.refdef.entities, cl.refdef.num_entities, sizeof( cl.refdef.entities[0] ), (int32_t (*)(const void *, const void *))CompareEntities );
 	}
 
 	re.RenderFrame (&cl.refdef);
@@ -446,11 +417,11 @@ void V_RenderView()
 		fprintf( log_stats_file, "%i,%i,%i,",r_numentities, r_numdlights, r_numparticles);
 
 
-	SCR_AddDirtyPoint (scr_vrect.x, scr_vrect.y);
-	SCR_AddDirtyPoint (scr_vrect.x+scr_vrect.width-1,
+	Render2D_AddDirtyPoint (scr_vrect.x, scr_vrect.y);
+	Render2D_AddDirtyPoint (scr_vrect.x+scr_vrect.width-1,
 		scr_vrect.y+scr_vrect.height-1);
 
-	SCR_DrawCrosshair ();
+	Render2D_DrawCrosshair ();
 }
 
 /*
@@ -458,11 +429,11 @@ void V_RenderView()
 V_Init
 =============
 */
-void V_Init ()
+void Render3D_Init ()
 {
-	Cmd_AddCommand ("gun_next", V_Gun_Next_f);
-	Cmd_AddCommand ("gun_prev", V_Gun_Prev_f);
-	Cmd_AddCommand ("gun_model", V_Gun_Model_f);
+	Cmd_AddCommand ("gun_next", Render3D_Gun_Next_f);
+	Cmd_AddCommand ("gun_prev", Render3D_Gun_Prev_f);
+	Cmd_AddCommand ("gun_model", Render3D_Gun_Model_f);
 
 	crosshair = Cvar_Get ("crosshair", "0", CVAR_ARCHIVE);
 }

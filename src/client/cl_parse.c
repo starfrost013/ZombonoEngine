@@ -724,7 +724,7 @@ void CL_ParseServerMessage ()
 			break;
 			
 		case svc_centerprint:
-			SCR_CenterPrint (MSG_ReadString (&net_message));
+			Render2D_CenterPrint (MSG_ReadString (&net_message));
 			break;
 			
 		case svc_stufftext:
@@ -850,7 +850,7 @@ void CL_ParseServerMessage ()
 		}
 	}
 
-	CL_AddNetgraph ();
+	Render2D_AddNetgraph ();
 
 	//
 	// we don't know if it is ok to save a demo message until

@@ -112,7 +112,7 @@ void CL_AddExplosions()
 			continue;
 		if (ex->light)
 		{
-			V_AddLight(ent->origin, ex->light * ent->alpha,
+			Render3D_AddLight(ent->origin, ex->light * ent->alpha,
 				ex->lightcolor[0], ex->lightcolor[1], ex->lightcolor[2]);
 		}
 
@@ -124,7 +124,7 @@ void CL_AddExplosions()
 		ent->oldframe = ex->baseframe + f;
 		ent->backlerp = 1.0 - cl.lerpfrac;
 
-		V_AddEntity(ent);
+		Render3D_AddEntity(ent);
 	}
 }
 

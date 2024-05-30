@@ -308,7 +308,7 @@ void SV_InitGame ()
 	{
 		// make sure the client is down
 		CL_Drop ();
-		SCR_BeginLoadingPlaque ();
+		Render2D_BeginLoadingPlaque ();
 	}
 
 	// get any latched variable changes (maxclients, etc)
@@ -425,13 +425,13 @@ void SV_Map (bool attractloop, char *levelstring, bool loadgame)
 	// demo file
 	if (l > 4 && !strcmp (level+l-4, ".dm2") )
 	{
-		SCR_BeginLoadingPlaque ();			// for local system
+		Render2D_BeginLoadingPlaque ();			// for local system
 		SV_BroadcastCommand ("changing\n");
 		SV_SpawnServer (level, spawnpoint, ss_demo, attractloop, loadgame);
 	}
 	else // map
 	{
-		SCR_BeginLoadingPlaque ();			// for local system
+		Render2D_BeginLoadingPlaque ();			// for local system
 		SV_BroadcastCommand ("changing\n");
 		SV_SendClientMessages ();
 		SV_SpawnServer (level, spawnpoint, ss_game, attractloop, loadgame);

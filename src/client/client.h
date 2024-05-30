@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ref.h"
 
 #include "vid.h"
-#include "screen.h"
+#include "render.h"
 #include "sound.h"
 #include "input.h"
 #include "keys.h"
@@ -345,7 +345,7 @@ extern	sizebuf_t	net_message;
 
 bool CL_CheckOrDownloadFile(char* filename);
 
-void CL_AddNetgraph();
+void Render2D_AddNetgraph();
 
 void CL_TeleporterParticles(entity_state_t* ent);
 void CL_ParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count);
@@ -407,7 +407,6 @@ void CL_AddLightStyles();
 
 //=================================================
 
-void CL_PrepRefresh();
 void CL_RegisterSounds();
 
 void CL_Quit_f();
@@ -475,24 +474,6 @@ void CL_LoadClientinfo(clientinfo_t* ci, char* s);
 void ShowNet(char* s);
 void CL_ParseClientinfo(int32_t player);
 void CL_Download_f();
-
-//
-// cl_view.c
-//
-extern	int32_t 		gun_frame;
-extern	struct model_s* gun_model;
-
-void V_Init();
-void V_RenderView();
-void V_AddEntity(entity_t* ent);
-void V_AddParticle(vec3_t org, vec4_t color);
-void V_AddLight(vec3_t org, float intensity, float r, float g, float b);
-void V_AddLightStyle(int32_t style, float r, float g, float b);
-
-// Debug stuff for cl_showinfo
-extern int32_t r_numdlights;
-extern int32_t r_numentities;
-extern int32_t r_numparticles;
 
 //
 // cl_tent.c

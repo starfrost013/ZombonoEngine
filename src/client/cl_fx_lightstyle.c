@@ -109,5 +109,5 @@ void CL_AddLightStyles()
 	clightstyle_t* ls;
 
 	for (i = 0, ls = cl_lightstyle; i < MAX_LIGHTSTYLES; i++, ls++)
-		V_AddLightStyle(i, ls->value[0], ls->value[1], ls->value[2]);
+		Render3D_AddLightStyle(i, ls->value[0], ls->value[1], ls->value[2]);
 }

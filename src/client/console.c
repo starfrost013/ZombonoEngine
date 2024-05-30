@@ -47,7 +47,7 @@ Con_ToggleConsole_f
 */
 void Con_ToggleConsole_f ()
 {
-	SCR_EndLoadingPlaque ();	// get rid of loading plaque
+	Render2D_EndLoadingPlaque ();	// get rid of loading plaque
 
 	if (cl.attractloop)
 	{
@@ -537,8 +537,8 @@ void Con_DrawNotify ()
 	
 	if (v)
 	{
-		SCR_AddDirtyPoint (0,0);
-		SCR_AddDirtyPoint (viddef.width-1, v*vid_hudscale->value);
+		Render2D_AddDirtyPoint (0,0);
+		Render2D_AddDirtyPoint (viddef.width-1, v*vid_hudscale->value);
 	}
 }
 
@@ -619,8 +619,8 @@ void Con_DrawConsole (float frac)
 		}
 	}
 
-	SCR_AddDirtyPoint (0,0);
-	SCR_AddDirtyPoint (viddef.width-1,lines-1);
+	Render2D_AddDirtyPoint (0,0);
+	Render2D_AddDirtyPoint (viddef.width-1,lines-1);
 
 	Com_sprintf (version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);

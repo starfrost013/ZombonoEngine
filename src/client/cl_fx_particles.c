@@ -1301,7 +1301,7 @@ void CL_AddParticles()
 		org[1] = p->org[1] + p->vel[1] * time + p->accel[1] * time2;
 		org[2] = p->org[2] + p->vel[2] * time + p->accel[2] * time2;
 
-		V_AddParticle(org, p->color);
+		Render3D_AddParticle(org, p->color);
 
 		if (p->alphavel == INSTANT_PARTICLE)
 		{
