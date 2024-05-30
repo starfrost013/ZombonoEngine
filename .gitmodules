@@ -1,12 +1,9 @@
-[submodule "game"]
-	path = assets
-	url = https://github.com/starfrost013/ZombonoAssets.git
-[submodule "engine/game"]
-	path = engine/game
-	url = https://github.com/starfrost013/ZombonoGame.git
 [submodule "src/game"]
 	path = src/game
 	url = https://github.com/starfrost013/ZombonoGame.git
 [submodule "tools/zbsp"]
 	path = tools/zbsp
 	url = https://github.com/starfrost013/zbsp.git
+[submodule "assets"]
+	path = assets
+	url = https://github.com/starfrost013/ZombonoAssets.git
