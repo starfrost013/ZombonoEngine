@@ -1,23 +1,18 @@
 // Zombono game definition file (.fgd)
 // Copyright © 2023-2024 starfrost
 //
-// Based on quake2 FGD
-// Originally written by autolycus
-// Special thanks to: Disruptor, Zoid, Zaphod, Imaginos, and EutecTic.
-//
-// 2024/05/13 version
+// Last updated: 29 May 2024
 
 //
 // worldspawn
 //
 
-// 0302 - added "nextmap" key
 @SolidClass = worldspawn : "World entity"
 [
 	sky(string) : "Environment map name"
 	skyaxis(string) : "Vector axis for rotating sky"
 	skyrotate(string) : "Speed of rotation (degrees/second)"
-	sounds(integer) : "CD Track Number" : 1
+	sounds(integer) : "Music Track Number" : 1
 	gravity(integer) : "Gravity" : 800
 	message(string) : "Level name"
 	nextmap(string) : "Next map (DM only)"
@@ -28,9 +23,10 @@
 
 //
 // base marker definitions
-//model({ "path": ":models/items/keys/target/tris.md2" }) =
+//
 
-@baseclass = Appearflags [
+@baseclass = Appearflags 
+[
 	spawnflags(Flags) =
 	[
 		256 : "Not in Easy" : 0
@@ -41,14 +37,16 @@
 		8192 : "Not in Waves mode" : 0
 		16384 : "Not in co-op mode" : 0	
 		32768 : "Not in Control Point mode" : 0
+		//tournament?
 	]
 ]
+
 @baseclass = Angle [ angle(integer) : "Direction in degrees. Special values: -1 is up, -2 is down" ]
 @baseclass = Targetname [ targetname(target_source) : "Name" ]
 @baseclass = Target [ target(target_destination) : "Target" ]
 
 //
-// player start, deathmatch, coop, deathmatch intermission
+// player start, team starts
 //
 
 @PointClass base(PlayerClass) = info_player_start : "Unassigned team start" []
@@ -82,39 +80,31 @@
 // Keep in mind when using func_areaportal that it must
 // *completely* separate two areas.  otherwise, you will
 // get an error message and the areaportal will not work
-//
-// 0221 - is there any point in a "style" key?
+
 @SolidClass base(Appearflags, Targetname) = func_areaportal : "Area portal (Vis blocker)" []
 
-// 0221 - added "pathtarget"
-// 0221 - changed "sounds" information
 @SolidClass base(Appearflags, Target, Targetname) color(0 128 204) = func_button : "Button"
 [
 	pathtarget(string) : "Elevator level target"
 	speed(integer) : "Speed" : 40
+
 	wait(choices) : "Wait before reset" : 1 =
 	[
 		-1 : "Never Return"
 	]
+
 	lip(integer) : "Lip remaining after move" : 4
 	health(integer) : "Health (shootable)"
+
 	sounds(choices) : "Sounds" : 0 =
 	[
 		0 : "Audible"
 		1 : "Silent"
 	]
-//	sounds(choices) : "Sounds" : 2 =
-//	[
-//		1 : "Silent"
-//		2 : "Steam Metal"
-//		3 : "Wodden Clunk"
-//		4 : "Metallic Click"
-//		5 : "In-Out"
-//	]
+
 	message(string) : "Activation message"
 ]
 
-// 0221 - added "count" key...oops :)
 @PointClass base(Appearflags, Targetname) color(0 0 255) size(-8 -8 -8, 8 8 8) = func_clock : "Clock"
 [
 	spawnflags(Flags) =
@@ -124,8 +114,10 @@
 		4 : "Start Off" : 0
 		8 : "Multi Use" : 0
 	]
+
 	count(integer) : "Clock Count"
 	pathtarget(string) : "Target"
+
 	style(choices) : "Style" : 0 =
 	[
 		0 : "xx"
@@ -136,7 +128,6 @@
 
 // func_conveyor code is incomplete.  use the surface attribute "flowing"
 // and the "current" content flag.  (texture won't scroll)
-//
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_conveyor : "Conveyor belt"
 [
 	spawnflags(Flags) =
@@ -144,11 +135,10 @@
 		1 : "Start On" : 0
 		2 : "Toggle" : 0
 	]
+
 	speed(integer) : "Speed" : 100
 ]
 
-// 0221 - updated "sounds" information
-// 0221 - added "killtarget"
 @SolidClass base(Angle, Appearflags, Targetname, Target) color(0 128 204) = func_door : "Door"
 [
 	spawnflags(Flags) =
@@ -160,40 +150,36 @@
 		32 : "Toggle" : 0
 		64 : "Animated Fast" : 0
 	]
+
 	killtarget(string) : "Kill Target"
 	team(integer) : "Team"
+
 	allowed_teams(Flags) =
 	[
 		1 : "Director Team" : 0
 		2 : "Player Team" : 0
 		4 : "Unassigned" : 0
 	]
+
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
 	speed(integer) : "Speed" : 100
+
 	wait(choices) : "Wait before close" : 3 =
 	[
 		-1 : "Stay open"
 	]
+
 	lip(integer) : "Lip remaining after move" : 8
 	dmg(integer) : "Damage when blocked" : 2
+
 	sounds(choices) : "Sounds" : 0 =
 	[
 		0 : "Audible"
 		1 : "Silent"
 	]
-//	sounds(choices) : "Sounds" : 3 =
-//	[
-//		1 : "Silent"
-//		2 : "Light"
-//		3 : "Medium"
-//		4 : "Heavy"
-//	]
 ]
 
-// 0221 - added "killtarget" and "target" keys
-// 0221 - updated "sounds" info
-// 0221 - removed "lip" key
 @SolidClass base(Appearflags, Targetname, Target) color(0 128 204) = func_door_rotating : "Rotating Door"
 [
 	spawnflags(Flags) =
@@ -207,39 +193,36 @@
 		64 : "X Axis" : 0
 		128 : "Y Axis" : 0
 	]
+
 	killtarget(string) : "Kill Target"
 	team(integer) : "Team"
+
 	allowed_teams(Flags) =
 	[
 		1 : "Director Team" : 0
 		2 : "Player Team" : 0
 		4 : "Unassigned" : 0
 	]
+
 	distance(integer) : "Degrees of rotation" : 90
 	message(string) : "Trigger message"
 	health(integer) : "Health (shootable)"
 	speed(integer) : "Speed" : 100
+
 	wait(choices) : "Wait before close" : 3 =
 	[
 		-1 : "Stay open"
 	]
+
 	dmg(integer) : "Damage when blocked" : 2
+
 	sounds(choices) : "Sounds" : 0 =
 	[
 		0 : "Audible"
 		1 : "Silent"
 	]
-//	sounds(choices) : "Sounds" : 3 =
-//	[
-//		1 : "Silent"
-//		2 : "Light"
-//		3 : "Medium"
-//		4 : "Heavy"
-//	]
 ]
 
-// 0221 - added "message" key
-// 0221 - removed "team" key
 @SolidClass base(Angle, Appearflags, Targetname) color(0 128 204) = func_door_secret : "Secret Door"
 [
 	spawnflags(Flags) =
@@ -248,16 +231,17 @@
 		2 : "1st Left" : 0
 		4 : "1st Down" : 0
 	]
+
 	dmg(integer) : "Damage when blocked" : 2
+
 	wait(choices) : "Wait before close" : 5 =
 	[
 		-1 : "Stay open"
 	]
+
 	message(string) : "Message"
 ]
 
-// not visible in DM mode
-//
 @SolidClass base(Appearflags, Targetname, Target) color(0 128 204) = func_explosive : "Exploding/Breakable brush"
 [
 	spawnflags(Flags) =
@@ -266,6 +250,7 @@
 		2 : "Animated" : 0
 		4 : "Animated Fast" : 0
 	]
+
 	health(integer) : "Health" : 100
 	mass(integer) : "Mass (debris)" : 75
 	dmg(integer) : "Damage" : 0
@@ -273,7 +258,6 @@
 
 @SolidClass base(Appearflags, Targetname) color(255 0 0) = func_killbox : "Instant death" []
 
-// 0221 - added "_minlight" key
 @SolidClass base(Appearflags, Targetname) color (0 128 204) = func_object : "Solid bmodel, will fall if its support is removed"
 [
 	spawnflags(Flags) =
@@ -284,6 +268,7 @@
 	]
 ]
 
+// Uses tempents
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_particle_effect : "Particle Effect"
 [
 	spawnflags(Flags) =
@@ -319,20 +304,19 @@
 	]
 ]
 
-// 0221 - removed "sounds" key
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_plat : "Platform"
 [
 	spawnflags(Flags) =
 	[
 		1 : "Plat Low Trigger" : 0
 	]
+
 	speed(integer) : "Speed" : 100
 	accel(integer) : "Acceleration" : 500
 	lip(integer) : "Lip remaining after move" : 8
 	height(integer) : "Movement distance"
 ]
 
-// 0222 - added "team" key
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_rotating : "Rotating brush"
 [
 	spawnflags(Flags) =
@@ -346,6 +330,7 @@
 		64 : "Animated" : 0
 		128 : "Animated Fast" : 0
 	]
+
 	team(integer) : "Team"
 	speed(integer) : "Speed" : 100
 	dmg(integer) : "Damage when blocked" : 2
@@ -357,13 +342,13 @@
 	[
 		1 : "Start On" : 0
 	]
+
 	wait(integer) : "Base wait time" : 1
 	random(integer) : "Wait variance (+/-)"
 	delay(integer) : "Delay before first firing"
 	pausetime(integer) : "Additional delay"
 ]
 
-// 0219 - added "team" key
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_train : "Moving platform"
 [
 	spawnflags(Flags) =
@@ -372,6 +357,7 @@
 		2 : "Toggle" : 0
 		4 : "Block Stops" : 0
 	]
+
 	target(string) : "First stop target"
 	team(integer) : "Team"
 	speed(integer) : "Speed" : 100
@@ -381,15 +367,16 @@
 
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_trampoline : "Trampoline"
 [
-	team(integer) : "Team"
-	jump_velocity(integer): "Jump Height" : 100
-	dmg(integer): "Damage on hit"
-	noise(string) : "Sound (path/file.wav)"
 	spawnflags(Flags) =
 	[
 		1 : "Has Knockback" : 0
 		8 : "No Protection" : 0
 	]
+
+	team(integer) : "Team"
+	jump_velocity(integer): "Jump Height" : 100
+	dmg(integer): "Damage on hit"
+	noise(string) : "Sound (path/file.wav)"
 ]
 
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_wall : "Solid Wall"
@@ -415,25 +402,29 @@
 
 // must never be transparent?
 //
-// 0221 - added a "_minlight" key
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_water : "Moveable water"
 [
 	spawnflags(Flags) =
 	[
 		1 : "Start Open" : 0
 	]
+
 	speed(integer) : "Speed" : 25
+
 	wait(choices) : "Wait before return" : -1 =
 	[
 		-1 : "Toggle"
 	]
+
 	lip(integer) : "Lip remaining after move"
+
 	sounds(Choices) : "Sounds" : 1 =
 	[
 		0 : "No Sounds"
 		1 : "Water"
 		2 : "Lava"
 	]
+
 	team(integer) : "Team"
 ]
 
@@ -454,8 +445,8 @@
 @PointClass base(Items) model({ "path": ":models/items/band/tris.md2" }) = item_bandolier : "Equipment belt" []
 @PointClass base(Items) model({ "path": ":models/items/breather/tris.md2" }) = item_breather : "Underwater breather" []
 @PointClass base(Items) model({ "path": ":models/items/enviro/tris.md2" }) = item_enviro : "Enviro-Suit" []
-@PointClass base(Items) model({ "path": ":models/items/healing/medium/tris.md2" }) = item_health : "+10 health" []
 @PointClass base(Items) model({ "path": ":models/items/healing/stimpack/tris.md2" }) = item_health_small : "+2 health" []
+@PointClass base(Items) model({ "path": ":models/items/healing/medium/tris.md2" }) = item_health : "+10 health" []
 @PointClass base(Items) model({ "path": ":models/items/healing/large/tris.md2" }) = item_health_large : "+25 health" []
 @PointClass base(Items) model({ "path": ":models/items/healing/large/tris.md2" }) = item_health_super : "+50 health" []
 @PointClass base(Items) model({ "path": ":models/items/mega_h/tris.md2" }) = item_health_mega : "+100 health" []
@@ -468,16 +459,16 @@
 
 @BaseClass base(Appearflags, Target) color(0 128 204) size(-16 -16 -16, 16 16 16) = Keys []
 
-// 0301 - added "targetname" key
-
 @PointClass base( Appearflags, Target, Targetname) color(0 255 0) size(-8 -8 -8, 8 8 8) = light : "Pointlight"
 [
 	spawnflags(Flags) =
 	[
 		1 : "Start Off" : 0
 	]
+
 	light(integer) : "Brightness" : 300
 	_color(color1) : "RGB Color" // why is this not here already
+
 	style(Choices) : "Style" : 0 =
 	[
 		0 : "Normal"
@@ -493,6 +484,7 @@
 		10 : "Fluorescent Flicker"
 		11 : "Slow pulse, no black"
 	]
+
 	_falloff(integer) : "Decline in intensity as you move away from the light"
 	// must be a float for ZBSP
 	angle(float): "Angle" : 0
@@ -506,8 +498,10 @@
 	[
 		1 : "Start Off" : 0
 	]
+
 	light(integer) : "Brightness" : 300
 	_color(color1) : "RGB Color" // why is this not here already
+
 	style(Choices) : "Style" : 0 =
 	[
 		0 : "Normal"
@@ -523,6 +517,7 @@
 		10 : "Fluorescent Flicker"
 		11 : "Slow pulse, no black"
 	]
+
 	_cone(float): "Light cone size" : 200
 	angle(float): "Angle" : 0
 	wait(integer) : "Wait time before the light turns on"
@@ -532,9 +527,7 @@
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light1/tris.md2", "skin": 0 }) = light_mine1 : "Clean fluorescent light fixture"	[spawnflags(Flags) =	[	1 : "" : 0	]]
 @PointClass base(light) color(0 255 0) size(-2 -2 -12, 2 2 12) model({ "path": ":models/objects/minelite/light2/tris.md2", "skin": 0 }) = light_mine2 : "Dusty fluorescent light fixture"	[spawnflags(Flags) = [	1 : "" : 0]]
 
-// 0224 - changed banner size from (-4 -4 -4, 4 4 4) to (-4 -4 0, 4 4 246)
 @PointClass base(Appearflags) color(255 128 0) size(-4 -4 0, 4 4 246) model({ "path": ":models/objects/banner/tris.md2" }) = misc_banner : "Flowing banner" []
-
 @PointClass base(Appearflags) color(255 128 0) size(-8 -8 -8, 8 8 8) model({ "path": ":models/objects/black/tris.md2" }) = misc_blackhole : "Blackhole" []
 
 @PointClass base(Appearflags) color(255 128 0) size(-16 -16 0, 16 16 16)	model({{
@@ -588,15 +581,16 @@
 		2 : "Trigger Spawn" : 0
 		4 : "Sight" : 0
 	]
+
 	combattarget(string) : "Point combat target"
 	deathtarget(string) : "Entity to trigger at death"
 	killtarget(string) : "Entity to remove at death"
 	item(string) : "Spawn Item"
 ]
 
-@PointClass base(Monsters) model({ "path": ":models/monsters/zombie/tris.md2", "skin": 2 }) = monster_zombie : "Basic Zombie (Zombono)" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/zombie_fast/tris.md2", "skin": 2 }) = monster_zombie : "Fast Zombie (Zombono)" []
-@PointClass base(Monsters) model({ "path": ":models/monsters/ogre/tris.md2", "skin": 2 }) = monster_zombie : "Ogre (Zombono)" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/zombie/tris.md2", "skin": 2 }) = monster_zombie : "Basic Zombie" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/zombie_fast/tris.md2", "skin": 2 }) = monster_zombie : "Zombie on Speed" []
+@PointClass base(Monsters) model({ "path": ":models/monsters/ogre/tris.md2", "skin": 2 }) = monster_zombie : "Ogre" []
 
 // using a "wait" value of -1 on a path corner causes a func_train to go silent between
 // itself and the next path corner when the train is restarted. The train's sound will
@@ -607,8 +601,10 @@
 	[
 		1 : "Teleport" : 0
 	]
+
 	target(string) : "Next path target"
 	pathtarget(string) : "Event to trigger"
+
 	wait(choices) : "Wait" : 0 =
 	[
 		-1 : "Wait for retrigger"
@@ -637,17 +633,16 @@
 
 // set "map" value to "mapname$playername" where playername equals
 // the targetname of a corresponding info_player_start in the
-// next map.  To play a cinematic before starting the level, the
-// "map" value should be "cinemeatic.cin+mapname$playername". Note
+// next map.  To play a cinematic before starting the level (WHEN CINEMATICS ARE IMPLEMENTED), the
+// "map" value should be "cinemeatic.webm+mapname$playername". Note
 // that a playername is not required if the corresponding info_player_start
 // doesn't have a targetname.  If you want this to be designated as the last
-// level of a unit, place an asterix (*) before the map name.
+// level of a unit, place an asterisk (*) before the map name.
 @PointClass base(Appearflags, Targetname) color(255 0 0) size(-8 -8 -8, 8 8 8) = target_changelevel : "Change level"
 [
 	map(string) : "Next map"
 ]
 
-// 0221 - added "_minlight" key
 @SolidClass base(Appearflags, Targetname) color(0 0 255) = target_character : "Use with target_string and func_clock"
 [
 	team(integer) : "Team"
@@ -668,6 +663,7 @@
 		64 : "Trigger 7" : 0
 		128 : "Trigger 8" : 0
 	]
+
 	killtarget(string) : "Kill Target"
 	message(string) : "Message"
 	delay(integer) : "Trigger delay"
@@ -686,6 +682,7 @@
 		64 : "Trigger 7" : 0
 		128 : "Trigger 8" : 0
 	]
+
 	killtarget(string) : "Kill Target"
 	delay(integer) : "Trigger delay (if activated)" : 1
 ]
@@ -708,8 +705,9 @@
 [
 	spawnflags(Flags) =
 	[
-		1 : "Main Onjective" : 0
+		1 : "Main Objective" : 0
 	]
+
 	message(string) : "Computer message"
 ]
 
@@ -728,16 +726,17 @@
 		32 : "Orange" : 0
 		64 : "Fat" : 0
 	]
+
 	dmg(integer) : "Damage"
 ]
 
-// 0221 - added "target" key
 @PointClass base(Appearflags, Targetname, Target) color(0 128 204) size(-8 -8 -8, 8 8 8) = target_lightramp : "Light ramp"
 [
 	spawnflags(Flags) =
 	[
 		1 : "Toggle" : 0
 	]
+
 	speed(integer) : "Speed"
 	message(string) : "start/end light level"
 ]
@@ -748,8 +747,6 @@
 ]
 
 // set speed and angle, otherwise spawned object drops
-//
-// 0221 - changed "target" key description for clarity
 @PointClass base(Appearflags, Targetname) color(255 0 0) size(-8 -8 -8, 8 8 8) = target_spawner : "Monster/Item spawner"
 [
 	target(string) : "Monster/Item to spawn"
@@ -765,7 +762,9 @@
 		2 : "Looped Off" : 0
 		4 : "Reliable" : 0
 	]
+
 	noise(string) : "Sound (path/file.wav)"
+
 	attenuation(Choices) : "Attenuation" : 1 =
 	[
 		-1 : "None, send to whole level"
@@ -773,13 +772,12 @@
 		2 : "Idle sound level"
 		3 : "Ambient sound level"
 	]
+
 	volume(integer) : "Volume (0.0 - 1.0)" : 1
 ]
 
 // "sounds" values other than 1 are silent.  leaving in the other
 // options for availability to mods/fixes
-//
-// 0221 - clarified "count" description
 @PointClass base(Appearflags, Targetname) color(255 0 0) size(-8 -8 -8, 8 8 8) = target_splash : "Creates a splash when used"
 [
 	sounds(choices) : "Type of splash" : 2 =
@@ -791,11 +789,11 @@
 		5 : "Lava"
 		6 : "Blood"
 	]
+
 	count(integer) : "Number of pixels in splash (1 - 255)"
 	dmg(integer) : "Radius damage"
 ]
 
-// 0221 - removed "message" key (?)
 @PointClass base(Appearflags, Targetname) color(0 0 255) size(-8 -8 -8, 8 8 8) = target_string : "String"
 [
 	team(integer) : "Team"
@@ -812,7 +810,6 @@
 	]
 ]
 
-// 0221 - added "delay" and "killtarget" keys
 @PointClass base(Appearflags, Target) color(128 128 128) size(-8 -8 -8, 8 8 8) = trigger_always : "Always triggers"
 [
 	killtarget(string) : "Kill Target"
@@ -825,6 +822,7 @@
 	[
 		1 : "No Message" : 0
 	]
+
 	count(integer) : "Count before trigger" : 2
 ]
 
@@ -845,6 +843,7 @@
 		8 : "No Protection" : 0
 		16 : "Slow hurt" : 0
 	]
+
 	dmg(integer) : "Damage" : 5
 ]
 
@@ -854,7 +853,6 @@
 	height(integer) : "Height thrown upward" : 200
 ]
 
-// 0221 - switched around _relay, _once, and _multiple
 @PointClass base(Appearflags, Targetname, Target) color(128 128 128) = trigger_relay : "Relay trigger"
 [
 	killtarget(string) : "Kill Target"
@@ -878,6 +876,7 @@
 		1 : "Monster" : 0
 		2 : "Not Player" : 0
 	]
+
 	wait(integer) : "Seconds between triggers" : 0
 ]
 
@@ -887,6 +886,7 @@
 	[
 		1 : "Push Once" : 0
 	]
+
 	speed(integer) : "Speed of push" : 1000
 ]
 

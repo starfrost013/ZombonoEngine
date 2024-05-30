@@ -34,6 +34,7 @@ REMOVALS:
 
 OTHER CHANGES:
 * Enable sv_cheats always on debug builds
+* Renamed cheats to sv_cheats (because it's classic)
 
 Version 0.0.9 (Build 480)
 May 25, 2024
