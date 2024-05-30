@@ -16,7 +16,7 @@ NEW FEATURES:
 * cl_showinfo improvements:
 	* Text turns yellow if you are more than 5 FPS below the target fps (60 fps or cl_maxfps, whichever is lower), scaling down linearly with the value of cl_maxfps
 	* Text turns red if you drop below (target_fps)/2
-	* Added the current map you're on to it
+	* Added the current map you are playing
 
 BUG FIXES:
 * Various map fixes
@@ -34,6 +34,7 @@ first particle to NULL
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)
+* Ancient Head and 
 
 OTHER CHANGES:
 * Enable sv_cheats always on debug builds
