@@ -27,28 +27,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // development tools for weapons
 //
 int32_t 		gun_frame;
-struct model_s	*gun_model;
+struct model_s* gun_model;
 
 //=============
 
-cvar_t		*crosshair;
+cvar_t*			crosshair;
 
-extern	cvar_t* vid_hudscale;
-extern	cvar_t* viewsize;
+extern cvar_t*	vid_hudscale;
+extern cvar_t*	viewsize;
 
-int32_t 	r_numdlights;
-dlight_t	r_dlights[MAX_DLIGHTS];
+int32_t 		r_numdlights;
+dlight_t		r_dlights[MAX_DLIGHTS];
 
-int32_t 	r_numentities;
-entity_t	r_entities[MAX_ENTITIES];
+int32_t 		r_numentities;
+entity_t		r_entities[MAX_ENTITIES];
 
-int32_t 	r_numparticles;
-particle_t	r_particles[MAX_PARTICLES];
+int32_t 		r_numparticles;
+particle_t		r_particles[MAX_PARTICLES];
 
 lightstyle_t	r_lightstyles[MAX_LIGHTSTYLES];
 
-char cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
-int32_t num_cl_weaponmodels;
+char			cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
+int32_t			num_cl_weaponmodels;
 
 /*
 ====================
@@ -116,7 +116,7 @@ V_AddLight
 */
 void V_AddLight (vec3_t org, float intensity, float r, float g, float b)
 {
-	dlight_t	*dl;
+	dlight_t* dl;
 
 	if (r_numdlights >= MAX_DLIGHTS)
 	{

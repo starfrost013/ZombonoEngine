@@ -45,7 +45,6 @@ struct model_s	*cl_mod_explode;
 struct model_s	*cl_mod_smoke;
 struct model_s	*cl_mod_flash;
 struct model_s	*cl_mod_explo4;
-struct model_s	*cl_mod_powerscreen;
 struct model_s	*cl_mod_plasmaexplo;
 
 /*
@@ -92,8 +91,7 @@ void CL_RegisterTEntModels ()
 	cl_mod_explode = re.RegisterModel ("models/objects/explode/tris.md2");
 	cl_mod_smoke = re.RegisterModel ("models/objects/smoke/tris.md2");
 	cl_mod_flash = re.RegisterModel ("models/objects/flash/tris.md2");
-	cl_mod_explo4 = re.RegisterModel ("models/objects/r_explode/tris.md2");
-	cl_mod_powerscreen = re.RegisterModel ("models/items/armor/effect/tris.md2");
+	cl_mod_explo4 = re.RegisterModel("models/objects/r_explode/tris.md2");
 
 	re.RegisterModel ("models/objects/laser/tris.md2");
 	re.RegisterModel ("models/objects/grenade2/tris.md2");

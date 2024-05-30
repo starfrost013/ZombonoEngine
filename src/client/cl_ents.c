@@ -22,8 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-extern	struct model_s	*cl_mod_powerscreen;
-
 int32_t vidref_val;
 
 /*
@@ -884,16 +882,6 @@ void CL_AddPacketEntities (frame_t *frame)
 		if (s1->modelindex4)
 		{
 			ent.model = cl.model_draw[s1->modelindex4];
-			V_AddEntity (&ent);
-		}
-
-		if ( effects & EF_POWERSCREEN )
-		{
-			ent.model = cl_mod_powerscreen;
-			ent.oldframe = 0;
-			ent.frame = 0;
-			ent.flags |= (RF_TRANSLUCENT | RF_SHELL_GREEN);
-			ent.alpha = 0.30;
 			V_AddEntity (&ent);
 		}
 
