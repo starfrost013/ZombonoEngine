@@ -73,7 +73,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 		}
 	}
 
-	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5) "BUILD_CONFIG, monitor, NULL);
+	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", monitor, NULL);
 
 	if (!gl_state.window)
 	{
