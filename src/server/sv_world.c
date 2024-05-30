@@ -216,7 +216,10 @@ void SV_LinkEdict (edict_t *ent)
 		ent->s.solid = 31;		// a solid_bbox will never create this value
 	}
 	else
+	{
 		ent->s.solid = 0;
+	}
+
 
 	// set the abs box
 	if (ent->solid == SOLID_BSP && 
@@ -262,7 +265,7 @@ void SV_LinkEdict (edict_t *ent)
 	ent->areanum2 = 0;
 
 	//get all leafs, including solids
-	num_leafs = MapRenderer_BoxLeafnums (ent->absmin, ent->absmax,
+	num_leafs = Map_BoxLeafnums (ent->absmin, ent->absmax,
 		leafs, MAX_TOTAL_ENT_LEAFS, &topnode);
 
 	// set areas

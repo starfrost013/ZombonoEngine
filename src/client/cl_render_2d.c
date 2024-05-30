@@ -1069,19 +1069,28 @@ void SCR_DrawInfo()
 		return;
 	}
 
-	// target fps regardless fo 
+	// I really should make it be an average.
+
 	float target_fps = 60;
 
 	if (cl_maxfps->value < target_fps) target_fps = cl_maxfps->value;
 
+	float warning_fps = target_fps * (55.0f/60.0f);
+	float alarm_fps = (target_fps / 2);
+
 	int32_t x = (10 * vid_hudscale->value);
+	int32_t y = (viddef.height - (142 * vid_hudscale->value));
 
-	int32_t y = (viddef.height - (120 * vid_hudscale->value));
-
-	if (cls.fps < target_fps)
+	if (cls.fps < alarm_fps)
 	{
 		Text_Draw(cl_console_font->string, x, y,
-			"FPS: ^1%.2f(Below target FPS %.1f)^7", cls.fps, target_fps);
+			"FPS: ^1%.2f (The game is lagging - <50% target FPS %.1f)!", cls.fps, target_fps);
+	}
+	else if (cls.fps < warning_fps
+		&& cls.fps > alarm_fps)
+	{
+		Text_Draw(cl_console_font->string, x, y,
+			"FPS: ^3%.2f (Significantly below target FPS %.1f)!", cls.fps, target_fps);
 	}
 	else
 	{
@@ -1111,6 +1120,8 @@ void SCR_DrawInfo()
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Particles: %d/%d", r_numparticles, MAX_PARTICLES);
+	y += console_font_ptr->line_height * 2 * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y, "Map: %s", map_name);
 }
 
 //=======================================================

@@ -41,14 +41,14 @@
     <ClCompile Include="client\cl_main.c" />
     <ClCompile Include="client\cl_parse.c" />
     <ClCompile Include="client\cl_pred.c" />
-    <ClCompile Include="client\cl_scrn.c" />
+    <ClCompile Include="client\cl_render_2d.c" />
     <ClCompile Include="client\cl_tent.c" />
     <ClCompile Include="client\cl_font.c" />
     <ClCompile Include="client\cl_ui.c" />
     <ClCompile Include="client\cl_ui_eventhandling.c" />
     <ClCompile Include="client\cl_ui_leaderboard.c" />
     <ClCompile Include="client\cl_ui_scripts.c" />
-    <ClCompile Include="client\cl_view.c" />
+    <ClCompile Include="client\cl_render_3d.c" />
     <ClCompile Include="client\console.c" />
     <ClCompile Include="client\cl_input_events.c" />
     <ClCompile Include="client\menu.c" />

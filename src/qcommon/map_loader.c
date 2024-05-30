@@ -61,45 +61,45 @@ typedef struct
 
 int32_t 		checkcount;
 
-char		map_name[MAX_QPATH];
+char			map_name[MAX_QPATH];
 
 int32_t 		numbrushsides;
-cbrushside_t map_brushsides[MAX_MAP_BRUSHSIDES];
+cbrushside_t	map_brushsides[MAX_MAP_BRUSHSIDES];
 
 int32_t 		numtexinfo;
 mapsurface_t	map_surfaces[MAX_MAP_TEXINFO];
 
 int32_t 		numplanes;
-cplane_t	map_planes[MAX_MAP_PLANES+6];		// extra for box hull
+cplane_t		map_planes[MAX_MAP_PLANES+6];		// extra for box hull
 
 int32_t 		numnodes;
-cnode_t		map_nodes[MAX_MAP_NODES+6];		// extra for box hull
+cnode_t			map_nodes[MAX_MAP_NODES+6];		// extra for box hull
 
 int32_t 		numleafs = 1;	// allow leaf funcs to be called without a map
-cleaf_t		map_leafs[MAX_MAP_LEAFS];
+cleaf_t			map_leafs[MAX_MAP_LEAFS];
 int32_t 		emptyleaf, solidleaf;
 
 int32_t 		numleafbrushes;
-uint32_t	map_leafbrushes[MAX_MAP_LEAFBRUSHES];
+uint32_t		map_leafbrushes[MAX_MAP_LEAFBRUSHES];
 
 int32_t 		numcmodels;
-cmodel_t	map_cmodels[MAX_MAP_MODELS];
+cmodel_t		map_cmodels[MAX_MAP_MODELS];
 
 int32_t 		numbrushes;
-cbrush_t	map_brushes[MAX_MAP_BRUSHES];
+cbrush_t		map_brushes[MAX_MAP_BRUSHES];
 
 int32_t 		numvisibility;
-uint8_t		map_visibility[MAX_MAP_VISIBILITY];
-dvis_t		*map_vis = (dvis_t *)map_visibility;
+uint8_t			map_visibility[MAX_MAP_VISIBILITY];
+dvis_t*			map_vis = (dvis_t *)map_visibility;
 
 int32_t 		numentitychars;
-char		map_entitystring[MAX_MAP_ENTSTRING];
+char			map_entitystring[MAX_MAP_ENTSTRING];
 
 int32_t 		numareas = 1;
-carea_t		map_areas[MAX_MAP_AREAS];
+carea_t			map_areas[MAX_MAP_AREAS];
 
 int32_t 		numareaportals;
-dareaportal_t map_areaportals[MAX_MAP_AREAPORTALS];
+dareaportal_t	map_areaportals[MAX_MAP_AREAPORTALS];
 
 int32_t 		numclusters = 1;
 
@@ -107,10 +107,9 @@ mapsurface_t	nullsurface;
 
 int32_t 		floodvalid;
 
-bool	portalopen[MAX_MAP_AREAPORTALS];
+bool			portalopen[MAX_MAP_AREAPORTALS];
 
-
-cvar_t		*map_noareas;
+cvar_t*			map_noareas;
 
 void	Map_InitBoxHull ();
 void	Map_FloodAreaConnections ();
@@ -551,7 +550,7 @@ Map_Load
 Loads in the map and all submodels
 ==================
 */
-cmodel_t *Map_Load (char *name, bool clientload, uint32_t *checksum)
+cmodel_t* Map_Load (char *name, bool clientload, uint32_t *checksum)
 {
 	uint32_t		*buf;
 	int32_t 		i;
@@ -908,7 +907,7 @@ int32_t MapRenderer_BoxLeafnums_headnode (vec3_t mins, vec3_t maxs, int32_t *lis
 	return leaf_count;
 }
 
-int32_t MapRenderer_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t *topnode)
+int32_t Map_BoxLeafnums (vec3_t mins, vec3_t maxs, int32_t *list, int32_t listsize, int32_t *topnode)
 {
 	return MapRenderer_BoxLeafnums_headnode (mins, maxs, list,
 		listsize, map_cmodels[0].headnode, topnode);

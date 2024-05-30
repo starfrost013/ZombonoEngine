@@ -33,13 +33,13 @@
     <ClCompile Include="client\cl_pred.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_scrn.c">
+    <ClCompile Include="client\cl_render_2d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_tent.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_view.c">
+    <ClCompile Include="client\cl_render_3d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\console.c">

@@ -11,6 +11,10 @@ NEW FEATURES:
 * Particle system features:
 	* Added permanent particles that never despawn (optional)
 	* Added a "lifetime" field to cparticle_t that allows particles to despawn without fading away with alphavel
+* cl_showinfo improvements:
+	* Text turns yellow if you are more than 5 FPS below the target fps (60 fps or cl_maxfps, whichever is lower), scaling down linearly with the value of cl_maxfps
+	* Text turns red if you drop below (target_fps)/2
+	* Added the current map you're on to it
 
 BUG FIXES:
 * Various map fixes
@@ -23,6 +27,7 @@ BUG FIXES:
 first particle to NULL
 * Fixed a bug where particles could never despawn and would always take up particle slots if alphavel was 0 
 * Fixed unusual spacing of "select team" text in TeamUI
+* Fixed insane build_config and build_platform bullshittery
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)
