@@ -45,7 +45,8 @@ first particle to NULL
 * Fixed sscanf return values not being checked during edict field parsing (F_VECTOR3 and F_VECTOR4)
 * Fixed a bug where particles could never despawn and would always take up particle slots if alphavel was 0 
 * Fixed unusual spacing of "select team" text in TeamUI
-* Fixed insane build_config and build_platform bullshittery
+* Fixed insane BUILD_CONFIG and BUILD_PLATFORM bullshittery
+* Fixed an immediate crash if the game ever called Sys_Error
 * Fixed the target_laser entity causing a client disconnect
 * Fixed being able to shoot the machine gun forever in automatic mode
 	* Hopefully fixed not picking up bullets from packs

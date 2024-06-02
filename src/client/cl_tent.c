@@ -162,11 +162,12 @@ void CL_ParseTEnt ()
 		MSG_ReadDir(&net_message, dir);
 		MSG_ReadColor(&net_message, color);
 		MSG_ReadInt(&net_message, i1);
-		MSG_ReadPos(&net_message, pos2);
+		MSG_ReadPos(&net_message, pos);
 		MSG_ReadInt(&net_message, i2);
+		MSG_ReadPos(&net_message, pos2);
 		MSG_ReadFloat(&net_message, f1);
 
-		CL_GenericParticleEffect(pos, dir, color, i1, pos2, i2, f1);
+		CL_GenericParticleEffect(pos, dir, color, i1, pos, i2, pos2, f1);
 		break; 
 
 	case TE_BLOOD:			// bullet hitting flesh
