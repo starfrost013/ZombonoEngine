@@ -892,7 +892,7 @@ void SZ_Clear (sizebuf_t *buf)
 
 void *SZ_GetSpace (sizebuf_t *buf, int32_t length)
 {
-	void	*data;
+	void* data;
 	
 	if (buf->cursize + length > buf->maxsize)
 	{

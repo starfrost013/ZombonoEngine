@@ -306,14 +306,15 @@
 
 	particle_rate(integer) : "Rate of particles per second" : 50
 	particle_lifetime(integer) : "Lifetime (milliseconds)" : 1000
-	particle_magnitude(integer): "Particle magnitude (smoke and steam)"
+	particle_magnitude(integer) : "Particle magnitude (smoke and steam)"
+	count(integer) : "Number of particles" 
 	color(color1) : "Color (ignored for non-Generic particles!)"
 	color_run(color1) : "Color run (ignored for non-Generic particles!)"
 	angles(string) : "Angles (vector)"
 	angles_spread(integer) : "Angle spread (in all directions)"
 	alphavel(float) : "Alternative to lifetime. Will fade out by this much alpha per second."
 	wait(integer) : "Wait time before the particle effect starts"
-	velocity(string) : "Velocity"
+	velocity(float) : "Velocity"
 ]
 
 @SolidClass base(Appearflags, Targetname) color(0 128 204) = func_plat : "Platform"

@@ -744,8 +744,8 @@ void		Com_SetServerState(int32_t state);
 uint32_t	Com_BlockChecksum(void* buffer, int32_t length);
 uint8_t		Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequence);
 
-float	frand();	// 0 ti 1
-float	crand();	// -1 to 1
+float frand();	// 0 ti 1
+float crand();	// -1 to 1
 
 extern cvar_t*	developer;
 extern cvar_t*	dedicated;

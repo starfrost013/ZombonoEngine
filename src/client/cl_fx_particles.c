@@ -1420,9 +1420,9 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 CL_GenericParticleEffect
 ===============
 */
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, float alphavel)
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel)
 {
-	int32_t 		i, j;
+	int32_t 		i, j; 
 	cparticle_t*	p;
 	float			d;
 
@@ -1436,6 +1436,7 @@ void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t coun
 		active_particles = p;
 
 		p->time = cl.time;
+		p->lifetime = lifetime;
 
 		VectorAdd(color, run, p->color);
 
@@ -1452,8 +1453,8 @@ void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t coun
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY;
-
-		p->alphavel = -1.0 / (0.5 + frand() * alphavel);
+		p->color[3] = 255;
+		p->alphavel = alphavel;
 	}
 }
 

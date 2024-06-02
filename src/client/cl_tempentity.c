@@ -140,47 +140,48 @@ static vec4_t splash_color[] =
 void CL_ParseTEnt ()
 {
 	int32_t 		type;
-	vec3_t			pos, pos2, dir;
+	vec3_t			pos = { 0 }, pos2 = { 0 }, pos3 = { 0 }, dir = { 0 };
 	explosion_t*	ex;
-	vec4_t			color;
+	color4_t		color;
 	int32_t			cnt = 0, r = 0, ent = 0, i1 = 0, i2 = 0, i3 = 0;
 	float			f1 = 0.0f, f2 = 0.0f, f3 = 0.0f;
 
-	vec4_t legacy_colour_0  = { 0, 0, 0, 255 };
-	vec4_t legacy_colour_b0 = { 118, 123, 207, 255 };
-	vec4_t legacy_colour_d0 = { 0, 255, 0, 255 };
-	vec4_t legacy_colour_df = { 254, 191, 15, 255 };
-	vec4_t legacy_colour_e0 = { 254, 171, 7, 255 };
-	vec4_t legacy_colour_e8 = { 156, 31, 1, 255 };
+	color4_t legacy_colour_0  = { 0, 0, 0, 255 };
+	color4_t legacy_colour_b0 = { 118, 123, 207, 255 };
+	color4_t legacy_colour_d0 = { 0, 255, 0, 255 };
+	color4_t legacy_colour_df = { 254, 191, 15, 255 };
+	color4_t legacy_colour_e0 = { 254, 171, 7, 255 };
+	color4_t legacy_colour_e8 = { 156, 31, 1, 255 };
 
 	type = MSG_ReadByte (&net_message);
 
 	switch (type)
 	{
 	case TE_GENERIC:
-		MSG_ReadPos(&net_message, pos);
-		MSG_ReadDir(&net_message, dir);
-		MSG_ReadColor(&net_message, color);
-		MSG_ReadInt(&net_message, i1);
-		MSG_ReadPos(&net_message, pos);
-		MSG_ReadInt(&net_message, i2);
-		MSG_ReadPos(&net_message, pos2);
-		MSG_ReadFloat(&net_message, f1);
+		MSG_ReadPos(&net_message, &pos);
+		MSG_ReadDir(&net_message, &dir);
+		MSG_ReadColor(&net_message, &color);
+		i1 = MSG_ReadInt(&net_message);
+		MSG_ReadPos(&net_message, &pos2);
+		i2 = MSG_ReadInt(&net_message);
+		MSG_ReadPos(&net_message, &pos3);
+		i3 = MSG_ReadInt(&net_message);
+		f1 = MSG_ReadFloat(&net_message);
 
-		CL_GenericParticleEffect(pos, dir, color, i1, pos, i2, pos2, f1);
+		CL_GenericParticleEffect(pos, dir, color, i1, pos2, i2, pos3, i3, f1);
 		break; 
 
 	case TE_BLOOD:			// bullet hitting flesh
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		CL_ParticleEffect (pos, dir, legacy_colour_e8, 60);
 		break;
 
 	case TE_GUNSHOT:			// bullet hitting wall
 	case TE_SPARKS:
 	case TE_BULLET_SPARKS:
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		if (type == TE_GUNSHOT)
 			CL_ParticleEffect (pos, dir, legacy_colour_0, 40);
 		else
@@ -204,8 +205,8 @@ void CL_ParseTEnt ()
 		
 	case TE_SCREEN_SPARKS:
 	case TE_SHIELD_SPARKS:
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		if (type == TE_SCREEN_SPARKS)
 			CL_ParticleEffect (pos, dir, legacy_colour_d0, 40);
 		else
@@ -215,16 +216,16 @@ void CL_ParseTEnt ()
 		break;
 		
 	case TE_SHOTGUN:			// bullet hitting wall
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		CL_ParticleEffect (pos, dir, legacy_colour_0, 20);
 		CL_SmokeAndFlash(pos);
 		break;
 
 	case TE_SPLASH:			// bullet hitting water
 		cnt = MSG_ReadByte (&net_message);
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		r = MSG_ReadByte (&net_message);
 		if (r > 6)
 		{
@@ -257,8 +258,8 @@ void CL_ParseTEnt ()
 
 	case TE_LASER_SPARKS:
 		cnt = MSG_ReadShort (&net_message);
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 
 		MSG_ReadColor(&net_message, color);
 		
@@ -266,8 +267,8 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_BLASTER:			// blaster hitting wall
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadDir (&net_message, dir);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadDir (&net_message, &dir);
 		CL_BlasterParticles (pos, dir);
 
 		ex = CL_AllocExplosion ();
@@ -295,8 +296,8 @@ void CL_ParseTEnt ()
 		break;
 		
 	case TE_RAILTRAIL:			// railgun effect
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadPos (&net_message, pos2);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadPos (&net_message, &pos2);
 		CL_RailTrail (pos, pos2);
 		S_StartSound (pos2, 0, 0, cl_sfx_railg, 1, ATTN_NORM, 0);
 		break;
@@ -304,7 +305,7 @@ void CL_ParseTEnt ()
 	case TE_EXPLOSION2:
 	case TE_GRENADE_EXPLOSION:
 	case TE_GRENADE_EXPLOSION_WATER:
-		MSG_ReadPos (&net_message, pos);
+		MSG_ReadPos (&net_message, &pos);
 
 		ex = CL_AllocExplosion ();
 		VectorCopy (pos, ex->ent.origin);
