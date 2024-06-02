@@ -1297,12 +1297,12 @@ uint8_t	Com_BlockSequenceCRCByte (uint8_t *base, int32_t length, int32_t sequenc
 
 //========================================================
 
-float	frand()
+float frand()
 {
 	return (rand()&32767)* (1.0/32767);
 }
 
-float	crand()
+float crand()
 {
 	return (rand()&32767)* (2.0/32767) - 1;
 }

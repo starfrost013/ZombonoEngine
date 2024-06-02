@@ -18,12 +18,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// sv_game.c -- interface to the game dll
+
+// sv_game.c -- the server's interface to the game dll
 
 #include "server.h"
 
 game_export_t	*ge;
-
 
 /*
 ===============
@@ -230,17 +230,16 @@ void PF_Configstring (int32_t index, char *val)
 	}
 }
 
-
-
-void PF_WriteChar (int32_t c) {MSG_WriteChar (&sv.multicast, c);}
-void PF_WriteByte (int32_t c) {MSG_WriteByte (&sv.multicast, c);}
-void PF_WriteShort (int32_t c) {MSG_WriteShort (&sv.multicast, c);}
-void PF_WriteInt (int32_t c) {MSG_WriteInt (&sv.multicast, c);}
-void PF_WriteFloat (float f) {MSG_WriteFloat (&sv.multicast, f);}
-void PF_WriteString (char *s) {MSG_WriteString (&sv.multicast, s);}
-void PF_WritePos (vec3_t pos) {MSG_WritePos (&sv.multicast, pos);}
-void PF_WriteDir (vec3_t dir) {MSG_WriteDir (&sv.multicast, dir);}
-void PF_WriteAngle (float f) {MSG_WriteAngle (&sv.multicast, f);}
+void PF_WriteChar(int32_t c) { MSG_WriteChar(&sv.multicast, c); }
+void PF_WriteByte(int32_t c) { MSG_WriteByte(&sv.multicast, c); }
+void PF_WriteShort(int32_t c) { MSG_WriteShort(&sv.multicast, c); }
+void PF_WriteInt(int32_t c) { MSG_WriteInt(&sv.multicast, c); }
+void PF_WriteFloat(float f) { MSG_WriteFloat(&sv.multicast, f); }
+void PF_WriteString(char* s) { MSG_WriteString(&sv.multicast, s); }
+void PF_WritePos(vec3_t pos) { MSG_WritePos(&sv.multicast, pos); }
+void PF_WriteDir(vec3_t dir) { MSG_WriteDir(&sv.multicast, dir); }
+void PF_WriteColor(color4_t color) { MSG_WriteColor(&sv.multicast, color); }
+void PF_WriteAngle(float f) { MSG_WriteAngle(&sv.multicast, f); }
 
 
 /*
@@ -381,8 +380,9 @@ void SV_InitGameProgs ()
 	import.WriteInt = PF_WriteInt;
 	import.WriteFloat = PF_WriteFloat;
 	import.WriteString = PF_WriteString;
-	import.WritePosition = PF_WritePos;
+	import.WritePos = PF_WritePos;
 	import.WriteDir = PF_WriteDir;
+	import.WriteColor = PF_WriteColor;
 	import.WriteAngle = PF_WriteAngle;
 
 	import.TagMalloc = Z_TagMalloc;

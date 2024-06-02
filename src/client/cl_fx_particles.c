@@ -1334,7 +1334,7 @@ void CL_Flashlight(int32_t ent, vec3_t pos)
 CL_ColorFlash - flash of light
 ======
 */
-void CL_ColorFlash(vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b)
+void CL_ColorFlash(int32_t ent, vec3_t pos, int32_t intensity, color4_t color)
 {
 	cdlight_t* dl;
 
@@ -1343,9 +1343,9 @@ void CL_ColorFlash(vec3_t pos, int32_t ent, int32_t intensity, float r, float g,
 	dl->radius = intensity;
 	dl->minlight = 250;
 	dl->die = cl.time + 100;
-	dl->color[0] = r;
-	dl->color[1] = g;
-	dl->color[2] = b;
+	dl->color[0] = color[0];
+	dl->color[1] = color[1];
+	dl->color[2] = color[2];
 }
 
 void CL_FlameEffects(centity_t* ent, vec3_t origin)
@@ -1420,7 +1420,7 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 CL_GenericParticleEffect
 ===============
 */
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel)
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, float alphavel)
 {
 	int32_t 		i, j;
 	cparticle_t*	p;
@@ -1443,7 +1443,11 @@ void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t coun
 		for (j = 0; j < 3; j++)
 		{
 			p->org[j] = org[j] + ((rand() & 7) - 4) + d * dir[j];
-			p->vel[j] = crand() * 20;
+
+			if (velocity == vec3_origin)
+				p->vel[j] = crand() * 20;
+			else
+				p->vel[j] = velocity[j] + (crand() * 20);
 		}
 
 		p->accel[0] = p->accel[1] = 0;

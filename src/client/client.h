@@ -383,7 +383,7 @@ void CL_Flashlight(int32_t ent, vec3_t pos);
 void CL_FlameEffects(centity_t* ent, vec3_t origin);
 void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, float alphavel);
 void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
-void CL_ColorFlash(vec3_t pos, int32_t ent, int32_t intensity, float r, float g, float b);
+void CL_ColorFlash(int32_t ent, vec3_t pos, int32_t intensity, color4_t color);
 void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
 
 int32_t CL_ParseEntityBits(uint32_t* bits);

@@ -7,9 +7,20 @@ June XX, 2024
 NEW FEATURES:
 * Added the Planfuslicator!
 	* A director team gun that can zombify Players. However, the range is short (currently 1,536 units) and you can't directly see where it's going.
+* Major particle system improvements:
+	* Added velocity to generic particle effect
+	* Added the func_particle_effect entity
+		* You can use this to send any tempent over the network.
+		* The main keys to use with this entity are velocity (speed of the particles), particle_effect (type of the particle effect), rate (particles per tick) and for some of them color.
+		* There are two ways to control lifetime: alphavel (will fade by this much) and lifetime (will disappear after this many milliseconds)
+		* Most of the others are intended for specific particle effects and haven't really been tested! 
+		* You can see this feature in action by running "map test_particle_effect" in the editor. It's also in some maps
 * Added the ability to independently disable the keyboard and mouse using the cls.disable_keyboard and cls.disable_mouse properties (overridden by cls.disable_input)
 * Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
 * Added the EF_LIGHTNING entity effect
+* New core engine types:
+	* vec3_t typedef'd as color3_t (RGB format)
+	* vec4_t typedef'd as color4_t (RGBA format)
 * Particle system features:
 	* Added permanent particles that never despawn (optional)
 	* Added a "lifetime" field to cparticle_t that allows particles to despawn without fading away with alphavel
@@ -17,6 +28,10 @@ NEW FEATURES:
 	* Text turns yellow if you are more than 5 FPS below the target fps (60 fps or cl_maxfps, whichever is lower), scaling down linearly with the value of cl_maxfps
 	* Text turns red if you drop below (target_fps)/2
 	* Added the current map you are playing
+* On debug builds (NOT IN PLAYTEST OR RELEASE BUILDS THAT YOU ACTUALLY DOWNLOAD), sv_cheats is now always enabled
+* Game API version 8: 
+	* Added WriteColor
+	* Renamed WritePosition to WritePos for consistency with engine
 
 BUG FIXES:
 * Various map fixes
@@ -27,14 +42,17 @@ BUG FIXES:
 * Fixed server crash that could happen in rare cases if the Bamfuslicator failed to spawn a zombie (it was trying to free the zombie edict before creaitng it)
 * Fixed potential memory corruption and exploit issue involving calling CL_ClearParticles with no particles. You would be able to set the four bytes at [80..76] bytes (cl_particles->next) before the 
 first particle to NULL
+* Fixed sscanf return values not being checked during edict field parsing (F_VECTOR3 and F_VECTOR4)
 * Fixed a bug where particles could never despawn and would always take up particle slots if alphavel was 0 
 * Fixed unusual spacing of "select team" text in TeamUI
 * Fixed insane build_config and build_platform bullshittery
+* Fixed the target_laser entity causing a client disconnect
 * Fixed being able to shoot the machine gun forever in automatic mode
+	* Hopefully fixed not picking up bullets from packs
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)
-* Ancient Head and 
+* Ancient Head and unused Power Screen items
 
 OTHER CHANGES:
 * Enable sv_cheats always on debug builds

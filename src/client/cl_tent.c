@@ -255,14 +255,11 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_LASER_SPARKS:
-		cnt = MSG_ReadByte (&net_message);
+		cnt = MSG_ReadShort (&net_message);
 		MSG_ReadPos (&net_message, pos);
 		MSG_ReadDir (&net_message, dir);
 
-		color[0] = MSG_ReadByte(&net_message);
-		color[1] = MSG_ReadByte(&net_message);
-		color[2] = MSG_ReadByte(&net_message);
-		color[3] = MSG_ReadByte(&net_message);
+		MSG_ReadColor(&net_message, color);
 		
 		CL_ParticleEffect2 (pos, dir, color, cnt);
 		break;
@@ -355,29 +352,29 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_BUBBLETRAIL:
-		MSG_ReadPos (&net_message, pos);
-		MSG_ReadPos (&net_message, pos2);
+		MSG_ReadPos (&net_message, &pos);
+		MSG_ReadPos (&net_message, &pos2);
 		CL_BubbleTrail (pos, pos2);
 		break;
 
 	case TE_TELEPORT:
-		MSG_ReadPos(&net_message, pos);
+		MSG_ReadPos(&net_message, &pos);
 
 		CL_TeleportParticles(pos);
 		break;
 
 	case TE_LIGHTNING:
-		MSG_ReadPos(&net_message, pos);
+		MSG_ReadPos(&net_message, &pos);
 		f1 = MSG_ReadFloat(&net_message);
-		MSG_ReadDir(&net_message, dir);
+		MSG_ReadDir(&net_message, &dir);
 
 		CL_LightningParticles(pos, f1, dir);
 		break;
 
 	case TE_SMOKE:
-		MSG_ReadPos(&net_message, pos);
-		MSG_ReadDir(&net_message, dir);
-		MSG_ReadColor(&net_message, color);
+		MSG_ReadPos(&net_message, &pos);
+		MSG_ReadDir(&net_message, &dir);
+		MSG_ReadColor(&net_message, &color);
 		i1 = MSG_ReadInt(&net_message);
 		i2 = MSG_ReadInt(&net_message);
 
@@ -385,9 +382,9 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_STEAM:
-		MSG_ReadPos(&net_message, pos);
-		MSG_ReadDir(&net_message, dir);
-		MSG_ReadColor(&net_message, color);
+		MSG_ReadPos(&net_message, &pos);
+		MSG_ReadDir(&net_message, &dir);
+		MSG_ReadColor(&net_message, &color);
 		i1 = MSG_ReadInt(&net_message);
 		i2 = MSG_ReadInt(&net_message);
 
@@ -395,36 +392,32 @@ void CL_ParseTEnt ()
 		break;
 
 	case TE_FLAME:
-		ent = MSG_ReadInt(&net_message);
-		MSG_ReadPos(&net_message, pos);
+		ent = MSG_ReadShort(&net_message);
+		MSG_ReadPos(&net_message, &pos);
 
 		CL_FlameEffects(ent, pos);
 		break;
 
 	case TE_FLASHLIGHT:
-		ent = MSG_ReadInt(&net_message);
-		MSG_ReadPos(&net_message, pos);
+		ent = MSG_ReadShort(&net_message);
+		MSG_ReadPos(&net_message, &pos);
 
 		CL_Flashlight(ent, pos);
 		break;
 
 	case TE_FLASH: // e.g. Flashbang
-		MSG_ReadPos(&net_message, pos);
-		ent = MSG_ReadInt(&net_message);
+		ent = MSG_ReadShort(&net_message);
+		MSG_ReadPos(&net_message, &pos);
 		i1 = MSG_ReadInt(&net_message);
-		f1 = MSG_ReadFloat(&net_message);
-		f2 = MSG_ReadFloat(&net_message);
-		f3 = MSG_ReadFloat(&net_message);
+		MSG_ReadColor(&net_message, &color);
 
-		CL_ColorFlash(pos, ent, i1, f1, f2, f3);
+		CL_ColorFlash(ent, pos, i1, pos2);
 		break;
 
 	default:
-		Com_Error (ERR_DROP, "CL_ParseTEnt: bad type");
+		Com_Error (ERR_DROP, "CL_ParseTEnt: bad type %d", type);
 	}
 }
-
-
 
 /*
 =================
