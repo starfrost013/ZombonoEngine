@@ -42,7 +42,7 @@
     <ClCompile Include="client\cl_parse.c" />
     <ClCompile Include="client\cl_pred.c" />
     <ClCompile Include="client\cl_render_2d.c" />
-    <ClCompile Include="client\cl_tent.c" />
+    <ClCompile Include="client\cl_tempentity.c" />
     <ClCompile Include="client\cl_font.c" />
     <ClCompile Include="client\cl_ui.c" />
     <ClCompile Include="client\cl_ui_eventhandling.c" />

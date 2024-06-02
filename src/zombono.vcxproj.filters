@@ -36,7 +36,7 @@
     <ClCompile Include="client\cl_render_2d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_tent.c">
+    <ClCompile Include="client\cl_tempentity.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_render_3d.c">
