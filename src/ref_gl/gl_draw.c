@@ -168,7 +168,7 @@ void Draw_Pic (int32_t x, int32_t y, char *pic, color4_t color)
 /*
 ================
 Draw_PicArea
-Draws a part of the 
+Draws a part of an image.
 ================
 */
 void Draw_PicArea(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, float scale)
@@ -242,8 +242,9 @@ Same as Draw_PicRegion, but it only uses integer scales
 void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color)
 {
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
-	// truncate
-	Draw_PicArea(x, y, start_x, start_y, end_x, end_y, pic, color, (int)scale->value);
+	// truncate the scale
+	float font_scale = truncf(scale->value);
+	Draw_PicArea(x, y, start_x, start_y, end_x, end_y, pic, color, font_scale);
 }
 
 /*
