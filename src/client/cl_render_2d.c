@@ -58,6 +58,7 @@ cvar_t*		scr_graphscale;
 cvar_t*		scr_graphshift;
 
 cvar_t*		vid_hudscale;
+
 extern cvar_t* vid_ref;
 
 typedef struct dirty_s

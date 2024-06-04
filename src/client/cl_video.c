@@ -125,13 +125,13 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	int32_t wscale = viddef.width / UI_SCALE_BASE_X;
-	int32_t hscale = viddef.height / UI_SCALE_BASE_Y;
+	float wscale = viddef.width / UI_SCALE_BASE_X;
+	float hscale = viddef.height / UI_SCALE_BASE_Y;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;
 
-	snprintf(hudscale, 4, "%d", wscale);
+	snprintf(hudscale, 4, "%.2f", wscale);
 	vid_hudscale = Cvar_Set("hudscale", hudscale);
 }
 

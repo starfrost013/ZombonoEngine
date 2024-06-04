@@ -104,10 +104,10 @@ GL_ScreenShot_f
 void GL_ScreenShot_f()
 {
 	uint8_t* buffer;
-	char		picname[MAX_OSPATH] = { 0 };
-	char		checkname[MAX_OSPATH] = { 0 };
-	int32_t		i, c, temp;
-	FILE* f;
+	char	picname[MAX_OSPATH] = { 0 };
+	char	checkname[MAX_OSPATH] = { 0 };
+	int32_t	i, c, temp;
+	FILE*	f;
 
 	// create the scrnshots directory if it doesn't exist
 	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());

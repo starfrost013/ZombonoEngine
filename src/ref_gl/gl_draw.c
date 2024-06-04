@@ -165,16 +165,15 @@ void Draw_Pic (int32_t x, int32_t y, char *pic, color4_t color)
 	}
 }
 
-
 /*
 ================
-Draw_PicRegion
+Draw_PicArea
+Draws a part of the 
 ================
 */
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, color4_t color)
+void Draw_PicArea(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, float scale)
 {
 	image_t* gl;
-	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
 
 	gl = Draw_FindPic(pic);
 
@@ -185,10 +184,10 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 	}
 
 	// set up UV coordinates
-	float coord_begin_x = (float)start_x * scale->value / (float)(gl->upload_width * scale->value);
-	float coord_begin_y = (float)start_y * scale->value / (float)(gl->upload_height * scale->value);
-	float coord_end_x = (float)end_x * scale->value / (float)(gl->upload_width * scale->value);
-	float coord_end_y = (float)end_y * scale->value / (float)(gl->upload_height * scale->value);
+	float coord_begin_x = (float)start_x * scale / (float)(gl->upload_width * scale);
+	float coord_begin_y = (float)start_y * scale / (float)(gl->upload_height * scale);
+	float coord_end_x = (float)end_x * scale / (float)(gl->upload_width * scale);
+	float coord_end_y = (float)end_y * scale / (float)(gl->upload_height * scale);
 
 	float size_x = end_x - start_x;
 	float size_y = end_y - start_y;
@@ -205,15 +204,15 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 		glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
 	}
 
- 	glBegin(GL_QUADS);
+	glBegin(GL_QUADS);
 	glTexCoord2f(coord_begin_x, coord_begin_y);
 	glVertex2f(x, y);
 	glTexCoord2f(coord_end_x, coord_begin_y);
-	glVertex2f(x + size_x * scale->value, y);
+	glVertex2f(x + size_x * scale, y);
 	glTexCoord2f(coord_end_x, coord_end_y);
-	glVertex2f(x + size_x * scale->value, y + size_y * scale->value);
+	glVertex2f(x + size_x * scale, y + size_y * scale);
 	glTexCoord2f(coord_begin_x, coord_end_y);
-	glVertex2f(x, y + size_y * scale->value);
+	glVertex2f(x, y + size_y * scale);
 	glEnd();
 
 	if (color != NULL)
@@ -221,7 +220,30 @@ void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int3
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		glDisable(GL_BLEND);
 	}
+}
 
+/*
+================
+Draw_PicRegion
+================
+*/
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, color4_t color)
+{
+	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
+	Draw_PicArea(x, y, start_x, start_y, end_x, end_y, pic, color, scale->value);
+}
+
+/*
+================
+Draw_FontChar
+Same as Draw_PicRegion, but it only uses integer scales
+================
+*/
+void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color)
+{
+	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
+	// truncate
+	Draw_PicArea(x, y, start_x, start_y, end_x, end_y, pic, color, (int)scale->value);
 }
 
 /*

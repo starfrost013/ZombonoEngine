@@ -167,7 +167,7 @@ typedef struct refexport_s
 	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
 	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
 	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
-
+	void	(*DrawFontChar)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
 	void	(*DrawFadeScreen) ();
 	/*
 	** video mode and refresh state management entry points

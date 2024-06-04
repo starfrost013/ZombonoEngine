@@ -43,7 +43,6 @@ bool UI_MainMenuUICreate()
 	
 	UI_SetImageIsStretched("MainMenuUI", "UI_MainMenuUI_Background", true);
 
-	//UI_AddImage("MainMenuUI", "UI_MainMenuUI_ZombonoLogo", "2d/zombono_logo_lores_red", 0, 0, 500, 108);
 	float x = 0.01f;
 	float y = 0.54f;
 	//todo: scale these?

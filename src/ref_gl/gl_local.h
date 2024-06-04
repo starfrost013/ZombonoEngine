@@ -10,7 +10,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -65,7 +65,7 @@ extern  int32_t		modfilelen; // for gl_sprite.c
 
 */
 
-typedef enum 
+typedef enum
 {
 	it_skin,
 	it_sprite,
@@ -82,7 +82,7 @@ typedef struct image_s
 	int32_t				width, height;				// source image
 	int32_t				upload_width, upload_height;	// after power of two and picmip
 	int32_t				registration_sequence;		// 0 = free
-	struct msurface_s*	texturechain;	// for sort-by-texture world drawing
+	struct msurface_s* texturechain;	// for sort-by-texture world drawing
 	int32_t				texnum;						// gl texture binding
 	float				sl, tl, sh, th;				// 0,0 - 1,1 unless part of the scrap
 	bool				has_alpha;
@@ -127,7 +127,7 @@ extern gl_state_t	gl_state;
 
 #include "gl_model.h"
 
-void GL_SetDefaultState( void );
+void GL_SetDefaultState(void);
 
 extern	float	gldepthmin, gldepthmax;
 
@@ -148,11 +148,11 @@ extern image_t  gltextures[MAX_GLTEXTURES];
 extern int32_t	numgltextures;
 
 //TODO: THESE DON'T WORK BECAUSE THE TEXTURE FORMAT CHANGED
-extern image_t	*r_notexture;
-extern image_t	*r_particletexture;
+extern image_t* r_notexture;
+extern image_t* r_particletexture;
 
-extern entity_t *currententity;
-extern model_t	*currentmodel;
+extern entity_t* currententity;
+extern model_t* currentmodel;
 extern int32_t	r_visframecount;
 extern int32_t	r_framecount;
 extern cplane_t frustum[4];
@@ -239,76 +239,77 @@ extern int32_t c_visible_textures;
 
 extern float   r_world_matrix[16];
 
-void GL_Bind (int32_t texnum);
-void GL_MBind( GLenum target, int32_t texnum );
-void GL_TexEnv( GLenum value );
-void GL_EnableMultitexture( bool enable );
-void GL_SelectTexture( GLenum );
+void GL_Bind(int32_t texnum);
+void GL_MBind(GLenum target, int32_t texnum);
+void GL_TexEnv(GLenum value);
+void GL_EnableMultitexture(bool enable);
+void GL_SelectTexture(GLenum);
 
-void R_LightPoint (vec3_t p, vec3_t color);
-void R_PushDlights ();
+void R_LightPoint(vec3_t p, vec3_t color);
+void R_PushDlights();
 
 //====================================================================
 
-extern	model_t	*r_worldmodel;
+extern	model_t* r_worldmodel;
 
 extern	int		registration_sequence;
 
 bool R_Init();
-void R_Shutdown( void );
+void R_Shutdown(void);
 
-void R_RenderView (refdef_t *fd);
-void GL_ScreenShot_f ();
-void R_DrawAliasModel (entity_t *e);
-void R_DrawBrushModel (entity_t *e);
-void R_DrawSpriteModel (entity_t *e);
-void R_DrawBeam( entity_t *e );
-void R_DrawWorld ();
-void R_RenderDlights ();
-void R_DrawAlphaSurfaces ();
-void R_RenderBrushPoly (msurface_t *fa);
-void R_InitParticleTexture ();
-void Draw_InitLocal ();
-void GL_SubdivideSurface (msurface_t *fa);
-bool R_CullBox (vec3_t mins, vec3_t maxs);
-void R_RotateForEntity (entity_t *e);
-void R_MarkLeaves ();
+void R_RenderView(refdef_t* fd);
+void GL_ScreenShot_f();
+void R_DrawAliasModel(entity_t* e);
+void R_DrawBrushModel(entity_t* e);
+void R_DrawSpriteModel(entity_t* e);
+void R_DrawBeam(entity_t* e);
+void R_DrawWorld();
+void R_RenderDlights();
+void R_DrawAlphaSurfaces();
+void R_RenderBrushPoly(msurface_t* fa);
+void R_InitParticleTexture();
+void Draw_InitLocal();
+void GL_SubdivideSurface(msurface_t* fa);
+bool R_CullBox(vec3_t mins, vec3_t maxs);
+void R_RotateForEntity(entity_t* e);
+void R_MarkLeaves();
 
-void EmitWaterPolys (msurface_t *fa);
-void R_AddSkySurface (msurface_t *fa);
-void R_ClearSkyBox ();
-void R_DrawSkyBox ();
-void R_MarkLights (dlight_t *light, int32_t bit, mnode_t *node);
+void EmitWaterPolys(msurface_t* fa);
+void R_AddSkySurface(msurface_t* fa);
+void R_ClearSkyBox();
+void R_DrawSkyBox();
+void R_MarkLights(dlight_t* light, int32_t bit, mnode_t* node);
 
-void COM_StripExtension (char *in, char *out);
+void COM_StripExtension(char* in, char* out);
 
 // Mostly exports here.
-void Draw_GetPicSize (int32_t *w, int32_t *h, char *name);
-void Load_Pic(char *name); // load but don't draw a pic.
-void Draw_Pic(int32_t x, int32_t y, char *name, color4_t color);
+void Draw_GetPicSize(int32_t* w, int32_t* h, char* name);
+void Load_Pic(char* name); // load but don't draw a pic.
+void Draw_Pic(int32_t x, int32_t y, char* name, color4_t color);
 void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
-void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *name, color4_t color);
-void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
-void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
-void Draw_FadeScreen ();
+void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
+void Draw_PicStretch(int32_t x, int32_t y, int32_t w, int32_t h, char* name, color4_t color);
+void Draw_TileClear(int32_t x, int32_t y, int32_t w, int32_t h, char* name);
+void Draw_Fill(int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
+void Draw_FadeScreen();
 void R_BeginFrame();
 
-void GL_ResampleTexture (uint32_t *in, int32_t inwidth, int32_t inheight, uint32_t *out,  int32_t outwidth, int32_t outheight);
+void GL_ResampleTexture(uint32_t* in, int32_t inwidth, int32_t inheight, uint32_t* out, int32_t outwidth, int32_t outheight);
 
-struct image_s *R_RegisterSkin (char *name);
+struct image_s* R_RegisterSkin(char* name);
 
-image_t*	GL_LoadPic (char *name, uint8_t *pic, int32_t width, int32_t height, imagetype_t type);
-image_t*	GL_FindImage (char *name, imagetype_t type);
-void		GL_SetTextureMode( char *string );
-void		GL_ImageList_f ();
+image_t* GL_LoadPic(char* name, uint8_t* pic, int32_t width, int32_t height, imagetype_t type);
+image_t* GL_FindImage(char* name, imagetype_t type);
+void		GL_SetTextureMode(char* string);
+void		GL_ImageList_f();
 
-void GL_InitImages ();
-void GL_ShutdownImages ();
+void GL_InitImages();
+void GL_ShutdownImages();
 
-void GL_FreeUnusedImages ();
+void GL_FreeUnusedImages();
 
-void GL_SetTextureAlphaMode( char *string );
-void GL_SetTextureSolidMode( char *string );
+void GL_SetTextureAlphaMode(char* string);
+void GL_SetTextureSolidMode(char* string);
 
 // Map extents
 extern float map_radius;
@@ -329,7 +330,6 @@ void GL_SetCursorPosition(double x, double y);
 void GL_SetWindowPosition(double x, double y);
 void GL_EnableCursor(bool enabled);
 void GL_SetResolution(int32_t x, int32_t y);
-
 
 /*
 ====================================================================
@@ -353,4 +353,4 @@ void	GL_BeginFrame();
 void	GL_EndFrame(void);
 void	GL_Shutdown(void);
 void	GL_ShutdownEverything(void);
-rserr_t GL_SetMode( int32_t *pwidth, int32_t *pheight, bool fullscreen );
+rserr_t GL_SetMode(int32_t* pwidth, int32_t* pheight, bool fullscreen);
