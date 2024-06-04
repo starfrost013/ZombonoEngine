@@ -243,7 +243,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 	int32_t current_y = y;
 
 	// default is white
-	vec4_t color = { 255, 255, 255, 255 };
+	color4_t color = { 255, 255, 255, 255 };
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{

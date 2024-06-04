@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "client.h"
 
-
 /*
 ===================
 CL_CheckPredictionError
@@ -29,10 +28,10 @@ CL_CheckPredictionError
 */
 void CL_CheckPredictionError ()
 {
-	int32_t 	frame;
-	int32_t 	delta[3];
-	int32_t 	i;
-	int32_t 	len;
+	int32_t frame;
+	int32_t delta[3];
+	int32_t i;
+	int32_t len;
 
 	if (!cl_predict->value || (cl.frame.playerstate.pmove.pm_flags & PMF_NO_PREDICTION))
 		return;

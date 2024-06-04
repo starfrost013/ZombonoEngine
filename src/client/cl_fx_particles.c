@@ -248,7 +248,7 @@ CL_ParticleEffect
 Wall impact puffs
 ===============
 */
-void CL_ParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count)
+void CL_ParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count)
 {
 	int32_t 		i, j;
 	cparticle_t*	p;
@@ -293,7 +293,7 @@ Same as CL_ParticleEffect, but that varies the colour (making it darker by a ran
 and this doesn't.
 ===============
 */
-void CL_ParticleEffect2(vec3_t org, vec3_t dir, vec4_t color, int32_t count)
+void CL_ParticleEffect2(vec3_t org, vec3_t dir, color4_t color, int32_t count)
 {
 	int32_t 		i, j;
 	cparticle_t*	p;
@@ -1420,7 +1420,7 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 CL_GenericParticleEffect
 ===============
 */
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel)
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel)
 {
 	int32_t 		i, j; 
 	cparticle_t*	p;
@@ -1465,7 +1465,7 @@ CL_ParticleSteamEffect
 Puffs with velocity along direction, with some randomness thrown in
 ===============
 */
-void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
+void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude)
 {
 	int32_t 		i, j;
 	cparticle_t*	p;
@@ -1514,7 +1514,7 @@ void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count,
 CL_ParticleSmokeEffect - like the steam effect, but unaffected by gravity
 ===============
 */
-void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude)
+void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude)
 {
 	int32_t 		i, j;
 	cparticle_t*	p;

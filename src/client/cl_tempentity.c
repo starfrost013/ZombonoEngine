@@ -203,14 +203,11 @@ void CL_ParseTEnt ()
 
 		break;
 		
-	case TE_SCREEN_SPARKS:
 	case TE_SHIELD_SPARKS:
 		MSG_ReadPos (&net_message, &pos);
 		MSG_ReadDir (&net_message, &dir);
-		if (type == TE_SCREEN_SPARKS)
-			CL_ParticleEffect (pos, dir, legacy_colour_d0, 40);
-		else
-			CL_ParticleEffect (pos, dir, legacy_colour_b0, 40);
+		CL_ParticleEffect(pos, dir, legacy_colour_b0, 40);
+
 		//FIXME : replace or remove this sound
 		S_StartSound (pos, 0, 0, cl_sfx_lashit, 1, ATTN_NORM, 0);
 		break;

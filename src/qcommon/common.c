@@ -439,7 +439,7 @@ void MSG_WriteDir (sizebuf_t *sb, vec3_t dir)
 	MSG_WriteByte (sb, best);
 }
 
-void MSG_WriteColor(sizebuf_t* msg_read, vec4_t color)
+void MSG_WriteColor(sizebuf_t* msg_read, color4_t color)
 {
 	MSG_WriteByte(msg_read, color[0]);
 	MSG_WriteByte(msg_read, color[1]);
@@ -809,7 +809,7 @@ void MSG_ReadPos (sizebuf_t *msg_read, vec3_t pos)
 	pos[2] = MSG_ReadFloat(msg_read);
 }
 
-void MSG_ReadColor(sizebuf_t* msg_read, vec4_t color)
+void MSG_ReadColor(sizebuf_t* msg_read, color4_t color)
 {
 	color[0] = MSG_ReadByte(msg_read);
 	color[1] = MSG_ReadByte(msg_read);

@@ -348,8 +348,8 @@ bool CL_CheckOrDownloadFile(char* filename);
 void Render2D_AddNetgraph();
 
 void CL_TeleporterParticles(entity_state_t* ent);
-void CL_ParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count);
-void CL_ParticleEffect2(vec3_t org, vec3_t dir, vec4_t color, int32_t count);
+void CL_ParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count);
+void CL_ParticleEffect2(vec3_t org, vec3_t dir, color4_t color, int32_t count);
 
 //=============================================================================
 
@@ -360,7 +360,7 @@ typedef struct particle_s
 	vec3_t		org;
 	vec3_t		vel;
 	vec3_t		accel;
-	vec4_t		color;
+	color4_t	color;
 	float		colorvel;
 	float		alphavel;
 	int32_t		lifetime; // alternative way of having particles die without fading away
@@ -381,10 +381,10 @@ void CL_BubbleTrail(vec3_t start, vec3_t end);
 
 void CL_Flashlight(int32_t ent, vec3_t pos);
 void CL_FlameEffects(centity_t* ent, vec3_t origin);
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel);
-void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel);
+void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude);
 void CL_ColorFlash(int32_t ent, vec3_t pos, int32_t intensity, color4_t color);
-void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, vec4_t color, int32_t count, int32_t magnitude);
+void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude);
 
 int32_t CL_ParseEntityBits(uint32_t* bits);
 void CL_ParseDelta(entity_state_t* from, entity_state_t* to, int32_t number, int32_t bits);

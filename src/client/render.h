@@ -68,7 +68,7 @@ void Render3D_Init();
 void Render3D_PrepRefresh();
 void Render3D_RenderView();
 void Render3D_AddEntity(entity_t* ent);
-void Render3D_AddParticle(vec3_t org, vec4_t color);
+void Render3D_AddParticle(vec3_t org, color4_t color);
 void Render3D_AddLight(vec3_t org, float intensity, float r, float g, float b);
 void Render3D_AddLightStyle(int32_t style, float r, float g, float b);
 

@@ -223,7 +223,7 @@ LOOPBACK BUFFERS FOR LOCAL PLAYER
 =============================================================================
 */
 
-bool	NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
+bool NET_GetLoopPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
 {
 	int32_t 	i;
 	loopback_t	*loop;
@@ -264,7 +264,7 @@ void NET_SendLoopPacket (netsrc_t sock, int32_t length, void *data, netadr_t to)
 
 //=============================================================================
 
-bool	NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
+bool NET_GetPacket (netsrc_t sock, netadr_t *net_from, sizebuf_t *net_message)
 {
 	int32_t 	ret;
 	struct sockaddr from;
@@ -326,7 +326,7 @@ void NET_SendPacket (netsrc_t sock, int32_t length, void *data, netadr_t to)
 	struct sockaddr	addr;
 	int32_t 	net_socket;
 
-	if ( to.type == NA_LOOPBACK )
+	if (to.type == NA_LOOPBACK)
 	{
 		NET_SendLoopPacket (sock, length, data, to);
 		return;

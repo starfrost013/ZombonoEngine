@@ -16,6 +16,8 @@ NEW FEATURES:
 		* Most of the others are intended for specific particle effects and haven't really been tested! 
 		* You can see this feature in action by running "map test_particle_effect" in the editor. It's also in some maps
 * Added the ability to independently disable the keyboard and mouse using the cls.disable_keyboard and cls.disable_mouse properties (overridden by cls.disable_input)
+* Somewhat redesigned z_tdm_labrats to fix choke points
+	* Added clip brushes to 16-unit stairs to reduce view bobbing
 * Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
 * Added the EF_LIGHTNING entity effect
 * New core engine types:
@@ -50,6 +52,7 @@ first particle to NULL
 * Fixed the target_laser entity causing a client disconnect
 * Fixed being able to shoot the machine gun forever in automatic mode
 	* Hopefully fixed not picking up bullets from packs
+* Fixed weird spacing and missing background (float was being passed as int32_t to sizing function and then re-interpreted as a float...) in TimeUI
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)

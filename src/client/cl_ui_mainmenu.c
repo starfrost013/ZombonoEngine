@@ -43,11 +43,11 @@ bool UI_MainMenuUICreate()
 	
 	UI_SetImageIsStretched("MainMenuUI", "UI_MainMenuUI_Background", true);
 
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_ZombonoLogo", "2d/zombono_logo_lores_red", 0, 0, 500, 108);
+	//UI_AddImage("MainMenuUI", "UI_MainMenuUI_ZombonoLogo", "2d/zombono_logo_lores_red", 0, 0, 500, 108);
 	float x = 0.01f;
 	float y = 0.54f;
 	//todo: scale these?
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnCoop", "2d/ui/mainmenuui_btn_coop", x, y, 256, 40); 
+	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart", x, y, 256, 40); 
 	y += 0.08f;
 	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers", x, y, 256, 40);
 	y += 0.08f;
@@ -59,7 +59,7 @@ bool UI_MainMenuUICreate()
 	y += 0.08f;
 
 	// Main Menu buttons onhover images
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnCoop", "2d/ui/mainmenuui_btn_coop_hover");
+	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnZombieTelevision", "2d/ui/mainmenuui_btn_zombietelevision_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings_hover");

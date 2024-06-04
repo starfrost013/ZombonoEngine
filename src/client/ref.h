@@ -161,12 +161,12 @@ typedef struct refexport_s
 	void	(*RenderFrame) (refdef_t *fd);
 
 	void	(*DrawGetPicSize) (int32_t *w, int32_t *h, char *name);	// will return 0 0 if not found
-	void	(*DrawPic) (int32_t x, int32_t y, char *name, vec4_t color);
+	void	(*DrawPic) (int32_t x, int32_t y, char *name, color4_t color);
 	void	(*LoadPic) (char* name);
-	void	(*DrawPicStretch) (int32_t x, int32_t y, int32_t w, int32_t h, char *name, vec4_t color);
+	void	(*DrawPicStretch) (int32_t x, int32_t y, int32_t w, int32_t h, char *name, color4_t color);
 	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
-	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, vec4_t color);
-	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, vec4_t color);
+	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
+	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
 
 	void	(*DrawFadeScreen) ();
 	/*

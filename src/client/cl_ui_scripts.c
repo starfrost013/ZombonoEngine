@@ -100,18 +100,18 @@ bool UI_BamfuslicatorUICreate()
 
 bool UI_TimeUICreate()
 {
-	float size_x = 0, size_y = 0;
+	int32_t size_x = 0, size_y = 0;
 
 	UI_SetPassive("TimeUI", true);
 
 	const char* temp_text = "Time: x:xx";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 
-	UI_AddBox("TimeUI", "TimeUI_TextBox", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - (0.045f), 0.021f,
+	UI_AddBox("TimeUI", "TimeUI_TextBox", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.03f, 0.021f,
 		size_x + 72, size_y, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.023f); //padding/advance reasons
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.021f); //padding/advance reasons
 
 	return true; 
 }
@@ -212,4 +212,6 @@ bool UI_LoadoutUICreate()
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option7", true);
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option8", true);
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option9", true);
+
+	return true; 
 }

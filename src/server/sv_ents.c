@@ -423,20 +423,21 @@ copies off the playerstat and areabits.
 */
 void SV_BuildClientFrame (client_t *client)
 {
-	int32_t 	e, i;
-	vec3_t	org;
-	edict_t	*ent;
-	edict_t	*clent;
-	client_frame_t	*frame;
-	entity_state_t	*state;
-	int32_t 	l;
-	int32_t 	clientarea, clientcluster;
-	int32_t 	leafnum;
-	int32_t 	c_fullsend;
-	uint8_t	*clientphs;
-	uint8_t	*bitvector;
+	int32_t 		e, i;
+	vec3_t			org;
+	edict_t*		ent;
+	edict_t*		clent;
+	client_frame_t* frame;
+	entity_state_t* state;
+	int32_t 		l;
+	int32_t 		clientarea, clientcluster;
+	int32_t 		leafnum;
+	int32_t 		c_fullsend;
+	uint8_t*		clientphs;
+	uint8_t*		bitvector;
 
 	clent = client->edict;
+
 	if (!clent->client)
 		return;		// not in game yet
 
@@ -458,7 +459,6 @@ void SV_BuildClientFrame (client_t *client)
 
 	// grab the current player_state_t
 	frame->ps = clent->client->ps;
-
 
 	SV_FatPVS (org);
 	clientphs = Map_ClusterPHS (clientcluster);

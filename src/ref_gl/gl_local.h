@@ -285,11 +285,11 @@ void COM_StripExtension (char *in, char *out);
 // Mostly exports here.
 void Draw_GetPicSize (int32_t *w, int32_t *h, char *name);
 void Load_Pic(char *name); // load but don't draw a pic.
-void Draw_Pic(int32_t x, int32_t y, char *name, vec4_t color);
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, vec4_t color);
-void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *name, vec4_t color);
+void Draw_Pic(int32_t x, int32_t y, char *name, color4_t color);
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
+void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *name, color4_t color);
 void Draw_TileClear (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
-void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, vec4_t color);
+void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
 void Draw_FadeScreen ();
 void R_BeginFrame();
 

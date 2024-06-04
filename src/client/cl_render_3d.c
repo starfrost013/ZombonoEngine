@@ -88,7 +88,7 @@ V_AddParticle
 
 =====================
 */
-void Render3D_AddParticle (vec3_t org, vec4_t color)
+void Render3D_AddParticle (vec3_t org, color4_t color)
 {
 	particle_t	*p;
 
@@ -389,10 +389,13 @@ void Render3D_RenderView()
 
 		if (!cl_add_entities->value)
 			r_numentities = 0;
+
 		if (!cl_add_particles->value)
 			r_numparticles = 0;
+
 		if (!cl_add_lights->value)
 			r_numdlights = 0;
+
 		if (!cl_add_blend->value)
 		{
 			VectorClear (cl.refdef.blend);

@@ -82,7 +82,7 @@ void Draw_GetPicSize (int32_t *w, int32_t *h, char *pic)
 Draw_StretchPic
 =============
 */
-void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic, vec4_t color)
+void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic, color4_t color)
 {
 	image_t *gl;
 
@@ -126,7 +126,7 @@ void Draw_PicStretch (int32_t x, int32_t y, int32_t w, int32_t h, char *pic, vec
 Draw_Pic
 =============
 */
-void Draw_Pic (int32_t x, int32_t y, char *pic, vec4_t color)
+void Draw_Pic (int32_t x, int32_t y, char *pic, color4_t color)
 {
 	image_t *gl;
 	cvar_t *scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -171,7 +171,7 @@ void Draw_Pic (int32_t x, int32_t y, char *pic, vec4_t color)
 Draw_PicRegion
 ================
 */
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, vec4_t color)
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char *pic, color4_t color)
 {
 	image_t* gl;
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
@@ -286,7 +286,7 @@ Draw_Fill
 Fills a box of pixels with a single color
 =============
 */
-void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, vec4_t color)
+void Draw_Fill (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color)
 {
 	glEnable (GL_BLEND);
 	glDisable (GL_TEXTURE_2D);
