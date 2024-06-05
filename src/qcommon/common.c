@@ -890,7 +890,7 @@ void SZ_Clear (sizebuf_t *buf)
 	buf->overflowed = false;
 }
 
-void *SZ_GetSpace (sizebuf_t *buf, int32_t length)
+void* SZ_GetSpace (sizebuf_t *buf, int32_t length)
 {
 	void* data;
 	
@@ -1031,10 +1031,10 @@ char *CopyString (char *in)
 
 void Info_Print (char *s)
 {
-	char	key[512];
-	char	value[512];
-	char	*o;
-	int32_t 	l;
+	char	key[512] = { 0 };
+	char	value[512] = { 0 };
+	char*	o;
+	int32_t l;
 
 	if (*s == '\\')
 		s++;

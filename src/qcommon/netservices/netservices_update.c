@@ -56,17 +56,20 @@ game_update_channel current_update_channel = update_channel_release;
 const char* selected_update_channel_str = "release";
 #endif
 
-CURL*			update_json_curl_obj = { 0 };
-CURL*			update_binary_curl_obj = { 0 };			// see how fast this is and if we need multiple simultaneous connections (curl_multitransfer_t)
+CURL*	update_json_curl_obj = { 0 };
+CURL*	update_binary_curl_obj = { 0 };			// see how fast this is and if we need multiple simultaneous connections (curl_multitransfer_t)
 
-int				netservices_running_transfers;
+int32_t	netservices_running_transfers;
 
 // tmpfile() handle
-FILE*			update_json_handle;						// updateinfo.json file handle
-char			update_json_file_name[L_tmpnam];		// updateinfo.json temp file name
+FILE*	update_json_handle;						// updateinfo.json file handle
+char	update_json_file_name[L_tmpnam];		// updateinfo.json temp file name
 
-FILE*			update_binary_handle;					// Update binary file handle
-char			update_binary_file_name[DOWNLOAD_URL_STR_LENGTH] = { 0 };	// Update binary file name after downloaded
+FILE*	update_binary_handle;					// Update binary file handle
+char	update_binary_file_name[DOWNLOAD_URL_STR_LENGTH] = { 0 };	// Update binary file name after downloaded
+
+char*	update_json_file_name_ptr = update_json_file_name;
+char*	update_binary_file_name_ptr = update_binary_file_name;
 
 // stores available update information
 // if update_available is true, it will ask the user to update
@@ -88,7 +91,7 @@ void Netservices_UpdaterGetUpdate()
 	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, Netservices_UpdateInfoJsonReceive);
 
 	// create a temporary file
-	tmpnam(&update_json_file_name);
+	tmpnam(update_json_file_name_ptr);
 	
 	// tell the user about this but not stop them from playing the game
 	if (update_json_file_name[0] == '\0')
@@ -130,7 +133,7 @@ void Netservices_UpdateInfoJsonComplete()
 
 	// close and reopen the file as r+ for stupid msvc tmpfile() related reasons
 	fclose(update_json_handle);
-	update_json_handle = fopen(&update_json_file_name, "r+");
+	update_json_handle = fopen(update_json_file_name_ptr, "r+");
 
 	// open the file as a json stream
 	JSON_open_stream(&update_json_stream, update_json_handle);
@@ -143,7 +146,7 @@ void Netservices_UpdateInfoJsonComplete()
 	{
 		Sys_Msgbox("Update Error", 0, "Invalid update channel selected. Can't update...");
 		fclose(update_json_handle);
-		remove(&update_json_file_name);
+		remove(update_json_file_name_ptr);
 		return;
 	}
 
@@ -294,16 +297,12 @@ void Netservices_UpdateInfoJsonComplete()
 	// in any case we need to delete the tempfile so close it first
 	JSON_close(&update_json_stream);
 	fclose(update_json_handle);
-	remove(&update_json_file_name);
+	remove(update_json_file_name_ptr);
 
 	// destroy the curl object
 
 	Netservices_DestroyCurlObject(update_json_curl_obj, true);
 }
-
-// Prompts for an update. Returns true if the user wanted to update
-
-
 
 // The update prompt text.
 char* update_prompt_format =
@@ -316,6 +315,7 @@ char* update_prompt_format =
 "\n"
 "(This UI is temporary and will be improved in the future.)";
 
+// Prompts for an update. Returns true if the user wanted to update
 bool Netservices_UpdaterPromptForUpdate()
 {
 	// Temporary UI
@@ -332,18 +332,20 @@ bool Netservices_UpdaterPromptForUpdate()
 	return (buttons == 6);
 }
 
+char update_binary_path[DOWNLOAD_URL_STR_LENGTH] = { 0 };
+
 // Starts the update process. We can still get out at this point
 void Netservices_UpdaterStartUpdate()
-{
-	char update_binary_path[DOWNLOAD_URL_STR_LENGTH] = { 0 };
+{ 
+	char* update_binary_path_ptr = update_binary_path;
 
 	// generate a build url
-	snprintf(&update_binary_path, DOWNLOAD_URL_STR_LENGTH, UPDATE_BINARY_BASE_URL "/" DOWNLOAD_URL_FORMAT,
+	snprintf(update_binary_path_ptr, DOWNLOAD_URL_STR_LENGTH, UPDATE_BINARY_BASE_URL "/" DOWNLOAD_URL_FORMAT,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
 		BUILD_PLATFORM, selected_update_channel_str);
 
 	// generate the local filename to be opened when we're done
-	snprintf(&update_binary_file_name, DOWNLOAD_URL_STR_LENGTH, DOWNLOAD_URL_FORMAT,
+	snprintf(update_binary_path_ptr, DOWNLOAD_URL_STR_LENGTH, DOWNLOAD_URL_FORMAT,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
 		BUILD_PLATFORM, selected_update_channel_str);
 
@@ -356,9 +358,9 @@ void Netservices_UpdaterStartUpdate()
 	curl_easy_setopt(update_binary_curl_obj, CURLOPT_TIMEOUT, 120000);
 	
 	// remove it if it already exists (we don't care about the result)
-	remove(update_binary_file_name);
+	remove(update_binary_path_ptr);
 
-	update_binary_handle = fopen(update_binary_file_name, "wb");
+	update_binary_handle = fopen(update_binary_path_ptr, "wb");
 
 	if (!update_binary_handle)
 	{
@@ -395,12 +397,13 @@ __attribute((noreturn)) void Netservices_UpdaterUpdateGame()
 	// TODO: this is incredibly retarded and I am an idiot
 	// I was too lazy to do anything else
 	char update_exec_parameters[RESTART_MAX_CMD_LINE] = { 0 };
+	char* update_exec_parameters_ptr = update_exec_parameters;
 
 #if _WIN32
-	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe >nul && %s -o\".\" -y && del %s && Zombono & exit",
+	snprintf(update_exec_parameters_ptr, RESTART_MAX_CMD_LINE, "taskkill -f -im Zombono.exe >nul && %s -o\".\" -y && del %s && Zombono & exit",
 		update_binary_file_name, update_binary_file_name);
 #else
-	snprintf(&update_exec_parameters, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && rm %s && Zombono", 
+	snprintf(update_exec_parameters_ptr, RESTART_MAX_CMD_LINE, "kill -9 Zombono && %s -o\".\" -y && rm %s && Zombono",
 		update_binary_file_name, update_binary_file_name);
 #endif
 
@@ -411,5 +414,5 @@ __attribute((noreturn)) void Netservices_UpdaterUpdateGame()
 		FreeConsole();
 
 	// run the command
-	system(update_exec_parameters);
+	system(update_exec_parameters_ptr);
 }

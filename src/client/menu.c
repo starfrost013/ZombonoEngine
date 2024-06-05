@@ -714,11 +714,11 @@ static void DrawKeyBindingFunc( void *self )
 
 		if (keys[1] != -1)
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7 OR ^2%s", Key_KeynumToString(keys[0], false), Key_KeynumToString(keys[1], false));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7 OR ^2%s", Key_VirtualToPhysical(keys[0], false), Key_VirtualToPhysical(keys[1], false));
 		}
 		else
 		{
-			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7", Key_KeynumToString(keys[0], false));
+			snprintf(name, NAME_ARRAY_SIZE, "^2%s^7", Key_VirtualToPhysical(keys[0], false));
 		}
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, name);
@@ -989,7 +989,7 @@ static const char *Keys_MenuKey( int32_t key )
 		{
 			char cmd[1024];
 
-			Com_sprintf (cmd, sizeof(cmd), "bind \"%s\" \"%s\"\n", Key_KeynumToString(key, false), bindnames[item->generic.localdata[0]][0]);
+			Com_sprintf (cmd, sizeof(cmd), "bind \"%s\" \"%s\"\n", Key_VirtualToPhysical(key, false), bindnames[item->generic.localdata[0]][0]);
 			Cbuf_InsertText (cmd);
 		}
 		

@@ -453,7 +453,7 @@ void Input_CenterView();
 extern double last_mouse_pos_x, last_mouse_pos_y;
 
 float CL_KeyState(kbutton_t* key);
-char* Key_KeynumToString(int32_t keynum, bool shift);
+char* Key_VirtualToPhysical(int32_t keynum, bool shift);
 
 extern uint32_t		sys_frame_time;
 
@@ -612,6 +612,8 @@ typedef enum ui_control_type_e
 	ui_control_entry = 6,									// A textbox that can have text entered into it.
 } ui_control_type;
 
+#define MAX_ENTRY_TEXT_LENGTH		128
+
 typedef struct ui_control_s
 {
 	// general
@@ -625,7 +627,6 @@ typedef struct ui_control_s
 	bool			invisible;							// Is this UI control invisible?
 	bool			focused;							// Is this UI control focused?
 	bool			hovered;							// Is the mouse hovering over this UI control?
-
 	// text
 	char			text[MAX_UI_STRLEN];				// Text UI control: Text to display.
 	// image
@@ -633,13 +634,20 @@ typedef struct ui_control_s
 	char			image_path_on_hover[MAX_UI_STRLEN];	// Image path when the UI control has been hovered over.
 	char			image_path_on_click[MAX_UI_STRLEN];	// Image path when the UI control clicked on.
 	bool			image_is_stretched;					// Is this UI control's image stretched?
-	// slider
-	int32_t 		value_min;							// Slider UI control: minimum value.
-	int32_t 		value_max;							// Slider UI control: maximum value.
+	// slider (also used by spin control)
+	float	 		value_min;							// Slider UI control: minimum value
+	float	 		value_max;							// Slider UI control: maximum value
+	float			value_current;						// Slider UI control: current value
 	// checkbox
 	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
 	vec4_t			color;								// The color of this UI element.
+	// spin control
+	char**			item_names;							// Spin control: Item names (pointer to string arrays)
+	// entry
+	int32_t			cursor_position;					// Entry: The position of the cursor
+	int32_t			cursor_last_visible;				// Entry: Last visible cursor position
+	char			entry_text_buffer[MAX_ENTRY_TEXT_LENGTH];// Entry: Maximum text length
 
 	// events
 	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
@@ -659,11 +667,11 @@ typedef struct ui_s
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
-extern ui_t			ui_list[MAX_UIS];	// The list of UIs.
-extern ui_t* current_ui;			// The current UI being displayed
-extern int32_t 		num_uis;			// The current number of UIs
-extern bool			ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
-extern bool			ui_initialised;		// Determines if the UI engine has been initialised or not.
+extern ui_t		ui_list[MAX_UIS];	// The list of UIs.
+extern ui_t*	current_ui;			// The current UI being displayed
+extern int32_t 	num_uis;			// The current number of UIs
+extern bool		ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern bool		ui_initialised;		// Determines if the UI engine has been initialised or not.
 
 // UI: Init
 bool UI_Init();
@@ -737,6 +745,9 @@ bool UI_LoadoutUICreate();
 
 // MainMenuUI
 bool UI_MainMenuUICreate();
+
+// KillFeedUI
+bool UI_KillFeedUICreate();
 
 // UI: Required CVars
 

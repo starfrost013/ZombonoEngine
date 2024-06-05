@@ -45,6 +45,12 @@ void UI_DrawBox(ui_control_t* box);																// Draws a box control.
 void UI_DrawSpinControl(ui_control_t* spin_control);											// Draws a spin control.
 void UI_DrawEntry(ui_control_t* entry);															// Draws an entry control.
 
+void UI_SliderDoSlide(ui_control_t* slider, int32_t dir);										// 'Slides' a slider control.
+void UI_SpinControlDoEnter(ui_control_t* spin_control);											// Handles pressing ENTER on a spincontrol.
+void UI_SpinControlDoSlide(ui_control_t* spin_control, int32_t dir);							// 'Slides' a spin control.
+bool Entry_OnKeyDown(ui_control_t* entry, int32_t key);											// Handles a key being pressed on an entry control.
+
+
 bool UI_Init()
 {
 	// init UI cvars
@@ -63,6 +69,8 @@ bool UI_Init()
 	if (successful) successful = UI_AddUI("ScoreUI", UI_ScoreUICreate);
 	if (successful) successful = UI_AddUI("LoadoutUI", UI_LoadoutUICreate);
 	if (successful) successful = UI_AddUI("MainMenuUI", UI_MainMenuUICreate);
+	if (successful) successful = UI_AddUI("KillFeedUI", UI_KillFeedUICreate);
+
 	ui_initialised = true;
 	return successful;
 }
@@ -614,9 +622,46 @@ void UI_DrawImage(ui_control_t* image)
 
 }
 
+#define SLIDER_RANGE 10
+#define RCOLUMN_OFFSET  16 * vid_hudscale->value
+#define LCOLUMN_OFFSET -16 * vid_hudscale->value
+
+void UI_SliderDoSlide(ui_control_t* slider, int32_t dir)
+{
+	slider->value_current += dir;
+
+	if (slider->value_current > slider->value_max)
+		slider->value_current = slider->value_max;
+	else if (slider->value_current < slider->value_min)
+		slider->value_current = slider->value_min;
+
+}
+
 void UI_DrawSlider(ui_control_t* slider)
 {
-	Com_Printf("UI: Sliders aren't implemented yet!\n");
+	int32_t i;
+	int32_t size_x = 0, size_y = 0; // emulate original code R2L drawing
+
+	Text_GetSize(cl_system_font->string, &size_x, &size_y, slider->text);
+	Text_Draw(cl_system_font->string, slider->position_x * viddef.width  + LCOLUMN_OFFSET - size_x,
+		slider->position_y * viddef.height,
+		slider->text);
+
+	float range = (slider->value_current - slider->value_min) / (float)(slider->value_max - slider->value_min);
+
+	if (range < 0)
+		range = 0;
+	if (range > 1)
+		range = 1;
+
+	re.DrawPic(slider->position_x * viddef.width  + RCOLUMN_OFFSET, slider->position_y * viddef.height, "2d/slider_01", NULL);
+	
+	for (i = 0; i < SLIDER_RANGE; i++)
+		re.DrawPic(RCOLUMN_OFFSET + slider->position_x * viddef.width + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * viddef.height, "2d/slider_02", NULL);
+	
+	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * viddef.width + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * viddef.height, "2d/slider_03", NULL);
+	
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * viddef.width + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * viddef.height, "2d/slider_value", NULL);
 }
 
 void UI_DrawCheckbox(ui_control_t* checkbox)
@@ -635,12 +680,161 @@ void UI_DrawBox(ui_control_t* box)
 	re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
 }
 
-void UI_DrawSpinControl(ui_control_t* spin_control)
+void UI_SpinControlDoEnter(ui_control_t* spin_control)
 {
-	Com_Printf("UI: Spin controls aren't implemented yet!\n");
+	spin_control->value_current++;
+	if (spin_control->item_names[(int32_t)spin_control->value_current] == 0)
+		spin_control->value_current = 0;
 }
 
+void UI_SpinControlDoSlide(ui_control_t* spin_control, int32_t dir)
+{
+	spin_control->value_current += dir;
+
+	if (spin_control->value_current < 0)
+		spin_control->value_current = 0;
+	else if (spin_control->item_names[(int32_t)spin_control->value_current] == 0)
+		spin_control->value_current--;
+}
+
+void UI_DrawSpinControl(ui_control_t* spin_control)
+{
+	int32_t size_x = 0, size_y = 0;
+
+	if (spin_control->text)
+	{
+		Text_GetSize(cl_system_font->string, &size_x, &size_y, spin_control->text);
+		Text_Draw(cl_system_font->string, spin_control->position_x * viddef.width + LCOLUMN_OFFSET - size_x,
+			spin_control->position_y,
+			spin_control->text);
+	}
+
+	Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + spin_control->position_x * viddef.width, spin_control->position_y, spin_control->item_names[(int32_t)spin_control->value_current]);
+}
+
+bool Entry_OnKeyDown(ui_control_t* entry, int32_t key)
+{
+	//TODO: THIS CODE SUCKS
+	//WHY DO WE DUPLICATE EVERYTHING ALREADY HANDLED IN INPUT SYSTEM????
+
+	extern int32_t keydown[];
+
+	// support pasting from the clipboard
+	if ((toupper(key) == 'V' && keydown[K_CTRL]) ||
+		(((key == K_INSERT)) && keydown[K_SHIFT]))
+	{
+		char* cbd;
+
+		if ((cbd = Sys_GetClipboardData()) != 0)
+		{
+			strtok(cbd, "\n\r\b");
+
+			strncpy(entry->entry_text_buffer, cbd, strlen(entry->entry_text_buffer) - 1);
+
+			entry->cursor_position = (int32_t)strlen(entry->entry_text_buffer);
+			entry->cursor_last_visible = entry->cursor_position - entry->cursor_last_visible;
+			if (entry->cursor_last_visible < 0)
+				entry->cursor_last_visible = 0;
+
+			free(cbd);
+		}
+		return true;
+	}
+
+	switch (key)
+	{
+	case K_LEFTARROW:
+	case K_BACKSPACE:
+		if (entry->cursor_position > 0)
+		{
+			memmove(&entry->entry_text_buffer[entry->cursor_position - 1], &entry->entry_text_buffer[entry->cursor_position], strlen(&entry->entry_text_buffer[entry->cursor_position]) + 1);
+			entry->cursor_position--;
+
+			if (entry->cursor_last_visible)
+			{
+				entry->cursor_last_visible--;
+			}
+		}
+		break;
+
+	case K_DELETE:
+		memmove(&entry->entry_text_buffer[entry->cursor_position], &entry->entry_text_buffer[entry->cursor_position + 1], strlen(&entry->entry_text_buffer[entry->cursor_position + 1]) + 1);
+		break;
+
+	case K_KP_ENTER:
+	case K_ENTER:
+	case K_ESCAPE:
+	case K_TAB:
+		return false;
+
+	case K_SPACE:
+	default:
+		char processed_key = Key_VirtualToPhysical(key, (keydown[K_SHIFT])
+			|| (keydown[K_CAPS_LOCK])
+			&& key >= K_A
+			&& key <= K_Z)[0];
+
+		//if (!isdigit(key) && (f->generic.flags & QMF_NUMBERSONLY))
+			//return false;
+
+		if (entry->cursor_position < strlen(entry->entry_text_buffer))
+		{
+			entry->entry_text_buffer[entry->cursor_position++] = processed_key;
+			entry->entry_text_buffer[entry->cursor_position] = 0;
+
+			if (entry->cursor_position > entry->cursor_last_visible)
+			{
+				entry->cursor_last_visible++;
+			}
+		}
+	}
+
+	return true;
+}
+
+//TODO: Draw cursor
 void UI_DrawEntry(ui_control_t* entry)
 {
-	Com_Printf("UI: Entries aren't implemented yet!\n");
+	int32_t i;
+	int32_t name_size_x = 0, name_size_y = 0;
+	int32_t text_size_x = 0, text_size_y = 0;
+	char tempbuffer[128] = "";
+
+	if (entry->text)
+	{
+		Text_GetSize(cl_system_font->string, &name_size_x, &name_size_y, entry->text);
+		Text_Draw(cl_system_font->string, entry->position_x * viddef.width + LCOLUMN_OFFSET - name_size_x, entry->position_y * viddef.height, entry->text);
+	}
+
+	strncpy(tempbuffer, entry->entry_text_buffer + entry->cursor_last_visible, entry->cursor_last_visible);
+
+	re.DrawPic(entry->position_x * viddef.width + 16 * vid_hudscale->value, entry->position_y * viddef.height - 4 * vid_hudscale->value, "2d/field_top_01", NULL);
+	re.DrawPic(entry->position_x * viddef.width + 16 * vid_hudscale->value, entry->position_y * viddef.height + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL);
+
+	re.DrawPic(entry->position_x * viddef.width + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * viddef.height - 4 * vid_hudscale->value, "2d/field_top_03", NULL);
+	re.DrawPic(entry->position_x * viddef.width + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * viddef.height + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL);
+
+	for (i = 0; i < entry->cursor_last_visible; i++)
+	{
+		re.DrawPic(entry->position_x * viddef.width + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * viddef.height - 4 * vid_hudscale->value, "2d/field_top_02", NULL);
+		re.DrawPic(entry->position_x * viddef.width + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * viddef.height + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL);
+	}
+
+	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
+	Text_Draw(cl_system_font->string, entry->position_x * viddef.width + 24 * vid_hudscale->value, (entry->position_y * viddef.height) - 1, tempbuffer); // -1 for padding
+
+	int32_t offset;
+
+	if (entry->cursor_last_visible)
+		offset = entry->cursor_last_visible;
+	else
+		offset = entry->cursor_position;
+
+	if (((int32_t)(Sys_Milliseconds() / 250)) & 1)
+	{
+		// 8x8 is cursor size
+		re.DrawPic(entry->position_x * viddef.width + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
+			entry->position_y * viddef.height,
+			"2d/field_cursor_on", NULL);
+	}
 }

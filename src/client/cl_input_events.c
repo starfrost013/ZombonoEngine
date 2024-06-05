@@ -470,7 +470,7 @@ void Key_Console (int32_t key, int32_t mods)
 	// translate from virtual to physical keys
 
 	// HACK: WE NEED MULTIBYTE CHARACTER SUPPORT
-	key = Key_KeynumToString(key, (caps_lock || shift_down) && (!(caps_lock && shift_down)))[0];
+	key = Key_VirtualToPhysical(key, (caps_lock || shift_down) && (!(caps_lock && shift_down)))[0];
 
 	if (key_linepos < MAXCMDLINE-1)
 	{	
@@ -534,7 +534,7 @@ void Key_Message (int32_t key, int mods)
 		&& !(caps_lock && shift_down);
 
 	//TODO: FIX WHEN KEYNUMTOSTRING is actually a string
-	key = Key_KeynumToString(key, perform_shift)[0];
+	key = Key_VirtualToPhysical(key, perform_shift)[0];
 
 	chat_buffer[chat_bufferlen++] = key;
 	chat_buffer[chat_bufferlen] = 0;
@@ -576,7 +576,7 @@ given keynum.
 FIXME: handle quote special (general escape sequence?)
 ===================
 */
-char *Key_KeynumToString (int32_t keynum, bool shift)
+char *Key_VirtualToPhysical (int32_t keynum, bool shift)
 {
 	keyname_t	*kn;	
 	static	char	tinystr[2];
@@ -717,7 +717,7 @@ void Key_WriteBindings (FILE *f)
 
 	for (i=0 ; i<NUM_KEYS ; i++)
 		if (keybindings[i] && keybindings[i][0])
-			fprintf (f, "bind %s \"%s\"\n", Key_KeynumToString(i, false), keybindings[i]);
+			fprintf (f, "bind %s \"%s\"\n", Key_VirtualToPhysical(i, false), keybindings[i]);
 }
 
 
@@ -733,7 +733,7 @@ void Key_Bindlist_f ()
 
 	for (i=0 ; i<NUM_KEYS; i++)
 		if (keybindings[i] && keybindings[i][0])
-			Com_Printf ("%s \"%s\"\n", Key_KeynumToString(i, false), keybindings[i]);
+			Com_Printf ("%s \"%s\"\n", Key_VirtualToPhysical(i, false), keybindings[i]);
 }
 
 
@@ -991,7 +991,7 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			&& key != K_CAPS_LOCK
 			&& !keybindings[key])
 		{
-			Com_Printf("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key, false));
+			Com_Printf("%s is unbound, hit F4 to set.\n", Key_VirtualToPhysical(key, false));
 		}
 	}
 	else

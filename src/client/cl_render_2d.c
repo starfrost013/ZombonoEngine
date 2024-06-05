@@ -766,7 +766,7 @@ Allows rendering code to cache all needed sbar graphics
 */
 void Render2D_TouchPics ()
 {
-	int32_t 	i, j;
+	int32_t i, j;
 
 	for (i=0 ; i<2 ; i++)
 		for (j=0 ; j<11 ; j++)
@@ -804,10 +804,10 @@ void Render2D_ExecuteLayoutString (char *s)
 {
 	int32_t 	x, y;
 	int32_t 	value;
-	char*	token;
+	char*		token;
 	int32_t 	width;
 	int32_t 	index;
-	clientinfo_t	*ci;
+	clientinfo_t* ci;
 
 	if (cls.state != ca_active || !cl.refresh_prepped)
 		return;

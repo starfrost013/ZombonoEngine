@@ -19,6 +19,7 @@ NEW FEATURES:
 * Somewhat redesigned z_tdm_labrats to fix choke points
 	* Added clip brushes to 16-unit stairs to reduce view bobbing
 * Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
+* Added spin control, entry and slider controls to new UI system
 * Added the EF_LIGHTNING entity effect
 * Added F_VECTOR4 edict field parse type for future use
 * Made hudscale a float, except for text which truncates it to an integer (so text doesn't look weird at non-integer scaling factors)
@@ -63,6 +64,8 @@ first particle to NULL
 * Fixed being able to shoot the machine gun forever in automatic mode
 	* Hopefully fixed not picking up bullets from packs
 * Fixed weird spacing and missing background (float was being passed as int32_t to sizing function and then re-interpreted as a float...) in TimeUI
+* Fixed pressing backspace in entry controls
+	* Shift is still fucked...
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)

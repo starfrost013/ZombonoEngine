@@ -215,3 +215,8 @@ bool UI_LoadoutUICreate()
 
 	return true; 
 }
+
+bool UI_KillFeedUICreate()
+{
+	return true;
+}
