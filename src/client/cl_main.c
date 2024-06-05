@@ -39,7 +39,6 @@ cvar_t* rcon_address;
 
 cvar_t* cl_noskins;
 cvar_t* cl_autoskins;
-cvar_t* ui_newmenu;
 cvar_t* cl_footsteps;
 cvar_t* cl_timeout;
 cvar_t* cl_predict;
@@ -58,7 +57,8 @@ cvar_t* cl_showmiss;
 cvar_t* cl_showclamp;
 cvar_t* cl_showinfo;
 
-cvar_t* cl_showintro; 
+cvar_t* cl_showintro;
+
 // until UI scripts implemented
 cvar_t* cl_intro1; 
 cvar_t* cl_intro2;
@@ -78,6 +78,11 @@ cvar_t* m_forward;
 cvar_t* m_side;
 
 cvar_t* cl_lightlevel;
+
+//
+// UI CVar
+//
+cvar_t* ui_newmenu;
 
 //
 // userinfo

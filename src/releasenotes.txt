@@ -2,11 +2,11 @@ Zombono
 Release Notes:
 
 Version 0.0.10
-June XX, 2024
+June 8, 2024
 
 NEW FEATURES:
-* Added the Planfuslicator!
-	* A director team gun that can zombify Players. However, the range is short (currently 1,536 units) and you can't directly see where it's going.
+* Added the Tangfuslicator!
+	* A director team gun that can zombify Players. However, the range is short (currently 1,536 units) and you can't directly see where it's going (it spews particles).
 * Major particle system improvements:
 	* Added velocity to generic particle effect
 	* Added the func_particle_effect entity
@@ -20,6 +20,8 @@ NEW FEATURES:
 	* Added clip brushes to 16-unit stairs to reduce view bobbing
 * Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
 * Added the EF_LIGHTNING entity effect
+* Added F_VECTOR4 edict field parse type for future use
+* Made hudscale a float, except for text which truncates it to an integer (so text doesn't look weird at non-integer scaling factors)
 * New core engine types:
 	* vec3_t typedef'd as color3_t (RGB format)
 	* vec4_t typedef'd as color4_t (RGBA format)
@@ -40,15 +42,23 @@ BUG FIXES:
 	* Fixed a misaligned light switch on z_tdm_subway
 	* Fixed one of the roofs of the bases on z_tdm_subway being 8 units off
 	* Added a clip brush to some of the stairs on z_tdm_labrats
+	* Many minor fixes to z_tdm_warehouse
+		* Added more details to back area
+		* Fixed many misaligned face textures
+		* Fixed many blockout textures remaining from original rushed map
+		* Added even more boxes
 * Fixed the networking of generic, flame, smoke, flash, flashlight and steam particle effects
-* Fixed server crash that could happen in rare cases if the Bamfuslicator failed to spawn a zombie (it was trying to free the zombie edict before creaitng it)
+* Fixed server crash that could happen in rare cases if the Bamfuslicator failed to spawn a zombie (it was trying to free the zombie edict before creating it)
 * Fixed potential memory corruption and exploit issue involving calling CL_ClearParticles with no particles. You would be able to set the four bytes at [80..76] bytes (cl_particles->next) before the 
 first particle to NULL
 * Fixed sscanf return values not being checked during edict field parsing (F_VECTOR3 and F_VECTOR4)
 * Fixed a bug where particles could never despawn and would always take up particle slots if alphavel was 0 
 * Fixed unusual spacing of "select team" text in TeamUI
 * Fixed insane BUILD_CONFIG and BUILD_PLATFORM bullshittery
-* Fixed an immediate crash if the game ever called Sys_Error
+* Fixed armour not working
+* Fixed Newton's First Law of Motion not existing, you now take the relative velocity of objects you jump off
+	* This sucks due to the disastrous collision code (needs to be rewritten)
+* Fixed an immediate crash if the game DLL ever called Sys_Error
 * Fixed the target_laser entity causing a client disconnect
 * Fixed being able to shoot the machine gun forever in automatic mode
 	* Hopefully fixed not picking up bullets from packs
@@ -57,6 +67,7 @@ first particle to NULL
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)
 * Ancient Head and unused Power Screen items
+* gl_mode cvar (I forgot to remove it)
 
 OTHER CHANGES:
 * Enable sv_cheats always on debug builds

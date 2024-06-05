@@ -818,12 +818,12 @@ void PM_FlyMove (bool doclip)
 {
 	float	speed, drop, friction, control, newspeed;
 	float	currentspeed, addspeed, accelspeed;
-	int32_t 		i;
-	vec3_t		wishvel;
-	float		fmove, smove;
-	vec3_t		wishdir;
-	float		wishspeed;
-	vec3_t		end;
+	int32_t i;
+	vec3_t	wishvel;
+	float	fmove, smove;
+	vec3_t	wishdir;
+	float	wishspeed;
+	vec3_t	end;
 	trace_t	trace;
 
 	pm->viewheight = 22;
