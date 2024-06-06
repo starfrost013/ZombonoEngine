@@ -27,6 +27,7 @@ void Intro_Start()
 {
 	intro_running = true; 
 	cls.disable_input = true;
+	Input_Activate(false);
 
 	intro_start_time = Sys_Milliseconds();
 }
@@ -46,6 +47,9 @@ void Intro_Update()
 	{
 		cls.disable_input = false;
 		intro_running = false;
+
+		// Technically this isn't needed but if we ever change what happens after the intro it might be, so keep it to be safe
+		Input_Activate(true);
 	}
 
 	// 255,255,255 = multiply by 1

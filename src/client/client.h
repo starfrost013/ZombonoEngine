@@ -340,8 +340,8 @@ void AppActivate(bool fActive, bool minimize);
 
 //=============================================================================
 
-extern	netadr_t	net_from;
-extern	sizebuf_t	net_message;
+extern netadr_t		net_from;
+extern sizebuf_t	net_message;
 
 bool CL_CheckOrDownloadFile(char* filename);
 

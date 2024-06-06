@@ -60,6 +60,7 @@ first particle to NULL
 * Fixed Newton's First Law of Motion not existing, you now take the relative velocity of objects you jump off
 	* This sucks due to the disastrous collision code (needs to be rewritten)
 * Fixed an immediate crash if the game DLL ever called Sys_Error
+* Fixed mouse being snapped to (0,0) in the intro
 * Fixed the target_laser entity causing a client disconnect
 * Fixed being able to shoot the machine gun forever in automatic mode
 	* Hopefully fixed not picking up bullets from packs
