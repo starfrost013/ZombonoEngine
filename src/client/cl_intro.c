@@ -53,7 +53,7 @@ void Intro_Update()
 	}
 
 	// 255,255,255 = multiply by 1
-	vec4_t fade_colour = { 255, 255, 255, 0 };
+	color4_t fade_colour = { 255, 255, 255, 0 };
 
 	float start_fade = 0.4;
 	float end_fade = 0.6;

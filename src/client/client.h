@@ -381,7 +381,7 @@ void CL_BubbleTrail(vec3_t start, vec3_t end);
 
 void CL_Flashlight(int32_t ent, vec3_t pos);
 void CL_FlameEffects(centity_t* ent, vec3_t origin);
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel);
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, color4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel);
 void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude);
 void CL_ColorFlash(int32_t ent, vec3_t pos, int32_t intensity, color4_t color);
 void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, int32_t magnitude);
@@ -641,7 +641,7 @@ typedef struct ui_control_s
 	// checkbox
 	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
-	vec4_t			color;								// The color of this UI element.
+	color4_t		color;								// The color of this UI element.
 	// spin control
 	char**			item_names;							// Spin control: Item names (pointer to string arrays)
 	// entry

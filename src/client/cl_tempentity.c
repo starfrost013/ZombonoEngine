@@ -126,7 +126,7 @@ void CL_ClearTEnts ()
 CL_ParseTEnt
 =================
 */
-static vec4_t splash_color[] =
+static color4_t splash_color[] =
 {
 	{ 0, 0, 0, 0 },					
 	{ 254, 171, 7, 255 },			

@@ -186,7 +186,7 @@ void CL_ParseMuzzleFlash2()
 
 	case MZ2_SOLDIER_MACHINEGUN_1:
 		dl->color[0] = 1; dl->color[1] = 1; dl->color[2] = 0;
-		vec4_t particle_color2 = { 0, 0, 0, 255 };
+		color4_t particle_color2 = { 0, 0, 0, 255 };
 		CL_ParticleEffect(origin, vec3_origin, particle_color2, 40);
 		CL_SmokeAndFlash(origin);
 		S_StartSound(NULL, ent, CHAN_WEAPON, S_RegisterSound("soldier/solatck3.wav"), 1, ATTN_NORM, 0);
@@ -1419,7 +1419,7 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 CL_GenericParticleEffect
 ===============
 */
-void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, vec4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel)
+void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count, color4_t run, int32_t dirspread, vec3_t velocity, int32_t lifetime, float alphavel)
 {
 	int32_t 		i, j; 
 	cparticle_t*	p;

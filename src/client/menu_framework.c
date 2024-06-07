@@ -367,7 +367,7 @@ void Menu_DrawStatusBar(const char* string)
 	int32_t size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
-	vec4_t colour = { 0 };
+	color4_t colour = { 0 };
 
 	if (string)
 	{
@@ -376,14 +376,14 @@ void Menu_DrawStatusBar(const char* string)
 		int32_t maxcol = viddef.width / (8 * vid_hudscale->value);
 		int32_t col = maxcol / 2 - l / 2;
 
-		vec4_t colour = { 63, 63, 63, 255 };
+		color4_t colour = { 63, 63, 63, 255 };
 		re.DrawFill(0, (viddef.height - system_font_ptr->line_height) * vid_hudscale->value, viddef.width, 8 * vid_hudscale->value, colour);
 
 		Text_Draw(cl_system_font->string, col * size_x * vid_hudscale->value, viddef.height - size_y * vid_hudscale->value, string);
 	}
 	else
 	{
-		vec4_t colour = { 0, 0, 0, 255 };
+		color4_t colour = { 0, 0, 0, 255 };
 		re.DrawFill(0, viddef.height - 8 * vid_hudscale->value, viddef.width, 8 * vid_hudscale->value, colour);
 	}
 }
@@ -485,7 +485,7 @@ void MenuList_Draw(menulist_t* l)
 
 	n = l->itemnames;
 
-	vec4_t menulist_colour = { 99, 76, 35, 255 };
+	color4_t menulist_colour = { 99, 76, 35, 255 };
 
 	re.DrawFill(l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue * 10 + 10, 128, 10, menulist_colour);
 	while (*n)

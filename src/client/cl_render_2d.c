@@ -478,7 +478,7 @@ void Render2D_DrawConsole ()
 	if (cls.state != ca_active || !cl.refresh_prepped)
 	{	// connected, but can't render
 		Con_DrawConsole (0.5);
-		vec4_t colour = { 0, 0, 0, 255 };
+		color4_t colour = { 0, 0, 0, 255 };
 		re.DrawFill(0, viddef.height/2, viddef.width, viddef.height/2, colour);
 		return;
 	}

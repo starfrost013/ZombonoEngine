@@ -82,21 +82,21 @@ typedef struct entity_s
 typedef struct dlight_s
 {
 	vec3_t	origin;
-	vec3_t	color;
+	color3_t color;
 	float	intensity;
 } dlight_t;
 
 typedef struct
 {
 	vec3_t	origin;
-	vec4_t 	color;
+	color4_t color;
 	float	alpha;
 } particle_t;
 
 typedef struct lightstyle_s
 {
-	float		rgb[3];			// 0.0 - 2.0
-	float		white;			// highest of rgb
+	float	rgb[3];			// 0.0 - 2.0
+	float	white;			// highest of rgb
 } lightstyle_t;
 
 typedef struct refdef_s
