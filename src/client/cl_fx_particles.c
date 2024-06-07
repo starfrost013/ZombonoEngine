@@ -1200,7 +1200,7 @@ void CL_TeleportParticles(vec3_t org)
 				p->color[3] = 255;
 
 				p->alphavel = -1.0 / (0.3 + (rand() & 7) * 0.02);
-
+		
 				p->org[0] = org[0] + i + (rand() & 3);
 				p->org[1] = org[1] + j + (rand() & 3);
 				p->org[2] = org[2] + k + (rand() & 3);
@@ -1256,8 +1256,7 @@ void CL_AddParticles()
 				p->alphavel = 0.1f;
 			}
 
-			if (p->alphavel > 0)
-				p->color[3] = p->color[3] + time * p->alphavel;
+			p->color[3] = p->color[3] + time * p->alphavel;
 
 			if (p->color[3] <= 0)
 				despawn = true;
@@ -1271,7 +1270,7 @@ void CL_AddParticles()
 			
 			if (despawn)
 			{
-				// faded out, get rid of it
+				// faded out or expired, get rid of it
 				p->next = free_particles;
 				free_particles = p;
 				continue;
