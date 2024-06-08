@@ -24,9 +24,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 #pragma once
 
-#define	NUM_CON_CHAT_LINES 9	// Number of lines that will be disabled in chat
+#define	NUM_CON_CHAT_LINES	9	// Number of lines that will be disabled in chat
+#define	CON_TEXTSIZE		131072 // Size of console text buffer
 
-#define		CON_TEXTSIZE	131072
 typedef struct console_s
 {
 	bool	initialized;

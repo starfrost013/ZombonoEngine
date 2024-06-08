@@ -75,12 +75,12 @@ first particle to NULL
 
 REMOVALS:
 * gl_saturatelighting cvar (does nothing)
-* Ancient Head and unused Power Screen items
+* Ancient (actually John Carmack's) Head and unused Power Screen items
 * gl_mode cvar (I forgot to remove it)
 
 OTHER CHANGES:
-* Enable sv_cheats always on debug builds
-* Renamed cheats to sv_cheats (because it's classic)
+* Renamed cheats cvar to sv_cheats (because it's classic)
+* Increased console line length from 38 to 128 characters (this will be a CVar in the future)
 
 Version 0.0.9 (Build 480)
 May 25, 2024
