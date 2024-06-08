@@ -1802,7 +1802,7 @@ void CL_Frame (int32_t msec)
 }
 
 
-void AppActivate(bool active, bool minimize)
+void App_Activate(bool active, bool minimize)
 {
 	app_minimized = minimize;
 
@@ -1826,7 +1826,7 @@ void AppActivate(bool active, bool minimize)
 		if (!ui_active
 			|| ui_active && current_ui->passive) Input_Activate(true);
 
-		S_Activate(true);
+
 	}
 }
 
@@ -1881,7 +1881,7 @@ void CL_Init ()
 #endif
 
 	// let's go!
-	AppActivate(true, false);
+	App_Activate(true, false);
 
 	if (cl_showintro->value)
 		Intro_Start();

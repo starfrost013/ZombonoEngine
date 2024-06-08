@@ -725,6 +725,11 @@ void Input_MouseMove(usercmd_t* cmd)
 	if (!mouseactive)
 		return;
 
+	// THIS HACK IS ONLY FOR V0.0.10
+	// MUST BE REMOVED BY V0.0.11
+	if (intro_running)
+		return;
+
 	float x_pos = (last_mouse_pos_x - window_center_x) * sensitivity->value;
 	float y_pos = (last_mouse_pos_y - window_center_y) * sensitivity->value;
 

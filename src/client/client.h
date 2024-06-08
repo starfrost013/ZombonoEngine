@@ -338,7 +338,7 @@ extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 
 bool app_active;
 bool app_minimized;
-void AppActivate(bool fActive, bool minimize);
+void App_Activate(bool fActive, bool minimize);
 
 //=============================================================================
 
