@@ -1085,7 +1085,6 @@ just cleared malloc with counters now...
 
 #define	Z_MAGIC		0x1d1d
 
-
 typedef struct zhead_s
 {
 	struct zhead_s	*prev, *next;

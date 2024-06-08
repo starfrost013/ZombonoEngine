@@ -129,9 +129,7 @@ CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callba
 	if (multi)
 	{
 		if (curl_multi_add_handle(curl_obj, new_obj))
-		{
 			return NULL;
-		}
 	}
 
 	return new_obj;

@@ -132,17 +132,21 @@ void MSG_ReadData(sizebuf_t* sb, void* buffer, int32_t size);
 
 //============================================================================
 
-extern	bool		big_endian;
+extern bool big_endian;
 
-extern	short	BigShort(int16_t l);
-extern	short	LittleShort(int16_t l);
-extern	int32_t BigInt(int32_t l);
-extern	int32_t LittleInt(int32_t l);
-extern	float	BigFloat(float l);
-extern	float	LittleFloat(float l);
+int16_t	BigShort(int16_t l);
+int16_t	LittleShort(int16_t l);
+uint16_t BigShortUnsigned(int16_t l);
+uint16_t LittleShortUnsigned(int16_t l);
+int32_t BigInt(int32_t l);
+int32_t LittleInt(int32_t l);
+uint32_t BigIntUnsigned(int32_t l);
+uint32_t LittleIntUnsigned(int32_t l);
+float	BigFloat(float l);
+float	LittleFloat(float l);
 
-//============================================================================
-
+void	Swap_Init();
+char* va(char* format, ...);
 
 int32_t	COM_Argc();
 char*	COM_Argv(int32_t arg);	// range and null checked

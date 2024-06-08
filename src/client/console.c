@@ -475,22 +475,25 @@ Draws the last few lines of output transparently over the game top
 */
 void Con_DrawNotify ()
 {
-	int32_t 	x, v = 0;
-	int32_t 	skip_size_x = 0, skip_size_y = 0;
-	char	*text;
-	int32_t 	i;
-	int32_t 	time;
-	char	*s;
+	int32_t v = 0;
+	int32_t skip_size_x = 0, skip_size_y = 0;
+	char*	text;
+	int32_t i;
+	int32_t time;
+	char*	s;
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
 	for (i = con.current-NUM_CON_CHAT_LINES+1 ; i <= con.current ; i++)
 	{
 		if (i < 0)
 			continue;
+
 		time = con.times[i % NUM_CON_CHAT_LINES];
 		if (time == 0)
+
 			continue;
 		time = cls.realtime - time;
+
 		if (time > con_notifytime->value*1000)
 			continue;
 		text = con.text + (i % con.totallines)*con.linewidth;

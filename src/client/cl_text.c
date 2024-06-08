@@ -223,20 +223,15 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 		font_ptr = Font_GetByName(cl_system_font->string);
 
+		// we should already refuse to run without a system font but return anyway
 		if (!font_ptr)
-		{
-			// already a check for this
-			return false;
-		}
+			return;
 	}
 
 	int32_t string_length = strlen(final_text);
 
 	if (string_length == 0)
-	{
-		// don't bother drawing empty strings
-		return; 
-	}
+		return;
 	
 	if (string_length > MAX_STRING_LENGTH)
 	{
@@ -269,14 +264,14 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		if (next_char == ' ')
 		{
 			// just use the size of the font divided by 2.5 (TODO: DEFINE THIS) for now
-			current_x += (font_ptr->size / 2.5f) * font_scale;
+			current_x += (int32_t)(font_ptr->size / 2.5f) * font_scale;
 			continue; // skip spaces
 		}
 
 		// if we've found a tab, advance by the amount above
 		if (next_char == '\t')
 		{
-			current_x += (font_ptr->size / 2.5f) * font_scale * TAB_SIZE_CHARS;
+			current_x += (int32_t)(font_ptr->size / 2.5f) * font_scale * TAB_SIZE_CHARS;
 			continue; // skip spaces
 		}
 
@@ -286,6 +281,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
 			// don't do anything (will draw the invalid color code) if 
 			bool done = false;
+
 			for (int32_t color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
 			{
 				color_code_t current_color_code = color_codes[color_code_num];

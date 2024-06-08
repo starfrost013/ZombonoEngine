@@ -39,7 +39,7 @@ size_t	Netservices_UpdateInfoJsonReceive(char* ptr, size_t size, size_t nmemb, c
 void	Netservices_UpdateInfoJsonComplete();															// Callback function for when updateinfo.json stuff is completed.
 void	Netservices_UpdaterUpdateGame();																// Actually perform the game update
 
-void	Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when binary stuff is received.
+size_t	Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata);		// Callback function for when binary stuff is received.
 void	Netservices_UpdateInfoBinaryComplete();															// Callback function for when binary stuff is received.
 
 // Globals
@@ -372,7 +372,7 @@ void Netservices_UpdaterStartUpdate()
 	Netservices_StartPendingTransfers();
 }
 
-void Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata)
+size_t Netservices_UpdateInfoBinaryReceive(char* ptr, size_t size, size_t nmemb, char* userdata)
 {
 	// write to the update bvinary
 	fwrite(ptr, nmemb, size, update_binary_handle);
