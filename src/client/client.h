@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "include/render.h"
 #include "include/sound.h"
 #include "include/input.h"
-#include "include/keys.h"
+#include "include/input_keys.h"
 #include "include/console.h"
 #include "include/sound_miniaudio.h"
 

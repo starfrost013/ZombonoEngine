@@ -18,9 +18,14 @@ NEW FEATURES:
 * Added the ability to independently disable the keyboard and mouse using the cls.disable_keyboard and cls.disable_mouse properties (overridden by cls.disable_input)
 * Somewhat redesigned z_tdm_labrats to fix choke points
 	* Added clip brushes to 16-unit stairs to reduce view bobbing
+* Added many more details to z_tdm_warehouse
+	* Office chairs
+	* More details in the storage room and bases
+	* You can now see the roof of the SubStop
 * Added the MOD_ZOMBIE and MOD_ZOMBIFIED Methods of Death (MOD) strings
 * Added spin control, entry and slider controls to new UI system
 * Added the EF_LIGHTNING entity effect
+* Added loss, victory, and death sound effects
 * Added F_VECTOR4 edict field parse type for future use
 * Made hudscale a float, except for text which truncates it to an integer (so text doesn't look weird at non-integer scaling factors)
 * New core engine types:

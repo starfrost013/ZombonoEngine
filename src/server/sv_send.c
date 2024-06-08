@@ -455,9 +455,9 @@ SV_SendClientMessages
 */
 void SV_SendClientMessages ()
 {
-	int32_t 		i;
-	client_t	*c;
-	int32_t 		msglen;
+	int32_t 	i;
+	client_t*	c;
+	int32_t 	msglen;
 	uint8_t		msgbuf[MAX_MSGLEN];
 	size_t		r;
 
