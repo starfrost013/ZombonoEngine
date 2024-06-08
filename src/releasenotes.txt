@@ -1,7 +1,7 @@
 Zombono
 Release Notes:
 
-Version 0.0.10
+Version 0.0.10 (Build 553)
 June 8, 2024
 
 NEW FEATURES:
@@ -81,6 +81,7 @@ REMOVALS:
 OTHER CHANGES:
 * Renamed cheats cvar to sv_cheats (because it's classic)
 * Increased console line length from 38 to 128 characters (this will be a CVar in the future)
+* Added more details to one of the intro images
 
 Version 0.0.9 (Build 480)
 May 25, 2024
