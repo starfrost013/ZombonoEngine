@@ -33,6 +33,7 @@ let it know we are alive, and log information
 ================
 */
 #define	HEARTBEAT_SECONDS	300
+
 void Master_Heartbeat()
 {
 	char* string;
@@ -96,6 +97,7 @@ void Master_Shutdown()
 		{
 			if (i > 0)
 				Com_Printf("Sending heartbeat to %s\n", NET_AdrToString(master_adr[i]));
+
 			Netchan_OutOfBandPrint(NS_SERVER, master_adr[i], "shutdown");
 		}
 	}

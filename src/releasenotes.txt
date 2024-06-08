@@ -1,6 +1,10 @@
 Zombono
 Release Notes:
 
+Version 0.0.10 (Build 556)
+June 8, 2024
+* Fixed numerous horrific crimes against C programming that caused crash bugs
+
 Version 0.0.10 (Build 553)
 June 8, 2024
 

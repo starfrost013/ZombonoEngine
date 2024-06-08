@@ -1694,6 +1694,7 @@ const char* Game_MenuKey(int32_t key)
 #else
 	return Default_MenuKey(&s_game_menu, key);
 #endif
+	return 0x00;
 }
 
 void M_Menu_Game_f()
@@ -2067,7 +2068,7 @@ static char** mapnames;
 static int32_t   nummaps;
 
 static menuaction_t	s_startserver_start_action;
-static menuaction_t	s_startserver_dmoptions_action;
+static menuaction_t	s_startserver_gameoptions_action;
 static menufield_t	s_timelimit_field;
 static menufield_t	s_fraglimit_field;
 static menufield_t	s_maxclients_field;
@@ -2075,7 +2076,7 @@ static menufield_t	s_hostname_field;
 static menulist_t	s_startmap_list;
 static menulist_t	s_rules_box;
 
-void DMOptionsFunc(void* self)
+void gameoptionsFunc(void* self)
 {
 	if (s_rules_box.curvalue == 1)
 		return;
@@ -2088,7 +2089,7 @@ void RulesChangeFunc(void* self)
 	if (s_rules_box.curvalue == 0)
 	{
 		s_maxclients_field.generic.statusbar = NULL;
-		s_startserver_dmoptions_action.generic.statusbar = NULL;
+		s_startserver_gameoptions_action.generic.statusbar = NULL;
 	}
 }
 
@@ -2301,13 +2302,13 @@ void StartServer_MenuInit(void)
 	s_hostname_field.visible_length = 12;
 	strcpy(s_hostname_field.buffer, Cvar_VariableString("hostname"));
 
-	s_startserver_dmoptions_action.generic.type = MTYPE_ACTION;
-	s_startserver_dmoptions_action.generic.name = " ^3Game Settings";
-	s_startserver_dmoptions_action.generic.flags = QMF_LEFT_JUSTIFY;
-	s_startserver_dmoptions_action.generic.x = 29 * vid_hudscale->value;
-	s_startserver_dmoptions_action.generic.y = 107 * vid_hudscale->value;
-	s_startserver_dmoptions_action.generic.statusbar = NULL;
-	s_startserver_dmoptions_action.generic.callback = DMOptionsFunc;
+	s_startserver_gameoptions_action.generic.type = MTYPE_ACTION;
+	s_startserver_gameoptions_action.generic.name = " ^3Game Settings";
+	s_startserver_gameoptions_action.generic.flags = QMF_LEFT_JUSTIFY;
+	s_startserver_gameoptions_action.generic.x = 29 * vid_hudscale->value;
+	s_startserver_gameoptions_action.generic.y = 107 * vid_hudscale->value;
+	s_startserver_gameoptions_action.generic.statusbar = NULL;
+	s_startserver_gameoptions_action.generic.callback = gameoptionsFunc;
 
 	s_startserver_start_action.generic.type = MTYPE_ACTION;
 	s_startserver_start_action.generic.name = " ^3Start!";
@@ -2322,7 +2323,7 @@ void StartServer_MenuInit(void)
 	Menu_AddItem(&s_startserver_menu, &s_fraglimit_field);
 	Menu_AddItem(&s_startserver_menu, &s_maxclients_field);
 	Menu_AddItem(&s_startserver_menu, &s_hostname_field);
-	Menu_AddItem(&s_startserver_menu, &s_startserver_dmoptions_action);
+	Menu_AddItem(&s_startserver_menu, &s_startserver_gameoptions_action);
 	Menu_AddItem(&s_startserver_menu, &s_startserver_start_action);
 
 	Menu_Center(&s_startserver_menu);
@@ -2365,6 +2366,8 @@ const char* StartServer_MenuKey(int32_t key)
 
 	return Default_MenuKey(&s_startserver_menu, key);
 #endif
+
+	return 0x00;
 }
 
 void M_Menu_StartServer_f()
@@ -2376,7 +2379,7 @@ void M_Menu_StartServer_f()
 /*
 =============================================================================
 
-DMOPTIONS BOOK MENU
+gameoptions BOOK MENU
 
 =============================================================================
 */
@@ -3475,7 +3478,7 @@ void M_Init()
 	Cmd_AddCommand("menu_joinserver", M_Menu_JoinServer_f);
 	Cmd_AddCommand("menu_addressbook", M_Menu_AddressBook_f);
 	Cmd_AddCommand("menu_startserver", M_Menu_StartServer_f);
-	Cmd_AddCommand("menu_dmoptions", M_Menu_GameOptions_f);
+	Cmd_AddCommand("menu_gameoptions", M_Menu_GameOptions_f);
 	Cmd_AddCommand("menu_playerconfig", M_Menu_PlayerConfig_f);
 	Cmd_AddCommand("menu_downloadoptions", M_Menu_DownloadOptions_f);
 	Cmd_AddCommand("menu_credits", M_Menu_Credits_f);

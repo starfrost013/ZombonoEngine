@@ -104,7 +104,7 @@ SV_StatusString
 Builds the string that is sent as heartbeats and status replies
 ===============
 */
-char	*SV_StatusString ()
+char* SV_StatusString ()
 {
 	char	player[1024];
 	static char	status[MAX_MSGLEN - 16];

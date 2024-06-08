@@ -157,7 +157,6 @@ typedef struct
 	int32_t 		time;
 } challenge_t;
 
-
 typedef struct
 {
 	bool	initialized;				// sv_init has completed
@@ -222,6 +221,11 @@ void SV_InitOperatorCommands ();
 
 void SV_UserinfoChanged (client_t *cl);
 
+char* SV_StatusString();
+
+//
+// sv_master.c
+//
 void Master_Heartbeat ();
 
 //

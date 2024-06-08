@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //BUILD_PLATFORM - Used for updates
 
-#ifdef NDEBUG
+#ifdef RELEASE
 #define BUILD_CONFIG "Release"
 #elif PLAYTEST
 #define BUILD_CONFIG "Playtest"
@@ -46,17 +46,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #ifdef WIN32
-#ifdef NDEBUG
+#if _M_X86
 #define BUILD_PLATFORM "win32"
 #elif _M_X64
 #define BUILD_PLATFORM "win64"
 #elif _M_ARM64 // TEMP
 #define BUILD_PLATFORM "winarm64"
 #endif
-
 #elif defined __linux__
-
-#ifdef NDEBUG
+#if defined __i386__
 #define BUILD_PLATFORM "linux32"
 #elif defined __x86_64__
 #define BUILD_PLATFORM "linux64"
@@ -64,8 +62,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define BUILD_PLATFORM "linuxarm32"
 #elif defined __aarch64__
 #define BUILD_PLATFORM "linuxarm64"
-#endif
-#else	// !WIN32 and !__LINUX__
+#endif	// !WIN32 and !__LINUX__
 
 #define BUILD_PLATFORM "Define the Platform Name!"
 #endif
@@ -76,7 +73,7 @@ typedef struct sizebuf_s
 {
 	bool		allowoverflow;	// if false, do a Com_Error
 	bool		overflowed;		// set to true if the buffer size failed
-	uint8_t* data;
+	uint8_t*	data;
 	int32_t 	maxsize;
 	int32_t 	cursize;
 	int32_t 	readcount;
