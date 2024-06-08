@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #pragma once
 
-// snd_loc.h -- private sound functions
+// sound_local.h -- private sound functions
 
 typedef struct
 {

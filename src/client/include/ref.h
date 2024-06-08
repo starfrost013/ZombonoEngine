@@ -46,6 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define SHELL_WHITE_COLOR	0xD7
 
+// Client entity struct
 typedef struct entity_s
 {
 	struct model_s	*model;			// opaque type outside refresh
@@ -101,7 +102,10 @@ typedef struct lightstyle_s
 
 typedef struct refdef_s
 {
-	int32_t 		x, y, width, height;// in virtual screen coordinates
+	int32_t 		x;
+	int32_t			y;
+	uint32_t		width;
+	uint32_t		height;
 	float			fov_x, fov_y;
 	float			vieworg[3];
 	float			viewangles[3];

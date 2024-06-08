@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #pragma once
-#include "keys.h"
+#include "input_keys.h"
 #define MAXMENUITEMS	64
 
 #define MTYPE_SLIDER		0

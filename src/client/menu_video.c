@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include <client/client.h>
-#include <client/menu_framework.h>
+#include <client/include/menu_framework.h>
 
 #define REF_OPENGL	0
 

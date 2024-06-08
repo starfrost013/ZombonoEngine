@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #pragma once
 
+// input_keys.h: Defines all of the keys in the game
 /*
 From GLFW:
 These key codes are inspired by the USB HID Usage Tables v1.12 (p. 53-60), 
@@ -219,29 +220,5 @@ They have been renamed from KEY_ to Key_ to fit with the rest of the code
 #define K_RIGHT_ALT   346
 #define K_RIGHT_SUPER   347
 #define K_MENU   348
+
 #define NUM_KEYS   K_MENU
-
-extern char* keybindings[NUM_KEYS];
-extern	int32_t 	Key_repeats[NUM_KEYS];
-
-extern	int32_t anykeydown;
-extern char chat_buffer[];
-extern	int32_t chat_bufferlen;
-extern	bool	chat_team;
-
-// glfw evetts
-void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods);
-void MouseClick_Event(void* unused, int32_t button, int32_t action, int32_t mods);
-void MouseMove_Event(void* unused, double xpos, double ypos);
-void MouseScroll_Event(void* unused, double xoffset, double yoffset);
-void WindowFocus_Event(void* unused, int32_t focused);
-void WindowIconify_Event(void* unused, int32_t iconified);
-
-// zombono events
-void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x, int32_t y);
-void Key_Init ();
-void Key_WriteBindings (FILE *f);
-void Key_SetBinding (int32_t keynum, char *binding);
-void Key_ClearStates ();
-int32_t Key_GetKey ();
-

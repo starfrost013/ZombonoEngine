@@ -41,6 +41,8 @@ void Render2D_TouchPics ();
 void Render2D_RunConsole ();
 void Render2D_DrawCrosshair();
 
+void Render2D_AddNetgraph();
+
 extern float	scr_con_current;
 extern float	scr_conlines;		// lines of console to display
 

@@ -23,12 +23,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct vrect_s
 {
-	int32_t 			x,y,width,height;
+	int32_t 			x;
+	int32_t				y;
+	int32_t				width;
+	int32_t				height;
 } vrect_t;
 
 typedef struct
 {
-	uint32_t		width, height;			// coordinates from main game
+	uint32_t		width;
+	uint32_t		height;
 } viddef_t;
 
 extern	viddef_t	viddef;				// global video state

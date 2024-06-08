@@ -24,18 +24,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <math.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 
-#include "ref.h"
+#include "include/ref.h"
 
-#include "vid.h"
-#include "render.h"
-#include "sound.h"
-#include "input.h"
-#include "keys.h"
-#include "console.h"
-#include "snd_miniaudio.h"
+#include "include/vid.h"
+#include "include/render.h"
+#include "include/sound.h"
+#include "include/input.h"
+#include "include/keys.h"
+#include "include/console.h"
+#include "include/sound_miniaudio.h"
 
 //=============================================================================
 
@@ -345,8 +347,6 @@ extern sizebuf_t	net_message;
 
 bool CL_CheckOrDownloadFile(char* filename);
 
-void Render2D_AddNetgraph();
-
 void CL_TeleporterParticles(entity_state_t* ent);
 void CL_ParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count);
 void CL_ParticleEffect2(vec3_t org, vec3_t dir, color4_t color, int32_t count);
@@ -424,38 +424,6 @@ void CL_Disconnect_f();
 void CL_PingServers_f();
 void CL_Snd_Restart_f();
 void CL_RequestNextDownload();
-
-//
-// cl_input.c
-//
-typedef struct
-{
-	int32_t 		down[2];		// key nums holding it down
-	uint32_t		downtime;		// msec timestamp
-	uint32_t		msec;			// msec down this frame
-	int32_t 		state;			// state of this key
-} kbutton_t;
-
-extern kbutton_t	input_mlook, input_klook;
-extern kbutton_t 	input_speed;
-
-void CL_InitInput();
-void CL_SendCmd();
-
-void CL_ClearState();
-
-void CL_ReadPackets();
-
-void CL_BaseMove(usercmd_t* cmd);
-
-void Input_CenterView();
-
-extern double last_mouse_pos_x, last_mouse_pos_y;
-
-float CL_KeyState(kbutton_t* key);
-char* Key_VirtualToPhysical(int32_t keynum, bool shift);
-
-extern uint32_t		sys_frame_time;
 
 //
 // cl_demo.c
@@ -595,7 +563,7 @@ void CL_PredictMovement();
 #define MAX_UIS					32
 #define MAX_UI_STRLEN			256
 
-// Defined her for use by UI
+// Defined here for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
 
 #define UI_SCALE_BASE_X			960.0f			// Horizontal resolution used as the base for UI scaling.

@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "miniaudio/stb_vorbis.c" /* Enables OGG/Vorbis decoding. */
 
 #define MINIAUDIO_IMPLEMENTATION
-#include "miniaudio.h"
+#include "include/miniaudio.h"
 
 #include <client/client.h>
 

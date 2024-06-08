@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <KHR/khrplatform.h>
 #include "gl_state.h"
 
-#include <client/ref.h>
+#include <client/include/ref.h>
 
 #define	REF_VERSION	"Zombono Legacy OpenGL 1.x"
 

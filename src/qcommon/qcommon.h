@@ -146,7 +146,7 @@ float	BigFloat(float l);
 float	LittleFloat(float l);
 
 void	Swap_Init();
-char* va(char* format, ...);
+char*	va(char* format, ...);
 
 int32_t	COM_Argc();
 char*	COM_Argv(int32_t arg);	// range and null checked
