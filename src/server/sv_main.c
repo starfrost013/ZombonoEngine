@@ -16,14 +16,11 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
 */
 
 #include "server.h"
 
-netadr_t	master_adr[MAX_MASTERS];	// address of group servers
-
-client_t	*sv_client;			// current client
+client_t* sv_client;			// current client
 
 cvar_t* sv_paused;
 cvar_t* sv_timedemo;
@@ -264,14 +261,14 @@ void SVC_DirectConnect ()
 {
 	char		userinfo[MAX_INFO_STRING];
 	netadr_t	adr;
-	int32_t 		i;
-	client_t	*cl, *newcl;
+	int32_t 	i;
+	client_t*	cl, * newcl;
 	client_t	temp;
-	edict_t		*ent;
-	int32_t 		edictnum;
-	int32_t 		version;
-	int32_t 		qport;
-	int32_t 		challenge;
+	edict_t*	ent;
+	int32_t 	edictnum;
+	int32_t 	version;
+	int32_t 	qport;
+	int32_t 	challenge;
 
 	adr = net_from;
 
@@ -472,8 +469,8 @@ connectionless packets.
 */
 void SV_ConnectionlessPacket ()
 {
-	char	*s;
-	char	*c;
+	char* s;
+	char* c;
 
 	MSG_BeginReading (&net_message);
 	MSG_ReadInt (&net_message);		// skip the -1 marker
@@ -516,9 +513,9 @@ Updates the cl->ping variables
 */
 void SV_CalcPings ()
 {
-	int32_t 		i, j;
-	client_t	*cl;
-	int32_t 		total, count;
+	int32_t 	i, j;
+	client_t*	cl;
+	int32_t 	total, count;
 
 	for (i=0 ; i<maxclients->value ; i++)
 	{
@@ -800,77 +797,6 @@ void SV_Frame (int32_t msec)
 
 //============================================================================
 
-/*
-================
-Master_Heartbeat
-
-Send a message to the master every few minutes to
-let it know we are alive, and log information
-================
-*/
-#define	HEARTBEAT_SECONDS	300
-void Master_Heartbeat ()
-{
-	char		*string;
-	int32_t 		i;
-
-	// pgm post3.19 change, cvar pointer not validated before dereferencing
-	if (!dedicated || !dedicated->value)
-		return;		// only dedicated servers send heartbeats
-
-	// pgm post3.19 change, cvar pointer not validated before dereferencing
-	if (!public_server || !public_server->value)
-		return;		// a private dedicated game
-
-	// check for time wraparound
-	if (svs.last_heartbeat > svs.realtime)
-		svs.last_heartbeat = svs.realtime;
-
-	if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS*1000)
-		return;		// not time to send yet
-
-	svs.last_heartbeat = svs.realtime;
-
-	// send the same string that we would give for a status OOB command
-	string = SV_StatusString();
-
-	// send to group master
-	for (i=0 ; i<MAX_MASTERS ; i++)
-		if (master_adr[i].port)
-		{
-			Com_Printf ("Sending heartbeat to %s\n", NET_AdrToString (master_adr[i]));
-			Netchan_OutOfBandPrint (NS_SERVER, master_adr[i], "heartbeat\n%s", string);
-		}
-}
-
-/*
-=================
-Master_Shutdown
-
-Informs all masters that this server is going down
-=================
-*/
-void Master_Shutdown ()
-{
-	int32_t 		i;
-
-	// pgm post3.19 change, cvar pointer not validated before dereferencing
-	if (!dedicated || !dedicated->value)
-		return;		// only dedicated servers send heartbeats
-
-	// pgm post3.19 change, cvar pointer not validated before dereferencing
-	if (!public_server || !public_server->value)
-		return;		// a private dedicated game
-
-	// send to group master
-	for (i=0 ; i<MAX_MASTERS ; i++)
-		if (master_adr[i].port)
-		{
-			if (i > 0)
-				Com_Printf ("Sending heartbeat to %s\n", NET_AdrToString (master_adr[i]));
-			Netchan_OutOfBandPrint (NS_SERVER, master_adr[i], "shutdown");
-		}
-}
 
 //============================================================================
 
@@ -880,7 +806,7 @@ void Master_Shutdown ()
 SV_UserinfoChanged
 
 Pull specific info from a newly changed userinfo string
-into a more C freindly form.
+into a more C friendly form.
 =================
 */
 void SV_UserinfoChanged (client_t *cl)

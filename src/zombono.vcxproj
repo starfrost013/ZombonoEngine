@@ -78,6 +78,7 @@
     <ClCompile Include="server\sv_game.c" />
     <ClCompile Include="server\sv_init.c" />
     <ClCompile Include="server\sv_main.c" />
+    <ClCompile Include="server\sv_master.c" />
     <ClCompile Include="server\sv_send.c" />
     <ClCompile Include="server\sv_user.c" />
     <ClCompile Include="server\sv_world.c" />
