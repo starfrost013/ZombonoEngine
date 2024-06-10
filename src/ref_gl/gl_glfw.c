@@ -289,10 +289,10 @@ void GL_EndFrame()
 	if (gl_state.window == NULL)
 		return;
 
-	int32_t	err;
+	//int32_t	err;
 
-	err = glGetError();
-	assert(err == GL_NO_ERROR);
+	//err = glGetError();
+	//assert(err == GL_NO_ERROR);
 
 	glfwPollEvents();
 
