@@ -505,7 +505,7 @@ static	cmd_function_t	*cmd_functions;		// possible commands to execute
 Cmd_Argc
 ============
 */
-int32_t 	Cmd_Argc ()
+int32_t Cmd_Argc ()
 {
 	return cmd_argc;
 }
@@ -515,7 +515,7 @@ int32_t 	Cmd_Argc ()
 Cmd_Argv
 ============
 */
-char	*Cmd_Argv (int32_t arg)
+char* Cmd_Argv (int32_t arg)
 {
 	if ( (uint32_t)arg >= cmd_argc )
 		return cmd_null_string;
@@ -529,7 +529,7 @@ Cmd_Args
 Returns a single string containing argv(1) to argv(argc()-1)
 ============
 */
-char		*Cmd_Args ()
+char* Cmd_Args ()
 {
 	return cmd_args;
 }

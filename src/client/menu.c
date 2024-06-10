@@ -3117,6 +3117,7 @@ static bool PlayerConfig_ScanDirectories(void)
 
 		s_numplayermodels++;
 	}
+
 	if (dirnames)
 		FreeFileList(dirnames, ndirs);
 

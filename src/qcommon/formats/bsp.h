@@ -201,14 +201,14 @@ typedef struct dnode_s
 	uint32_t	numfaces;	// counting both sides
 } dnode_t;
 
-#define TEXTURE_LENGTH			80
+#define TEXTURE_NAME_LENGTH			80
 
 typedef struct texinfo_s
 {
 	float		vecs[2][4];					// [s/t][xyz offset]
 	int32_t 	flags;						// miptex flags + overrides
 	int32_t 	value;						// light emission, etc
-	char		texture[TEXTURE_LENGTH];	// texture name (textures/*.tga)
+	char		texture[TEXTURE_NAME_LENGTH];	// texture name (textures/*.tga)
 	int32_t 	nexttexinfo;				// for animations, -1 = end of chain
 } texinfo_t;
 

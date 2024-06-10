@@ -76,9 +76,9 @@ Returns true if the file exists, otherwise it attempts
 to start a download from the server.
 ===============
 */
-bool	CL_CheckOrDownloadFile(char* filename)
+bool CL_CheckOrDownloadFile(char* filename)
 {
-	FILE* fp;
+	FILE*	fp;
 	char	name[MAX_OSPATH];
 
 	if (strstr(filename, ".."))
@@ -108,7 +108,8 @@ bool	CL_CheckOrDownloadFile(char* filename)
 	//	FS_CreatePath (name);
 
 	fp = fopen(name, "r+b");
-	if (fp) { // it exists
+	if (fp) 
+	{ // it exists
 		int32_t len;
 		fseek(fp, 0, SEEK_END);
 		len = ftell(fp);
@@ -121,7 +122,8 @@ bool	CL_CheckOrDownloadFile(char* filename)
 		MSG_WriteString(&cls.netchan.message,
 			va("download %s %i", cls.downloadname, len));
 	}
-	else {
+	else 
+	{
 		Com_Printf("Downloading %s\n", cls.downloadname);
 		MSG_WriteByte(&cls.netchan.message, clc_stringcmd);
 		MSG_WriteString(&cls.netchan.message,

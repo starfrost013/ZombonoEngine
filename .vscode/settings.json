@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "SUDISK.C": "cpp",
-        "SUSEL.C": "cpp"
+        "SUSEL.C": "cpp",
+        "STRINGS.C": "cpp"
     }
 }
