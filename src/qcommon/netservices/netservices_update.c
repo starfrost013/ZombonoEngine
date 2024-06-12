@@ -45,7 +45,7 @@ void	Netservices_UpdateInfoBinaryComplete();															// Callback function 
 // Globals
 // 
 // Set the update channel and a string for it based on the build configuration
-#if !NDEBUG // gcc+msvc portable
+#if DEBUG
 game_update_channel current_update_channel = update_channel_debug;
 const char* selected_update_channel_str = "debug";
 #elif PLAYTEST

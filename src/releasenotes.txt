@@ -5,6 +5,9 @@ Version 0.0.11
 June XX, 2024
 
 NEW FEATURES:
+	* Master server changes:
+		* The master server protocol now sends the number of players in the server directly.
+		* Added an sv_debug_heartbeat cvar that sends the heartbeat every two seconds instead of five minutes. It is only present on debug builds, to remove any outside possibility of spamming the server.
 
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
@@ -15,6 +18,9 @@ REMOVALS:
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour
+	* Renamed some cvars:
+		* zombietime -> sv_zombietime
+		* showclamp -> sv_showclamp
 
 Version 0.0.10 (Build 558)
 June 8, 2024

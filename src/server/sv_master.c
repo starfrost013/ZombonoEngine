@@ -38,7 +38,8 @@ Send a message to the master every few minutes to
 let it know we are alive, and log information
 ================
 */
-#define	HEARTBEAT_SECONDS	2
+#define	HEARTBEAT_SECONDS		300
+#define HEARTBEAT_SECONDS_DEBUG	2		// Used on debug builds when sv_debug_heartbeat is used
 
 /*
 ===============
@@ -178,8 +179,16 @@ void Master_Heartbeat()
 	if (svs.last_heartbeat > svs.realtime)
 		svs.last_heartbeat = svs.realtime;
 
-	if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS * 1000)
-		return;		// not time to send yet
+	if (sv_debug_heartbeat->value)
+	{
+		if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS_DEBUG * 1000)
+			return;		// not time to send yet
+	}
+	else
+	{
+		if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS * 1000)
+			return;		// not time to send yet
+	}
 
 	svs.last_heartbeat = svs.realtime;
 

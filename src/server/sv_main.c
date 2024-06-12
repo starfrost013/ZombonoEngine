@@ -27,8 +27,8 @@ cvar_t* sv_timedemo;
 
 cvar_t* sv_enforcetime;
 
-cvar_t* msg_timeout;			// seconds without any message
-cvar_t* zombietime;			// seconds to sink messages after disconnect
+cvar_t* sv_msg_timeout;			// seconds without any message
+cvar_t* sv_zombietime;			// seconds to sink messages after disconnect
 
 cvar_t* rcon_password;			// password for remote server commands
 
@@ -42,11 +42,14 @@ cvar_t* sv_airaccelerate;
 
 cvar_t* sv_noreload;			// don't reload level state when reentering
 
-cvar_t* maxclients;			// FIXME: rename sv_maxclients
+cvar_t* maxclients;	
 cvar_t* sv_showclamp;
+#ifdef DEBUG
+cvar_t* sv_debug_heartbeat;		// send heartbeat at a debug rate
+#endif
 
 cvar_t* hostname;
-cvar_t* public_server;			// should heartbeats be sent
+cvar_t* public_server;			// should heartbeats be sent?
 
 cvar_t* sv_reconnect_limit;	// minimum seconds between connect messages
 
@@ -543,8 +546,8 @@ void SV_CheckTimeouts()
 	int32_t 		droppoint;
 	int32_t 		zombiepoint;
 
-	droppoint = svs.realtime - 1000 * msg_timeout->value;
-	zombiepoint = svs.realtime - 1000 * zombietime->value;
+	droppoint = svs.realtime - 1000 * sv_msg_timeout->value;
+	zombiepoint = svs.realtime - 1000 * sv_zombietime->value;
 
 	for (i = 0, cl = svs.clients; i < maxclients->value; i++, cl++)
 	{
@@ -749,9 +752,12 @@ void SV_Init()
 	Cvar_Get("protocol", va("%i", PROTOCOL_VERSION), CVAR_SERVERINFO | CVAR_NOSET);;
 	maxclients = Cvar_Get("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
 	hostname = Cvar_Get("hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE);
-	msg_timeout = Cvar_Get("timeout", "125", 0);
-	zombietime = Cvar_Get("zombietime", "2", 0);
-	sv_showclamp = Cvar_Get("showclamp", "0", 0);
+	sv_msg_timeout = Cvar_Get("sv_msg_timeout", "125", 0);
+	sv_zombietime = Cvar_Get("sv_zombietime", "2", 0);
+	sv_showclamp = Cvar_Get("sv_showclamp", "0", 0);
+#ifdef DEBUG
+	sv_debug_heartbeat = Cvar_Get("sv_debug_heartbeat", "0", 0);
+#endif
 	sv_paused = Cvar_Get("paused", "0", 0);
 	sv_timedemo = Cvar_Get("timedemo", "0", 0);
 	sv_enforcetime = Cvar_Get("sv_enforcetime", "0", 0);
