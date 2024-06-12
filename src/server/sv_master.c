@@ -68,7 +68,7 @@ char* SV_StatusString()
 
 	snprintf(status, (MAX_MSGLEN - 16), "\\%d", num_clients);
 	status_length = (int32_t)strlen(status);
-	strncpy(status + status_length, (MAX_MSGLEN - 16 - status_length), Cvar_Serverinfo());
+	strncpy(status + status_length, Cvar_Serverinfo(), (MAX_MSGLEN - 16 - status_length));
 	status_length = (int32_t)strlen(status);
 	strncat(status + status_length, "\n", (MAX_MSGLEN - 16 - status_length));
 
