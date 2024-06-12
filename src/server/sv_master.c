@@ -161,7 +161,6 @@ void SVC_Ping()
 	Netchan_OutOfBandPrint(NS_SERVER, net_from, "ack");
 }
 
-
 void Master_Heartbeat()
 {
 	char* string;
