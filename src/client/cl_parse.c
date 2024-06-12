@@ -188,7 +188,7 @@ CL_RegisterSounds
 */
 void CL_RegisterSounds()
 {
-	int32_t 	i;
+	int32_t  i;
 
 	S_BeginRegistration();
 	CL_RegisterTEntSounds();

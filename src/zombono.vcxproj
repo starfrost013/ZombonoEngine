@@ -69,6 +69,7 @@
     <ClCompile Include="qcommon\files.c" />
     <ClCompile Include="qcommon\md4.c" />
     <ClCompile Include="qcommon\netservices\netservices_base.c" />
+    <ClCompile Include="qcommon\netservices\netservices_masterserver.c" />
     <ClCompile Include="qcommon\netservices\netservices_update.c" />
     <ClCompile Include="qcommon\net_chan.c" />
     <ClCompile Include="qcommon\pdjson.c" />

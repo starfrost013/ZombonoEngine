@@ -184,25 +184,26 @@ typedef struct
 
 //=============================================================================
 
-extern	netadr_t	net_from;
-extern	sizebuf_t	net_message;
+extern netadr_t			net_from;
+extern sizebuf_t		net_message;
 
-extern	netadr_t	master_adr[MAX_MASTERS];	// address of the master server
+extern netadr_t			master_adr[MAX_MASTERS];	// address of the master server
 
-extern	server_static_t	svs;				// persistant server info
-extern	server_t		sv;					// local server
+extern server_static_t	svs;				// persistant server info
+extern server_t			sv;					// local server
 
-extern	cvar_t*			sv_paused;
-extern	cvar_t*			maxclients;
-extern	cvar_t*			sv_noreload;			// don't reload level state when reentering
-extern	cvar_t*			sv_airaccelerate;		// don't reload level state when reentering
-extern  cvar_t*			public_server;
+extern cvar_t*			hostname;
+extern cvar_t*			sv_paused;
+extern cvar_t*			maxclients;
+extern cvar_t*			sv_noreload;			// don't reload level state when reentering
+extern cvar_t*			sv_airaccelerate;		// don't reload level state when reentering
+extern cvar_t*			public_server;
 // development tool
-extern	cvar_t*			sv_enforcetime;
+extern cvar_t*			sv_enforcetime;
 
 
-extern	client_t*		sv_client;
-extern	edict_t*		sv_player;
+extern client_t*		sv_client;
+extern edict_t*			sv_player;
 
 //===========================================================
 

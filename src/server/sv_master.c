@@ -24,6 +24,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 netadr_t	master_adr[MAX_MASTERS];	// address of group servers
 
+const char* master_base = "servers.zombono.com";
+const char* master_alternative = "servers-alt.zombono.com"; // temp
+
+// The master protocol version
+// The regular protocol version is still used, but I want older versions of the game to still be supported to some extent (hidden by default)
+#define	MASTER_PROTOCOL_VERSION		1
 /*
 ================
 Master_Heartbeat
@@ -32,7 +38,129 @@ Send a message to the master every few minutes to
 let it know we are alive, and log information
 ================
 */
-#define	HEARTBEAT_SECONDS	300
+#define	HEARTBEAT_SECONDS	2
+
+/*
+===============
+SV_StatusString
+
+Builds the string that is sent as heartbeats and status replies
+===============
+*/
+char* SV_StatusString()
+{
+	char		player[1024];
+	static char	status[MAX_MSGLEN - 16];
+	int32_t 	i;
+	client_t*	cl;
+	int32_t 	status_length;
+	int32_t 	player_length;
+	int32_t		num_clients = 0;
+
+	// get the number of clients
+	for (i = 0; i < maxclients->value; i++)
+	{
+		cl = &svs.clients[i];
+
+		if (cl->state == cs_connected || cl->state == cs_spawned)
+			num_clients++;
+	}
+
+	snprintf(status, (MAX_MSGLEN - 16), "\\%d", num_clients);
+	status_length = (int32_t)strlen(status);
+	strncpy(status + status_length, (MAX_MSGLEN - 16 - status_length), Cvar_Serverinfo());
+	status_length = (int32_t)strlen(status);
+	strncat(status + status_length, "\n", (MAX_MSGLEN - 16 - status_length));
+
+	status_length = (int32_t)strlen(status);
+
+	for (i = 0; i < maxclients->value; i++)
+	{
+		cl = &svs.clients[i];
+		if (cl->state == cs_connected || cl->state == cs_spawned)
+		{
+			Com_sprintf(player, sizeof(player), "%i %i \"%s\"\n",
+				cl->edict->client->ps.stats[STAT_FRAGS], cl->ping, cl->name);
+			player_length = (int32_t)strlen(player);
+			if (status_length + player_length >= sizeof(status))
+				break;		// can't hold any more
+			strcpy(status + status_length, player);
+			status_length += player_length;
+		}
+	}
+
+	return status;
+}
+
+/*
+================
+SVC_Status
+
+Responds with all the info that qplug or qspy can see
+================
+*/
+void SVC_Status()
+{
+	Netchan_OutOfBandPrint(NS_SERVER, net_from, "print\n%s", SV_StatusString());
+}
+
+/*
+================
+SVC_Ack
+
+================
+*/
+void SVC_Ack()
+{
+	Com_Printf("Ping acknowledge from %s\n", NET_AdrToString(net_from));
+}
+
+/*
+================
+SVC_Info
+
+Responds with int16_t info for broadcast scans
+The second parameter should be the current protocol version number.
+================
+*/
+void SVC_Info()
+{
+	char	string[64];
+	int32_t i, count;
+	int32_t version;
+
+	if (maxclients->value == 1)
+		return;		// ignore in single player
+
+	version = atoi(Cmd_Argv(1));
+
+	if (version != PROTOCOL_VERSION)
+		Com_sprintf(string, sizeof(string), "%s: wrong version\n", hostname->string, sizeof(string));
+	else
+	{
+		count = 0;
+		for (i = 0; i < maxclients->value; i++)
+			if (svs.clients[i].state >= cs_connected)
+				count++;
+
+		Com_sprintf(string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)maxclients->value);
+	}
+
+	Netchan_OutOfBandPrint(NS_SERVER, net_from, "info\n%s", string);
+}
+
+/*
+================
+SVC_Ping
+
+Just responds with an acknowledgement
+================
+*/
+void SVC_Ping()
+{
+	Netchan_OutOfBandPrint(NS_SERVER, net_from, "ack");
+}
+
 
 void Master_Heartbeat()
 {
@@ -80,7 +208,7 @@ Informs all masters that this server is going down
 */
 void Master_Shutdown()
 {
-	int32_t 		i;
+	int32_t i;
 
 	// pgm post3.19 change, cvar pointer not validated before dereferencing
 	if (!dedicated || !dedicated->value)
@@ -103,3 +231,4 @@ void Master_Shutdown()
 	}
 
 }
+

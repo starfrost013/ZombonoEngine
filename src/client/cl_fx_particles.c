@@ -543,10 +543,10 @@ void CL_LightningParticles(vec3_t start, float velocity, vec3_t angles)
 		particle->time = cl.time + rand() % 500;
 
 		// all colours are whitish
-		particle->color[0] = 190 + rand() % 11;
-		particle->color[1] = 190 + rand() % 11;
-		particle->color[2] = 245 + rand() % 56;
-		particle->color[3] = 235 + rand() % 27;
+		particle->color[0] = 100 + rand() % 30;
+		particle->color[1] = 100 + rand() % 30;
+		particle->color[2] = 225 + rand() % 30;
+		particle->color[3] = 235 + rand() % 20;
 
 		particle->org[0] = start[0] + 3 + rand() % 5; //3-8 units forward
 		particle->org[1] = start[1] + 2 + rand() % 2; //2-4 units side
@@ -560,7 +560,7 @@ void CL_LightningParticles(vec3_t start, float velocity, vec3_t angles)
 		particle->accel[1] = (angles[1]) * 5 + rand() % 5;
 		particle->accel[2] = (angles[2]) * 5 + rand() % 5;
 
-		particle->lifetime = 5000;
+		particle->lifetime = 4500;
 
 		
 		//particle->alphavel = -1.0 / (0.5 + frand() * 0.3);
