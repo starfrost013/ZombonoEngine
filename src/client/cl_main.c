@@ -1847,8 +1847,8 @@ void CL_Init()
 		return;		// nothing running on the client
 
 	// all archived variables will now be loaded
-
 	Con_Init();
+
 #if defined __linux__
 	S_Init();
 	Vid_Init();

@@ -762,10 +762,10 @@ extern int32_t 	time_after_game;
 extern int32_t 	time_before_ref;
 extern int32_t 	time_after_ref;
 
-void	Z_Free(void* ptr);
-void*	Z_Malloc(int32_t size);			// returns 0 filled memory
-void*	Z_TagMalloc(int32_t size, int32_t tag);
-void	Z_FreeTags(int32_t tag);
+void Z_Free(void* ptr);
+void* Z_Malloc(int32_t size);			// returns 0 filled memory
+void* Z_TagMalloc(int32_t size, int32_t tag);
+void Z_FreeTags(int32_t tag);
 
 void Qcommon_Init(int32_t argc, char** argv);
 void Qcommon_Frame(int32_t msec);

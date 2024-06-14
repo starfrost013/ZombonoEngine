@@ -312,6 +312,9 @@ extern cvar_t* cl_intro2;
 extern cvar_t* cl_intro1_time;
 extern cvar_t* cl_intro2_time;
 
+cvar_t* gl_width;
+cvar_t* gl_height;
+
 typedef struct cdlight_s
 {
 	int32_t key;				// so entities can reuse same entry

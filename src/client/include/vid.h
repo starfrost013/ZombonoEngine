@@ -23,19 +23,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct vrect_s
 {
-	int32_t 			x;
-	int32_t				y;
-	int32_t				width;
-	int32_t				height;
+	int32_t	x;
+	int32_t y;
+	int32_t	width;
+	int32_t	height;
 } vrect_t;
 
-typedef struct
-{
-	uint32_t		width;
-	uint32_t		height;
-} viddef_t;
-
-extern	viddef_t	viddef;				// global video state
+extern cvar_t* gl_width;
+extern cvar_t* gl_height;
+extern bool graphics_mode;
 
 // Video module initialisation etc
 void	Vid_Init ();
@@ -43,5 +39,5 @@ void	Vid_Shutdown ();
 void	Vid_CheckChanges ();
 
 void	Vid_MenuInit( void );
-void	VID_MenuDraw( void );
+void	Vid_MenuDraw( void );
 const char *Vid_MenuKey( int32_t );

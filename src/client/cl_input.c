@@ -673,8 +673,8 @@ void Input_ActivateMouse()
 	mouseactive = true;
 
 	// position is relative to top-left corner of window
-	window_center_x = viddef.width / 2;
-	window_center_y = viddef.height / 2;
+	window_center_x = gl_width->value / 2;
+	window_center_y = gl_height->value / 2;
 }
 
 

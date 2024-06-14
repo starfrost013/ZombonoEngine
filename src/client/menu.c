@@ -82,7 +82,7 @@ static void M_Banner(char* name)
 	int32_t w, h;
 
 	re.DrawGetPicSize(&w, &h, name);
-	re.DrawPic(viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, name, NULL);
+	re.DrawPic(gl_width->value / 2 - w / 2, gl_height->value / 2 - 110 * vid_hudscale->value, name, NULL);
 }
 
 void M_PushMenu(void (*draw) (), const char* (*key) (int32_t k))
@@ -271,7 +271,7 @@ higher res screens.
 */
 void Menu_DrawCenteredImage(int32_t cx, int32_t cy, char* image)
 {
-	re.DrawPic(cx + ((viddef.width - 320) >> 1) * vid_hudscale->value, cy + ((viddef.height - 240) >> 1) * vid_hudscale->value, image, NULL);
+	re.DrawPic(cx + (((int32_t)gl_width->value - 320) >> 1) * vid_hudscale->value, cy + (((int32_t)gl_height->value - 240) >> 1) * vid_hudscale->value, image, NULL);
 }
 
 /*
@@ -391,8 +391,8 @@ void M_Main_Draw()
 		totalheight += (h + 12);
 	}
 
-	ystart = (viddef.height / 2 - 100 * vid_hudscale->value);
-	xoffset = (viddef.width - widest * vid_hudscale->value) / 2; // moved left by 70 pixels, because we got rid of the "QUAKE2" logo
+	ystart = (gl_height->value / 2 - 100 * vid_hudscale->value);
+	xoffset = (gl_width->value - widest * vid_hudscale->value) / 2; // moved left by 70 pixels, because we got rid of the "QUAKE2" logo
 
 	for (i = 0; names[i] != 0; i++)
 	{
@@ -515,7 +515,7 @@ static void StartNetworkServerFunc(void* unused)
 
 void Multiplayer_MenuInit(void)
 {
-	s_multiplayer_menu.x = viddef.width * 0.50 - 64 * vid_hudscale->value;
+	s_multiplayer_menu.x = gl_width->value * 0.50 - 64 * vid_hudscale->value;
 	s_multiplayer_menu.nitems = 0;
 
 	s_browse_servers_action.generic.type = MTYPE_ACTION;
@@ -746,7 +746,7 @@ static void Keys_MenuInit(void)
 	int32_t y = 0;
 	int32_t i = 0;
 
-	s_keys_menu.x = viddef.width * 0.50;
+	s_keys_menu.x = gl_width->value * 0.50;
 	s_keys_menu.nitems = 0;
 	s_keys_menu.cursordraw = KeyCursorDrawFunc;
 
@@ -1204,8 +1204,8 @@ void Options_MenuInit(void)
 	/*
 	** configure controls menu and menu items
 	*/
-	s_options_menu.x = viddef.width / 2;
-	s_options_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
+	s_options_menu.x = gl_width->value / 2;
+	s_options_menu.y = gl_height->value / 2 - 58 * vid_hudscale->value;
 	s_options_menu.nitems = 0;
 
 	s_options_sfxvolume_slider.generic.type = MTYPE_SLIDER;
@@ -1374,7 +1374,7 @@ VIDEO MENU
 void M_Menu_Video_f()
 {
 	Vid_MenuInit();
-	M_PushMenu(VID_MenuDraw, Vid_MenuKey);
+	M_PushMenu(Vid_MenuDraw, Vid_MenuKey);
 }
 
 /*
@@ -1453,8 +1453,8 @@ void M_Credits_MenuDraw(void)
 	/*
 	** draw the credits
 	*/
-	for (i = 0, y = viddef.height - ((cls.realtime - credits_start_time) / 40.0F);
-		credits[i] && y < viddef.height * vid_hudscale->value; y += 10 * vid_hudscale->value, i++)
+	for (i = 0, y = gl_height->value - ((cls.realtime - credits_start_time) / 40.0F);
+		credits[i] && y < gl_height->value * vid_hudscale->value; y += 10 * vid_hudscale->value, i++)
 	{
 		int32_t bold = false;
 
@@ -1465,7 +1465,7 @@ void M_Credits_MenuDraw(void)
 		int32_t size_x = 0, size_y = 0;
 
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, credits[i]);
-		x = (viddef.width / 2) - (size_x / 2); //(viddef.width - strlen(credits[i]) * 8 * vid_hudscale->value * 8 * vid_hudscale->value) / 2 * 8 * vid_hudscale->value;
+		x = (gl_width->value / 2) - (size_x / 2); //(gl_width->value - strlen(credits[i]) * 8 * vid_hudscale->value * 8 * vid_hudscale->value) / 2 * 8 * vid_hudscale->value;
 		Text_Draw(cl_system_font->string, x, y, credits[i]);
 	}
 
@@ -1605,7 +1605,7 @@ static void CreditsFunc(void* unused)
 
 void Game_MenuInit(void)
 {
-	s_game_menu.x = viddef.width * 0.50;
+	s_game_menu.x = gl_width->value * 0.50;
 	s_game_menu.nitems = 0;
 
 	s_easy_game_action.generic.type = MTYPE_ACTION;
@@ -1679,7 +1679,7 @@ void Game_MenuDraw(void)
 	int32_t size_x = 0, size_y = 0;
 	const char* no_playtest_text = "^1This option is not available in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
+	Text_Draw(cl_system_font->string, gl_width->value / 2 - (size_x / 2), gl_height->value / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
 	M_Banner("2d/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);
@@ -1759,8 +1759,8 @@ void LoadGame_MenuInit(void)
 {
 	int32_t i;
 
-	s_loadgame_menu.x = viddef.width / 2 - 120 * vid_hudscale->value;
-	s_loadgame_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
+	s_loadgame_menu.x = gl_width->value / 2 - 120 * vid_hudscale->value;
+	s_loadgame_menu.y = gl_height->value / 2 - 58 * vid_hudscale->value;
 	s_loadgame_menu.nitems = 0;
 
 	Create_Savestrings();
@@ -1837,8 +1837,8 @@ void SaveGame_MenuInit(void)
 {
 	int32_t i;
 
-	s_savegame_menu.x = viddef.width / 2 - 120 * vid_hudscale->value;
-	s_savegame_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
+	s_savegame_menu.x = gl_width->value / 2 - 120 * vid_hudscale->value;
+	s_savegame_menu.y = gl_height->value / 2 - 58 * vid_hudscale->value;
 	s_savegame_menu.nitems = 0;
 
 	Create_Savestrings();
@@ -1973,7 +1973,7 @@ void JoinServer_MenuInit(void)
 {
 	int32_t i;
 
-	s_joinserver_menu.x = viddef.width * 0.50 - 120 * vid_hudscale->value;
+	s_joinserver_menu.x = gl_width->value * 0.50 - 120 * vid_hudscale->value;
 	s_joinserver_menu.nitems = 0;
 
 	s_joinserver_address_book_action.generic.type = MTYPE_ACTION;
@@ -2233,7 +2233,7 @@ void StartServer_MenuInit(void)
 	/*
 	** initialize the menu stuff
 	*/
-	s_startserver_menu.x = viddef.width * 0.50;
+	s_startserver_menu.x = gl_width->value * 0.50;
 	s_startserver_menu.nitems = 0;
 
 	s_startmap_list.generic.type = MTYPE_SPINCONTROL;
@@ -2339,7 +2339,7 @@ void StartServer_MenuDraw()
 	int32_t size_x = 0, size_y = 0;
 	const char* no_playtest_text = "^1Servers cannot be started in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, viddef.width / 2 - (size_x / 2), viddef.height / 2 - (92 * vid_hudscale->value), no_playtest_text);
+	Text_Draw(cl_system_font->string, gl_width->value / 2 - (size_x / 2), gl_height->value / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
 	Menu_Draw(&s_startserver_menu);
 #endif
@@ -2527,7 +2527,7 @@ void GameOptions_MenuInit(void)
 	int32_t gameflags = Cvar_VariableValue("gameflags");
 	int32_t y = 0;
 
-	s_gameoptions_menu.x = viddef.width * 0.50;
+	s_gameoptions_menu.x = gl_width->value * 0.50;
 	s_gameoptions_menu.nitems = 0;
 
 	s_falls_box.generic.type = MTYPE_SPINCONTROL;
@@ -2742,7 +2742,7 @@ void DownloadOptions_MenuInit(void)
 	};
 	int32_t y = 0;
 
-	s_downloadoptions_menu.x = viddef.width * 0.50;
+	s_downloadoptions_menu.x = gl_width->value * 0.50;
 	s_downloadoptions_menu.nitems = 0;
 
 	s_download_title.generic.type = MTYPE_SEPARATOR;
@@ -2835,8 +2835,8 @@ void AddressBook_MenuInit(void)
 {
 	int32_t i;
 
-	s_addressbook_menu.x = viddef.width / 2 - 142 * vid_hudscale->value;
-	s_addressbook_menu.y = viddef.height / 2 - 58 * vid_hudscale->value;
+	s_addressbook_menu.x = gl_width->value / 2 - 142 * vid_hudscale->value;
+	s_addressbook_menu.y = gl_height->value / 2 - 58 * vid_hudscale->value;
 	s_addressbook_menu.nitems = 0;
 
 	for (i = 0; i < NUM_ADDRESSBOOK_ENTRIES; i++)
@@ -3212,8 +3212,8 @@ bool PlayerConfig_MenuInit(void)
 		}
 	}
 
-	s_player_config_menu.x = viddef.width / 2 - 95 * vid_hudscale->value;
-	s_player_config_menu.y = viddef.height / 2 - 97 * vid_hudscale->value;
+	s_player_config_menu.x = gl_width->value / 2 - 95 * vid_hudscale->value;
+	s_player_config_menu.y = gl_height->value / 2 - 97 * vid_hudscale->value;
 	s_player_config_menu.nitems = 0;
 
 	s_player_name_field.generic.type = MTYPE_FIELD;
@@ -3316,8 +3316,8 @@ void PlayerConfig_MenuDraw(void)
 
 	memset(&refdef, 0, sizeof(refdef));
 
-	refdef.x = viddef.width / 2;
-	refdef.y = viddef.height / 2 - 72 * vid_hudscale->value;
+	refdef.x = gl_width->value / 2;
+	refdef.y = gl_height->value / 2 - 72 * vid_hudscale->value;
 	refdef.width = 144 * vid_hudscale->value;
 	refdef.height = 168 * vid_hudscale->value;
 	refdef.fov_x = 40;
@@ -3355,7 +3355,7 @@ void PlayerConfig_MenuDraw(void)
 
 		Menu_Draw(&s_player_config_menu);
 
-		Menu_DrawTextBox((refdef.x) * (320.0F / viddef.width) - 8 * vid_hudscale->value, (viddef.height / 2) * (240.0F / viddef.height) - 77 * vid_hudscale->value, refdef.width / (8 * vid_hudscale->value), refdef.height / (8 * vid_hudscale->value));
+		Menu_DrawTextBox((refdef.x) * (320.0F / gl_width->value) - 8 * vid_hudscale->value, (gl_height->value / 2) * (240.0F / gl_height->value) - 77 * vid_hudscale->value, refdef.width / (8 * vid_hudscale->value), refdef.height / (8 * vid_hudscale->value));
 		refdef.height += 4 * vid_hudscale->value;
 
 		re.RenderFrame(&refdef);
@@ -3450,7 +3450,7 @@ void M_Quit_Draw()
 	int32_t 	w, h;
 
 	re.DrawGetPicSize(&w, &h, "2d/quit");
-	re.DrawPic((viddef.width - w) / 2, (viddef.height - h) / 2, "2d/quit", NULL);
+	re.DrawPic((gl_width->value - w) / 2, (gl_height->value - h) / 2, "2d/quit", NULL);
 }
 
 

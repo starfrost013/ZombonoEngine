@@ -42,9 +42,8 @@ cvar_t* vid_refresh;
 cvar_t* viewsize;
 
 // Global variables used internally by this module
-viddef_t	viddef;				// global video state; used by other modules
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
-bool		reflib_active = 0;
+bool		graphics_mode = 0;
 
 extern uint32_t	sys_msg_time;
 
@@ -114,19 +113,25 @@ void Vid_Restart_f()
 */
 void Vid_ChangeResolution(int32_t width, int32_t height)
 {
-	int32_t old_width = viddef.width;
-	int32_t old_height = viddef.height;
+	if (width == 0
+		|| height == 0)
+	{
+		return;
+	}
 
-	viddef.width = width;
-	viddef.height = height;
+	int32_t old_width = gl_width->value;
+	int32_t old_height = gl_height->value;
+
+	gl_width->value = width;
+	gl_height->value = height;
 
 	cl.force_refdef = true;		// can't use a paused refdef
 
 	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	float wscale = viddef.width / UI_SCALE_BASE_X;
-	float hscale = viddef.height / UI_SCALE_BASE_Y;
+	float wscale = gl_width->value / UI_SCALE_BASE_X;
+	float hscale = gl_height->value / UI_SCALE_BASE_Y;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;
@@ -141,7 +146,7 @@ void Vid_FreeReflib()
 		Com_Error(ERR_FATAL, "Reflib FreeLibrary failed");
 	memset(&re, 0, sizeof(re));
 	reflib_library = NULL;
-	reflib_active = false;
+	graphics_mode = false;
 }
 
 /*
@@ -154,7 +159,7 @@ bool Vid_LoadRefresh(char* name)
 	refimport_t	ri = { 0 };
 	GetRefAPI_t	GetRefAPI;
 
-	if (reflib_active)
+	if (graphics_mode)
 	{
 		re.Shutdown();
 		Vid_FreeReflib();
@@ -205,7 +210,7 @@ bool Vid_LoadRefresh(char* name)
 	}
 
 	Com_Printf("------------------------------------\n");
-	reflib_active = true;
+	graphics_mode = true;
 
 	vidref_val = VIDREF_OTHER;
 	if (vid_ref)
@@ -310,6 +315,9 @@ Initialises the video/rendering subsystem
 void Vid_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
+	gl_width = Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
+	gl_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
+
 	vid_ref = Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get("vid_xpos", "3", CVAR_ARCHIVE);
 	vid_ypos = Cvar_Get("vid_ypos", "22", CVAR_ARCHIVE);
@@ -333,7 +341,7 @@ Vid_Shutdown
 */
 void Vid_Shutdown()
 {
-	if (reflib_active)
+	if (graphics_mode)
 	{
 		re.Shutdown();
 		Vid_FreeReflib();

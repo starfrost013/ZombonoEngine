@@ -30,7 +30,7 @@ extern cvar_t* vid_hudscale;
 
 #define	MAXCMDLINE	256
 //This will become a cvar in 0.0.11
-#define DEFAULT_CONSOLE_LINE_LENGTH			128
+#define DEFAULT_CONSOLE_LINE_WIDTH			128
 
 extern	char	key_lines[128][MAXCMDLINE];
 extern	int32_t edit_line;
@@ -228,22 +228,22 @@ If the line width has changed, reformat the buffer.
 void Con_CheckResize()
 {
 	int32_t 	i, j, width, oldwidth, oldtotallines, numlines, numchars;
-	char	tbuf[CON_TEXTSIZE];
+	char		tbuf[CON_TEXTSIZE];
 
-	width = (viddef.width >> 3) - 2;
-
-	if (width == con.linewidth)
-		return;
-
-	if (width < 1)			// video hasn't been initialized yet
+	if (!graphics_mode)			// video hasn't been initialized yet
 	{
-		width = DEFAULT_CONSOLE_LINE_LENGTH;
+		width = DEFAULT_CONSOLE_LINE_WIDTH;
 		con.linewidth = width;
 		con.totallines = CON_TEXTSIZE / con.linewidth;
 		memset(con.text, ' ', CON_TEXTSIZE);
 	}
 	else
 	{
+		width = ((int32_t)gl_width->value >> 3) - 2;
+
+		if (width == con.linewidth)
+			return;
+
 		oldwidth = con.linewidth;
 		con.linewidth = width;
 		oldtotallines = con.totallines;
@@ -289,6 +289,7 @@ void Con_Init()
 	con.linewidth = -1;
 
 	Con_CheckResize();
+
 
 	Com_Printf("Console initialized.\n");
 
@@ -527,8 +528,8 @@ void Con_DrawNotify()
 		}
 
 		s = chat_buffer;
-		if (chat_bufferlen > (viddef.width >> 3) - (skip_size_x + 1))
-			s += chat_bufferlen - ((viddef.width >> 3) - (skip_size_x + 1));
+		if (chat_bufferlen > ((int32_t)gl_width->value >> 3) - (skip_size_x + 1))
+			s += chat_bufferlen - (((int32_t)gl_width->value >> 3) - (skip_size_x + 1));
 
 		// terminator for text engine
 		char original = s[chat_bufferlen];
@@ -544,7 +545,7 @@ void Con_DrawNotify()
 	if (v)
 	{
 		Render2D_AddDirtyPoint(0, 0);
-		Render2D_AddDirtyPoint(viddef.width - 1, v * vid_hudscale->value);
+		Render2D_AddDirtyPoint(gl_width->value - 1, v * vid_hudscale->value);
 	}
 }
 
@@ -586,51 +587,51 @@ void Con_DrawConsole(float frac)
 		}
 	}
 
-	lines = viddef.height * frac;
+	lines = gl_height->value * frac;
 	if (lines <= 0)
 		return;
 
-	if (lines > viddef.height)
-		lines = viddef.height;
+	if (lines > gl_height->value)
+		lines = gl_height->value;
 
 	// draw the background (draw widescreen 457*240 background if 16:9 res)
-	if ((float)viddef.width / (float)viddef.height > 1.4f)
+	if ((float)gl_width->value / (float)gl_height->value > 1.4f)
 	{
-		if (viddef.width >= 1920)
+		if (gl_width->value >= 1920)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9", NULL);
 		}
-		else if (viddef.width >= 960)
+		else if (gl_width->value >= 960)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.5x", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback_16x9@0.25x", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9@0.25x", NULL);
 		}
 	}
 	else
 	{
-		if (viddef.width >= 1440)
+		if (gl_width->value >= 1440)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback", NULL);
 		}
-		else if (viddef.width >= 720)
+		else if (gl_width->value >= 720)
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.5x", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - viddef.height, viddef.width, viddef.height, "2d/conback@0.25x", NULL);
+			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback@0.25x", NULL);
 		}
 	}
 
 	Render2D_AddDirtyPoint(0, 0);
-	Render2D_AddDirtyPoint(viddef.width - 1, lines - 1);
+	Render2D_AddDirtyPoint(gl_width->value - 1, lines - 1);
 
 	Com_sprintf(version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);
-	Text_Draw(cl_console_font->string, viddef.width - size_x, lines - 12 * vid_hudscale->value, version);
+	Text_Draw(cl_console_font->string, gl_width->value - size_x, lines - 12 * vid_hudscale->value, version);
 
 	// draw the text
 	con.vislines = lines;

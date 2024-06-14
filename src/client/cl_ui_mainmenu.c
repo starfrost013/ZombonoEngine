@@ -28,17 +28,17 @@ bool UI_MainMenuUICreate()
 	if (!ui_newmenu->value)
 		return true; 
 
-	if (viddef.width >= 1920)
+	if (gl_width->value >= 1920)
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, viddef.width, viddef.height);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, gl_width->value, gl_height->value);
 	}
-	else if (viddef.width >= 960)
+	else if (gl_width->value >= 960)
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.5x", 0, 0, viddef.width, viddef.height);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.5x", 0, 0, gl_width->value, gl_height->value);
 	}
 	else
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.25x", 0, 0, viddef.width, viddef.height);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.25x", 0, 0, gl_width->value, gl_height->value);
 	}
 	
 	UI_SetImageIsStretched("MainMenuUI", "UI_MainMenuUI_Background", true);

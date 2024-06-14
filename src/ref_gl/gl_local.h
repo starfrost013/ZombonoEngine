@@ -45,9 +45,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	uint32_t		width, height;			// coordinates from main game
+	uint32_t		width;
+	uint32_t		height;			// coordinates from main game
 } viddef_t;
-
 
 extern	viddef_t	vid;
 extern  int32_t		modfilelen; // for gl_sprite.c

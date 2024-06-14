@@ -231,12 +231,12 @@ void Render2D_DrawCenterString ()
 	start = scr_centerstring;
 
 	if (scr_center_lines <= 4)
-		y = viddef.height*0.35;
+		y = gl_height->value*0.35;
 	else
 		y = 48;
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
-	x = (viddef.width - size_x * vid_hudscale->value) / 2;
+	x = (gl_width->value - size_x * vid_hudscale->value) / 2;
 	Render2D_AddDirtyPoint(x, y);
 	Text_Draw(cl_system_font->string, x, y, start);
 	Render2D_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
@@ -273,11 +273,11 @@ void Render2D_CalcVrect ()
 
 	size = scr_viewsize->value;
 
-	scr_vrect.width  = viddef.width*size/100;
-	scr_vrect.height = viddef.height*size/100;
+	scr_vrect.width  = gl_width->value*size/100;
+	scr_vrect.height = gl_height->value*size/100;
 
-	scr_vrect.x = (viddef.width - scr_vrect.width)/2;
-	scr_vrect.y = (viddef.height - scr_vrect.height)/2;
+	scr_vrect.x = (gl_width->value - scr_vrect.width)/2;
+	scr_vrect.y = (gl_height->value - scr_vrect.height)/2;
 }
 
 
@@ -407,7 +407,7 @@ void Render2D_DrawPause ()
 		return;
 
 	re.DrawGetPicSize (&w, &h, "2d/pause");
-	re.DrawPic ((viddef.width-w)/2, viddef.height/2 + 8*vid_hudscale->value, "2d/pause", NULL);
+	re.DrawPic ((gl_width->value-w)/2, gl_height->value/2 + 8*vid_hudscale->value, "2d/pause", NULL);
 }
 
 /*
@@ -424,7 +424,7 @@ void Render2D_DrawLoading ()
 
 	scr_draw_loading = false;
 	re.DrawGetPicSize (&w, &h, "2d/loading");
-	re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading", NULL);
+	re.DrawPic ((gl_width->value-w)/2, (gl_height->value-h)/2, "2d/loading", NULL);
 }
 
 //=============================================================================
@@ -479,7 +479,7 @@ void Render2D_DrawConsole ()
 	{	// connected, but can't render
 		Con_DrawConsole (0.5);
 		color4_t colour = { 0, 0, 0, 255 };
-		re.DrawFill(0, viddef.height/2, viddef.width, viddef.height/2, colour);
+		re.DrawFill(0, gl_height->value/2, gl_width->value, gl_height->value/2, colour);
 		return;
 	}
 
@@ -621,7 +621,7 @@ void Render2D_AddDirtyPoint (int32_t x, int32_t y)
 void Render2D_DirtyScreen ()
 {
 	Render2D_AddDirtyPoint (0, 0);
-	Render2D_AddDirtyPoint (viddef.width-1, viddef.height-1);
+	Render2D_AddDirtyPoint (gl_width->value-1, gl_height->value-1);
 }
 
 /*
@@ -645,15 +645,15 @@ void Render2D_TileClear ()
 
 		// clear below view screen
 		re.DrawTileClear(scr_vrect.x, scr_vrect.y + scr_vrect.height,
-			scr_vrect.width, viddef.height - scr_vrect.height - scr_vrect.y, "2d/backtile");
+			scr_vrect.width, gl_height->value - scr_vrect.height - scr_vrect.y, "2d/backtile");
 	}
 
 	if (scr_vrect.x > 0)
 	{	// clear left of view screen
-		re.DrawTileClear (0, 0, scr_vrect.x, viddef.height, "2d/backtile");
+		re.DrawTileClear (0, 0, scr_vrect.x, gl_height->value, "2d/backtile");
 
 		// clear right of view screen
-		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, viddef.height, "2d/backtile");
+		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, gl_height->value, "2d/backtile");
 	}
 }
 
@@ -831,13 +831,13 @@ void Render2D_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "xr"))
 		{
 			token = COM_Parse (&s);
-			x = viddef.width + atoi(token) * vid_hudscale->value;
+			x = gl_width->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "xv"))
 		{
 			token = COM_Parse (&s);
-			x = viddef.width/2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			x = gl_width->value/2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
@@ -850,13 +850,13 @@ void Render2D_ExecuteLayoutString (char *s)
 		if (!strcmp(token, "yb"))
 		{
 			token = COM_Parse (&s);
-			y = viddef.height + atoi(token) * vid_hudscale->value;
+			y = gl_height->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "yv"))
 		{
 			token = COM_Parse (&s);
-			y = viddef.height/2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			y = gl_height->value/2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
@@ -1047,7 +1047,7 @@ void Render2D_DrawInfo()
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
-	int32_t y = (viddef.height - (142 * vid_hudscale->value));
+	int32_t y = (gl_height->value - (142 * vid_hudscale->value));
 
 	if (cls.fps < alarm_fps)
 	{
@@ -1175,7 +1175,7 @@ void Render_UpdateScreen()
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
 			re.DrawGetPicSize (&w, &h, "2d/loading");
-			re.DrawPic ((viddef.width-w)/2, (viddef.height-h)/2, "2d/loading", NULL);
+			re.DrawPic ((gl_width->value-w)/2, (gl_height->value-h)/2, "2d/loading", NULL);
 		} 
 		else 
 		{

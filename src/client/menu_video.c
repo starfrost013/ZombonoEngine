@@ -33,8 +33,6 @@ extern cvar_t* vid_gamma;
 extern cvar_t* vid_hudscale;
 extern cvar_t* scr_viewsize;
 
-static cvar_t* gl_width;
-static cvar_t* gl_height;
 static cvar_t* gl_picmip;
 static cvar_t* gl_vsync;
 static cvar_t* gl_texturemode;
@@ -320,7 +318,7 @@ void Vid_MenuInit()
 		s_ref_list[s_current_menu_index].curvalue = REF_OPENGL;
 	}
 
-	s_opengl_menu.x = viddef.width * 0.50;
+	s_opengl_menu.x = gl_width->value * 0.50;
 	s_opengl_menu.nitems = 0;
 
 	for (i = 0; i < NUM_REF_MENUS; i++)
@@ -453,7 +451,7 @@ void Vid_MenuInit()
 VID_MenuDraw
 ================
 */
-void VID_MenuDraw()
+void Vid_MenuDraw()
 {
 	int32_t w, h;
 
@@ -463,7 +461,7 @@ void VID_MenuDraw()
 	** draw the banner
 	*/
 	re.DrawGetPicSize(&w, &h, "2d/m_banner_video");
-	re.DrawPic(viddef.width / 2 - w / 2, viddef.height / 2 - 110 * vid_hudscale->value, "2d/m_banner_video", NULL);
+	re.DrawPic(gl_width->value / 2 - w / 2, gl_height->value / 2 - 110 * vid_hudscale->value, "2d/m_banner_video", NULL);
 
 	/*
 	** move cursor to a reasonable starting position
