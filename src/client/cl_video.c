@@ -111,20 +111,8 @@ void Vid_Restart_f()
 /*
 ** Vid_ChangeResolution
 */
-void Vid_ChangeResolution(int32_t width, int32_t height)
+void Vid_ChangeResolution()
 {
-	if (width == 0
-		|| height == 0)
-	{
-		return;
-	}
-
-	int32_t old_width = gl_width->value;
-	int32_t old_height = gl_height->value;
-
-	gl_width->value = width;
-	gl_height->value = height;
-
 	cl.force_refdef = true;		// can't use a paused refdef
 
 	char hudscale[5];

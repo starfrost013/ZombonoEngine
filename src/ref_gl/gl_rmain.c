@@ -926,7 +926,7 @@ void R_BeginFrame()
 	{
 		GL_SetResolution(gl_width->value, gl_height->value);
 		// tell the client/server about it
-		ri.Vid_ChangeResolution(gl_width->value, gl_height->value);
+		ri.Vid_ChangeResolution();
 		gl_width->modified = false;
 		gl_height->modified = false;
 	}

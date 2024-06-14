@@ -9,13 +9,14 @@ NEW FEATURES:
 		* The master server protocol now sends the number of players in the server directly.
 		* Added an sv_debug_heartbeat cvar that sends the heartbeat every two seconds instead of five minutes. It is only present on debug builds, to remove any outside possibility of spamming the server.
 	* Added the ability for the engine to detect when it is in graphics mode (i.e. if the renderer lib has been initalised yet)
-	* Got rid of viddef and used gl_width/gl_height cvars everywhere
+	* Got rid of viddef in the engine (it's now an internal OpenGL renderer cvar) and used gl_width/gl_height cvars everywhere
 	
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.
 	* Fixed crash when alt+tabbing out
 	* Fixed textures still being internally interpreted with a maximum length of 32 characters instead of the intended 80, leading to phantom downloads of textures that really existed, but with longer names
+
 REMOVALS:
 
 OTHER CHANGES:

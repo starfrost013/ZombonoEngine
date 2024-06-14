@@ -112,7 +112,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	glfwSetErrorCallback(gl_state.window, GLFW_Error);
 
 	// let the sound and input subsystems know about the new window
-	ri.Vid_ChangeResolution (width, height);
+	ri.Vid_ChangeResolution();
 
 	// move the window if the user specified 
 	if (!fullscreen)
