@@ -7,3 +7,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/starfrost013/ZombonoAssets.git
+[submodule "webservices"]
+	path = webservices
+	url = https://github.com/starfrost013/ZombonoWebservices.git

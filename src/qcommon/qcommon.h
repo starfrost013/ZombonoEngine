@@ -73,7 +73,7 @@ typedef struct sizebuf_s
 {
 	bool		allowoverflow;	// if false, do a Com_Error
 	bool		overflowed;		// set to true if the buffer size failed
-	uint8_t*	data;
+	uint8_t* data;
 	int32_t 	maxsize;
 	int32_t 	cursize;
 	int32_t 	readcount;
@@ -143,17 +143,17 @@ float	BigFloat(float l);
 float	LittleFloat(float l);
 
 void	Swap_Init();
-char*	va(char* format, ...);
+char* va(char* format, ...);
 
 int32_t	COM_Argc();
-char*	COM_Argv(int32_t arg);	// range and null checked
+char* COM_Argv(int32_t arg);	// range and null checked
 void	COM_ClearArgv(int32_t arg);
 int32_t COM_CheckParm(char* parm);
 void	COM_AddParm(char* parm);
 
 void	COM_InitArgv(int32_t argc, char** argv);
 
-char*	CopyString(char* in);
+char* CopyString(char* in);
 
 //============================================================================
 
@@ -552,18 +552,18 @@ typedef struct netadr_s
 	uint16_t		port;
 } netadr_t;
 
-void	NET_Init();
-void	NET_Shutdown();
+void NET_Init();
+void NET_Shutdown();
 
-void	NET_Config(bool multiplayer);
+void NET_Config(bool multiplayer);
 
-bool	NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message);
-void	NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to);
+bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message);
+void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to);
 
-bool	NET_CompareAdr(netadr_t a, netadr_t b);
-bool	NET_CompareBaseAdr(netadr_t a, netadr_t b);
-bool	NET_IsLocalAddress(netadr_t adr);
-char*	NET_AdrToString(netadr_t a);
+bool NET_CompareAdr(netadr_t a, netadr_t b);
+bool NET_CompareBaseAdr(netadr_t a, netadr_t b);
+bool NET_IsLocalAddress(netadr_t adr);
+char* NET_AdrToString(netadr_t a);
 bool	NET_StringToAdr(char* s, netadr_t* a);
 void	NET_Sleep(int32_t msec);
 
@@ -630,12 +630,12 @@ Map Loader
 
 extern char	map_name[MAX_QPATH];
 
-cmodel_t*	Map_Load(char* name, bool clientload, uint32_t* checksum);
-cmodel_t*	Map_LoadInlineModel(char* name);	// *1, *2, etc
+cmodel_t* Map_Load(char* name, bool clientload, uint32_t* checksum);
+cmodel_t* Map_LoadInlineModel(char* name);	// *1, *2, etc
 
 int32_t 	Map_GetNumClusters();
 int32_t 	Map_NumInlineModels();
-char*		Map_GetEntityString();
+char* Map_GetEntityString();
 
 // creates a clipping hull for an arbitrary box
 int32_t 	Map_HeadnodeForBox(vec3_t mins, vec3_t maxs);
@@ -647,8 +647,8 @@ int32_t 	Map_TransformedPointContents(vec3_t p, int32_t headnode, vec3_t origin,
 trace_t		Map_BoxTrace(vec3_t start, vec3_t end, vec3_t mins, vec3_t maxs, int32_t headnode, int32_t brushmask);
 trace_t		Map_TransformedBoxTrace(vec3_t start, vec3_t end, vec3_t mins, vec3_t maxs, int32_t headnode, int32_t brushmask, vec3_t origin, vec3_t angles);
 
-uint8_t*	Map_ClusterPVS(int32_t cluster);
-uint8_t*	Map_ClusterPHS(int32_t cluster);
+uint8_t* Map_ClusterPVS(int32_t cluster);
+uint8_t* Map_ClusterPHS(int32_t cluster);
 
 // call with topnode set to the headnode, returns with topnode
 // set to the first node that splits the box
@@ -692,8 +692,8 @@ FILESYSTEM
 
 void	FS_InitFilesystem();
 void	FS_SetGamedir(char* dir);
-char*	FS_Gamedir();
-char*	FS_NextPath(char* prevpath);
+char* FS_Gamedir();
+char* FS_NextPath(char* prevpath);
 void	FS_ExecAutoexec();
 
 int32_t FS_FOpenFile(char* filename, FILE** file);
@@ -748,13 +748,13 @@ uint8_t		Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequenc
 float frand();	// 0 ti 1
 float crand();	// -1 to 1
 
-extern cvar_t*	developer;
-extern cvar_t*	dedicated;
-extern cvar_t*	host_speeds;
-extern cvar_t*	log_stats;
-extern cvar_t*	debug_console;
+extern cvar_t* developer;
+extern cvar_t* dedicated;
+extern cvar_t* host_speeds;
+extern cvar_t* log_stats;
+extern cvar_t* debug_console;
 
-extern FILE*	log_stats_file;
+extern FILE* log_stats_file;
 
 // host_speeds times
 extern int32_t 	time_before_game;
@@ -772,11 +772,11 @@ void Qcommon_Frame(int32_t msec);
 void Qcommon_Shutdown();
 
 #define NUMVERTEXNORMALS	162
+
 extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
 
 // this is in the client code, but can be used for debugging from server
 void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a);
-
 
 /*
 ==============================================================
@@ -789,15 +789,15 @@ NON-PORTABLE SYSTEM SERVICES
 void	Sys_Init();
 
 void	Sys_UnloadGame();
-void*	Sys_GetGameAPI(void* parms);
+void* Sys_GetGameAPI(void* parms);
 // loads the game dll and calls the api init function
 
-char*	Sys_ConsoleInput();
+char* Sys_ConsoleInput();
 void	Sys_ConsoleOutput(char* string);
 void	Sys_Error(char* error, ...);
 int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit();
-char*	Sys_GetClipboardData(void);
+char* Sys_GetClipboardData(void);
 
 /*
 ==============================================================
