@@ -42,7 +42,7 @@
     <ClCompile Include="client\cl_render_3d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\console.c">
+    <ClCompile Include="client\cl_console.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_input_events.c">

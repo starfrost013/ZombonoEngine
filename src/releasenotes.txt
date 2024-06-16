@@ -17,6 +17,7 @@ NEW FEATURES:
 		* sv_friction - default value of 6
 		* sv_waterfriction - default value of 1
 		* sv_stopspeed - default value of 100
+
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.
@@ -31,6 +32,7 @@ OTHER CHANGES:
 		* zombietime -> sv_zombietime
 		* showclamp -> sv_showclamp
 	* Engine sign-on message now matches "Euphoria Retro Game Engine" external branding
+	* Changed quit image
 
 Version 0.0.10 (Build 558)
 June 8, 2024

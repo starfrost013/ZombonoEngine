@@ -49,7 +49,7 @@
     <ClCompile Include="client\cl_ui_leaderboard.c" />
     <ClCompile Include="client\cl_ui_scripts.c" />
     <ClCompile Include="client\cl_render_3d.c" />
-    <ClCompile Include="client\console.c" />
+    <ClCompile Include="client\cl_console.c" />
     <ClCompile Include="client\cl_input_events.c" />
     <ClCompile Include="client\menu.c" />
     <ClCompile Include="client\menu_video.c" />
