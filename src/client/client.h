@@ -202,7 +202,7 @@ typedef enum
 typedef struct
 {
 	connstate_t	state;
-	keydest_t	key_dest;
+	keydest_t	input_dest;
 
 	int32_t 	framecount;
 	int32_t 	realtime;			// always increasing, no clamping, etc

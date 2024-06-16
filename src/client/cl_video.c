@@ -255,7 +255,7 @@ void Vid_CheckChanges()
 			/*
 			** drop the console if we fail to load a refresh
 			*/
-			if (cls.key_dest != key_console)
+			if (cls.input_dest != key_console)
 			{
 				Con_ToggleConsole_f();
 			}

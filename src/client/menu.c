@@ -116,14 +116,14 @@ void M_PushMenu(void (*draw) (), const char* (*key) (int32_t k))
 
 	m_entersound = true;
 
-	cls.key_dest = key_menu;
+	cls.input_dest = key_menu;
 }
 
 void M_ForceMenuOff()
 {
 	m_drawfunc = 0;
 	m_keyfunc = 0;
-	cls.key_dest = key_game;
+	cls.input_dest = key_game;
 	m_menudepth = 0;
 	Key_ClearStates();
 	Cvar_Set("paused", "0");
@@ -1152,7 +1152,7 @@ static void ConsoleFunc(void* unused)
 	Con_ClearNotify();
 
 	M_ForceMenuOff();
-	cls.key_dest = key_console;
+	cls.input_dest = key_console;
 }
 
 static void UpdateSoundQualityFunc(void* unused)
@@ -1561,7 +1561,7 @@ static void StartGame(void)
 	Cvar_SetValue("gamemode", 0);
 
 	Cbuf_AddText("loading ; killserver ; wait ; newgame\n");
-	cls.key_dest = key_game;
+	cls.input_dest = key_game;
 }
 
 static void EasyGameFunc(void* data)
@@ -3432,7 +3432,7 @@ const char* M_Quit_Key(int32_t key)
 		break;
 
 	case K_Y:
-		cls.key_dest = key_console;
+		cls.input_dest = key_console;
 		CL_Quit_f();
 		break;
 
@@ -3498,7 +3498,7 @@ M_Draw
 */
 void M_Draw()
 {
-	if (cls.key_dest != key_menu)
+	if (cls.input_dest != key_menu)
 		return;
 
 	// repaint32_t everything next frame

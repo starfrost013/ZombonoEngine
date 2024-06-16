@@ -499,7 +499,7 @@ void Key_Message (int32_t key, int mods)
 		Cbuf_AddText(chat_buffer);
 		Cbuf_AddText("\"\n");
 
-		cls.key_dest = key_game;
+		cls.input_dest = key_game;
 		chat_bufferlen = 0;
 		chat_buffer[0] = 0;
 		return;
@@ -507,7 +507,7 @@ void Key_Message (int32_t key, int mods)
 
 	if (key == K_ESCAPE)
 	{
-		cls.key_dest = key_game;
+		cls.input_dest = key_game;
 		chat_bufferlen = 0;
 		chat_buffer[0] = 0;
 		return;
@@ -1023,7 +1023,7 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	}
 
 	// any key during the attract mode will bring up the menu
-	if (cl.attractloop && cls.key_dest != key_menu &&
+	if (cl.attractloop && cls.input_dest != key_menu &&
 		!(key >= K_F1 && key <= K_F12))
 		key = K_ESCAPE;
 
@@ -1067,12 +1067,12 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 		if (!down)
 			return;
 
-		if (cl.frame.playerstate.stats[STAT_LAYOUTS] && cls.key_dest == key_game)
+		if (cl.frame.playerstate.stats[STAT_LAYOUTS] && cls.input_dest == key_game)
 		{	// put away help computer / inventory
 			Cbuf_AddText ("cmd putaway\n");
 			return;
 		}
-		switch (cls.key_dest)
+		switch (cls.input_dest)
 		{
 		case key_message:
 			Key_Message (key, 0);
@@ -1163,9 +1163,9 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 //
 // if not a consolekey, send to the interpreter no matter what mode is
 //
-	if ( (cls.key_dest == key_menu && menubound[key])
-	|| (cls.key_dest == key_console && !consolekeys[key])
-	|| (cls.key_dest == key_game && ( cls.state == ca_active || !consolekeys[key] ) ) )
+	if ( (cls.input_dest == key_menu && menubound[key])
+	|| (cls.input_dest == key_console && !consolekeys[key])
+	|| (cls.input_dest == key_game && ( cls.state == ca_active || !consolekeys[key] ) ) )
 	{
 		kb = keybindings[key];
 
@@ -1188,7 +1188,7 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 	if (!down)
 		return;		// other systems only care about key down events
 
-	switch (cls.key_dest)
+	switch (cls.input_dest)
 	{
 	case key_message:
 		Key_Message (key, mods);

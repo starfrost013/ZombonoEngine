@@ -115,8 +115,8 @@ void Input_Frame()
 	}
 
 	if (!cl.refresh_prepped
-		|| cls.key_dest == key_console
-		|| cls.key_dest == key_menu)
+		|| cls.input_dest == key_console
+		|| cls.input_dest == key_menu)
 	{
 		// temporarily deactivate if in windowed
 		if (Cvar_VariableValue("vid_borderless") == 0
@@ -452,7 +452,7 @@ void CL_FinishMove (usercmd_t *cmd)
 		cmd->buttons |= BUTTON_USE;
 	input_use.state &= ~2;
 
-	if (anykeydown && cls.key_dest == key_game)
+	if (anykeydown && cls.input_dest == key_game)
 		cmd->buttons |= BUTTON_ANY;
 
 	// send milliseconds of time to apply the move

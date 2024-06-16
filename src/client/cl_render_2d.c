@@ -439,7 +439,7 @@ Scroll it up or down
 void Render2D_RunConsole()
 {
 	// decide on the height of the console
-	if (cls.key_dest == key_console)
+	if (cls.input_dest == key_console)
 		scr_conlines = cl_console_fraction->value;		// half screen
 	else
 		scr_conlines = 0;				// none visible
@@ -489,7 +489,7 @@ void Render2D_DrawConsole()
 	}
 	else
 	{
-		if (cls.key_dest == key_game || cls.key_dest == key_message)
+		if (cls.input_dest == key_game || cls.input_dest == key_message)
 			Con_DrawNotify();	// only draw notify in game
 	}
 }
@@ -512,7 +512,7 @@ void Render2D_BeginLoadingPlaque()
 		return;
 	if (cls.state == ca_disconnected)
 		return;	// if at console, don't bring up the plaque
-	if (cls.key_dest == key_console)
+	if (cls.input_dest == key_console)
 		return;
 
 	scr_draw_loading = 1;

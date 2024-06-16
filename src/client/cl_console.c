@@ -63,7 +63,7 @@ void Con_ToggleConsole_f()
 	Key_ClearTyping();
 	Con_ClearNotify();
 
-	if (cls.key_dest == key_console)
+	if (cls.input_dest == key_console)
 	{
 		M_ForceMenuOff();
 		Cvar_Set("paused", "0");
@@ -71,7 +71,7 @@ void Con_ToggleConsole_f()
 	else
 	{
 		M_ForceMenuOff();
-		cls.key_dest = key_console;
+		cls.input_dest = key_console;
 
 		if (Cvar_VariableValue("maxclients") == 1
 			&& Com_ServerState())
@@ -88,16 +88,16 @@ void Con_ToggleChat_f()
 {
 	Key_ClearTyping();
 
-	if (cls.key_dest == key_console)
+	if (cls.input_dest == key_console)
 	{
 		if (cls.state == ca_active)
 		{
 			M_ForceMenuOff();
-			cls.key_dest = key_game;
+			cls.input_dest = key_game;
 		}
 	}
 	else
-		cls.key_dest = key_console;
+		cls.input_dest = key_console;
 
 	Con_ClearNotify();
 }
@@ -201,7 +201,7 @@ Con_MessageMode_f
 void Con_MessageMode_f()
 {
 	chat_team = false;
-	cls.key_dest = key_message;
+	cls.input_dest = key_message;
 }
 
 /*
@@ -212,7 +212,7 @@ Con_MessageMode2_f
 void Con_MessageMode2_f()
 {
 	chat_team = true;
-	cls.key_dest = key_message;
+	cls.input_dest = key_message;
 }
 
 /*
@@ -437,9 +437,9 @@ void Con_DrawInput()
 	int32_t size_x = 0, size_y = 0;
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string); // checked by drawconsole
 
-	if (cls.key_dest == key_menu)
+	if (cls.input_dest == key_menu)
 		return;
-	if (cls.key_dest != key_console)
+	if (cls.input_dest != key_console)
 		return;		// don't draw anything (always draw if not active)
 
 	text = key_lines[edit_line];
@@ -509,7 +509,7 @@ void Con_DrawNotify()
 		v += console_font_ptr->line_height;
 	}
 
-	if (cls.key_dest == key_message)
+	if (cls.input_dest == key_message)
 	{
 		if (chat_team)
 		{
