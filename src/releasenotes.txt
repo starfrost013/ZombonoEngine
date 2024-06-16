@@ -1,8 +1,8 @@
 Zombono
 Release Notes:
 
-Version 0.0.11
-June 23/30, 2024
+Version 0.0.11/0.1.0
+June 29, 2024
 
 NEW FEATURES:
 	* Master server changes:
@@ -12,7 +12,7 @@ NEW FEATURES:
 	* Got rid of viddef in the engine (it's now an internal OpenGL renderer cvar) and used gl_width/gl_height cvars everywhere
 	* Rendering API version 10
 		* Vid_ChangeResolution doesn't have parameters anymore
-
+	* Added more posters to z_tdm_labrats
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.

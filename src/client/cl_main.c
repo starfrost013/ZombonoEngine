@@ -1076,7 +1076,7 @@ void CL_RequestNextDownload()
 {
 	uint32_t	map_checksum;		// for detecting cheater maps
 	char		fn[MAX_OSPATH];
-	dmdl_t* pheader;
+	dmdl_t*		pheader;
 
 	if (cls.state != ca_connected)
 		return;

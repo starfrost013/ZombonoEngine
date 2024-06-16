@@ -211,7 +211,7 @@
     <ClInclude Include="client\include\vid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="client\anorms.h">
+    <ClInclude Include="client\include\anorms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\client.h">

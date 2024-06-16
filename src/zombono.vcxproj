@@ -93,7 +93,7 @@
     <ResourceCompile Include="win32\Zombono.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="client\anorms.h" />
+    <ClInclude Include="client\include\anorms.h" />
     <ClInclude Include="client\client.h" />
     <ClInclude Include="client\include\console.h" />
     <ClInclude Include="client\include\input.h" />
