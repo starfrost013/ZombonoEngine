@@ -13,6 +13,10 @@ NEW FEATURES:
 	* Rendering API version 10
 		* Vid_ChangeResolution doesn't have parameters anymore
 	* Added more posters to z_tdm_labrats
+	* Made many more physics parameters tunable CVars:
+		* sv_friction - default value of 6
+		* sv_waterfriction - default value of 1
+		* sv_stopspeed - default value of 100
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.

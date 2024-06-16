@@ -66,7 +66,7 @@ typedef struct
 	uint8_t			multicast_buf[MAX_MSGLEN];
 
 	// demo server information
-	FILE* demofile;
+	FILE*			demofile;
 	bool			timedemo;		// don't time sync
 } server_t;
 
@@ -103,20 +103,20 @@ typedef struct client_s
 
 	char			userinfo[MAX_INFO_STRING];		// name, etc
 
-	int32_t 			lastframe;			// for delta compression
+	int32_t 		lastframe;			// for delta compression
 	usercmd_t		lastcmd;			// for filling in big drops
 
-	int32_t 			commandMsec;		// every seconds this is reset, if user
+	int32_t 		commandMsec;		// every seconds this is reset, if user
 	// commands exhaust it, assume time cheating
 
-	int32_t 			frame_latency[LATENCY_COUNTS];
-	int32_t 			ping;
+	int32_t 		frame_latency[LATENCY_COUNTS];
+	int32_t 		ping;
 
-	int32_t 			message_size[RATE_MESSAGES];	// used to rate drop packets
+	int32_t 		message_size[RATE_MESSAGES];	// used to rate drop packets
 
-	edict_t* edict;				// EDICT_NUM(clientnum+1)
+	edict_t*		edict;				// EDICT_NUM(clientnum+1)
 	char			name[PLAYER_NAME_LENGTH];			// extracted from userinfo, high bits masked
-	int32_t 			messagelevel;		// for filtering printed messages
+	int32_t 		messagelevel;		// for filtering printed messages
 
 	// The datagram is written to by sound calls, prints, temp ents, etc.
 	// It can be harmlessly overflowed.
@@ -125,14 +125,14 @@ typedef struct client_s
 
 	client_frame_t	frames[UPDATE_BACKUP];	// updates can be delta'd from here
 
-	uint8_t* download;			// file being downloaded
-	int32_t 			downloadsize;		// total bytes (can't use EOF because of paks)
-	int32_t 			downloadcount;		// bytes sent
+	uint8_t*		download;			// file being downloaded
+	int32_t 		downloadsize;		// total bytes (can't use EOF because of paks)
+	int32_t 		downloadcount;		// bytes sent
 
-	int32_t 			lastmessage;		// sv.framenum when packet was last received
-	int32_t 			lastconnect;
+	int32_t 		lastmessage;		// sv.framenum when packet was last received
+	int32_t 		lastconnect;
 
-	int32_t 			challenge;			// challenge of this user, randomly generated
+	int32_t 		challenge;			// challenge of this user, randomly generated
 
 	netchan_t		netchan;
 } client_t;
