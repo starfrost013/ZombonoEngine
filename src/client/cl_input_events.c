@@ -1078,8 +1078,12 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			Key_Message (key, 0);
 			break;
 		case key_menu:
-			M_Keydown (key, 0);
-			break;
+			if (!ui_newmenu->value)
+			{
+				M_Keydown(key, 0);
+				break;
+			}
+			// otherwise, fall through
 		case key_game:
 		case key_console:
 
@@ -1088,14 +1092,17 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 			{
 				ui_t* mainmenu_ptr = UI_GetUI("MainMenuUI");
 
+				// for this UI enabled == activated
+				bool is_active = (mainmenu_ptr->enabled);
+
+				cls.input_dest == (is_active) ? key_menu : key_game;
+
 				// let the player toggle the menu if it's connected
 				if (cls.state == ca_active
 					|| cls.state == ca_connecting)
 				{
-					bool is_active = false;
-
-					UI_SetEnabled("MainMenuUI", !mainmenu_ptr->enabled);
-					UI_SetActivated("MainMenuUI", !mainmenu_ptr->activated);
+					UI_SetEnabled("MainMenuUI", !is_active);
+					UI_SetActivated("MainMenuUI", !is_active);
 				}
 				else // otherwise don't
 				{

@@ -135,15 +135,13 @@ bool Field_Key(menufield_t* f, int32_t key)
 	/*
 	** support pasting from the clipboard
 	*/
-	if ((toupper(key) == 'V' && keydown[K_CTRL]) ||
+	if ((keydown[K_V] && keydown[K_CTRL]) ||
 		(((key == K_INSERT)) && keydown[K_SHIFT]))
 	{
 		char* cbd;
 
 		if ((cbd = Sys_GetClipboardData()) != 0)
 		{
-			strtok(cbd, "\n\r\b");
-
 			strncpy(f->buffer, cbd, f->length - 1);
 			f->cursor = (int32_t)strlen(f->buffer);
 			f->visible_offset = f->cursor - f->visible_length;

@@ -725,15 +725,13 @@ bool Entry_OnKeyDown(ui_control_t* entry, int32_t key)
 	extern int32_t keydown[];
 
 	// support pasting from the clipboard
-	if ((toupper(key) == 'V' && keydown[K_CTRL]) ||
+	if ((keydown[K_V] && keydown[K_CTRL]) ||
 		(((key == K_INSERT)) && keydown[K_SHIFT]))
 	{
 		char* cbd;
 
 		if ((cbd = Sys_GetClipboardData()) != 0)
 		{
-			strtok(cbd, "\n\r\b");
-
 			strncpy(entry->entry_text_buffer, cbd, strlen(entry->entry_text_buffer) - 1);
 
 			entry->cursor_position = (int32_t)strlen(entry->entry_text_buffer);
