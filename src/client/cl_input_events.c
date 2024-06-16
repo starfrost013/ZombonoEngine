@@ -940,7 +940,7 @@ Should NOT be called during an interrupt!
 void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x, int32_t y)
 {
 	char* kb;
-	char	cmd[1024];
+	char  cmd[1024];
 	extern cvar_t* vid_borderless;
 	extern cvar_t* vid_fullscreen;
 

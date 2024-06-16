@@ -17,12 +17,18 @@ NEW FEATURES:
 		* sv_friction - default value of 6
 		* sv_waterfriction - default value of 1
 		* sv_stopspeed - default value of 100
+	* Added cvars to control the console
+		* cl_console_disabled - determines if the console is disabled entirely. Default value is 0.
+		* cl_console_fraction - determines how much of the screen the console will take up. The default value is 0.5 (50%)
+			* For the old fullscreen console behaviour, use cl_console_fraction 1.0
 
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.
 	* Fixed crash when alt+tabbing out
 	* Fixed textures still being internally interpreted with a maximum length of 32 characters instead of the intended 80, leading to phantom downloads of textures that really existed, but with longer names
+	* Fixed debug info being printed while not connected to the server
+	* Fixed garbage debug information being printed when the game is running below 30 fps due to non-escaped % sign
 
 REMOVALS:
 

@@ -300,6 +300,9 @@ extern cvar_t* cl_lightlevel;	// FIXME HACK
 extern cvar_t* cl_paused;
 extern cvar_t* cl_timedemo;
 
+extern cvar_t* cl_console_fraction;
+extern cvar_t* cl_console_disabled;
+
 extern cvar_t* cl_vwep;
 
 extern cvar_t* cl_drawhud;

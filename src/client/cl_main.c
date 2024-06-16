@@ -68,6 +68,9 @@ cvar_t* cl_intro2_time;
 cvar_t* cl_paused;
 cvar_t* cl_timedemo;
 
+cvar_t* cl_console_fraction;
+cvar_t* cl_console_disabled;
+
 cvar_t* lookspring;
 cvar_t* lookstrafe;
 cvar_t* sensitivity;
@@ -707,7 +710,6 @@ The server is changing levels
 */
 void CL_Reconnect_f()
 {
-	//ZOID
 	//if we are downloading, we don't change!  This so we don't suddenly stop downloading a map
 	if (cls.download)
 		return;
@@ -1084,7 +1086,6 @@ void CL_RequestNextDownload()
 	if (!allow_download->value && precache_check < ENV_CNT)
 		precache_check = ENV_CNT;
 
-	//ZOID
 	if (precache_check == CS_MODELS)
 	{ // confirm map
 		precache_check = CS_MODELS + 2; // 0 isn't used
@@ -1370,7 +1371,6 @@ void CL_RequestNextDownload()
 		precache_check = TEXTURE_CNT + 999;
 	}
 
-	//ZOID
 	CL_RegisterSounds();
 	Render3D_PrepRefresh();
 
@@ -1475,6 +1475,9 @@ void CL_InitLocal()
 	cl_timeout = Cvar_Get("cl_timeout", "120", 0);
 	cl_paused = Cvar_Get("paused", "0", 0);
 	cl_timedemo = Cvar_Get("timedemo", "0", 0);
+	
+	cl_console_fraction = Cvar_Get("cl_console_fraction", "0.5", 0);
+	cl_console_disabled = Cvar_Get("cl_console_disabled", "0", 0);
 
 	cl_showintro = Cvar_Get("cl_showintro", "1", CVAR_ARCHIVE);
 	cl_intro1 = Cvar_Get("cl_intro1", "2d/ui/introui_background2", CVAR_ARCHIVE);

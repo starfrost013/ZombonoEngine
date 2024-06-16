@@ -10,7 +10,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -46,18 +46,18 @@ int32_t 	scr_draw_loading;
 
 vrect_t		scr_vrect;		// position of render window on screen
 
-cvar_t*		scr_viewsize;
-cvar_t*		scr_conspeed;
-cvar_t*		scr_centertime;
-cvar_t*		scr_showpause;
+cvar_t* scr_viewsize;
+cvar_t* scr_conspeed;
+cvar_t* scr_centertime;
+cvar_t* scr_showpause;
 
-cvar_t*		scr_timegraph;
-cvar_t*		scr_debuggraph;
-cvar_t*		scr_graphheight;
-cvar_t*		scr_graphscale;
-cvar_t*		scr_graphshift;
+cvar_t* scr_timegraph;
+cvar_t* scr_debuggraph;
+cvar_t* scr_graphheight;
+cvar_t* scr_graphscale;
+cvar_t* scr_graphshift;
 
-cvar_t*		vid_hudscale;
+cvar_t* vid_hudscale;
 
 extern cvar_t* vid_ref;
 
@@ -71,8 +71,8 @@ dirty_t		scr_dirty, scr_old_dirty[2];
 char		crosshair_pic[MAX_QPATH];
 int32_t 	crosshair_width, crosshair_height;
 
-void Render2D_TimeRefresh_f ();
-void Render2D_Loading_f ();
+void Render2D_TimeRefresh_f();
+void Render2D_Loading_f();
 
 
 /*
@@ -90,7 +90,7 @@ CL_AddNetgraph
 A new packet was just parsed
 ==============
 */
-void Render2D_AddNetgraph ()
+void Render2D_AddNetgraph()
 {
 	int32_t in;
 	int32_t ping;
@@ -100,12 +100,12 @@ void Render2D_AddNetgraph ()
 	if (scr_timegraph->value)
 		return;
 	// see what the latency was on this packet
-	in = cls.netchan.incoming_acknowledged & (CMD_BACKUP-1);
+	in = cls.netchan.incoming_acknowledged & (CMD_BACKUP - 1);
 	ping = cls.realtime - cl.cmd_time[in];
 	ping /= 30;
 	if (ping > 30)
 		ping = 30;
-	Render2D_DebugGraph (ping, 18, 15, 22, 255);
+	Render2D_DebugGraph(ping, 18, 15, 22, 255);
 }
 
 
@@ -123,7 +123,7 @@ static	graphsamp_t	values[1024];
 SCR_DebugGraph
 ==============
 */
-void Render2D_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t a)
+void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	values[current & 1023].value = value;
 	values[current & 1023].color[0] = r;
@@ -138,7 +138,7 @@ void Render2D_DebugGraph (float value, int32_t r, int32_t g, int32_t b, int32_t 
 SCR_DrawDebugGraph
 ==============
 */
-void Render2D_DrawDebugGraph ()
+void Render2D_DrawDebugGraph()
 {
 	int32_t a, x, y, w, i, h;
 	float	v;
@@ -149,20 +149,20 @@ void Render2D_DrawDebugGraph ()
 	w = scr_vrect.width;
 
 	x = scr_vrect.x;
-	y = scr_vrect.y+scr_vrect.height;
-	re.DrawFill (x, y-scr_graphheight->value,
+	y = scr_vrect.y + scr_vrect.height;
+	re.DrawFill(x, y - scr_graphheight->value,
 		w, scr_graphheight->value, 123, 123, 123, 255);
 
-	for (a=0 ; a<w ; a++)
+	for (a = 0; a < w; a++)
 	{
-		i = (current-1-a+1024) & 1023;
+		i = (current - 1 - a + 1024) & 1023;
 		v = values[i].value;
-		v = v*scr_graphscale->value + scr_graphshift->value;
-		
+		v = v * scr_graphscale->value + scr_graphshift->value;
+
 		if (v < 0)
-			v += scr_graphheight->value * (1+(int32_t)(-v/scr_graphheight->value));
+			v += scr_graphheight->value * (1 + (int32_t)(-v / scr_graphheight->value));
 		h = (int32_t)v % (int32_t)scr_graphheight->value;
-		re.DrawFill (x+w-1-a, y - h, 1,	h, values[i].color);
+		re.DrawFill(x + w - 1 - a, y - h, 1, h, values[i].color);
 	}
 }
 
@@ -188,11 +188,11 @@ Called for important messages that should stay in the center of the screen
 for a few moments
 ==============
 */
-void Render2D_CenterPrint (char *str)
+void Render2D_CenterPrint(char* str)
 {
 	char* s;
 
-	strncpy (scr_centerstring, str, sizeof(scr_centerstring));
+	strncpy(scr_centerstring, str, sizeof(scr_centerstring));
 	scr_centertime_off = scr_centertime->value;
 	scr_centertime_start = cl.time;
 
@@ -212,26 +212,26 @@ void Render2D_CenterPrint (char *str)
 	Com_Printf("%s", str);
 
 	Com_Printf("\n\n");
-	Con_ClearNotify ();
+	Con_ClearNotify();
 }
 
 
-void Render2D_DrawCenterString ()
+void Render2D_DrawCenterString()
 {
-	char*	start;
+	char* start;
 	int32_t x, y;
 	int32_t remaining;
 	int32_t size_x = 0, size_y = 0;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
-// the finale prints the characters one at a time
+	// the finale prints the characters one at a time
 	remaining = 9999;
 
 	scr_erase_center = 0;
 	start = scr_centerstring;
 
 	if (scr_center_lines <= 4)
-		y = gl_height->value*0.35;
+		y = gl_height->value * 0.35;
 	else
 		y = 48;
 
@@ -242,14 +242,14 @@ void Render2D_DrawCenterString ()
 	Render2D_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
 }
 
-void Render2D_CheckDrawCenterString ()
+void Render2D_CheckDrawCenterString()
 {
 	scr_centertime_off -= cls.frametime;
-	
+
 	if (scr_centertime_off <= 0)
 		return;
 
-	Render2D_DrawCenterString ();
+	Render2D_DrawCenterString();
 }
 
 //=============================================================================
@@ -261,23 +261,23 @@ SCR_CalcVrect
 Sets scr_vrect, the coordinates of the rendered window
 =================
 */
-void Render2D_CalcVrect ()
+void Render2D_CalcVrect()
 {
 	int32_t 	size;
 
 	// bound viewsize
 	if (scr_viewsize->value < 40)
-		Cvar_Set ("viewsize","40");
+		Cvar_Set("viewsize", "40");
 	if (scr_viewsize->value > 100)
-		Cvar_Set ("viewsize","100");
+		Cvar_Set("viewsize", "100");
 
 	size = scr_viewsize->value;
 
-	scr_vrect.width  = gl_width->value*size/100;
-	scr_vrect.height = gl_height->value*size/100;
+	scr_vrect.width = gl_width->value * size / 100;
+	scr_vrect.height = gl_height->value * size / 100;
 
-	scr_vrect.x = (gl_width->value - scr_vrect.width)/2;
-	scr_vrect.y = (gl_height->value - scr_vrect.height)/2;
+	scr_vrect.x = (gl_width->value - scr_vrect.width) / 2;
+	scr_vrect.y = (gl_height->value - scr_vrect.height) / 2;
 }
 
 
@@ -288,9 +288,9 @@ SCR_SizeUp_f
 Keybinding command
 =================
 */
-void Render2D_SizeUp_f ()
+void Render2D_SizeUp_f()
 {
-	Cvar_SetValue ("viewsize",scr_viewsize->value+10);
+	Cvar_SetValue("viewsize", scr_viewsize->value + 10);
 }
 
 
@@ -301,9 +301,9 @@ SCR_SizeDown_f
 Keybinding command
 =================
 */
-void Render2D_SizeDown_f ()
+void Render2D_SizeDown_f()
 {
-	Cvar_SetValue ("viewsize",scr_viewsize->value-10);
+	Cvar_SetValue("viewsize", scr_viewsize->value - 10);
 }
 
 /*
@@ -313,14 +313,14 @@ SCR_Sky_f
 Set a specific sky and rotation speed
 =================
 */
-void Render2D_Sky_f ()
+void Render2D_Sky_f()
 {
 	float	rotate;
 	vec3_t	axis;
 
 	if (Cmd_Argc() < 2)
 	{
-		Com_Printf ("Usage: sky <basename> <rotate> <axis x y z>\n");
+		Com_Printf("Usage: sky <basename> <rotate> <axis x y z>\n");
 		return;
 	}
 
@@ -342,7 +342,7 @@ void Render2D_Sky_f ()
 		axis[2] = 1;
 	}
 
-	re.SetSky (Cmd_Argv(1), rotate, axis);
+	re.SetSky(Cmd_Argv(1), rotate, axis);
 }
 
 //============================================================================
@@ -352,26 +352,26 @@ void Render2D_Sky_f ()
 SCR_Init
 ==================
 */
-void Render2D_Init ()
+void Render2D_Init()
 {
-	scr_viewsize = Cvar_Get ("viewsize", "100", CVAR_ARCHIVE);
-	scr_conspeed = Cvar_Get ("scr_conspeed", "3", 0);
-	scr_showpause = Cvar_Get ("scr_showpause", "1", 0);
-	scr_centertime = Cvar_Get ("scr_centertime", "2.5", 0);
-	scr_timegraph = Cvar_Get ("timegraph", "0", 0);
-	scr_debuggraph = Cvar_Get ("debuggraph", "0", 0);
-	scr_graphheight = Cvar_Get ("graphheight", "32", 0);
-	scr_graphscale = Cvar_Get ("graphscale", "1", 0);
-	scr_graphshift = Cvar_Get ("graphshift", "0", 0);
+	scr_viewsize = Cvar_Get("viewsize", "100", CVAR_ARCHIVE);
+	scr_conspeed = Cvar_Get("scr_conspeed", "3", 0);
+	scr_showpause = Cvar_Get("scr_showpause", "1", 0);
+	scr_centertime = Cvar_Get("scr_centertime", "2.5", 0);
+	scr_timegraph = Cvar_Get("timegraph", "0", 0);
+	scr_debuggraph = Cvar_Get("debuggraph", "0", 0);
+	scr_graphheight = Cvar_Get("graphheight", "32", 0);
+	scr_graphscale = Cvar_Get("graphscale", "1", 0);
+	scr_graphshift = Cvar_Get("graphshift", "0", 0);
 
-//
-// register our commands
-//
-	Cmd_AddCommand ("timerefresh",Render2D_TimeRefresh_f);
-	Cmd_AddCommand ("loading",Render2D_Loading_f);
-	Cmd_AddCommand ("sizeup",Render2D_SizeUp_f);
-	Cmd_AddCommand ("sizedown",Render2D_SizeDown_f);
-	Cmd_AddCommand ("sky",Render2D_Sky_f);
+	//
+	// register our commands
+	//
+	Cmd_AddCommand("timerefresh", Render2D_TimeRefresh_f);
+	Cmd_AddCommand("loading", Render2D_Loading_f);
+	Cmd_AddCommand("sizeup", Render2D_SizeUp_f);
+	Cmd_AddCommand("sizedown", Render2D_SizeDown_f);
+	Cmd_AddCommand("sky", Render2D_Sky_f);
 
 	scr_initialized = true;
 }
@@ -382,13 +382,13 @@ void Render2D_Init ()
 SCR_DrawNet
 ==============
 */
-void Render2D_DrawNet ()
+void Render2D_DrawNet()
 {
-	if (cls.netchan.outgoing_sequence - cls.netchan.incoming_acknowledged 
-		< CMD_BACKUP-1)
+	if (cls.netchan.outgoing_sequence - cls.netchan.incoming_acknowledged
+		< CMD_BACKUP - 1)
 		return;
 
-	re.DrawPic (scr_vrect.x+64, scr_vrect.y, "2d/net", NULL);
+	re.DrawPic(scr_vrect.x + 64, scr_vrect.y, "2d/net", NULL);
 }
 
 /*
@@ -396,7 +396,7 @@ void Render2D_DrawNet ()
 SCR_DrawPause
 ==============
 */
-void Render2D_DrawPause ()
+void Render2D_DrawPause()
 {
 	int32_t w, h;
 
@@ -406,8 +406,8 @@ void Render2D_DrawPause ()
 	if (!cl_paused->value)
 		return;
 
-	re.DrawGetPicSize (&w, &h, "2d/pause");
-	re.DrawPic ((gl_width->value-w)/2, gl_height->value/2 + 8*vid_hudscale->value, "2d/pause", NULL);
+	re.DrawGetPicSize(&w, &h, "2d/pause");
+	re.DrawPic((gl_width->value - w) / 2, gl_height->value / 2 + 8 * vid_hudscale->value, "2d/pause", NULL);
 }
 
 /*
@@ -415,16 +415,16 @@ void Render2D_DrawPause ()
 SCR_DrawLoading
 ==============
 */
-void Render2D_DrawLoading ()
+void Render2D_DrawLoading()
 {
 	int32_t w, h;
-		
+
 	if (!scr_draw_loading)
 		return;
 
 	scr_draw_loading = false;
-	re.DrawGetPicSize (&w, &h, "2d/loading");
-	re.DrawPic ((gl_width->value-w)/2, (gl_height->value-h)/2, "2d/loading", NULL);
+	re.DrawGetPicSize(&w, &h, "2d/loading");
+	re.DrawPic((gl_width->value - w) / 2, (gl_height->value - h) / 2, "2d/loading", NULL);
 }
 
 //=============================================================================
@@ -436,24 +436,24 @@ SCR_RunConsole
 Scroll it up or down
 ==================
 */
-void Render2D_RunConsole ()
+void Render2D_RunConsole()
 {
-// decide on the height of the console
+	// decide on the height of the console
 	if (cls.key_dest == key_console)
-		scr_conlines = 0.5;		// half screen
+		scr_conlines = cl_console_fraction->value;		// half screen
 	else
 		scr_conlines = 0;				// none visible
-	
+
 	if (scr_conlines < scr_con_current)
 	{
-		scr_con_current -= scr_conspeed->value*cls.frametime;
+		scr_con_current -= scr_conspeed->value * cls.frametime;
 		if (scr_conlines > scr_con_current)
 			scr_con_current = scr_conlines;
 
 	}
 	else if (scr_conlines > scr_con_current)
 	{
-		scr_con_current += scr_conspeed->value*cls.frametime;
+		scr_con_current += scr_conspeed->value * cls.frametime;
 		if (scr_conlines < scr_con_current)
 			scr_con_current = scr_conlines;
 	}
@@ -465,32 +465,32 @@ void Render2D_RunConsole ()
 SCR_DrawConsole
 ==================
 */
-void Render2D_DrawConsole ()
+void Render2D_DrawConsole()
 {
-	Con_CheckResize ();
-	
+	Con_CheckResize();
+
 	if (cls.state == ca_disconnected || cls.state == ca_connecting)
 	{	// forced full screen console
-		Con_DrawConsole (1.0);
+		Con_DrawConsole(scr_con_current);
 		return;
 	}
 
 	if (cls.state != ca_active || !cl.refresh_prepped)
 	{	// connected, but can't render
-		Con_DrawConsole (0.5);
+		Con_DrawConsole(scr_con_current);
 		color4_t colour = { 0, 0, 0, 255 };
-		re.DrawFill(0, gl_height->value/2, gl_width->value, gl_height->value/2, colour);
+		re.DrawFill(0, gl_height->value / 2, gl_width->value, gl_height->value / 2, colour);
 		return;
 	}
 
 	if (scr_con_current)
 	{
-		Con_DrawConsole (scr_con_current);
+		Con_DrawConsole(scr_con_current);
 	}
 	else
 	{
 		if (cls.key_dest == key_game || cls.key_dest == key_message)
-			Con_DrawNotify ();	// only draw notify in game
+			Con_DrawNotify();	// only draw notify in game
 	}
 }
 
@@ -501,11 +501,11 @@ void Render2D_DrawConsole ()
 SCR_BeginLoadingPlaque
 ================
 */
-void Render2D_BeginLoadingPlaque ()
+void Render2D_BeginLoadingPlaque()
 {
-	S_StopAllSounds ();
+	S_StopAllSounds();
 	cl.sound_prepped = false;		// don't play ambients
-	Miniaudio_Stop ();
+	Miniaudio_Stop();
 	if (cls.disable_screen)
 		return;
 	if (developer->value)
@@ -517,8 +517,8 @@ void Render2D_BeginLoadingPlaque ()
 
 	scr_draw_loading = 1;
 
-	Render_UpdateScreen ();
-	cls.disable_screen = Sys_Milliseconds ();
+	Render_UpdateScreen();
+	cls.disable_screen = Sys_Milliseconds();
 	cls.disable_servercount = cl.servercount;
 }
 
@@ -527,10 +527,10 @@ void Render2D_BeginLoadingPlaque ()
 SCR_EndLoadingPlaque
 ================
 */
-void Render2D_EndLoadingPlaque ()
+void Render2D_EndLoadingPlaque()
 {
 	cls.disable_screen = 0;
-	Con_ClearNotify ();
+	Con_ClearNotify();
 }
 
 /*
@@ -538,9 +538,9 @@ void Render2D_EndLoadingPlaque ()
 SCR_Loading_f
 ================
 */
-void Render2D_Loading_f ()
+void Render2D_Loading_f()
 {
-	Render2D_BeginLoadingPlaque ();
+	Render2D_BeginLoadingPlaque();
 }
 
 /*
@@ -548,22 +548,22 @@ void Render2D_Loading_f ()
 SCR_TimeRefresh_f
 ================
 */
-int32_t CompareEntities( const entity_t *a, const entity_t *b )
+int32_t CompareEntities(const entity_t* a, const entity_t* b)
 {
 	/*
 	** all other models are sorted by model then skin
 	*/
-	if ( a->model == b->model )
+	if (a->model == b->model)
 	{
-		return ( ( intptr_t ) a->skin - ( intptr_t ) b->skin );
+		return ((intptr_t)a->skin - (intptr_t)b->skin);
 	}
 	else
 	{
-		return ( (intptr_t) a->model - (intptr_t) b->model );
+		return ((intptr_t)a->model - (intptr_t)b->model);
 	}
 }
 
-void Render2D_TimeRefresh_f ()
+void Render2D_TimeRefresh_f()
 {
 	int32_t i;
 	int32_t start, stop;
@@ -606,7 +606,7 @@ void Render2D_TimeRefresh_f ()
 SCR_AddDirtyPoint
 =================
 */
-void Render2D_AddDirtyPoint (int32_t x, int32_t y)
+void Render2D_AddDirtyPoint(int32_t x, int32_t y)
 {
 	if (x < scr_dirty.x1)
 		scr_dirty.x1 = x;
@@ -618,10 +618,10 @@ void Render2D_AddDirtyPoint (int32_t x, int32_t y)
 		scr_dirty.y2 = y;
 }
 
-void Render2D_DirtyScreen ()
+void Render2D_DirtyScreen()
 {
-	Render2D_AddDirtyPoint (0, 0);
-	Render2D_AddDirtyPoint (gl_width->value-1, gl_height->value-1);
+	Render2D_AddDirtyPoint(0, 0);
+	Render2D_AddDirtyPoint(gl_width->value - 1, gl_height->value - 1);
 }
 
 /*
@@ -631,7 +631,7 @@ SCR_TileClear
 Clear any parts of the tiled background that were drawn on last frame
 ==============
 */
-void Render2D_TileClear ()
+void Render2D_TileClear()
 {
 	if (scr_con_current == 1.0)
 		return;		// full screen console
@@ -640,7 +640,7 @@ void Render2D_TileClear ()
 
 	if (scr_vrect.y > 0)
 	{	// clear above view screen
-		re.DrawTileClear (scr_vrect.x , 0,
+		re.DrawTileClear(scr_vrect.x, 0,
 			scr_vrect.width, scr_vrect.y, "2d/backtile");
 
 		// clear below view screen
@@ -650,7 +650,7 @@ void Render2D_TileClear ()
 
 	if (scr_vrect.x > 0)
 	{	// clear left of view screen
-		re.DrawTileClear (0, 0, scr_vrect.x, gl_height->value, "2d/backtile");
+		re.DrawTileClear(0, 0, scr_vrect.x, gl_height->value, "2d/backtile");
 
 		// clear right of view screen
 		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, gl_height->value, "2d/backtile");
@@ -662,7 +662,7 @@ void Render2D_TileClear ()
 
 
 #define STAT_MINUS		10	// num frame for '-' stats digit
-char		*sb_nums[2][11] = 
+char* sb_nums[2][11] =
 {
 	// 2 sets of big numbers
 	{"2d/num_0", "2d/num_1", "2d/num_2", "2d/num_3", "2d/num_4", "2d/num_5", "2d/num_6", "2d/num_7", "2d/num_8", "2d/num_9", "2d/num_minus"},
@@ -674,7 +674,7 @@ char		*sb_nums[2][11] =
 #define	CHAR_WIDTH	16 * vid_hudscale->value
 #define	ICON_SPACE	8
 
-void Render2DDrawCenteredString (char *string, int32_t x, int32_t y, int32_t centerwidth)
+void Render2DDrawCenteredString(char* string, int32_t x, int32_t y, int32_t centerwidth)
 {
 	int32_t 	margin;
 	char	line[1024];
@@ -693,7 +693,7 @@ void Render2DDrawCenteredString (char *string, int32_t x, int32_t y, int32_t cen
 		line[width] = 0;
 
 		if (centerwidth)
-			x = margin + ((centerwidth - width*8)*vid_hudscale->value)/2;
+			x = margin + ((centerwidth - width * 8) * vid_hudscale->value) / 2;
 		else
 			x = margin;
 
@@ -719,9 +719,9 @@ void Render2DDrawCenteredString (char *string, int32_t x, int32_t y, int32_t cen
 SCR_DrawField
 ==============
 */
-void Render2D_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int32_t value)
+void Render2D_DrawField(int32_t x, int32_t y, int32_t color, int32_t width, int32_t value)
 {
-	char	num[16], *ptr;
+	char	num[16], * ptr;
 	int32_t 	l;
 	int32_t 	frame;
 
@@ -732,14 +732,14 @@ void Render2D_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int
 	if (width > 5)
 		width = 5;
 
-	Render2D_AddDirtyPoint (x, y);
-	Render2D_AddDirtyPoint (x+width*CHAR_WIDTH+2, y+23);
+	Render2D_AddDirtyPoint(x, y);
+	Render2D_AddDirtyPoint(x + width * CHAR_WIDTH + 2, y + 23);
 
-	Com_sprintf (num, sizeof(num), "%i", value);
+	Com_sprintf(num, sizeof(num), "%i", value);
 	l = (int32_t)strlen(num);
 	if (l > width)
 		l = width;
-	x += 2 + CHAR_WIDTH*(width - l);
+	x += 2 + CHAR_WIDTH * (width - l);
 
 	ptr = num;
 	while (*ptr && l)
@@ -747,9 +747,9 @@ void Render2D_DrawField (int32_t x, int32_t y, int32_t color, int32_t width, int
 		if (*ptr == '-')
 			frame = STAT_MINUS;
 		else
-			frame = *ptr -'0';
+			frame = *ptr - '0';
 
-		re.DrawPic (x,y,sb_nums[color][frame], NULL);
+		re.DrawPic(x, y, sb_nums[color][frame], NULL);
 		x += CHAR_WIDTH;
 		ptr++;
 		l--;
@@ -764,23 +764,23 @@ SCR_TouchPics
 Allows rendering code to cache all needed sbar graphics
 ===============
 */
-void Render2D_TouchPics ()
+void Render2D_TouchPics()
 {
 	int32_t i, j;
 
-	for (i=0 ; i<2 ; i++)
-		for (j=0 ; j<11 ; j++)
-			re.RegisterPic (sb_nums[i][j]);
+	for (i = 0; i < 2; i++)
+		for (j = 0; j < 11; j++)
+			re.RegisterPic(sb_nums[i][j]);
 
 	if (crosshair->value)
 	{
-		cvar_t *scale = Cvar_Get("hudscale", "1", 0);
+		cvar_t* scale = Cvar_Get("hudscale", "1", 0);
 
 		if (crosshair->value > 3 || crosshair->value < 0)
 			crosshair->value = 3;
 
-		Com_sprintf (crosshair_pic, sizeof(crosshair_pic), "2d/ch%i", (int32_t)(crosshair->value));
-		re.DrawGetPicSize (&crosshair_width, &crosshair_height, crosshair_pic);
+		Com_sprintf(crosshair_pic, sizeof(crosshair_pic), "2d/ch%i", (int32_t)(crosshair->value));
+		re.DrawGetPicSize(&crosshair_width, &crosshair_height, crosshair_pic);
 
 		// remove scaling - it will be applied during draw with proper screen centering
 		if (scale->value > 1)
@@ -796,15 +796,15 @@ void Render2D_TouchPics ()
 
 /*
 ================
-SCR_ExecuteLayoutString 
+SCR_ExecuteLayoutString
 
 ================
 */
-void Render2D_ExecuteLayoutString (char *s)
+void Render2D_ExecuteLayoutString(char* s)
 {
 	int32_t 	x, y;
 	int32_t 	value;
-	char*		token;
+	char* token;
 	int32_t 	width;
 	int32_t 	index;
 	clientinfo_t* ci;
@@ -821,76 +821,76 @@ void Render2D_ExecuteLayoutString (char *s)
 
 	while (s)
 	{
-		token = COM_Parse (&s);
+		token = COM_Parse(&s);
 		if (!strcmp(token, "xl"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			x = atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "xr"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			x = gl_width->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "xv"))
 		{
-			token = COM_Parse (&s);
-			x = gl_width->value/2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			token = COM_Parse(&s);
+			x = gl_width->value / 2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
 		if (!strcmp(token, "yt"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			y = atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "yb"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			y = gl_height->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 		if (!strcmp(token, "yv"))
 		{
-			token = COM_Parse (&s);
-			y = gl_height->value/2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			token = COM_Parse(&s);
+			y = gl_height->value / 2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
 		if (!strcmp(token, "pic"))
 		{	// draw a pic from a stat number
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			value = cl.frame.playerstate.stats[atoi(token)];
 			if (value >= MAX_IMAGES)
-				Com_Error (ERR_DROP, "Pic >= MAX_IMAGES");
-			if (cl.configstrings[CS_IMAGES+value])
+				Com_Error(ERR_DROP, "Pic >= MAX_IMAGES");
+			if (cl.configstrings[CS_IMAGES + value])
 			{
-				Render2D_AddDirtyPoint (x, y);
-				Render2D_AddDirtyPoint (x+23, y+23);
-				re.DrawPic (x, y, cl.configstrings[CS_IMAGES+value], NULL);
+				Render2D_AddDirtyPoint(x, y);
+				Render2D_AddDirtyPoint(x + 23, y + 23);
+				re.DrawPic(x, y, cl.configstrings[CS_IMAGES + value], NULL);
 			}
 			continue;
 		}
 
 		if (!strcmp(token, "picn"))
 		{	// draw a pic from a name
-			token = COM_Parse (&s);
-			Render2D_AddDirtyPoint (x, y);
-			Render2D_AddDirtyPoint (x+23, y+23);
-			re.DrawPic (x, y, token, NULL);
+			token = COM_Parse(&s);
+			Render2D_AddDirtyPoint(x, y);
+			Render2D_AddDirtyPoint(x + 23, y + 23);
+			re.DrawPic(x, y, token, NULL);
 			continue;
 		}
 
 		if (!strcmp(token, "num"))
 		{	// draw a number
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			width = atoi(token);
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			value = cl.frame.playerstate.stats[atoi(token)];
-			Render2D_DrawField (x, y, 0, width, value);
+			Render2D_DrawField(x, y, 0, width, value);
 			continue;
 		}
 
@@ -903,14 +903,14 @@ void Render2D_ExecuteLayoutString (char *s)
 			if (value > 25)
 				color = 0;	// green
 			else if (value > 0)
-				color = (cl.frame.serverframe>>2) & 1;		// flash
+				color = (cl.frame.serverframe >> 2) & 1;		// flash
 			else
 				color = 1;
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
-				re.DrawPic (x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL);
 
-			Render2D_DrawField (x, y, color, width, value);
+			Render2D_DrawField(x, y, color, width, value);
 			continue;
 		}
 
@@ -923,14 +923,14 @@ void Render2D_ExecuteLayoutString (char *s)
 			if (value > 5)
 				color = 0;	// green
 			else if (value >= 0)
-				color = (cl.frame.serverframe>>2) & 1;		// flash
+				color = (cl.frame.serverframe >> 2) & 1;		// flash
 			else
 				continue;	// negative number = don't show
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
-				re.DrawPic (x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL);
 
-			Render2D_DrawField (x, y, color, width, value);
+			Render2D_DrawField(x, y, color, width, value);
 			continue;
 		}
 
@@ -946,50 +946,50 @@ void Render2D_ExecuteLayoutString (char *s)
 			color = 0;	// green
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
-				re.DrawPic (x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL);
 
-			Render2D_DrawField (x, y, color, width, value);
+			Render2D_DrawField(x, y, color, width, value);
 			continue;
 		}
 
 
 		if (!strcmp(token, "stat_string"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			index = atoi(token);
 			if (index < 0 || index >= MAX_CONFIGSTRINGS)
-				Com_Error (ERR_DROP, "Bad stat_string index");
+				Com_Error(ERR_DROP, "Bad stat_string index");
 			index = cl.frame.playerstate.stats[index];
 			if (index < 0 || index >= MAX_CONFIGSTRINGS)
-				Com_Error (ERR_DROP, "Bad stat_string index");
-			Text_Draw (cl_system_font->string, x, y, cl.configstrings[index]);
+				Com_Error(ERR_DROP, "Bad stat_string index");
+			Text_Draw(cl_system_font->string, x, y, cl.configstrings[index]);
 			continue;
 		}
 
 		if (!strcmp(token, "cstring"))
 		{
-			token = COM_Parse (&s);
-			Render2DDrawCenteredString (token, x, y, 320);
+			token = COM_Parse(&s);
+			Render2DDrawCenteredString(token, x, y, 320);
 			continue;
 		}
 
 		if (!strcmp(token, "string"))
 		{
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			//todo: is this terminated properly?
-			Text_Draw (cl_system_font->string, x, y, token);
+			Text_Draw(cl_system_font->string, x, y, token);
 			continue;
 		}
 
 		if (!strcmp(token, "if"))
 		{	// draw a number
-			token = COM_Parse (&s);
+			token = COM_Parse(&s);
 			value = cl.frame.playerstate.stats[atoi(token)];
 			if (!value)
 			{	// skip to endif
-				while (s && strcmp(token, "endif") )
+				while (s && strcmp(token, "endif"))
 				{
-					token = COM_Parse (&s);
+					token = COM_Parse(&s);
 				}
 			}
 
@@ -1006,11 +1006,10 @@ The status bar is a small layout program that
 is based on the stats array
 ================
 */
-void Render2D_DrawStats ()
+void Render2D_DrawStats()
 {
-	Render2D_ExecuteLayoutString (cl.configstrings[CS_STATUSBAR]);
+	Render2D_ExecuteLayoutString(cl.configstrings[CS_STATUSBAR]);
 }
-
 
 /*
 ================
@@ -1020,15 +1019,22 @@ SCR_DrawLayout
 */
 #define	STAT_LAYOUTS		13
 
-void Render2D_DrawLayout ()
+void Render2D_DrawLayout()
 {
 	if (!cl.frame.playerstate.stats[STAT_LAYOUTS])
 		return;
-	Render2D_ExecuteLayoutString (cl.layout);
+	Render2D_ExecuteLayoutString(cl.layout);
 }
 
+// Draws some debug info
 void Render2D_DrawInfo()
 {
+	if (cls.state == ca_connecting
+		|| cls.state == ca_disconnected)
+	{
+		return; 
+	}
+
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
 	if (console_font_ptr == NULL)
@@ -1043,7 +1049,7 @@ void Render2D_DrawInfo()
 
 	if (cl_maxfps->value < target_fps) target_fps = cl_maxfps->value;
 
-	float warning_fps = target_fps * (55.0f/60.0f);
+	float warning_fps = target_fps * (55.0f / 60.0f);
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
@@ -1052,7 +1058,7 @@ void Render2D_DrawInfo()
 	if (cls.fps < alarm_fps)
 	{
 		Text_Draw(cl_console_font->string, x, y,
-			"FPS: ^1%.2f (The game is lagging - <50% target FPS %.1f)!", cls.fps, target_fps);
+			"FPS: ^1%.2f (The game is lagging - <50\045 target FPS %.1f)!", cls.fps, target_fps);
 	}
 	else if (cls.fps < warning_fps
 		&& cls.fps > alarm_fps)
@@ -1137,7 +1143,7 @@ void Render_UpdateScreen()
 		if (Sys_Milliseconds() - cls.disable_screen > 120000)
 		{
 			cls.disable_screen = 0;
-			Com_Printf ("Loading plaque timed out.\n");
+			Com_Printf("Loading plaque timed out.\n");
 		}
 		return;
 	}
@@ -1147,7 +1153,7 @@ void Render_UpdateScreen()
 
 	numframes = 1;
 
-	for ( i = 0; i < numframes; i++ )
+	for (i = 0; i < numframes; i++)
 	{
 		re.BeginFrame();
 
@@ -1174,18 +1180,18 @@ void Render_UpdateScreen()
 
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
-			re.DrawGetPicSize (&w, &h, "2d/loading");
-			re.DrawPic ((gl_width->value-w)/2, (gl_height->value-h)/2, "2d/loading", NULL);
-		} 
-		else 
+			re.DrawGetPicSize(&w, &h, "2d/loading");
+			re.DrawPic((gl_width->value - w) / 2, (gl_height->value - h) / 2, "2d/loading", NULL);
+		}
+		else
 		{
 			// do 3D refresh drawing, and then update the screen
-			Render2D_CalcVrect ();
+			Render2D_CalcVrect();
 
-			Render3D_RenderView ();
+			Render3D_RenderView();
 
 			// clear any dirty part of the background
-			Render2D_TileClear ();
+			Render2D_TileClear();
 
 			// still draw console if cl_drawhud is 0
 			if (cl_drawhud->value)
@@ -1211,12 +1217,13 @@ void Render_UpdateScreen()
 			if (cl_showinfo->value)
 				Render2D_DrawInfo();
 
-			Render2D_DrawConsole ();
+			if (!cl_console_disabled->value)
+				Render2D_DrawConsole();
 
 			if (!ui_newmenu->value)
-				M_Draw ();
+				M_Draw();
 
-			Render2D_DrawLoading ();
+			Render2D_DrawLoading();
 		}
 	}
 	re.EndFrame();

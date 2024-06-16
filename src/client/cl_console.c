@@ -30,11 +30,11 @@ extern cvar_t* vid_hudscale;
 
 #define	MAXCMDLINE	256
 //This will become a cvar in 0.0.11
-#define DEFAULT_CONSOLE_LINE_WIDTH			128
+#define DEFAULT_CONSOLE_LINE_WIDTH 128
 
-extern	char	key_lines[128][MAXCMDLINE];
-extern	int32_t edit_line;
-extern	int32_t key_linepos;
+extern char	key_lines[128][MAXCMDLINE];
+extern int32_t edit_line;
+extern int32_t key_linepos;
 
 void Key_ClearTyping()
 {
@@ -51,15 +51,12 @@ void Con_ToggleConsole_f()
 {
 	Render2D_EndLoadingPlaque();	// get rid of loading plaque
 
+	// changing key_dest determinse if the console gets drawn...
+	// ...do we change this?
+
 	if (cl.attractloop)
 	{
 		Cbuf_AddText("killserver\n");
-		return;
-	}
-
-	if (cls.state == ca_disconnected)
-	{	// start the demo loop again
-		Cbuf_AddText("d1\n");
 		return;
 	}
 
@@ -434,15 +431,15 @@ The input line scrolls horizontally if typing goes beyond the right edge
 */
 void Con_DrawInput()
 {
-	int32_t 	y;
-	int32_t 	i;
-	char* text;
-	int32_t 	size_x = 0, size_y = 0;
+	int32_t y;
+	int32_t i;
+	char*	text;
+	int32_t size_x = 0, size_y = 0;
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string); // checked by drawconsole
 
 	if (cls.key_dest == key_menu)
 		return;
-	if (cls.key_dest != key_console && cls.state == ca_active)
+	if (cls.key_dest != key_console)
 		return;		// don't draw anything (always draw if not active)
 
 	text = key_lines[edit_line];
@@ -480,10 +477,10 @@ void Con_DrawNotify()
 {
 	int32_t v = 0;
 	int32_t skip_size_x = 0, skip_size_y = 0;
-	char* text;
+	char*	text;
 	int32_t i;
 	int32_t time;
-	char* s;
+	char*	s;
 	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
 	for (i = con.current - NUM_CON_CHAT_LINES + 1; i <= con.current; i++)
@@ -558,14 +555,15 @@ Draws the console with the solid background
 */
 void Con_DrawConsole(float frac)
 {
-	int32_t 			i, j, x, y, n;
-	int32_t 			rows;
-	char* text;
-	int32_t 			row;
-	int32_t 			lines;
-	char			version[64];
-	char			dlbar[1024];
-	int32_t 			size_x = 0, size_y = 0;
+	int32_t i, j, x, y, n;
+	int32_t rows;
+	char*	text;
+	int32_t row;
+	int32_t lines;
+	char	version[64];
+	char	dlbar[1024];
+	int32_t size_x = 0, size_y = 0;
+
 	font_t* console_font_ptr;
 
 	console_font_ptr = Font_GetByName(cl_console_font->string);
@@ -670,10 +668,11 @@ void Con_DrawConsole(float frac)
 		text[con.linewidth] = original_character;
 	}
 
-	//ZOID
-		// draw the download bar
-		// figure out width
-	if (cls.download) {
+	// draw the download bar
+	// figure out width
+
+	if (cls.download)
+	{
 		if ((text = strrchr(cls.downloadname, '/')) != NULL)
 			text++;
 		else
@@ -682,14 +681,19 @@ void Con_DrawConsole(float frac)
 		x = con.linewidth - ((con.linewidth * 7) / 40);
 		y = (x - (int32_t)strlen(text) - 24 * vid_hudscale->value) / vid_hudscale->value;
 		i = con.linewidth / 6;
-		if (strlen(text) > i) {
+
+		if (strlen(text) > i)
+		{
 			y = x - i - 20;
 			strncpy(dlbar, text, i);
 			dlbar[i] = 0;
 			strcat(dlbar, "...");
 		}
 		else
+		{
 			strcpy(dlbar, text);
+		}
+			
 		strcat(dlbar, ": ");
 		i = (int32_t)strlen(dlbar);
 		dlbar[i++] = '\x80';
@@ -700,10 +704,13 @@ void Con_DrawConsole(float frac)
 			n = y * cls.downloadpercent / 100;
 
 		for (j = 0; j < y; j++)
+		{
 			if (j == n)
 				dlbar[i++] = '\x83';
 			else
 				dlbar[i++] = '\x81';
+		}
+
 		dlbar[i++] = '\x82';
 		dlbar[i] = 0;
 
@@ -716,7 +723,6 @@ void Con_DrawConsole(float frac)
 		Text_GetSize(cl_console_font->string, &size_x, &size_y, dlbar);
 		Text_Draw(cl_console_font->string, 10, y, dlbar);
 	}
-	//ZOID
 
 	// draw the input prompt, user text, and cursor if desired
 	Con_DrawInput();
