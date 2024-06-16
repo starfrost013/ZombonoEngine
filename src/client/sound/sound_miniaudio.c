@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // music playback using Miniaudio library (https://github.com/dr-soft/miniaudio)
 
 #ifdef _WIN32
-#include <windows.h>
+//#include <windows.h>
 #endif
 // force ALSA on Linux to avoid playback issues when using mixed backends
 #ifdef __linux__
@@ -30,16 +30,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #define DR_FLAC_IMPLEMENTATION
-#include "miniaudio/dr_flac.h"  /* Enables FLAC decoding. */
+#include <client/sound/miniaudio/dr_flac.h>  /* Enables FLAC decoding. */
 #define DR_MP3_IMPLEMENTATION
-#include "miniaudio/dr_mp3.h"   /* Enables MP3 decoding. */
+#include <client/sound/miniaudio/dr_mp3.h>   /* Enables MP3 decoding. */
 #define DR_WAV_IMPLEMENTATION
-#include "miniaudio/dr_wav.h"   /* Enables WAV decoding. */
+#include <client/sound/miniaudio/dr_wav.h>   /* Enables WAV decoding. */
 
-#include "miniaudio/stb_vorbis.c" /* Enables OGG/Vorbis decoding. */
+#include <client/sound/miniaudio/stb_vorbis.c> /* Enables OGG/Vorbis decoding. */
 
 #define MINIAUDIO_IMPLEMENTATION
-#include "include/miniaudio.h"
+#include <client/include/miniaudio.h>
 
 #include <client/client.h>
 

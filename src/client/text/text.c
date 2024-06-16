@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#include "client.h"
+#include <client/client.h>
 
 #define NUM_COLOR_CODES			16
 #define TAB_SIZE_CHARS			8 // make a cvar?

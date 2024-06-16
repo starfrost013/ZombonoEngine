@@ -18,9 +18,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// cl_fx.c -- entity effects parsing and management
+// fx.c -- entity effects parsing and management
 
-#include "client.h"
+#include <client/client.h>
 
 void CL_LogoutEffect(vec3_t org, int32_t type);
 void CL_ItemRespawnParticles(vec3_t org);

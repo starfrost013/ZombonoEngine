@@ -18,8 +18,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// cl_fx_explosion.c - explod!
-#include "client.h"
+// fx_explosion.c - explod!
+#include <client/client.h>
 
 explosion_t	cl_explosions[MAX_EXPLOSIONS];
 

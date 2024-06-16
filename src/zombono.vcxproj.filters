@@ -18,7 +18,7 @@
     <ClCompile Include="client\cl_ents.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx_particles.c">
+    <ClCompile Include="client\fx\fx_particles.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_input.c">
@@ -33,13 +33,13 @@
     <ClCompile Include="client\cl_pred.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_render_2d.c">
+    <ClCompile Include="client\render\render_2d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_tempentity.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_render_3d.c">
+    <ClCompile Include="client\render\render_3d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_console.c">
@@ -48,19 +48,19 @@
     <ClCompile Include="client\cl_input_events.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\menu.c">
+    <ClCompile Include="client\ui_legacy\menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\menu_framework.c">
+    <ClCompile Include="client\ui_legacy\menu_framework.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\snd_dma.c">
+    <ClCompile Include="client\sound\sound_dma.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\snd_mem.c">
+    <ClCompile Include="client\sound\sound_mem.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\snd_mix.c">
+    <ClCompile Include="client\sound\sound_mix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\q_shared.c">
@@ -132,7 +132,7 @@
     <ClCompile Include="win32\sys_win.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\snd_miniaudio.c">
+    <ClCompile Include="client\sound\sound_miniaudio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui.c">
@@ -147,10 +147,10 @@
     <ClCompile Include="client\ui\ui_eventhandling.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_text.c">
+    <ClCompile Include="client\text\text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_font.c">
+    <ClCompile Include="client\text\text_font.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qcommon\pdjson.c">
@@ -168,25 +168,25 @@
     <ClCompile Include="client\cl_loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_video.c">
+    <ClCompile Include="client\render\render_interface.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\menu_video.c">
+    <ClCompile Include="client\ui_legacy\menu_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui_mainmenu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx_dlight.c">
+    <ClCompile Include="client\fx\fx_dlight.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx_lightstyle.c">
+    <ClCompile Include="client\fx\fx_lightstyle.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx_beam.c">
+    <ClCompile Include="client\fx\fx_beam.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_fx_explosion.c">
+    <ClCompile Include="client\fx\fx_explosion.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_intro.c">

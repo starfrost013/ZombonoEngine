@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef _WIN32
 #include <io.h>
 #endif
-#include "client.h"
+#include <client/client.h>
 #include <client/include/menu_framework.h>
 
 extern cvar_t* vid_hudscale;

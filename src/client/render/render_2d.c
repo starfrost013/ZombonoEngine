@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
   */
 
-#include "client.h"
+#include <client/client.h>
 #include <inttypes.h>
 
 float		scr_con_current;	// aproaches scr_conlines at scr_conspeed

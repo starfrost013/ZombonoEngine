@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <string.h>
 #include <ctype.h>
 
-#include "client.h"
-#include "include/menu_framework.h"
+#include <client/client.h>
+#include <client/include/menu_framework.h>
 
 static void Action_DoEnter(menuaction_t* a);
 static void Action_Draw(menuaction_t* a);
