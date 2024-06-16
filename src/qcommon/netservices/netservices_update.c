@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "netservices.h"
 
 // Defines
-#define UPDATE_JSON_URL UPDATER_BASE_URL		"/updateinfo.json"	// URL for update info json file
-#define UPDATE_BINARY_BASE_URL UPDATER_BASE_URL "/updates"			// base URL for update binary
+#define UPDATE_JSON_URL SERVICE_BASE_URL_UPDATER		"/updateinfo.json"	// URL for update info json file
+#define UPDATE_BINARY_BASE_URL SERVICE_BASE_URL_UPDATER "/updates"			// base URL for update binary
 #define UPDATE_PROMPT_STR_LENGTH				2048				// Length of the update prompt string
 #define DOWNLOAD_URL_STR_LENGTH					256					// Length of the download URL string
 #define DOWNLOAD_CMD_STR_LENGTH					512					// Length of the command to run

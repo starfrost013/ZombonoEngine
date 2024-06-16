@@ -27,7 +27,7 @@ bool netservices_connected = false;					// Determines if netservices is initiali
 
 // String downloaded from the below url to 
 const char* connect_test_string = "This is a connect test file for Zombono Network Services";
-const char* connect_test_url = UPDATER_BASE_URL "/connecttest.txt"; // Just use updater service for thi
+const char* connect_test_url = SERVICE_BASE_URL_UPDATER "/connecttest.txt"; // Just use updater service for thi
 char	netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
 	
 char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
@@ -37,6 +37,9 @@ char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer return
 cvar_t* ns_disabled;										// If true, don't ever contact zombono.com
 cvar_t* ns_nointernetcheck;									// If true, don't perform an internet check
 cvar_t* ns_noupdatecheck;									// If true, don't perform an update check
+#ifndef RELEASE
+cvar_t* ns_usetestserver;									// Use test serve 
+#endif
 
 CURL*	curl_obj_connect_test;								// The single blocking transfer curl interface object used for testing connections
 CURLM*	curl_obj;											// The multi nonblocking transfer curl interface object
@@ -54,6 +57,7 @@ bool Netservices_Init()
 	ns_nointernetcheck = Cvar_Get("ns_nointernetcheck", "0", CVAR_ARCHIVE);
 	ns_noupdatecheck = Cvar_Get("ns_noupdatecheck", "0", CVAR_ARCHIVE);
 	ns_disabled = Cvar_Get("ns_disabled", "0", CVAR_ARCHIVE);
+	ns_usetestserver = Cvar_Get("ns_usetestserver", "0", CVAR_ARCHIVE);
 
 	if (ns_nointernetcheck->value
 		|| ns_disabled->value)
@@ -172,7 +176,6 @@ void Netservices_Frame()
 
 		update_info.dismissed = true;
 	}
-
 
 	// if there is nothing to return (NULL means it was never set)
 	if (netservices_running_transfers == 0

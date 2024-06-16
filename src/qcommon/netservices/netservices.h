@@ -26,18 +26,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qcommon/qcommon.h>
 #include <qcommon/curl/curl.h>
 
-#define UPDATER_BASE_URL			"https://updates.zombono.com"	// Base URL for the updater service
+// Cvars
+// 
+// All netservices cvars start with ns_* 
+extern cvar_t* ns_nointernetcheck;							// If true, no internet check will be performed.
+extern cvar_t* ns_noupdatecheck;							// If true, no update check will be performed.
+extern cvar_t* ns_disabled;									// If true, netservices will be entirely disabled. Zombono.com will not be contacted at all. Essentially acts as if Netservices_Init failed.
+
+// cvars
+#ifndef RELEASE
+extern cvar_t* ns_usetestserver;
+#endif
+
+// base urls
+
+#define GAME_WEBSITE_URL			"https://zombono.com"			// Game URL
+#define GAME_WEBSITE_URL_STAGING	"https://staging.zombono.com"	// Staging URL for test servers
+
+#define SERVICE_BASE_URL_UPDATER	"https://updates.zombono.com"	// Base URL for the updater service
+#define SERVICE_BASE_URL_SERVERS	"https://servers.zombono.com"	// Base URL for the master sercer services
+
 #define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 
 #define	ZOMBONO_USER_AGENT			"Zombono/" ZOMBONO_VERSION
 
 extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];	// The data actually received from the connect test.
-// Cvars
-// 
-// All netservices cvars start with ns_* 
-extern cvar_t*			ns_nointernetcheck;							// If true, no internet check will be performed.
-extern cvar_t*			ns_noupdatecheck;							// If true, no update check will be performed.
-extern cvar_t*			ns_disabled;								// If true, netservices will be entirely disabled. Zombono.com will not be contacted at all. Essentially acts as if Netservices_Init failed.
 
 //
 // netservices_base.c
@@ -79,7 +92,6 @@ typedef struct game_version_s
 	int32_t		build;										// Should we have this?
 } game_version_t;
 
-
 // Defines a game software update.
 typedef struct game_update_s
 {
@@ -94,12 +106,22 @@ typedef struct game_update_s
 extern game_update_channel	update_current_channel;			// The currently defined channel - corresponds with the engine's build config
 extern game_update_t		update_info;					// The most recently obtained update information.
 
-void Netservices_UpdaterGetUpdate();				// Gets an Update. Returns a game_update_t structure containing update information.
-
+void Netservices_UpdaterGetUpdate();			// Gets an Update. Returns a game_update_t structure containing update information.
 bool Netservices_UpdaterPromptForUpdate();		// Prompts for an update. Returns true if the user wanted to update.
 void Netservices_UpdaterStartUpdate();			// Starts the update process.
 
 //
 // netservices_masterserver.c
+// The Zombono master server protocol
 //
 
+typedef struct master_server_entry_s
+{
+	uint32_t	ip;
+	uint16_t	port;
+	uint32_t	ping; // lets hope the upper two bytes never get used here
+	char		map[NETWORK_MAX_MAP_NAME_LENGTH]; // The map name
+	// TODO: country, etc
+} master_server_entry_t;
+
+void Netservices_MasterServerDiscover();

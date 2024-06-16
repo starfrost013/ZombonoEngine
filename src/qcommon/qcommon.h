@@ -564,8 +564,8 @@ bool NET_CompareAdr(netadr_t a, netadr_t b);
 bool NET_CompareBaseAdr(netadr_t a, netadr_t b);
 bool NET_IsLocalAddress(netadr_t adr);
 char* NET_AdrToString(netadr_t a);
-bool	NET_StringToAdr(char* s, netadr_t* a);
-void	NET_Sleep(int32_t msec);
+bool NET_StringToAdr(char* s, netadr_t* a);
+void NET_Sleep(int32_t msec);
 
 //============================================================================
 
@@ -789,15 +789,15 @@ NON-PORTABLE SYSTEM SERVICES
 void	Sys_Init();
 
 void	Sys_UnloadGame();
-void* Sys_GetGameAPI(void* parms);
+void*	Sys_GetGameAPI(void* parms);
 // loads the game dll and calls the api init function
 
-char* Sys_ConsoleInput();
+char*	Sys_ConsoleInput();
 void	Sys_ConsoleOutput(char* string);
 void	Sys_Error(char* error, ...);
 int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit();
-char* Sys_GetClipboardData(void);
+char*	Sys_GetClipboardData(void);
 
 /*
 ==============================================================
