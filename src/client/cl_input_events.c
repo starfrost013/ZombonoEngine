@@ -1083,23 +1083,28 @@ void Input_Event (int32_t key, int32_t mods, bool down, uint32_t time, int32_t x
 		case key_game:
 		case key_console:
 
-			// still hardcoded: TODO - GET FROM CONFIG FILE
+			// TODO: still hardcoded: TODO - GET FROM CONFIG FILE
 			if (ui_newmenu->value)
 			{
-				bool is_active = false; 
+				ui_t* mainmenu_ptr = UI_GetUI("MainMenuUI");
 
-				// TEMP HACK until new UI functionality (UI_SetCurrent)
-				if (current_ui != NULL
-					&& !strcmp(current_ui->name, "MainMenuUI"))
+				// let the player toggle the menu if it's connected
+				if (cls.state == ca_active
+					|| cls.state == ca_connecting)
 				{
-					UI_SetEnabled("MainMenuUI", false);
-					UI_SetActivated("MainMenuUI", false);
-					current_ui = NULL;
+					bool is_active = false;
+
+					UI_SetEnabled("MainMenuUI", !mainmenu_ptr->enabled);
+					UI_SetActivated("MainMenuUI", !mainmenu_ptr->activated);
 				}
-				else
+				else // otherwise don't
 				{
-					UI_SetEnabled("MainMenuUI", true);
-					UI_SetActivated("MainMenuUI", true);
+					// TODO: this is temporary logic, because the player will be sent back to the main menu when conecting. We need a stack system for this...
+					if (!mainmenu_ptr->enabled)
+					{
+						UI_SetEnabled("MainMenuUI", true);
+						UI_SetActivated("MainMenuUI", true);
+					}
 				}
 			}
 			else

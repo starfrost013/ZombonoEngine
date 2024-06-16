@@ -135,16 +135,16 @@
     <ClCompile Include="client\snd_miniaudio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ui.c">
+    <ClCompile Include="client\ui\ui.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ui_scripts.c">
+    <ClCompile Include="client\ui\ui_scripts.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ui_leaderboard.c">
+    <ClCompile Include="client\ui\ui_leaderboard.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ui_eventhandling.c">
+    <ClCompile Include="client\ui\ui_eventhandling.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_text.c">
@@ -174,7 +174,7 @@
     <ClCompile Include="client\menu_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_ui_mainmenu.c">
+    <ClCompile Include="client\ui\ui_mainmenu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_fx_dlight.c">
@@ -196,6 +196,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qcommon\netservices\netservices_masterserver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\ui_mainmenu_quickstart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\ui_mainmenu_browseservers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\ui_mainmenu_settings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\ui_mainmenu_zombietv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\ui_mainmenu_quit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

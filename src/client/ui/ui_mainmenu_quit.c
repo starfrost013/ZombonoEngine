@@ -18,12 +18,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+// cl_ui_mainmenu_quit.c: Quit menu (June 16, 2024)
 
-// If we need this string helper macro anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+#include <client/client.h>
 
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 1
-#define ZOMBONO_VERSION_REVISION 0
-#define ZOMBONO_VERSION_BUILD 594
+bool UI_MainMenuQuitUICreate()
+{
+	if (!ui_newmenu->value)
+		return true;
+
+	// create uI
+	return true;
+}

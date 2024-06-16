@@ -21,6 +21,7 @@ NEW FEATURES:
 		* cl_console_disabled - determines if the console is disabled entirely. Default value is 0.
 		* cl_console_fraction - determines how much of the screen the console will take up. The default value is 0.5 (50%)
 			* For the old fullscreen console behaviour, use cl_console_fraction 1.0
+	* The console is now disableable when you aren't doing anything
 
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
@@ -29,7 +30,7 @@ BUG FIXES:
 	* Fixed textures still being internally interpreted with a maximum length of 32 characters instead of the intended 80, leading to phantom downloads of textures that really existed, but with longer names
 	* Fixed debug info being printed while not connected to the server
 	* Fixed garbage debug information being printed when the game is running below 30 fps due to non-escaped % sign
-
+	* Fixed UI initialisation status being set to successful even if it failed
 REMOVALS:
 
 OTHER CHANGES:

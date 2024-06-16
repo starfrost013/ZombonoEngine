@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // cl_ui_mainmenu.c: New! main menu (April 20, 2024)
 
-#include "client.h"
+#include <client/client.h>
 
 bool UI_MainMenuUICreate()
 {

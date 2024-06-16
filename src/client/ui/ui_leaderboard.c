@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // cl_ui_leaderboard.c: The new leaderboard UI! (December 24-25, 2023)
 
-#include "client.h"
+#include <client/client.h>
 
 #define TEXT_BUF_LENGTH			16
 #define TEXT_BUF_LENGTH_LONG	38

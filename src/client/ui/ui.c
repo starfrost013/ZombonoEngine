@@ -19,8 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // cl_ui.c -- ZombonoUI (December 9, 2023)
+// In the future, all of these will be handled using scripts...
 
-#include "client.h"
+#include <client/client.h>
 
 // Globals
 // see client.h for explanations on what these are 
@@ -69,9 +70,13 @@ bool UI_Init()
 	if (successful) successful = UI_AddUI("ScoreUI", UI_ScoreUICreate);
 	if (successful) successful = UI_AddUI("LoadoutUI", UI_LoadoutUICreate);
 	if (successful) successful = UI_AddUI("MainMenuUI", UI_MainMenuUICreate);
+	if (successful) successful = UI_AddUI("MainMenuQuickstartUI", UI_MainMenuQuickstartUICreate);
+	if (successful) successful = UI_AddUI("MainMenuBrowseServersUI", UI_MainMenuBrowseServersUICreate);
+	if (successful) successful = UI_AddUI("MainMenuSettingsUI", UI_MainMenuSettingsUICreate);
+	if (successful) successful = UI_AddUI("MainMenuZombieTVUI", UI_MainMenuZombieTVUICreate);
+	if (successful) successful = UI_AddUI("MainMenuQuitUI", UI_MainMenuQuitUICreate);
 	if (successful) successful = UI_AddUI("KillFeedUI", UI_KillFeedUICreate);
-
-	ui_initialised = true;
+	ui_initialised = successful;
 	return successful;
 }
 

@@ -720,6 +720,21 @@ bool UI_LoadoutUICreate();
 // MainMenuUI
 bool UI_MainMenuUICreate();
 
+// MainMenuQuickstartUI
+bool UI_MainMenuQuickstartUICreate();
+
+// MainMenuBrowseServersUI
+bool UI_MainMenuBrowseServersUICreate();
+
+// MainMenuSettingsUI
+bool UI_MainMenuSettingsUICreate();
+
+// MainMenuZombieTVUI
+bool UI_MainMenuZombieTVUICreate();
+
+// MainMenuQuitUI
+bool UI_MainMenuQuitUICreate();
+
 // KillFeedUI
 bool UI_KillFeedUICreate();
 

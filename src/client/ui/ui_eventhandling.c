@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 // cl_ui_eventhandling.c : Split UI Event Handling from UI Code (December 27, 2023)
-#include "client.h"
+#include <client/client.h>
 
 bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y))
 {

@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_ui_scripts.c: ZombonoUI UI creation scripts
 // 12/14/2023: Created
 
-#include "client.h"
+#include <client/client.h>
 
 // 
 // TeamUI
