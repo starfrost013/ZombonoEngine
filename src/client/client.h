@@ -565,9 +565,11 @@ void CL_PredictMovement();
 // This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
 //
 
-#define CONTROLS_PER_UI			256
-#define MAX_UIS					32
-#define MAX_UI_STRLEN			256
+#define CONTROLS_PER_UI			256				// The maximum number of controls per UI.
+#define MAX_UIS					32				// The maximum number of UIS
+#define MAX_UI_STRLEN			256				// The maximum string length for various UI elements.
+
+#define MAX_UIS_STACKED			256				// The maximum number of stacked UIs. Same as the maximum number of UIs because they just get stacked.
 
 // Defined here for use by UI
 #define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
@@ -638,10 +640,12 @@ typedef struct ui_s
 	bool			enabled;					// True if the UI is currently being drawn.
 	bool			activated;					// True if the UI is currently interactable.
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
+	bool			stackable;					// True if the UI is stackable
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
 extern ui_t		ui_list[MAX_UIS];	// The list of UIs.
+extern ui_t*	ui_stack_list[MAX_UIS];	// The list of stacked UIs
 extern ui_t*	current_ui;			// The current UI being displayed
 extern int32_t 	num_uis;			// The current number of UIs
 extern bool		ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
@@ -658,10 +662,11 @@ bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y,
 bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
 bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
-// UI: Toggle
+// UI: Toggles
 bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to enabled (visible).
 bool UI_SetActivated(char* name, bool activated);																	// Sets a UI to active (tangible).
 bool UI_SetPassive(char* name, bool passive);																// Sets a UI to passive (does not capture the mouse).
+bool UI_SetStackable(char* name, bool stackable);
 
 // UI: Update Properties 
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.

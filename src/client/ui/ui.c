@@ -27,7 +27,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // see client.h for explanations on what these are 
 int32_t num_uis;																					
 ui_t	ui_list[MAX_UIS];
-bool	ui_active = false;																				// This is so we know to turn on the mouse cursor when a UI is being displayed.
+ui_t*	ui_stack[MAX_UIS];				// The optional UI stack
+int32_t	ui_stack_top = -1;				// The top of the UI stack, starts at -1
+
+bool	ui_active = false;				// This is so we know to turn on the mouse cursor when a UI is being displayed and turn it off when it isn't before
 bool	ui_initialised = false;
 
 // Current UI. A non-null value is enforced.
@@ -35,9 +38,10 @@ bool	ui_initialised = false;
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
+// Functions only in this file
 bool UI_AddControl(ui_t* ui, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
-// Draw methods
+// Draw functions
 void UI_DrawText(ui_control_t* text);															// Draws a text control.
 void UI_DrawImage(ui_control_t* image);															// Draws an image control.
 void UI_DrawSlider(ui_control_t* slider);														// Draws a slider control.
@@ -46,11 +50,17 @@ void UI_DrawBox(ui_control_t* box);																// Draws a box control.
 void UI_DrawSpinControl(ui_control_t* spin_control);											// Draws a spin control.
 void UI_DrawEntry(ui_control_t* entry);															// Draws an entry control.
 
+// Utility functions
 void UI_SliderDoSlide(ui_control_t* slider, int32_t dir);										// 'Slides' a slider control.
 void UI_SpinControlDoEnter(ui_control_t* spin_control);											// Handles pressing ENTER on a spincontrol.
 void UI_SpinControlDoSlide(ui_control_t* spin_control, int32_t dir);							// 'Slides' a spin control.
-bool Entry_OnKeyDown(ui_control_t* entry, int32_t key);											// Handles a key being pressed on an entry control.
+bool UI_EntryOnKeyDown(ui_control_t* entry, int32_t key);										// Handles a key being pressed on an entry control.
 
+// Stack functions
+// Since a UI should never get destroyed at the same time that a state change is occurring, we don't have to check the stack.
+// Hopefully.
+void UI_Push();																					// Pushes the UI stack
+void UI_Pop();																					// Pops the UI stack
 
 bool UI_Init()
 {
@@ -303,6 +313,13 @@ bool UI_SetEnabled(char* ui_name, bool enabled)
 		ui_ptr->enabled = enabled;
 
 		current_ui = (ui_ptr->enabled) ? ui_ptr : NULL;
+
+		// don't bother popping on disable because multiple UIs can be enabled at a time
+		if (ui_ptr->stackable
+			&& ui_ptr->enabled)
+		{
+			UI_Push();
+		}
 	}
 
 	return false;
@@ -311,6 +328,18 @@ bool UI_SetEnabled(char* ui_name, bool enabled)
 bool UI_SetActivated(char* ui_name, bool activated)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	// if this UI is not passive, determine if any other UI is activated, and turn it off if it is
+	if (!ui_ptr->passive)
+	{
+		for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
+		{
+			ui_t* ui_ptr = &ui_list[ui_num];
+
+			if (ui_ptr->activated)
+				ui_ptr->activated = false;
+		}
+	}
 
 	if (ui_ptr != NULL)
 	{
@@ -345,6 +374,18 @@ bool UI_SetPassive(char* ui_name, bool passive)
 	return false;
 }
 
+bool UI_SetStackable(char* ui_name, bool stackable)
+{
+	ui_t* ui_ptr = UI_GetUI(ui_name);
+
+	if (ui_ptr != NULL)
+	{
+		ui_ptr->stackable = stackable;
+		return true;
+	}
+
+	return false;
+}
 
 bool UI_SetText(char* ui_name, char* control_name, char* text)
 {
@@ -492,6 +533,41 @@ void UI_Reset()
 		UI_SetEnabled(ui_ptr->name, false);
 		UI_SetActivated(ui_ptr->name, false);
 	}
+}
+
+void UI_Push()
+{
+	// don't bother pushing the same ui twice
+	if (ui_stack[ui_stack_top] == current_ui)
+	{
+		Com_Printf("Warning: Tried to push the same UI twice...");
+		return;
+	}
+
+
+	if (ui_stack_top >= (MAX_UIS - 1))
+	{
+		Sys_Error("User interface stack overflow!");
+		return; // shut up compiler
+	}
+
+	ui_stack_top++;
+	ui_stack[ui_stack_top] = current_ui;
+}
+
+void UI_Pop()
+{
+	if (ui_stack_top <= 0)
+	{
+		Sys_Error("User interface stack underflow");
+		return; // shut up compiler
+	}
+
+	ui_stack[ui_stack_top] = NULL;
+	ui_stack_top--;
+
+	UI_SetEnabled(ui_stack[ui_stack_top], true);
+	UI_SetActivated(ui_stack[ui_stack_top], true);
 }
 
 void UI_Draw()
@@ -717,7 +793,7 @@ void UI_DrawSpinControl(ui_control_t* spin_control)
 	Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + spin_control->position_x * gl_width->value, spin_control->position_y, spin_control->item_names[(int32_t)spin_control->value_current]);
 }
 
-bool Entry_OnKeyDown(ui_control_t* entry, int32_t key)
+bool UI_EntryOnKeyDown(ui_control_t* entry, int32_t key)
 {
 	//TODO: THIS CODE SUCKS
 	//WHY DO WE DUPLICATE EVERYTHING ALREADY HANDLED IN INPUT SYSTEM????
