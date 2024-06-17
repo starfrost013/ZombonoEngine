@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#include "client.h"
+#include <client/client.h>
 
 /*
 key up events are sent even if in console mode
@@ -902,12 +902,12 @@ void WindowFocus_Event(void* unused, int32_t focused)
 		|| (ui_active && current_ui != NULL && current_ui->passive))
 	{
 		re.EnableCursor(!focused);
-		mouseactive = focused;
+		mouse_active = focused;
 	}
 	else
 	{
 		re.EnableCursor(true);
-		mouseactive = false;
+		mouse_active = false;
 	}
 }
 
@@ -917,12 +917,12 @@ void WindowIconify_Event(void* unused, int32_t iconified)
 		|| (ui_active && current_ui != NULL && current_ui->passive))
 	{
 		re.EnableCursor(iconified);
-		mouseactive = !iconified;
+		mouse_active = !iconified;
 	}
 	else
 	{
 		re.EnableCursor(true);
-		mouseactive = false;
+		mouse_active = false;
 	}
 }
 

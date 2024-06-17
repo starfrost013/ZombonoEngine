@@ -21,7 +21,7 @@
     <ClCompile Include="client\fx\fx_particles.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_input.c">
+    <ClCompile Include="client\input\input_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\cl_main.c">
@@ -45,7 +45,7 @@
     <ClCompile Include="client\cl_console.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_input_events.c">
+    <ClCompile Include="client\input\input_events.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui_legacy\menu.c">
@@ -211,6 +211,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui_mainmenu_quit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\input\input_mouse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

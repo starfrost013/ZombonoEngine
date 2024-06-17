@@ -315,8 +315,10 @@ extern cvar_t* cl_intro2;
 extern cvar_t* cl_intro1_time;
 extern cvar_t* cl_intro2_time;
 
-cvar_t* gl_width;
-cvar_t* gl_height;
+extern cvar_t* input_mouse_enabled;
+
+extern cvar_t* gl_width;
+extern cvar_t* gl_height;
 
 typedef struct cdlight_s
 {

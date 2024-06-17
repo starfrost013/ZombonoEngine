@@ -23,12 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "input_keys.h"
 
 extern int32_t 	window_center_x, window_center_y;
-extern bool		mouseactive;
+extern bool		mouse_active;
 
 void Input_Init();					
 void Input_StartupMouse();
-void Input_ActivateMouse();
-void Input_DeactivateMouse();
+void Input_MouseActivate();
+void Input_MouseDeactivate();
 void Input_MouseMove(usercmd_t* cmd);
 
 void Input_Shutdown();
@@ -70,15 +70,15 @@ extern double last_mouse_pos_x, last_mouse_pos_y;
 float CL_KeyState(kbutton_t* key);
 char* Key_VirtualToPhysical(int32_t keynum, bool shift);
 
-extern uint32_t		sys_frame_time;
+extern uint32_t	sys_frame_time;
 
-extern char* keybindings[NUM_KEYS];
-extern	int32_t 	Key_repeats[NUM_KEYS];
+extern char*	keybindings[NUM_KEYS];
+extern int32_t 	Key_repeats[NUM_KEYS];
 
-extern	int32_t anykeydown;
-extern char chat_buffer[];
-extern	int32_t chat_bufferlen;
-extern	bool	chat_team;
+extern int32_t	anykeydown;
+extern char		chat_buffer[];
+extern int32_t	chat_bufferlen;
+extern bool		chat_team;
 
 // glfw evetts
 void Key_Event(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods);
@@ -94,4 +94,3 @@ void Key_Init();
 void Key_WriteBindings(FILE* f);
 void Key_SetBinding(int32_t keynum, char* binding);
 void Key_ClearStates();
-int32_t Key_GetKey();
