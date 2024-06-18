@@ -281,7 +281,7 @@ void Menu_Center(menuframework_t* menu)
 	height = ((menucommon_t*)menu->items[menu->nitems - 1])->y;
 	height += 10;
 
-	menu->y = (gl_height->value - height) / 2;
+	menu->y = (r_height->value - height) / 2;
 }
 
 void Menu_Draw(menuframework_t* menu)
@@ -370,18 +370,18 @@ void Menu_DrawStatusBar(const char* string)
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, string);
 		int32_t l = (int32_t)strlen(string);
-		int32_t maxcol = gl_width->value / (8 * vid_hudscale->value);
+		int32_t maxcol = r_width->value / (8 * vid_hudscale->value);
 		int32_t col = maxcol / 2 - l / 2;
 
 		color4_t colour = { 63, 63, 63, 255 };
-		re.DrawFill(0, (gl_height->value - system_font_ptr->line_height) * vid_hudscale->value, gl_width->value, 8 * vid_hudscale->value, colour);
+		re.DrawFill(0, (r_height->value - system_font_ptr->line_height) * vid_hudscale->value, r_width->value, 8 * vid_hudscale->value, colour);
 
-		Text_Draw(cl_system_font->string, col * size_x * vid_hudscale->value, gl_height->value - size_y * vid_hudscale->value, string);
+		Text_Draw(cl_system_font->string, col * size_x * vid_hudscale->value, r_height->value - size_y * vid_hudscale->value, string);
 	}
 	else
 	{
 		color4_t colour = { 0, 0, 0, 255 };
-		re.DrawFill(0, gl_height->value - 8 * vid_hudscale->value, gl_width->value, 8 * vid_hudscale->value, colour);
+		re.DrawFill(0, r_height->value - 8 * vid_hudscale->value, r_width->value, 8 * vid_hudscale->value, colour);
 	}
 }
 

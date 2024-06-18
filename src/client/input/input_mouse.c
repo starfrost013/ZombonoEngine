@@ -65,8 +65,8 @@ void Input_MouseActivate()
 	mouse_active = true;
 
 	// position is relative to top-left corner of window
-	window_center_x = gl_width->value / 2;
-	window_center_y = gl_height->value / 2;
+	window_center_x = r_width->value / 2;
+	window_center_y = r_height->value / 2;
 }
 
 

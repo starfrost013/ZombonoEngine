@@ -235,12 +235,12 @@ void Render2D_DrawCenterString()
 	start = scr_centerstring;
 
 	if (scr_center_lines <= 4)
-		y = gl_height->value * 0.35;
+		y = r_height->value * 0.35;
 	else
 		y = 48;
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, start);
-	x = (gl_width->value - size_x * vid_hudscale->value) / 2;
+	x = (r_width->value - size_x * vid_hudscale->value) / 2;
 	Render2D_AddDirtyPoint(x, y);
 	Text_Draw(cl_system_font->string, x, y, start);
 	Render2D_AddDirtyPoint(x, y + system_font_ptr->line_height * vid_hudscale->value);
@@ -277,11 +277,11 @@ void Render2D_CalcVrect()
 
 	size = scr_viewsize->value;
 
-	scr_vrect.width = gl_width->value * size / 100;
-	scr_vrect.height = gl_height->value * size / 100;
+	scr_vrect.width = r_width->value * size / 100;
+	scr_vrect.height = r_height->value * size / 100;
 
-	scr_vrect.x = (gl_width->value - scr_vrect.width) / 2;
-	scr_vrect.y = (gl_height->value - scr_vrect.height) / 2;
+	scr_vrect.x = (r_width->value - scr_vrect.width) / 2;
+	scr_vrect.y = (r_height->value - scr_vrect.height) / 2;
 }
 
 
@@ -411,7 +411,7 @@ void Render2D_DrawPause()
 		return;
 
 	re.DrawGetPicSize(&w, &h, "2d/pause");
-	re.DrawPic((gl_width->value - w) / 2, gl_height->value / 2 + 8 * vid_hudscale->value, "2d/pause", NULL);
+	re.DrawPic((r_width->value - w) / 2, r_height->value / 2 + 8 * vid_hudscale->value, "2d/pause", NULL);
 }
 
 /*
@@ -428,7 +428,7 @@ void Render2D_DrawLoading()
 
 	scr_draw_loading = false;
 	re.DrawGetPicSize(&w, &h, "2d/loading");
-	re.DrawPic((gl_width->value - w) / 2, (gl_height->value - h) / 2, "2d/loading", NULL);
+	re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL);
 }
 
 //=============================================================================
@@ -483,7 +483,7 @@ void Render2D_DrawConsole()
 	{	// connected, but can't render
 		Con_DrawConsole(scr_con_current);
 		color4_t colour = { 0, 0, 0, 255 };
-		re.DrawFill(0, gl_height->value / 2, gl_width->value, gl_height->value / 2, colour);
+		re.DrawFill(0, r_height->value / 2, r_width->value, r_height->value / 2, colour);
 		return;
 	}
 
@@ -625,7 +625,7 @@ void Render2D_AddDirtyPoint(int32_t x, int32_t y)
 void Render2D_DirtyScreen()
 {
 	Render2D_AddDirtyPoint(0, 0);
-	Render2D_AddDirtyPoint(gl_width->value - 1, gl_height->value - 1);
+	Render2D_AddDirtyPoint(r_width->value - 1, r_height->value - 1);
 }
 
 /*
@@ -649,15 +649,15 @@ void Render2D_TileClear()
 
 		// clear below view screen
 		re.DrawTileClear(scr_vrect.x, scr_vrect.y + scr_vrect.height,
-			scr_vrect.width, gl_height->value - scr_vrect.height - scr_vrect.y, "2d/backtile");
+			scr_vrect.width, r_height->value - scr_vrect.height - scr_vrect.y, "2d/backtile");
 	}
 
 	if (scr_vrect.x > 0)
 	{	// clear left of view screen
-		re.DrawTileClear(0, 0, scr_vrect.x, gl_height->value, "2d/backtile");
+		re.DrawTileClear(0, 0, scr_vrect.x, r_height->value, "2d/backtile");
 
 		// clear right of view screen
-		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, gl_height->value, "2d/backtile");
+		re.DrawTileClear(scr_vrect.x + scr_vrect.width, 0, scr_vrect.width, r_height->value, "2d/backtile");
 	}
 }
 
@@ -837,14 +837,14 @@ void Render2D_ExecuteLayoutString(char* s)
 		if (!strcmp(token, "xr"))
 		{
 			token = COM_Parse(&s);
-			x = gl_width->value + atoi(token) * vid_hudscale->value;
+			x = r_width->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
 		if (!strcmp(token, "xv"))
 		{
 			token = COM_Parse(&s);
-			x = gl_width->value / 2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			x = r_width->value / 2 - 160 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
@@ -858,14 +858,14 @@ void Render2D_ExecuteLayoutString(char* s)
 		if (!strcmp(token, "yb"))
 		{
 			token = COM_Parse(&s);
-			y = gl_height->value + atoi(token) * vid_hudscale->value;
+			y = r_height->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
 		if (!strcmp(token, "yv"))
 		{
 			token = COM_Parse(&s);
-			y = gl_height->value / 2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
+			y = r_height->value / 2 - 120 * vid_hudscale->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
 
@@ -1062,7 +1062,7 @@ void Render2D_DrawInfo()
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
-	int32_t y = (gl_height->value - (142 * vid_hudscale->value));
+	int32_t y = (r_height->value - (142 * vid_hudscale->value));
 
 	// cls.frametime limited to 0.2s for sim purposes
 	float real_frametime = (1000.0f / cls.fps);
@@ -1120,8 +1120,8 @@ void Render2D_AddFrametimeGraph()
 	font_t* cl_console_font_ptr = Font_GetByName(cl_console_font->string);
 	const char* text_line_1 = "Frametime: %.2fms";
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, text_line_1, real_frametime);
-	int32_t y = gl_height->value - scr_graphheight->value - 15;
-	int32_t x = gl_width->value - size_x - 3;
+	int32_t y = r_height->value - scr_graphheight->value - 15;
+	int32_t x = r_width->value - size_x - 3;
 	Text_Draw(cl_console_font->string, x, y, text_line_1, real_frametime);
 
 	y += cl_console_font_ptr->line_height * vid_hudscale->value;
@@ -1213,7 +1213,7 @@ void Render_UpdateScreen()
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
 			re.DrawGetPicSize(&w, &h, "2d/loading");
-			re.DrawPic((gl_width->value - w) / 2, (gl_height->value - h) / 2, "2d/loading", NULL);
+			re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL);
 		}
 		else
 		{

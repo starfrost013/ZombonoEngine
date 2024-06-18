@@ -29,17 +29,17 @@ bool UI_MainMenuUICreate()
 
 	UI_SetStackable("MainMenuUI", true);
 
-	if (gl_width->value >= 1920)
+	if (r_width->value >= 1920)
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, gl_width->value, gl_height->value);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, r_width->value, r_height->value);
 	}
-	else if (gl_width->value >= 960)
+	else if (r_width->value >= 960)
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.5x", 0, 0, gl_width->value, gl_height->value);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.5x", 0, 0, r_width->value, r_height->value);
 	}
 	else
 	{
-		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.25x", 0, 0, gl_width->value, gl_height->value);
+		UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background@0.25x", 0, 0, r_width->value, r_height->value);
 	}
 	
 	UI_SetImageIsStretched("MainMenuUI", "UI_MainMenuUI_Background", true);

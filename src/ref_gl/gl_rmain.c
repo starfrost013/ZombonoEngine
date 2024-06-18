@@ -98,8 +98,8 @@ cvar_t* gl_bitdepth;
 cvar_t* gl_drawbuffer;
 cvar_t* gl_lightmap;
 cvar_t* gl_shadows;
-cvar_t* gl_width;
-cvar_t* gl_height;
+cvar_t* r_width;
+cvar_t* r_height;
 cvar_t* gl_dynamic;
 cvar_t* gl_modulate;
 cvar_t* gl_round_down;
@@ -722,8 +722,8 @@ void R_Register( void )
 
 	gl_modulate = ri.Cvar_Get ("gl_modulate", "1", CVAR_ARCHIVE );
 	gl_bitdepth = ri.Cvar_Get( "gl_bitdepth", "0", 0 );
-	gl_width = ri.Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
-	gl_height = ri.Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
+	r_width = ri.Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+	r_height = ri.Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 	gl_lightmap = ri.Cvar_Get ("gl_lightmap", "0", 0);
 	gl_shadows = ri.Cvar_Get ("gl_shadows", "0", CVAR_ARCHIVE );
 	gl_dynamic = ri.Cvar_Get ("gl_dynamic", "1", 0);
@@ -775,8 +775,8 @@ bool R_SetMode ()
 	vid_borderless->modified = false;
 	vid_fullscreen->modified = false;
 
-	// vid.width = gl_width->value
-	// vid.height = gl_height->value
+	// vid.width = r_width->value
+	// vid.height = r_height->value
 	err = GL_SetMode(&vid.width, &vid.height, fullscreen);
 
 	if (err != rserr_ok)
@@ -921,14 +921,14 @@ void R_BeginFrame()
 		ref->modified = true;
 	}
 
-	if (gl_width->modified
-		|| gl_height->modified)
+	if (r_width->modified
+		|| r_height->modified)
 	{
-		GL_SetResolution(gl_width->value, gl_height->value);
+		GL_SetResolution(r_width->value, r_height->value);
 		// tell the client/server about it
 		ri.Vid_ChangeResolution();
-		gl_width->modified = false;
-		gl_height->modified = false;
+		r_width->modified = false;
+		r_height->modified = false;
 	}
 
 	// make the gamma not modified

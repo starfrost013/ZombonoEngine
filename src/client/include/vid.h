@@ -29,8 +29,8 @@ typedef struct vrect_s
 	int32_t	height;
 } vrect_t;
 
-extern cvar_t* gl_width;
-extern cvar_t* gl_height;
+extern cvar_t* r_width;
+extern cvar_t* r_height;
 extern bool graphics_mode;
 
 // Video module initialisation etc

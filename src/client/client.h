@@ -319,8 +319,8 @@ extern cvar_t* cl_timeout;
 
 extern cvar_t* input_mouse_enabled;
 
-extern cvar_t* gl_width;
-extern cvar_t* gl_height;
+extern cvar_t* r_width;
+extern cvar_t* r_height;
 
 extern cvar_t* rcon_address;
 extern cvar_t* rcon_client_password;

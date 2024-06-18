@@ -200,8 +200,8 @@ extern cvar_t* gl_particle_att_b;
 extern cvar_t* gl_particle_att_c;
 
 extern cvar_t* gl_bitdepth;
-extern cvar_t* gl_width;
-extern cvar_t* gl_height;
+extern cvar_t* r_width;
+extern cvar_t* r_height;
 extern cvar_t* gl_lightmap;
 extern cvar_t* gl_shadows;
 extern cvar_t* gl_dynamic;

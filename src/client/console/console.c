@@ -236,7 +236,7 @@ void Con_CheckResize()
 	}
 	else
 	{
-		width = ((int32_t)gl_width->value >> 3) - 2;
+		width = ((int32_t)r_width->value >> 3) - 2;
 
 		if (width == con.linewidth)
 			return;
@@ -525,8 +525,8 @@ void Con_DrawNotify()
 		}
 
 		s = chat_buffer;
-		if (chat_bufferlen > ((int32_t)gl_width->value >> 3) - (skip_size_x + 1))
-			s += chat_bufferlen - (((int32_t)gl_width->value >> 3) - (skip_size_x + 1));
+		if (chat_bufferlen > ((int32_t)r_width->value >> 3) - (skip_size_x + 1))
+			s += chat_bufferlen - (((int32_t)r_width->value >> 3) - (skip_size_x + 1));
 
 		// terminator for text engine
 		char original = s[chat_bufferlen];
@@ -542,7 +542,7 @@ void Con_DrawNotify()
 	if (v)
 	{
 		Render2D_AddDirtyPoint(0, 0);
-		Render2D_AddDirtyPoint(gl_width->value - 1, v * vid_hudscale->value);
+		Render2D_AddDirtyPoint(r_width->value - 1, v * vid_hudscale->value);
 	}
 }
 
@@ -585,51 +585,51 @@ void Con_DrawConsole(float frac)
 		}
 	}
 
-	lines = gl_height->value * frac;
+	lines = r_height->value * frac;
 	if (lines <= 0)
 		return;
 
-	if (lines > gl_height->value)
-		lines = gl_height->value;
+	if (lines > r_height->value)
+		lines = r_height->value;
 
 	// draw the background (draw widescreen 457*240 background if 16:9 res)
-	if ((float)gl_width->value / (float)gl_height->value > 1.4f)
+	if ((float)r_width->value / (float)r_height->value > 1.4f)
 	{
-		if (gl_width->value >= 1920)
+		if (r_width->value >= 1920)
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9", NULL);
 		}
-		else if (gl_width->value >= 960)
+		else if (r_width->value >= 960)
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9@0.5x", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback_16x9@0.25x", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9@0.25x", NULL);
 		}
 	}
 	else
 	{
-		if (gl_width->value >= 1440)
+		if (r_width->value >= 1440)
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback", NULL);
 		}
-		else if (gl_width->value >= 720)
+		else if (r_width->value >= 720)
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback@0.5x", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback@0.5x", NULL);
 		}
 		else
 		{
-			re.DrawPicStretch(0, lines - gl_height->value, gl_width->value, gl_height->value, "2d/conback@0.25x", NULL);
+			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback@0.25x", NULL);
 		}
 	}
 
 	Render2D_AddDirtyPoint(0, 0);
-	Render2D_AddDirtyPoint(gl_width->value - 1, lines - 1);
+	Render2D_AddDirtyPoint(r_width->value - 1, lines - 1);
 
 	Com_sprintf(version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);
-	Text_Draw(cl_console_font->string, gl_width->value - size_x, lines - 12 * vid_hudscale->value, version);
+	Text_Draw(cl_console_font->string, r_width->value - size_x, lines - 12 * vid_hudscale->value, version);
 
 	// draw the text
 	con.vislines = lines;

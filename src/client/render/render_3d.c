@@ -173,7 +173,7 @@ void Render3D_PrepRefresh()
 		return;		// no map loaded
 
 	Render2D_AddDirtyPoint(0, 0);
-	Render2D_AddDirtyPoint(gl_width->value - 1, gl_height->value - 1);
+	Render2D_AddDirtyPoint(r_width->value - 1, r_height->value - 1);
 
 	// let the render dll load the map
 	strcpy(mapname, cl.configstrings[CS_MODELS + 1] + 5);	// skip "maps/"

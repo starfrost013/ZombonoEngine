@@ -63,7 +63,7 @@ void Intro_Update()
 		// make it fade
 		fade_colour[3] = 255 * sin(M_PI * (current_time_intro / cl_intro1_time->value));
 
-		re.DrawPicStretch(0, 0, gl_width->value, gl_height->value, cl_intro1->string, fade_colour);
+		re.DrawPicStretch(0, 0, r_width->value, r_height->value, cl_intro1->string, fade_colour);
 	}
 	else // show second image
 	{
@@ -72,7 +72,7 @@ void Intro_Update()
 
 		fade_colour[3] = 255 * sin(M_PI * (current_time_intro2 / cl_intro2_time->value));
 
-		re.DrawPicStretch(0, 0, gl_width->value, gl_height->value, cl_intro2->string, fade_colour);
+		re.DrawPicStretch(0, 0, r_width->value, r_height->value, cl_intro2->string, fade_colour);
 	}
 }
 

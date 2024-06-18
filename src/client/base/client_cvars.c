@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
-cvar_t* gl_width;
-cvar_t* gl_height;
+cvar_t* r_width;
+cvar_t* r_height;
 
 cvar_t* freelook;
 

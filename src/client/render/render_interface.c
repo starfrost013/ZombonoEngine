@@ -118,8 +118,8 @@ void Vid_ChangeResolution()
 	char hudscale[5];
 	memset(hudscale, 0, sizeof(hudscale));
 
-	float wscale = gl_width->value / UI_SCALE_BASE_X;
-	float hscale = gl_height->value / UI_SCALE_BASE_Y;
+	float wscale = r_width->value / UI_SCALE_BASE_X;
+	float hscale = r_height->value / UI_SCALE_BASE_Y;
 
 	if (wscale > hscale) wscale = hscale;
 	if (wscale < 1) wscale = 1;
@@ -303,8 +303,8 @@ Initialises the video/rendering subsystem
 void Vid_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
-	gl_width = Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
-	gl_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
+	r_width = Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+	r_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
 
 	vid_ref = Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get("vid_xpos", "3", CVAR_ARCHIVE);

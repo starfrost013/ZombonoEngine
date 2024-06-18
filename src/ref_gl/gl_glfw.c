@@ -89,7 +89,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 		return false;
 	}
 
-	GL_SetResolution(gl_width->value, gl_height->value);
+	GL_SetResolution(r_width->value, r_height->value);
 
 	// set up callbacks
 	glfwSetWindowSizeCallback(gl_state.window, GL_WindowSizeChanged);
@@ -138,8 +138,8 @@ void GL_SetResolution(int32_t width, int32_t height)
 	vid.width = width;
 	vid.height = height;
 	// this will change the resolution
-	ri.Cvar_SetValue("gl_width", width);
-	ri.Cvar_SetValue("gl_height", height);
+	ri.Cvar_SetValue("r_width", width);
+	ri.Cvar_SetValue("r_height", height);
 	glfwSetWindowSize(gl_state.window, width, height);
 }
 
@@ -148,7 +148,7 @@ void GL_SetResolution(int32_t width, int32_t height)
 */
 rserr_t GL_SetMode( int32_t* pwidth, int32_t* pheight, bool fullscreen )
 {
-	int32_t width = (int32_t)gl_width->value, height = (int32_t)gl_height->value;
+	int32_t width = (int32_t)r_width->value, height = (int32_t)r_height->value;
 	const char *window_modes[] = { "Windowed", "Fullscreen"};
 
 	// destroy the existing window

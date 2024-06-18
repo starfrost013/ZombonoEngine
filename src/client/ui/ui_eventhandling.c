@@ -114,8 +114,8 @@ void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-			float final_pos_x = ui_control_ptr->position_x * gl_width->value;
-			float final_pos_y = ui_control_ptr->position_y * gl_height->value;
+			float final_pos_x = ui_control_ptr->position_x * r_width->value;
+			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
 			// Handle focus changes for key events
 			// TODO: Scaling
@@ -154,8 +154,8 @@ void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-			float final_pos_x = ui_control_ptr->position_x * gl_width->value;
-			float final_pos_y = ui_control_ptr->position_y * gl_height->value;
+			float final_pos_x = ui_control_ptr->position_x * r_width->value;
+			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
 			// Handle focus changes for key events
 			// TODO: Scaling

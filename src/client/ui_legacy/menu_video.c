@@ -77,7 +77,7 @@ typedef struct vidmode_s
 	int32_t     mode;
 } vidmode_t;
 
-// These are strictly virtual modes and the driver only cares about gl_width and gl_height so we don't bother with them
+// These are strictly virtual modes and the driver only cares about r_width and r_height so we don't bother with them
 vidmode_t vid_modes[] =
 {
 	{ "Mode 0: 320x240",   320, 240,   0 },
@@ -200,8 +200,8 @@ static void ApplyChanges(void* unused)
 	if (s_mode_list[OPENGL_MENU].curvalue > 0)
 	{
 		// -1 for the "custom" option
-		Cvar_SetValue("gl_width", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].width);
-		Cvar_SetValue("gl_height", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].height);
+		Cvar_SetValue("r_width", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].width);
+		Cvar_SetValue("r_height", vid_modes[s_mode_list[OPENGL_MENU].curvalue - 1].height);
 	}
 
 	switch (s_ref_list[s_current_menu_index].curvalue)
@@ -284,10 +284,10 @@ void Vid_MenuInit()
 
 	if (!gl_picmip)
 		gl_picmip = Cvar_Get("gl_picmip", "0", 0);
-	if (!gl_width)
-		gl_width = Cvar_Get("gl_width", "1024", CVAR_ARCHIVE);
-	if (!gl_height)
-		gl_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
+	if (!r_width)
+		r_width = Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+	if (!r_height)
+		r_height = Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 	if (!gl_vsync)
 		gl_vsync = Cvar_Get("gl_vsync", "0", CVAR_ARCHIVE);
 	if (!gl_texturemode)
@@ -299,7 +299,7 @@ void Vid_MenuInit()
 	// since modes don't actually exist now and the game can run at an arbitrary resolution we have to search for the correct item
 	for (int32_t mode_num = 0; mode_num < VID_NUM_MODES; mode_num++)
 	{
-		if (vid_modes[mode_num].width == gl_width->value)
+		if (vid_modes[mode_num].width == r_width->value)
 		{
 			s_mode_list[OPENGL_MENU].curvalue = mode_num + 1; // +1 for "custom" option
 			break;
@@ -318,7 +318,7 @@ void Vid_MenuInit()
 		s_ref_list[s_current_menu_index].curvalue = REF_OPENGL;
 	}
 
-	s_opengl_menu.x = gl_width->value * 0.50;
+	s_opengl_menu.x = r_width->value * 0.50;
 	s_opengl_menu.nitems = 0;
 
 	for (i = 0; i < NUM_REF_MENUS; i++)
@@ -461,7 +461,7 @@ void Vid_MenuDraw()
 	** draw the banner
 	*/
 	re.DrawGetPicSize(&w, &h, "2d/m_banner_video");
-	re.DrawPic(gl_width->value / 2 - w / 2, gl_height->value / 2 - 110 * vid_hudscale->value, "2d/m_banner_video", NULL);
+	re.DrawPic(r_width->value / 2 - w / 2, r_height->value / 2 - 110 * vid_hudscale->value, "2d/m_banner_video", NULL);
 
 	/*
 	** move cursor to a reasonable starting position

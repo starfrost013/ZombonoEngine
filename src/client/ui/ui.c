@@ -590,10 +590,10 @@ void UI_Draw()
 	int32_t size_x = 0, size_y = 0;
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
-	Text_Draw(cl_system_font->string, gl_width->value - size_x, 0, time_str);
+	Text_Draw(cl_system_font->string, r_width->value - size_x, 0, time_str);
 	const char* prerelease_text = "^3Pre-release build!";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, prerelease_text);
-	Text_Draw(cl_system_font->string, gl_width->value - size_x, 10 * vid_hudscale->value, prerelease_text);
+	Text_Draw(cl_system_font->string, r_width->value - size_x, 10 * vid_hudscale->value, prerelease_text);
 
 #endif
 
@@ -610,8 +610,8 @@ void UI_Draw()
 
 				if (!current_ui_control->invisible)
 				{
-					float final_pos_x = current_ui_control->position_x * gl_width->value;
-					float final_pos_y = current_ui_control->position_y * gl_height->value;
+					float final_pos_x = current_ui_control->position_x * r_width->value;
+					float final_pos_y = current_ui_control->position_y * r_height->value;
 
 					// toggle UI hover images if the mouse is within a UI
 					current_ui_control->hovered =
@@ -652,8 +652,8 @@ void UI_Draw()
 
 void UI_DrawText(ui_control_t* text)
 {
-	int32_t final_pos_x = text->position_x * gl_width->value;
-	int32_t final_pos_y = text->position_y * gl_height->value;
+	int32_t final_pos_x = text->position_x * r_width->value;
+	int32_t final_pos_y = text->position_y * r_height->value;
 
 	// initialised to 0
 	// if the font is not set use the system font
@@ -669,8 +669,8 @@ void UI_DrawText(ui_control_t* text)
 
 void UI_DrawImage(ui_control_t* image)
 {
-	int32_t final_pos_x = image->position_x * gl_width->value;
-	int32_t final_pos_y = image->position_y * gl_height->value;
+	int32_t final_pos_x = image->position_x * r_width->value;
+	int32_t final_pos_y = image->position_y * r_height->value;
 
 	int32_t final_size_x = image->size_x * vid_hudscale->value;
 	int32_t final_size_y = image->size_y * vid_hudscale->value;
@@ -723,8 +723,8 @@ void UI_DrawSlider(ui_control_t* slider)
 	int32_t size_x = 0, size_y = 0; // emulate original code R2L drawing
 
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, slider->text);
-	Text_Draw(cl_system_font->string, slider->position_x * gl_width->value  + LCOLUMN_OFFSET - size_x,
-		slider->position_y * gl_height->value,
+	Text_Draw(cl_system_font->string, slider->position_x * r_width->value  + LCOLUMN_OFFSET - size_x,
+		slider->position_y * r_height->value,
 		slider->text);
 
 	float range = (slider->value_current - slider->value_min) / (float)(slider->value_max - slider->value_min);
@@ -734,14 +734,14 @@ void UI_DrawSlider(ui_control_t* slider)
 	if (range > 1)
 		range = 1;
 
-	re.DrawPic(slider->position_x * gl_width->value  + RCOLUMN_OFFSET, slider->position_y * gl_height->value, "2d/slider_01", NULL);
+	re.DrawPic(slider->position_x * r_width->value  + RCOLUMN_OFFSET, slider->position_y * r_height->value, "2d/slider_01", NULL);
 	
 	for (i = 0; i < SLIDER_RANGE; i++)
-		re.DrawPic(RCOLUMN_OFFSET + slider->position_x * gl_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * gl_height->value, "2d/slider_02", NULL);
+		re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_02", NULL);
 	
-	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * gl_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * gl_height->value, "2d/slider_03", NULL);
+	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_03", NULL);
 	
-	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * gl_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * gl_height->value, "2d/slider_value", NULL);
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * r_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * r_height->value, "2d/slider_value", NULL);
 }
 
 void UI_DrawCheckbox(ui_control_t* checkbox)
@@ -751,8 +751,8 @@ void UI_DrawCheckbox(ui_control_t* checkbox)
 
 void UI_DrawBox(ui_control_t* box)
 {
-	int32_t final_pos_x = box->position_x * gl_width->value;
-	int32_t final_pos_y = box->position_y * gl_height->value;
+	int32_t final_pos_x = box->position_x * r_width->value;
+	int32_t final_pos_y = box->position_y * r_height->value;
 
 	int32_t final_size_x = box->size_x * vid_hudscale->value;
 	int32_t final_size_y = box->size_y * vid_hudscale->value;
@@ -784,12 +784,12 @@ void UI_DrawSpinControl(ui_control_t* spin_control)
 	if (spin_control->text)
 	{
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, spin_control->text);
-		Text_Draw(cl_system_font->string, spin_control->position_x * gl_width->value + LCOLUMN_OFFSET - size_x,
+		Text_Draw(cl_system_font->string, spin_control->position_x * r_width->value + LCOLUMN_OFFSET - size_x,
 			spin_control->position_y,
 			spin_control->text);
 	}
 
-	Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + spin_control->position_x * gl_width->value, spin_control->position_y, spin_control->item_names[(int32_t)spin_control->value_current]);
+	Text_Draw(cl_system_font->string, RCOLUMN_OFFSET + spin_control->position_x * r_width->value, spin_control->position_y, spin_control->item_names[(int32_t)spin_control->value_current]);
 }
 
 bool UI_EntryOnKeyDown(ui_control_t* entry, int32_t key)
@@ -881,25 +881,25 @@ void UI_DrawEntry(ui_control_t* entry)
 	if (entry->text)
 	{
 		Text_GetSize(cl_system_font->string, &name_size_x, &name_size_y, entry->text);
-		Text_Draw(cl_system_font->string, entry->position_x * gl_width->value + LCOLUMN_OFFSET - name_size_x, entry->position_y * gl_height->value, entry->text);
+		Text_Draw(cl_system_font->string, entry->position_x * r_width->value + LCOLUMN_OFFSET - name_size_x, entry->position_y * r_height->value, entry->text);
 	}
 
 	strncpy(tempbuffer, entry->entry_text_buffer + entry->cursor_last_visible, entry->cursor_last_visible);
 
-	re.DrawPic(entry->position_x * gl_width->value + 16 * vid_hudscale->value, entry->position_y * gl_height->value - 4 * vid_hudscale->value, "2d/field_top_01", NULL);
-	re.DrawPic(entry->position_x * gl_width->value + 16 * vid_hudscale->value, entry->position_y * gl_height->value + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_01", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL);
 
-	re.DrawPic(entry->position_x * gl_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * gl_height->value - 4 * vid_hudscale->value, "2d/field_top_03", NULL);
-	re.DrawPic(entry->position_x * gl_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * gl_height->value + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_03", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL);
 
 	for (i = 0; i < entry->cursor_last_visible; i++)
 	{
-		re.DrawPic(entry->position_x * gl_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * gl_height->value - 4 * vid_hudscale->value, "2d/field_top_02", NULL);
-		re.DrawPic(entry->position_x * gl_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * gl_height->value + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL);
+		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_02", NULL);
+		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL);
 	}
 
 	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
-	Text_Draw(cl_system_font->string, entry->position_x * gl_width->value + 24 * vid_hudscale->value, (entry->position_y * gl_height->value) - 1, tempbuffer); // -1 for padding
+	Text_Draw(cl_system_font->string, entry->position_x * r_width->value + 24 * vid_hudscale->value, (entry->position_y * r_height->value) - 1, tempbuffer); // -1 for padding
 
 	int32_t offset;
 
@@ -911,8 +911,8 @@ void UI_DrawEntry(ui_control_t* entry)
 	if (((int32_t)(Sys_Milliseconds() / 250)) & 1)
 	{
 		// 8x8 is cursor size
-		re.DrawPic(entry->position_x * gl_width->value + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
-			entry->position_y * gl_height->value,
+		re.DrawPic(entry->position_x * r_width->value + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
+			entry->position_y * r_height->value,
 			"2d/field_cursor_on", NULL);
 	}
 }
