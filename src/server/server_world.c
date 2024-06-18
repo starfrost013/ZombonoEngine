@@ -161,9 +161,11 @@ void SV_UnlinkEdict (edict_t *ent)
 ===============
 SV_LinkEdict
 
+Links an edict into the chain so it can be acutally used
 ===============
 */
 #define MAX_TOTAL_ENT_LEAFS		256
+
 void SV_LinkEdict (edict_t *ent)
 {
 	areanode_t	*node;
@@ -219,7 +221,6 @@ void SV_LinkEdict (edict_t *ent)
 	{
 		ent->s.solid = 0;
 	}
-
 
 	// set the abs box
 	if (ent->solid == SOLID_BSP && 

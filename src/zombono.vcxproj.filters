@@ -93,28 +93,28 @@
     <ClCompile Include="qcommon\net_chan.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_world.c">
+    <ClCompile Include="server\server_world.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_ccmds.c">
+    <ClCompile Include="server\server_console_commands.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_ents.c">
+    <ClCompile Include="server\server_entities.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_game.c">
+    <ClCompile Include="server\server_game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_init.c">
+    <ClCompile Include="server\server_init.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_main.c">
+    <ClCompile Include="server\server_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_send.c">
+    <ClCompile Include="server\server_send.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_user.c">
+    <ClCompile Include="server\server_user.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32\conproc.c">
@@ -192,7 +192,7 @@
     <ClCompile Include="client\intro\intro.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="server\sv_master.c">
+    <ClCompile Include="server\server_master.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qcommon\netservices\netservices_masterserver.c">
