@@ -5,6 +5,11 @@ Version 0.0.11/0.1.0
 June 29, 2024
 
 NEW FEATURES:
+	* UIs are now stackable:
+		* If a UI has its "stackable" field set using the UI_SetStackable function with the stackable parameter set to "true", the UI will enter into a stack.
+			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
+			* Up to MAX_UIs (32) UIs can be stacked currently
+			* You can't push the same UI to the stack twice in a row (in order to prevent bugs), but you can stack the same UI twice non-consecutively.
 	* Master server changes:
 		* The master server protocol now sends the number of players in the server directly.
 		* Added an sv_debug_heartbeat cvar that sends the heartbeat every two seconds instead of five minutes. It is only present on debug builds, to remove any outside possibility of spamming the server.
@@ -22,18 +27,23 @@ NEW FEATURES:
 		* cl_console_fraction - determines how much of the screen the console will take up. The default value is 0.5 (50%)
 			* For the old fullscreen console behaviour, use cl_console_fraction 1.0
 	* The console is now disableable when you aren't doing anything
+	* Massive code reorganisation for client
+	* Added light fixture details to the lights in the bases of z_tdm_subway
 
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.
 		* However this does not apply to the tangfuslicator ammo or rockets, so you can boost off of those.
-	* Fixed crash when alt+tabbing out
+	* Fixed crash when alt+tabbing out of the game with dedicated fullscreen enabled
 	* Fixed textures still being internally interpreted with a maximum length of 32 characters instead of the intended 80, leading to phantom downloads of textures that really existed, but with longer names
 	* Fixed debug info being printed while not connected to the server
 	* Fixed garbage debug information being printed when the game is running below 30 fps due to non-escaped % sign
 	* Fixed UI initialisation status being set to successful even if it failed
+	* Fixed the constraint of only one UI being activated at a time not actually existing 
+	* Fixed a crash when debug graphs were used
 
 REMOVALS:
-	* The m_filter cvar
+	* Removed the m_filter cvar - it did nothing
+	* Renamed scr_debuggraph to scr_netgraph -- more clearly delineates its purpose
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour

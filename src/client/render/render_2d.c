@@ -37,14 +37,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <client/client.h>
 #include <inttypes.h>
 
-float		scr_con_current;	// aproaches scr_conlines at scr_conspeed
-float		scr_conlines;		// 0.0 to 1.0 lines of console to display
+float	scr_con_current;	// aproaches scr_conlines at scr_conspeed
+float	scr_conlines;		// 0.0 to 1.0 lines of console to display
 
-bool		scr_initialized;		// ready to draw
+bool	scr_initialized;		// ready to draw
 
-int32_t 	scr_draw_loading;
+int32_t scr_draw_loading;
 
-vrect_t		scr_vrect;		// position of render window on screen
+vrect_t	scr_vrect;		// position of render window on screen
 
 cvar_t* scr_viewsize;
 cvar_t* scr_conspeed;
@@ -52,7 +52,7 @@ cvar_t* scr_centertime;
 cvar_t* scr_showpause;
 
 cvar_t* scr_timegraph;
-cvar_t* scr_debuggraph;
+cvar_t* scr_netgraph;
 cvar_t* scr_graphheight;
 cvar_t* scr_graphscale;
 cvar_t* scr_graphshift;
@@ -63,7 +63,10 @@ extern cvar_t* vid_ref;
 
 typedef struct dirty_s
 {
-	int32_t 	x1, y1, x2, y2;
+	int32_t 	x1;
+	int32_t		y1;
+	int32_t		x2;
+	int32_t		y2;
 } dirty_t;
 
 dirty_t		scr_dirty, scr_old_dirty[2];
@@ -108,19 +111,18 @@ void Render2D_AddNetgraph()
 	Render2D_DebugGraph(ping, 18, 15, 22, 255);
 }
 
-
 typedef struct
 {
 	float	value;
 	vec_t   color[4];
 } graphsamp_t;
 
-static	int32_t 		current;
-static	graphsamp_t	values[1024];
+static int32_t 		current;
+static graphsamp_t	values[1024];
 
 /*
 ==============
-SCR_DebugGraph
+scr_netgraph
 ==============
 */
 void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a)
@@ -140,8 +142,9 @@ SCR_DrawDebugGraph
 */
 void Render2D_DrawDebugGraph()
 {
-	int32_t a, x, y, w, i, h;
-	float	v;
+	int32_t		a, x, y, w, i, h;
+	color4_t	debug_graph_color = { 123, 123, 123, 255 };
+	float		v;
 
 	//
 	// draw the graph
@@ -151,7 +154,7 @@ void Render2D_DrawDebugGraph()
 	x = scr_vrect.x;
 	y = scr_vrect.y + scr_vrect.height;
 	re.DrawFill(x, y - scr_graphheight->value,
-		w, scr_graphheight->value, 123, 123, 123, 255);
+		w, scr_graphheight->value, debug_graph_color);
 
 	for (a = 0; a < w; a++)
 	{
@@ -203,6 +206,7 @@ void Render2D_CenterPrint(char* str)
 	{
 		if (*s == '\n')
 			scr_center_lines++;
+
 		s++;
 	}
 
@@ -359,7 +363,7 @@ void Render2D_Init()
 	scr_showpause = Cvar_Get("scr_showpause", "1", 0);
 	scr_centertime = Cvar_Get("scr_centertime", "2.5", 0);
 	scr_timegraph = Cvar_Get("timegraph", "0", 0);
-	scr_debuggraph = Cvar_Get("debuggraph", "0", 0);
+	scr_netgraph = Cvar_Get("netgraph", "0", 0);
 	scr_graphheight = Cvar_Get("graphheight", "32", 0);
 	scr_graphscale = Cvar_Get("graphscale", "1", 0);
 	scr_graphshift = Cvar_Get("graphshift", "0", 0);
@@ -804,7 +808,7 @@ void Render2D_ExecuteLayoutString(char* s)
 {
 	int32_t 	x, y;
 	int32_t 	value;
-	char* token;
+	char*		token;
 	int32_t 	width;
 	int32_t 	index;
 	clientinfo_t* ci;
@@ -822,18 +826,21 @@ void Render2D_ExecuteLayoutString(char* s)
 	while (s)
 	{
 		token = COM_Parse(&s);
+
 		if (!strcmp(token, "xl"))
 		{
 			token = COM_Parse(&s);
 			x = atoi(token) * vid_hudscale->value;
 			continue;
 		}
+
 		if (!strcmp(token, "xr"))
 		{
 			token = COM_Parse(&s);
 			x = gl_width->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
+
 		if (!strcmp(token, "xv"))
 		{
 			token = COM_Parse(&s);
@@ -847,12 +854,14 @@ void Render2D_ExecuteLayoutString(char* s)
 			y = atoi(token) * vid_hudscale->value;
 			continue;
 		}
+
 		if (!strcmp(token, "yb"))
 		{
 			token = COM_Parse(&s);
 			y = gl_height->value + atoi(token) * vid_hudscale->value;
 			continue;
 		}
+
 		if (!strcmp(token, "yv"))
 		{
 			token = COM_Parse(&s);
@@ -1055,21 +1064,24 @@ void Render2D_DrawInfo()
 	int32_t x = (10 * vid_hudscale->value);
 	int32_t y = (gl_height->value - (142 * vid_hudscale->value));
 
+	// cls.frametime limited to 0.2s for sim purposes
+	float real_frametime = (1000.0f / cls.fps);
+
 	if (cls.fps < alarm_fps)
 	{
 		Text_Draw(cl_console_font->string, x, y,
-			"FPS: ^1%.2f (The game is lagging - <50\045 target FPS %.1f)!", cls.fps, target_fps);
+			"FPS: ^1%.2f (%.2fms) (The game is lagging - <50\045 target FPS %.1f)!", cls.fps, real_frametime, target_fps);
 	}
 	else if (cls.fps < warning_fps
 		&& cls.fps > alarm_fps)
 	{
 		Text_Draw(cl_console_font->string, x, y,
-			"FPS: ^3%.2f (Significantly below target FPS %.1f)!", cls.fps, target_fps);
+			"FPS: ^3%.2f (%.2fms) (Significantly below target FPS %.1f)!", cls.fps, real_frametime, target_fps);
 	}
 	else
 	{
 		Text_Draw(cl_console_font->string, x, y,
-			"FPS: %.2f", cls.fps);
+			"FPS: %.2f (%.2fms)", cls.fps, real_frametime);
 	}
 
 	y += console_font_ptr->line_height * vid_hudscale->value;
@@ -1096,6 +1108,26 @@ void Render2D_DrawInfo()
 		"Particles: %d/%d", r_numparticles, MAX_PARTICLES);
 	y += console_font_ptr->line_height * 2 * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y, "Map: %s", map_name);
+}
+
+void Render2D_AddFrametimeGraph()
+{
+	// game caps cls.frametime to 0.2, for simulation purposes
+	float real_frametime = (1000.0f / cls.fps);
+
+	// draw some nice text
+	int32_t size_x = 0, size_y = 0;
+	font_t* cl_console_font_ptr = Font_GetByName(cl_console_font->string);
+	const char* text_line_1 = "Frametime: %.2fms";
+	Text_GetSize(cl_console_font->string, &size_x, &size_y, text_line_1, real_frametime);
+	int32_t y = gl_height->value - scr_graphheight->value - 15;
+	int32_t x = gl_width->value - size_x - 3;
+	Text_Draw(cl_console_font->string, x, y, text_line_1, real_frametime);
+
+	y += cl_console_font_ptr->line_height * vid_hudscale->value;
+
+	Render2D_DebugGraph(cls.frametime * 300, 255, 255, 255, 255);
+
 }
 
 /*
@@ -1204,9 +1236,9 @@ void Render_UpdateScreen()
 				Render2D_CheckDrawCenterString();
 
 				if (scr_timegraph->value)
-					Render2D_DebugGraph(cls.frametime * 300, 0, 0, 0, 255);
+					Render2D_AddFrametimeGraph();
 
-				if (scr_debuggraph->value || scr_timegraph->value)
+				if (scr_netgraph->value || scr_timegraph->value)
 					Render2D_DrawDebugGraph();
 
 				Render2D_DrawPause();
