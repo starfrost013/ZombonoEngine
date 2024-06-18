@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="client\cl_ents.c">
+    <ClCompile Include="client\entity\entity_client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\fx\fx_particles.c">
@@ -24,25 +24,25 @@
     <ClCompile Include="client\input\input_base.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_main.c">
+    <ClCompile Include="client\base\client_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_parse.c">
+    <ClCompile Include="client\base\client_parse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_pred.c">
+    <ClCompile Include="client\base\client_prediction.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\render\render_2d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_tempentity.c">
+    <ClCompile Include="client\entity\entity_tempent.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\render\render_3d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_console.c">
+    <ClCompile Include="client\console\console.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\input\input_events.c">
@@ -165,7 +165,7 @@
     <ClCompile Include="game\gameplay\game_monster_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_loadout.c">
+    <ClCompile Include="client\loadout\loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\render\render_interface.c">
@@ -189,7 +189,7 @@
     <ClCompile Include="client\fx\fx_explosion.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\cl_intro.c">
+    <ClCompile Include="client\intro\intro.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="server\sv_master.c">
@@ -214,6 +214,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\input\input_mouse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\base\client_commands.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\base\client_cvars.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\base\client_commands_demo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\base\client_commands_download.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,11 +30,11 @@ CL_AddExplosions
 */
 void CL_AddExplosions()
 {
-	entity_t* ent;
-	int32_t 		i;
+	entity_t*	ent;
+	int32_t 	i;
 	explosion_t* ex;
 	float		frac;
-	int32_t 		f;
+	int32_t 	f;
 
 	memset(&ent, 0, sizeof(ent));
 
@@ -110,6 +110,7 @@ void CL_AddExplosions()
 
 		if (ex->type == ex_free)
 			continue;
+
 		if (ex->light)
 		{
 			Render3D_AddLight(ent->origin, ex->light * ent->alpha,

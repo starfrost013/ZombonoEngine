@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // cl_ents.c -- entity parsing and management
 
-#include "client.h"
+#include <client/client.h>
 
 int32_t vidref_val;
 
@@ -559,14 +559,14 @@ void CL_ParseFrame ()
 
 	// read playerinfo
 	cmd = MSG_ReadByte (&net_message);
-	ShowNet(svc_strings[cmd]);
+	CL_ShowNet(svc_strings[cmd]);
 	if (cmd != svc_playerinfo)
 		Com_Error (ERR_DROP, "CL_ParseFrame: not playerinfo");
 	CL_ParsePlayerstate (old, &cl.frame);
 
 	// read packet entities
 	cmd = MSG_ReadByte (&net_message);
-	ShowNet(svc_strings[cmd]);
+	CL_ShowNet(svc_strings[cmd]);
 	if (cmd != svc_packetentities)
 		Com_Error (ERR_DROP, "CL_ParseFrame: not packetentities");
 	CL_ParsePacketEntities (old, &cl.frame);

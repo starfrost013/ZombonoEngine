@@ -315,10 +315,23 @@ extern cvar_t* cl_intro2;
 extern cvar_t* cl_intro1_time;
 extern cvar_t* cl_intro2_time;
 
+extern cvar_t* cl_timeout;
+
 extern cvar_t* input_mouse_enabled;
 
 extern cvar_t* gl_width;
 extern cvar_t* gl_height;
+
+extern cvar_t* rcon_address;
+extern cvar_t* rcon_client_password;
+
+extern cvar_t* gender;
+extern cvar_t* gender_auto;
+
+extern cvar_t* skin;
+
+//userinfo
+extern cvar_t* msg;
 
 typedef struct cdlight_s
 {
@@ -354,6 +367,7 @@ extern netadr_t		net_from;
 extern sizebuf_t	net_message;
 
 bool CL_CheckOrDownloadFile(char* filename);
+void CL_ParseDownload();
 
 void CL_TeleporterParticles(entity_state_t* ent);
 void CL_ParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t count);
@@ -431,10 +445,21 @@ void CL_Disconnect();
 void CL_Disconnect_f();
 void CL_PingServers_f();
 void CL_Snd_Restart_f();
+void CL_Precache_f();
 void CL_RequestNextDownload();
 
 //
-// cl_demo.c
+// client_cvars.c
+//
+void CL_InitCvars();
+
+//
+// client_commands.c
+// 
+void CL_InitCommands();
+
+//
+// client_commands_demo.c
 //
 void CL_WriteDemoMessage();
 void CL_Stop_f();
@@ -443,11 +468,11 @@ void CL_Record_f();
 //
 // cl_parse.c
 //
-extern	char* svc_strings[256];
+extern char* svc_strings[256];
 
 void CL_ParseServerMessage();
 void CL_LoadClientinfo(clientinfo_t* ci, char* s);
-void ShowNet(char* s);
+void CL_ShowNet(char* s);
 void CL_ParseClientinfo(int32_t player);
 void CL_Download_f();
 
@@ -480,7 +505,7 @@ void CL_ClearLightStyles();
 // cl_fx_explosion.c
 //
 
-typedef enum
+typedef enum exptype_s
 {
 	ex_free,
 	ex_explosion,
@@ -491,7 +516,7 @@ typedef enum
 	ex_poly2
 } exptype_t;
 
-typedef struct
+typedef struct explosion_s
 {
 	exptype_t	type;
 	entity_t	ent;
