@@ -52,7 +52,7 @@ static bool paused = false;
 static bool playLooping = false;
 static bool trackFinished = false;
 
-static cvar_t *s_volume;
+static cvar_t *s_volume_music;
 static cvar_t *s_loopcount;
 static cvar_t *s_looptrack;
 static cvar_t *no_music;
@@ -159,7 +159,7 @@ static void Miniaudio_f()
 
 void Miniaudio_Init()
 {
-	s_volume = Cvar_Get("s_volume", "1", CVAR_ARCHIVE);
+	s_volume_music = Cvar_Get("s_volume_music", "1", CVAR_ARCHIVE);
 	s_loopcount = Cvar_Get("s_loopcount", "4", 0);
 	s_looptrack = Cvar_Get("s_looptrack", "11", 0);
 	no_music = Cvar_Get("no_music", "0", 0);
@@ -238,10 +238,10 @@ void Miniaudio_Play(int32_t track, bool looping)
 	paused = false;
 	trackFinished = false;
 
-	if ( Cvar_VariableValue("cd_volume") == 0 )
+	if ( Cvar_VariableValue("s_volume_music") == 0 )
 		Miniaudio_Pause();
 
-	ma_device_set_master_volume(&device, s_volume->value);
+	ma_device_set_master_volume(&device, s_volume_music->value);
 }
 
 void Miniaudio_Stop()
@@ -261,21 +261,21 @@ void Miniaudio_Update()
 	if (no_music->value != 0)
 		return;
 
-	if (s_volume->modified)
+	if (s_volume_music->modified)
 	{
-		s_volume->modified = false;
+		s_volume_music->modified = false;
 
-		if (s_volume->value < 0.f)
-			Cvar_SetValue("s_volume", 0.f);
-		if (s_volume->value > 1.f)
-			Cvar_SetValue("s_volume", 1.f);
+		if (s_volume_music->value < 0.f)
+			Cvar_SetValue("s_volume_music", 0.f);
+		if (s_volume_music->value > 1.f)
+			Cvar_SetValue("s_volume_music", 1.f);
 
-		ma_device_set_master_volume(&device, s_volume->value);
+		ma_device_set_master_volume(&device, s_volume_music->value);
 	}
 
-	if ((s_volume->value == 0) != !enabled)
+	if ((s_volume_music->value == 0) != !enabled)
 	{
-		if (s_volume->value == 0)
+		if (s_volume_music->value == 0)
 		{
 			Miniaudio_Pause();
 			enabled = false;

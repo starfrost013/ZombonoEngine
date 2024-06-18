@@ -1080,7 +1080,7 @@ static float ClampCvar(float min, float max, float value)
 static void ControlsSetMenuItemValues(void)
 {
 	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume") * 10;
-	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("cd_volume") * 10;
+	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
 	s_options_quality_list.curvalue = !Cvar_VariableValue("s_loadas8bit");
 	s_options_sensitivity_slider.curvalue = (sensitivity->value) * 2;
 
@@ -1132,7 +1132,7 @@ static void UpdateVolumeFunc(void* unused)
 
 static void UpdateCDVolumeFunc(void* unused)
 {
-	Cvar_SetValue("cd_volume", s_options_cdvolume_slider.curvalue / 10);
+	Cvar_SetValue("s_volume_music", s_options_cdvolume_slider.curvalue / 10);
 }
 
 static void ConsoleFunc(void* unused)
@@ -1224,7 +1224,7 @@ void Options_MenuInit(void)
 	s_options_cdvolume_slider.generic.callback = UpdateCDVolumeFunc;
 	s_options_cdvolume_slider.minvalue = 0;
 	s_options_cdvolume_slider.maxvalue = 10;
-	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("cd_volume") * 10;
+	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
 
 	s_options_quality_list.generic.type = MTYPE_SPINCONTROL;
 	s_options_quality_list.generic.x = 0;
