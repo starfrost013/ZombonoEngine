@@ -43,7 +43,7 @@ BUG FIXES:
 
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing
-	* Renamed scr_debuggraph to scr_netgraph -- more clearly delineates its purpose
+
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour
@@ -53,7 +53,9 @@ OTHER CHANGES:
 	* Engine sign-on message now matches "Euphoria Retro Game Engine" external branding
 	* Changed quit image
 	* Renamed mouse_input cvar to input_mouse_enabled
-
+	* Renamed scr_debuggraph to scr_netgraph -- more clearly delineates its purpose
+	* Renamed basically every single source file
+	
 Version 0.0.10 (Build 558)
 June 8, 2024
 * Fixed numerous horrific crimes against C programming that caused crash bugs

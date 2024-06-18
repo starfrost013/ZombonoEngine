@@ -1,5 +1,4 @@
 /*
-Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
@@ -27,6 +26,8 @@ bool UI_MainMenuUICreate()
 	// don't bother creating it if ui_newmenu is not set to 1
 	if (!ui_newmenu->value)
 		return true; 
+
+	UI_SetStackable("MainMenuUI", true);
 
 	if (gl_width->value >= 1920)
 	{
