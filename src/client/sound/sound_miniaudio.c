@@ -52,9 +52,9 @@ static bool paused = false;
 static bool playLooping = false;
 static bool trackFinished = false;
 
-static cvar_t *cd_volume;
-static cvar_t *cd_loopcount;
-static cvar_t *cd_looptrack;
+static cvar_t *s_volume;
+static cvar_t *s_loopcount;
+static cvar_t *s_looptrack;
 static cvar_t *no_music;
 
 static void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
@@ -159,9 +159,9 @@ static void Miniaudio_f()
 
 void Miniaudio_Init()
 {
-	cd_volume = Cvar_Get("cd_volume", "1", CVAR_ARCHIVE);
-	cd_loopcount = Cvar_Get("cd_loopcount", "4", 0);
-	cd_looptrack = Cvar_Get("cd_looptrack", "11", 0);
+	s_volume = Cvar_Get("s_volume", "1", CVAR_ARCHIVE);
+	s_loopcount = Cvar_Get("s_loopcount", "4", 0);
+	s_looptrack = Cvar_Get("s_looptrack", "11", 0);
 	no_music = Cvar_Get("no_music", "0", 0);
 	enabled = no_music->value == 0;
 	paused = false;
@@ -241,7 +241,7 @@ void Miniaudio_Play(int32_t track, bool looping)
 	if ( Cvar_VariableValue("cd_volume") == 0 )
 		Miniaudio_Pause();
 
-	ma_device_set_master_volume(&device, cd_volume->value);
+	ma_device_set_master_volume(&device, s_volume->value);
 }
 
 void Miniaudio_Stop()
@@ -261,21 +261,21 @@ void Miniaudio_Update()
 	if (no_music->value != 0)
 		return;
 
-	if (cd_volume->modified)
+	if (s_volume->modified)
 	{
-		cd_volume->modified = false;
+		s_volume->modified = false;
 
-		if (cd_volume->value < 0.f)
-			Cvar_SetValue("cd_volume", 0.f);
-		if (cd_volume->value > 1.f)
-			Cvar_SetValue("cd_volume", 1.f);
+		if (s_volume->value < 0.f)
+			Cvar_SetValue("s_volume", 0.f);
+		if (s_volume->value > 1.f)
+			Cvar_SetValue("s_volume", 1.f);
 
-		ma_device_set_master_volume(&device, cd_volume->value);
+		ma_device_set_master_volume(&device, s_volume->value);
 	}
 
-	if ((cd_volume->value == 0) != !enabled)
+	if ((s_volume->value == 0) != !enabled)
 	{
-		if (cd_volume->value == 0)
+		if (s_volume->value == 0)
 		{
 			Miniaudio_Pause();
 			enabled = false;
@@ -303,13 +303,13 @@ void Miniaudio_Update()
 		{
 			// if the track has played the given number of times,
 			// go to the ambient track
-			if (++loopcounter >= cd_loopcount->value)
+			if (++loopcounter >= s_loopcount->value)
 			{
 				// ambient track will be played for the first time, so we need to load it
-				if (loopcounter == cd_loopcount->value)
+				if (loopcounter == s_loopcount->value)
 				{
 					Miniaudio_Stop();
-					Miniaudio_Play(cd_looptrack->value, true);
+					Miniaudio_Play(s_looptrack->value, true);
 				}
 				else
 				{

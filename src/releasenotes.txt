@@ -55,7 +55,9 @@ OTHER CHANGES:
 	* Renamed mouse_input cvar to input_mouse_enabled
 	* Renamed scr_debuggraph to scr_netgraph -- more clearly delineates its purpose
 	* Renamed basically every single source file
-	
+	* Renamed gl_width and gl_height CVars to r_width and r_height due to being renderer independent
+	* Renamed cd_ cvars to s_ because they don't relate to CDs anymore
+
 Version 0.0.10 (Build 558)
 June 8, 2024
 * Fixed numerous horrific crimes against C programming that caused crash bugs
