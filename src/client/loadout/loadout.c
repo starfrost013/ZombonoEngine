@@ -84,6 +84,10 @@ void Loadout_Update()
 	// do not interrupt teamui
 	if (current_ui == NULL || !strncmp(current_ui->name, "TeamUI", 7))
 		return;
+	
+	// if the client is NOT FUCKING RUNNING, don't do anything
+	if (cls.state != ca_active)
+		return;
 
 	// if the user wants the UI faded out...
 	if (cl_loadout_fade->value)
@@ -92,10 +96,10 @@ void Loadout_Update()
 
 		// and there has been enough time to fade it out
 		if ((current_ms - loadout_last_displayed_time) > cl_loadout_fade_time->value)
-			loadout_is_displayed = false;
-
-		UI_SetEnabled("LoadoutUI", loadout_is_displayed);
-		UI_SetActivated("LoadoutUI", loadout_is_displayed);
+		{
+			UI_SetEnabled("LoadoutUI", false);
+			UI_SetActivated("LoadoutUI", false);
+		}
 	}
 }
 

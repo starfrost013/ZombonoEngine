@@ -82,7 +82,7 @@ cvar_t* r_novis;
 cvar_t* r_nocull;
 cvar_t* r_lerpmodels;
 cvar_t* r_lefthand;
-cvar_t* r_scaled_assets_basesize;
+cvar_t* r_scaled_assets_basewidth;
 
 cvar_t* r_lightlevel;	// FIXME: This is a HACK to get the client's light level
 
@@ -713,7 +713,7 @@ void R_Register(void)
 	r_novis = ri.Cvar_Get("r_novis", "0", 0);
 	r_nocull = ri.Cvar_Get("r_nocull", "0", 0);
 	r_lerpmodels = ri.Cvar_Get("r_lerpmodels", "1", 0);
-	r_scaled_assets_basesize = ri.Cvar_Get("r_scaled_assets_basesize", "1920", 0);
+	r_scaled_assets_basewidth = ri.Cvar_Get("r_scaled_assets_basewidth", "1920", 0);
 	r_speeds = ri.Cvar_Get("r_speeds", "0", 0);
 
 	r_lightlevel = ri.Cvar_Get("r_lightlevel", "0", 0);

@@ -46,12 +46,12 @@ char* Draw_GetScaledImagePath(char* name)
 {
 	char scaled_asset_path[MAX_QPATH] = { 0 };
 
-	if (r_scaled_assets_basesize->value == 0
-		|| r_width->value > (r_scaled_assets_basesize->value / 2))
+	if (r_scaled_assets_basewidth->value == 0
+		|| r_width->value > (r_scaled_assets_basewidth->value / 2))
 	{
 		return name;
 	}
-	else if (r_width->value > (r_scaled_assets_basesize->value / 4))
+	else if (r_width->value > (r_scaled_assets_basewidth->value / 4))
 	{
 		snprintf(scaled_asset_path, MAX_QPATH, "%s@0.5x", name);
 	}
@@ -62,7 +62,6 @@ char* Draw_GetScaledImagePath(char* name)
 
 	return scaled_asset_path;
 }
-
 
 /*
 =============

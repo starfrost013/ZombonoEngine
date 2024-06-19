@@ -13,6 +13,7 @@ NEW FEATURES:
 	* Renderer API version 11:
 		* The renderer now can optionally automatically find scaled assets
 		* This uses the use_scaled_assets parameters of Draw_Pic, Draw_PicStretch and Draw_PicRegion
+		* The default width used for this is controlled by the r_scaled_assets_basewidth cvar
 	* Master server changes:
 		* The master server protocol now sends the number of players in the server directly.
 		* Added an sv_debug_heartbeat cvar that sends the heartbeat every two seconds instead of five minutes. It is only present on debug builds, to remove any outside possibility of spamming the server.
