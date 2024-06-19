@@ -700,7 +700,7 @@ bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched
 
 bool UI_SetPassive(char* ui_name, bool passive);															// Sets a UI to passive (does not capture the mouse).
 bool UI_SetStackable(char* ui_name, bool stackable);														// Allows a UI to be pushed to the UI stack.
-bool UI_SetAutoscale(char* ui_name, char* control_name, bool use_scaled_assets);									// Allows an image to automatically scale.
+bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_assets);									// Allows an image to automatically scale.
 
 // UI: Enable/Disable
 bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI's enabled (visible) state.

@@ -386,7 +386,7 @@ bool UI_SetStackable(char* ui_name, bool stackable)
 	return false;
 }
 
-bool UI_SetAutoscale(char* ui_name, char* control_name, bool use_scaled_assets)
+bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_assets)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 

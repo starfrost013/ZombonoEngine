@@ -21,13 +21,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cl_ui_eventhandling.c : Split UI Event Handling from UI Code (December 27, 2023)
 #include <client/client.h>
 
-bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y))
+bool UI_SetEventOnClickDown(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y))
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
 		return false;
 	}
 
@@ -41,13 +41,13 @@ bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn,
 	return true;
 }
 
-bool UI_SetEventOnClickUp(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y))
+bool UI_SetEventOnClickUp(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y))
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
 		return false;
 	}
 
@@ -61,13 +61,13 @@ bool UI_SetEventOnClickUp(char* ui_name, char* name, void (*func)(int32_t btn, i
 	return true;
 }
 
-bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn))
+bool UI_SetEventOnKeyDown(char* ui_name, char* control_name, void (*func)(int32_t btn))
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
 		return false;
 	}
 
@@ -81,13 +81,13 @@ bool UI_SetEventOnKeyDown(char* ui_name, char* name, void (*func)(int32_t btn))
 	return true;
 }
 
-bool UI_SetEventOnKeyUp(char* ui_name, char* name, void (*func)(int32_t btn))
+bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t btn))
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", name, current_ui->name);
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
 		return false;
 	}
 

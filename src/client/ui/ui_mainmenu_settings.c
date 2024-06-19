@@ -27,6 +27,9 @@ bool UI_MainMenuSettingsUICreate()
 		return true;
 
 	UI_SetStackable("MainMenuSettingsUI", true);
+	UI_AddImage("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", "2d/ui/mainmenusettingsui_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
+	UI_UseScaledAssets("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
 
 	// create uI
 	return true;

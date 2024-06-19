@@ -10,6 +10,9 @@ NEW FEATURES:
 			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
 			* Up to MAX_UIs (32) UIs can be stacked currently
 			* You can't push the same UI to the stack twice in a row (in order to prevent bugs), but you can stack the same UI twice non-consecutively.
+	* Renderer API version 11:
+		* The renderer now can optionally automatically find scaled assets
+		* This uses the use_scaled_assets parameters of Draw_Pic, Draw_PicStretch and Draw_PicRegion
 	* Master server changes:
 		* The master server protocol now sends the number of players in the server directly.
 		* Added an sv_debug_heartbeat cvar that sends the heartbeat every two seconds instead of five minutes. It is only present on debug builds, to remove any outside possibility of spamming the server.

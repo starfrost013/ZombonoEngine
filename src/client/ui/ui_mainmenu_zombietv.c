@@ -27,6 +27,9 @@ bool UI_MainMenuZombieTVUICreate()
 		return true;
 
 	UI_SetStackable("MainMenuZombieTVUI", true);
+	UI_AddImage("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", "2d/ui/mainmenusettingsui_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
+	UI_UseScaledAssets("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
 
 	// create uI
 	return true;
