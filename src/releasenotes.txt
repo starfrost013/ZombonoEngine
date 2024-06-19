@@ -45,7 +45,6 @@ BUG FIXES:
 	* Fixed UI initialisation status being set to successful even if it failed
 	* Fixed the constraint of only one UI being activated at a time not actually existing 
 	* Fixed a crash when debug graphs were used
-
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing
 

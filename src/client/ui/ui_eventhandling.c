@@ -110,8 +110,6 @@ void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!ui_ptr->enabled)
-			return;
 
 		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
@@ -153,9 +151,6 @@ void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!ui_ptr->enabled)
-			return;
-
 		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
@@ -192,9 +187,6 @@ void UI_HandleEventOnKeyDown(int32_t btn)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!ui_ptr->enabled)
-			return;
-
 		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
@@ -212,8 +204,6 @@ void UI_HandleEventOnKeyUp(int32_t btn)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!ui_ptr->enabled)
-			return;
 
 		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
