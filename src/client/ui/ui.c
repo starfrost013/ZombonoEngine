@@ -386,6 +386,19 @@ bool UI_SetStackable(char* ui_name, bool stackable)
 	return false;
 }
 
+bool UI_SetAutoscale(char* ui_name, char* control_name, bool use_scaled_assets)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (ui_control_ptr != NULL)
+	{
+		ui_control_ptr->use_scaled_assets = use_scaled_assets;
+		return true;
+	}
+
+	return false;
+}
+
 bool UI_SetText(char* ui_name, char* control_name, char* text)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
@@ -693,11 +706,11 @@ void UI_DrawImage(ui_control_t* image)
 
 	if (image->image_is_stretched)
 	{
-		re.DrawPicStretch(final_pos_x, final_pos_y, final_size_x, final_size_y, image_path, NULL);
+		re.DrawPicStretch(final_pos_x, final_pos_y, final_size_x, final_size_y, image_path, NULL, image->use_scaled_assets);
 	}
 	else
 	{
-		re.DrawPic(final_pos_x, final_pos_y, image_path, NULL);
+		re.DrawPic(final_pos_x, final_pos_y, image_path, NULL, image->use_scaled_assets);
 	}
 
 }
@@ -734,14 +747,14 @@ void UI_DrawSlider(ui_control_t* slider)
 	if (range > 1)
 		range = 1;
 
-	re.DrawPic(slider->position_x * r_width->value  + RCOLUMN_OFFSET, slider->position_y * r_height->value, "2d/slider_01", NULL);
+	re.DrawPic(slider->position_x * r_width->value  + RCOLUMN_OFFSET, slider->position_y * r_height->value, "2d/slider_01", NULL, false);
 	
 	for (i = 0; i < SLIDER_RANGE; i++)
-		re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_02", NULL);
+		re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_02", NULL, false);
 	
-	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_03", NULL);
+	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_03", NULL, false);
 	
-	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * r_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * r_height->value, "2d/slider_value", NULL);
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * r_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * r_height->value, "2d/slider_value", NULL, false);
 }
 
 void UI_DrawCheckbox(ui_control_t* checkbox)
@@ -886,16 +899,16 @@ void UI_DrawEntry(ui_control_t* entry)
 
 	strncpy(tempbuffer, entry->entry_text_buffer + entry->cursor_last_visible, entry->cursor_last_visible);
 
-	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_01", NULL);
-	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_01", NULL, false);
+	re.DrawPic(entry->position_x * r_width->value + 16 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_01", NULL, false);
 
-	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_03", NULL);
-	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL);
+	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_03", NULL, false);
+	re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + entry->cursor_last_visible * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_03", NULL, false);
 
 	for (i = 0; i < entry->cursor_last_visible; i++)
 	{
-		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_02", NULL);
-		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL);
+		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value - 4 * vid_hudscale->value, "2d/field_top_02", NULL, false);
+		re.DrawPic(entry->position_x * r_width->value + 24 * vid_hudscale->value + i * 8 * vid_hudscale->value, entry->position_y * r_height->value + 4 * vid_hudscale->value, "2d/field_bottom_02", NULL, false);
 	}
 
 	Text_GetSize(cl_system_font->string, &text_size_x, &text_size_y, tempbuffer);
@@ -913,6 +926,6 @@ void UI_DrawEntry(ui_control_t* entry)
 		// 8x8 is cursor size
 		re.DrawPic(entry->position_x * r_width->value + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
 			entry->position_y * r_height->value,
-			"2d/field_cursor_on", NULL);
+			"2d/field_cursor_on", NULL, false);
 	}
 }

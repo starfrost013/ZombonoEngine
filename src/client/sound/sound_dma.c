@@ -72,7 +72,7 @@ playsound_t	s_pendingplays;
 
 int32_t 	s_beginofs;
 
-cvar_t*		s_volume;
+cvar_t*		s_volume_sfx;
 cvar_t*		s_testsound;
 cvar_t*		s_loadas8bit;
 cvar_t*		s_khz;
@@ -125,7 +125,7 @@ void S_Init ()
 		Com_Printf ("not initializing.\n");
 	else
 	{
-		s_volume = Cvar_Get ("s_volume", "0.7", CVAR_ARCHIVE);
+		s_volume_sfx = Cvar_Get ("s_volume_sfx", "0.7", CVAR_ARCHIVE);
 		s_khz = Cvar_Get ("s_khz", "11", CVAR_ARCHIVE);
 		s_loadas8bit = Cvar_Get ("s_loadas8bit", "1", CVAR_ARCHIVE);
 		s_mixahead = Cvar_Get ("s_mixahead", "0.2", CVAR_ARCHIVE);
@@ -946,7 +946,7 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 	}
 
 	// rebuild scale tables if volume is modified
-	if (s_volume->modified)
+	if (s_volume_sfx->modified)
 		S_InitScaletable ();
 
 	VectorCopy(origin, listener_origin);

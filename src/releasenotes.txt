@@ -29,6 +29,8 @@ NEW FEATURES:
 	* The console is now disableable when you aren't doing anything
 	* Massive code reorganisation for client
 	* Added light fixture details to the lights in the bases of z_tdm_subway
+	* Rendering API version 11:
+		* Added "autoscale" parameter to DrawPic, DrawPicStretch and DrawPicRegion
 
 BUG FIXES:
 	* Limited relative velocity gain to the object's velocity so you can't gain velocity forever.

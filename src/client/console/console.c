@@ -592,36 +592,15 @@ void Con_DrawConsole(float frac)
 	if (lines > r_height->value)
 		lines = r_height->value;
 
-	// draw the background (draw widescreen 457*240 background if 16:9 res)
+	// draw the background (draw widescreen background if 16:9 res)
+	// scale automatically handled by Draw_GetScaledImagePath
 	if ((float)r_width->value / (float)r_height->value > 1.4f)
 	{
-		if (r_width->value >= 1920)
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9", NULL);
-		}
-		else if (r_width->value >= 960)
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9@0.5x", NULL);
-		}
-		else
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9@0.25x", NULL);
-		}
+		re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback_16x9", NULL, true);
 	}
 	else
 	{
-		if (r_width->value >= 1440)
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback", NULL);
-		}
-		else if (r_width->value >= 720)
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback@0.5x", NULL);
-		}
-		else
-		{
-			re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback@0.25x", NULL);
-		}
+		re.DrawPicStretch(0, lines - r_height->value, r_width->value, r_height->value, "2d/conback", NULL, true);
 	}
 
 	Render2D_AddDirtyPoint(0, 0);
@@ -642,8 +621,10 @@ void Con_DrawConsole(float frac)
 	{
 		// draw arrows to show the buffer is backscrolled
 		for (x = 0; x < con.linewidth; x += 4)
-
+		{
 			Text_DrawChar(cl_console_font->string, ((x + 1) << 3) * vid_hudscale->value, y * vid_hudscale->value, '^');
+		}
+
 
 		y -= console_font_ptr->line_height;
 		rows--;

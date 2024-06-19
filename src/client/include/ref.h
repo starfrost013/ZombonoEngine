@@ -127,7 +127,7 @@ typedef struct refdef_s
 	particle_t*		particles;
 } refdef_t;
 
-#define	API_VERSION		10
+#define	API_VERSION		11
 
 //
 // these are the functions exported by the refresh module
@@ -161,17 +161,15 @@ typedef struct refexport_s
 	struct image_s *(*RegisterPic) (char *name);
 	void	(*SetSky) (char *name, float rotate, vec3_t axis);
 	void	(*EndRegistration) ();
-
 	void	(*RenderFrame) (refdef_t *fd);
-
-	void	(*DrawGetPicSize) (int32_t *w, int32_t *h, char *name);	// will return 0 0 if not found
-	void	(*DrawPic) (int32_t x, int32_t y, char *name, color4_t color);
-	void	(*LoadPic) (char* name);
-	void	(*DrawPicStretch) (int32_t x, int32_t y, int32_t w, int32_t h, char *name, color4_t color);
-	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char *name);
+	void	(*DrawTileClear) (int32_t x, int32_t y, int32_t w, int32_t h, char* name);
 	void	(*DrawFill) (int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
-	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
-	void	(*DrawFontChar)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
+	void	(*LoadPic) (char* name);
+	void	(*DrawGetPicSize) (int32_t *w, int32_t *h, char *name);	// will return 0 0 if not found
+	void	(*DrawPic) (int32_t x, int32_t y, char *name, color4_t color, bool use_scaled_assets);
+	void	(*DrawPicStretch) (int32_t x, int32_t y, int32_t w, int32_t h, char* name, color4_t color, bool use_scaled_assets);
+	void	(*DrawPicRegion)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, bool use_scaled_assets);
+	void	(*DrawFontChar)(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, bool use_scaled_assets);
 	void	(*DrawFadeScreen) ();
 	/*
 	** video mode and refresh state management entry points

@@ -49,8 +49,8 @@ typedef struct
 	uint32_t		height;			// coordinates from main game
 } viddef_t;
 
-extern	viddef_t	vid;
-extern  int32_t		modfilelen; // for gl_sprite.c
+extern viddef_t	vid;
+extern int32_t	modfilelen; // for gl_sprite.c
 
 /*
 
@@ -111,7 +111,7 @@ typedef enum
 // keep this system in case we need to work around buggy drivers.
 #define GL_RENDERER_OTHER		0x80000000
 
-typedef struct glconfig_s
+typedef struct gl_config_s
 {
 	int32_t     renderer;
 	const char* renderer_string;
@@ -184,6 +184,7 @@ extern cvar_t* r_fullbright;
 extern cvar_t* r_novis;
 extern cvar_t* r_nocull;
 extern cvar_t* r_lerpmodels;
+extern cvar_t* r_scaled_assets_basesize;
 
 extern cvar_t* r_lightlevel;	// FIXME: This is a HACK to get the client's light level
 
@@ -285,10 +286,11 @@ void COM_StripExtension(char* in, char* out);
 // Mostly exports here.
 void Draw_GetPicSize(int32_t* w, int32_t* h, char* name);
 void Load_Pic(char* name); // load but don't draw a pic.
-void Draw_Pic(int32_t x, int32_t y, char* name, color4_t color);
-void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
+void Draw_Pic(int32_t x, int32_t y, char* name, color4_t color, bool use_scaled_assets);
+void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, bool use_scaled_assets);
+void Draw_PicStretch(int32_t x, int32_t y, int32_t w, int32_t h, char* name, color4_t color, bool use_scaled_assets);
 void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
-void Draw_PicStretch(int32_t x, int32_t y, int32_t w, int32_t h, char* name, color4_t color);
+
 void Draw_TileClear(int32_t x, int32_t y, int32_t w, int32_t h, char* name);
 void Draw_Fill(int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
 void Draw_FadeScreen();

@@ -327,7 +327,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		snprintf(&final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
 
 		// draw it
-		re.DrawFontChar(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color);
+		re.DrawFontChar(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color, false);
 
 		// move to next char
 		current_x += (glyph->x_advance * font_scale);

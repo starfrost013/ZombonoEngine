@@ -135,7 +135,7 @@ void PF_centerprintf (edict_t *ent, char *fmt, ...)
 {
 	char		msg[1024];
 	va_list		argptr;
-	int32_t 		n;
+	int32_t 	n;
 	
 	n = NUM_FOR_EDICT(ent);
 	if (n < 1 || n > maxclients->value)

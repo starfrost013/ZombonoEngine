@@ -637,6 +637,7 @@ typedef struct ui_control_s
 	char			image_path_on_hover[MAX_UI_STRLEN];	// Image path when the UI control has been hovered over.
 	char			image_path_on_click[MAX_UI_STRLEN];	// Image path when the UI control clicked on.
 	bool			image_is_stretched;					// Is this UI control's image stretched?
+	bool			use_scaled_assets;							// Does this image autoscale?
 	// slider (also used by spin control)
 	float	 		value_min;							// Slider UI control: minimum value
 	float	 		value_max;							// Slider UI control: maximum value
@@ -689,12 +690,6 @@ bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y,
 bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
 bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
-// UI: Toggles
-bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI to enabled (visible).
-bool UI_SetActivated(char* name, bool activated);																	// Sets a UI to active (tangible).
-bool UI_SetPassive(char* name, bool passive);																// Sets a UI to passive (does not capture the mouse).
-bool UI_SetStackable(char* name, bool stackable);
-
 // UI: Update Properties 
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
@@ -702,6 +697,14 @@ bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible);								
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
 bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
 bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched);							// Updates a UI control's stretched status.
+
+bool UI_SetPassive(char* ui_name, bool passive);															// Sets a UI to passive (does not capture the mouse).
+bool UI_SetStackable(char* ui_name, bool stackable);														// Allows a UI to be pushed to the UI stack.
+bool UI_SetAutoscale(char* ui_name, char* control_name, bool use_scaled_assets);									// Allows an image to automatically scale.
+
+// UI: Enable/Disable
+bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI's enabled (visible) state.
+bool UI_SetActivated(char* name, bool activated);															// Sets a UI's active (tangible) state.
 
 // UI: Set Event Handler
 bool UI_SetEventOnClickDown(char* ui_name, char* name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.
@@ -721,10 +724,16 @@ void UI_Draw();																								// Draws a UI.
 // UI: Clear
 void UI_Clear(char* name);																					// Removes all the controls in a UI.
 
+// UI: Stack
+// UI_PUSH IS NOT RECOMMENDED TO CALL - PUSHES A UI TO THE STACK
+void UI_Push();																								// Pushes a UI to the UI stack.
+void UI_Pop();																								// Pops a UI from the UI stack.
+
 // UI: Internal
 ui_t* UI_GetUI(char* name);																					// Returns a pointer so NULL can be indicated for failure
 ui_control_t* UI_GetControl(char* ui_name, char* name);														// Gets the control with name name in the ui UI.
 void UI_Reset();																							// INTERNAL, resets all UI states to their defaults.																													// INTERNAL, deletes all UIs, and restarts the UI system
+
 
 // UI: Create Scripts
 // TeamUI
@@ -736,6 +745,9 @@ void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y);
 bool UI_LeaderboardUICreate();
 void UI_LeaderboardUIEnable(int32_t btn);								// Enables the Leaderboard UI.
 void UI_LeaderboardUIDisable(int32_t btn);								// Disables the Leaderboard UI.
+
+// Leaderboard utility functions
+void UI_LeaderboardUIUpdate();
 
 // BamfuslicatorUI
 bool UI_BamfuslicatorUICreate();
@@ -774,8 +786,6 @@ bool UI_KillFeedUICreate();
 
 extern cvar_t* vid_hudscale;
 
-// Leaderboard utility functions
-void UI_LeaderboardUIUpdate();
 
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
 #define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.

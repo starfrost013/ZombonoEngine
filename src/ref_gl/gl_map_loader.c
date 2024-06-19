@@ -974,7 +974,6 @@ struct model_s* R_RegisterModel(char* name)
 	return mod;
 }
 
-
 /*
 @@@@@@@@@@@@@@@@@@@@@
 R_EndRegistration

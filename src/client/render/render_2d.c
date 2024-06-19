@@ -392,7 +392,7 @@ void Render2D_DrawNet()
 		< CMD_BACKUP - 1)
 		return;
 
-	re.DrawPic(scr_vrect.x + 64, scr_vrect.y, "2d/net", NULL);
+	re.DrawPic(scr_vrect.x + 64, scr_vrect.y, "2d/net", NULL, false);
 }
 
 /*
@@ -411,7 +411,7 @@ void Render2D_DrawPause()
 		return;
 
 	re.DrawGetPicSize(&w, &h, "2d/pause");
-	re.DrawPic((r_width->value - w) / 2, r_height->value / 2 + 8 * vid_hudscale->value, "2d/pause", NULL);
+	re.DrawPic((r_width->value - w) / 2, r_height->value / 2 + 8 * vid_hudscale->value, "2d/pause", NULL, false);
 }
 
 /*
@@ -428,7 +428,7 @@ void Render2D_DrawLoading()
 
 	scr_draw_loading = false;
 	re.DrawGetPicSize(&w, &h, "2d/loading");
-	re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL);
+	re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL, false);
 }
 
 //=============================================================================
@@ -753,7 +753,7 @@ void Render2D_DrawField(int32_t x, int32_t y, int32_t color, int32_t width, int3
 		else
 			frame = *ptr - '0';
 
-		re.DrawPic(x, y, sb_nums[color][frame], NULL);
+		re.DrawPic(x, y, sb_nums[color][frame], NULL, false);
 		x += CHAR_WIDTH;
 		ptr++;
 		l--;
@@ -879,7 +879,7 @@ void Render2D_ExecuteLayoutString(char* s)
 			{
 				Render2D_AddDirtyPoint(x, y);
 				Render2D_AddDirtyPoint(x + 23, y + 23);
-				re.DrawPic(x, y, cl.configstrings[CS_IMAGES + value], NULL);
+				re.DrawPic(x, y, cl.configstrings[CS_IMAGES + value], NULL, false);
 			}
 			continue;
 		}
@@ -889,7 +889,7 @@ void Render2D_ExecuteLayoutString(char* s)
 			token = COM_Parse(&s);
 			Render2D_AddDirtyPoint(x, y);
 			Render2D_AddDirtyPoint(x + 23, y + 23);
-			re.DrawPic(x, y, token, NULL);
+			re.DrawPic(x, y, token, NULL, false);
 			continue;
 		}
 
@@ -917,7 +917,7 @@ void Render2D_ExecuteLayoutString(char* s)
 				color = 1;
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 1)
-				re.DrawPic(x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL, false);
 
 			Render2D_DrawField(x, y, color, width, value);
 			continue;
@@ -937,7 +937,7 @@ void Render2D_ExecuteLayoutString(char* s)
 				continue;	// negative number = don't show
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 4)
-				re.DrawPic(x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL, false);
 
 			Render2D_DrawField(x, y, color, width, value);
 			continue;
@@ -955,7 +955,7 @@ void Render2D_ExecuteLayoutString(char* s)
 			color = 0;	// green
 
 			if (cl.frame.playerstate.stats[STAT_FLASHES] & 2)
-				re.DrawPic(x, y, "2d/field_3", NULL);
+				re.DrawPic(x, y, "2d/field_3", NULL, false);
 
 			Render2D_DrawField(x, y, color, width, value);
 			continue;
@@ -1152,7 +1152,7 @@ void Render2D_DrawCrosshair()
 	cvar_t* scale = Cvar_Get("hudscale", "1", 0);
 
 	re.DrawPic(scr_vrect.x + ((scr_vrect.width - (int32_t)scale->value * crosshair_width) >> 1)
-		, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic, NULL);
+		, scr_vrect.y + ((scr_vrect.height - (int32_t)scale->value * crosshair_height) >> 1), crosshair_pic, NULL, false);
 }
 
 /*
@@ -1213,7 +1213,7 @@ void Render_UpdateScreen()
 			re.EndWorldRenderpass();
 			scr_draw_loading = false;
 			re.DrawGetPicSize(&w, &h, "2d/loading");
-			re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL);
+			re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/loading", NULL, false);
 		}
 		else
 		{

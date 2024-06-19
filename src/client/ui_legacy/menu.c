@@ -56,7 +56,7 @@ void M_Menu_Options_f();
 void M_Menu_Keys_f();
 void M_Menu_Quit_f();
 
-bool	m_entersound;		// play after drawing a frame, so caching
+bool m_entersound;		// play after drawing a frame, so caching
 // won't disrupt the sound
 
 void	(*m_drawfunc) ();
@@ -82,7 +82,7 @@ static void M_Banner(char* name)
 	int32_t w, h;
 
 	re.DrawGetPicSize(&w, &h, name);
-	re.DrawPic(r_width->value / 2 - w / 2, r_height->value / 2 - 110 * vid_hudscale->value, name, NULL);
+	re.DrawPic(r_width->value / 2 - w / 2, r_height->value / 2 - 110 * vid_hudscale->value, name, NULL, false);
 }
 
 void M_PushMenu(void (*draw) (), const char* (*key) (int32_t k))
@@ -271,7 +271,7 @@ higher res screens.
 */
 void Menu_DrawCenteredImage(int32_t cx, int32_t cy, char* image)
 {
-	re.DrawPic(cx + (((int32_t)r_width->value - 320) >> 1) * vid_hudscale->value, cy + (((int32_t)r_height->value - 240) >> 1) * vid_hudscale->value, image, NULL);
+	re.DrawPic(cx + (((int32_t)r_width->value - 320) >> 1) * vid_hudscale->value, cy + (((int32_t)r_height->value - 240) >> 1) * vid_hudscale->value, image, NULL, false);
 }
 
 /*
@@ -302,7 +302,7 @@ void M_DrawCursor(int32_t x, int32_t y, int32_t f)
 	}
 
 	Com_sprintf(cursorname, sizeof(cursorname), "2d/m_cursor%d", f);
-	re.DrawPic(x, y, cursorname, NULL);
+	re.DrawPic(x, y, cursorname, NULL, false);
 }
 
 // uses 320*240 coords
@@ -397,11 +397,11 @@ void M_Main_Draw()
 	for (i = 0; names[i] != 0; i++)
 	{
 		if (i != m_main_cursor)
-			re.DrawPic(xoffset, ystart + (i * 40 + 13) * vid_hudscale->value, names[i], NULL);
+			re.DrawPic(xoffset, ystart + (i * 40 + 13) * vid_hudscale->value, names[i], NULL, false);
 	}
 	strcpy(litname, names[m_main_cursor]);
 	strcat(litname, "_sel");
-	re.DrawPic(xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname, NULL);
+	re.DrawPic(xoffset, ystart + (m_main_cursor * 40 + 13) * vid_hudscale->value, litname, NULL, false);
 
 	M_DrawCursor(xoffset - (25 * vid_hudscale->value), ystart + (m_main_cursor * 40 + 11) * vid_hudscale->value, (int32_t)(cls.realtime / 100) % NUM_CURSOR_FRAMES);
 
@@ -690,7 +690,7 @@ static void KeyCursorDrawFunc(menuframework_t* menu)
 	{
 		if ((int32_t)(Sys_Milliseconds() / 250) & 1)
 		{
-			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "2d/menu_cursor_on", NULL);
+			re.DrawPic(menu->x, menu->y + menu->cursor * 9 * vid_hudscale->value, "2d/menu_cursor_on", NULL, false);
 		}
 	}
 }
@@ -1079,7 +1079,7 @@ static float ClampCvar(float min, float max, float value)
 
 static void ControlsSetMenuItemValues(void)
 {
-	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume") * 10;
+	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume_sfx") * 10;
 	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
 	s_options_quality_list.curvalue = !Cvar_VariableValue("s_loadas8bit");
 	s_options_sensitivity_slider.curvalue = (sensitivity->value) * 2;
@@ -1127,7 +1127,7 @@ static void LookstrafeFunc(void* unused)
 
 static void UpdateVolumeFunc(void* unused)
 {
-	Cvar_SetValue("s_volume", s_options_sfxvolume_slider.curvalue / 10);
+	Cvar_SetValue("s_volume_sfx", s_options_sfxvolume_slider.curvalue / 10);
 }
 
 static void UpdateCDVolumeFunc(void* unused)
@@ -1215,7 +1215,7 @@ void Options_MenuInit(void)
 	s_options_sfxvolume_slider.generic.callback = UpdateVolumeFunc;
 	s_options_sfxvolume_slider.minvalue = 0;
 	s_options_sfxvolume_slider.maxvalue = 10;
-	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume") * 10;
+	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume_sfx") * 10;
 
 	s_options_cdvolume_slider.generic.type = MTYPE_SLIDER;
 	s_options_cdvolume_slider.generic.x = 0;
@@ -3363,7 +3363,7 @@ void PlayerConfig_MenuDraw(void)
 		Com_sprintf(scratch, sizeof(scratch), "/players/%s/%s_i.tga",
 			s_pmi[s_player_model_box.curvalue].directory,
 			s_pmi[s_player_model_box.curvalue].skindisplaynames[s_player_skin_box.curvalue]);
-		re.DrawPic(s_player_config_menu.x - 40 * vid_hudscale->value, refdef.y, scratch, NULL);
+		re.DrawPic(s_player_config_menu.x - 40 * vid_hudscale->value, refdef.y, scratch, NULL, false);
 	}
 }
 
@@ -3450,7 +3450,7 @@ void M_Quit_Draw()
 	int32_t 	w, h;
 
 	re.DrawGetPicSize(&w, &h, "2d/quit");
-	re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/quit", NULL);
+	re.DrawPic((r_width->value - w) / 2, (r_height->value - h) / 2, "2d/quit", NULL, false);
 }
 
 
