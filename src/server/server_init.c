@@ -349,7 +349,7 @@ void SV_InitGame()
 
 		if (!NET_StringToAdr(zombono_master, &master_adr[0]))
 		{
-			Com_Printf("Warning: Failed to contact both base and alternative master servers!");
+			Com_Printf("Warning: Failed to contact both base and alternative master servers!\n");
 		}
 	}
 

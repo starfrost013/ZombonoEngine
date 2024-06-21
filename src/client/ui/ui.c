@@ -550,7 +550,7 @@ void UI_Push()
 	// don't bother pushing the same ui twice
 	if (ui_stack[ui_stack_top] == current_ui)
 	{
-		Com_Printf("Warning: Tried to push the same UI twice...");
+		Com_Printf("Warning: Tried to push the same UI twice...\n");
 		return;
 	}
 
@@ -569,7 +569,7 @@ void UI_Pop()
 {
 	if (ui_stack_top <= 0)
 	{
-		Sys_Error("User interface stack underflow");
+		Sys_Error("User interface stack underflow!");
 		return; // shut up compiler
 	}
 
