@@ -304,7 +304,7 @@ void Vid_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
 	r_width = Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
-	r_height = Cvar_Get("gl_height", "768", CVAR_ARCHIVE);
+	r_height = Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 
 	vid_ref = Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
 	vid_xpos = Cvar_Get("vid_xpos", "3", CVAR_ARCHIVE);

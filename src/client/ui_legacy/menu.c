@@ -1679,7 +1679,7 @@ void Game_MenuDraw(void)
 	int32_t size_x = 0, size_y = 0;
 	const char* no_playtest_text = "^1This option is not available in playtest builds!\n\n^7Press any key to return to the main menu.";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, no_playtest_text);
-	Text_Draw(cl_system_font->string, r_width->value / 2 - (size_x / 2), gl_height->value / 2 - (92 * vid_hudscale->value), no_playtest_text);
+	Text_Draw(cl_system_font->string, r_width->value / 2 - (size_x / 2), r_height->value / 2 - (92 * vid_hudscale->value), no_playtest_text);
 #else
 	M_Banner("2d/m_banner_game");
 	Menu_AdjustCursor(&s_game_menu, 1);

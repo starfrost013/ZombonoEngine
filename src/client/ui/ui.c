@@ -149,11 +149,9 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
+	// message already printed in check above
 	if (!ui_ptr)
-	{
-		// message already pRinted
-		return NULL; 
-	}
+		return NULL;
 
 	for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 	{
