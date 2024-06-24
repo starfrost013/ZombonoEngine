@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
+void UI_MainMenuSettingsUIOnBackPressed(uint32_t btn, int32_t x, int32_t y);
+
 bool UI_MainMenuSettingsUICreate()
 {
 	if (!ui_newmenu->value)
@@ -33,4 +35,10 @@ bool UI_MainMenuSettingsUICreate()
 
 	// create uI
 	return true;
+}
+
+// is this enough to justify adding global UI assets?
+void UI_MainMenuSettingsUIOnBackPressed(uint32_t btn, int32_t x, int32_t y)
+{
+	UI_Pop();
 }

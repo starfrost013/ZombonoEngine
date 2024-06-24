@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
+void UI_MainMenuZombieTVUIOnBackPressed(uint32_t btn, int32_t x, int32_t y);
+
 bool UI_MainMenuZombieTVUICreate()
 {
 	if (!ui_newmenu->value)
@@ -31,6 +33,16 @@ bool UI_MainMenuZombieTVUICreate()
 	UI_SetImageIsStretched("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
 	UI_UseScaledAssets("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
 
+	UI_AddImage("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", "2d/ui/global_btn_back", (r_width->value/10.0f), (r_height->value/1.3f), 256, 64);
+	UI_SetImageOnHover("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", UI_MainMenuZombieTVUIOnBackPressed);
+
 	// create uI
 	return true;
+}
+
+// is this enough to justify adding global UI assets?
+void UI_MainMenuZombieTVUIOnBackPressed(uint32_t btn, int32_t x, int32_t y)
+{
+	UI_Pop();
 }

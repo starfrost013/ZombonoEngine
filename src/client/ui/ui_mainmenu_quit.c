@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
+void UI_MainMenuQuitUIOnYesPressed(uint32_t btn, int32_t x, int32_t y);
+void UI_MainMenuQuitUIOnNoPressed(uint32_t btn, int32_t x, int32_t y);
+
 bool UI_MainMenuQuitUICreate()
 {
 	if (!ui_newmenu->value)
@@ -33,4 +36,16 @@ bool UI_MainMenuQuitUICreate()
 
 	// create uI
 	return true;
+}
+
+void UI_MainMenuQuitUIOnYesPressed(uint32_t btn, int32_t x, int32_t y)
+{
+	// perform same action as quitting using "quit" command
+	CL_Quit_f();
+}
+
+// is this enough to justify adding global UI assets?
+void UI_MainMenuQuitUIOnNoPressed(uint32_t btn, int32_t x, int32_t y)
+{
+	UI_Pop();
 }
