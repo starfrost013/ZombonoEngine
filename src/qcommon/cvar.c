@@ -227,7 +227,8 @@ cvar_t* Cvar_Set2 (char *var_name, char *value, bool force)
 			{
 				var->string = CopyString(value);
 				var->value = (float)atof(var->string);
-				if (!strcmp(var->name, "game_asset_path"))
+				if (!strcmp(var->name, "game_asset_path")
+					|| !strcmp(var->name, "game"))
 				{
 					FS_SetGamedir (var->string);
 					FS_ExecAutoexec ();
@@ -348,7 +349,8 @@ void Cvar_GetLatchedVars ()
 		var->latched_string = NULL;
 		var->value = strtof(var->string, NULL);
 
-		if (!strcmp(var->name, "game_asset_path"))
+		if (!strcmp(var->name, "game_asset_path")
+			|| !strcmp(var->name, "game"))
 		{
 			FS_SetGamedir (var->string);
 			FS_ExecAutoexec ();

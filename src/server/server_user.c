@@ -58,8 +58,8 @@ This will be sent on the initial connection and upon each server load.
 */
 void SV_New_f()
 {
-	char* gamedir;
-	int32_t 		playernum;
+	char*	gamedir;
+	int32_t playernum;
 	edict_t* ent;
 
 	Com_DPrintf("New() from %s\n", sv_client->name);
@@ -81,7 +81,7 @@ void SV_New_f()
 	// serverdata needs to go over for all types of servers
 	// to make sure the protocol is right, and to set the gamedir
 	//
-	gamedir = Cvar_VariableString("gamedir");
+	gamedir = Cvar_VariableString("game_asset_path");
 
 	// send the serverdata
 	MSG_WriteByte(&sv_client->netchan.message, svc_serverdata);

@@ -454,7 +454,7 @@ void FS_ExecAutoexec()
 	char* dir;
 	char name[MAX_QPATH];
 
-	dir = Cvar_VariableString("gamedir");
+	dir = Cvar_VariableString("game_asset_path");
 	if (*dir)
 		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, dir);
 	else
@@ -509,12 +509,11 @@ void FS_SetGamedir(char* dir)
 
 	if (!strcmp(dir, game_asset_path->string) || (*dir == 0))
 	{
-		Cvar_FullSet("gamedir", "", CVAR_SERVERINFO | CVAR_NOSET);
 		Cvar_FullSet("game", "", CVAR_LATCH | CVAR_SERVERINFO);
 	}
 	else
 	{
-		Cvar_FullSet("gamedir", dir, CVAR_SERVERINFO | CVAR_NOSET);
+		Cvar_FullSet("game_asset_path", dir, CVAR_SERVERINFO | CVAR_NOSET);
 		FS_AddGameDirectory(va("%s/%s", fs_basedir->string, dir));
 	}
 }
