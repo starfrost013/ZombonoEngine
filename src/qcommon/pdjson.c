@@ -1,3 +1,7 @@
+// Forked from: https://github.com/skeeto/pdjson/ library
+// Public domain (Developed 2014-2024, Boris Kolpackov / Skeeto) under the UNLICENSE
+// Last rebase: 78fe04b820dc8817f540bdd87fb22887e0ef3981 (February 22, 2024) - completed June 24, 2024
+
 #ifndef _POSIX_C_SOURCE
 #  define _POSIX_C_SOURCE 200112L
 #elif _POSIX_C_SOURCE < 200112L
@@ -101,14 +105,17 @@ static int32_t buffer_peek(struct JSON_source *source)
 static int32_t buffer_get(struct JSON_source *source)
 {
     int32_t c = source->peek(source);
-    source->position++;
+	if (c != EOF)
+		source->position++;
     return c;
 }
 
 static int32_t stream_get(struct JSON_source *source)
 {
-    source->position++;
-    return fgetc(source->source.stream.stream);
+	int32_t c = fgetc(source->source.stream.stream);
+	if (c != EOF)
+		source->position++;
+	return c;
 }
 
 static int32_t stream_peek(struct JSON_source *source)
@@ -146,7 +153,12 @@ is_match(JSON_stream *json, const char *pattern, enum JSON_type type)
     int32_t c;
     for (const char *p = pattern; *p; p++) {
         if (*p != (c = json->source.get(&json->source))) {
-            JSON_error(json, "expected '%c' instead of byte '%c'", *p, c);
+			if (c != EOF) {
+				JSON_error(json, "expected '%c' instead of byte '%c'", *p, c);
+			}
+			else {
+				JSON_error(json, "expected '%c' instead of end of text", *p);
+			}
             return JSON_ERROR;
         }
     }
@@ -465,7 +477,7 @@ read_utf8(JSON_stream* json, int32_t next_char)
     int32_t i;
     for (i = 1; i < count; ++i)
     {
-        buffer[i] = json->source.get(&json->source);;
+        buffer[i] = json->source.get(&json->source);
     }
 
     if (!is_legal_utf8((uint8_t*) buffer, count))
@@ -927,7 +939,10 @@ void JSON_open_stream(JSON_stream *json, FILE * stream)
 
 static int32_t user_get(struct JSON_source *json)
 {
-    return json->source.user.get(json->source.user.ptr);
+	int32_t c = json->source.user.get(json->source.user.ptr);
+	if (c != EOF)
+		json->position++;
+	return c;
 }
 
 static int32_t user_peek(struct JSON_source *json)

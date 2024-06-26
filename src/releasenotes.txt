@@ -1,7 +1,7 @@
 Zombono
 Release Notes:
 
-Version 0.0.11/0.1.0
+Version 0.1.0-pre1
 June 29, 2024
 
 NEW FEATURES:
@@ -10,6 +10,10 @@ NEW FEATURES:
 			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
 			* Up to MAX_UIs (32) UIs can be stacked currently
 			* You can't push the same UI to the stack twice in a row (in order to prevent bugs), but you can stack the same UI twice non-consecutively.
+	* Began work on a new main menu to replace the old one
+		* This is not very functional right now but can be toggled using +ui_newmenu 1
+	* Updated PDJSON library to commit 78fe04b820dc8817f540bdd87fb22887e0ef3981 (February 22, 2024, and yes I'm late)
+		* This fixes an issue where position tracking could go beyond the end of the JSON file by adding more checks for EOF
 	* Renderer API version 11:
 		* The renderer now can optionally automatically find scaled assets
 		* This uses the use_scaled_assets parameters of Draw_Pic, Draw_PicStretch and Draw_PicRegion

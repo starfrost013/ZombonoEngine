@@ -47,7 +47,7 @@ extern cvar_t* allow_download_maps;
 void CL_DownloadFileName(char* dest, int32_t destlen, char* fn)
 {
 	if (strncmp(fn, "players", 7) == 0)
-		Com_sprintf(dest, destlen, "%s/%s", BASEDIRNAME, fn);
+		Com_sprintf(dest, destlen, "%s/%s", game_asset_path->string, fn);
 	else
 		Com_sprintf(dest, destlen, "%s/%s", FS_Gamedir(), fn);
 }

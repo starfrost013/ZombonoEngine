@@ -48,7 +48,7 @@ extern cvar_t* ns_usetestserver;
 
 #define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 
-#define	ZOMBONO_USER_AGENT			"Zombono/" ZOMBONO_VERSION
+#define	ZOMBONO_USER_AGENT			"Zombono/" ENGINE_VERSION
 
 extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];	// The data actually received from the connect test.
 

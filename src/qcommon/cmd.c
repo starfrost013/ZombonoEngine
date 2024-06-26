@@ -372,7 +372,7 @@ Cmd_Exec_f
 void Cmd_Exec_f ()
 {
 	char	*f, *f2;
-	int32_t 	len;
+	int32_t len;
 
 	if (Cmd_Argc () != 2)
 	{

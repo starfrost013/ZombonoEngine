@@ -94,7 +94,6 @@ CL_ParseServerData
 */
 void CL_ParseServerData()
 {
-	extern cvar_t* fs_gamedirvar;
 	char* str;
 	int32_t 	i;
 
@@ -121,8 +120,12 @@ void CL_ParseServerData()
 	strncpy(cl.gamedir, str, sizeof(cl.gamedir) - 1);
 
 	// set gamedir
-	if ((*str && (!fs_gamedirvar->string || !*fs_gamedirvar->string || strcmp(fs_gamedirvar->string, str))) || (!*str && (fs_gamedirvar->string || *fs_gamedirvar->string)))
+	if ((*str && (!game_asset_path->string
+		|| strcmp(game_asset_path->string, str))
+			|| *game_asset_path->string))
+	{
 		Cvar_Set("game", str);
+	}
 
 	// parse player entity number
 	cl.playernum = MSG_ReadShort(&net_message);

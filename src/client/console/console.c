@@ -291,7 +291,7 @@ void Con_Init()
 
 	Com_Printf("Euphoria Retro Game Engine\n");
 	Com_Printf("© 2023 - 2024 starfrost.\n");
-	Com_Printf("Version %s\n", ZOMBONO_VERSION);
+	Com_Printf("Version %s\n", ENGINE_VERSION);
 
 	//
 	// register our commands
@@ -606,7 +606,7 @@ void Con_DrawConsole(float frac)
 	Render2D_AddDirtyPoint(0, 0);
 	Render2D_AddDirtyPoint(r_width->value - 1, lines - 1);
 
-	Com_sprintf(version, sizeof(version), "^2Zombono v%s", ZOMBONO_VERSION);
+	Com_sprintf(version, sizeof(version), "^2Zombono v%s", ENGINE_VERSION);
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);
 	Text_Draw(cl_console_font->string, r_width->value - size_x, lines - 12 * vid_hudscale->value, version);
 

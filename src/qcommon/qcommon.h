@@ -31,9 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "version.h"
 
 // Due to awk(wardness) we can't put this in version.h
-#define ZOMBONO_VERSION STR(ZOMBONO_VERSION_MAJOR) "." STR(ZOMBONO_VERSION_MINOR) "." STR(ZOMBONO_VERSION_REVISION) "." STR(ZOMBONO_VERSION_BUILD)
-
-#define	BASEDIRNAME	"zombonogame" // changed from simply "zombono" for Linux' sake
+#define ENGINE_VERSION STR(ZOMBONO_VERSION_MAJOR) "." STR(ZOMBONO_VERSION_MINOR) "." STR(ZOMBONO_VERSION_REVISION) "." STR(ZOMBONO_VERSION_BUILD)
 
 //BUILD_PLATFORM - Used for updates
 
@@ -414,15 +412,15 @@ then searches for a command or variable that matches the first token.
 
 typedef void (*xcommand_t) ();
 
-void	Cmd_Init();
+void Cmd_Init();
 
-void	Cmd_AddCommand(char* cmd_name, xcommand_t function);
+void Cmd_AddCommand(char* cmd_name, xcommand_t function);
 // called by the init functions of other parts of the program to
 // register commands and functions to call for them.
 // The cmd_name is referenced later, so it should not be in temp memory
 // if function is NULL, the command will be forwarded to the server
 // as a clc_stringcmd instead of executed locally
-void	Cmd_RemoveCommand(char* cmd_name);
+void Cmd_RemoveCommand(char* cmd_name);
 
 bool Cmd_Exists(char* cmd_name);
 // used by the cvar code to check for cvar / command name overlap
@@ -438,15 +436,15 @@ char* Cmd_Args();
 // functions. Cmd_Argv () will return an empty string, not a NULL
 // if arg > argc, so string operations are always safe.
 
-void	Cmd_TokenizeString(char* text, bool macroExpand);
+void Cmd_TokenizeString(char* text, bool macroExpand);
 // Takes a null terminated string.  Does not need to be /n terminated.
 // breaks the string up into arg tokens.
 
-void	Cmd_ExecuteString(char* text);
+void Cmd_ExecuteString(char* text);
 // Parses a single line of text into arguments and tries to execute it
 // as if it was typed at the console
 
-void	Cmd_ForwardToServer();
+void Cmd_ForwardToServer();
 // adds the current command line as a clc_stringcmd to the client message.
 // things like godmode, noclip, etc, are commands directed to the server,
 // so when they are typed in at the console, they will need to be forwarded.
@@ -527,9 +525,28 @@ extern	bool	userinfo_modified;
 
 /*
 ==============================================================
+Gameinfo stuff
+==============================================================
+*/
 
+typedef struct gameinfo_s
+{
+	char name[MAX_QPATH];
+	char asset_path[MAX_QPATH];
+} gameinfo_t;
+
+extern gameinfo_t gameinfo;
+
+// copied from struct above, internal to gameinfo.c
+extern cvar_t* game_name;
+extern cvar_t* game_asset_path;
+
+// Sys_Error on fail
+void Gameinfo_Load();
+
+/*
+==============================================================
 NET
-
 ==============================================================
 */
 
@@ -619,7 +636,6 @@ bool Netchan_Process(netchan_t* chan, sizebuf_t* msg);
 
 bool Netchan_CanReliable(netchan_t* chan);
 
-
 /*
 ==============================================================
 
@@ -630,12 +646,12 @@ Map Loader
 
 extern char	map_name[MAX_QPATH];
 
-cmodel_t* Map_Load(char* name, bool clientload, uint32_t* checksum);
-cmodel_t* Map_LoadInlineModel(char* name);	// *1, *2, etc
+cmodel_t*	Map_Load(char* name, bool clientload, uint32_t* checksum);
+cmodel_t*	Map_LoadInlineModel(char* name);	// *1, *2, etc
 
 int32_t 	Map_GetNumClusters();
 int32_t 	Map_NumInlineModels();
-char* Map_GetEntityString();
+char*		Map_GetEntityString();
 
 // creates a clipping hull for an arbitrary box
 int32_t 	Map_HeadnodeForBox(vec3_t mins, vec3_t maxs);
@@ -647,8 +663,8 @@ int32_t 	Map_TransformedPointContents(vec3_t p, int32_t headnode, vec3_t origin,
 trace_t		Map_BoxTrace(vec3_t start, vec3_t end, vec3_t mins, vec3_t maxs, int32_t headnode, int32_t brushmask);
 trace_t		Map_TransformedBoxTrace(vec3_t start, vec3_t end, vec3_t mins, vec3_t maxs, int32_t headnode, int32_t brushmask, vec3_t origin, vec3_t angles);
 
-uint8_t* Map_ClusterPVS(int32_t cluster);
-uint8_t* Map_ClusterPHS(int32_t cluster);
+uint8_t*	Map_ClusterPVS(int32_t cluster);
+uint8_t*	Map_ClusterPHS(int32_t cluster);
 
 // call with topnode set to the headnode, returns with topnode
 // set to the first node that splits the box
@@ -692,8 +708,8 @@ FILESYSTEM
 
 void	FS_InitFilesystem();
 void	FS_SetGamedir(char* dir);
-char* FS_Gamedir();
-char* FS_NextPath(char* prevpath);
+char*	FS_Gamedir();
+char*	FS_NextPath(char* prevpath);
 void	FS_ExecAutoexec();
 
 int32_t FS_FOpenFile(char* filename, FILE** file);
@@ -732,18 +748,18 @@ MISC
 #define	PRINT_ALL		0
 #define PRINT_DEVELOPER	1	// only print when "developer 1"
 
-void		Com_BeginRedirect(int32_t target, char* buffer, int32_t buffersize, void(*flush));
-void		Com_EndRedirect();
-void 		Com_Printf(char* fmt, ...);
-void 		Com_DPrintf(char* fmt, ...);
-void 		Com_Error(int32_t code, char* fmt, ...);
-void 		Com_Quit();
+void	Com_BeginRedirect(int32_t target, char* buffer, int32_t buffersize, void(*flush));
+void	Com_EndRedirect();
+void 	Com_Printf(char* fmt, ...);
+void 	Com_DPrintf(char* fmt, ...);
+void 	Com_Error(int32_t code, char* fmt, ...);
+void 	Com_Quit();
 
-int32_t 	Com_ServerState();		// this should have just been a cvar...
-void		Com_SetServerState(int32_t state);
+int32_t Com_ServerState();		// this should have just been a cvar...
+void	Com_SetServerState(int32_t state);
 
-uint32_t	Com_BlockChecksum(void* buffer, int32_t length);
-uint8_t		Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequence);
+uint32_t Com_BlockChecksum(void* buffer, int32_t length);
+uint8_t	Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequence);
 
 float frand();	// 0 ti 1
 float crand();	// -1 to 1

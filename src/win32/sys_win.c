@@ -399,13 +399,12 @@ Loads the game dll
 */
 void *Sys_GetGameAPI (void *parms)
 {
-	void	*(*GetGameAPI) (void *);
+	void*	(*GetGameAPI) (void *);
 	char	name[MAX_OSPATH];
-	char	*path;
+	char*	path;
 	char	cwd[MAX_OSPATH];
 #if defined _M_IX86
 	const char *gamename = "gamex86.dll";
-
 #ifdef NDEBUG
 	const char *debugdir = "release";
 #else
@@ -523,7 +522,7 @@ The entry point on Windows platform
 
 int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
-	int32_t 		time, oldtime, newtime;
+	int32_t time, oldtime, newtime;
 
 	ParseCommandLine (lpCmdLine);
 

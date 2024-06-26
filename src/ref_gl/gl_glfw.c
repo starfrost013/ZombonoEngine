@@ -47,6 +47,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	// Monitor is NULL for windowed mode,
 	// non-NULL for fullscreen
 	GLFWmonitor* monitor = NULL;
+	char window_title_buffer[MAX_QPATH] = { 0 }; // 256
 
 	// Fullscreen in GLFW Zombono is borderless windowed by default, unless the user chose vid_fullscreen
 	if (fullscreen)
@@ -70,6 +71,15 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 		{
 			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE); // dedicated fullscreen is a hint in GLFW
 		}
+	}
+
+	if (!game_asset_path->string) // placeholder
+	{
+		snprintf(&window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", "Euphoria Retro Game Engine - set gameinfo.json!");
+	}
+	else
+	{
+		snprintf(&window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", game_name->string);
 	}
 
 	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", monitor, NULL);

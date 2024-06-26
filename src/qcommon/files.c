@@ -32,11 +32,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /*
 =============================================================================
 
-QUAKE FILESYSTEM
+GAME FILESYSTEM
 
 =============================================================================
 */
 
+cvar_t* fs_basedir;
 
 //
 // in memory
@@ -45,20 +46,16 @@ QUAKE FILESYSTEM
 typedef struct
 {
 	char	name[MAX_QPATH];
-	int32_t 	filepos, filelen;
+	int32_t filepos, filelen;
 } packfile_t;
 
 typedef struct pack_s
 {
-	char	filename[MAX_OSPATH];
+	char		filename[MAX_OSPATH];
 	FILE* handle;
 	int32_t 	numfiles;
 	packfile_t* files;
 } pack_t;
-
-char	fs_gamedir[MAX_OSPATH];
-cvar_t* fs_basedir;
-cvar_t* fs_gamedirvar;
 
 typedef struct filelink_s
 {
@@ -161,9 +158,9 @@ int32_t file_from_pak = 0;
 int32_t FS_FOpenFile(char* filename, FILE** file)
 {
 	searchpath_t* search;
-	char			netpath[MAX_OSPATH];
+	char		netpath[MAX_OSPATH];
 	pack_t* pak;
-	int32_t 			i;
+	int32_t 	 i;
 	filelink_t* link;
 
 	file_from_pak = 0;
@@ -398,18 +395,16 @@ pack_t* FS_LoadPackFile(char* packfile)
 ================
 FS_AddGameDirectory
 
-Sets fs_gamedir, adds the directory to the head of the path,
+Sets game_asset_path, adds the directory to the head of the path,
 then loads and adds pak1.pak pak2.pak ...
 ================
 */
 void FS_AddGameDirectory(char* dir)
 {
-	int32_t 			i;
-	searchpath_t* search;
-	pack_t* pak;
+	int32_t 		i;
+	searchpath_t*	 search;
+	pack_t*			pak;
 	char			pakfile[MAX_OSPATH];
-
-	strcpy(fs_gamedir, dir);
 
 	//
 	// add the directory to the search path
@@ -446,10 +441,7 @@ Called to find where to write a file (demos, savegames, etc)
 */
 char* FS_Gamedir()
 {
-	if (*fs_gamedir)
-		return fs_gamedir;
-	else
-		return BASEDIRNAME;
+	return game_asset_path->string;
 }
 
 /*
@@ -466,9 +458,11 @@ void FS_ExecAutoexec()
 	if (*dir)
 		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, dir);
 	else
-		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, BASEDIRNAME);
+		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, game_asset_path->string);
+
 	if (Sys_FindFirst(name, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM))
 		Cbuf_AddText("exec autoexec.cfg\n");
+
 	Sys_FindClose();
 }
 
@@ -513,9 +507,7 @@ void FS_SetGamedir(char* dir)
 	if (dedicated && !dedicated->value)
 		Cbuf_AddText("vid_restart\nsnd_restart\n");
 
-	Com_sprintf(fs_gamedir, sizeof(fs_gamedir), "%s/%s", fs_basedir->string, dir);
-
-	if (!strcmp(dir, BASEDIRNAME) || (*dir == 0))
+	if (!strcmp(dir, game_asset_path->string) || (*dir == 0))
 	{
 		Cvar_FullSet("gamedir", "", CVAR_SERVERINFO | CVAR_NOSET);
 		Cvar_FullSet("game", "", CVAR_LATCH | CVAR_SERVERINFO);
@@ -710,9 +702,9 @@ char* FS_NextPath(char* prevpath)
 	char* prev;
 
 	if (!prevpath)
-		return fs_gamedir;
+		return game_asset_path->string;
 
-	prev = fs_gamedir;
+	prev = game_asset_path->string;
 	for (s = fs_searchpaths; s; s = s->next)
 	{
 		if (s->pack)
@@ -737,25 +729,37 @@ void FS_InitFilesystem()
 	Cmd_AddCommand("link", FS_Link_f);
 	Cmd_AddCommand("dir", FS_Dir_f);
 
-	//
-	// basedir <path>
-	// allows the game to run from outside the data tree
-	//
-	fs_basedir = Cvar_Get("basedir", ".", CVAR_NOSET);
+	//todo: get current working directory
+	fs_basedir = Cvar_Get("basedir", "", 0);
 
 	//
 	// start up with zombonogame by default
 	//
-	FS_AddGameDirectory(va("%s/"BASEDIRNAME, fs_basedir->string));
+
+	// slight hack, since fs_basedir is now the current working directory by default, we have to do some kludging so that we try and load from the right file
+
+	if (strlen(fs_basedir->string) == 0)
+	{
+		FS_AddGameDirectory(game_asset_path->string);
+	}
+	else
+	{
+		FS_AddGameDirectory(va("%s/%s", fs_basedir->string, game_asset_path->string));
+	}
 
 	// any set gamedirs will be freed up to here
 	fs_base_searchpaths = fs_searchpaths;
 
 	// check for game override
-	fs_gamedirvar = Cvar_Get("game", "", CVAR_LATCH | CVAR_SERVERINFO);
-	if (fs_gamedirvar->string[0])
-		FS_SetGamedir(fs_gamedirvar->string);
+	cvar_t* game_override = Cvar_Get("game", "", CVAR_LATCH | CVAR_SERVERINFO);
+
+	if (strlen(game_override->string) > 0)
+	{
+		FS_SetGamedir(game_override->string);
+	}
+	else
+	{
+		FS_SetGamedir(game_asset_path->string);
+	}
+
 }
-
-
-

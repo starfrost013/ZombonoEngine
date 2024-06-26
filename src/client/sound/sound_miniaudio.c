@@ -201,9 +201,9 @@ void Miniaudio_Play(int32_t track, bool looping)
 	result = LoadTrack(FS_Gamedir(), track);
 
 	// try the baseq2 folder if loading the track from a custom gamedir failed
-	if (result != MA_SUCCESS && Q_stricmp(FS_Gamedir(), "./"BASEDIRNAME) != 0)
+	if (result != MA_SUCCESS && Q_stricmp(FS_Gamedir(), "./%s", game_asset_path->string) != 0)
 	{
-		result = LoadTrack(BASEDIRNAME, track);
+		result = LoadTrack(game_asset_path->string, track);
 	}
 
 	if (result != MA_SUCCESS)

@@ -135,7 +135,7 @@ input sources (say, mouse button 1 and the control key) can both press the
 same button, but the button should only be released when both of the
 pressing key have been released.
 
-When a key event issues a button command (+forward, +attack, etc), it appends
+When a key event issues a button command (+forward, +attack1, etc), it appends
 its key number as a parameter to the command so it can be matched up with
 the release.
 

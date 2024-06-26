@@ -165,7 +165,7 @@ void Netservices_UpdateInfoJsonComplete()
 		switch (next_object)
 		{
 			// there is only one array in this json file (it's an array of update channels),
-			// so we can use object objects and ignore the array objects to reduce code complexity
+			// so we can use regular JSON_OBJECT objects and ignore the array objects to reduce code complexity
 			case JSON_OBJECT:
 				
 				// iterate through array
@@ -224,7 +224,7 @@ void Netservices_UpdateInfoJsonComplete()
 
 
 							}
-							// Release date: ISO 8601 format date string for release of version
+							// Release date: ISO 8601 format date string for version reelase date
 							else if (!strcmp(json_string, "release_date"))
 							{
 								next_object = JSON_next(&update_json_stream);

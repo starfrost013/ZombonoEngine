@@ -24,11 +24,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Globals
 
-font_t			fonts[MAX_FONTS] = { 0 };		// The fonts loaded.
-cvar_t*			cl_system_font;					// The font used for in-game text.
-cvar_t*			cl_console_font;				// The font used for the console.
-int32_t 		num_fonts;						// The number of loaded fonts.
-bool			fonts_initialised = false;		// Determines if the font engine is initialised.
+font_t	fonts[MAX_FONTS] = { 0 };		// The fonts loaded.
+cvar_t*	cl_system_font;					// The font used for in-game text.
+cvar_t*	cl_console_font;				// The font used for the console.
+int32_t num_fonts;						// The number of loaded fonts.
+bool	fonts_initialised = false;		// Determines if the font engine is initialised.
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
@@ -57,14 +57,19 @@ bool Font_Init()
 	cl_console_font = Cvar_Get("cl_console_font", "cascadia_code_regular_8", 0);
 
 	// open up fonts.txt
+#ifdef _WIN32
 	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
+#else
+	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s/%s", FS_Gamedir(), "fonts\\fonts.txt");
+#endif
+
 
 	font_list_stream = fopen(file_name_list, "rb");
 
 	if (font_list_stream == NULL)
 	{
-		Sys_Error("Failed to initialise font engine: Couldn't open %s", FONT_LIST_FILENAME);
-		return false; // doesn't return but its for communication
+		Sys_Error("Failed to initialise font engine: Couldn't open %s", file_name_list);
+		return false; // shut up compiler
 	}
 
 	// get the file length
@@ -167,7 +172,7 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 
 	// allocate a JSON stream, FILE handle and the font object
 	FILE*			json_handle;
-	JSON_stream*	json_stream = malloc(sizeof(JSON_stream));
+	JSON_stream		json_stream;
 	font_t*			font = &fonts[num_fonts];
 
 	//+4 for extension
@@ -191,13 +196,13 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 		return false;
 	}
 
-	JSON_open_stream(json_stream, json_handle);
+	JSON_open_stream(&json_stream, json_handle);
 
-	enum JSON_type next_type = JSON_peek(json_stream);
+	enum JSON_type next_type = JSON_peek(&json_stream);
 
 	// start the real parsing
 	// two JSON_DONES means EOF
-	int32_t 				done_count = 0;
+	int32_t 			done_count = 0;
 	bool				running = true; 
 	const char*			json_string = { 0 };
 	font_json_section	json_section_current = font_json_config;
@@ -212,16 +217,16 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 		case JSON_OBJECT:
 		case JSON_ARRAY:
 			//JSON_next(json_stream);
-			json_string = JSON_get_string(json_stream, NULL);
+			json_string = JSON_get_string(&json_stream, NULL);
 
 			if (!strcmp(json_string, "config"))
 			{
 				json_section_current = font_json_config;
 
-				if (!Font_LoadFontConfig(json_stream, font))
+				if (!Font_LoadFontConfig(&json_stream, font))
 				{
 					Sys_Error("Failed to load font configuration for font %s: %s (line %d, column %d)",
-						&json_filename, JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+						&json_filename, JSON_get_error(&json_stream), JSON_get_lineno(&json_stream), JSON_get_position(&json_stream));
 				}
 			}
 			else if (!strcmp(json_string, "kerning"))
@@ -233,20 +238,20 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 			{
 				json_section_current = font_json_symbols;
 
-				if (!Font_LoadFontGlyphs(json_stream, font))
+				if (!Font_LoadFontGlyphs(&json_stream, font))
 				{
 					Sys_Error("Failed to load font glyph information for font %s: %s (line %d, column %d)",
-						&json_filename, JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+						&json_filename, JSON_get_error(&json_stream), JSON_get_lineno(&json_stream), JSON_get_position(&json_stream));
 				}
 			}
 			break;
 		case JSON_OBJECT_END:
 		case JSON_ARRAY_END:
-			JSON_next(json_stream); // just skip????
+			JSON_next(&json_stream); // just skip????
 			break;
 		case JSON_ERROR:
 			Sys_Error("Invalid Font JSON %s: %s (Line %d, column %d)!", json_filename, 
-				JSON_get_error(json_stream), JSON_get_lineno(json_stream), JSON_get_position(json_stream));
+				JSON_get_error(&json_stream), JSON_get_lineno(&json_stream), JSON_get_position(&json_stream));
 			return false; 
 		case JSON_DONE:
 			done_count++;
@@ -257,18 +262,16 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 			}
 			else
 			{
-				JSON_reset(json_stream);
+				JSON_reset(&json_stream);
 			}
 			break;
 		}
 
-		next_type = JSON_next(json_stream);
+		next_type = JSON_next(&json_stream);
 	}
 
 	// we're done, close up
-	JSON_close(json_stream);
-
-	free(json_stream);
+	JSON_close(&json_stream);
 
 	fclose(json_handle);
 

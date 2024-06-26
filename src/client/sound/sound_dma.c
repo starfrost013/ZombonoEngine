@@ -608,8 +608,8 @@ struct sfx_s *S_RegisterModelSound (entity_state_t *ent, char *base)
 	struct sfx_s*	sfx;
 	FILE*			f;
 	char			model[MAX_QPATH];
-	char			sexedFilename[MAX_QPATH];
-	char			maleFilename[MAX_QPATH];
+	char			model_filename[MAX_QPATH];
+	char			male_filename[MAX_QPATH];
 
 	// determine what model the client is using
 	model[0] = 0;
@@ -631,24 +631,24 @@ struct sfx_s *S_RegisterModelSound (entity_state_t *ent, char *base)
 		strcpy(model, "male");
 
 	// see if we already know of the model specific sound
-	Com_sprintf (sexedFilename, sizeof(sexedFilename), "#players/%s/%s", model, base+1);
-	sfx = S_FindName (sexedFilename, false);
+	Com_sprintf (model_filename, sizeof(model_filename), "#players/%s/%s", model, base+1);
+	sfx = S_FindName (model_filename, false);
 
 	if (!sfx)
 	{
 		// no, so see if it exists
-		FS_FOpenFile (&sexedFilename[1], &f);
+		FS_FOpenFile (&model_filename[1], &f);
 		if (f)
 		{
 			// yes, close the file and register it
 			FS_FCloseFile (f);
-			sfx = S_RegisterSound (sexedFilename);
+			sfx = S_RegisterSound (model_filename);
 		}
 		else
 		{
 			// no, revert to the male sound in the pak0.pak
-			Com_sprintf (maleFilename, sizeof(maleFilename), "player/%s/%s", "male", base+1);
-			sfx = S_AliasName (sexedFilename, maleFilename);
+			Com_sprintf (male_filename, sizeof(male_filename), "player/%s/%s", "male", base+1);
+			sfx = S_AliasName (model_filename, male_filename);
 		}
 	}
 

@@ -127,6 +127,9 @@ cvar_t* vid_fullscreen;
 cvar_t* vid_gamma;
 cvar_t* vid_ref;
 
+cvar_t* game_name;
+cvar_t* game_asset_path;
+
 /*
 =================
 R_CullBox
@@ -167,7 +170,7 @@ R_DrawNullModel
 void R_DrawNullModel()
 {
 	vec3_t	shadelight;
-	int		i;
+	int32_t	i;
 
 	if (currententity->flags & RF_FULLBRIGHT)
 		shadelight[0] = shadelight[1] = shadelight[2] = 1.0F;
@@ -204,7 +207,7 @@ R_DrawEntitiesOnList
 */
 void R_DrawEntitiesOnList()
 {
-	int		i;
+	int32_t	i;
 
 	if (!r_drawentities->value)
 		return;
@@ -759,6 +762,9 @@ void R_Register(void)
 	vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
 	vid_gamma = ri.Cvar_Get("vid_gamma", "1.0", CVAR_ARCHIVE);
 	vid_ref = ri.Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
+
+	game_name = ri.Cvar_Get("game_name", "Zombono", CVAR_LATCH | CVAR_SERVERINFO);
+	game_asset_path = ri.Cvar_Get("game_asset_path", "zombonogame", CVAR_LATCH | CVAR_SERVERINFO);
 
 	ri.Cmd_AddCommand("imagelist", GL_ImageList_f);
 	ri.Cmd_AddCommand("screenshot", GL_ScreenShot_f);

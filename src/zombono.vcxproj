@@ -72,6 +72,7 @@
     <ClCompile Include="game\gameplay\game_monster_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="qcommon\cmd.c" />
+    <ClCompile Include="qcommon\gameinfo.c" />
     <ClCompile Include="qcommon\map_loader.c" />
     <ClCompile Include="qcommon\common.c" />
     <ClCompile Include="qcommon\crc.c" />

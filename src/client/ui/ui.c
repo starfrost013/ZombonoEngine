@@ -595,7 +595,7 @@ void UI_Draw()
 #ifdef PLAYTEST
 	strftime(&time_str, 128, "Playtest Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #elif !defined(NDEBUG)
-	strftime(&time_str, 128, "Debug Build v" ZOMBONO_VERSION " (%b %d %Y %H:%M:%S)", local_time);
+	strftime(&time_str, 128, "Debug Build v" ENGINE_VERSION " (%b %d %Y %H:%M:%S)", local_time);
 #endif
 
 	int32_t size_x = 0, size_y = 0;

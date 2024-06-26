@@ -54,7 +54,7 @@ CL_RegisterTEntSounds
 */
 void CL_RegisterTEntSounds()
 {
-	int32_t 	i;
+	int32_t i;
 	char	name[MAX_QPATH];
 
 	cl_sfx_ric1 = S_RegisterSound("world/ric1.wav");
