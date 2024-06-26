@@ -29,11 +29,11 @@ bool UI_MainMenuZombieTVUICreate()
 		return true;
 
 	UI_SetStackable("MainMenuZombieTVUI", true);
-	UI_AddImage("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", "2d/ui/mainmenusettingsui_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", "2d/ui/mainmenuzombietvui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
 	UI_UseScaledAssets("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);
 
-	UI_AddImage("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", "2d/ui/global_btn_back", (r_width->value/10.0f), (r_height->value/1.3f), 256, 64);
+	UI_AddImage("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", "2d/ui/global_btn_back", 0.1f, 0.77f, 256, 64);
 	UI_SetImageOnHover("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuZombieTVUI", "MainMenuZombieTVUI_Back", UI_MainMenuZombieTVUIOnBackPressed);
 

@@ -117,6 +117,9 @@ void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 			float final_pos_x = ui_control_ptr->position_x * r_width->value;
 			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
+			if (!current_ui->passive && !current_ui->activated)
+				return;
+
 			// Handle focus changes for key events
 			// TODO: Scaling
 			if (x >= final_pos_x

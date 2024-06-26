@@ -30,7 +30,7 @@ bool UI_MainMenuQuitUICreate()
 		return true;
 
 	UI_SetStackable("MainMenuQuitUI", true);
-	UI_AddImage("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", "2d/ui/mainmenuquitui_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", "2d/ui/mainmenuui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", true);
 	UI_UseScaledAssets("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", true);
 

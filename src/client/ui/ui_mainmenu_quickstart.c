@@ -33,6 +33,9 @@ bool UI_MainMenuQuickstartUICreate()
 	UI_SetImageIsStretched("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", true);
 	UI_UseScaledAssets("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", true);
 
+	UI_AddImage("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back", 0.1f, 0.77f, 256, 64);
+	UI_SetImageOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", UI_MainMenuQuickstartUIOnBackPressed);
 
 	// create uI
 	return true;

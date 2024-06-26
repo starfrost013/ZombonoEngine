@@ -573,11 +573,15 @@ void UI_Pop()
 		return; // shut up compiler
 	}
 
+	// explicitly disable the old ui
+	UI_SetEnabled(ui_stack[ui_stack_top]->name, false);
+	UI_SetActivated(ui_stack[ui_stack_top]->name, false);
+
 	ui_stack[ui_stack_top] = NULL;
 	ui_stack_top--;
 
-	UI_SetEnabled(ui_stack[ui_stack_top], true);
-	UI_SetActivated(ui_stack[ui_stack_top], true);
+	UI_SetEnabled(ui_stack[ui_stack_top]->name, true);
+	UI_SetActivated(ui_stack[ui_stack_top]->name, true);
 }
 
 void UI_Draw()

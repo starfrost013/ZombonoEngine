@@ -5,6 +5,9 @@ Version 0.1.0-pre1
 June 29, 2024
 
 NEW FEATURES:
+	* The way that game assets get loaded has changed!
+		* The game name and asset path are still loaded from the gameinfo.json file instead of being hardcoded by default
+		* You can still use +set game <name> (or the equivalent alias of +set game_asset_path <name>) to change the name of the game
 	* UIs are now stackable:
 		* If a UI has its "stackable" field set using the UI_SetStackable function with the stackable parameter set to "true", the UI will enter into a stack.
 			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
@@ -50,9 +53,11 @@ BUG FIXES:
 	* Fixed UI initialisation status being set to successful even if it failed
 	* Fixed the constraint of only one UI being activated at a time not actually existing 
 	* Fixed a crash when debug graphs were used
+	* Fixed incorrect path being used if the font engine failed to load
+
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing
-
+	* Removed the "Gamedir" cvar due to aforementioned asset changes
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour

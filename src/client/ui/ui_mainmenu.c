@@ -61,7 +61,7 @@ bool UI_MainMenuUICreate()
 	// Main Menu buttons onhover images
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers_hover");
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnZombieTelevision", "2d/ui/mainmenuui_btn_zombietelevision_hover");
+	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnZombieTV", "2d/ui/mainmenuui_btn_zombietelevision_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings_hover");
 	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnQuit", "2d/ui/mainmenuui_btn_quit_hover");
 

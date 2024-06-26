@@ -759,6 +759,9 @@ void FS_InitFilesystem()
 	else
 	{
 		FS_SetGamedir(game_asset_path->string);
+		// actually make it an alias for compatibility...
+		
+		game_override->string = game_asset_path->string;
 	}
 
 }

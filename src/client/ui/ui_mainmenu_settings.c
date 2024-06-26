@@ -33,6 +33,10 @@ bool UI_MainMenuSettingsUICreate()
 	UI_SetImageIsStretched("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
 	UI_UseScaledAssets("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
 
+	UI_AddImage("MainMenuSettingsUI", "MainMenuSettingsUI_Back", "2d/ui/global_btn_back", 0.1f, 0.77f, 256, 64);
+	UI_SetImageOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_Back", UI_MainMenuSettingsUIOnBackPressed);
+
 	// create uI
 	return true;
 }
