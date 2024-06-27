@@ -295,7 +295,7 @@ void SV_WriteLevelFile()
 	fclose(f);
 
 	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
-	ge->WriteLevel(name);
+	ge->Level_Write(name);
 }
 
 /*
@@ -323,7 +323,7 @@ void SV_ReadLevelFile()
 	fclose(f);
 
 	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
-	ge->ReadLevel(name);
+	ge->Level_Read(name);
 }
 
 /*
@@ -396,7 +396,7 @@ void SV_WriteServerFile(bool autosave)
 
 	// write game state
 	Com_sprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
-	ge->WriteGame(name, autosave);
+	ge->Game_Write(name, autosave);
 }
 
 /*
@@ -447,7 +447,7 @@ void SV_ReadServerFile()
 
 	// read game state
 	Com_sprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
-	ge->ReadGame(name);
+	ge->Game_Read(name);
 }
 
 
@@ -1023,7 +1023,7 @@ void SV_ServerCommand_f()
 		return;
 	}
 
-	ge->ServerCommand();
+	ge->Server_Command();
 }
 
 //===========================================================

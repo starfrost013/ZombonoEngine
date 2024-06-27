@@ -1068,11 +1068,6 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 		if (!down)
 			return;
 
-		if (cl.frame.playerstate.stats[STAT_LAYOUTS] && cls.input_dest == key_game)
-		{	// put away help computer / inventory
-			Cbuf_AddText("cmd putaway\n");
-			return;
-		}
 		switch (cls.input_dest)
 		{
 		case key_message:

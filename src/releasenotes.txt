@@ -58,6 +58,7 @@ BUG FIXES:
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing
 	* Removed the "Gamedir" cvar due to aforementioned asset changes
+	* Removed the help computer
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour
@@ -71,6 +72,7 @@ OTHER CHANGES:
 	* Renamed basically every single source file
 	* Renamed gl_width and gl_height CVars to r_width and r_height due to being renderer independent
 	* Renamed cd_ cvars to s_ because they don't relate to CDs anymore
+	* Renamed tons of functions in the game dll
 
 Version 0.0.10 (Build 558)
 June 8, 2024

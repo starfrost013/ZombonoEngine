@@ -77,7 +77,7 @@ void SV_DropClient(client_t* drop)
 	{
 		// call the prog function for removing a client
 		// this will remove the body, among other things
-		ge->ClientDisconnect(drop->edict);
+		ge->Client_Disconnect(drop->edict);
 	}
 
 	if (drop->download)
@@ -271,7 +271,7 @@ gotnewcl:
 	newcl->challenge = challenge; // save challenge for checksumming
 
 	// get the game a chance to reject this connection or modify the userinfo
-	if (!(ge->ClientConnect(ent, userinfo)))
+	if (!(ge->Client_Connect(ent, userinfo)))
 	{
 		if (*Info_ValueForKey(userinfo, "rejmsg"))
 			Netchan_OutOfBandPrint(NS_SERVER, adr, "print\n%s\nConnection refused.\n",
@@ -711,7 +711,7 @@ void SV_UserinfoChanged(client_t* cl)
 	int32_t 	i;
 
 	// call prog code to allow overrides
-	ge->ClientUserinfoChanged(cl->edict, cl->userinfo);
+	ge->Client_UserinfoChanged(cl->edict, cl->userinfo);
 
 	// name for C code
 	strncpy(cl->name, Info_ValueForKey(cl->userinfo, "name"), sizeof(cl->name) - 1);

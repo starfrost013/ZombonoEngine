@@ -249,7 +249,7 @@ void SV_Begin_f()
 	sv_client->state = cs_spawned;
 
 	// call the game begin function
-	ge->ClientBegin(sv_player);
+	ge->Client_OnConnected(sv_player);
 
 	Cbuf_InsertFromDefer();
 }
@@ -495,11 +495,11 @@ void SV_ExecuteUserCommand(char* s, bool no_console)
 	{
 		if (no_console)
 		{
-			ge->ClientCommand_NoConsole(sv_player);
+			ge->Client_CommandNoConsole(sv_player);
 		}
 		else
 		{
-			ge->ClientCommand(sv_player);
+			ge->Client_Command(sv_player);
 		}
 	}
 }
@@ -524,7 +524,7 @@ void SV_ClientThink(client_t* cl, usercmd_t* cmd)
 		return;
 	}
 
-	ge->ClientThink(cl->edict, cmd);
+	ge->Client_Think(cl->edict, cmd);
 }
 
 

@@ -139,7 +139,7 @@ Returns true if the box is completely outside the frustum
 */
 bool R_CullBox(vec3_t mins, vec3_t maxs)
 {
-	int		i;
+	int32_t i;
 
 	if (r_nocull->value)
 		return false;
