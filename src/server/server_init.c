@@ -205,8 +205,28 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 	// save name for levels that don't set message
 	strcpy(sv.configstrings[CS_NAME], server);
 
-	sprintf(sv.configstrings[CS_AIRACCEL], "%g", sv_airaccelerate->value);
-	pm_airaccelerate = sv_airaccelerate->value;
+	// add player physics information to configstrings
+	sprintf(sv.configstrings[CS_PHYS_STOPSPEED], "%g", sv_stopspeed->value);
+	sprintf(sv.configstrings[CS_PHYS_MAXSPEED_PLAYER], "%g", sv_maxspeed_player->value);
+	sprintf(sv.configstrings[CS_PHYS_MAXSPEED_DIRECTOR], "%g", sv_maxspeed_director->value);
+	sprintf(sv.configstrings[CS_PHYS_DUCKSPEED], "%g", sv_duckspeed->value);
+	sprintf(sv.configstrings[CS_PHYS_ACCELERATE_PLAYER], "%g", sv_accelerate_player->value);
+	sprintf(sv.configstrings[CS_PHYS_ACCELERATE_DIRECTOR], "%g", sv_accelerate_director->value);
+	sprintf(sv.configstrings[CS_PHYS_ACCELERATE_AIR], "%g", sv_airaccelerate->value);
+	sprintf(sv.configstrings[CS_PHYS_ACCELERATE_WATER], "%g", sv_wateraccelerate->value);
+	sprintf(sv.configstrings[CS_PHYS_FRICTION], "%g", sv_friction->value);
+	sprintf(sv.configstrings[CS_PHYS_FRICTION_WATER], "%g", sv_waterfriction->value);
+
+	phys_airaccelerate = sv_airaccelerate->value;
+	phys_maxspeed_player = sv_maxspeed_player->value;
+	phys_maxspeed_director = sv_maxspeed_director->value;
+	phys_duckspeed = sv_duckspeed->value;
+	phys_accelerate_player = sv_accelerate_player->value;
+	phys_accelerate_director = sv_accelerate_director->value;
+	phys_airaccelerate = sv_airaccelerate->value;
+	phys_wateraccelerate = sv_wateraccelerate->value;
+	phys_friction = sv_friction->value;
+	phys_waterfriction = sv_waterfriction->value;
 
 	SZ_Init(&sv.multicast, sv.multicast_buf, sizeof(sv.multicast_buf));
 

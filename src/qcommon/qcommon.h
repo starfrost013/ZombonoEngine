@@ -694,9 +694,20 @@ Common between server and client so prediction matches
 ==============================================================
 */
 
-extern float pm_airaccelerate;
+void Player_Move(pmove_t* pmove);
 
-void Pmove(pmove_t* pmove);
+// physics parameters
+extern float phys_stopspeed;
+extern float phys_maxspeed_player;
+extern float phys_maxspeed_director;
+extern float phys_duckspeed;
+extern float phys_accelerate_player;
+extern float phys_accelerate_director;
+extern float phys_airaccelerate;
+extern float phys_wateraccelerate;
+extern float phys_friction;
+extern float phys_waterfriction;
+extern float phys_waterspeed;
 
 /*
 ==============================================================

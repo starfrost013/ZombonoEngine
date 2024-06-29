@@ -1058,10 +1058,10 @@ GLAPI PFNGLCALLLISTPROC glad_glCallList;
 typedef void (APIENTRYP PFNGLCALLLISTSPROC)(GLsizei n, GLenum type, const void *lists);
 GLAPI PFNGLCALLLISTSPROC glad_glCallLists;
 #define glCallLists glad_glCallLists
-typedef void (APIENTRYP PFNGLDELETELISTSPROC)(GLuint list, GLsizei range);
+typedef void (APIENTRYP PFNGLDELETELISTSPROC)(GLuint list, GLsizei AI_GetRange);
 GLAPI PFNGLDELETELISTSPROC glad_glDeleteLists;
 #define glDeleteLists glad_glDeleteLists
-typedef GLuint (APIENTRYP PFNGLGENLISTSPROC)(GLsizei range);
+typedef GLuint (APIENTRYP PFNGLGENLISTSPROC)(GLsizei AI_GetRange);
 GLAPI PFNGLGENLISTSPROC glad_glGenLists;
 #define glGenLists glad_glGenLists
 typedef void (APIENTRYP PFNGLLISTBASEPROC)(GLuint base);

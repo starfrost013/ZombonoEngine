@@ -98,7 +98,6 @@ cvar_t* gl_particle_att_c;
 cvar_t* gl_vsync;
 cvar_t* gl_ext_compiled_vertex_array;
 
-cvar_t* gl_bitdepth;
 cvar_t* gl_drawbuffer;
 cvar_t* gl_lightmap;
 cvar_t* gl_shadows;
@@ -729,7 +728,6 @@ void R_Register(void)
 	gl_particle_att_c = ri.Cvar_Get("gl_particle_att_c", "0.01", CVAR_ARCHIVE);
 
 	gl_modulate = ri.Cvar_Get("gl_modulate", "1", CVAR_ARCHIVE);
-	gl_bitdepth = ri.Cvar_Get("gl_bitdepth", "0", 0);
 	r_width = ri.Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
 	r_height = ri.Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 	gl_lightmap = ri.Cvar_Get("gl_lightmap", "0", 0);

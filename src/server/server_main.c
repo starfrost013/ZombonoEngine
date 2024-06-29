@@ -38,7 +38,17 @@ cvar_t* allow_download_models;
 cvar_t* allow_download_sounds;
 cvar_t* allow_download_maps;
 
+cvar_t* sv_stopspeed;
+cvar_t* sv_maxspeed_player;
+cvar_t* sv_maxspeed_director;
+cvar_t* sv_duckspeed;
+cvar_t* sv_accelerate_player;
+cvar_t* sv_accelerate_director;
 cvar_t* sv_airaccelerate;
+cvar_t* sv_wateraccelerate;
+cvar_t* sv_friction;
+cvar_t* sv_waterfriction;
+cvar_t* sv_waterspeed;
 
 cvar_t* sv_noreload;			// don't reload level state when reentering
 
@@ -769,7 +779,18 @@ void SV_Init()
 
 	sv_noreload = Cvar_Get("sv_noreload", "0", 0);
 
-	sv_airaccelerate = Cvar_Get("sv_airaccelerate", "10", CVAR_LATCH);
+	sv_stopspeed = Cvar_Get("sv_stopspeed", "100", CVAR_SERVERINFO);
+	sv_maxspeed_player = Cvar_Get("sv_maxspeed_player", "300", CVAR_SERVERINFO);
+	sv_maxspeed_director = Cvar_Get("sv_maxspeed_director", "300", CVAR_SERVERINFO);
+	sv_duckspeed = Cvar_Get("sv_duckspeed", "100", CVAR_SERVERINFO);
+	sv_accelerate_player = Cvar_Get("sv_accelerate_player", "10", CVAR_SERVERINFO);
+	sv_accelerate_director = Cvar_Get("sv_accelerate_director", "8", CVAR_SERVERINFO);
+	sv_airaccelerate = Cvar_Get("sv_airaccelerate", "10", CVAR_SERVERINFO);
+	sv_wateraccelerate = Cvar_Get("sv_wateraccelerate", "10", CVAR_SERVERINFO);
+	sv_friction = Cvar_Get("sv_friction", "6", CVAR_SERVERINFO);
+	sv_waterfriction = Cvar_Get("sv_waterfriction", "1", CVAR_SERVERINFO);
+	sv_waterspeed = Cvar_Get("sv_waterspeed", "400", CVAR_SERVERINFO);
+
 
 	public_server = Cvar_Get("public", "0", 0);
 

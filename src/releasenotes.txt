@@ -8,6 +8,7 @@ NEW FEATURES:
 	* The way that game assets get loaded has changed!
 		* The game name and asset path are still loaded from the gameinfo.json file instead of being hardcoded by default
 		* You can still use +set game <name> (or the equivalent alias of +set game_asset_path <name>) to change the name of the game
+	* Director players now drop their items when they die, but they despawn after 10 seconds instead of30.
 	* UIs are now stackable:
 		* If a UI has its "stackable" field set using the UI_SetStackable function with the stackable parameter set to "true", the UI will enter into a stack.
 			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
@@ -15,6 +16,11 @@ NEW FEATURES:
 			* You can't push the same UI to the stack twice in a row (in order to prevent bugs), but you can stack the same UI twice non-consecutively.
 	* Began work on a new main menu to replace the old one
 		* This is not very functional right now but can be toggled using +ui_newmenu 1
+	* Added two new fields to the gitem_t type, "touchable_time" and "disappear_time"
+		* Can be used to override the default one second before an item is able to be picked up, and the time from when it drops to when it disappears respectively. 
+		* Default behaviour is set when these items are set to 0.
+		* This is not presently intended for use in games but is only intended for the game code to use
+
 	* Updated PDJSON library to commit 78fe04b820dc8817f540bdd87fb22887e0ef3981 (February 22, 2024, and yes I'm late)
 		* This fixes an issue where position tracking could go beyond the end of the JSON file by adding more checks for EOF
 	* Renderer API version 11:
@@ -59,6 +65,7 @@ REMOVALS:
 	* Removed the m_filter cvar - it did nothing
 	* Removed the "Gamedir" cvar due to aforementioned asset changes
 	* Removed the help computer
+	* Removed gl_bitdepth cvar (doesn't work)
 
 OTHER CHANGES:
 	* Gave the tangfuslicator particles a bit of colour

@@ -3188,11 +3188,11 @@ static int vorbis_decode_packet_rest(vorb *f, int *len, Mode *m, int left_start,
             short *finalY;
             uint8 step2_flag[256];
             static int range_list[4] = { 256, 128, 86, 64 };
-            int range = range_list[g->floor1_multiplier-1];
+            int AI_GetRange = range_list[g->floor1_multiplier-1];
             int offset = 2;
             finalY = f->finalY[i];
-            finalY[0] = get_bits(f, ilog(range)-1);
-            finalY[1] = get_bits(f, ilog(range)-1);
+            finalY[0] = get_bits(f, ilog(AI_GetRange)-1);
+            finalY[1] = get_bits(f, ilog(AI_GetRange)-1);
             for (j=0; j < g->partitions; ++j) {
                int pclass = g->partition_class_list[j];
                int cdim = g->class_dimensions[pclass];
@@ -3224,7 +3224,7 @@ static int vorbis_decode_packet_rest(vorb *f, int *len, Mode *m, int left_start,
                //neighbors(g->Xlist, j, &low, &high);
                pred = predict_point(g->Xlist[j], g->Xlist[low], g->Xlist[high], finalY[low], finalY[high]);
                val = finalY[j];
-               highroom = range - pred;
+               highroom = AI_GetRange - pred;
                lowroom = pred;
                if (highroom < lowroom)
                   room = highroom * 2;

@@ -44,25 +44,25 @@ typedef struct
 	bool	ladder;
 } pml_t;
 
-pmove_t		*pm;
+pmove_t*	pm;
 pml_t		pml;
 
-
-// movement parameters
-float	pm_stopspeed = 100;
-float	pm_maxspeed = 300;
-float	pm_duckspeed = 100;
-float	pm_accelerate = 10;
-float	pm_airaccelerate = 0;
-float	pm_wateraccelerate = 10;
-float	pm_friction = 6;
-float	pm_waterfriction = 1;
-float	pm_waterspeed = 400;
+// DEFAULT PHYSICS PARAMETERS
+// OVERRIDABLE BY SERVER
+float phys_stopspeed = 100;
+float phys_maxspeed_player = 300;
+float phys_maxspeed_director = 300;
+float phys_duckspeed = 100;
+float phys_accelerate_player = 10;
+float phys_accelerate_director = 8;
+float phys_airaccelerate = 0;
+float phys_wateraccelerate = 10;
+float phys_friction = 6;
+float phys_waterfriction = 1;
+float phys_waterspeed = 400;
 
 /*
-
   walking up a step should kill some velocity
-
 */
 
 /*
@@ -309,14 +309,14 @@ void PM_Friction ()
 // apply ground friction
 	if ((pm->groundentity && pml.groundsurface && !(pml.groundsurface->flags & SURF_SLICK) ) || (pml.ladder) )
 	{
-		friction = pm_friction;
-		control = speed < pm_stopspeed ? pm_stopspeed : speed;
+		friction = phys_friction;
+		control = speed < phys_stopspeed ? phys_stopspeed : speed;
 		drop += control*friction*pml.frametime;
 	}
 
 // apply water friction
 	if (pm->waterlevel && !pml.ladder)
-		drop += speed*pm_waterfriction*pm->waterlevel*pml.frametime;
+		drop += speed*phys_waterfriction*pm->waterlevel*pml.frametime;
 
 // scale the velocity
 	newspeed = speed - drop;
@@ -436,7 +436,7 @@ void PM_AddCurrents (vec3_t	wishvel)
 		if (pm->watertype & CONTENTS_CURRENT_DOWN)
 			v[2] -= 1;
 
-		s = pm_waterspeed;
+		s = phys_waterspeed;
 		if ((pm->waterlevel == 1) && (pm->groundentity))
 			s /= 2;
 
@@ -498,14 +498,14 @@ void PM_WaterMove ()
 	VectorCopy (wishvel, wishdir);
 	wishspeed = VectorNormalize(wishdir);
 
-	if (wishspeed > pm_maxspeed)
+	if (wishspeed > phys_maxspeed_player)
 	{
-		VectorScale (wishvel, pm_maxspeed/wishspeed, wishvel);
-		wishspeed = pm_maxspeed;
+		VectorScale (wishvel, phys_maxspeed_player/wishspeed, wishvel);
+		wishspeed = phys_maxspeed_player;
 	}
 	wishspeed *= 0.5;
 
-	PM_Accelerate (wishdir, wishspeed, pm_wateraccelerate);
+	PM_Accelerate (wishdir, wishspeed, phys_wateraccelerate);
 
 	PM_StepSlideMove ();
 }
@@ -542,7 +542,7 @@ void PM_AirMove ()
 //
 // clamp to server defined max speed
 //
-	maxspeed = (pm->s.pm_flags & PMF_DUCKED) ? pm_duckspeed : pm_maxspeed;
+	maxspeed = (pm->s.pm_flags & PMF_DUCKED) ? phys_duckspeed : phys_maxspeed_player;
 
 	if (wishspeed > maxspeed)
 	{
@@ -552,7 +552,7 @@ void PM_AirMove ()
 	
 	if ( pml.ladder )
 	{
-		PM_Accelerate (wishdir, wishspeed, pm_accelerate);
+		PM_Accelerate (wishdir, wishspeed, phys_accelerate_player);
 		if (!wishvel[2])
 		{
 			if (pml.velocity[2] > 0)
@@ -573,7 +573,7 @@ void PM_AirMove ()
 	else if ( pm->groundentity )
 	{	// walking on ground
 		pml.velocity[2] = 0; //!!! this is before the accel
-		PM_Accelerate (wishdir, wishspeed, pm_accelerate);
+		PM_Accelerate (wishdir, wishspeed, phys_accelerate_player);
 
 // PGM	-- fix for negative trigger_gravity fields
 //		pml.velocity[2] = 0;
@@ -588,8 +588,8 @@ void PM_AirMove ()
 	}
 	else
 	{	// not on ground, so little effect on velocity
-		if (pm_airaccelerate)
-			PM_AirAccelerate (wishdir, wishspeed, pm_accelerate);
+		if (phys_airaccelerate)
+			PM_AirAccelerate (wishdir, wishspeed, phys_accelerate_player);
 		else
 			PM_Accelerate (wishdir, wishspeed, 1);
 		// add gravity
@@ -839,8 +839,8 @@ void PM_FlyMove (bool doclip)
 	{
 		drop = 0;
 
-		friction = pm_friction*1.5;	// extra friction
-		control = speed < pm_stopspeed ? pm_stopspeed : speed;
+		friction = phys_friction*1.5;	// extra friction
+		control = speed < phys_stopspeed ? phys_stopspeed : speed;
 		drop += control*friction*pml.frametime;
 
 		// scale the velocity
@@ -869,10 +869,10 @@ void PM_FlyMove (bool doclip)
 	//
 	// clamp to server defined max speed
 	//
-	if (wishspeed > pm_maxspeed)
+	if (wishspeed > phys_maxspeed_player)
 	{
-		VectorScale (wishvel, pm_maxspeed/wishspeed, wishvel);
-		wishspeed = pm_maxspeed;
+		VectorScale (wishvel, phys_maxspeed_player/wishspeed, wishvel);
+		wishspeed = phys_maxspeed_player;
 	}
 
 
@@ -880,7 +880,7 @@ void PM_FlyMove (bool doclip)
 	addspeed = wishspeed - currentspeed;
 	if (addspeed <= 0)
 		return;
-	accelspeed = pm_accelerate*pml.frametime*wishspeed;
+	accelspeed = phys_accelerate_player*pml.frametime*wishspeed;
 	if (accelspeed > addspeed)
 		accelspeed = addspeed;
 	
@@ -1131,7 +1131,7 @@ Pmove
 Can be called by either the server or the client
 ================
 */
-void Pmove (pmove_t *pmove)
+void Player_Move (pmove_t *pmove)
 {
 	pm = pmove;
 

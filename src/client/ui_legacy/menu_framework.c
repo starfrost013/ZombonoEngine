@@ -532,17 +532,17 @@ void Slider_Draw(menuslider_t* s)
 		s->generic.y + s->generic.parent->y,
 		s->generic.name);
 
-	s->range = (s->curvalue - s->minvalue) / (float)(s->maxvalue - s->minvalue);
+	s->AI_GetRange = (s->curvalue - s->minvalue) / (float)(s->maxvalue - s->minvalue);
 
-	if (s->range < 0)
-		s->range = 0;
-	if (s->range > 1)
-		s->range = 1;
+	if (s->AI_GetRange < 0)
+		s->AI_GetRange = 0;
+	if (s->AI_GetRange > 1)
+		s->AI_GetRange = 1;
 	re.DrawPic(s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, "2d/slider_01", NULL, false);
 	for (i = 0; i < SLIDER_RANGE; i++)
 		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_02", NULL, false);
 	re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_03", NULL, false);
-	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * s->range), s->generic.y + s->generic.parent->y, "2d/slider_value", NULL, false);
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * s->AI_GetRange), s->generic.y + s->generic.parent->y, "2d/slider_value", NULL, false);
 }
 
 void SpinControl_DoEnter(menulist_t* s)

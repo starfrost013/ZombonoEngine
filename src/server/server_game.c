@@ -364,7 +364,7 @@ void SV_InitGameProgs ()
 	import.setmodel = PF_setmodel;
 	import.inPVS = PF_inPVS;
 	import.inPHS = PF_inPHS;
-	import.Pmove = Pmove;
+	import.Player_Move = Player_Move;
 
 	import.modelindex = SV_ModelIndex;
 	import.soundindex = SV_SoundIndex;

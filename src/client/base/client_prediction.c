@@ -240,7 +240,16 @@ void CL_PredictMovement()
 	pm.trace = CL_PMTrace;
 	pm.pointcontents = CL_PMpointcontents;
 
-	pm_airaccelerate = atof(cl.configstrings[CS_AIRACCEL]);
+	phys_stopspeed = atof(cl.configstrings[CS_PHYS_STOPSPEED]);
+	phys_maxspeed_player = atof(cl.configstrings[CS_PHYS_MAXSPEED_PLAYER]);
+	phys_maxspeed_director = atof(cl.configstrings[CS_PHYS_MAXSPEED_DIRECTOR]);
+	phys_duckspeed = atof(cl.configstrings[CS_PHYS_DUCKSPEED]);
+	phys_accelerate_player = atof(cl.configstrings[CS_PHYS_ACCELERATE_PLAYER]);
+	phys_accelerate_director = atof(cl.configstrings[CS_PHYS_ACCELERATE_DIRECTOR]);
+	phys_airaccelerate = atof(cl.configstrings[CS_PHYS_ACCELERATE_AIR]);
+	phys_wateraccelerate = atof(cl.configstrings[CS_PHYS_ACCELERATE_WATER]);
+	phys_friction = atof(cl.configstrings[CS_PHYS_FRICTION]);
+	phys_waterfriction = atof(cl.configstrings[CS_PHYS_FRICTION_WATER]);
 
 	pm.s = cl.frame.playerstate.pmove;
 
@@ -253,7 +262,7 @@ void CL_PredictMovement()
 		cmd = &cl.cmds[frame];
 
 		pm.cmd = *cmd;
-		Pmove(&pm);
+		Player_Move(&pm);
 
 		// save for debug checking
 		VectorCopy(pm.s.origin, cl.predicted_origins[frame]);
@@ -262,12 +271,12 @@ void CL_PredictMovement()
 	oldframe = (ack - 2) & (CMD_BACKUP - 1);
 	oldz = cl.predicted_origins[oldframe][2];
 	step = pm.s.origin[2] - oldz;
+
 	if (step > 63 && step < 160 && (pm.s.pm_flags & PMF_ON_GROUND))
 	{
 		cl.predicted_step = step;
 		cl.predicted_step_time = cls.realtime - cls.frametime * 500;
 	}
-
 
 	// copy results out for rendering
 	cl.predicted_origin[0] = pm.s.origin[0];

@@ -94,6 +94,7 @@
     <ClCompile Include="server\server_send.c" />
     <ClCompile Include="server\server_user.c" />
     <ClCompile Include="server\server_world.c" />
+    <ClCompile Include="server\server_hack_protection.c" />
     <ClCompile Include="win32\conproc.c" />
     <ClCompile Include="win32\net_wins.c" />
     <ClCompile Include="win32\q_shwin.c" />

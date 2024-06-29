@@ -1,5 +1,4 @@
 /*
-Copyright (C) 1997-2001 Id Software, Inc.
 Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
@@ -19,11 +18,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// If we need this string helper macro anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+// server_hack_protection.c: Server-side speed and other hack protections
 
-#define ZOMBONO_VERSION_MAJOR 0
-#define ZOMBONO_VERSION_MINOR 1
-#define ZOMBONO_VERSION_REVISION 0
-#define ZOMBONO_VERSION_BUILD 649
+#include <server/server.h>
+
+void SV_VerifyPmove()
+{
+
+}

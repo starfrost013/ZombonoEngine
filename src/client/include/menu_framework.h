@@ -86,7 +86,7 @@ typedef struct menuslider_s
 	float maxvalue;
 	float curvalue;
 
-	float range;
+	float AI_GetRange;
 } menuslider_t;
 
 typedef struct menulist_s

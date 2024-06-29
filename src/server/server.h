@@ -196,7 +196,21 @@ extern cvar_t* hostname;
 extern cvar_t* sv_paused;
 extern cvar_t* maxclients;
 extern cvar_t* sv_noreload;			// don't reload level state when reentering
-extern cvar_t* sv_airaccelerate;		// don't reload level state when reentering
+
+// physics parameters (override client default to prevent cheating)
+extern cvar_t* sv_stopspeed;
+extern cvar_t* sv_maxspeed_player;
+extern cvar_t* sv_maxspeed_director;
+extern cvar_t* sv_duckspeed;
+extern cvar_t* sv_accelerate_player;
+extern cvar_t* sv_accelerate_director;
+extern cvar_t* sv_airaccelerate;
+extern cvar_t* sv_wateraccelerate;
+extern cvar_t* sv_friction;
+extern cvar_t* sv_waterfriction;
+extern cvar_t* sv_waterspeed;
+
+// master stuff
 extern cvar_t* public_server;
 // development tool
 extern cvar_t* sv_enforcetime;
@@ -342,3 +356,7 @@ int32_t SV_PointContents(vec3_t p);
 
 // passedict is explicitly excluded from clipping checks (normally NULL)
 trace_t SV_Trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t* passedict, int32_t contentmask);
+
+//
+// HACK PROTECTION
+//

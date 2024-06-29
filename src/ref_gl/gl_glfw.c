@@ -279,9 +279,6 @@ void GL_BeginFrame()
 	if (gl_state.window == NULL)
 		return;
 
-	if (gl_bitdepth->modified)
-		gl_bitdepth->modified = false;
-
 	glDrawBuffer(GL_BACK);
 }
 

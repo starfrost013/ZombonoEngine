@@ -2401,7 +2401,7 @@ static menulist_t s_infinite_ammo_box;
 static menulist_t s_quad_drop_box;
 static menulist_t s_individual_fraglimit_box;
 static menulist_t s_director_can_pickup_player_items_box;
-static menulist_t s_drop_director_items_box;
+static menulist_t s_dont_drop_director_items_box;
 
 static void GameFlagCallback(void* self)
 {
@@ -2509,12 +2509,12 @@ static void GameFlagCallback(void* self)
 			flags &= ~GF_DIRECTOR_CAN_PICKUP_PLAYER_ITEMS;
 		goto setvalue;
 	}
-	else if (f == &s_drop_director_items_box)
+	else if (f == &s_dont_drop_director_items_box)
 	{
 		if (f->curvalue)
-			flags |= GF_DROP_DIRECTOR_ITEMS;
+			flags |= GF_DONT_DROP_DIRECTOR_ITEMS;
 		else
-			flags &= ~GF_DROP_DIRECTOR_ITEMS;
+			flags &= ~GF_DONT_DROP_DIRECTOR_ITEMS;
 		goto setvalue;
 	}
 
@@ -2675,13 +2675,13 @@ void GameOptions_MenuInit(void)
 	s_director_can_pickup_player_items_box.itemnames = yes_no_names;
 	s_director_can_pickup_player_items_box.curvalue = (gameflags & GF_DIRECTOR_CAN_PICKUP_PLAYER_ITEMS) != 0;
 
-	s_drop_director_items_box.generic.type = MTYPE_SPINCONTROL;
-	s_drop_director_items_box.generic.x = 0;
-	s_drop_director_items_box.generic.y = y += 10 * vid_hudscale->value;
-	s_drop_director_items_box.generic.name = "^5Directors Drop Items";
-	s_drop_director_items_box.generic.callback = GameFlagCallback;
-	s_drop_director_items_box.itemnames = yes_no_names;
-	s_drop_director_items_box.curvalue = (gameflags & GF_DROP_DIRECTOR_ITEMS) != 0;
+	s_dont_drop_director_items_box.generic.type = MTYPE_SPINCONTROL;
+	s_dont_drop_director_items_box.generic.x = 0;
+	s_dont_drop_director_items_box.generic.y = y += 10 * vid_hudscale->value;
+	s_dont_drop_director_items_box.generic.name = "^5Directors Don't Drop Team Items On Death";
+	s_dont_drop_director_items_box.generic.callback = GameFlagCallback;
+	s_dont_drop_director_items_box.itemnames = yes_no_names;
+	s_dont_drop_director_items_box.curvalue = (gameflags & GF_DONT_DROP_DIRECTOR_ITEMS) != 0;
 
 	Menu_AddItem(&s_gameoptions_menu, &s_falls_box);
 	Menu_AddItem(&s_gameoptions_menu, &s_weapons_stay_box);
@@ -2699,7 +2699,7 @@ void GameOptions_MenuInit(void)
 	Menu_AddItem(&s_gameoptions_menu, &s_friendlyfire_item_box);
 	Menu_AddItem(&s_gameoptions_menu, &s_individual_fraglimit_box);
 	Menu_AddItem(&s_gameoptions_menu, &s_director_can_pickup_player_items_box);
-	Menu_AddItem(&s_gameoptions_menu, &s_drop_director_items_box);
+	Menu_AddItem(&s_gameoptions_menu, &s_dont_drop_director_items_box);
 	Menu_Center(&s_gameoptions_menu);
 
 	// set the original gameflags statusbar
