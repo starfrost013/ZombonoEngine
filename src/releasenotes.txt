@@ -5,6 +5,7 @@ Version 0.1.0-pre1
 June 29, 2024
 
 NEW FEATURES:
+	* Early version of new asset - 
 	* The way that game assets get loaded has changed!
 		* The game name and asset path are now loaded from the gameinfo.json file instead of being hardcoded by default
 		* You can still use +set game <name> (or the equivalent alias of +set game_asset_path <name>) to change the name of the game

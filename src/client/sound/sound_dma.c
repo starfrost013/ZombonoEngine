@@ -118,7 +118,7 @@ void S_Init ()
 {
 	cvar_t* cv;
 
-	Com_Printf("\n------- sound initialization -------\n");
+	Com_Printf("\n------- Sound Initialization -------\n");
 
 	cv = Cvar_Get ("s_initsound", "1", 0);
 	if (!cv->value)

@@ -179,6 +179,7 @@ void Master_Heartbeat()
 	if (svs.last_heartbeat > svs.realtime)
 		svs.last_heartbeat = svs.realtime;
 
+#if DEBUG
 	if (sv_debug_heartbeat->value)
 	{
 		if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS_DEBUG * 1000)
@@ -189,6 +190,10 @@ void Master_Heartbeat()
 		if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS * 1000)
 			return;		// not time to send yet
 	}
+#elif PLAYTEST
+	if (svs.realtime - svs.last_heartbeat < HEARTBEAT_SECONDS * 1000)
+		return;		// not time to send yet
+#endif
 
 	svs.last_heartbeat = svs.realtime;
 
