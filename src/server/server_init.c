@@ -217,7 +217,7 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 	sprintf(sv.configstrings[CS_PHYS_FRICTION], "%g", sv_friction->value);
 	sprintf(sv.configstrings[CS_PHYS_FRICTION_WATER], "%g", sv_waterfriction->value);
 
-	phys_airaccelerate = sv_airaccelerate->value;
+	phys_stopspeed = sv_stopspeed->value;
 	phys_maxspeed_player = sv_maxspeed_player->value;
 	phys_maxspeed_director = sv_maxspeed_director->value;
 	phys_duckspeed = sv_duckspeed->value;

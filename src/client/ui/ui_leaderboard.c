@@ -178,7 +178,7 @@ void UI_LeaderboardUIUpdate()
 		if (client_num == 0)
 		{
 			x = 0.16667f;
-			y = 0.86f;
+			y = 0.67f;
 
 			// 38 map name length + 7 for "Time: " and optional 0
 			char map_buf[TEXT_BUF_LENGTH_LONG];
