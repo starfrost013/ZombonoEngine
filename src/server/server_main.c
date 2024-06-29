@@ -624,7 +624,7 @@ void SV_RunGameFrame()
 	// don't run if paused
 	if (!sv_paused->value || maxclients->value > 1)
 	{
-		ge->RunFrame();
+		ge->Game_RunFrame();
 
 		// never get more than one tic behind
 		if (sv.time < svs.realtime)

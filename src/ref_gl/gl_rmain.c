@@ -1142,8 +1142,8 @@ refexport_t GetRefAPI(refimport_t rimp)
 	re.DrawFill = Draw_Fill;
 	re.DrawFadeScreen = Draw_FadeScreen;
 
-	re.Init = R_Init;
-	re.Shutdown = R_Shutdown;
+	re.Game_Init = R_Init;
+	re.Game_Shutdown = R_Shutdown;
 
 	re.BeginFrame = R_BeginFrame;
 	re.EndFrame = GL_EndFrame;

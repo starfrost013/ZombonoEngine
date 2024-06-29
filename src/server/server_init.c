@@ -153,7 +153,7 @@ void SV_CheckForSavegame()
 		previousState = sv.state;
 		sv.state = ss_loading;
 		for (i = 0; i < 100; i++)
-			ge->RunFrame();
+			ge->Game_RunFrame();
 
 		sv.state = previousState;
 	}
@@ -284,8 +284,8 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 	ge->Game_SpawnEntities(sv.name, Map_GetEntityString(), spawnpoint);
 
 	// run two frames to allow everything to settle
-	ge->RunFrame();
-	ge->RunFrame();
+	ge->Game_RunFrame();
+	ge->Game_RunFrame();
 
 	// all precaches are complete
 	sv.state = serverstate;

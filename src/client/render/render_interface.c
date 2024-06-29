@@ -149,7 +149,7 @@ bool Vid_LoadRefresh(char* name)
 
 	if (graphics_mode)
 	{
-		re.Shutdown();
+		re.Game_Shutdown();
 		Vid_FreeReflib();
 	}
 
@@ -190,9 +190,9 @@ bool Vid_LoadRefresh(char* name)
 		Com_Error(ERR_FATAL, "%s has incompatible api_version", name);
 	}
 
-	if (re.Init() == false)
+	if (re.Game_Init() == false)
 	{
-		re.Shutdown();
+		re.Game_Shutdown();
 		Vid_FreeReflib();
 		return false;
 	}
@@ -331,7 +331,7 @@ void Vid_Shutdown()
 {
 	if (graphics_mode)
 	{
-		re.Shutdown();
+		re.Game_Shutdown();
 		Vid_FreeReflib();
 	}
 }

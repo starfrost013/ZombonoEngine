@@ -8,7 +8,7 @@ NEW FEATURES:
 	* The way that game assets get loaded has changed!
 		* The game name and asset path are now loaded from the gameinfo.json file instead of being hardcoded by default
 		* You can still use +set game <name> (or the equivalent alias of +set game_asset_path <name>) to change the name of the game
-	* Made physics variables modifiable by the server
+	* Made many more physics parameters tunable CVars:
 		* This adds the following CVars:
 			* sv_friction
 			* sv_waterfriction
@@ -19,8 +19,9 @@ NEW FEATURES:
 			* sv_duckspeed
 			* sv_accelerate
 			* sv_wateraccelerate
-		* These don't work unless you change their default values for listen servers.
-		* For dedicated they work entirely.
+			* sv_friction - default value of 6
+			* sv_waterfriction - default value of 1
+			* sv_stopspeed - default value of 100
 	* Director players now drop their items when they die, but, unlike regular items, they despawn after 10 seconds instead of 30.
 	* UIs are now stackable:
 		* If a UI has its "stackable" field set using the UI_SetStackable function with the stackable parameter set to "true", the UI will enter into a stack.
@@ -35,7 +36,7 @@ NEW FEATURES:
 		* Default behaviour is set when these items are set to 0.
 		* This is not presently intended for use in games but is only intended for the game code to use
 	* Updated PDJSON library to commit 78fe04b820dc8817f540bdd87fb22887e0ef3981 (February 22, 2024, and yes I'm late)
-		* This fixes an issue where position tracking could go beyond the end of the JSON file by adding more checks for EOF
+		* This fixes an issue where position tracking could go beyond the end of the JSON file by adding more checks for EOF charactersev
 	* Renderer API version 11:
 		* The renderer now can optionally automatically find scaled assets
 		* This uses the use_scaled_assets parameters of Draw_Pic, Draw_PicStretch and Draw_PicRegion
@@ -48,10 +49,6 @@ NEW FEATURES:
 	* Rendering API version 10
 		* Vid_ChangeResolution doesn't have parameters anymore
 	* Added more posters to z_tdm_labrats
-	* Made many more physics parameters tunable CVars:
-		* sv_friction - default value of 6
-		* sv_waterfriction - default value of 1
-		* sv_stopspeed - default value of 100
 	* Added cvars to control the console
 		* cl_console_disabled - determines if the console is disabled entirely. Default value is 0.
 		* cl_console_fraction - determines how much of the screen the console will take up. The default value is 0.5 (50%)

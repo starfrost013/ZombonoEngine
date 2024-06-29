@@ -632,8 +632,6 @@ static menuaction_t		s_keys_inv_drop_action;
 static menuaction_t		s_keys_inv_prev_action;
 static menuaction_t		s_keys_inv_next_action;
 
-static menuaction_t		s_keys_help_computer_action;
-
 static void M_UnbindCommand(char* command)
 {
 	int32_t 	j;
@@ -932,14 +930,6 @@ static void Keys_MenuInit(void)
 	s_keys_inv_next_action.generic.localdata[0] = ++i;
 	s_keys_inv_next_action.generic.name = bindnames[s_keys_inv_next_action.generic.localdata[0]][1];
 
-	s_keys_help_computer_action.generic.type = MTYPE_ACTION;
-	s_keys_help_computer_action.generic.flags = QMF_GRAYED;
-	s_keys_help_computer_action.generic.x = 0;
-	s_keys_help_computer_action.generic.y = y += 9 * vid_hudscale->value;
-	s_keys_help_computer_action.generic.ownerdraw = DrawKeyBindingFunc;
-	s_keys_help_computer_action.generic.localdata[0] = ++i;
-	s_keys_help_computer_action.generic.name = bindnames[s_keys_help_computer_action.generic.localdata[0]][1];
-
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_attack_action);
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_change_weapon_action);
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_change_weapon_prev_action);
@@ -964,8 +954,6 @@ static void Keys_MenuInit(void)
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_inv_drop_action);
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_inv_prev_action);
 	Menu_AddItem(&s_keys_menu, (void*)&s_keys_inv_next_action);
-
-	Menu_AddItem(&s_keys_menu, (void*)&s_keys_help_computer_action);
 
 	Menu_SetStatusBar(&s_keys_menu, "^5Enter^7 to change, ^5Backspace^7 to clear");
 	Menu_Center(&s_keys_menu);

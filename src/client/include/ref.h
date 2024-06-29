@@ -138,10 +138,10 @@ typedef struct refexport_s
 	int32_t api_version;
 
 	// called when the library is loaded
-	bool	(*Init) ();
+	bool	(*Game_Init) ();
 
 	// called before the library is unloaded
-	void	(*Shutdown) ();
+	void	(*Game_Shutdown) ();
 
 	// All data that will be used in a level should be
 	// registered before rendering any frames to prevent disk hits,

@@ -324,7 +324,7 @@ void SV_ShutdownGameProgs ()
 {
 	if (!ge)
 		return;
-	ge->Shutdown ();
+	ge->Game_Shutdown ();
 	Sys_UnloadGame ();
 	ge = NULL;
 }
@@ -414,6 +414,6 @@ void SV_InitGameProgs ()
 		Com_Error (ERR_DROP, "game is version %i, not %i", ge->apiversion,
 		GAME_API_VERSION);
 
-	ge->Init ();
+	ge->Game_Init ();
 }
 
