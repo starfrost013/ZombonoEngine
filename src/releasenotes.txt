@@ -21,12 +21,13 @@ NEW FEATURES:
 			* sv_wateraccelerate
 		* These don't work unless you change their default values for listen servers.
 		* For dedicated they work entirely.
-	* Director players now drop their items when they die, but they despawn after 10 seconds instead of 30.
+	* Director players now drop their items when they die, but, unlike regular items, they despawn after 10 seconds instead of 30.
 	* UIs are now stackable:
 		* If a UI has its "stackable" field set using the UI_SetStackable function with the stackable parameter set to "true", the UI will enter into a stack.
 			* UI_Push (as well as UI_SetEnabled) pushes the current UI, UI_Pop() pops it
 			* Up to MAX_UIs (32) UIs can be stacked currently
 			* You can't push the same UI to the stack twice in a row (in order to prevent bugs), but you can stack the same UI twice non-consecutively.
+	* Added con_line_length cvar to customise the console line length
 	* Began work on a new main menu to replace the old one
 		* This is not very functional right now but can be toggled using +ui_newmenu 1
 	* Added two new fields to the gitem_t type, "touchable_time" and "disappear_time"
@@ -72,6 +73,7 @@ BUG FIXES:
 	* Fixed the constraint of only one UI being activated at a time not actually existing 
 	* Fixed a crash when debug graphs were used
 	* Fixed incorrect path being used if the font engine failed to load
+	* Fixed zombies being persisted in save files and across multiple level transitions
 
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing

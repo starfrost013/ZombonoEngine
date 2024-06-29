@@ -26,11 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 console_t	con;
 
 cvar_t* con_notifytime;
+cvar_t* con_line_length;
+
 extern cvar_t* vid_hudscale;
 
 #define	MAXCMDLINE	256
-//This will become a cvar in 0.0.11
-#define DEFAULT_CONSOLE_LINE_WIDTH 128
 
 extern char	key_lines[128][MAXCMDLINE];
 extern int32_t edit_line;
@@ -229,7 +229,7 @@ void Con_CheckResize()
 
 	if (!graphics_mode)			// video hasn't been initialized yet
 	{
-		width = DEFAULT_CONSOLE_LINE_WIDTH;
+		width = con_line_length->value;
 		con.linewidth = width;
 		con.totallines = CON_TEXTSIZE / con.linewidth;
 		memset(con.text, ' ', CON_TEXTSIZE);
@@ -285,6 +285,11 @@ void Con_Init()
 {
 	con.linewidth = -1;
 
+	// register cvars
+
+	con_notifytime = Cvar_Get("con_notifytime", "3", 0);
+	con_line_length = Cvar_Get("con_line_length", "128", 0);
+
 	Con_CheckResize();
 
 	Com_Printf("Console initialized.\n");
@@ -293,10 +298,7 @@ void Con_Init()
 	Com_Printf("© 2023 - 2024 starfrost.\n");
 	Com_Printf("Version %s\n", ENGINE_VERSION);
 
-	//
-	// register our commands
-	//
-	con_notifytime = Cvar_Get("con_notifytime", "3", 0);
+	// register commands
 
 	Cmd_AddCommand("toggleconsole", Con_ToggleConsole_f);
 	Cmd_AddCommand("togglechat", Con_ToggleChat_f);
