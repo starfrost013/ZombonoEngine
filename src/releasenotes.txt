@@ -1,11 +1,11 @@
 Zombono
 Release Notes:
 
-Version 0.1.0-pre1
+Version 0.1.0-pre1 (Build 659)
 June 29, 2024
 
 NEW FEATURES:
-	* Early version of new asset - 
+	* Early version of new map - Hellspire
 	* The way that game assets get loaded has changed!
 		* The game name and asset path are now loaded from the gameinfo.json file instead of being hardcoded by default
 		* You can still use +set game <name> (or the equivalent alias of +set game_asset_path <name>) to change the name of the game
@@ -72,6 +72,7 @@ BUG FIXES:
 	* Fixed a crash when debug graphs were used
 	* Fixed incorrect path being used if the font engine failed to load
 	* Fixed zombies being persisted in save files and across multiple level transitions
+	* Fixed leaderboard map text being wrong
 
 REMOVALS:
 	* Removed the m_filter cvar - it did nothing

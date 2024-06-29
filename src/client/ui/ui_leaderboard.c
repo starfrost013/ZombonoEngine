@@ -177,8 +177,8 @@ void UI_LeaderboardUIUpdate()
 
 		if (client_num == 0)
 		{
-			x = 0.16667f;
-			y = 0.67f;
+			x = 0.171f;
+			y = 0.66f;
 
 			// 38 map name length + 7 for "Time: " and optional 0
 			char map_buf[TEXT_BUF_LENGTH_LONG];
@@ -188,7 +188,7 @@ void UI_LeaderboardUIUpdate()
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempMapName", map_buf, x, y);
 
-			y += (system_font_ptr->line_height/UI_SCALE_BASE_Y);
+			y += ((system_font_ptr->line_height)/UI_SCALE_BASE_Y) - 0.002f;
 
 			int32_t seconds = leaderboard_entry.time_remaining % 60;
 
