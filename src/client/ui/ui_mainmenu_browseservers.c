@@ -37,8 +37,7 @@ bool UI_MainMenuBrowseServersUICreate()
 	UI_SetImageOnHover("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", UI_MainMenuBrowseServersUIOnBackPressed);
 
-
-	// create uI
+	// create ui
 	return true;
 }
 

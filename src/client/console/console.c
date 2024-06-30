@@ -283,12 +283,12 @@ Con_Init
 */
 void Con_Init()
 {
-	con.linewidth = -1;
-
 	// register cvars
 
 	con_notifytime = Cvar_Get("con_notifytime", "3", 0);
 	con_line_length = Cvar_Get("con_line_length", "128", 0);
+
+	con.linewidth = con_line_length->value;
 
 	Con_CheckResize();
 

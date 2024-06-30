@@ -87,7 +87,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	}
 
 	// so that text doesn't appear weird - truncate and not round so that the text does not become larger than the ui elements
-	int32_t font_scale = (int)vid_hudscale->value;
+	int32_t font_scale = (int32_t)vid_hudscale->value;
 
 	int32_t string_length = strlen(final_text);
 

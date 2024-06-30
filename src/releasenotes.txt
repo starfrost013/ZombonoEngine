@@ -1,6 +1,21 @@
 Zombono
 Release Notes:
 
+Version 0.1.0-pre2
+July XX, 2024
+
+NEW FEATURES:
+
+BUG FIXES:
+* Fixed the game crashing on minimise
+	* Don't try and render if resolution width or height are zero
+* Fixed updater (TODO BEFORE RELEASE: TEST)
+
+REMOVALS:
+
+OTHER CHANGES:
+* NOTE: con_line_length only has any effect on dedicated servers
+
 Version 0.1.0-pre1 (Build 659)
 June 29, 2024
 

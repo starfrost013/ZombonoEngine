@@ -1183,6 +1183,15 @@ void Render_UpdateScreen()
 	if (!scr_initialized || !con.initialized)
 		return;				// not initialized yet
 
+	// no point doing this if we have no resolution e.g. in minimised mode
+
+	if (r_width->value == 0
+		|| r_height->value == 0)
+	{
+		re.EndFrame();
+		return;
+	}
+
 	numframes = 1;
 
 	for (i = 0; i < numframes; i++)
