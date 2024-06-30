@@ -36,10 +36,11 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN]);
 bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
 bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 
+#define FONT_LIST_FILE_NAME "fonts\\fonts.txt"
+
 bool Font_Init()
 {
 	FILE*	font_list_stream;
-	char	file_name_list[MAX_FONT_FILENAME_LEN] = { 0 };
 	char	file_name_font[MAX_FONT_FILENAME_LEN] = { 0 };
 	long	file_length = 0;
 	long	file_location = 0;
@@ -57,18 +58,13 @@ bool Font_Init()
 	cl_console_font = Cvar_Get("cl_console_font", "cascadia_code_regular_8", 0);
 
 	// open up fonts.txt
-#ifdef _WIN32
-	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s\\%s", FS_Gamedir(), "fonts\\fonts.txt");
-#else
-	snprintf(file_name_list, MAX_FONT_FILENAME_LEN, "%s/%s", FS_Gamedir(), "fonts\\fonts.txt");
-#endif
 
+	int32_t file_size = FS_FOpenFile(FONT_LIST_FILE_NAME, &font_list_stream);
 
-	font_list_stream = fopen(file_name_list, "rb");
-
-	if (font_list_stream == NULL)
+	if (font_list_stream == NULL
+		|| file_size < 0)
 	{
-		Sys_Error("Failed to initialise font engine: Couldn't open %s", file_name_list);
+		Sys_Error("Failed to initialise font engine: Couldn't open %s", FONT_LIST_FILE_NAME);
 		return false; // shut up compiler
 	}
 
