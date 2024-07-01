@@ -18,39 +18,37 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#include <ref_gl/gl_local.h>
+//#include <ref_gl/gl_local.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 // glimp_null.c : Null GLImp implementation for pure dedicated server
 
-void		GLimp_BeginFrame( float camera_separation )
+void GLimp_BeginFrame()
 {
 }
 
-void		GLimp_EndFrame( void )
+void GLimp_EndFrame( void )
 {
 }
 
-int 		GLimp_Init( void *hinstance, void *hWnd )
+int32_t GLimp_Init( void *hinstance, void *hWnd )
 {
 }
 
-void		GLimp_Shutdown( void )
+void GLimp_Shutdown( void )
 {
 }
 
-int     	GLimp_SetMode( int *pwidth, int *pheight, int mode, bool fullscreen )
+void GLimp_AppActivate( bool active )
 {
 }
 
-void		GLimp_AppActivate( bool active )
+void GLimp_EnableLogging( bool enable )
 {
 }
 
-void		GLimp_EnableLogging( bool enable )
-{
-}
-
-void		GLimp_LogNewFrame( void )
+void GLimp_LogNewFrame( void )
 {
 }
 

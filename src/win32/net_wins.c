@@ -102,7 +102,7 @@ NET_CompareBaseAdr
 Compares without the port
 ===================
 */
-bool	NET_CompareBaseAdr(netadr_t a, netadr_t b)
+bool NET_CompareBaseAdr(netadr_t a, netadr_t b)
 {
 	if (a.type != b.type)
 		return false;

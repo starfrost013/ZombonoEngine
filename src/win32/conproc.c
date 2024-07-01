@@ -86,10 +86,10 @@ int32_t CCheckParm (char *parm)
 void InitConProc (int32_t argc, char **argv)
 {
 	uint32_t	threadAddr;
-	HANDLE		hFile;
-	HANDLE		heventParent;
-	HANDLE		heventChild;
-	int32_t 		t;
+	HANDLE		hFile = NULL;
+	HANDLE		heventParent = NULL;
+	HANDLE		heventChild = NULL;
+	int32_t 	t;
 
 	ccom_argc = argc;
 	ccom_argv = argv;

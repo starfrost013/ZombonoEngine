@@ -10,7 +10,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -42,7 +42,7 @@ uint32_t		sys_msg_time;
 
 #define	MAX_NUM_ARGVS	128
 int32_t 		argc;
-char*			argv[MAX_NUM_ARGVS];
+char* argv[MAX_NUM_ARGVS];
 
 int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args);
 
@@ -61,7 +61,7 @@ __declspec(noreturn) void Sys_Error(char* error, ...);
 #else
 __attribute__((noreturn)) void Sys_Error(char* error, ...);
 #endif
-void Sys_Error (char *error, ...)
+void Sys_Error(char* error, ...)
 {
 	CL_Shutdown();
 	Qcommon_Shutdown();
@@ -73,10 +73,10 @@ void Sys_Error (char *error, ...)
 	Sys_MsgboxV("Fatal Error", MB_OK, error, args);
 	va_end(args);
 
-// shut down QHOST hooks if necessary 
-	DeinitConProc ();
+	// shut down QHOST hooks if necessary 
+	DeinitConProc();
 
-	exit (1);
+	exit(1);
 }
 
 // returns a value indicating which buttons were pressed
@@ -104,44 +104,44 @@ int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
 }
 
 void
-Sys_Quit ()
+Sys_Quit()
 {
-	timeEndPeriod( 1 );
+	timeEndPeriod(1);
 
 	CL_Shutdown();
 	Netservices_Shutdown();
-	Qcommon_Shutdown ();
+	Qcommon_Shutdown();
 	if (dedicated && dedicated->value)
-		FreeConsole ();
+		FreeConsole();
 	else if (debug_console->value)
 		FreeConsole();
 
-// shut down QHOST hooks if necessary
-	DeinitConProc ();
+	// shut down QHOST hooks if necessary
+	DeinitConProc();
 
-	exit (0);
+	exit(0);
 }
 
 
-void WinError ()
+void WinError()
 {
 	LPVOID lpMsgBuf;
 
-	FormatMessage( 
+	FormatMessage(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL,
 		GetLastError(),
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		(LPTSTR) &lpMsgBuf,
+		(LPTSTR)&lpMsgBuf,
 		0,
-		NULL 
+		NULL
 	);
 
 	// Display the string.
-	MessageBox( NULL, lpMsgBuf, "GetLastError", MB_OK|MB_ICONINFORMATION );
+	MessageBox(NULL, lpMsgBuf, "GetLastError", MB_OK | MB_ICONINFORMATION);
 
 	// Free the buffer.
-	LocalFree( lpMsgBuf );
+	LocalFree(lpMsgBuf);
 }
 
 //================================================================
@@ -153,8 +153,8 @@ Sys_SetDPIAwareness
 ================
 */
 typedef enum { dpi_unaware = 0, dpi_system_aware = 1, dpi_monitor_aware = 2 } dpi_awareness;
-typedef BOOL(WINAPI *SetProcessDPIAwareFunc)();
-typedef HRESULT(WINAPI *SetProcessDPIAwarenessFunc)(dpi_awareness value);
+typedef BOOL(WINAPI* SetProcessDPIAwareFunc)();
+typedef HRESULT(WINAPI* SetProcessDPIAwarenessFunc)(dpi_awareness value);
 
 void	Sys_SetDPIAwareness()
 {
@@ -182,30 +182,30 @@ void	Sys_SetDPIAwareness()
 Sys_Init
 ================
 */
-void Sys_Init ()
+void Sys_Init()
 {
 	OSVERSIONINFO	vinfo;
 
-	timeBeginPeriod( 1 );
+	timeBeginPeriod(1);
 
 	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
 
-	if (!GetVersionEx (&vinfo))
-		Sys_Error ("Couldn't get OS info");
+	if (!GetVersionEx(&vinfo))
+		Sys_Error("Couldn't get OS info");
 
 	if (vinfo.dwMajorVersion < 4
 		|| vinfo.dwPlatformId == VER_PLATFORM_WIN32s)
-		Sys_Error ("Zombono requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)");
+		Sys_Error("Zombono requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)");
 
 	if (dedicated->value)
 	{
-		if (!AllocConsole ())
-			Sys_Error ("Couldn't create dedicated server console");
-		hinput = GetStdHandle (STD_INPUT_HANDLE);
-		houtput = GetStdHandle (STD_OUTPUT_HANDLE);
-	
+		if (!AllocConsole())
+			Sys_Error("Couldn't create dedicated server console");
+		hinput = GetStdHandle(STD_INPUT_HANDLE);
+		houtput = GetStdHandle(STD_OUTPUT_HANDLE);
+
 		// let QHOST hook in
-		InitConProc (argc, argv);
+		InitConProc(argc, argv);
 	}
 	else if (debug_console->value)
 	{
@@ -228,7 +228,7 @@ static int32_t console_textlen;
 Sys_ConsoleInput
 ================
 */
-char *Sys_ConsoleInput ()
+char* Sys_ConsoleInput()
 {
 	INPUT_RECORD	recs[1024];
 	int32_t 	dummy;
@@ -238,19 +238,19 @@ char *Sys_ConsoleInput ()
 		return NULL;
 
 
-	for ( ;; )
+	for (;; )
 	{
-		if (!GetNumberOfConsoleInputEvents (hinput, &numevents))
-			Sys_Error ("Error getting # of console events");
+		if (!GetNumberOfConsoleInputEvents(hinput, &numevents))
+			Sys_Error("Error getting # of console events");
 
 		if (numevents <= 0)
 			break;
 
 		if (!ReadConsoleInput(hinput, recs, 1, &numread))
-			Sys_Error ("Error reading console input");
+			Sys_Error("Error reading console input");
 
 		if (numread != 1)
-			Sys_Error ("Couldn't read console input");
+			Sys_Error("Couldn't read console input");
 
 		if (recs[0].EventType == KEY_EVENT)
 		{
@@ -260,37 +260,37 @@ char *Sys_ConsoleInput ()
 
 				switch (ch)
 				{
-					case '\r':
-						WriteFile(houtput, "\r\n", 2, &dummy, NULL);	
+				case '\r':
+					WriteFile(houtput, "\r\n", 2, &dummy, NULL);
 
-						if (console_textlen)
+					if (console_textlen)
+					{
+						console_text[console_textlen] = 0;
+						console_textlen = 0;
+						return console_text;
+					}
+					break;
+
+				case '\b':
+					if (console_textlen)
+					{
+						console_textlen--;
+						WriteFile(houtput, "\b \b", 3, &dummy, NULL);
+					}
+					break;
+
+				default:
+					if (ch >= ' ')
+					{
+						if (console_textlen < sizeof(console_text) - 2)
 						{
-							console_text[console_textlen] = 0;
-							console_textlen = 0;
-							return console_text;
+							WriteFile(houtput, &ch, 1, &dummy, NULL);
+							console_text[console_textlen] = ch;
+							console_textlen++;
 						}
-						break;
+					}
 
-					case '\b':
-						if (console_textlen)
-						{
-							console_textlen--;
-							WriteFile(houtput, "\b \b", 3, &dummy, NULL);	
-						}
-						break;
-
-					default:
-						if (ch >= ' ')
-						{
-							if (console_textlen < sizeof(console_text)-2)
-							{
-								WriteFile(houtput, &ch, 1, &dummy, NULL);	
-								console_text[console_textlen] = ch;
-								console_textlen++;
-							}
-						}
-
-						break;
+					break;
 
 				}
 			}
@@ -308,7 +308,7 @@ Sys_ConsoleOutput
 Print text to the dedicated console
 ================
 */
-void Sys_ConsoleOutput (char *string)
+void Sys_ConsoleOutput(char* string)
 {
 	int32_t 	dummy;
 	char	text[256];
@@ -327,9 +327,9 @@ void Sys_ConsoleOutput (char *string)
 	{
 		text[0] = '\r';
 		memset(&text[1], ' ', console_textlen);
-		text[console_textlen+1] = '\r';
-		text[console_textlen+2] = 0;
-		WriteFile(houtput, text, console_textlen+2, &dummy, NULL);
+		text[console_textlen + 1] = '\r';
+		text[console_textlen + 2] = 0;
+		WriteFile(houtput, text, console_textlen + 2, &dummy, NULL);
 	}
 
 	WriteFile(houtput, string, (DWORD)strlen(string), &dummy, NULL);
@@ -344,22 +344,22 @@ Sys_GetClipboardData
 
 ================
 */
-char *Sys_GetClipboardData( void )
+char* Sys_GetClipboardData(void)
 {
-	char *data = NULL;
-	char *cliptext;
+	char* data = NULL;
+	char* cliptext;
 
-	if ( OpenClipboard( NULL ) != 0 )
+	if (OpenClipboard(NULL) != 0)
 	{
 		HANDLE hClipboardData;
 
-		if ( ( hClipboardData = GetClipboardData( CF_TEXT ) ) != 0 )
+		if ((hClipboardData = GetClipboardData(CF_TEXT)) != 0)
 		{
-			if ( ( cliptext = GlobalLock( hClipboardData ) ) != 0 ) 
+			if ((cliptext = GlobalLock(hClipboardData)) != 0)
 			{
-				data = malloc( GlobalSize( hClipboardData ) + 1 );
-				strcpy( data, cliptext );
-				GlobalUnlock( hClipboardData );
+				data = malloc(GlobalSize(hClipboardData) + 1);
+				strcpy(data, cliptext);
+				GlobalUnlock(hClipboardData);
 			}
 		}
 		CloseClipboard();
@@ -383,10 +383,10 @@ static HINSTANCE	game_library;
 Sys_UnloadGame
 =================
 */
-void Sys_UnloadGame ()
+void Sys_UnloadGame()
 {
-	if (!FreeLibrary (game_library))
-		Com_Error (ERR_FATAL, "FreeLibrary failed for game library");
+	if (!FreeLibrary(game_library))
+		Com_Error(ERR_FATAL, "FreeLibrary failed for game library");
 	game_library = NULL;
 }
 
@@ -397,51 +397,51 @@ Sys_GetGameAPI
 Loads the game dll
 =================
 */
-void *Sys_GetGameAPI (void *parms)
+void* Sys_GetGameAPI(void* parms)
 {
-	void*	(*GetGameAPI) (void *);
+	void* (*GetGameAPI) (void*);
 	char	name[MAX_OSPATH];
-	char*	path;
+	char* path;
 	char	cwd[MAX_OSPATH];
 #if defined _M_IX86
-	const char *gamename = "gamex86.dll";
+	const char* gamename = "gamex86.dll";
 #ifdef NDEBUG
-	const char *debugdir = "release";
+	const char* debugdir = "release";
 #else
-	const char *debugdir = "debug";
+	const char* debugdir = "debug";
 #endif
 
 #elif defined _M_X64
-	const char *gamename = "gamex64.dll";
+	const char* gamename = "gamex64.dll";
 
 #ifdef NDEBUG
-	const char *debugdir = "releasex64";
+	const char* debugdir = "releasex64";
 #else
-	const char *debugdir = "debugx64";
+	const char* debugdir = "debugx64";
 #endif
 
 #endif
 
 	if (game_library)
-		Com_Error (ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadingGame");
+		Com_Error(ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadingGame");
 
 	// check the current debug directory first for development purposes
-	_getcwd (cwd, sizeof(cwd));
-	Com_sprintf (name, sizeof(name), "%s/%s/%s", cwd, debugdir, gamename);
-	game_library = LoadLibrary ( name );
+	_getcwd(cwd, sizeof(cwd));
+	Com_sprintf(name, sizeof(name), "%s/%s/%s", cwd, debugdir, gamename);
+	game_library = LoadLibrary(name);
 	if (game_library)
 	{
-		Com_DPrintf ("LoadLibrary (%s)\n", name);
+		Com_DPrintf("LoadLibrary (%s)\n", name);
 	}
 	else
 	{
 #ifdef DEBUG
 		// check the current directory for other development purposes
-		Com_sprintf (name, sizeof(name), "%s/%s", cwd, gamename);
-		game_library = LoadLibrary ( name );
+		Com_sprintf(name, sizeof(name), "%s/%s", cwd, gamename);
+		game_library = LoadLibrary(name);
 		if (game_library)
 		{
-			Com_DPrintf ("LoadLibrary (%s)\n", name);
+			Com_DPrintf("LoadLibrary (%s)\n", name);
 		}
 		else
 #endif
@@ -450,28 +450,28 @@ void *Sys_GetGameAPI (void *parms)
 			path = NULL;
 			while (1)
 			{
-				path = FS_NextPath (path);
+				path = FS_NextPath(path);
 				if (!path)
 					return NULL;		// couldn't find one anywhere
-				Com_sprintf (name, sizeof(name), "%s/%s", path, gamename);
-				game_library = LoadLibrary (name);
+				Com_sprintf(name, sizeof(name), "%s/%s", path, gamename);
+				game_library = LoadLibrary(name);
 				if (game_library)
 				{
-					Com_DPrintf ("LoadLibrary (%s)\n",name);
+					Com_DPrintf("LoadLibrary (%s)\n", name);
 					break;
 				}
 			}
 		}
 	}
 
-	GetGameAPI = (void *)GetProcAddress (game_library, "GetGameAPI");
+	GetGameAPI = (void*)GetProcAddress(game_library, "GetGameAPI");
 	if (!GetGameAPI)
 	{
-		Sys_UnloadGame ();		
+		Sys_UnloadGame();
 		return NULL;
 	}
 
-	return GetGameAPI (parms);
+	return GetGameAPI(parms);
 }
 
 //=======================================================================
@@ -483,7 +483,7 @@ ParseCommandLine
 
 ==================
 */
-void ParseCommandLine (LPSTR lpCmdLine)
+void ParseCommandLine(LPSTR lpCmdLine)
 {
 	argc = 1;
 	argv[0] = "exe";
@@ -506,7 +506,7 @@ void ParseCommandLine (LPSTR lpCmdLine)
 				*lpCmdLine = 0;
 				lpCmdLine++;
 			}
-			
+
 		}
 	}
 
@@ -520,34 +520,42 @@ The entry point on Windows platform
 ==================
 */
 
-int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
+int32_t WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
 	int32_t time, oldtime, newtime;
 
-	ParseCommandLine (lpCmdLine);
+	ParseCommandLine(lpCmdLine);
 
-	Qcommon_Init (argc, argv);
-	oldtime = Sys_Milliseconds ();
+	Qcommon_Init(argc, argv);
+	oldtime = Sys_Milliseconds();
 
-    /* main window message loop */
+	/* main window message loop */
 	while (1)
 	{
 		// if at a full screen console, don't update unless needed
-		if ((dedicated && dedicated->value) )
+		if ((dedicated && dedicated->value))
 		{
-			Sleep (1);
+			Sleep(1);
 		}
 
 		do
 		{
-			newtime = Sys_Milliseconds ();
+			newtime = Sys_Milliseconds();
 			time = newtime - oldtime;
-		} while (time < 1);
+		} 
+		while (time < 1);
 
+		// always run on dedicated, only run if the app is active otherwise
+#ifndef DEDICATED_ONLY
 		if (app_active
 			|| dedicated->value
+
 			|| (!dedicated->value && (cls.state == ca_connected
-			|| cls.state == ca_active)))
+				|| cls.state == ca_active)))
+#else
+		if (app_active
+			|| (dedicated && dedicated->value))
+#endif
 		{
 			Qcommon_Frame(time);
 		}
@@ -557,5 +565,5 @@ int32_t WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 	}
 
 	// never gets here
-    return TRUE;
+	return TRUE;
 }

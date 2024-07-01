@@ -231,6 +231,9 @@
     <ClCompile Include="qcommon\gameinfo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="server\server_hack_protection.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc">

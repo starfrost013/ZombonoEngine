@@ -127,7 +127,7 @@ typedef struct refdef_s
 	particle_t*		particles;
 } refdef_t;
 
-#define	API_VERSION		11
+#define	API_VERSION		12
 
 //
 // these are the functions exported by the refresh module
@@ -138,10 +138,10 @@ typedef struct refexport_s
 	int32_t api_version;
 
 	// called when the library is loaded
-	bool	(*Game_Init) ();
+	bool	(*Init) ();
 
 	// called before the library is unloaded
-	void	(*Game_Shutdown) ();
+	void	(*Shutdown) ();
 
 	// All data that will be used in a level should be
 	// registered before rendering any frames to prevent disk hits,

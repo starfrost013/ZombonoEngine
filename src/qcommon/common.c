@@ -1457,7 +1457,10 @@ void Qcommon_Init(int32_t argc, char** argv)
 	else
 	{	// the user asked for something explicit
 		// so drop the loading plaque
+
+#ifndef DEDICATED_ONLY
 		Render2D_EndLoadingPlaque();
+#endif
 	}
 	Com_Printf("====== Zombono Initialized ======\n\n");
 

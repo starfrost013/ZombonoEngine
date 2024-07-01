@@ -23,10 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qcommon/qcommon.h>
 #include "errno.h"
 
-int	curtime;
+int32_t	curtime;
 
-unsigned	sys_frame_time;
-
+uint32_t sys_frame_time;
 
 void Sys_mkdir (char *path)
 {

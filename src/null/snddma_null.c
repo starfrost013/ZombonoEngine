@@ -23,14 +23,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // all other sound mixing is portable
 
 #include <client/client.h>
-#include <client/snd_loc.h>
+#include <client/include/sound_local.h>
 
 bool SNDDMA_Init(void)
 {
 	return false;
 }
 
-int	SNDDMA_GetDMAPos(void)
+int32_t	SNDDMA_GetDMAPos(void)
 {
 	return 0;
 }

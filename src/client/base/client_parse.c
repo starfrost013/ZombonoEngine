@@ -94,8 +94,8 @@ CL_ParseServerData
 */
 void CL_ParseServerData()
 {
-	char* str;
-	int32_t 	i;
+	char*	str;
+	int32_t i;
 
 	Com_DPrintf("Serverdata packet received.\n");
 	//
@@ -149,8 +149,8 @@ CL_ParseBaseline
 void CL_ParseBaseline()
 {
 	entity_state_t* es;
-	int32_t 			bits;
-	int32_t 			newnum;
+	int32_t 		bits;
+	int32_t 		newnum;
 	entity_state_t	nullstate;
 
 	memset(&nullstate, 0, sizeof(nullstate));

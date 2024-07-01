@@ -82,7 +82,7 @@ uint16_t CRC_Value(uint16_t crcvalue)
 
 uint16_t CRC_Block (uint8_t *start, int32_t count)
 {
-	uint16_t	crc;
+	uint16_t crc;
 
 	CRC_Init (&crc);
 	while (count--)

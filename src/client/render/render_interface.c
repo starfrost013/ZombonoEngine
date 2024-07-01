@@ -42,8 +42,10 @@ cvar_t* vid_refresh;
 cvar_t* viewsize;
 
 // Global variables used internally by this module
+#ifdef WIN32
 HINSTANCE	reflib_library;		// Handle to refresh DLL 
-bool		graphics_mode = 0;
+#endif
+bool		graphics_mode = false;
 
 extern uint32_t	sys_msg_time;
 
@@ -149,7 +151,7 @@ bool Vid_LoadRefresh(char* name)
 
 	if (graphics_mode)
 	{
-		re.Game_Shutdown();
+		re.Shutdown();
 		Vid_FreeReflib();
 	}
 
@@ -190,9 +192,9 @@ bool Vid_LoadRefresh(char* name)
 		Com_Error(ERR_FATAL, "%s has incompatible api_version", name);
 	}
 
-	if (re.Game_Init() == false)
+	if (re.Init() == false)
 	{
-		re.Game_Shutdown();
+		re.Shutdown();
 		Vid_FreeReflib();
 		return false;
 	}
@@ -331,7 +333,7 @@ void Vid_Shutdown()
 {
 	if (graphics_mode)
 	{
-		re.Game_Shutdown();
+		re.Shutdown();
 		Vid_FreeReflib();
 	}
 }

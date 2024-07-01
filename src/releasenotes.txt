@@ -5,11 +5,15 @@ Version 0.1.0-pre2
 July XX, 2024
 
 NEW FEATURES:
+	* Rendering API version 12
+		* Renamed Game_Init and Game_Shutdown to Init and Shutdown (as they are intended to be called, I fucked up renaming things)
+	* A dedicated server binary, on Windows as well as Linux...
 
 BUG FIXES:
-* Fixed the game crashing on minimise
-	* Don't try and render if resolution width or height are zero
-* Fixed updater (TODO BEFORE RELEASE: TEST)
+	* Fixed the game crashing on minimise
+		* Don't try and render if resolution width or height are zero
+	* Fixed updater (TODO BEFORE RELEASE: TEST)
+	* Fixed font list not being loaded from pak file
 
 REMOVALS:
 

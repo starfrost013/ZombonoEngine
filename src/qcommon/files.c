@@ -337,11 +337,11 @@ of the list so they override previous pack files.
 pack_t* FS_LoadPackFile(char* packfile)
 {
 	dpackheader_t	header;
-	int32_t 			i;
-	packfile_t* newfiles;
-	int32_t 			numpackfiles;
-	pack_t* pack;
-	FILE* packhandle;
+	int32_t 		i;
+	packfile_t*		newfiles;
+	int32_t 		numpackfiles;
+	pack_t*			pack;
+	FILE*			packhandle;
 	dpackfile_t		info[MAX_FILES_IN_PACK];
 	uint32_t		checksum;
 
@@ -402,7 +402,7 @@ then loads and adds pak1.pak pak2.pak ...
 void FS_AddGameDirectory(char* dir)
 {
 	int32_t 		i;
-	searchpath_t*	 search;
+	searchpath_t*	search;
 	pack_t*			pak;
 	char			pakfile[MAX_OSPATH];
 

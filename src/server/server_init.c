@@ -328,7 +328,9 @@ void SV_InitGame()
 	{
 		// make sure the client is down
 		CL_Drop();
+#ifndef DEDICATED_ONLY
 		Render2D_BeginLoadingPlaque();
+#endif
 	}
 
 	// get any latched variable changes (maxclients, etc)
