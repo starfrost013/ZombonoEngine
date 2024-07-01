@@ -1,5 +1,7 @@
 /* unpak.c 
 Unpack Zombono engine (Euphoria) PAK files
+
+original author wishes to remain unnamed
 */
 
 // TODO: windows unicode support

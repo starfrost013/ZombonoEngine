@@ -1,5 +1,7 @@
-/* pak.h - Quake PAK archive format structs
- * by unsubtract, MIT license */
+/* pak.h - Zombono engine (Euphoria) archive format structs
+ * licensed under the MIT license 
+ * original author wishes to remain unnamed
+ */
 #ifndef PAK_H_
 #define PAK_H_
 #include <stdint.h>

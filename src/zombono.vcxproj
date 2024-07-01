@@ -39,6 +39,7 @@
     <ClCompile Include="client\intro\intro.c" />
     <ClCompile Include="client\loadout\loadout.c" />
     <ClCompile Include="client\input\input_mouse.c" />
+    <ClCompile Include="qcommon\localisation.c" />
     <ClCompile Include="client\ui\ui_mainmenu.c" />
     <ClCompile Include="client\text\text.c" />
     <ClCompile Include="client\fx\fx_particles.c" />

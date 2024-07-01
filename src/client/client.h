@@ -846,12 +846,17 @@ extern cvar_t* cl_console_font;			// The font used for the console.
 extern int32_t 	num_fonts;					// The number of loaded fonts.
 extern bool		fonts_initialised;			// Indicates if the font engine has been initialised or not.
 
+//
+// text/text_font.c 
+// Font system
+//
+
 bool Font_Init();									// Initialises the font subsystem.
 font_t* Font_GetByName(const char* name);			// Returns a pointer to the font with name name, or NULL.
 glyph_t* Glyph_GetByChar(font_t* font, char glyph);	// Returns the pointer to a glyph with char code glyph, or NULL if it does not exist.
 
 //
-// cl_text.c
+// text/text.c
 // Modern Text Engine
 //
 
@@ -859,7 +864,6 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...);		
 void Text_DrawChar(const char* font, int32_t x, int32_t y, char text);							// Draws a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
 bool Text_GetSize(const char* font, int32_t* size_x, int32_t* size_y, const char* text, ...);	// Gets the size of the text text.#
 bool Text_GetSizeChar(const char* font, int32_t* size_x, int32_t* size_y, char text);			// Gets the size of a single character of text text using font font. FOR CONSOLE INTERNAL USE ONLY.
-
 //
 // cl_loadout.c
 // Client parts of the loadout system

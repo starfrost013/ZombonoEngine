@@ -568,7 +568,7 @@ static WSADATA		winsockdata;
 NET_Init
 ====================
 */
-void NET_Init()
+void Net_Init()
 {
 	WORD	wVersionRequested;
 	int32_t 	r;

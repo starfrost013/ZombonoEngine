@@ -1411,8 +1411,10 @@ void Qcommon_Init(int32_t argc, char** argv)
 
 	Sys_Init();
 
-	NET_Init();					// Open sockets
+	Net_Init();					// Open sockets
 	Netchan_Init();				// Initialise networking channels
+
+	Localisation_Init();
 
 	if (!Netservices_Init())		// Initialise CURL/the game's network services
 	{

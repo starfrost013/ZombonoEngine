@@ -569,7 +569,7 @@ typedef struct netadr_s
 	uint16_t		port;
 } netadr_t;
 
-void NET_Init();
+void Net_Init();
 void NET_Shutdown();
 
 void NET_Config(bool multiplayer);
@@ -759,12 +759,12 @@ MISC
 #define	PRINT_ALL		0
 #define PRINT_DEVELOPER	1	// only print when "developer 1"
 
-void	Com_BeginRedirect(int32_t target, char* buffer, int32_t buffersize, void(*flush));
-void	Com_EndRedirect();
-void 	Com_Printf(char* fmt, ...);
-void 	Com_DPrintf(char* fmt, ...);
-void 	Com_Error(int32_t code, char* fmt, ...);
-void 	Com_Quit();
+void Com_BeginRedirect(int32_t target, char* buffer, int32_t buffersize, void(*flush));
+void Com_EndRedirect();
+void Com_Printf(char* fmt, ...);
+void Com_DPrintf(char* fmt, ...);
+void Com_Error(int32_t code, char* fmt, ...);
+void Com_Quit();
 
 int32_t Com_ServerState();		// this should have just been a cvar...
 void	Com_SetServerState(int32_t state);
@@ -804,6 +804,32 @@ extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
 
 // this is in the client code, but can be used for debugging from server
 void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a);
+
+// 
+// Localisation system (localisation.c)
+//
+
+// defines
+
+#define TEXT_STRINGS_MAX				1024
+#define TEXT_STRING_MAX_LENGTH_KEY		64			
+#define TEXT_STRING_MAX_LENGTH_VALUE	512					// CONSIDER: Dynamically allocate these?
+#define TEXT_DICTIONARY_FILENAME		"strings.txt"
+
+// cvars
+extern cvar_t* language;
+
+typedef struct text_string_s
+{
+	char key[TEXT_STRING_MAX_LENGTH_KEY];
+	char value[TEXT_STRING_MAX_LENGTH_VALUE];
+} text_string_t;
+
+extern text_string_t text_strings[TEXT_STRINGS_MAX];
+
+void Localisation_Init();
+char* Localisation_GetString();
+char* Localisation_ProcessString();
 
 /*
 ==============================================================

@@ -219,7 +219,6 @@
   <ItemGroup>
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\q_shared.h" />
-    <ClInclude Include="qcommon\crc.h" />
     <ClInclude Include="qcommon\curl\curl.h" />
     <ClInclude Include="qcommon\curl\curlver.h" />
     <ClInclude Include="qcommon\curl\easy.h" />
@@ -257,6 +256,7 @@
     <ClCompile Include="qcommon\cvar.c" />
     <ClCompile Include="qcommon\files.c" />
     <ClCompile Include="qcommon\gameinfo.c" />
+    <ClCompile Include="qcommon\localisation.c" />
     <ClCompile Include="qcommon\map_loader.c" />
     <ClCompile Include="qcommon\md4.c" />
     <ClCompile Include="qcommon\netservices\netservices_base.c" />

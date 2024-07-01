@@ -42,7 +42,6 @@ bool Font_Init()
 {
 	FILE*	font_list_stream;
 	char	file_name_font[MAX_FONT_FILENAME_LEN] = { 0 };
-	long	file_length = 0;
 	long	file_location = 0;
 	char*	token;
 	char*	file;
@@ -72,23 +71,21 @@ bool Font_Init()
 
 	fseek(font_list_stream, 0, SEEK_END);
 
-	file_length = ftell(font_list_stream);
-
 	// msvc does not support VLAs
-	file = calloc(1, file_length);
+	file = calloc(1, file_size);
 
 	assert(file != NULL);
 
 	// return to start and read the file
 	fseek(font_list_stream, 0, SEEK_SET);
 	
-	fread(file, 1, file_length, font_list_stream);
+	fread(file, 1, file_size, font_list_stream);
 	
 	// start at the first byte
 	token = file;
 
 	// parse fonts.txt
-	while (file_location < file_length)
+	while (file_location < file_size)
 	{
 		file_location = token - file;
 
@@ -99,7 +96,7 @@ bool Font_Init()
 		if (token[0] != '/'
 			&& token[0] != '\n'
 			&& token[0] != '\r'
-			&& ((file_length - file_location > 1) && token[1] != '/')) // don't overflow if we're on the last byte
+			&& ((file_size - file_location > 1) && token[1] != '/')) // don't overflow if we're on the last byte
 		{
 			while (token[0] != '\n'
 				&& token[0] != '\r') // prevents /r from being added to filenames
@@ -125,7 +122,7 @@ bool Font_Init()
 		}
 		else // go to next line
 		{
-			if (file_location < file_length)
+			if (file_location < file_size)
 			{
 				while (token[0] != '\n') token++;
 				token++; // go past the newline
