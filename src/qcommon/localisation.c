@@ -272,6 +272,9 @@ char* Localisation_ProcessString(char* string)
 		
 		char* loc_string = Localisation_GetString(loc_string_key_buf);
 
+		if (!loc_string)
+			return string;
+
 		localisation_string_length = strlen(loc_string);
 
 		// figure out the new length of the string
@@ -338,6 +341,9 @@ char* Localisation_ProcessString(char* string)
 		strncpy(loc_string_key_buf, ref_start_ptr, localisation_key_length);
 
 		char* loc_string = Localisation_GetString(loc_string_key_buf);
+
+		if (!loc_string)
+			return string;
 
 		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].string);
 		// copy the localisation string
