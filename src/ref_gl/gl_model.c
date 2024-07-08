@@ -23,9 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gl_local.h"
 
 // Why does this code compile?
-#define NUMVERTEXNORMALS	162
+#define NUM_VERTEX_NORMALS	162
 
-float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
+float	r_avertexnormals[NUM_VERTEX_NORMALS][3] = {
 #include <client/include/anorms.h>
 };
 

@@ -606,7 +606,7 @@ void UI_Draw()
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, time_str);
 	// TODO: Text_GetSize
 	Text_Draw(cl_system_font->string, r_width->value - size_x, 0, time_str);
-	const char* prerelease_text = "^3Pre-release build!";
+	const char* prerelease_text = "^3[STRING_PRERELEASE]";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, prerelease_text);
 	Text_Draw(cl_system_font->string, r_width->value - size_x, 10 * vid_hudscale->value, prerelease_text);
 

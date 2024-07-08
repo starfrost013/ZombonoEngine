@@ -174,7 +174,7 @@ void CL_PingServers_f()
 	char* adrstring;
 	cvar_t* noudp;
 
-	NET_Config(true);		// allow remote
+	Net_Config(true);		// allow remote
 
 	// send a broadcast packet
 	Com_Printf("pinging broadcast...\n");
@@ -195,7 +195,7 @@ void CL_PingServers_f()
 			continue;
 
 		Com_Printf("pinging %s...\n", adrstring);
-		if (!NET_StringToAdr(adrstring, &adr))
+		if (!Net_StringToAdr(adrstring, &adr))
 		{
 			Com_Printf("Bad address: %s\n", adrstring);
 			continue;
@@ -319,7 +319,7 @@ void CL_Connect_f()
 
 	server = Cmd_Argv(1);
 
-	NET_Config(true);		// allow remote
+	Net_Config(true);		// allow remote
 
 	CL_Disconnect();
 
@@ -356,7 +356,7 @@ void CL_Rcon_f()
 	message[3] = (char)255;
 	message[4] = 0;
 
-	NET_Config(true);		// allow remote
+	Net_Config(true);		// allow remote
 
 	strcat(message, "rcon ");
 
@@ -381,12 +381,12 @@ void CL_Rcon_f()
 
 			return;
 		}
-		NET_StringToAdr(rcon_address->string, &to);
+		Net_StringToAdr(rcon_address->string, &to);
 		if (to.port == 0)
 			to.port = BigShort(PORT_SERVER);
 	}
 
-	NET_SendPacket(NS_CLIENT, (int32_t)strlen(message) + 1, message, to);
+	Net_SendPacket(NS_CLIENT, (int32_t)strlen(message) + 1, message, to);
 }
 
 /*

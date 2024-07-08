@@ -141,10 +141,10 @@ float	BigFloat(float l);
 float	LittleFloat(float l);
 
 void	Swap_Init();
-char* va(char* format, ...);
+char*	va(char* format, ...);
 
 int32_t	COM_Argc();
-char* COM_Argv(int32_t arg);	// range and null checked
+char*	 COM_Argv(int32_t arg);	// range and null checked
 void	COM_ClearArgv(int32_t arg);
 int32_t COM_CheckParm(char* parm);
 void	COM_AddParm(char* parm);
@@ -429,7 +429,7 @@ char* Cmd_CompleteCommand(char* partial);
 // attempts to match a partial command for automatic command line completion
 // returns NULL if nothing fits
 
-int32_t 	Cmd_Argc();
+int32_t Cmd_Argc();
 char* Cmd_Argv(int32_t arg);
 char* Cmd_Args();
 // The functions that execute commands get their parameters with these
@@ -570,19 +570,19 @@ typedef struct netadr_s
 } netadr_t;
 
 void Net_Init();
-void NET_Shutdown();
+void Net_Shutdown();
 
-void NET_Config(bool multiplayer);
+void Net_Config(bool multiplayer);
 
-bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message);
-void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to);
+bool Net_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message);
+void Net_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to);
 
-bool NET_CompareAdr(netadr_t a, netadr_t b);
+bool Net_CompareAdr(netadr_t a, netadr_t b);
 bool NET_CompareBaseAdr(netadr_t a, netadr_t b);
-bool NET_IsLocalAddress(netadr_t adr);
-char* NET_AdrToString(netadr_t a);
-bool NET_StringToAdr(char* s, netadr_t* a);
-void NET_Sleep(int32_t msec);
+bool Net_IsLocalAddress(netadr_t adr);
+char* Net_AdrToString(netadr_t a);
+bool Net_StringToAdr(char* s, netadr_t* a);
+void Net_Sleep(int32_t msec);
 
 //============================================================================
 
@@ -772,7 +772,7 @@ void	Com_SetServerState(int32_t state);
 uint32_t Com_BlockChecksum(void* buffer, int32_t length);
 uint8_t	Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequence);
 
-float frand();	// 0 ti 1
+float frand();	// 0 to 1
 float crand();	// -1 to 1
 
 extern cvar_t* developer;
@@ -784,10 +784,10 @@ extern cvar_t* debug_console;
 extern FILE* log_stats_file;
 
 // host_speeds times
-extern int32_t 	time_before_game;
-extern int32_t 	time_after_game;
-extern int32_t 	time_before_ref;
-extern int32_t 	time_after_ref;
+extern int32_t time_before_game;
+extern int32_t time_after_game;
+extern int32_t time_before_ref;
+extern int32_t time_after_ref;
 
 void Z_Free(void* ptr);
 void* Z_Malloc(int32_t size);			// returns 0 filled memory
@@ -798,9 +798,9 @@ void Qcommon_Init(int32_t argc, char** argv);
 void Qcommon_Frame(int32_t msec);
 void Qcommon_Shutdown();
 
-#define NUMVERTEXNORMALS	162
+#define NUM_VERTEX_NORMALS	162
 
-extern	vec3_t	bytedirs[NUMVERTEXNORMALS];
+extern vec3_t bytedirs[NUM_VERTEX_NORMALS];
 
 // this is in the client code, but can be used for debugging from server
 void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a);
@@ -811,25 +811,35 @@ void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a
 
 // defines
 
-#define TEXT_STRINGS_MAX				1024
-#define TEXT_STRING_MAX_LENGTH_KEY		64			
-#define TEXT_STRING_MAX_LENGTH_VALUE	512					// CONSIDER: Dynamically allocate these?
-#define TEXT_DICTIONARY_FILENAME		"strings.txt"
+#define LOCALISATION_ENTRIES_MAX		1024
+#define LOCALISATION_MAX_LENGTH_KEY		64			
+#define LOCALISATION_MAX_LENGTH_VALUE	512					// CONSIDER: Dynamically allocate these?
+#define LOCALISATION_DICTIONARY_FILENAME "strings.txt"
 
 // cvars
 extern cvar_t* language;
 
-typedef struct text_string_s
+typedef struct localisation_entry_s
 {
-	char key[TEXT_STRING_MAX_LENGTH_KEY];
-	char value[TEXT_STRING_MAX_LENGTH_VALUE];
-} text_string_t;
+	char key[LOCALISATION_MAX_LENGTH_KEY];
+	char value[LOCALISATION_MAX_LENGTH_VALUE];
+} localisation_entry_t;
 
-extern text_string_t text_strings[TEXT_STRINGS_MAX];
+// As we cannot change the size of a preallocated const char*, we have to dynamically allocate localised strings.
+// This struct lets us do that...
+
+typedef struct localised_string_s
+{
+	char* string;
+} localised_string_t;
+
+extern localisation_entry_t localisation_entries[LOCALISATION_ENTRIES_MAX];
+extern localised_string_t localised_strings[LOCALISATION_ENTRIES_MAX];
 
 void Localisation_Init();
-char* Localisation_GetString();
-char* Localisation_ProcessString();
+char* Localisation_GetString(char* key);
+char* Localisation_ProcessString(char* string);
+void Localisation_Shutdown();
 
 /*
 ==============================================================

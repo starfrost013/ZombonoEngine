@@ -103,8 +103,7 @@ int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
 	return MessageBox(NULL, &text_processed, title, buttons);
 }
 
-void
-Sys_Quit()
+void Sys_Quit()
 {
 	timeEndPeriod(1);
 
@@ -121,31 +120,6 @@ Sys_Quit()
 
 	exit(0);
 }
-
-
-void WinError()
-{
-	LPVOID lpMsgBuf;
-
-	FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL,
-		GetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		(LPTSTR)&lpMsgBuf,
-		0,
-		NULL
-	);
-
-	// Display the string.
-	MessageBox(NULL, lpMsgBuf, "GetLastError", MB_OK | MB_ICONINFORMATION);
-
-	// Free the buffer.
-	LocalFree(lpMsgBuf);
-}
-
-//================================================================
-
 /*
 ================
 Sys_SetDPIAwareness

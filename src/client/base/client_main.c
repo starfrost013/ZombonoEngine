@@ -65,7 +65,7 @@ void CL_SendConnectPacket()
 	netadr_t	adr;
 	int32_t 	port;
 
-	if (!NET_StringToAdr(cls.servername, &adr))
+	if (!Net_StringToAdr(cls.servername, &adr))
 	{
 		Com_Printf("Bad server address\n");
 		cls.connect_time = 0;
@@ -111,7 +111,7 @@ void CL_CheckForResend()
 	if (cls.realtime - cls.connect_time < 3000)
 		return;
 
-	if (!NET_StringToAdr(cls.servername, &adr))
+	if (!Net_StringToAdr(cls.servername, &adr))
 	{
 		Com_Printf("Bad server address\n");
 		cls.state = ca_disconnected;
@@ -243,7 +243,7 @@ void CL_ConnectionlessPacket()
 
 	c = Cmd_Argv(0);
 
-	Com_Printf("%s: %s\n", NET_AdrToString(net_from), c);
+	Com_Printf("%s: %s\n", Net_AdrToString(net_from), c);
 
 	// server connection
 	if (!strcmp(c, "client_connect"))
@@ -270,7 +270,7 @@ void CL_ConnectionlessPacket()
 	// remote command from gui front end
 	if (!strcmp(c, "cmd"))
 	{
-		if (!NET_IsLocalAddress(net_from))
+		if (!Net_IsLocalAddress(net_from))
 		{
 			Com_Printf("Command packet from remote host.  Ignored.\n");
 			return;
@@ -324,7 +324,7 @@ when they overflow
 */
 void CL_DumpPackets()
 {
-	while (NET_GetPacket(NS_CLIENT, &net_from, &net_message))
+	while (Net_GetPacket(NS_CLIENT, &net_from, &net_message))
 	{
 		Com_Printf("dumnping a packet\n");
 	}
@@ -337,7 +337,7 @@ CL_ReadPackets
 */
 void CL_ReadPackets()
 {
-	while (NET_GetPacket(NS_CLIENT, &net_from, &net_message))
+	while (Net_GetPacket(NS_CLIENT, &net_from, &net_message))
 	{
 		//	Com_Printf ("packet\n");
 				//
@@ -354,14 +354,14 @@ void CL_ReadPackets()
 
 		if (net_message.cursize < 8)
 		{
-			Com_Printf("%s: Runt packet\n", NET_AdrToString(net_from));
+			Com_Printf("%s: Runt packet\n", Net_AdrToString(net_from));
 			continue;
 		}
 
 		//
 		// packet from server
 		//
-		if (!NET_CompareAdr(net_from, cls.netchan.remote_address))
+		if (!Net_CompareAdr(net_from, cls.netchan.remote_address))
 		{
 			// WHY IS THIS EVEN BEING TRIGGERED
 			//Com_DPrintf ("%s:sequenced packet without connection\n"

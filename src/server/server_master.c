@@ -113,7 +113,7 @@ SVC_Ack
 */
 void SVC_Ack()
 {
-	Com_Printf("Ping acknowledge from %s\n", NET_AdrToString(net_from));
+	Com_Printf("Ping acknowledge from %s\n", Net_AdrToString(net_from));
 }
 
 /*
@@ -205,7 +205,7 @@ void Master_Heartbeat()
 	{
 		if (master_adr[i].port)
 		{
-			Com_Printf("Sending heartbeat to %s\n", NET_AdrToString(master_adr[i]));
+			Com_Printf("Sending heartbeat to %s\n", Net_AdrToString(master_adr[i]));
 			Netchan_OutOfBandPrint(NS_SERVER, master_adr[i], "heartbeat\n%s", string);
 		}
 	}
@@ -237,7 +237,7 @@ void Master_Shutdown()
 		if (master_adr[i].port)
 		{
 			if (i > 0)
-				Com_Printf("Sending heartbeat to %s\n", NET_AdrToString(master_adr[i]));
+				Com_Printf("Sending heartbeat to %s\n", Net_AdrToString(master_adr[i]));
 
 			Netchan_OutOfBandPrint(NS_SERVER, master_adr[i], "shutdown");
 		}

@@ -71,6 +71,11 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
 	va_end(args);
 
+	char* final_text_ptr = &final_text;
+
+	// localise the text
+	final_text_ptr = Localisation_ProcessString(text);
+
 	font_t* font_ptr = Font_GetByName(font);
 
 	if (!font_ptr)
@@ -89,7 +94,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	// so that text doesn't appear weird - truncate and not round so that the text does not become larger than the ui elements
 	int32_t font_scale = (int32_t)vid_hudscale->value;
 
-	int32_t string_length = strlen(final_text);
+	int32_t string_length = strlen(final_text_ptr);
 
 	if (string_length == 0)
 	{
@@ -110,7 +115,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
-		char next_char = final_text[char_num];
+		char next_char = final_text_ptr[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
 		if (next_char == '\n'
@@ -210,7 +215,11 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
 	va_end(args);
 
-	// get the font
+	// localise the text
+	char* final_text_ptr = &final_text;
+	final_text_ptr = Localisation_ProcessString(final_text);
+
+	// get the font to be used for drawing the text
 	font_t* font_ptr = Font_GetByName(font);
 
 	// so that text doesn't appear weird - truncate and not round so that the text does not become larger than the ui elements
@@ -218,7 +227,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 	if (!font_ptr)
 	{
-		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
+		Com_Printf("Failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
 
 		font_ptr = Font_GetByName(cl_system_font->string);
 
@@ -227,7 +236,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 			return;
 	}
 
-	int32_t string_length = strlen(final_text);
+	int32_t string_length = strlen(final_text_ptr);
 
 	if (string_length == 0)
 		return;
@@ -248,7 +257,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
-		char next_char = final_text[char_num];
+		char next_char = final_text_ptr[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
 		if (next_char == '\n'

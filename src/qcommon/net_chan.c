@@ -118,7 +118,7 @@ void Netchan_OutOfBand (int32_t net_socket, netadr_t adr, int32_t length, uint8_
 	SZ_Write (&send, data, length);
 
 // send the datagram
-	NET_SendPacket (net_socket, send.cursize, send.data, adr);
+	Net_SendPacket (net_socket, send.cursize, send.data, adr);
 }
 
 /*
@@ -221,7 +221,7 @@ void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data)
 	{
 		chan->fatal_error = true;
 		Com_Printf ("%s:Outgoing message overflow\n"
-			, NET_AdrToString (chan->remote_address));
+			, Net_AdrToString (chan->remote_address));
 		return;
 	}
 
@@ -266,7 +266,7 @@ void Netchan_Transmit (netchan_t *chan, int32_t length, uint8_t *data)
 		Com_Printf ("Netchan_Transmit: dumped unreliable\n");
 
 // send the datagram
-	NET_SendPacket (chan->sock, send.cursize, send.data, chan->remote_address);
+	Net_SendPacket (chan->sock, send.cursize, send.data, chan->remote_address);
 
 	if (showpackets->value)
 	{
@@ -339,7 +339,7 @@ bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
 	{
 		if (showdrop->value)
 			Com_Printf ("%s:Out of order packet %i at %i\n"
-				, NET_AdrToString (chan->remote_address)
+				, Net_AdrToString (chan->remote_address)
 				,  sequence
 				, chan->incoming_sequence);
 		return false;

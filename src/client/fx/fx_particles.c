@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 void CL_LogoutEffect(vec3_t org, int32_t type);
 void CL_ItemRespawnParticles(vec3_t org);
 
-static vec3_t avelocities[NUMVERTEXNORMALS];
+static vec3_t avelocities[NUM_VERTEX_NORMALS];
 
 /*
 ==============
@@ -1076,12 +1076,12 @@ void CL_FlyParticles(vec3_t origin, int32_t count)
 	float			ltime;
 
 
-	if (count > NUMVERTEXNORMALS)
-		count = NUMVERTEXNORMALS;
+	if (count > NUM_VERTEX_NORMALS)
+		count = NUM_VERTEX_NORMALS;
 
 	if (!avelocities[0][0])
 	{
-		for (i = 0; i < NUMVERTEXNORMALS; i++)
+		for (i = 0; i < NUM_VERTEX_NORMALS; i++)
 		{
 			avelocities[i][0] = (rand() & 255) * 0.01;
 			avelocities[i][1] = (rand() & 255) * 0.01;

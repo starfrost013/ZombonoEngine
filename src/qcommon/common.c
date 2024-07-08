@@ -275,7 +275,7 @@ Handles byte ordering and avoids alignment errors
 ==============================================================================
 */
 
-vec3_t	bytedirs[NUMVERTEXNORMALS] =
+vec3_t	bytedirs[NUM_VERTEX_NORMALS] =
 {
 #include <client/include/anorms.h>
 };
@@ -427,7 +427,7 @@ void MSG_WriteDir(sizebuf_t* sb, vec3_t dir)
 
 	bestd = 0;
 	best = 0;
-	for (i = 0; i < NUMVERTEXNORMALS; i++)
+	for (i = 0; i < NUM_VERTEX_NORMALS; i++)
 	{
 		d = DotProduct(dir, bytedirs[i]);
 		if (d > bestd)
@@ -452,7 +452,7 @@ void MSG_ReadDir(sizebuf_t* sb, vec3_t dir)
 	int32_t 	b;
 
 	b = MSG_ReadByte(sb);
-	if (b >= NUMVERTEXNORMALS)
+	if (b >= NUM_VERTEX_NORMALS)
 		Com_Error(ERR_DROP, "MSF_ReadDir: out of range");
 
 	VectorCopy(bytedirs[b], dir);
@@ -1577,4 +1577,5 @@ Qcommon_Shutdown
 */
 void Qcommon_Shutdown()
 {
+	Localisation_Shutdown();
 }

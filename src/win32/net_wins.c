@@ -29,22 +29,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 typedef struct
 {
 	uint8_t	data[MAX_MSGLEN];
-	int32_t 	datalen;
+	int32_t datalen;
 } loopmsg_t;
 
 typedef struct
 {
 	loopmsg_t	msgs[MAX_LOOPBACK];
-	int32_t 		get, send;
+	int32_t 	get, send;
 } loopback_t;
 
 cvar_t* net_shownet;
 static cvar_t* noudp;
 
 loopback_t	loopbacks[2];
-int32_t 		ip_sockets[2];
+int32_t 	ip_sockets[2];
 
-char* NET_ErrorString();
+char* Net_ErrorString();
 
 //=============================================================================
 
@@ -77,7 +77,7 @@ void SockadrToNetadr(struct sockaddr* s, netadr_t* a)
 }
 
 
-bool	NET_CompareAdr(netadr_t a, netadr_t b)
+bool	Net_CompareAdr(netadr_t a, netadr_t b)
 {
 	if (a.type != b.type)
 		return false;
@@ -120,7 +120,7 @@ bool NET_CompareBaseAdr(netadr_t a, netadr_t b)
 	return TRUE;
 }
 
-char* NET_AdrToString(netadr_t a)
+char* Net_AdrToString(netadr_t a)
 {
 	static	char	s[64];
 
@@ -144,7 +144,7 @@ idnewt:28000
 =============
 */
 
-bool	NET_StringToSockaddr(char* s, struct sockaddr* sadr)
+bool Net_StringToSockaddr(char* s, struct sockaddr* sadr)
 {
 	struct hostent* h;
 	char* colon;
@@ -194,7 +194,7 @@ idnewt:28000
 192.246.40.70:28000
 =============
 */
-bool NET_StringToAdr(char* s, netadr_t* a)
+bool Net_StringToAdr(char* s, netadr_t* a)
 {
 	struct sockaddr sadr;
 
@@ -205,7 +205,7 @@ bool NET_StringToAdr(char* s, netadr_t* a)
 		return true;
 	}
 
-	if (!NET_StringToSockaddr(s, &sadr))
+	if (!Net_StringToSockaddr(s, &sadr))
 		return false;
 
 	SockadrToNetadr(&sadr, a);
@@ -214,7 +214,7 @@ bool NET_StringToAdr(char* s, netadr_t* a)
 }
 
 
-bool NET_IsLocalAddress(netadr_t adr)
+bool Net_IsLocalAddress(netadr_t adr)
 {
 	return adr.type == NA_LOOPBACK;
 }
@@ -227,7 +227,7 @@ LOOPBACK BUFFERS FOR LOCAL PLAYER
 =============================================================================
 */
 
-bool NET_GetLoopPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
+bool Net_GetLoopPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
 {
 	int32_t 	i;
 	loopback_t* loop;
@@ -252,7 +252,7 @@ bool NET_GetLoopPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message
 }
 
 
-void NET_SendLoopPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
+void Net_SendLoopPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 {
 	int32_t 	i;
 	loopback_t* loop;
@@ -268,7 +268,7 @@ void NET_SendLoopPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 
 //=============================================================================
 
-bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
+bool Net_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
 {
 	int32_t 	ret;
 	struct sockaddr from;
@@ -276,7 +276,7 @@ bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
 	int32_t 	net_socket;
 	int32_t 	err;
 
-	if (NET_GetLoopPacket(sock, net_from, net_message))
+	if (Net_GetLoopPacket(sock, net_from, net_message))
 		return true;
 
 	net_socket = ip_sockets[sock];
@@ -298,22 +298,22 @@ bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
 			return false;
 		if (err == WSAEMSGSIZE) {
 			Com_Printf("Warning:  Oversize packet from %s\n",
-				NET_AdrToString(*net_from));
+				Net_AdrToString(*net_from));
 			return false;
 		}
 
 		if (dedicated->value)	// let dedicated servers continue after errors
-			Com_Printf("NET_GetPacket: %s from %s\n", NET_ErrorString(),
-				NET_AdrToString(*net_from));
+			Com_Printf("NET_GetPacket: %s from %s\n", Net_ErrorString(),
+				Net_AdrToString(*net_from));
 		else
 			Com_Error(ERR_DROP, "NET_GetPacket: %s from %s",
-				NET_ErrorString(), NET_AdrToString(*net_from));
+				Net_ErrorString(), Net_AdrToString(*net_from));
 		return false;
 	}
 
 	if (ret == net_message->maxsize)
 	{
-		Com_Printf("Oversize packet from %s\n", NET_AdrToString(*net_from));
+		Com_Printf("Oversize packet from %s\n", Net_AdrToString(*net_from));
 		return false;
 	}
 
@@ -323,7 +323,7 @@ bool NET_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message)
 
 //=============================================================================
 
-void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
+void Net_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 {
 	int32_t 	ret;
 	struct sockaddr	addr;
@@ -331,7 +331,7 @@ void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 
 	if (to.type == NA_LOOPBACK)
 	{
-		NET_SendLoopPacket(sock, length, data, to);
+		Net_SendLoopPacket(sock, length, data, to);
 		return;
 	}
 
@@ -348,7 +348,7 @@ void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 			return;
 	}
 	else
-		Com_Error(ERR_FATAL, "NET_SendPacket: bad address type");
+		Com_Error(ERR_FATAL, "Net_SendPacket: bad address type");
 
 	NetadrToSockadr(&to, &addr);
 
@@ -368,20 +368,20 @@ void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 
 		if (dedicated->value)	// let dedicated servers continue after errors
 		{
-			Com_Printf("NET_SendPacket ERROR: %s to %s\n", NET_ErrorString(),
-				NET_AdrToString(to));
+			Com_Printf("Net_SendPacket ERROR: %s to %s\n", Net_ErrorString(),
+				Net_AdrToString(to));
 		}
 		else
 		{
 			if (err == WSAEADDRNOTAVAIL)
 			{
-				Com_DPrintf("NET_SendPacket Warning: %s : %s\n",
-					NET_ErrorString(), NET_AdrToString(to));
+				Com_DPrintf("Net_SendPacket Warning: %s : %s\n",
+					Net_ErrorString(), Net_AdrToString(to));
 			}
 			else
 			{
-				Com_Error(ERR_DROP, "NET_SendPacket ERROR: %s to %s\n",
-					NET_ErrorString(), NET_AdrToString(to));
+				Com_Error(ERR_DROP, "Net_SendPacket ERROR: %s to %s\n",
+					Net_ErrorString(), Net_AdrToString(to));
 			}
 		}
 	}
@@ -396,40 +396,40 @@ void NET_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 NET_Socket
 ====================
 */
-int32_t NET_IPSocket(char* net_interface, int32_t port)
+int32_t Net_IPSocket(char* net_interface, int32_t port)
 {
-	int32_t 				newsocket;
+	int32_t 			newsocket;
 	struct sockaddr_in	address;
 	u_long		 		_true = 1;
-	int32_t 				i = 1;
-	int32_t 				err;
+	int32_t 			i = 1;
+	int32_t 			err;
 
 	if ((newsocket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
 	{
 		err = WSAGetLastError();
 		if (err != WSAEAFNOSUPPORT)
-			Com_Printf("WARNING: UDP_OpenSocket: socket: %s", NET_ErrorString());
+			Com_Printf("WARNING: UDP_OpenSocket: socket: %s", Net_ErrorString());
 		return 0;
 	}
 
 	// make it non-blocking
 	if (ioctlsocket(newsocket, FIONBIO, &_true) == -1)
 	{
-		Com_Printf("WARNING: UDP_OpenSocket: ioctl FIONBIO: %s\n", NET_ErrorString());
+		Com_Printf("WARNING: UDP_OpenSocket: ioctl FIONBIO: %s\n", Net_ErrorString());
 		return 0;
 	}
 
 	// make it broadcast capable
 	if (setsockopt(newsocket, SOL_SOCKET, SO_BROADCAST, (char*)&i, sizeof(i)) == -1)
 	{
-		Com_Printf("WARNING: UDP_OpenSocket: setsockopt SO_BROADCAST: %s\n", NET_ErrorString());
+		Com_Printf("WARNING: UDP_OpenSocket: setsockopt SO_BROADCAST: %s\n", Net_ErrorString());
 		return 0;
 	}
 
 	if (!net_interface || !net_interface[0] || !stricmp(net_interface, "localhost"))
 		address.sin_addr.s_addr = INADDR_ANY;
 	else
-		NET_StringToSockaddr(net_interface, (struct sockaddr*)&address);
+		Net_StringToSockaddr(net_interface, (struct sockaddr*)&address);
 
 	if (port == PORT_ANY)
 		address.sin_port = 0;
@@ -440,7 +440,7 @@ int32_t NET_IPSocket(char* net_interface, int32_t port)
 
 	if (bind(newsocket, (void*)&address, sizeof(address)) == -1)
 	{
-		Com_Printf("WARNING: UDP_OpenSocket: bind: %s\n", NET_ErrorString());
+		Com_Printf("WARNING: UDP_OpenSocket: bind: %s\n", Net_ErrorString());
 		closesocket(newsocket);
 		return 0;
 	}
@@ -454,11 +454,11 @@ int32_t NET_IPSocket(char* net_interface, int32_t port)
 NET_OpenIP
 ====================
 */
-void NET_OpenIP()
+void Net_OpenIP()
 {
 	cvar_t* ip;
-	int32_t 	port;
-	int32_t 	dedicated;
+	int32_t port;
+	int32_t dedicated;
 
 	ip = Cvar_Get("ip", "localhost", CVAR_NOSET);
 
@@ -475,7 +475,7 @@ void NET_OpenIP()
 				port = Cvar_Get("port", va("%i", PORT_SERVER), CVAR_NOSET)->value;
 			}
 		}
-		ip_sockets[NS_SERVER] = NET_IPSocket(ip->string, port);
+		ip_sockets[NS_SERVER] = Net_IPSocket(ip->string, port);
 		if (!ip_sockets[NS_SERVER] && dedicated)
 			Com_Error(ERR_FATAL, "Couldn't allocate dedicated server IP port");
 	}
@@ -494,9 +494,9 @@ void NET_OpenIP()
 			if (!port)
 				port = PORT_ANY;
 		}
-		ip_sockets[NS_CLIENT] = NET_IPSocket(ip->string, port);
+		ip_sockets[NS_CLIENT] = Net_IPSocket(ip->string, port);
 		if (!ip_sockets[NS_CLIENT])
-			ip_sockets[NS_CLIENT] = NET_IPSocket(ip->string, PORT_ANY);
+			ip_sockets[NS_CLIENT] = Net_IPSocket(ip->string, PORT_ANY);
 	}
 }
 
@@ -507,7 +507,7 @@ NET_Config
 A single player game will only use the loopback code
 ====================
 */
-void	NET_Config(bool multiplayer)
+void Net_Config(bool multiplayer)
 {
 	int32_t 	i;
 	static	bool	old_config;
@@ -531,12 +531,12 @@ void	NET_Config(bool multiplayer)
 	else
 	{	// open sockets
 		if (!noudp->value)
-			NET_OpenIP();
+			Net_OpenIP();
 	}
 }
 
 // sleeps msec or until net socket is ready
-void NET_Sleep(int32_t msec)
+void Net_Sleep(int32_t msec)
 {
 	struct timeval timeout;
 	fd_set	fdset;
@@ -593,9 +593,9 @@ void Net_Init()
 NET_Shutdown
 ====================
 */
-void	NET_Shutdown()
+void Net_Shutdown()
 {
-	NET_Config(false);	// close sockets
+	Net_Config(false);	// close sockets
 
 	WSACleanup();
 }
@@ -606,7 +606,7 @@ void	NET_Shutdown()
 NET_ErrorString
 ====================
 */
-char* NET_ErrorString()
+char* Net_ErrorString()
 {
 	int32_t 	code;
 

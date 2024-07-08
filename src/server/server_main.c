@@ -196,12 +196,12 @@ void SVC_DirectConnect()
 	userinfo[sizeof(userinfo) - 1] = 0;
 
 	// force the IP key/value pair so the game can filter based on ip
-	Info_SetValueForKey(userinfo, "ip", NET_AdrToString(net_from));
+	Info_SetValueForKey(userinfo, "ip", Net_AdrToString(net_from));
 
 	// attractloop servers are ONLY for local clients
 	if (sv.attractloop)
 	{
-		if (!NET_IsLocalAddress(adr))
+		if (!Net_IsLocalAddress(adr))
 		{
 			Com_Printf("Remote connect in attract loop.  Ignored.\n");
 			Netchan_OutOfBandPrint(NS_SERVER, adr, "print\nConnection refused.\n");
@@ -210,7 +210,7 @@ void SVC_DirectConnect()
 	}
 
 	// see if the challenge is valid
-	if (!NET_IsLocalAddress(adr))
+	if (!Net_IsLocalAddress(adr))
 	{
 		for (i = 0; i < MAX_CHALLENGES; i++)
 		{
@@ -241,12 +241,12 @@ void SVC_DirectConnect()
 			&& (cl->netchan.qport == qport
 				|| adr.port == cl->netchan.remote_address.port))
 		{
-			if (!NET_IsLocalAddress(adr) && (svs.realtime - cl->lastconnect) < ((int32_t)sv_reconnect_limit->value * 1000))
+			if (!Net_IsLocalAddress(adr) && (svs.realtime - cl->lastconnect) < ((int32_t)sv_reconnect_limit->value * 1000))
 			{
-				Com_DPrintf("%s:reconnect rejected : too soon\n", NET_AdrToString(adr));
+				Com_DPrintf("%s:reconnect rejected : too soon\n", Net_AdrToString(adr));
 				return;
 			}
-			Com_Printf("%s:reconnect\n", NET_AdrToString(adr));
+			Com_Printf("%s:reconnect\n", Net_AdrToString(adr));
 			newcl = cl;
 			goto gotnewcl;
 		}
@@ -337,9 +337,9 @@ void SVC_RemoteCommand()
 	i = Rcon_Validate();
 
 	if (i == 0)
-		Com_Printf("Bad rcon from %s:\n%s\n", NET_AdrToString(net_from), net_message.data + 4);
+		Com_Printf("Bad rcon from %s:\n%s\n", Net_AdrToString(net_from), net_message.data + 4);
 	else
-		Com_Printf("Rcon from %s:\n%s\n", NET_AdrToString(net_from), net_message.data + 4);
+		Com_Printf("Rcon from %s:\n%s\n", Net_AdrToString(net_from), net_message.data + 4);
 
 	Com_BeginRedirect(RD_PACKET, sv_outputbuf, SV_OUTPUTBUF_LENGTH, SV_FlushRedirect);
 
@@ -386,7 +386,7 @@ void SV_ConnectionlessPacket()
 	Cmd_TokenizeString(s, false);
 
 	c = Cmd_Argv(0);
-	Com_DPrintf("Packet %s : %s\n", NET_AdrToString(net_from), c);
+	Com_DPrintf("Packet %s : %s\n", Net_AdrToString(net_from), c);
 
 	if (!strcmp(c, "ping"))
 		SVC_Ping();
@@ -404,7 +404,7 @@ void SV_ConnectionlessPacket()
 		SVC_RemoteCommand();
 	else
 		Com_Printf("bad connectionless packet from %s:\n%s\n"
-			, NET_AdrToString(net_from), s);
+			, Net_AdrToString(net_from), s);
 }
 
 
@@ -489,7 +489,7 @@ void SV_ReadPackets()
 	client_t* cl;
 	int32_t 		qport;
 
-	while (NET_GetPacket(NS_SERVER, &net_from, &net_message))
+	while (Net_GetPacket(NS_SERVER, &net_from, &net_message))
 	{
 		// check for connectionless packet (0xffffffff) first
 		if (*(int32_t*)net_message.data == -1)
@@ -674,7 +674,7 @@ void SV_Frame(int32_t msec)
 				Com_Printf("sv lowclamp\n");
 			svs.realtime = sv.time - 100;
 		}
-		NET_Sleep(sv.time - svs.realtime);
+		Net_Sleep(sv.time - svs.realtime);
 		return;
 	}
 

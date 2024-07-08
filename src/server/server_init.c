@@ -359,17 +359,17 @@ void SV_InitGame()
 	svs.client_entities = Z_Malloc(sizeof(entity_state_t) * svs.num_client_entities);
 
 	// init network stuff
-	NET_Config((maxclients->value > 1));
+	Net_Config((maxclients->value > 1));
 
 	// heartbeats will always be sent to the id master
 	svs.last_heartbeat = -99999;		// send immediately
 	Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_base, PORT_MASTER);
 
-	if (!NET_StringToAdr(zombono_master, &master_adr[0]))
+	if (!Net_StringToAdr(zombono_master, &master_adr[0]))
 	{
 		Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_alternative, PORT_MASTER);
 
-		if (!NET_StringToAdr(zombono_master, &master_adr[0]))
+		if (!Net_StringToAdr(zombono_master, &master_adr[0]))
 		{
 			Com_Printf("Warning: Failed to contact both base and alternative master servers!\n");
 		}

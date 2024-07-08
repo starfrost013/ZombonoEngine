@@ -1925,7 +1925,7 @@ void JoinServerFunc(void* self)
 	if (index >= m_num_servers)
 		return;
 
-	Com_sprintf(buffer, sizeof(buffer), "connect %s\n", NET_AdrToString(local_server_netadr[index]));
+	Com_sprintf(buffer, sizeof(buffer), "connect %s\n", Net_AdrToString(local_server_netadr[index]));
 	Cbuf_AddText(buffer);
 	M_ForceMenuOff();
 }

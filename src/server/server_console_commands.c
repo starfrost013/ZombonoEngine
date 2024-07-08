@@ -60,7 +60,7 @@ void SV_SetMaster_f()
 		if (slot == MAX_MASTERS)
 			break;
 
-		if (!NET_StringToAdr(Cmd_Argv(i), &master_adr[i]))
+		if (!Net_StringToAdr(Cmd_Argv(i), &master_adr[i]))
 		{
 			Com_Printf("Bad address: %s\n", Cmd_Argv(i));
 			continue;
@@ -68,7 +68,7 @@ void SV_SetMaster_f()
 		if (master_adr[slot].port == 0)
 			master_adr[slot].port = BigShort(PORT_MASTER);
 
-		Com_Printf("Master server at %s\n", NET_AdrToString(master_adr[slot]));
+		Com_Printf("Master server at %s\n", Net_AdrToString(master_adr[slot]));
 
 		Com_Printf("Sending a ping.\n");
 
@@ -784,7 +784,7 @@ void SV_Status_f()
 
 		Com_Printf("%7i ", svs.realtime - cl->lastmessage);
 
-		s = NET_AdrToString(cl->netchan.remote_address);
+		s = Net_AdrToString(cl->netchan.remote_address);
 		Com_Printf("%s", s);
 		l = 22 - (int32_t)strlen(s);
 		for (j = 0; j < l; j++)
@@ -1005,7 +1005,7 @@ void SV_KillServer_f()
 		return;
 	SV_Shutdown("Server was killed.\n", false);
 	SV_ShutdownGameProgs();
-	NET_Config(false);	// close network sockets
+	Net_Config(false);	// close network sockets
 }
 
 /*

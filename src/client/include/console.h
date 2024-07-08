@@ -47,7 +47,7 @@ typedef struct console_s
 								// for transparent notify lines
 } console_t;
 
-extern	console_t	con;
+extern console_t con;
 
 void Con_CheckResize ();
 void Con_Init ();
