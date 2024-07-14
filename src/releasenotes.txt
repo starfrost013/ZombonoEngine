@@ -8,6 +8,12 @@ NEW FEATURES:
 	* Rendering API version 12
 		* Renamed Game_Init and Game_Shutdown to Init and Shutdown (as they are intended to be called, I fucked up renaming things)
 	* A dedicated server binary, on Windows as well as Linux...
+	* Implemented localisation into the game
+		* The language is controlled by the language cvar
+		* Strings are loaded from text\<language->value>\strings.txt (max 1024 strings, 64 key length and 512 key value)
+		* They are referred to using the syntax [STRING_KEY] in code
+	* Made the engine game-agnostic
+		* Changed references to Zombono to the value of the name field of the gameinfo_t structure
 
 BUG FIXES:
 	* Fixed the game crashing on minimise
@@ -16,8 +22,12 @@ BUG FIXES:
 	* Fixed font list not being loaded from pak file
 
 REMOVALS:
+	* Obsolete Windows-only code
+	* Increased MAX_GLTEXTURES from 1024 to 2048
 
 OTHER CHANGES:
+	* Made update prompt game-agnostic
+
 * NOTE: con_line_length only has any effect on dedicated servers
 
 Version 0.1.0-pre1 (Build 659)

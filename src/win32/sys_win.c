@@ -169,7 +169,7 @@ void Sys_Init()
 
 	if (vinfo.dwMajorVersion < 4
 		|| vinfo.dwPlatformId == VER_PLATFORM_WIN32s)
-		Sys_Error("Zombono requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)");
+		Sys_Error("%s requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)", gameinfo.name);
 
 	if (dedicated->value)
 	{

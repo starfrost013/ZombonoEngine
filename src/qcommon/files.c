@@ -37,7 +37,7 @@ GAME FILESYSTEM
 =============================================================================
 */
 
-cvar_t* fs_basedir;
+cvar_t* game_basedir;
 
 //
 // in memory
@@ -456,9 +456,9 @@ void FS_ExecAutoexec()
 
 	dir = Cvar_VariableString("game_asset_path");
 	if (*dir)
-		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, dir);
+		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, dir);
 	else
-		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", fs_basedir->string, game_asset_path->string);
+		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, game_asset_path->string);
 
 	if (Sys_FindFirst(name, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM))
 		Cbuf_AddText("exec autoexec.cfg\n");
@@ -514,7 +514,7 @@ void FS_SetGamedir(char* dir)
 	else
 	{
 		Cvar_FullSet("game_asset_path", dir, CVAR_SERVERINFO | CVAR_NOSET);
-		FS_AddGameDirectory(va("%s/%s", fs_basedir->string, dir));
+		FS_AddGameDirectory(va("%s/%s", game_basedir->string, dir));
 	}
 }
 
@@ -729,21 +729,21 @@ void FS_InitFilesystem()
 	Cmd_AddCommand("dir", FS_Dir_f);
 
 	//todo: get current working directory
-	fs_basedir = Cvar_Get("basedir", "", 0);
+	game_basedir = Cvar_Get("basedir", "", 0);
 
 	//
 	// start up with zombonogame by default
 	//
 
-	// slight hack, since fs_basedir is now the current working directory by default, we have to do some kludging so that we try and load from the right file
+	// slight hack, since game_basedir is now the current working directory by default, we have to do some kludging so that we try and load from the right directory
 
-	if (strlen(fs_basedir->string) == 0)
+	if (strlen(game_basedir->string) == 0)
 	{
 		FS_AddGameDirectory(game_asset_path->string);
 	}
 	else
 	{
-		FS_AddGameDirectory(va("%s/%s", fs_basedir->string, game_asset_path->string));
+		FS_AddGameDirectory(va("%s/%s", game_basedir->string, game_asset_path->string));
 	}
 
 	// any set gamedirs will be freed up to here
@@ -760,8 +760,7 @@ void FS_InitFilesystem()
 	{
 		FS_SetGamedir(game_asset_path->string);
 		// actually make it an alias for compatibility...
-		
-		game_override->string = game_asset_path->string;
+		Cvar_Set(game_override->string, game_asset_path->string);
 	}
 
 }

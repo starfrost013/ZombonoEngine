@@ -79,7 +79,7 @@ void Vid_Printf(int32_t print_level, char* fmt, ...)
 	else if (print_level == PRINT_ALERT)
 	{
 		// ICONWARNING
-		Sys_Msgbox("PRINT_ALERT", 30, msg);
+		Sys_Msgbox("Alert (PRINT_ALERT)", 30, msg);
 	}
 }
 

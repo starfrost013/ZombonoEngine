@@ -80,7 +80,7 @@ bool Netservices_Init()
 
 	if (!curl_obj_connect_test)
 	{
-		Sys_Error("CURL failed to initialise. Updating, master servers, and accounts won't be available.");
+		Sys_Msgbox("Warning", 0, "CURL failed to initialise. Updating, master servers, and accounts won't be available.\nYou can still play the game.");
 		return false;
 	}
 

@@ -144,7 +144,8 @@ typedef struct gltmode_s
 	int32_t mode;
 } gltmode_t;
 
-gltmode_t gl_alpha_modes[] = {
+gltmode_t gl_alpha_modes[] = 
+{
 	{"default", 4},
 	{"GL_RGBA", GL_RGBA},
 	{"GL_RGBA8", GL_RGBA8},
@@ -155,7 +156,8 @@ gltmode_t gl_alpha_modes[] = {
 
 #define NUM_GL_ALPHA_MODES (sizeof(gl_alpha_modes) / sizeof (gltmode_t))
 
-gltmode_t gl_solid_modes[] = {
+gltmode_t gl_solid_modes[] = 
+{
 	{"default", 3},
 	{"GL_RGB", GL_RGB},
 	{"GL_RGB8", GL_RGB8},
@@ -171,14 +173,14 @@ gltmode_t gl_solid_modes[] = {
 GL_TextureMode
 ===============
 */
-void GL_SetTextureMode(char* string)
+void GL_SetTextureMode(char* value)
 {
 	int32_t		i;
 	image_t* glt;
 
 	for (i = 0; i < NUM_GL_MODES; i++)
 	{
-		if (!Q_stricmp(modes[i].name, string))
+		if (!Q_stricmp(modes[i].name, value))
 			break;
 	}
 
@@ -210,7 +212,7 @@ GL_TextureAlphaMode
 */
 void GL_SetTextureAlphaMode(char* string)
 {
-	int		i;
+	int32_t	i;
 
 	for (i = 0; i < NUM_GL_ALPHA_MODES; i++)
 	{
@@ -256,7 +258,7 @@ void GL_SetTextureSolidMode(char* string)
 GL_ImageList_f
 ===============
 */
-void	GL_ImageList_f()
+void GL_ImageList_f()
 {
 	int32_t		i;
 	image_t* image;

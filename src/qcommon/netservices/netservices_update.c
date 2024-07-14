@@ -306,7 +306,7 @@ void Netservices_UpdateInfoJsonComplete()
 
 // The update prompt text.
 char* update_prompt_format =
-"An update is available for Zombono:\n"
+"An update is available for %s:\n"
 "\n"
 "Version %d.%d.%d.%d is now available.\n"
 "Description: %s\n"
@@ -321,7 +321,7 @@ bool Netservices_UpdaterPromptForUpdate()
 	// Temporary UI
 	char update_prompt[UPDATE_PROMPT_STR_LENGTH] = { 0 };
 
-	snprintf(&update_prompt, UPDATE_PROMPT_STR_LENGTH, update_prompt_format,
+	snprintf(&update_prompt, UPDATE_PROMPT_STR_LENGTH, gameinfo.name, update_prompt_format,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
 		update_info.description);
 

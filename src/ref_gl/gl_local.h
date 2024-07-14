@@ -88,10 +88,10 @@ typedef struct image_s
 	bool				has_alpha;
 } image_t;
 
-#define	TEXNUM_LIGHTMAPS	1024
-#define	TEXNUM_IMAGES		1153
+#define	TEXNUM_LIGHTMAPS	2048
+#define	TEXNUM_IMAGES		2177
 
-#define	MAX_GLTEXTURES	1024
+#define	MAX_GLTEXTURES		2048
 
 //===================================================================
 
@@ -301,7 +301,7 @@ struct image_s* R_RegisterSkin(char* name);
 
 image_t* GL_LoadPic(char* name, uint8_t* pic, int32_t width, int32_t height, imagetype_t type);
 image_t* GL_FindImage(char* name, imagetype_t type);
-void		GL_SetTextureMode(char* string);
+void		GL_SetTextureMode(char* value);
 void		GL_ImageList_f();
 
 void GL_InitImages();
@@ -309,8 +309,8 @@ void GL_ShutdownImages();
 
 void GL_FreeUnusedImages();
 
-void GL_SetTextureAlphaMode(char* string);
-void GL_SetTextureSolidMode(char* string);
+void GL_SetTextureAlphaMode(char* value);
+void GL_SetTextureSolidMode(char* value);
 
 // Map extents
 extern float map_radius;

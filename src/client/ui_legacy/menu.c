@@ -1025,7 +1025,7 @@ static menulist_t		s_options_lookspring_box;
 static menulist_t		s_options_lookstrafe_box;
 static menulist_t		s_options_crosshair_box;
 static menuslider_t		s_options_sfxvolume_slider;
-static menuslider_t		s_options_cdvolume_slider;
+static menuslider_t		s_options_musicvolume_slider;
 static menulist_t		s_options_joystick_box;
 static menulist_t		s_options_quality_list;
 static menulist_t		s_options_compatibility_list;
@@ -1066,7 +1066,7 @@ static float ClampCvar(float min, float max, float value)
 static void ControlsSetMenuItemValues(void)
 {
 	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume_sfx") * 10;
-	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
+	s_options_musicvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
 	s_options_quality_list.curvalue = !Cvar_VariableValue("s_loadas8bit");
 	s_options_sensitivity_slider.curvalue = (sensitivity->value) * 2;
 
@@ -1118,7 +1118,7 @@ static void UpdateVolumeFunc(void* unused)
 
 static void UpdateCDVolumeFunc(void* unused)
 {
-	Cvar_SetValue("s_volume_music", s_options_cdvolume_slider.curvalue / 10);
+	Cvar_SetValue("s_volume_music", s_options_musicvolume_slider.curvalue / 10);
 }
 
 static void ConsoleFunc(void* unused)
@@ -1203,14 +1203,14 @@ void Options_MenuInit(void)
 	s_options_sfxvolume_slider.maxvalue = 10;
 	s_options_sfxvolume_slider.curvalue = Cvar_VariableValue("s_volume_sfx") * 10;
 
-	s_options_cdvolume_slider.generic.type = MTYPE_SLIDER;
-	s_options_cdvolume_slider.generic.x = 0;
-	s_options_cdvolume_slider.generic.y = 10 * vid_hudscale->value;
-	s_options_cdvolume_slider.generic.name = "^5Music Volume";
-	s_options_cdvolume_slider.generic.callback = UpdateCDVolumeFunc;
-	s_options_cdvolume_slider.minvalue = 0;
-	s_options_cdvolume_slider.maxvalue = 10;
-	s_options_cdvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
+	s_options_musicvolume_slider.generic.type = MTYPE_SLIDER;
+	s_options_musicvolume_slider.generic.x = 0;
+	s_options_musicvolume_slider.generic.y = 10 * vid_hudscale->value;
+	s_options_musicvolume_slider.generic.name = "^5Music Volume";
+	s_options_musicvolume_slider.generic.callback = UpdateCDVolumeFunc;
+	s_options_musicvolume_slider.minvalue = 0;
+	s_options_musicvolume_slider.maxvalue = 10;
+	s_options_musicvolume_slider.curvalue = Cvar_VariableValue("s_volume_music") * 10;
 
 	s_options_quality_list.generic.type = MTYPE_SPINCONTROL;
 	s_options_quality_list.generic.x = 0;
@@ -1299,7 +1299,7 @@ void Options_MenuInit(void)
 	ControlsSetMenuItemValues();
 
 	Menu_AddItem(&s_options_menu, (void*)&s_options_sfxvolume_slider);
-	Menu_AddItem(&s_options_menu, (void*)&s_options_cdvolume_slider);
+	Menu_AddItem(&s_options_menu, (void*)&s_options_musicvolume_slider);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_quality_list);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_compatibility_list);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_sensitivity_slider);
@@ -1935,10 +1935,6 @@ void AddressBookFunc(void* self)
 	M_Menu_AddressBook_f();
 }
 
-void NullCursorDraw(void* self)
-{
-}
-
 void SearchLocalGames(void)
 {
 	int32_t 	i;
@@ -2250,7 +2246,7 @@ void StartServer_MenuInit(void)
 	strcpy(s_timelimit_field.buffer, Cvar_VariableString("timelimit"));
 
 	s_fraglimit_field.generic.type = MTYPE_FIELD;
-	s_fraglimit_field.generic.name = "^5 Frag Limit";
+	s_fraglimit_field.generic.name = "^5Frag Limit";
 	s_fraglimit_field.generic.flags = QMF_NUMBERSONLY;
 	s_fraglimit_field.generic.x = 0;
 	s_fraglimit_field.generic.y = 54 * vid_hudscale->value;
@@ -2365,7 +2361,7 @@ void M_Menu_StartServer_f()
 /*
 =============================================================================
 
-gameoptions BOOK MENU
+Game Options menu
 
 =============================================================================
 */
@@ -3429,7 +3425,7 @@ void M_Menu_PlayerConfig_f()
 {
 	if (!PlayerConfig_MenuInit())
 	{
-		Menu_SetStatusBar(&s_multiplayer_menu, "No valid player models found!");
+		Menu_SetStatusBar(&s_multiplayer_menu, "[STRING_ERROR_NO_PLAYER_MODELS]");
 		return;
 	}
 	Menu_SetStatusBar(&s_multiplayer_menu, NULL);

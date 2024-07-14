@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 gameinfo_t gameinfo;
 
-// cloned from gameinfo struct
+// copied from gameinfo struct
 cvar_t* game_name;
 cvar_t* game_asset_path;
 
@@ -54,7 +54,7 @@ void Gameinfo_Load()
 		{
 		case JSON_ERROR:
 			Sys_Error("Malformed gameinfo.json! (1): %s", JSON_get_error(&json_stream));
-			break;
+			return false;
 			// don't parse any arrays or anything like that
 		case JSON_OBJECT:
 			json_next = JSON_next(&json_stream);
@@ -65,7 +65,7 @@ void Gameinfo_Load()
 				{
 				case JSON_ERROR:
 					Sys_Error("Malformed gameinfo.json! (2): %s", JSON_get_error(&json_stream));
-					break;
+					return false;
 				case JSON_STRING:
 					json_string = JSON_get_string(&json_stream, NULL);
 

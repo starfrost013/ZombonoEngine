@@ -830,15 +830,16 @@ typedef struct localisation_entry_s
 
 typedef struct localised_string_s
 {
-	char* string;
+	char* key; // the key the localised string is tied to
+	char* value;
 } localised_string_t;
 
 extern localisation_entry_t localisation_entries[LOCALISATION_ENTRIES_MAX];
 extern localised_string_t localised_strings[LOCALISATION_ENTRIES_MAX];
 
 void Localisation_Init();
-char* Localisation_GetString(char* key);
-char* Localisation_ProcessString(char* string);
+localisation_entry_t* Localisation_GetString(char* key);
+char* Localisation_ProcessString(char* value);
 void Localisation_Shutdown();
 
 /*
@@ -856,7 +857,7 @@ void*	Sys_GetGameAPI(void* parms);
 // loads the game dll and calls the api init function
 
 char*	Sys_ConsoleInput();
-void	Sys_ConsoleOutput(char* string);
+void	Sys_ConsoleOutput(char* value);
 void	Sys_Error(char* error, ...);
 int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit();

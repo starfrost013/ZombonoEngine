@@ -160,7 +160,7 @@ void Localisation_LoadCurrentLanguage()
 }
 
 // Returns the value for the key key.
-char* Localisation_GetString(char* key)
+localisation_entry_t* Localisation_GetString(char* key)
 {
 	// if language has changed, reload localisation files
 	if (language->modified)
@@ -171,10 +171,10 @@ char* Localisation_GetString(char* key)
 
 	for (int32_t text_string_id = 0; text_string_id < localisation_entries_count; text_string_id++)
 	{
-		localisation_entry_t* string = &localisation_entries[text_string_id];
+		localisation_entry_t* value = &localisation_entries[text_string_id];
 
-		if (!strcmp(string->key, key))
-			return string->value;
+		if (!strcmp(value->key, key))
+			return value;
 	}
 
 	return NULL;
@@ -192,7 +192,7 @@ char* Localisation_GetString(char* key)
 char string_temp_buf[STRING_TEMP_BUF_SIZE] = { 0 };
 
 // This code sucks
-char* Localisation_ProcessString(char* string)
+char* Localisation_ProcessString(char* value)
 {
 	// if language has changed, reload localisation files
 	if (language->modified)
@@ -203,30 +203,30 @@ char* Localisation_ProcessString(char* string)
 
 	uint32_t clear_amount = 0;
 
-	uint8_t* ptr = string_temp_buf;
+	uint8_t* cur_pos = string_temp_buf;
 
-	while (ptr < (string_temp_buf + STRING_TEMP_BUF_SIZE))
+	while (cur_pos < (string_temp_buf + STRING_TEMP_BUF_SIZE))
 	{
 		clear_amount++;
-		if (*ptr == 0x00)
+		if (*cur_pos == 0x00)
 			break;
-		ptr++;
+		cur_pos++;
 	}
 
 	memset(string_temp_buf, 0x00, clear_amount);
 
-	strncpy(string_temp_buf, string, strlen(string));
+	strncpy(string_temp_buf, value, strlen(value));
 
 	size_t localisation_string_length = 0;
 	char loc_string_key_buf[LOCALISATION_MAX_LENGTH_KEY] = { 0 };
 	size_t string_length = strlen(string_temp_buf);
 	size_t string_length_original = string_length;
 	char* token_ptr = strtok(string_temp_buf, LOCALISATION_REF_START);
-	
+
 	// don't continuously clear 64k, just clear whatever is left
 
 	if (!token_ptr)
-		return string;
+		return value;
 
 	if (string_length > STRING_TEMP_BUF_SIZE)
 		Sys_Error("Passed string more than 0x10000 bytes in length to Localisation_ProcessString?!");
@@ -238,11 +238,11 @@ char* Localisation_ProcessString(char* string)
 
 		// no localisation to do
 		if (!ref_start_ptr)
-			return string;
+			return value;
 
 		// iterate through each part of the string
 
-		int32_t localisation_key_length = 0;  
+		int32_t localisation_key_length = 0;
 
 		while (token_ptr[0] != LOCALISATION_REF_END_CHAR)
 		{
@@ -258,9 +258,9 @@ char* Localisation_ProcessString(char* string)
 		if (localisation_key_length > LOCALISATION_MAX_LENGTH_KEY)
 		{
 			Com_Printf("Warning: Localisation string key length of %d, more than %d\n", localisation_key_length, LOCALISATION_MAX_LENGTH_KEY);
-			continue; 
+			continue;
 		}
-		
+
 		if (localisation_key_length <= 0)
 		{
 			Com_Printf("Warning: Empty localisation string key, skipping\n");
@@ -269,12 +269,20 @@ char* Localisation_ProcessString(char* string)
 
 		// get the localisation string
 		strncpy(loc_string_key_buf, ref_start_ptr, localisation_key_length);
-		
+
+		// was this string already localised?
+			// if so, return
+		for (uint32_t localisation_string_id = 0; localisation_string_id < localisation_entries_count; localisation_string_id++)
+		{
+			if (!strcmp(localisation_entries[localisation_string_id].key, loc_string_key_buf))
+				return localisation_entries[localisation_string_id].value;
+		}
+
 		char* loc_string = Localisation_GetString(loc_string_key_buf);
 
 		if (!loc_string)
-			return string;
-
+			return value;
+		
 		localisation_string_length = strlen(loc_string);
 
 		// figure out the new length of the string
@@ -286,11 +294,18 @@ char* Localisation_ProcessString(char* string)
 			break;
 	}
 
+	if (localised_strings_count >= LOCALISATION_ENTRIES_MAX)
+	{
+		Com_Printf("Too many localisation strings! (%d > %d)", localised_strings_count, LOCALISATION_ENTRIES_MAX);
+		return NULL;
+	}
+
 	// allocate memory for the string
 	// zero it since loading this happens rarely
-	localised_strings[localised_strings_count].string = (char*)calloc(1, string_length);
+	
+	localised_strings[localised_strings_count].value = (char*)calloc(1, string_length);
 
-	if (!localised_strings[localised_strings_count].string)
+	if (!localised_strings[localised_strings_count].value)
 	{
 		Sys_Error("Failed to allocate memory for localisation string information");
 		return NULL;
@@ -320,7 +335,7 @@ char* Localisation_ProcessString(char* string)
 		char* ref_end_ptr = ref_start_ptr;
 
 		// copy part before the localisation string
-		strncpy(localised_strings[localised_strings_count].string, token_ptr, (ref_start_ptr - token_ptr) - 1); // -1 to cut off the [
+		strncpy(localised_strings[localised_strings_count].value, token_ptr, (ref_start_ptr - token_ptr) - 1); // -1 to cut off the [
 
 		// iterate through each part of the string
 
@@ -340,14 +355,16 @@ char* Localisation_ProcessString(char* string)
 		// get the localisation string
 		strncpy(loc_string_key_buf, ref_start_ptr, localisation_key_length);
 
-		char* loc_string = Localisation_GetString(loc_string_key_buf);
+		localisation_entry_t* loc_string = Localisation_GetString(loc_string_key_buf);
 
 		if (!loc_string)
-			return string;
+			return value;
 
-		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].string);
+		localised_strings[localised_strings_count].key = loc_string->key;
+
+		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].value);
 		// copy the localisation string
-		strncpy(localised_strings[localised_strings_count].string + loc_string_current_length, loc_string, strlen(loc_string));
+		strncpy(localised_strings[localised_strings_count].value + loc_string_current_length, loc_string, strlen(loc_string));
 
 		token_ptr = strtok(NULL, LOCALISATION_REF_START);
 
@@ -358,7 +375,7 @@ char* Localisation_ProcessString(char* string)
 
 	// we are done
 	localised_strings_count++;
-	return localised_strings[localised_strings_count - 1].string;
+	return localised_strings[localised_strings_count - 1].value;
 }
 
 // Frees all localisation strins
@@ -366,6 +383,7 @@ void Localisation_Shutdown()
 {
 	for (int32_t localisation_string_id = 0; localisation_string_id < localisation_entries_count; localisation_string_id++)
 	{
-		free((void*)localised_strings[localised_strings_count].string);
+		if (localised_strings[localisation_string_id].value != NULL)
+			free((void*)localised_strings[localisation_string_id].value);
 	}
 }
