@@ -99,7 +99,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)build\out</OutDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\obj_ds</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
     <OutDir>$(SolutionDir)build\out</OutDir>

@@ -95,7 +95,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)build\out\</OutDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\obj_ref_gl</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

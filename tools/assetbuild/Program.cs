@@ -6,11 +6,12 @@
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.0.7"; // Version
+const string ASSETBUILD_VERSION = "2.1.0"; // Version
 const string DEFAULT_GAME_NAME = "zombonogame"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
 string gameDir = $@"..\..\..\..\..\assets\{gameName}"; // Complete relative path to game dir
 string outputDirectory = string.Empty; //set later
+string releaseConfiguration = string.Empty;
 
 bool quietMode = false; // If true, everything except errors are hushed
 
@@ -20,9 +21,10 @@ bool quietMode = false; // If true, everything except errors are hushed
 #region Strings
 const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
       string STRING_DESCRIPTION = $"Builds assets for {gameName}";
-const string STRING_USAGE = "Assetbuild <game> [release cfg] [-q]\n\n" +
+const string STRING_USAGE = "Assetbuild <game> <release cfg> [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
     "[directory]: Optional - base directory (default is ../../../../../assets/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
+    "[release cfg]: Configuration to release the game for (Debug, Playtest or Release)\n" +
     "[-q]: Optional - quiets everything except errors";
       string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
       string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
@@ -41,12 +43,14 @@ try
 
     #region Command-line parsing
 
+    // set default name and release configuration if they haven't been overridden
     if (args.Length < 1)
-    {
         gameName = DEFAULT_GAME_NAME;
-    }
 
-    if (args.Length >= 1)
+    if (args.Length < 2)
+        releaseConfiguration = "Debug";
+
+    if (args.Length >= 2)
     {
         if (!Directory.Exists(gameDir))
         {
@@ -55,10 +59,25 @@ try
         }
 
         gameName = args[0];
+        releaseConfiguration = args[1];
     }
-    
+
+    // see if any of the user-provided arguments include quiet mode
+    // skip the last argument
+    for (int argNum = 0; argNum < args.Length - 1; argNum++)
+    {
+        string currentArg = args[argNum];
+
+        if (string.Equals(currentArg, "-q", StringComparison.InvariantCultureIgnoreCase))
+        {
+            string nextArg = args[argNum++];
+
+            quietMode = Convert.ToBoolean(nextArg);
+        }
+    }
+
     // set the final directory
-    outputDirectory = $@"..\..\..\..\..\build\out\{gameName}"; // final directory
+    outputDirectory = $@"..\..\..\..\..\build\{releaseConfiguration}\{gameName}"; // final directory
 
     // could be first build of a new game so just create final dir if it exists
     if (!Directory.Exists(outputDirectory)) Directory.CreateDirectory(outputDirectory);
@@ -131,6 +150,7 @@ void PrintHelpAndExit(int exitCode)
     Environment.Exit(exitCode);
 }
 
+/// Always print text, regardless of if quiet mode is on.
 void PrintLoud(string text, ConsoleColor foreground = ConsoleColor.Gray)
 {
     Console.ForegroundColor = foreground;

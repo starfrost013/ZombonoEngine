@@ -12,8 +12,11 @@ NEW FEATURES:
 		* The language is controlled by the language cvar
 		* Strings are loaded from text\<language->value>\strings.txt (max 1024 strings, 64 key length and 512 key value)
 		* They are referred to using the syntax [STRING_KEY] in code
+		* A maximum of 1,024 localisation strings can be loaded (this limit is also applied to the processed localised strings)
+			* A list of dynamically allocated localised strings is kept and added to when a string key that has not been previously localised is found. 
+			* Localised strings are cached in memory and returned if the localisation string has already been cached.
 	* Made the engine game-agnostic
-		* Changed references to Zombono to the value of the name field of the gameinfo_t structure
+		* Changed references to Zombono to the value of the name field of the gameinfo_t structure (loaded from gameinfo.json)
 
 BUG FIXES:
 	* Fixed the game crashing on minimise
