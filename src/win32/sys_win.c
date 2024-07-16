@@ -167,14 +167,20 @@ void Sys_Init()
 	if (!GetVersionEx(&vinfo))
 		Sys_Error("Couldn't get OS info");
 
-	if (vinfo.dwMajorVersion < 4
-		|| vinfo.dwPlatformId == VER_PLATFORM_WIN32s)
-		Sys_Error("%s requires Windows NT 4.0, Windows 95 or greater (not that the compile tools support anything under Windows 7)", gameinfo.name);
+	// VS2022 requires Windows 7
+	// GetVersionEx fuckery didn't start until Windows 8.1 so it's safe
+	if (vinfo.dwMajorVersion < 6
+		|| (vinfo.dwMajorVersion == 6 && vinfo.dwMinorVersion < 1))
+	{
+		// TODO: LOCALISE THIS TEXT
+		Sys_Error("%s requires Windows 7 or later!", gameinfo.name);
+	}
 
 	if (dedicated->value)
 	{
 		if (!AllocConsole())
 			Sys_Error("Couldn't create dedicated server console");
+
 		hinput = GetStdHandle(STD_INPUT_HANDLE);
 		houtput = GetStdHandle(STD_OUTPUT_HANDLE);
 
