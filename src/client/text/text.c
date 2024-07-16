@@ -149,11 +149,12 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 			// determine if the colour code the user supplied is valid (the character and the character after match one of the color codes in the table defined above.
 			// don't do anything (will draw the invalid color code) if 
 			bool done = false;
+
 			for (int32_t color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
 			{
 				color_code_t current_color_code = color_codes[color_code_num];
 
-				if (!strncmp(text + char_num, color_codes[color_code_num].name, 2))
+				if (!strncmp(final_text_ptr + char_num, color_codes[color_code_num].name, 2))
 				{
 					// ignore
 					done = true;
@@ -293,7 +294,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 			for (int32_t color_code_num = 0; color_code_num < NUM_COLOR_CODES; color_code_num++)
 			{
 				color_code_t current_color_code = color_codes[color_code_num];
-				if (!strncmp(text + char_num, color_codes[color_code_num].name, 2))
+				if (!strncmp(final_text_ptr + char_num, color_codes[color_code_num].name, 2))
 				{
 					// todo: vector* macros for 4
 					color[0] = current_color_code.color[0];
