@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 //CURL_STATICLIB MUST BE DEFINED ON COMMAND LINE OR JHERE
-#include <qcommon/qcommon.h>
-#include <qcommon/curl/curl.h>
+#include <common/common.h>
+#include <common/curl/curl.h>
 
 // Cvars
 // 

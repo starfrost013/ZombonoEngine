@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // localisation.c
 // Text localisation and dictionary system (July 1, 2024)
 
-#include <qcommon/qcommon.h>
+#include <common/common.h>
 
 // cvars
 cvar_t* language;

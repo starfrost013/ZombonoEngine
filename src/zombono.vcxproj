@@ -139,7 +139,7 @@
     <ClInclude Include="common\netservices\netservices.h" />
     <ClInclude Include="common\formats\pak.h" />
     <ClInclude Include="common\pdjson.h" />
-    <ClInclude Include="common\qcommon.h" />
+    <ClInclude Include="common\common.h" />
     <ClInclude Include="common\formats\sp2.h" />
     <ClInclude Include="common\version.h" />
     <ClInclude Include="server\server.h" />

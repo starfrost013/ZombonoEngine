@@ -280,7 +280,7 @@
     <ClInclude Include="game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\qcommon.h">
+    <ClInclude Include="common\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="server\server.h">

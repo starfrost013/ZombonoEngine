@@ -20,11 +20,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #pragma once
-// qcommon.h -- definitions common between client and server, but not game*.dll
-#include <qcommon/formats/pak.h>
-#include <qcommon/formats/bsp.h>
-#include <qcommon/formats/md2.h>
-#include <qcommon/formats/sp2.h>
+// common.h -- definitions common between client and server, but not game*.dll
+#include <common/formats/pak.h>
+#include <common/formats/bsp.h>
+#include <common/formats/md2.h>
+#include <common/formats/sp2.h>
 #include <game/q_shared.h>
 #include "netservices/netservices.h" // hmm
 #include "pdjson.h"
