@@ -190,15 +190,31 @@ void UI_LeaderboardUIUpdate()
 
 			y += ((system_font_ptr->line_height)/UI_SCALE_BASE_Y) - 0.002f;
 
+			// get the time remainig
+			int32_t minutes = leaderboard_entry.time_remaining / 60;
 			int32_t seconds = leaderboard_entry.time_remaining % 60;
 
-			if (seconds < 10)
+			if (minutes < 10)
 			{
-				snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:0%d", leaderboard_entry.time_remaining / 60, seconds);
+				if (seconds < 10)
+				{
+					snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: 0%d:0%d", minutes, seconds);
+				}
+				else
+				{
+					snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: 0%d:%d", minutes, seconds);
+				}
 			}
 			else
 			{
-				snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:%d", leaderboard_entry.time_remaining / 60, seconds);
+				if (seconds < 10)
+				{
+					snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:0%d", minutes, seconds);
+				}
+				else
+				{
+					snprintf(time_buf, TEXT_BUF_LENGTH_LONG, "Time: %d:%d", minutes, seconds);
+				}
 			}
 
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTime", time_buf, x, y);

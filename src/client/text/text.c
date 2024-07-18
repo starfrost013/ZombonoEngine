@@ -118,12 +118,15 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 		char next_char = final_text_ptr[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
-		if (next_char == '\n'
+		// strings are literally encoded as "\n" in localisation strings
+		if ((next_char == '\n'
 			|| next_char == '\v')
+			|| ((string_length - char_num > 1) && next_char == '\\' && next_char + 1 == 'n')) // uses vertical tabs as well? 
 		{
-			size_y += font_ptr->line_height * font_scale;
-			if (size_x > longest_line_x) longest_line_x = size_x;
-			size_x = 0;
+			// check for \n so we can skip it
+			if (next_char == '\\')
+				char_num += 2;
+
 			continue; // skip newlines
 		}
 
@@ -261,11 +264,22 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		char next_char = final_text_ptr[char_num];
 
 		// if we found a newline, return x to the start and advance by the font's line height
-		if (next_char == '\n'
-			|| next_char == '\v') // uses vertical tabs as well? 
+		// strings are literally encoded as "\n" in localisation strings
+
+		// value by reference because i can't be bothered to change the above to a pointer and add millions of deref operations
+		if ((next_char == '\n'
+			|| next_char == '\v')
+			|| ((string_length - char_num > 1) 
+				&& final_text_ptr[char_num] == '\\'
+				&& final_text_ptr[char_num + 1] == 'n')) // uses vertical tabs as well? 
 		{
 			current_y += font_ptr->line_height * font_scale;
 			current_x = initial_x;
+
+			// skip next character
+			if (next_char == '\\')
+				char_num++; 
+
 			continue; // skip newlines
 		}
 

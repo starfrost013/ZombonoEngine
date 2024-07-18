@@ -149,14 +149,15 @@ bool UI_TimeUICreate()
 
 	UI_SetPassive("TimeUI", true);
 
-	const char* temp_text = "Time: x:xx";
-	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
+	const char* temp_text = "00:00";
+	Text_GetSize("bahnschrift_bold_18", &size_x, &size_y, temp_text);
 
-	UI_AddBox("TimeUI", "TimeUI_TextBox", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.03f, 0.021f,
-		size_x + 72, size_y, 255, 0, 0, 180); // add a buffer of 10 pixels for larger numbers
+	UI_AddBox("TimeUI", "TimeUI_TextBox", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.03f, 0.051f,
+		size_x + 72, size_y, 255, 0, 0, 150); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.021f); //padding/advance reasons
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.053f); //padding/advance reasons
+	UI_SetFont("TimeUI", "TimeUI_Text", "bahnschrift_bold_18");
 
 	return true; 
 }
@@ -174,14 +175,14 @@ bool UI_ScoreUICreate()
 	const char* temp_text = "Directors 0 : Players 0";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	//87, 0, 127, 255
-	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.05f, 0.04f,
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.05f, 0.02f,
 		(size_x + 48 / 2), size_y, 87, 0, 127, 255); // add a buffer of 10 pixels for larger numbers 
-	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2) + (size_x/UI_SCALE_BASE_X)/2, 0.04f,
+	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2) + (size_x/UI_SCALE_BASE_X)/2, 0.02f,
 		(size_x + 48 / 2), size_y, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
 	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", 0.5f - ((size_x)/UI_SCALE_BASE_X / 2), 
-		0.04f);
+		0.02f);
 
 	return true; 
 }

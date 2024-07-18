@@ -423,6 +423,28 @@ bool UI_SetText(char* ui_name, char* control_name, char* text)
 	return true; 
 }
 
+bool UI_SetFont(char* ui_name, char* control_name, char* font)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Couldn't find UI control %s to set text to %s!\n", control_name, font);
+		return false;
+	}
+
+	if (strlen(font) > MAX_UI_STRLEN)
+	{
+		Com_Printf("UI text for control %s, %s, was too long (max %d)\n", control_name, font, MAX_UI_STRLEN);
+		return false;
+	}
+
+	strcpy(ui_control_ptr->font, font);
+
+	return true;
+}
+
+
 bool UI_SetImage(char* ui_name, char* name, char* image_path)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);

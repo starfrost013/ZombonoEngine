@@ -692,6 +692,7 @@ bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, in
 
 // UI: Update Properties 
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
+bool UI_SetFont(char* ui_name, char* control_name, char* font);												// Updates a UI control's font.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
 bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible);									// Updates a UI control's invisibility.
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
@@ -700,7 +701,7 @@ bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched
 
 bool UI_SetPassive(char* ui_name, bool passive);															// Sets a UI to passive (does not capture the mouse).
 bool UI_SetStackable(char* ui_name, bool stackable);														// Allows a UI to be pushed to the UI stack.
-bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_assets);									// Allows an image to automatically scale.
+bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_assets);							// Allows an image to automatically scale.
 
 // UI: Enable/Disable
 bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI's enabled (visible) state.
