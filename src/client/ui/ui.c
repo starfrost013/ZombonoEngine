@@ -73,6 +73,7 @@ bool UI_Init()
 
 	Com_Printf("ZombonoUI is running UI creation scripts\n");
 	successful = UI_AddUI("TeamUI", UI_TeamUICreate);
+	if (successful) successful = UI_AddUI("TeamWavesUI", UI_TeamWavesUICreate);	
 	if (successful) successful = UI_AddUI("LeaderboardUI", UI_LeaderboardUICreate);
 	if (successful) successful = UI_AddUI("BamfuslicatorUI", UI_BamfuslicatorUICreate);
 	if (successful) successful = UI_AddUI("TimeUI", UI_TimeUICreate);

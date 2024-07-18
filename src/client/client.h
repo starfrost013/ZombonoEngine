@@ -737,9 +737,10 @@ void UI_Reset();																							// INTERNAL, resets all UI states to thei
 
 // UI: Create Scripts
 // TeamUI
-bool UI_TeamUICreate();
-void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y);
-void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y);
+bool UI_TeamUICreate();													// Create the TDM-mode Team UI
+
+// TeamWavesUI
+bool UI_TeamWavesUICreate();											// Create the Waves-mode Team UI
 
 // LeaderboardUI
 bool UI_LeaderboardUICreate();

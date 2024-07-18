@@ -794,9 +794,9 @@ void* Z_Malloc(int32_t size);			// returns 0 filled memory
 void* Z_TagMalloc(int32_t size, int32_t tag);
 void Z_FreeTags(int32_t tag);
 
-void Qcommon_Init(int32_t argc, char** argv);
-void Qcommon_Frame(int32_t msec);
-void Qcommon_Shutdown();
+void Common_Init(int32_t argc, char** argv);
+void Common_Frame(int32_t msec);
+void Common_Shutdown();
 
 #define NUM_VERTEX_NORMALS	162
 

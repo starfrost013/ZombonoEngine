@@ -1328,7 +1328,7 @@ void Com_Error_f()
 Qcommon_Init
 =================
 */
-void Qcommon_Init(int32_t argc, char** argv)
+void Common_Init(int32_t argc, char** argv)
 {
 	char* s;
 
@@ -1473,7 +1473,7 @@ void Qcommon_Init(int32_t argc, char** argv)
 Qcommon_Frame
 =================
 */
-void Qcommon_Frame(int32_t msec)
+void Common_Frame(int32_t msec)
 {
 	char* s;
 	int32_t 	time_before, time_between, time_after;
@@ -1575,7 +1575,7 @@ void Qcommon_Frame(int32_t msec)
 Qcommon_Shutdown
 =================
 */
-void Qcommon_Shutdown()
+void Common_Shutdown()
 {
 	Localisation_Shutdown();
 }

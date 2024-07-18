@@ -19,30 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // cl_ui_scripts.c: ZombonoUI UI creation scripts
 // 12/14/2023: Created
+// Note - LeaderboardUI is in cl_ui_leaderboard.c
 
 #include <client/client.h>
 
 // 
 // TeamUI
 // 
-
-bool UI_TeamUICreate()
-{
-	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "T E A M  S E L E C T", 0.461f, 0.375f);
-	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director", 0.25f, 0.4f, 256, 128);
-	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player", 0.5f, 0.4f, 256, 128);
-
-	// set on hover images 
-	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director_hover");
-	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player_hover");
-
-	UI_AddText("TeamUI", "TeamUI_DirectorText", "Possesses the ^2Bamfuslicator^7 to spawn various\n^1undead^7 creatures. Slow running speed.", 0.25f, 0.575f);
-	UI_AddText("TeamUI", "TeamUI_PlayerText", "Can't spawn ^1anything^7, but has access to more\n^2weapons^7. Fast running speed.", 0.5f, 0.575f);
-
-	UI_SetEventOnClickDown("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
-	UI_SetEventOnClickDown("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
-	return true; 
-}
 
 void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 {
@@ -66,9 +49,72 @@ void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 	MSG_WriteString(&cls.netchan.message, "setteam 2");
 }
 
+bool UI_TeamUICreate()
+{
+	UI_AddText("TeamUI", "TeamUI_TeamSelectText", "[STRING_TEAMUI_SELECT]", 0.461f, 0.375f);
+	UI_AddImage("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director", 0.25f, 0.4f, 256, 128);
+	UI_AddImage("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player", 0.5f, 0.4f, 256, 128);
+
+	// set on hover images 
+	UI_SetImageOnHover("TeamUI", "TeamUI_DirectorTeam", "2d/ui/teamui_btn_director_hover");
+	UI_SetImageOnHover("TeamUI", "TeamUI_PlayerTeam", "2d/ui/teamui_btn_player_hover");
+
+	UI_AddText("TeamUI", "TeamUI_DirectorText", "[STRING_TEAMUI_HINT_DIRECTOR]", 0.25f, 0.575f);
+	UI_AddText("TeamUI", "TeamUI_PlayerText", "[STRING_TEAMUI_HINT_PLAYER]", 0.5f, 0.575f);
+
+	UI_SetEventOnClickDown("TeamUI", "TeamUI_DirectorTeam", UI_TeamUISetDirectorTeam);
+	UI_SetEventOnClickDown("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
+	return true; 
+}
+
+
 //
-// LeaderboardUI is in cl_ui_leaderboard.c
+// TeamWavesUI
+// I could just change the text based on the gamemode
+// but I intend to have a different UI here
 //
+
+void UI_TeamWavesUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
+{
+	if (current_ui == NULL) return;
+	if (strncmp(current_ui->name, "TeamWavesUI", 11)) return;
+
+	UI_SetActivated("TeamWavesUI", false);
+	UI_SetEnabled("TeamWavesUI", false);
+	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
+	MSG_WriteString(&cls.netchan.message, "setteam 1");
+}
+
+void UI_TeamWavesUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
+{
+	if (current_ui == NULL) return;
+	if (strncmp(current_ui->name, "TeamWavesUI", 11)) return;
+
+	UI_SetActivated("TeamWavesUI", false);
+	UI_SetEnabled("TeaWavesUI", false);
+	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
+	MSG_WriteString(&cls.netchan.message, "setteam 2");
+}
+
+
+bool UI_TeamWavesUICreate()
+{
+	UI_AddText("TeamWavesUI", "TeamWavesUI_TeamSelectText", "[STRING_TEAMUI_SELECT]", 0.461f, 0.375f);
+	UI_AddImage("TeamWavesUI", "TeamWavesUI_DirectorTeam", "2d/ui/teamui_btn_director", 0.25f, 0.4f, 256, 128);
+	UI_AddImage("TeamWavesUI", "TeamWavesUI_PlayerTeam", "2d/ui/teamui_btn_player", 0.5f, 0.4f, 256, 128);
+
+	// set on hover images 
+	UI_SetImageOnHover("TeamWavesUI", "TeamWavesUI_DirectorTeam", "2d/ui/teamui_btn_director_hover");
+	UI_SetImageOnHover("TeamWavesUI", "TeamWavesUI_PlayerTeam", "2d/ui/teamui_btn_player_hover");
+
+	UI_AddText("TeamWavesUI", "TeamWavesUI_DirectorText", "[STRING_TEAMWAVESUI_HINT_DIRECTOR]", 0.25f, 0.575f);
+	UI_AddText("TeamWavesUI", "TeamWavesUI_PlayerText", "[STRING_TEAMWAVESUI_HINT_PLAYER]", 0.5f, 0.575f);
+
+	UI_SetEventOnClickDown("TeamWavesUI", "TeamWavesUI_DirectorTeam", UI_TeamUISetDirectorTeam);
+	UI_SetEventOnClickDown("TeamWavesUI", "TeamWavesUI_PlayerTeam", UI_TeamUISetPlayerTeam);
+	return true;
+}
+
 
 //
 // BamfuslicatorUI

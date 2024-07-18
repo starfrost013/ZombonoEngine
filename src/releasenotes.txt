@@ -19,6 +19,7 @@ NEW FEATURES:
 		* Changed references to Zombono to the value of the name field of the gameinfo_t structure (loaded from gameinfo.json)
 	* Changed build output directory from $(SolutionDir)/build/out to $(SolutionDir)/build/$(Configuration)
 		* This was meant to be temporary but took 7 months to change...
+	* Changed game binary to be EuphoriaEngine.exe
 
 BUG FIXES:
 	* Fixed the game crashing on minimise

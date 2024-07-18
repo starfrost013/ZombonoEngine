@@ -64,7 +64,7 @@ __attribute__((noreturn)) void Sys_Error(char* error, ...);
 void Sys_Error(char* error, ...)
 {
 	CL_Shutdown();
-	Qcommon_Shutdown();
+	Common_Shutdown();
 
 	va_list args;
 
@@ -109,7 +109,7 @@ void Sys_Quit()
 
 	CL_Shutdown();
 	Netservices_Shutdown();
-	Qcommon_Shutdown();
+	Common_Shutdown();
 	if (dedicated && dedicated->value)
 		FreeConsole();
 	else if (debug_console->value)
@@ -506,7 +506,7 @@ int32_t WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmd
 
 	ParseCommandLine(lpCmdLine);
 
-	Qcommon_Init(argc, argv);
+	Common_Init(argc, argv);
 	oldtime = Sys_Milliseconds();
 
 	/* main window message loop */
@@ -537,7 +537,7 @@ int32_t WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmd
 			|| (dedicated && dedicated->value))
 #endif
 		{
-			Qcommon_Frame(time);
+			Common_Frame(time);
 		}
 
 

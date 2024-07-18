@@ -135,11 +135,11 @@ void	Sys_Init (void)
 
 void main (int argc, char **argv)
 {
-	Qcommon_Init (argc, argv);
+	Common_Init (argc, argv);
 
 	while (1)
 	{
-		Qcommon_Frame (0.1);
+		Common_Frame (0.1);
 	}
 }
 
