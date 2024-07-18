@@ -181,14 +181,13 @@ localisation_entry_t* Localisation_GetString(char* key)
 }
 
 // Shamelessly stolen from Lightning
-#define LOCALISATION_REF_START	"["
-#define LOCALISATION_REF_START_CHAR '['
-#define LOCALISATION_REF_END	"]"
-#define LOCALISATION_REF_END_CHAR	']' // needed for some comparisons
-
-#define STRING_TEMP_BUF_SIZE	0x10000
+#define LOCALISATION_KEY_START	"["
+#define LOCALISATION_KEY_START_CHAR '['
+#define LOCALISATION_KEY_END	"]"
+#define LOCALISATION_KEY_END_CHAR	']' // needed for some comparisons
 
 // really big buffer for strtok to use
+#define STRING_TEMP_BUF_SIZE	0x10000
 char string_temp_buf[STRING_TEMP_BUF_SIZE] = { 0 };
 
 // This code sucks
@@ -201,16 +200,13 @@ char* Localisation_ProcessString(char* value)
 		language->modified = false;
 	}
 
+	// don't continuously clear the big buffer we use for the localisation string, just clear whatever is left
 	uint32_t clear_amount = 0;
 
-	uint8_t* cur_pos = string_temp_buf;
-
-	while (cur_pos < (string_temp_buf + STRING_TEMP_BUF_SIZE))
+	while (clear_amount < STRING_TEMP_BUF_SIZE
+		&& string_temp_buf[clear_amount] != 0x00)
 	{
 		clear_amount++;
-		if (*cur_pos == 0x00)
-			break;
-		cur_pos++;
 	}
 
 	memset(string_temp_buf, 0x00, clear_amount);
@@ -221,12 +217,21 @@ char* Localisation_ProcessString(char* value)
 	char loc_string_key_buf[LOCALISATION_MAX_LENGTH_KEY] = { 0 };
 	size_t string_length = strlen(string_temp_buf);
 	size_t string_length_original = string_length;
-	char* token_ptr = strtok(string_temp_buf, LOCALISATION_REF_START);
 
-	// don't continuously clear 64k, just clear whatever is left
+	// strstr can only find the first use of the character so we can't use that
+	// however we still need to start the string temp without breaking further [ charcters,
+	// so just check if thw first character is a localisation start character and set the buffer to the start of the string
+	// and use first_token below to determine if we need to call strtok or not
+
+	bool first_char_is_key = (string_temp_buf[0] == LOCALISATION_KEY_START_CHAR);
+
+	char* token_ptr = string_temp_buf;
+
+	if (!first_char_is_key)
+		token_ptr = strtok(string_temp_buf, LOCALISATION_KEY_START);
 
 	if (!token_ptr)
-		return value;
+		return value; // no string here
 
 	if (string_length > STRING_TEMP_BUF_SIZE)
 		Sys_Error("Passed string more than 0x10000 bytes in length to Localisation_ProcessString?!");
@@ -234,41 +239,42 @@ char* Localisation_ProcessString(char* value)
 	// determine the length of the string
 	while (token_ptr < (string_temp_buf + string_length))
 	{
-		char* ref_start_ptr = strtok(NULL, LOCALISATION_REF_START);
+		char* key_start_ptr = NULL;
+
+		if (first_char_is_key)
+		{
+			key_start_ptr = strtok(string_temp_buf, LOCALISATION_KEY_START);
+		}
+		else
+		{
+			key_start_ptr = strtok(NULL, LOCALISATION_KEY_START);
+		}
 
 		// no localisation to do
-		if (!ref_start_ptr)
+		if (!key_start_ptr)
 			return value;
 
 		// iterate through each part of the string
 
 		int32_t localisation_key_length = 0;
 
-		while (token_ptr[0] != LOCALISATION_REF_END_CHAR)
-		{
-			token_ptr++;
+		char* key_end_ptr = strchr(key_start_ptr, LOCALISATION_KEY_END_CHAR);
 
-			// no terminator
-			if (token_ptr >= (string_temp_buf + string_length))
-				break;
-		}
-
-		localisation_key_length = token_ptr - ref_start_ptr;
+		localisation_key_length = key_end_ptr - key_start_ptr;
 
 		if (localisation_key_length > LOCALISATION_MAX_LENGTH_KEY)
 		{
 			Com_Printf("Warning: Localisation string key length of %d, more than %d\n", localisation_key_length, LOCALISATION_MAX_LENGTH_KEY);
 			continue;
 		}
-
-		if (localisation_key_length <= 0)
+		else if (localisation_key_length <= 0)
 		{
 			Com_Printf("Warning: Empty localisation string key, skipping\n");
 			continue;
 		}
 
 		// get the localisation string
-		strncpy(loc_string_key_buf, ref_start_ptr, localisation_key_length);
+		strncpy(loc_string_key_buf, key_start_ptr, localisation_key_length);
 
 		// was this string already localised?
 			// if so, return
@@ -288,8 +294,9 @@ char* Localisation_ProcessString(char* value)
 		// figure out the new length of the string
 		string_length = string_length - localisation_key_length + localisation_string_length;
 
-		token_ptr = strtok(NULL, LOCALISATION_REF_START);
+		token_ptr = strtok(NULL, LOCALISATION_KEY_START);
 
+		// done so break
 		if (!token_ptr)
 			break;
 	}
@@ -313,14 +320,14 @@ char* Localisation_ProcessString(char* value)
 
 	// reset pointer
 	// this code might suck
-	token_ptr = strtok(string_temp_buf, LOCALISATION_REF_START);
+	token_ptr = strtok(string_temp_buf, LOCALISATION_KEY_START);
 
 	// if we got to this point we need to un-terminate the string as modified by strtok
 	// so do that
 	while (token_ptr < (string_temp_buf + string_length_original))
 	{
 		if (*token_ptr == '\0')
-			*token_ptr = LOCALISATION_REF_START_CHAR;
+			*token_ptr = LOCALISATION_KEY_START_CHAR;
 
 		token_ptr++;
 	}
@@ -330,30 +337,23 @@ char* Localisation_ProcessString(char* value)
 	// actually copy it
 	while (token_ptr < (string_temp_buf + string_length_original))
 	{
-		// get the part actually after the LOCALISATION_REF_START string
-		char* ref_start_ptr = strtok(NULL, LOCALISATION_REF_START);
-		char* ref_end_ptr = ref_start_ptr;
+		// get the part actually after the LOCALISATION_KEY_START string
+		char* key_start_ptr = strtok(NULL, LOCALISATION_KEY_START);
+		char* key_end_ptr = key_start_ptr;
 
 		// copy part before the localisation string
-		strncpy(localised_strings[localised_strings_count].value, token_ptr, (ref_start_ptr - token_ptr) - 1); // -1 to cut off the [
+		strncpy(localised_strings[localised_strings_count].value, token_ptr, (key_start_ptr - token_ptr) - 1); // -1 to cut off the [
 
 		// iterate through each part of the string
 
 		int32_t localisation_key_length = 0;
 
-		while (token_ptr[0] != LOCALISATION_REF_END_CHAR)
-		{
-			token_ptr++;
+		key_end_ptr = strchr(key_start_ptr, LOCALISATION_KEY_END_CHAR);
 
-			// no terminator
-			if (token_ptr >= (string_temp_buf + string_length))
-				break;
-		}
-
-		localisation_key_length = token_ptr - ref_start_ptr;
+		localisation_key_length = key_end_ptr - key_start_ptr;
 
 		// get the localisation string
-		strncpy(loc_string_key_buf, ref_start_ptr, localisation_key_length);
+		strncpy(loc_string_key_buf, key_start_ptr, localisation_key_length);
 
 		localisation_entry_t* loc_string = Localisation_GetString(loc_string_key_buf);
 
@@ -363,10 +363,11 @@ char* Localisation_ProcessString(char* value)
 		localised_strings[localised_strings_count].key = loc_string->key;
 
 		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].value);
+
 		// copy the localisation string
 		strncpy(localised_strings[localised_strings_count].value + loc_string_current_length, loc_string, strlen(loc_string));
 
-		token_ptr = strtok(NULL, LOCALISATION_REF_START);
+		token_ptr = strtok(NULL, LOCALISATION_KEY_START);
 
 		// we are done
 		if (!token_ptr)

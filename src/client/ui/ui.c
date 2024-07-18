@@ -212,7 +212,6 @@ bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float p
 	else
 		Text_GetSize(ui_control_ptr->font, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
 
-
 	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
 }
 
