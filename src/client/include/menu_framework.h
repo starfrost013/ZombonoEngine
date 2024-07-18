@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -24,11 +24,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAXMENUITEMS	64
 
 #define MTYPE_SLIDER		0
-#define MTYPE_LIST			1
-#define MTYPE_ACTION		2
-#define MTYPE_SPINCONTROL	3
-#define MTYPE_SEPARATOR  	4
-#define MTYPE_FIELD			5
+#define MTYPE_ACTION		1
+#define MTYPE_SPINCONTROL	2
+#define MTYPE_SEPARATOR  	3
+#define MTYPE_FIELD			4
 
 #define QMF_LEFT_JUSTIFY	0x00000001
 #define QMF_GRAYED			0x00000002
@@ -41,30 +40,30 @@ typedef struct _tag_menuframework
 
 	int32_t nitems;
 	int32_t nslots;
-	void *items[64];
+	void* items[64];
 
-	const char *statusbar;
+	const char* statusbar;
 
-	void (*cursordraw)( struct _tag_menuframework *m );
-	
+	void (*cursordraw)(struct _tag_menuframework* m);
+
 } menuframework_t;
 
 typedef struct menucommon_s
 {
 	int32_t type;
-	const char *name;
+	const char* name;
 	int32_t x, y;
-	menuframework_t *parent;
+	menuframework_t* parent;
 	int32_t cursor_offset;
 	int32_t localdata[4];
 	uint32_t flags;
 
-	const char *statusbar;
+	const char* statusbar;
 
-	void (*callback)( void *self );
-	void (*statusbarfunc)( void *self );
-	void (*ownerdraw)( void *self );
-	void (*cursordraw)( void *self );
+	void (*callback)(void* self);
+	void (*statusbarfunc)(void* self);
+	void (*ownerdraw)(void* self);
+	void (*cursordraw)(void* self);
 } menucommon_t;
 
 typedef struct menufield_s
@@ -86,7 +85,7 @@ typedef struct menuslider_s
 	float maxvalue;
 	float curvalue;
 
-	float AI_GetRange;
+	float range;
 } menuslider_t;
 
 typedef struct menulist_s
@@ -95,7 +94,7 @@ typedef struct menulist_s
 
 	int32_t curvalue;
 
-	const char **itemnames;
+	const char** itemnames;
 } menulist_t;
 
 typedef struct menuaction_s
@@ -108,15 +107,15 @@ typedef struct menuseparator_s
 	menucommon_t generic;
 } menuseparator_t;
 
-bool Field_Key( menufield_t *field, int32_t key );
+bool Field_Key(menufield_t* field, int32_t key);
 
-void	Menu_AddItem( menuframework_t *menu, void *item );
-void	Menu_AdjustCursor( menuframework_t *menu, int32_t dir );
-void	Menu_Center( menuframework_t *menu );
-void	Menu_Draw( menuframework_t *menu );
-void	*Menu_ItemAtCursor( menuframework_t *m );
-bool Menu_SelectItem( menuframework_t *s );
-void	Menu_SetStatusBar( menuframework_t *s, const char *string );
-void	Menu_SlideItem( menuframework_t *s, int32_t dir );
-int32_t 	Menu_TallySlots( menuframework_t *menu );
+void Menu_AddItem(menuframework_t* menu, void* item);
+void Menu_AdjustCursor(menuframework_t* menu, int32_t dir);
+void Menu_Center(menuframework_t* menu);
+void Menu_Draw(menuframework_t* menu);
+void* Menu_ItemAtCursor(menuframework_t* m);
+bool Menu_SelectItem(menuframework_t* s);
+void Menu_SetStatusBar(menuframework_t* s, const char* string);
+void Menu_SlideItem(menuframework_t* s, int32_t dir);
+int32_t 	Menu_TallySlots(menuframework_t* menu);
 

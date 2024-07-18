@@ -35,7 +35,7 @@ static bool search_local_games = false;
 
 #define NUM_CURSOR_FRAMES 15
 
-static char* menu_Input_sound = "misc/menu1.wav";
+static char* menu_input_sound = "misc/menu1.wav";
 static char* menu_move_sound = "misc/menu2.wav";
 static char* menu_out_sound = "misc/menu3.wav";
 
@@ -987,7 +987,7 @@ static const char* Keys_MenuKey(int32_t key)
 	case K_KP_ENTER:
 	case K_ENTER:
 		KeyBindingFunc(item);
-		return menu_Input_sound;
+		return menu_input_sound;
 	case K_BACKSPACE:		// delete bindings
 	case K_DELETE:				// delete bindings
 		M_UnbindCommand(bindnames[item->generic.localdata[0]][0]);
@@ -2794,7 +2794,7 @@ void DownloadOptions_MenuInit(void)
 	s_allow_download_players_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_players_box.generic.x = 0;
 	s_allow_download_players_box.generic.y = y += 10 * vid_hudscale->value;
-	s_allow_download_players_box.generic.name = "^5[[STRING_DOWNLOADOPTIONSUI_ALLOWDOWNLOADING_PLAYERSTUFF]";
+	s_allow_download_players_box.generic.name = "^5[STRING_DOWNLOADOPTIONSUI_ALLOWDOWNLOADING_PLAYERSTUFF]";
 	s_allow_download_players_box.generic.callback = DownloadCallback;
 	s_allow_download_players_box.itemnames = yes_no_names;
 	s_allow_download_players_box.curvalue = (Cvar_VariableValue("allow_download_players") != 0);
@@ -2802,7 +2802,7 @@ void DownloadOptions_MenuInit(void)
 	s_allow_download_models_box.generic.type = MTYPE_SPINCONTROL;
 	s_allow_download_models_box.generic.x = 0;
 	s_allow_download_models_box.generic.y = y += 10 * vid_hudscale->value;
-	s_allow_download_models_box.generic.name = "^5[[STRING_DOWNLOADOPTIONSUI_ALLOWDOWNLOADING_MODELS]";
+	s_allow_download_models_box.generic.name = "^5[STRING_DOWNLOADOPTIONSUI_ALLOWDOWNLOADING_MODELS]";
 	s_allow_download_models_box.generic.callback = DownloadCallback;
 	s_allow_download_models_box.itemnames = yes_no_names;
 	s_allow_download_models_box.curvalue = (Cvar_VariableValue("allow_download_models") != 0);
@@ -3538,7 +3538,7 @@ void M_Draw()
 	// caching images
 	if (m_entersound)
 	{
-		S_StartLocalSound(menu_Input_sound);
+		S_StartLocalSound(menu_input_sound);
 		m_entersound = false;
 	}
 }

@@ -220,8 +220,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
-    <OutDir>$(SolutionDir)build\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -233,13 +233,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
-    <OutDir>$(SolutionDir)build\out</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
-    <OutDir>$(SolutionDir)build\out</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -279,7 +279,7 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/we4013 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/we4013 /w34505 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -377,7 +377,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/we4013 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/we4013 /w34505 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -415,7 +415,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/we4013 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/we4013 /w34505 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

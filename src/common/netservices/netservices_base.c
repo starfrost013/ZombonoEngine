@@ -57,7 +57,9 @@ bool Netservices_Init()
 	ns_nointernetcheck = Cvar_Get("ns_nointernetcheck", "0", CVAR_ARCHIVE);
 	ns_noupdatecheck = Cvar_Get("ns_noupdatecheck", "0", CVAR_ARCHIVE);
 	ns_disabled = Cvar_Get("ns_disabled", "0", CVAR_ARCHIVE);
+#ifndef RELEASE
 	ns_usetestserver = Cvar_Get("ns_usetestserver", "0", CVAR_ARCHIVE);
+#endif
 
 	if (ns_nointernetcheck->value
 		|| ns_disabled->value)

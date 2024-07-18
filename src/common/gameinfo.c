@@ -54,7 +54,7 @@ void Gameinfo_Load()
 		{
 		case JSON_ERROR:
 			Sys_Error("Malformed gameinfo.json! (1): %s", JSON_get_error(&json_stream));
-			return false;
+			return;
 			// don't parse any arrays or anything like that
 		case JSON_OBJECT:
 			json_next = JSON_next(&json_stream);
@@ -65,7 +65,7 @@ void Gameinfo_Load()
 				{
 				case JSON_ERROR:
 					Sys_Error("Malformed gameinfo.json! (2): %s", JSON_get_error(&json_stream));
-					return false;
+					return;
 				case JSON_STRING:
 					json_string = JSON_get_string(&json_stream, NULL);
 
@@ -107,5 +107,5 @@ void Gameinfo_Load()
 
 	Com_Printf("Loading game %s from asset path %s...", game_name->string, game_asset_path->string);
 
-	return true;
+	return;
 }

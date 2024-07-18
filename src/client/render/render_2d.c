@@ -678,12 +678,11 @@ char* sb_nums[2][11] =
 #define	CHAR_WIDTH	16 * vid_hudscale->value
 #define	ICON_SPACE	8
 
-void Render2DDrawCenteredString(char* string, int32_t x, int32_t y, int32_t centerwidth)
+void Render2D_DrawCenteredString(char* string, int32_t x, int32_t y, int32_t centerwidth)
 {
-	int32_t 	margin;
+	int32_t margin;
 	char	line[1024];
-	int32_t 	width;
-	int32_t 	i;
+	int32_t width;
 	font_t* system_font_ptr = Font_GetByName(cl_system_font->string);
 
 	margin = x;
@@ -978,7 +977,7 @@ void Render2D_ExecuteLayoutString(char* s)
 		if (!strcmp(token, "cstring"))
 		{
 			token = COM_Parse(&s);
-			Render2DDrawCenteredString(token, x, y, 320);
+			Render2D_DrawCenteredString(token, x, y, 320);
 			continue;
 		}
 

@@ -27,8 +27,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 static void Action_DoEnter(menuaction_t* a);
 static void Action_Draw(menuaction_t* a);
 static void Menu_DrawStatusBar(const char* string);
-static void Menulist_DoEnter(menulist_t* l);
-static void MenuList_Draw(menulist_t* l);
 static void Separator_Draw(menuseparator_t* s);
 static void Slider_DoSlide(menuslider_t* s, int32_t dir);
 static void Slider_Draw(menuslider_t* s);
@@ -303,9 +301,6 @@ void Menu_Draw(menuframework_t* menu)
 		case MTYPE_SLIDER:
 			Slider_Draw((menuslider_t*)menu->items[i]);
 			break;
-		case MTYPE_LIST:
-			MenuList_Draw((menulist_t*)menu->items[i]);
-			break;
 		case MTYPE_SPINCONTROL:
 			SpinControl_Draw((menulist_t*)menu->items[i]);
 			break;
@@ -442,58 +437,10 @@ int32_t Menu_TallySlots(menuframework_t* menu)
 
 	for (i = 0; i < menu->nitems; i++)
 	{
-		if (((menucommon_t*)menu->items[i])->type == MTYPE_LIST)
-		{
-			int32_t nitems = 0;
-			const char** n = ((menulist_t*)menu->items[i])->itemnames;
-
-			while (*n)
-				nitems++, n++;
-
-			total += nitems;
-		}
-		else
-		{
-			total++;
-		}
+		total++;
 	}
 
 	return total;
-}
-
-void Menulist_DoEnter(menulist_t* l)
-{
-	int32_t start;
-
-	start = l->generic.y / 10 + 1;
-
-	l->curvalue = l->generic.parent->cursor - start;
-
-	if (l->generic.callback)
-		l->generic.callback(l);
-}
-
-void MenuList_Draw(menulist_t* l)
-{
-	const char** n;
-	int32_t y = 0;
-	int32_t size_x = 0, size_y = 0;
-
-	Text_Draw(cl_system_font->string, l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET, l->generic.y + l->generic.parent->y, l->generic.name);
-
-	n = l->itemnames;
-
-	color4_t menulist_colour = { 99, 76, 35, 255 };
-
-	re.DrawFill(l->generic.x - 112 + l->generic.parent->x, l->generic.parent->y + l->generic.y + l->curvalue * 10 + 10, 128, 10, menulist_colour);
-	while (*n)
-	{
-		Text_GetSize(cl_system_font->string, &size_x, &size_y, *n);
-		Text_Draw(cl_system_font->string, l->generic.x + l->generic.parent->x + LCOLUMN_OFFSET - size_x, l->generic.y + l->generic.parent->y + y + 10, *n);
-
-		n++;
-		y += 10;
-	}
 }
 
 void Separator_Draw(menuseparator_t* s)
@@ -533,17 +480,17 @@ void Slider_Draw(menuslider_t* s)
 		s->generic.y + s->generic.parent->y,
 		s->generic.name);
 
-	s->AI_GetRange = (s->curvalue - s->minvalue) / (float)(s->maxvalue - s->minvalue);
+	s->range = (s->curvalue - s->minvalue) / (float)(s->maxvalue - s->minvalue);
 
-	if (s->AI_GetRange < 0)
-		s->AI_GetRange = 0;
-	if (s->AI_GetRange > 1)
-		s->AI_GetRange = 1;
+	if (s->range < 0)
+		s->range = 0;
+	if (s->range > 1)
+		s->range = 1;
 	re.DrawPic(s->generic.x + s->generic.parent->x + RCOLUMN_OFFSET, s->generic.y + s->generic.parent->y, "2d/slider_01", NULL, false);
 	for (i = 0; i < SLIDER_RANGE; i++)
 		re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_02", NULL, false);
 	re.DrawPic(RCOLUMN_OFFSET + s->generic.x + i * 8 * vid_hudscale->value + s->generic.parent->x + 8 * vid_hudscale->value, s->generic.y + s->generic.parent->y, "2d/slider_03", NULL, false);
-	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * s->AI_GetRange), s->generic.y + s->generic.parent->y, "2d/slider_value", NULL, false);
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET + s->generic.parent->x + s->generic.x + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * s->range), s->generic.y + s->generic.parent->y, "2d/slider_value", NULL, false);
 }
 
 void SpinControl_DoEnter(menulist_t* s)
