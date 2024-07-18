@@ -74,13 +74,13 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	char* final_text_ptr = &final_text;
 
 	// localise the text
-	final_text_ptr = Localisation_ProcessString(text);
+	final_text_ptr = Localisation_ProcessString(final_text);
 
 	font_t* font_ptr = Font_GetByName(font);
 
 	if (!font_ptr)
 	{
-		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s\n). Trying system font.", text, font);
+		Com_Printf("Modern Font Engine failed to get text size: %s (tried to use invalid font %s). Trying system font.\n", text, font);
 
 		font_ptr = Font_GetByName(cl_system_font->string);
 

@@ -1064,6 +1064,9 @@ void Render2D_DrawInfo()
 	int32_t x = (10 * vid_hudscale->value);
 	int32_t y = (r_height->value - (142 * vid_hudscale->value));
 
+	// used for Text_GetSize calls
+	int32_t size_x = 0, size_y = 0;
+
 	// cls.frametime limited to 0.2s for sim purposes
 	float real_frametime = (1000.0f / cls.fps);
 
@@ -1087,27 +1090,61 @@ void Render2D_DrawInfo()
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Position: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.origin[0], cl.frame.playerstate.pmove.origin[1], cl.frame.playerstate.pmove.origin[2]);
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Velocity: X: %.2f  Y: %.2f  Z: %.2f", cl.frame.playerstate.pmove.velocity[0], cl.frame.playerstate.pmove.velocity[1], cl.frame.playerstate.pmove.velocity[2]);
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Viewangle: X: %.2f  Y: %.2f  Z: %.2f (Refdef: X: %.2f  Y: %.2f  Z: %.2f)", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2],
 		cl.refdef.viewangles[0], cl.refdef.viewangles[1], cl.refdef.viewangles[2]);
+
 	y += console_font_ptr->line_height * vid_hudscale->value * 2;
 	Text_Draw(cl_console_font->string, x, y,
 		"Client Entities: %d/%d", r_numentities, MAX_ENTITIES);
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Server Entities: %d/%d", CL_CountReceivedEntities(), MAX_EDICTS);
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Dynamic Lights: %d/%d", r_numdlights, MAX_DLIGHTS);
+
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
 		"Particles: %d/%d", r_numparticles, MAX_PARTICLES);
+
 	y += console_font_ptr->line_height * 2 * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y, "Map: %s", map_name);
+
+	// draw the detailed version information on the other side of the screen
+
+	// we don't have justify so just draw two lines
+	const char* version_string_line1 = "Engine version %s";
+	const char* version_string_line2 = "Gamedll version %s";
+
+	cvar_t* game_version = Cvar_Get("gameversion", "0.0.0", CVAR_SERVERINFO | CVAR_LATCH);
+
+	// draw detailed version information
+	Text_GetSize(cl_console_font->string, &size_x, &size_y, version_string_line1, engine_version->string);
+
+	// add a bit of padding
+	// engine version
+	x = r_width->value - size_x - 3;
+	y = r_height->value - (console_font_ptr->line_height * vid_hudscale->value * 2) - size_y;
+
+	Text_Draw(cl_console_font->string, x, y, version_string_line1, engine_version->string);
+
+	// gamedll version
+	Text_GetSize(cl_console_font->string, &size_x, &size_y, version_string_line2, game_version->string);
+
+	// reset x 
+	x = r_width->value - size_x - 3;
+	y += console_font_ptr->line_height * vid_hudscale->value;
+
+	Text_Draw(cl_console_font->string, x, y, version_string_line2, game_version->string);
 }
 
 void Render2D_AddFrametimeGraph()

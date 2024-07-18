@@ -780,6 +780,7 @@ extern cvar_t* dedicated;
 extern cvar_t* host_speeds;
 extern cvar_t* log_stats;
 extern cvar_t* debug_console;
+extern cvar_t* engine_version;
 
 extern FILE* log_stats_file;
 

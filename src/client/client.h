@@ -787,7 +787,6 @@ bool UI_KillFeedUICreate();
 
 extern cvar_t* vid_hudscale;
 
-
 #define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
 #define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
 #define FONT_LIST_FILENAME		"fonts\\fonts.txt"	// File name of the font list.

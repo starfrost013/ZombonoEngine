@@ -45,6 +45,7 @@ cvar_t* fixedtime;
 cvar_t* logfile_active;	// 1 = buffer log, 2 = flush after each print, 3 = append
 cvar_t* showtrace;
 cvar_t* dedicated;
+cvar_t* engine_version;
 cvar_t* debug_console;		// debug console toggle for Windows
 
 FILE* logfile;
@@ -1403,8 +1404,8 @@ void Common_Init(int32_t argc, char** argv)
 #endif
 
 
-	s = va("%d.%d.%d.%d %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, BUILD_PLATFORM, __DATE__, BUILD_CONFIG);
-	Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);
+	s = va("%d.%d.%d.%d %s %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, BUILD_PLATFORM, __DATE__, __TIME__, BUILD_CONFIG);
+	engine_version = Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);
 
 	if (dedicated->value)
 		Cmd_AddCommand("quit", Com_Quit);
