@@ -578,7 +578,6 @@ FIXME: handle quote special (general escape sequence?)
 char* Key_VirtualToPhysical(int32_t keynum, bool shift)
 {
 	keyname_t* kn;
-	static	char	tinystr[2];
 
 	if (shift)
 		return &keyshift[keynum];

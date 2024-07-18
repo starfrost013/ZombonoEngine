@@ -119,7 +119,7 @@ void Field_Draw(menufield_t* f)
 		if (((int32_t)(Sys_Milliseconds() / 250)) & 1)
 		{
 			// 8x8 is cursor size
-			re.DrawPic(f->generic.x + f->generic.parent->x + (offset + 2) + (text_size_x + 8) * vid_hudscale->value,
+			re.DrawPic(f->generic.x + f->generic.parent->x + (offset + 2) + (text_size_x + 8) * vid_hudscale->value, 
 				f->generic.y + f->generic.parent->y,
 				"2d/field_cursor_on", NULL, false);
 		}
@@ -155,7 +155,6 @@ bool Field_Key(menufield_t* f, int32_t key)
 
 	switch (key)
 	{
-	case K_LEFTARROW:
 	case K_BACKSPACE:
 		if (f->cursor > 0)
 		{
@@ -168,7 +167,6 @@ bool Field_Key(menufield_t* f, int32_t key)
 			}
 		}
 		break;
-
 	case K_DELETE:
 		memmove(&f->buffer[f->cursor], &f->buffer[f->cursor + 1], strlen(&f->buffer[f->cursor + 1]) + 1);
 		break;
@@ -177,6 +175,9 @@ bool Field_Key(menufield_t* f, int32_t key)
 	case K_ENTER:
 	case K_ESCAPE:
 	case K_TAB:
+	case K_RIGHTARROW:
+	case K_DOWNARROW:
+	case K_UPARROW:
 		return false;
 
 	case K_SPACE:

@@ -26,12 +26,15 @@ NEW FEATURES:
 	* Added the time of build to the version cvar
 	* Refactored gamemodes
 		* Each gamemode now has its own player spawn and update code
+	* Made the time text larger, removed "Time: " and moved it downwards
 
 BUG FIXES:
 	* Fixed the game crashing on minimise
 		* Don't try and render if resolution width or height are zero
 	* Fixed updater (TODO BEFORE RELEASE: TEST)
 	* Fixed font list not being loaded from pak file
+	* Fixed FUBAR'd Bahnschrift Bold and Regular 18 fonts
+	* Fixed ability to press arrow keys in legacy UI fields
 
 REMOVALS:
 	* Obsolete Windows-only code
