@@ -493,12 +493,12 @@ typedef struct cmd_function_s
 } cmd_function_t;
 
 
-static	int32_t 		cmd_argc;
-static	char		*cmd_argv[MAX_STRING_TOKENS];
-static	char		*cmd_null_string = "";
-static	char		cmd_args[MAX_STRING_CHARS];
+static int32_t cmd_argc;
+static char*	cmd_argv[MAX_STRING_TOKENS];
+static char*	cmd_null_string = "";
+static char		cmd_args[MAX_STRING_CHARS];
 
-static	cmd_function_t	*cmd_functions;		// possible commands to execute
+static cmd_function_t* cmd_functions;		// possible commands to execute
 
 /*
 ============
@@ -689,7 +689,7 @@ void Cmd_TokenizeString (char *text, bool macroExpand)
 Cmd_AddCommand
 ============
 */
-void	Cmd_AddCommand (char *cmd_name, xcommand_t function)
+void Cmd_AddCommand (char *cmd_name, xcommand_t function)
 {
 	cmd_function_t	*cmd;
 	
@@ -722,7 +722,7 @@ void	Cmd_AddCommand (char *cmd_name, xcommand_t function)
 Cmd_RemoveCommand
 ============
 */
-void	Cmd_RemoveCommand (char *cmd_name)
+void Cmd_RemoveCommand (char *cmd_name)
 {
 	cmd_function_t	*cmd, **back;
 
@@ -750,7 +750,7 @@ void	Cmd_RemoveCommand (char *cmd_name)
 Cmd_Exists
 ============
 */
-bool	Cmd_Exists (char *cmd_name)
+bool Cmd_Exists (char *cmd_name)
 {
 	cmd_function_t	*cmd;
 

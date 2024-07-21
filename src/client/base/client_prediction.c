@@ -203,8 +203,8 @@ void CL_PredictMovement()
 	int32_t 		ack, current;
 	int32_t 		frame;
 	int32_t 		oldframe;
-	usercmd_t* cmd;
-	pmove_t		pm;
+	usercmd_t*		cmd;
+	pmove_t			pm;
 	int32_t 		i;
 	int32_t 		step;
 	int32_t 		oldz;
@@ -279,6 +279,7 @@ void CL_PredictMovement()
 	}
 
 	// copy results out for rendering
+
 	cl.predicted_origin[0] = pm.s.origin[0];
 	cl.predicted_origin[1] = pm.s.origin[1];
 	cl.predicted_origin[2] = pm.s.origin[2];

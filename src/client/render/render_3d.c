@@ -50,6 +50,15 @@ lightstyle_t	r_lightstyles[MAX_LIGHTSTYLES];
 char			cl_weaponmodels[MAX_CLIENTWEAPONMODELS][MAX_QPATH];
 int32_t			num_cl_weaponmodels;
 
+// some camera type names ued in various files
+char* camera_type_names[] =
+{
+	"CAMERA_TYPE_NORMAL",
+	"CAMERA_TYPE_CHASE",
+	"CAMERA_TYPE_TOPDOWN",
+	"CAMERA_TYPE_FREE",
+};
+
 /*
 ====================
 V_ClearScene
@@ -196,7 +205,6 @@ void Render3D_PrepRefresh()
 	num_cl_weaponmodels = 1;
 	strcpy(cl_weaponmodels[0], "weapon.md2");
 
-
 	for (i = 1; i < MAX_MODELS && cl.configstrings[CS_MODELS + i][0]; i++)
 	{
 		strcpy(name, cl.configstrings[CS_MODELS + i]);
@@ -279,8 +287,8 @@ CalcFov
 */
 float Render3D_CalcFov(float fov_x, float width, float height)
 {
-	float	a;
-	float	x;
+	float a;
+	float x;
 
 	if (fov_x < 1 || fov_x > 179)
 		Com_Error(ERR_DROP, "Bad fov: %f", fov_x);
@@ -319,7 +327,7 @@ void Render3D_Gun_Prev_f()
 
 void Render3D_Gun_Model_f()
 {
-	char	name[MAX_QPATH];
+	char name[MAX_QPATH];
 
 	if (Cmd_Argc() != 2)
 	{
@@ -376,9 +384,9 @@ void Render3D_RenderView()
 		// never let it sit exactly on a node line, because a water plane can
 		// dissapear when viewed with the eye exactly on it.
 		// the server protocol only specifies to 1/8 pixel, so add 1/16 in each axis
-		cl.refdef.vieworg[0] += 1.0 / 16;
-		cl.refdef.vieworg[1] += 1.0 / 16;
-		cl.refdef.vieworg[2] += 1.0 / 16;
+		cl.refdef.vieworigin[0] += 1.0 / 16;
+		cl.refdef.vieworigin[1] += 1.0 / 16;
+		cl.refdef.vieworigin[2] += 1.0 / 16;
 
 		cl.refdef.x = scr_vrect.x;
 		cl.refdef.y = scr_vrect.y;
@@ -433,7 +441,7 @@ void Render3D_RenderView()
 =============
 Render3D_Init
 
-Initialises stuff that interfaces with the 3d rendering 
+Initialises stuff that interfaces with the 3d rendering subsystem of the client which interfaces with the renderer
 =============
 */
 void Render3D_Init()

@@ -171,8 +171,8 @@ void CL_PingServers_f()
 	int32_t 	i;
 	netadr_t	adr;
 	char		name[PLAYER_NAME_LENGTH];
-	char* adrstring;
-	cvar_t* noudp;
+	char*		adrstring;
+	cvar_t*		noudp;
 
 	Net_Config(true);		// allow remote
 
@@ -241,10 +241,9 @@ void CL_FixUpGender()
 
 	if (gender_auto->value)
 	{
-
 		if (gender->modified)
 		{
-			// was set directly, don't override the user
+			// was set directly, so don't override the user
 			gender->modified = false;
 			return;
 		}

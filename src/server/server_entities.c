@@ -170,6 +170,13 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 		|| ps->pmove.delta_angles[2] != ops->pmove.delta_angles[2] )
 		pflags |= PS_M_DELTA_ANGLES;
 
+	if (ps->vieworigin[0] != ops->vieworigin[0]
+		|| ps->vieworigin[1] != ops->vieworigin[1]
+		|| ps->vieworigin[2] != ops->vieworigin[2])
+		pflags |= PS_VIEWORIGIN;
+
+	if (ps->camera_type != ops->camera_type)
+		pflags |= PS_CAMERATYPE;
 
 	if (ps->viewoffset[0] != ops->viewoffset[0]
 		|| ps->viewoffset[1] != ops->viewoffset[1]
@@ -207,7 +214,7 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	// write it
 	//
 	MSG_WriteByte (msg, svc_playerinfo);
-	MSG_WriteShort (msg, pflags);
+	MSG_WriteInt (msg, pflags);
 
 	//
 	// write the pmove_state_t
@@ -216,18 +223,10 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 		MSG_WriteByte(msg, ps->pmove.pm_type);
 
 	if (pflags & PS_M_ORIGIN)
-	{
-		MSG_WriteFloat(msg, ps->pmove.origin[0]);
-		MSG_WriteFloat(msg, ps->pmove.origin[1]);
-		MSG_WriteFloat(msg, ps->pmove.origin[2]);
-	}
+		MSG_WritePos(msg, ps->pmove.origin);
 
 	if (pflags & PS_M_VELOCITY)
-	{
-		MSG_WriteFloat(msg, ps->pmove.velocity[0]);
-		MSG_WriteFloat(msg, ps->pmove.velocity[1]);
-		MSG_WriteFloat(msg, ps->pmove.velocity[2]);
-	}
+		MSG_WritePos(msg, ps->pmove.velocity);
 
 	if (pflags & PS_M_TIME)
 		MSG_WriteByte(msg, ps->pmove.pm_time);
@@ -248,6 +247,13 @@ void SV_WritePlayerstateToClient (client_frame_t *from, client_frame_t *to, size
 	//
 	// write the rest of the player_state_t
 	//
+
+	if (pflags & PS_VIEWORIGIN)
+		MSG_WritePos(msg, ps->vieworigin);
+
+	if (pflags & PS_CAMERATYPE)
+		MSG_WriteByte(msg, ps->camera_type);
+
 	if (pflags & PS_VIEWOFFSET)
 	{
 		MSG_WriteChar(msg, ps->viewoffset[0]*4);

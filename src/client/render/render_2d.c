@@ -1061,7 +1061,7 @@ void Render2D_DrawInfo()
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
-	int32_t y = (r_height->value - (142 * vid_hudscale->value));
+	int32_t y = (r_height->value - (155 * vid_hudscale->value));
 
 	// used for Text_GetSize calls
 	int32_t size_x = 0, size_y = 0;
@@ -1096,7 +1096,12 @@ void Render2D_DrawInfo()
 
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y,
-		"Viewangle: X: %.2f  Y: %.2f  Z: %.2f (Refdef: X: %.2f  Y: %.2f  Z: %.2f)", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2],
+		"Camera origin: X: %.2f  Y: %.2f  Z: %.2f (Type: %s)",
+		cl.frame.playerstate.vieworigin[0], cl.frame.playerstate.vieworigin[1], cl.frame.playerstate.vieworigin[2], camera_type_names[cl.frame.playerstate.camera_type]);
+
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y,
+		"Camera angle: X: %.2f  Y: %.2f  Z: %.2f (Refdef: X: %.2f  Y: %.2f  Z: %.2f)", cl.viewangles[0], cl.viewangles[1], cl.viewangles[2],
 		cl.refdef.viewangles[0], cl.refdef.viewangles[1], cl.refdef.viewangles[2]);
 
 	y += console_font_ptr->line_height * vid_hudscale->value * 2;

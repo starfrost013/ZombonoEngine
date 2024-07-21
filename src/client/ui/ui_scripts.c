@@ -156,7 +156,7 @@ bool UI_TimeUICreate()
 		size_x + 72, size_y, 255, 0, 0, 150); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
-	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.055f); //padding/advance reasons
+	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.056f); //padding/advance reasons
 	UI_SetFont("TimeUI", "TimeUI_Text", "bahnschrift_bold_18");
 
 	return true; 

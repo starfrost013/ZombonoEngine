@@ -258,6 +258,8 @@ typedef enum clc_ops_e
 
 // player_state_t communication
 
+// determines what needs to be sent updating the player
+
 #define	PS_M_TYPE			(1<<0)
 #define	PS_M_ORIGIN			(1<<1)
 #define	PS_M_VELOCITY		(1<<2)
@@ -266,14 +268,16 @@ typedef enum clc_ops_e
 #define	PS_M_GRAVITY		(1<<5)
 #define	PS_M_DELTA_ANGLES	(1<<6)
 
-#define	PS_VIEWOFFSET		(1<<7)
-#define	PS_VIEWANGLES		(1<<8)
-#define	PS_KICKANGLES		(1<<9)
-#define	PS_BLEND			(1<<10)
-#define	PS_FOV				(1<<11)
-#define	PS_WEAPONINDEX		(1<<12)
-#define	PS_WEAPONFRAME		(1<<13)
-#define	PS_RDFLAGS			(1<<14)
+#define PS_VIEWORIGIN		(1<<7)
+#define	PS_VIEWOFFSET		(1<<8)
+#define	PS_VIEWANGLES		(1<<9)
+#define	PS_KICKANGLES		(1<<10)
+#define	PS_BLEND			(1<<11)
+#define	PS_FOV				(1<<12)
+#define	PS_WEAPONINDEX		(1<<13)
+#define	PS_WEAPONFRAME		(1<<14)
+#define	PS_RDFLAGS			(1<<15)
+#define PS_CAMERATYPE		(1<<16)
 
 //==============================================
 

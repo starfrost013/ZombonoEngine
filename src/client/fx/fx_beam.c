@@ -52,7 +52,7 @@ void CL_AddBeams()
 		// if coming from the player, update the start position
 		if (b->entity == cl.playernum + 1)	// entity 0 is the world
 		{
-			VectorCopy(cl.refdef.vieworg, b->start);
+			VectorCopy(cl.refdef.vieworigin, b->start);
 			b->start[2] -= 22;	// adjust for view height
 		}
 		VectorAdd(b->start, b->offset, org);
@@ -164,7 +164,7 @@ void CL_AddPlayerBeams()
 		// if coming from the player, update the start position
 		if (b->entity == cl.playernum + 1)	// entity 0 is the world
 		{
-			VectorCopy(cl.refdef.vieworg, b->start);
+			VectorCopy(cl.refdef.vieworigin, b->start);
 			b->start[2] -= 22;	// adjust for view height
 		}
 		VectorAdd(b->start, b->offset, org);

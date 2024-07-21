@@ -424,7 +424,7 @@ void R_SetupFrame()
 	r_framecount++;
 
 	// build the transformation matrix for the given view angles
-	VectorCopy(r_newrefdef.vieworg, r_origin);
+	VectorCopy(r_newrefdef.vieworigin, r_origin);
 
 	AngleVectors(r_newrefdef.viewangles, vpn, vright, vup);
 
@@ -537,7 +537,7 @@ void R_SetupGL()
 	glRotatef(-r_newrefdef.viewangles[2], 1, 0, 0);
 	glRotatef(-r_newrefdef.viewangles[0], 0, 1, 0);
 	glRotatef(-r_newrefdef.viewangles[1], 0, 0, 1);
-	glTranslatef(-r_newrefdef.vieworg[0], -r_newrefdef.vieworg[1], -r_newrefdef.vieworg[2]);
+	glTranslatef(-r_newrefdef.vieworigin[0], -r_newrefdef.vieworigin[1], -r_newrefdef.vieworigin[2]);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, r_world_matrix);
 
@@ -671,7 +671,7 @@ void R_SetLightLevel()
 
 	// save off light value for server to look at (BIG HACK!)
 
-	R_LightPoint(r_newrefdef.vieworg, shadelight);
+	R_LightPoint(r_newrefdef.vieworigin, shadelight);
 
 	// pick the greatest component, which should be the same
 	// as the mono value returned by software

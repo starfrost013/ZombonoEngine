@@ -107,7 +107,7 @@ typedef struct refdef_s
 	uint32_t		width;
 	uint32_t		height;
 	float			fov_x, fov_y;
-	float			vieworg[3];
+	float			vieworigin[3];
 	float			viewangles[3];
 	float			blend[4];			// rgba 0-1 full screen blend
 	float			time;				// time is uesed to auto animate

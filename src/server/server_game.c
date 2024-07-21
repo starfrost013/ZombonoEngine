@@ -356,8 +356,8 @@ void SV_InitGameProgs()
 	import.centerprintf = PF_centerprintf;
 	import.error = PF_error;
 
-	import.linkentity = SV_LinkEdict;
-	import.unlinkentity = SV_UnlinkEdict;
+	import.Edict_Link = SV_LinkEdict;
+	import.Edict_Unlink = SV_UnlinkEdict;
 	import.BoxEdicts = SV_AreaEdicts;
 	import.trace = SV_Trace;
 	import.pointcontents = SV_PointContents;
@@ -389,13 +389,15 @@ void SV_InitGameProgs()
 	import.TagFree = Z_Free;
 	import.FreeTags = Z_FreeTags;
 
-	import.cvar = Cvar_Get;
-	import.cvar_set = Cvar_Set;
-	import.cvar_forceset = Cvar_ForceSet;
+	import.Cvar_Get = Cvar_Get;
+	import.Cvar_Set = Cvar_Set;
+	import.Cvar_ForceSet = Cvar_ForceSet;
 
-	import.argc = Cmd_Argc;
-	import.argv = Cmd_Argv;
-	import.args = Cmd_Args;
+	import.Cmd_AddCommand = Cmd_AddCommand;
+	import.Cmd_RemoveCommand = Cmd_RemoveCommand;
+	import.Cmd_Argc = Cmd_Argc;
+	import.Cmd_Argv = Cmd_Argv;
+	import.Cmd_Args = Cmd_Args;
 	import.AddCommandString = Cbuf_AddText;
 
 	import.DebugGraph = Render2D_DebugGraph;
