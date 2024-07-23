@@ -1054,7 +1054,6 @@ void CL_CalcViewValues()
 	// TODO: PREDICT THIS WITHOUT BREAKING THE PLAYER OR IF ITT'S FINE?
 	if (ps->camera_type != camera_type_normal)
 	{
-		//VectorCopy(ps->vieworigin, cl.refdef.vieworigin);
 		draw_weapon = false; 
 	}
 
@@ -1086,10 +1085,7 @@ void CL_CalcViewValues()
 	// add the weapon
 
 	if (draw_weapon)
-	{
 		CL_AddViewWeapon(ps, ops);
-	}
-
 }
 
 /*

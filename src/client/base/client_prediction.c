@@ -286,5 +286,4 @@ void CL_PredictMovement()
 	cl.predicted_origin[2] = pm.vieworigin[2];
 
 	VectorCopy(pm.viewangles, cl.predicted_angles);
-
 }
