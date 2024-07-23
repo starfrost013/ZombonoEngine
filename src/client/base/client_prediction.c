@@ -43,7 +43,7 @@ void CL_CheckPredictionError()
 	frame &= (CMD_BACKUP - 1);
 
 	// compare what the server returned with what we had predicted it to be
-	VectorSubtract(cl.frame.playerstate.pmove.origin, cl.predicted_origins[frame], delta);
+	VectorSubtract(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame], delta);
 
 	// save the prediction error for interpolation
 	len = abs(delta[0]) + abs(delta[1]) + abs(delta[2]);
@@ -57,7 +57,7 @@ void CL_CheckPredictionError()
 			Com_Printf("prediction miss on %i: %i\n", cl.frame.serverframe,
 				delta[0] + delta[1] + delta[2]);
 
-		VectorCopy(cl.frame.playerstate.pmove.origin, cl.predicted_origins[frame]);
+		VectorCopy(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame]);
 
 		// save for error itnerpolation
 		for (i = 0; i < 3; i++)
@@ -147,7 +147,7 @@ void CL_ClipMoveToEntities(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, t
 CL_PMTrace
 ================
 */
-trace_t		CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
+trace_t	 CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 {
 	trace_t	t;
 
@@ -162,7 +162,7 @@ trace_t		CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 	return t;
 }
 
-int32_t 	CL_PMpointcontents(vec3_t point)
+int32_t  CL_PMpointcontents(vec3_t point)
 {
 	int32_t 		i;
 	entity_state_t* ent;
@@ -200,14 +200,14 @@ Sets cl.predicted_origin and cl.predicted_angles
 */
 void CL_PredictMovement()
 {
-	int32_t 		ack, current;
-	int32_t 		frame;
-	int32_t 		oldframe;
-	usercmd_t*		cmd;
-	pmove_t			pm;
-	int32_t 		i;
-	int32_t 		step;
-	int32_t 		oldz;
+	int32_t 	ack, current;
+	int32_t 	frame;
+	int32_t 	oldframe;
+	usercmd_t*	cmd;
+	pmove_t		pm;
+	int32_t 	i;
+	int32_t 	step;
+	int32_t 	oldz;
 
 	if (cls.state != ca_active)
 		return;
@@ -251,6 +251,7 @@ void CL_PredictMovement()
 	phys_friction = atof(cl.configstrings[CS_PHYS_FRICTION]);
 	phys_waterfriction = atof(cl.configstrings[CS_PHYS_FRICTION_WATER]);
 
+	VectorCopy(cl.frame.playerstate.vieworigin, pm.vieworigin);
 	pm.s = cl.frame.playerstate.pmove;
 
 	frame = 0;
@@ -265,12 +266,12 @@ void CL_PredictMovement()
 		Player_Move(&pm);
 
 		// save for debug checking
-		VectorCopy(pm.s.origin, cl.predicted_origins[frame]);
+		VectorCopy(pm.vieworigin, cl.predicted_origins[frame]);
 	}
 
 	oldframe = (ack - 2) & (CMD_BACKUP - 1);
 	oldz = cl.predicted_origins[oldframe][2];
-	step = pm.s.origin[2] - oldz;
+	step = pm.vieworigin[2] - oldz;
 
 	if (step > 63 && step < 160 && (pm.s.pm_flags & PMF_ON_GROUND))
 	{
@@ -280,9 +281,9 @@ void CL_PredictMovement()
 
 	// copy results out for rendering
 
-	cl.predicted_origin[0] = pm.s.origin[0];
-	cl.predicted_origin[1] = pm.s.origin[1];
-	cl.predicted_origin[2] = pm.s.origin[2];
+	cl.predicted_origin[0] = pm.vieworigin[0];
+	cl.predicted_origin[1] = pm.vieworigin[1];
+	cl.predicted_origin[2] = pm.vieworigin[2];
 
 	VectorCopy(pm.viewangles, cl.predicted_angles);
 

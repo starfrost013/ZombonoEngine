@@ -285,7 +285,7 @@ void Vid_MenuInit()
 	if (!gl_picmip)
 		gl_picmip = Cvar_Get("gl_picmip", "0", 0);
 	if (!r_width)
-		r_width = Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+		r_width = Cvar_Get("r_width", "1366", CVAR_ARCHIVE);
 	if (!r_height)
 		r_height = Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 	if (!gl_vsync)

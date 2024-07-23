@@ -181,7 +181,7 @@ bool UI_ScoreUICreate()
 		(size_x + 48 / 2), size_y, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
-	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", 0.5f - ((size_x)/UI_SCALE_BASE_X / 2), 
+	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", 0.5f - ((size_x)/UI_SCALE_BASE_X / 2) + 0.01f, 
 		0.02f);
 
 	return true; 

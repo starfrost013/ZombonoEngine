@@ -83,7 +83,7 @@ void Vid_ChangeResolution(int32_t width, int32_t height)
 void Vid_Init()
 {
 	/* Create the video variables so we know how to start the graphics drivers */
-	r_width = Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+	r_width = Cvar_Get("r_width", "1366", CVAR_ARCHIVE);
 	r_height = Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 
 	/* Start the graphics mode and load refresh DLL */

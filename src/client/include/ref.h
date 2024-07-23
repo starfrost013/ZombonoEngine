@@ -96,7 +96,7 @@ typedef struct
 
 typedef struct lightstyle_s
 {
-	float	rgb[3];			// 0.0 - 2.0
+	color3_t rgb;			// 0.0 - 2.0
 	float	white;			// highest of rgb
 } lightstyle_t;
 
@@ -107,9 +107,10 @@ typedef struct refdef_s
 	uint32_t		width;
 	uint32_t		height;
 	float			fov_x, fov_y;
-	float			vieworigin[3];
-	float			viewangles[3];
-	float			blend[4];			// rgba 0-1 full screen blend
+	vec3_t			playerorigin; 
+	vec3_t			vieworigin; 
+	vec3_t			viewangles;
+	color4_t		blend;				// 0.0 - 1.0
 	float			time;				// time is uesed to auto animate
 	int32_t 		rdflags;			// RDF_UNDERWATER, etc
 

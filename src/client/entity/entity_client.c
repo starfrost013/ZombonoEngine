@@ -578,15 +578,14 @@ void CL_ParseFrame()
 
 	if (cl.frame.valid)
 	{
-		// getting a valid frame message ends the connection process
 		if (cls.state != ca_active)
 		{
 			cls.state = ca_active;
 			cl.force_refdef = true;
 
-			cl.predicted_origin[0] = cl.frame.playerstate.pmove.origin[0];
-			cl.predicted_origin[1] = cl.frame.playerstate.pmove.origin[1];
-			cl.predicted_origin[2] = cl.frame.playerstate.pmove.origin[2];
+			cl.predicted_origin[0] = cl.frame.playerstate.vieworigin[0];
+			cl.predicted_origin[1] = cl.frame.playerstate.vieworigin[1];
+			cl.predicted_origin[2] = cl.frame.playerstate.vieworigin[2];
 
 			VectorCopy(cl.frame.playerstate.viewangles, cl.predicted_angles);
 
@@ -613,7 +612,7 @@ INTERPOLATE BETWEEN FRAMES TO GET RENDERING PARMS
 struct model_s* S_RegisterPlayerModel(entity_state_t* ent, char* base)
 {
 	int32_t 		n;
-	char* p;
+	char*			p;
 	struct model_s* mdl;
 	char			model[MAX_QPATH];
 	char			buffer[MAX_QPATH];
@@ -1016,9 +1015,9 @@ void CL_CalcViewValues()
 	ops = &oldframe->playerstate;
 
 	// see if the player entity was teleported this frame
-	if (abs(ops->pmove.origin[0] - ps->pmove.origin[0]) > 256
-		|| abs(ops->pmove.origin[1] - ps->pmove.origin[1]) > 256
-		|| abs(ops->pmove.origin[2] - ps->pmove.origin[2]) > 256)
+	if (abs(ops->vieworigin[0] - ps->vieworigin[0]) > 256
+		|| abs(ops->vieworigin[1] - ps->vieworigin[1]) > 256
+		|| abs(ops->vieworigin[2] - ps->vieworigin[2]) > 256)
 		ops = ps;		// don't interpolate
 
 	ent = &cl_entities[cl.playernum + 1];
@@ -1046,16 +1045,16 @@ void CL_CalcViewValues()
 	else
 	{	// just use interpolated values
 		for (i = 0; i < 3; i++)
-			cl.refdef.vieworigin[i] = ops->pmove.origin[i] + ops->viewoffset[i]
-			+ lerp * (ps->pmove.origin[i] + ps->viewoffset[i]
-				- (ops->pmove.origin[i] + ops->viewoffset[i]));
+			cl.refdef.vieworigin[i] = ops->vieworigin[i] + ops->viewoffset[i]
+			+ lerp * (ps->vieworigin[i] + ps->viewoffset[i]
+				- (ops->vieworigin[i] + ops->viewoffset[i]));
 	}
 
 	// use the server-dictated camera position
 	// TODO: PREDICT THIS WITHOUT BREAKING THE PLAYER OR IF ITT'S FINE?
 	if (ps->camera_type != camera_type_normal)
 	{
-		VectorCopy(ps->vieworigin, cl.refdef.vieworigin);
+		//VectorCopy(ps->vieworigin, cl.refdef.vieworigin);
 		draw_weapon = false; 
 	}
 

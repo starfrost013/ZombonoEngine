@@ -728,7 +728,7 @@ void R_Register(void)
 	gl_particle_att_c = ri.Cvar_Get("gl_particle_att_c", "0.01", CVAR_ARCHIVE);
 
 	gl_modulate = ri.Cvar_Get("gl_modulate", "1", CVAR_ARCHIVE);
-	r_width = ri.Cvar_Get("r_width", "1024", CVAR_ARCHIVE);
+	r_width = ri.Cvar_Get("r_width", "1366", CVAR_ARCHIVE);
 	r_height = ri.Cvar_Get("r_height", "768", CVAR_ARCHIVE);
 	gl_lightmap = ri.Cvar_Get("gl_lightmap", "0", 0);
 	gl_shadows = ri.Cvar_Get("gl_shadows", "0", CVAR_ARCHIVE);
