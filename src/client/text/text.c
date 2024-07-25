@@ -84,11 +84,9 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 
 		font_ptr = Font_GetByName(cl_system_font->string);
 
+		// already a check
 		if (!font_ptr)
-		{
-			// already a check for this
 			return false;
-		}
 	}
 
 	// so that text doesn't appear weird - truncate and not round so that the text does not become larger than the ui elements
@@ -96,11 +94,9 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 
 	int32_t string_length = strlen(final_text_ptr);
 
+	// don't bother drawing empty strings
 	if (string_length == 0)
-	{
-		// don't bother drawing empty strings
 		return false;
-	}
 
 	if (string_length > MAX_STRING_LENGTH)
 	{
@@ -126,6 +122,9 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 			// check for \n so we can skip it
 			if (next_char == '\\')
 				char_num += 2;
+
+			if (size_x > longest_line_x) longest_line_x = size_x;
+			size_x = 0;
 
 			continue; // skip newlines
 		}
