@@ -575,7 +575,7 @@ void CL_Frame(int32_t msec)
 		Input_Frame();
 
 	// decide the simulation time
-	cls.frametime = extratime / 1000.0;
+	cls.frametime = extratime / 1000.0f;
 	cl.time += extratime;
 	cls.realtime = curtime;
 

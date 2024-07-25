@@ -417,7 +417,7 @@ void CL_Reconnect_f()
 		if (cls.state >= ca_connected)
 		{
 			CL_Disconnect();
-			cls.connect_time = cls.realtime - 1500;
+			cls.connect_time = (float)cls.realtime - 1500.0f;
 		}
 		else
 			cls.connect_time = -99999; // fire immediately

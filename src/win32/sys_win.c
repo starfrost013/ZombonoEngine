@@ -84,11 +84,11 @@ int32_t Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 {
 	va_list		args;
 
-	char		text_processed[1024] = { 0 };
+	char text_processed[1024] = { 0 };
 
 	va_start(args, text_processed);
 
-	vsnprintf(&text_processed, 1024, text, args);
+	vsnprintf(text_processed, 1024, text, args);
 	va_end(args);
 
 	return MessageBox(NULL, &text_processed, title, buttons);
@@ -96,9 +96,9 @@ int32_t Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 
 int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
 {
-	char		text_processed[1024] = { 0 };
+	char text_processed[1024] = { 0 };
 
-	vsnprintf(&text_processed, 1024, text, args);
+	vsnprintf(text_processed, 1024, text, args);
 
 	return MessageBox(NULL, &text_processed, title, buttons);
 }

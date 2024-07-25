@@ -61,7 +61,7 @@ void Intro_Update()
 	if (current_time_intro <= cl_intro1_time->value)
 	{
 		// make it fade
-		fade_colour[3] = 255 * sin(M_PI * (current_time_intro / cl_intro1_time->value));
+		fade_colour[3] = 255 * sinf(M_PI * (current_time_intro / cl_intro1_time->value));
 
 		re.DrawPicStretch(0, 0, r_width->value, r_height->value, cl_intro1->string, fade_colour, true);
 	}
@@ -70,7 +70,7 @@ void Intro_Update()
 		// for sine function
 		int32_t current_time_intro2 = (current_time - (intro_start_time + cl_intro1_time->value));
 
-		fade_colour[3] = 255 * sin(M_PI * (current_time_intro2 / cl_intro2_time->value));
+		fade_colour[3] = 255 * sinf(M_PI * (current_time_intro2 / cl_intro2_time->value));
 
 		re.DrawPicStretch(0, 0, r_width->value, r_height->value, cl_intro2->string, fade_colour, true);
 	}

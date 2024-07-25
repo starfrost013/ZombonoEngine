@@ -56,7 +56,7 @@ void Localisation_LoadCurrentLanguage()
 
 	localisation_entries_count = 0;
 
-	snprintf(&loc_filename, MAX_QPATH, "text/%s/%s", language->string, LOCALISATION_DICTIONARY_FILENAME);
+	snprintf(loc_filename, MAX_QPATH, "text/%s/%s", language->string, LOCALISATION_DICTIONARY_FILENAME);
 
 	Com_Printf("Loading localisation information for language %s from file %s...\n", language->string, loc_filename);
 
@@ -365,7 +365,7 @@ char* Localisation_ProcessString(char* value)
 		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].value);
 
 		// copy the localisation string
-		strncpy(localised_strings[localised_strings_count].value + loc_string_current_length, loc_string, strlen(loc_string));
+		strncpy(localised_strings[localised_strings_count].value + loc_string_current_length, loc_string->value, strlen(loc_string->value));
 
 		token_ptr = strtok(NULL, LOCALISATION_KEY_START);
 

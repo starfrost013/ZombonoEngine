@@ -125,7 +125,7 @@ void GL_ScreenShot_f()
 	time_now = localtime(&time_unix);
 
 	// should work on all FSes
-	strftime(&picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
+	strftime(picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
 
 	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots/%s", ri.FS_Gamedir(), picname);
 
@@ -145,8 +145,8 @@ void GL_ScreenShot_f()
 
 		while (exists)
 		{
-			memset(&tempbuf, 0x00, sizeof(char) * 128);
-			snprintf(&tempbuf, 80, "%s-%d", &picname, n);
+			memset(tempbuf, 0x00, sizeof(char) * 128);
+			snprintf(tempbuf, 80, "%s-%d", &picname, n);
 
 			exists = fopen(tempbuf, "rb") != NULL;
 

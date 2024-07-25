@@ -240,16 +240,16 @@ void CL_PredictMovement()
 	pm.trace = CL_PMTrace;
 	pm.pointcontents = CL_PMpointcontents;
 
-	phys_stopspeed = atof(cl.configstrings[CS_PHYS_STOPSPEED]);
-	phys_maxspeed_player = atof(cl.configstrings[CS_PHYS_MAXSPEED_PLAYER]);
-	phys_maxspeed_director = atof(cl.configstrings[CS_PHYS_MAXSPEED_DIRECTOR]);
-	phys_duckspeed = atof(cl.configstrings[CS_PHYS_DUCKSPEED]);
-	phys_accelerate_player = atof(cl.configstrings[CS_PHYS_ACCELERATE_PLAYER]);
-	phys_accelerate_director = atof(cl.configstrings[CS_PHYS_ACCELERATE_DIRECTOR]);
-	phys_airaccelerate = atof(cl.configstrings[CS_PHYS_ACCELERATE_AIR]);
-	phys_wateraccelerate = atof(cl.configstrings[CS_PHYS_ACCELERATE_WATER]);
-	phys_friction = atof(cl.configstrings[CS_PHYS_FRICTION]);
-	phys_waterfriction = atof(cl.configstrings[CS_PHYS_FRICTION_WATER]);
+	phys_stopspeed = (float)atof(cl.configstrings[CS_PHYS_STOPSPEED]);
+	phys_maxspeed_player = (float)atof(cl.configstrings[CS_PHYS_MAXSPEED_PLAYER]);
+	phys_maxspeed_director = (float)atof(cl.configstrings[CS_PHYS_MAXSPEED_DIRECTOR]);
+	phys_duckspeed = (float)atof(cl.configstrings[CS_PHYS_DUCKSPEED]);
+	phys_accelerate_player = (float)atof(cl.configstrings[CS_PHYS_ACCELERATE_PLAYER]);
+	phys_accelerate_director = (float)atof(cl.configstrings[CS_PHYS_ACCELERATE_DIRECTOR]);
+	phys_airaccelerate = (float)atof(cl.configstrings[CS_PHYS_ACCELERATE_AIR]);
+	phys_wateraccelerate = (float)atof(cl.configstrings[CS_PHYS_ACCELERATE_WATER]);
+	phys_friction = (float)atof(cl.configstrings[CS_PHYS_FRICTION]);
+	phys_waterfriction = (float)atof(cl.configstrings[CS_PHYS_FRICTION_WATER]);
 
 	VectorCopy(cl.frame.playerstate.vieworigin, pm.vieworigin);
 	pm.s = cl.frame.playerstate.pmove;

@@ -391,17 +391,17 @@ void CL_ParseStartSoundPacket()
 	sound_num = MSG_ReadByte(&net_message);
 
 	if (flags & SND_VOLUME)
-		volume = MSG_ReadByte(&net_message) / 255.0;
+		volume = MSG_ReadByte(&net_message) / 255.0f;
 	else
 		volume = DEFAULT_SOUND_PACKET_VOLUME;
 
 	if (flags & SND_ATTENUATION)
-		attenuation = MSG_ReadByte(&net_message) / 64.0;
+		attenuation = MSG_ReadByte(&net_message) / 64.0f;
 	else
 		attenuation = DEFAULT_SOUND_PACKET_ATTENUATION;
 
 	if (flags & SND_OFFSET)
-		ofs = MSG_ReadByte(&net_message) / 1000.0;
+		ofs = MSG_ReadByte(&net_message) / 1000.0f;
 	else
 		ofs = 0;
 
@@ -619,35 +619,35 @@ void CL_ParseServerMessage()
 
 		case svc_uisettext:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf2, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // New Text
 
-			UI_SetText(&str_tempbuf, &str_tempbuf2, s);
+			UI_SetText(str_tempbuf, str_tempbuf2, s);
 
 			break;
 
 		case svc_uisetimage:
 			s = MSG_ReadString(&net_message); // UI name
-			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // Name
-			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf2, s, MAX_UI_STRLEN);
 			s = MSG_ReadString(&net_message); // New image path
 
-			UI_SetImage(&str_tempbuf, &str_tempbuf2, s);
+			UI_SetImage(str_tempbuf, str_tempbuf2, s);
 
 			break;
 
 		case svc_drawtext:
 			s = MSG_ReadString(&net_message);
-			strncpy(&str_tempbuf, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf, s, MAX_UI_STRLEN);
 			int32_t x = MSG_ReadShort(&net_message);
 			int32_t y = MSG_ReadShort(&net_message);
 			s = MSG_ReadString(&net_message);
-			strncpy(&str_tempbuf2, s, MAX_UI_STRLEN);
+			strncpy(str_tempbuf2, s, MAX_UI_STRLEN);
 
-			Text_Draw(&str_tempbuf, x, y, &str_tempbuf2);
+			Text_Draw(str_tempbuf, x, y, str_tempbuf2);
 		}
 	}
 

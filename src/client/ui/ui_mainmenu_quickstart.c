@@ -33,16 +33,21 @@ bool UI_MainMenuQuickstartUICreate()
 	UI_SetImageIsStretched("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", true);
 	UI_UseScaledAssets("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", true);
 
-	UI_AddImage("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back", 0.1f, 0.77f, 256, 64);
+	UI_AddImage("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
 	UI_SetImageOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", UI_MainMenuQuickstartUIOnBackPressed);
+
+	// menu options
+	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "[STRING_QUICKSTARTUI_STARTCOOPGAME]", 0.2f, 0.2f);
+
+	// set the font to big bahnschrift
 
 	// create uI
 	return true;
 }
 
 // is this enough to justify adding global UI assets?
-void UI_MainMenuQuickstartUIOnBackPressed(uint32_t btn, int32_t x, int32_t y)
+void UI_MainMenuQuickstartUIOnBackPressed(int32_t btn, int32_t x, int32_t y)
 {
 	UI_Pop();
 }

@@ -101,7 +101,7 @@ void Netservices_UpdaterGetUpdate()
 	}
 
 	// open it
-	update_json_handle = fopen(&update_json_file_name, "w");
+	update_json_handle = fopen(update_json_file_name, "w");
 
 	if (update_json_handle == NULL)
 	{
@@ -129,7 +129,7 @@ void Netservices_UpdateInfoJsonComplete()
 {
 	JSON_stream update_json_stream;
 
-	Com_DPrintf("Downloaded update information to tmpfile %s\n", &update_json_file_name);
+	Com_DPrintf("Downloaded update information to tmpfile %s\n", update_json_file_name);
 
 	// close and reopen the file as r+ for stupid msvc tmpfile() related reasons
 	fclose(update_json_handle);
@@ -321,13 +321,13 @@ bool Netservices_UpdaterPromptForUpdate()
 	// Temporary UI
 	char update_prompt[UPDATE_PROMPT_STR_LENGTH] = { 0 };
 
-	snprintf(&update_prompt, UPDATE_PROMPT_STR_LENGTH, gameinfo.name, update_prompt_format,
+	snprintf(update_prompt, UPDATE_PROMPT_STR_LENGTH, gameinfo.name, update_prompt_format,
 		update_info.version.major, update_info.version.minor, update_info.version.revision, update_info.version.build,
 		update_info.description);
 
 	// cannot use constants, they are windows specific and this is platform independent code
 	// TODO: convert to enum...
-	int32_t buttons = Sys_Msgbox("Update Available", 4, &update_prompt); // 4 = MB_YESNO
+	int32_t buttons = Sys_Msgbox("Update Available", 4, update_prompt); // 4 = MB_YESNO
 
 	return (buttons == 6);
 }

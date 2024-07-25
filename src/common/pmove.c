@@ -290,9 +290,9 @@ Handles both ground friction and water friction
 void PM_Friction()
 {
 	float* vel;
-	float	speed, newspeed, control;
-	float	friction;
-	float	drop;
+	float speed, newspeed, control;
+	float friction;
+	float drop;
 
 	vel = pml.velocity;
 
@@ -1159,7 +1159,7 @@ void Player_Move(pmove_t* pmove)
 	// save old org in case we get stuck
 	VectorCopy(pm->s.origin, pml.previous_origin);
 
-	pml.frametime = pm->cmd.msec * 0.001;
+	pml.frametime = pm->cmd.msec * 0.001f;
 
 	PM_ClampAngles();
 
@@ -1242,7 +1242,7 @@ void Player_Move(pmove_t* pmove)
 			angles[PITCH] /= 3;
 
 			AngleVectors(angles, pml.forward, pml.right, pml.up);
-			
+
 			PM_AirMove();
 		}
 	}

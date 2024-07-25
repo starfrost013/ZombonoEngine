@@ -26,11 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <assert.h>
 #include "gl_local.h"
 
-gl_state_t  gl_state;			// The OpenGL state
+gl_state_t gl_state;			// The current renderer state
 
 bool GL_Init();
 
-void GLFW_Error(const char* error);
+void GLFW_Error(int32_t error_code, const char* error);
 void GL_DestroyWindow();
 void GL_WindowSizeChanged(GLFWwindow* window, int32_t width, int32_t height); 
 
@@ -75,11 +75,11 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 	if (!game_asset_path->string) // placeholder
 	{
-		snprintf(&window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", "Euphoria Retro Game Engine - set gameinfo.json!");
+		snprintf(window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", "Euphoria Retro Game Engine - set gameinfo.json!");
 	}
 	else
 	{
-		snprintf(&window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", game_name->string);
+		snprintf(window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", game_name->string);
 	}
 
 	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", monitor, NULL);
@@ -99,7 +99,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 		return false;
 	}
 
-	GL_SetResolution(r_width->value, r_height->value);
+	GL_SetResolution((int32_t)r_width->value, (int32_t)r_height->value);
 
 	// set up callbacks
 	glfwSetWindowSizeCallback(gl_state.window, GL_WindowSizeChanged);
@@ -118,7 +118,7 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	gl_config.extensions_string = glGetString(GL_EXTENSIONS);
 	ri.Con_Printf(PRINT_ALL, "GL_EXTENSIONS: %s\n", gl_config.extensions_string);
 
-	glfwSetErrorCallback(gl_state.window, GLFW_Error);
+	glfwSetErrorCallback(GLFW_Error);
 
 	// let the sound and input subsystems know about the new window
 	ri.Vid_ChangeResolution();
@@ -126,8 +126,8 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 	// move the window if the user specified 
 	if (!fullscreen)
 	{
-		int32_t vid_xpos = ri.Cvar_Get("vid_xpos", "0", 0)->value;
-		int32_t vid_ypos = ri.Cvar_Get("vid_ypos", "0", 0)->value;
+		int32_t vid_xpos = (int32_t)ri.Cvar_Get("vid_xpos", "0", 0)->value;
+		int32_t vid_ypos = (int32_t)ri.Cvar_Get("vid_ypos", "0", 0)->value;
 
 		glfwSetWindowPos(gl_state.window, vid_xpos, vid_ypos);
 	}
@@ -251,7 +251,7 @@ void GL_Shutdown()
 }
 
 // This routine tells the engine to shut down. Calls GL_Shutdown in the process of doing so
-void GL_ShutdownEverything()
+void GL_ShutdownEverything(GLFWwindow* window)
 {
 	ri.Com_Quit();
 }
@@ -307,10 +307,8 @@ void GL_EndFrame()
 		return;
 
 	if (!stricmp(gl_drawbuffer->string, "GL_BACK"))
-	{
 		// swap the buffers
 		glfwSwapBuffers(gl_state.window);
-	}
 }
 
 void GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods))
@@ -328,7 +326,7 @@ void GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode,
 	glfwSetKeyCallback(gl_state.window, proc);
 }
 
-void GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos))
+void GL_SetMouseMovedProc(void proc(void* unused, double xpos, double ypos))
 {
 	glfwSetCursorPosCallback(gl_state.window, proc);
 }
@@ -380,7 +378,7 @@ void GL_EnableCursor(bool enabled)
 	}
 }
 
-void GLFW_Error(const char* error)
+void GLFW_Error(int32_t error_code, const char* error)
 {
-	Sys_Error("A fatal GLFW error occurred:\n\n\n%s", error);
+	Sys_Error("A fatal GLFW error occurred:\n\nError %d: %s", error_code, error);
 }

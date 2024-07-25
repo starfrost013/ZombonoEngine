@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -22,21 +22,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gl_local.h"
 
-extern	model_t	*loadmodel;
+extern	model_t* loadmodel;
 
 char	skyname[MAX_QPATH];
 float	skyrotate;
 vec3_t	skyaxis;
-image_t	*sky_images[6];
+image_t* sky_images[6];
 
-msurface_t	*warpface;
+msurface_t* warpface;
 
 #define	SUBDIVIDE_SIZE	64
 
-void BoundPoly (int32_t numverts, float *verts, vec3_t mins, vec3_t maxs)
+void BoundPoly(int32_t numverts, float* verts, vec3_t mins, vec3_t maxs)
 {
 	int32_t	i, j;
-	float*	v;
+	float* v;
 
 	mins[0] = mins[1] = mins[2] = 9999;
 	maxs[0] = maxs[1] = maxs[2] = -9999;
@@ -53,30 +53,30 @@ void BoundPoly (int32_t numverts, float *verts, vec3_t mins, vec3_t maxs)
 	}
 }
 
-void SubdividePolygon (int32_t numverts, float *verts)
+void SubdividePolygon(int32_t numverts, float* verts)
 {
 	int32_t		i, j, k;
 	vec3_t		mins, maxs;
 	float		m;
-	float*		v;
+	float* v;
 	vec3_t		front[64] = { 0 }, back[64] = { 0 };
 	int32_t		f, b;
 	float		dist[64];
 	float		frac;
-	glpoly_t*	poly;
+	glpoly_t* poly;
 	float		s, t;
 	vec3_t		total = { 0 };
 	float		total_s, total_t;
 
 	if (numverts > 60)
-		ri.Sys_Error (ERR_DROP, "numverts = %i", numverts);
+		ri.Sys_Error(ERR_DROP, "numverts = %i", numverts);
 
-	BoundPoly (numverts, verts, mins, maxs);
+	BoundPoly(numverts, verts, mins, maxs);
 
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
-		m = (mins[i] + maxs[i]) * 0.5;
-		m = SUBDIVIDE_SIZE * floor (m/SUBDIVIDE_SIZE + 0.5);
+		m = (mins[i] + maxs[i]) * 0.5f;
+		m = SUBDIVIDE_SIZE * floorf(m / SUBDIVIDE_SIZE + 0.5f);
 		if (maxs[i] - m < 8)
 			continue;
 		if (m - mins[i] < 8)
@@ -84,74 +84,74 @@ void SubdividePolygon (int32_t numverts, float *verts)
 
 		// cut it
 		v = verts + i;
-		for (j=0 ; j<numverts ; j++, v+= 3)
+		for (j = 0; j < numverts; j++, v += 3)
 			dist[j] = *v - m;
 
 		// wrap cases
 		dist[j] = dist[0];
-		v-=i;
-		VectorCopy (verts, v);
+		v -= i;
+		VectorCopy(verts, v);
 
 		f = b = 0;
 		v = verts;
-		for (j=0 ; j<numverts ; j++, v+= 3)
+		for (j = 0; j < numverts; j++, v += 3)
 		{
 			if (dist[j] >= 0)
 			{
-				VectorCopy (v, front[f]);
+				VectorCopy(v, front[f]);
 				f++;
 			}
 			if (dist[j] <= 0)
 			{
-				VectorCopy (v, back[b]);
+				VectorCopy(v, back[b]);
 				b++;
 			}
-			if (dist[j] == 0 || dist[j+1] == 0)
+			if (dist[j] == 0 || dist[j + 1] == 0)
 				continue;
-			if ( (dist[j] > 0) != (dist[j+1] > 0) )
+			if ((dist[j] > 0) != (dist[j + 1] > 0))
 			{
 				// clip point
-				frac = dist[j] / (dist[j] - dist[j+1]);
-				for (k=0 ; k<3 ; k++)
-					front[f][k] = back[b][k] = v[k] + frac*(v[3+k] - v[k]);
+				frac = dist[j] / (dist[j] - dist[j + 1]);
+				for (k = 0; k < 3; k++)
+					front[f][k] = back[b][k] = v[k] + frac * (v[3 + k] - v[k]);
 				f++;
 				b++;
 			}
 		}
 
-		SubdividePolygon (f, front[0]);
-		SubdividePolygon (b, back[0]);
+		SubdividePolygon(f, front[0]);
+		SubdividePolygon(b, back[0]);
 		return;
 	}
 
 	// add a point in the center to help keep warp valid
-	poly = Hunk_Alloc (sizeof(glpoly_t) + ((numverts-4)+2) * VERTEXSIZE*sizeof(float));
+	poly = Hunk_Alloc(sizeof(glpoly_t) + ((numverts - 4) + 2) * VERTEXSIZE * sizeof(float));
 	poly->next = warpface->polys;
 	warpface->polys = poly;
-	poly->numverts = numverts+2;
-	VectorClear (total);
+	poly->numverts = numverts + 2;
+	VectorClear(total);
 	total_s = 0;
 	total_t = 0;
-	for (i=0 ; i<numverts ; i++, verts+= 3)
+	for (i = 0; i < numverts; i++, verts += 3)
 	{
-		VectorCopy (verts, poly->verts[i+1]);
-		s = DotProduct (verts, warpface->texinfo->vecs[0]);
-		t = DotProduct (verts, warpface->texinfo->vecs[1]);
+		VectorCopy(verts, poly->verts[i + 1]);
+		s = DotProduct(verts, warpface->texinfo->vecs[0]);
+		t = DotProduct(verts, warpface->texinfo->vecs[1]);
 
 		total_s += s;
 		total_t += t;
-		VectorAdd (total, verts, total);
+		VectorAdd(total, verts, total);
 
-		poly->verts[i+1][3] = s;
-		poly->verts[i+1][4] = t;
+		poly->verts[i + 1][3] = s;
+		poly->verts[i + 1][4] = t;
 	}
 
-	VectorScale (total, (1.0/numverts), poly->verts[0]);
-	poly->verts[0][3] = total_s/numverts;
-	poly->verts[0][4] = total_t/numverts;
+	VectorScale(total, (1.0 / numverts), poly->verts[0]);
+	poly->verts[0][3] = total_s / numverts;
+	poly->verts[0][4] = total_t / numverts;
 
 	// copy first vertex to last
-	memcpy (poly->verts[i+1], poly->verts[1], sizeof(poly->verts[0]));
+	memcpy(poly->verts[i + 1], poly->verts[1], sizeof(poly->verts[0]));
 }
 
 /*
@@ -163,13 +163,13 @@ boundaries so that turbulent and sky warps
 can be done reasonably.
 ================
 */
-void GL_SubdivideSurface (msurface_t *fa)
+void GL_SubdivideSurface(msurface_t* fa)
 {
 	vec3_t		verts[64];
 	int32_t		numverts;
 	int32_t		i;
 	int32_t		lindex;
-	float*		vec;
+	float* vec;
 
 	warpface = fa;
 
@@ -177,7 +177,7 @@ void GL_SubdivideSurface (msurface_t *fa)
 	// convert edges back to a normal polygon
 	//
 	numverts = 0;
-	for (i=0 ; i<fa->numedges ; i++)
+	for (i = 0; i < fa->numedges; i++)
 	{
 		lindex = loadmodel->surfedges[fa->firstedge + i];
 
@@ -185,11 +185,11 @@ void GL_SubdivideSurface (msurface_t *fa)
 			vec = loadmodel->vertexes[loadmodel->edges[lindex].v[0]].position;
 		else
 			vec = loadmodel->vertexes[loadmodel->edges[-lindex].v[1]].position;
-		VectorCopy (vec, verts[numverts]);
+		VectorCopy(vec, verts[numverts]);
 		numverts++;
 	}
 
-	SubdividePolygon (numverts, verts[0]);
+	SubdividePolygon(numverts, verts[0]);
 }
 
 //=========================================================
@@ -206,40 +206,40 @@ EmitWaterPolys
 Does a water warp on the pre-fragmented glpoly_t chain
 =============
 */
-void EmitWaterPolys (msurface_t *fa)
+void EmitWaterPolys(msurface_t* fa)
 {
-	glpoly_t*	p, *bp;
-	float*		v;
+	glpoly_t* p, * bp;
+	float* v;
 	int32_t		i;
 	float		s, t, os, ot;
 	float		scroll;
 	float		rdt = r_newrefdef.time;
 
 	if (fa->texinfo->flags & SURF_FLOWING)
-		scroll = -64 * ( (r_newrefdef.time*0.5) - (int32_t)(r_newrefdef.time*0.5) );
+		scroll = -64.0f * ((r_newrefdef.time * 0.5f) - (int32_t)(r_newrefdef.time * 0.5f));
 	else
 		scroll = 0;
-	for (bp=fa->polys ; bp ; bp=bp->next)
+	for (bp = fa->polys; bp; bp = bp->next)
 	{
 		p = bp;
 
-		glBegin (GL_TRIANGLE_FAN);
-		for (i=0,v=p->verts[0] ; i<p->numverts ; i++, v+=VERTEXSIZE)
+		glBegin(GL_TRIANGLE_FAN);
+		for (i = 0, v = p->verts[0]; i < p->numverts; i++, v += VERTEXSIZE)
 		{
 			os = v[3];
 			ot = v[4];
 
-			s = os + r_turbsin[(int32_t)((ot*0.125+r_newrefdef.time) * TURBSCALE) & 255];
+			s = os + r_turbsin[(int32_t)((ot * 0.125 + r_newrefdef.time) * TURBSCALE) & 255];
 			s += scroll;
-			s *= (1.0/64);
+			s *= (1.0 / 64);
 
-			t = ot + r_turbsin[(int32_t)((os*0.125+rdt) * TURBSCALE) & 255];
-			t *= (1.0/64);
+			t = ot + r_turbsin[(int32_t)((os * 0.125 + rdt) * TURBSCALE) & 255];
+			t *= (1.0 / 64);
 
-			glTexCoord2f (s, t);
-			glVertex3fv (v);
+			glTexCoord2f(s, t);
+			glVertex3fv(v);
 		}
-		glEnd ();
+		glEnd();
 	}
 }
 
@@ -253,7 +253,7 @@ vec3_t	skyclip[6] = {
 	{0,-1,1},
 	{0,1,1},
 	{1,0,1},
-	{-1,0,1} 
+	{-1,0,1}
 };
 int32_t	c_sky;
 
@@ -286,25 +286,25 @@ int32_t	vec_to_st[6][3] =
 float	skymins[2][6], skymaxs[2][6];
 float	sky_min, sky_max;
 
-void DrawSkyPolygon (int32_t nump, vec3_t vecs)
+void DrawSkyPolygon(int32_t nump, vec3_t vecs)
 {
-	int		i,j;
+	int32_t	i, j;
 	vec3_t	v, av;
 	float	s, t, dv;
-	int		axis;
-	float	*vp;
+	int32_t	axis;
+	float* vp;
 
 	c_sky++;
 
 	// decide which face it maps to
-	VectorCopy (vec3_origin, v);
-	for (i=0, vp=vecs ; i<nump ; i++, vp+=3)
+	VectorCopy(vec3_origin, v);
+	for (i = 0, vp = vecs; i < nump; i++, vp += 3)
 	{
-		VectorAdd (vp, v, v);
+		VectorAdd(vp, v, v);
 	}
-	av[0] = fabs(v[0]);
-	av[1] = fabs(v[1]);
-	av[2] = fabs(v[2]);
+	av[0] = fabsf(v[0]);
+	av[1] = fabsf(v[1]);
+	av[2] = fabsf(v[2]);
 	if (av[0] > av[1] && av[0] > av[2])
 	{
 		if (v[0] < 0)
@@ -328,7 +328,7 @@ void DrawSkyPolygon (int32_t nump, vec3_t vecs)
 	}
 
 	// project new texture coords
-	for (i=0 ; i<nump ; i++, vecs+=3)
+	for (i = 0; i < nump; i++, vecs += 3)
 	{
 		j = vec_to_st[axis][2];
 		if (j > 0)
@@ -339,14 +339,14 @@ void DrawSkyPolygon (int32_t nump, vec3_t vecs)
 			continue;	// don't divide by zero
 		j = vec_to_st[axis][0];
 		if (j < 0)
-			s = -vecs[-j -1] / dv;
+			s = -vecs[-j - 1] / dv;
 		else
-			s = vecs[j-1] / dv;
+			s = vecs[j - 1] / dv;
 		j = vec_to_st[axis][1];
 		if (j < 0)
-			t = -vecs[-j -1] / dv;
+			t = -vecs[-j - 1] / dv;
 		else
-			t = vecs[j-1] / dv;
+			t = vecs[j - 1] / dv;
 
 		if (s < skymins[0][axis])
 			skymins[0][axis] = s;
@@ -361,10 +361,10 @@ void DrawSkyPolygon (int32_t nump, vec3_t vecs)
 
 #define	ON_EPSILON		0.1			// point on plane side epsilon
 #define	MAX_CLIP_VERTS	64
-void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
+void ClipSkyPolygon(int32_t nump, vec3_t vecs, int32_t stage)
 {
-	float	*norm;
-	float	*v;
+	float* norm;
+	float* v;
 	bool	front, back;
 	float	d, e;
 	float	dists[MAX_CLIP_VERTS] = { 0 };
@@ -373,19 +373,19 @@ void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 	int32_t newc[2];
 	int32_t	i, j;
 
-	if (nump > MAX_CLIP_VERTS-2)
-		ri.Sys_Error (ERR_DROP, "ClipSkyPolygon: MAX_CLIP_VERTS");
+	if (nump > MAX_CLIP_VERTS - 2)
+		ri.Sys_Error(ERR_DROP, "ClipSkyPolygon: MAX_CLIP_VERTS");
 	if (stage == 6)
 	{	// fully clipped, so draw it
-		DrawSkyPolygon (nump, vecs);
+		DrawSkyPolygon(nump, vecs);
 		return;
 	}
 
 	front = back = false;
 	norm = skyclip[stage];
-	for (i=0, v = vecs ; i<nump ; i++, v+=3)
+	for (i = 0, v = vecs; i < nump; i++, v += 3)
 	{
-		d = DotProduct (v, norm);
+		d = DotProduct(v, norm);
 		if (d > ON_EPSILON)
 		{
 			front = true;
@@ -403,43 +403,43 @@ void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 
 	if (!front || !back)
 	{	// not clipped
-		ClipSkyPolygon (nump, vecs, stage+1);
+		ClipSkyPolygon(nump, vecs, stage + 1);
 		return;
 	}
 
 	// clip it
 	sides[i] = sides[0];
 	dists[i] = dists[0];
-	VectorCopy (vecs, (vecs+(i*3)) );
+	VectorCopy(vecs, (vecs + (i * 3)));
 	newc[0] = newc[1] = 0;
 
-	for (i=0, v = vecs ; i<nump ; i++, v+=3)
+	for (i = 0, v = vecs; i < nump; i++, v += 3)
 	{
 		switch (sides[i])
 		{
 		case SIDE_FRONT:
-			VectorCopy (v, newv[0][newc[0]]);
+			VectorCopy(v, newv[0][newc[0]]);
 			newc[0]++;
 			break;
 		case SIDE_BACK:
-			VectorCopy (v, newv[1][newc[1]]);
+			VectorCopy(v, newv[1][newc[1]]);
 			newc[1]++;
 			break;
 		case SIDE_ON:
-			VectorCopy (v, newv[0][newc[0]]);
+			VectorCopy(v, newv[0][newc[0]]);
 			newc[0]++;
-			VectorCopy (v, newv[1][newc[1]]);
+			VectorCopy(v, newv[1][newc[1]]);
 			newc[1]++;
 			break;
 		}
 
-		if (sides[i] == SIDE_ON || sides[i+1] == SIDE_ON || sides[i+1] == sides[i])
+		if (sides[i] == SIDE_ON || sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i])
 			continue;
 
-		d = dists[i] / (dists[i] - dists[i+1]);
-		for (j=0 ; j<3 ; j++)
+		d = dists[i] / (dists[i] - dists[i + 1]);
+		for (j = 0; j < 3; j++)
 		{
-			e = v[j] + d*(v[j+3] - v[j]);
+			e = v[j] + d * (v[j + 3] - v[j]);
 			newv[0][newc[0]][j] = e;
 			newv[1][newc[1]][j] = e;
 		}
@@ -448,8 +448,8 @@ void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 	}
 
 	// continue
-	ClipSkyPolygon (newc[0], newv[0][0], stage+1);
-	ClipSkyPolygon (newc[1], newv[1][0], stage+1);
+	ClipSkyPolygon(newc[0], newv[0][0], stage + 1);
+	ClipSkyPolygon(newc[1], newv[1][0], stage + 1);
 }
 
 /*
@@ -457,20 +457,20 @@ void ClipSkyPolygon (int32_t nump, vec3_t vecs, int32_t stage)
 R_AddSkySurface
 =================
 */
-void R_AddSkySurface (msurface_t *fa)
+void R_AddSkySurface(msurface_t* fa)
 {
 	int32_t		i;
 	vec3_t		verts[MAX_CLIP_VERTS];
-	glpoly_t*	p;
+	glpoly_t* p;
 
 	// calculate vertex values for sky box
-	for (p=fa->polys ; p ; p=p->next)
+	for (p = fa->polys; p; p = p->next)
 	{
-		for (i=0 ; i<p->numverts ; i++)
+		for (i = 0; i < p->numverts; i++)
 		{
-			VectorSubtract (p->verts[i], r_origin, verts[i]);
+			VectorSubtract(p->verts[i], r_origin, verts[i]);
 		}
-		ClipSkyPolygon (p->numverts, verts[0], 0);
+		ClipSkyPolygon(p->numverts, verts[0], 0);
 	}
 }
 
@@ -480,11 +480,11 @@ void R_AddSkySurface (msurface_t *fa)
 R_ClearSkyBox
 ==============
 */
-void R_ClearSkyBox ()
+void R_ClearSkyBox()
 {
 	int32_t		i;
 
-	for (i=0 ; i<6 ; i++)
+	for (i = 0; i < 6; i++)
 	{
 		skymins[0][i] = skymins[1][i] = 9999;
 		skymaxs[0][i] = skymaxs[1][i] = -9999;
@@ -492,13 +492,13 @@ void R_ClearSkyBox ()
 }
 
 
-void MakeSkyVec (float s, float t, int32_t axis)
+void MakeSkyVec(float s, float t, int32_t axis)
 {
 	vec3_t		v, b;
 	int32_t		j, k;
 
-	b[0] = (s*gl_drawdistance->value);
-	b[1] = (t* gl_drawdistance->value);
+	b[0] = (s * gl_drawdistance->value);
+	b[1] = (t * gl_drawdistance->value);
 	b[2] = (gl_drawdistance->value);
 
 	// prevent the skybox from being pushed outside of the map radius and therefore smearing
@@ -515,7 +515,7 @@ void MakeSkyVec (float s, float t, int32_t axis)
 	if (abs(b[2]) >= map_radius_z)
 		b[2] = map_radius_z;
 
-	for (j=0 ; j<3 ; j++)
+	for (j = 0; j < 3; j++)
 	{
 		k = st_to_vec[axis][j];
 		if (k < 0)
@@ -525,8 +525,8 @@ void MakeSkyVec (float s, float t, int32_t axis)
 	}
 
 	// avoid bilerp seam
-	s = (s+1)*0.5;
-	t = (t+1)*0.5;
+	s = (s + 1) * 0.5f;
+	t = (t + 1) * 0.5f;
 
 	if (s < sky_min)
 		s = sky_min;
@@ -537,9 +537,9 @@ void MakeSkyVec (float s, float t, int32_t axis)
 	else if (t > sky_max)
 		t = sky_max;
 
-	t = 1.0 - t;
-	glTexCoord2f (s, t);
-	glVertex3fv (v);
+	t = 1.0f - t;
+	glTexCoord2f(s, t);
+	glVertex3fv(v);
 }
 
 /*
@@ -547,26 +547,27 @@ void MakeSkyVec (float s, float t, int32_t axis)
 R_DrawSkyBox
 ==============
 */
-int	skytexorder[6] = {0,2,1,3,4,5};
-void R_DrawSkyBox ()
+int32_t	skytexorder[6] = { 0, 2, 1, 3, 4, 5 };
+
+void R_DrawSkyBox()
 {
-	int32_t		i;
+	int32_t i;
 
 	if (skyrotate)
 	{	// check for no sky at all
-		for (i=0 ; i<6 ; i++)
+		for (i = 0; i < 6; i++)
 			if (skymins[0][i] < skymaxs[0][i]
-			&& skymins[1][i] < skymaxs[1][i])
+				&& skymins[1][i] < skymaxs[1][i])
 				break;
 		if (i == 6)
 			return;		// nothing visible
 	}
 
-	glPushMatrix ();
-	glTranslatef (r_origin[0], r_origin[1], r_origin[2]);
-	glRotatef (r_newrefdef.time * skyrotate, skyaxis[0], skyaxis[1], skyaxis[2]);
+	glPushMatrix();
+	glTranslatef(r_origin[0], r_origin[1], r_origin[2]);
+	glRotatef(r_newrefdef.time * skyrotate, skyaxis[0], skyaxis[1], skyaxis[2]);
 
-	for (i=0 ; i<6 ; i++)
+	for (i = 0; i < 6; i++)
 	{
 		if (skyrotate)
 		{	// hack, forces full sky to draw when rotating
@@ -577,20 +578,20 @@ void R_DrawSkyBox ()
 		}
 
 		if (skymins[0][i] >= skymaxs[0][i]
-		|| skymins[1][i] >= skymaxs[1][i])
+			|| skymins[1][i] >= skymaxs[1][i])
 			continue;
 
-		GL_Bind (sky_images[skytexorder[i]]->texnum);
+		GL_Bind(sky_images[skytexorder[i]]->texnum);
 
-		glBegin (GL_QUADS);
-		MakeSkyVec (skymins[0][i], skymins[1][i], i);
-		MakeSkyVec (skymins[0][i], skymaxs[1][i], i);
-		MakeSkyVec (skymaxs[0][i], skymaxs[1][i], i);
-		MakeSkyVec (skymaxs[0][i], skymins[1][i], i);
-		glEnd ();
+		glBegin(GL_QUADS);
+		MakeSkyVec(skymins[0][i], skymins[1][i], i);
+		MakeSkyVec(skymins[0][i], skymaxs[1][i], i);
+		MakeSkyVec(skymaxs[0][i], skymaxs[1][i], i);
+		MakeSkyVec(skymaxs[0][i], skymins[1][i], i);
+		glEnd();
 	}
 
-	glPopMatrix ();
+	glPopMatrix();
 
 }
 
@@ -601,38 +602,38 @@ R_SetSky
 ============
 */
 // 3dstudio environment map names
-char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
-void R_SetSky (char *name, float rotate, vec3_t axis)
+char* suf[6] = { "rt", "bk", "lf", "ft", "up", "dn" };
+void R_SetSky(char* name, float rotate, vec3_t axis)
 {
 	int32_t	i;
 	char	pathname[MAX_QPATH];
 
-	strncpy (skyname, name, sizeof(skyname)-1);
+	strncpy(skyname, name, sizeof(skyname) - 1);
 	skyrotate = rotate;
-	VectorCopy (axis, skyaxis);
+	VectorCopy(axis, skyaxis);
 
-	for (i=0 ; i<6 ; i++)
+	for (i = 0; i < 6; i++)
 	{
 		// chop down rotating skies for less memory
 		if (gl_skymip->value || skyrotate)
 			gl_picmip->value++;
 
-		Com_sprintf (pathname, sizeof(pathname), "env/%s%s.tga", skyname, suf[i]);
+		Com_sprintf(pathname, sizeof(pathname), "env/%s%s.tga", skyname, suf[i]);
 
-		sky_images[i] = GL_FindImage (pathname, it_sky);
+		sky_images[i] = GL_FindImage(pathname, it_sky);
 		if (!sky_images[i])
 			sky_images[i] = r_notexture;
 
 		if (gl_skymip->value || skyrotate)
 		{	// take less memory
 			gl_picmip->value--;
-			sky_min = 1.0/256;
-			sky_max = 255.0/256;
+			sky_min = 1.0 / 256;
+			sky_max = 255.0 / 256;
 		}
-		else	
+		else
 		{
-			sky_min = 1.0/512;
-			sky_max = 511.0/512;
+			sky_min = 1.0 / 512;
+			sky_max = 511.0 / 512;
 		}
 	}
 }

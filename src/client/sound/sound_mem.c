@@ -35,7 +35,7 @@ void ResampleSfx (sfx_t *sfx, int32_t inrate, int32_t inwidth, uint8_t *data)
 {
 	int32_t 	outcount;
 	int32_t 	srcsample;
-	float	stepscale;
+	float		stepscale;
 	int32_t 	i;
 	int32_t 	sample, samplefrac, fracstep;
 	sfxcache_t	*sc;

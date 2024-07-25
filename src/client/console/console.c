@@ -566,9 +566,7 @@ void Con_DrawConsole(float frac)
 	char	dlbar[1024];
 	int32_t size_x = 0, size_y = 0;
 
-	font_t* console_font_ptr;
-
-	console_font_ptr = Font_GetByName(cl_console_font->string);
+	font_t* console_font_ptr = Font_GetByName(cl_console_font->string);
 
 	// we already check it can't be null and exit earlier, but the user can change the cvar
 	if (!console_font_ptr)

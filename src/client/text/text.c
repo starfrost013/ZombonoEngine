@@ -54,10 +54,10 @@ color_code_t color_codes[] =
 bool Text_GetSizeChar(const char* font, int32_t* x, int32_t* y, char text)
 {
 	// munge it for the fucking console which uses a 128kb buffer
-	char	new_string[2] = { 0 };
+	char new_string[2] = { 0 };
 	new_string[0] = text;
 	new_string[1] = '\0';
-	return Text_GetSize(font, x, y, &new_string);
+	return Text_GetSize(font, x, y, new_string);
 }
 
 bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ...)
@@ -157,7 +157,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 			{
 				color_code_t current_color_code = color_codes[color_code_num];
 
-				if (!strncmp(final_text_ptr + char_num, color_codes[color_code_num].name, 2))
+				if (!strncmp(final_text_ptr + char_num, current_color_code.name, 2))
 				{
 					// ignore
 					done = true;
@@ -202,10 +202,10 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 void Text_DrawChar(const char* font, int32_t x, int32_t y, char text)
 {
 	// munge it for the fucking console which uses a 128kb buffer
-	char	new_string[2] = { 0 };
+	char new_string[2] = { 0 };
 	new_string[0] = text;
 	new_string[1] = '\0';
-	Text_Draw(font, x, y, &new_string);
+	Text_Draw(font, x, y, new_string);
 }
 
 void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
@@ -348,7 +348,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		// convert to a file path that drawpicregion in the fonts folder
 		char final_name[MAX_FONT_FILENAME_LEN] = { 0 };
 
-		snprintf(&final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
+		snprintf(final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
 
 		// draw it
 		re.DrawFontChar(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color, false);

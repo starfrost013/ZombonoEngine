@@ -235,7 +235,7 @@ void Render2D_DrawCenterString()
 	start = scr_centerstring;
 
 	if (scr_center_lines <= 4)
-		y = r_height->value * 0.35;
+		y = r_height->value * 0.35f;
 	else
 		y = 48;
 
@@ -329,15 +329,15 @@ void Render2D_Sky_f()
 	}
 
 	if (Cmd_Argc() > 2)
-		rotate = atof(Cmd_Argv(2));
+		rotate = (float)atof(Cmd_Argv(2));
 	else
 		rotate = 0;
 
 	if (Cmd_Argc() == 6)
 	{
-		axis[0] = atof(Cmd_Argv(3));
-		axis[1] = atof(Cmd_Argv(4));
-		axis[2] = atof(Cmd_Argv(5));
+		axis[0] = (float)atof(Cmd_Argv(3));
+		axis[1] = (float)atof(Cmd_Argv(4));
+		axis[2] = (float)atof(Cmd_Argv(5));
 	}
 	else
 	{
@@ -583,7 +583,7 @@ void Render2D_TimeRefresh_f()
 		re.BeginFrame(0);
 		for (i = 0; i < 128; i++)
 		{
-			cl.refdef.viewangles[1] = i / 128.0 * 360.0;
+			cl.refdef.viewangles[1] = i / 128.0f * 360.0f;
 			re.RenderFrame(&cl.refdef);
 		}
 		re.EndFrame();
@@ -592,7 +592,7 @@ void Render2D_TimeRefresh_f()
 	{
 		for (i = 0; i < 128; i++)
 		{
-			cl.refdef.viewangles[1] = i / 128.0 * 360.0;
+			cl.refdef.viewangles[1] = i / 128.0f * 360.0f;
 
 			re.BeginFrame(0);
 			re.RenderFrame(&cl.refdef);
@@ -601,7 +601,7 @@ void Render2D_TimeRefresh_f()
 	}
 
 	stop = Sys_Milliseconds();
-	time = (stop - start) / 1000.0;
+	time = (stop - start) / 1000.0f;
 	Com_Printf("%f seconds (%f fps)\n", time, 128 / time);
 }
 
@@ -810,7 +810,6 @@ void Render2D_ExecuteLayoutString(char* s)
 	char*		token;
 	int32_t 	width;
 	int32_t 	index;
-	clientinfo_t* ci;
 
 	if (cls.state != ca_active || !cl.refresh_prepped)
 		return;

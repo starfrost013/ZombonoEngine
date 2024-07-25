@@ -413,9 +413,9 @@ void CL_ParsePlayerstate(frame_t* oldframe, frame_t* newframe)
 
 	if (flags & PS_VIEWOFFSET)
 	{
-		state->viewoffset[0] = MSG_ReadChar(&net_message) * 0.25;
-		state->viewoffset[1] = MSG_ReadChar(&net_message) * 0.25;
-		state->viewoffset[2] = MSG_ReadChar(&net_message) * 0.25;
+		state->viewoffset[0] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->viewoffset[1] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->viewoffset[2] = (float)MSG_ReadChar(&net_message) * 0.25f;
 	}
 
 	if (flags & PS_VIEWANGLES)
@@ -427,9 +427,9 @@ void CL_ParsePlayerstate(frame_t* oldframe, frame_t* newframe)
 
 	if (flags & PS_KICKANGLES)
 	{
-		state->kick_angles[0] = MSG_ReadChar(&net_message) * 0.25;
-		state->kick_angles[1] = MSG_ReadChar(&net_message) * 0.25;
-		state->kick_angles[2] = MSG_ReadChar(&net_message) * 0.25;
+		state->kick_angles[0] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->kick_angles[1] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->kick_angles[2] = (float)MSG_ReadChar(&net_message) * 0.25f;
 	}
 
 	if (flags & PS_WEAPONINDEX)
@@ -440,20 +440,20 @@ void CL_ParsePlayerstate(frame_t* oldframe, frame_t* newframe)
 	if (flags & PS_WEAPONFRAME)
 	{
 		state->gunframe = MSG_ReadByte(&net_message);
-		state->gunoffset[0] = MSG_ReadChar(&net_message) * 0.25;
-		state->gunoffset[1] = MSG_ReadChar(&net_message) * 0.25;
-		state->gunoffset[2] = MSG_ReadChar(&net_message) * 0.25;
-		state->gunangles[0] = MSG_ReadChar(&net_message) * 0.25;
-		state->gunangles[1] = MSG_ReadChar(&net_message) * 0.25;
-		state->gunangles[2] = MSG_ReadChar(&net_message) * 0.25;
+		state->gunoffset[0] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->gunoffset[1] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->gunoffset[2] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->gunangles[0] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->gunangles[1] = (float)MSG_ReadChar(&net_message) * 0.25f;
+		state->gunangles[2] = (float)MSG_ReadChar(&net_message) * 0.25f;
 	}
 
 	if (flags & PS_BLEND)
 	{
-		state->blend[0] = MSG_ReadByte(&net_message) / 255.0;
-		state->blend[1] = MSG_ReadByte(&net_message) / 255.0;
-		state->blend[2] = MSG_ReadByte(&net_message) / 255.0;
-		state->blend[3] = MSG_ReadByte(&net_message) / 255.0;
+		state->blend[0] = (float)MSG_ReadByte(&net_message) / 255.0f;
+		state->blend[1] = (float)MSG_ReadByte(&net_message) / 255.0f;
+		state->blend[2] = (float)MSG_ReadByte(&net_message) / 255.0f;
+		state->blend[3] = (float)MSG_ReadByte(&net_message) / 255.0f;
 	}
 
 	if (flags & PS_FOV)
@@ -721,7 +721,7 @@ void CL_AddPacketEntities(frame_t* frame)
 
 
 		ent.oldframe = cent->prev.frame;
-		ent.backlerp = 1.0 - cl.lerpfrac;
+		ent.backlerp = 1.0f - cl.lerpfrac;
 
 		if (renderfx & (RF_FRAMELERP | RF_BEAM))
 		{	// step origin discretely, because the frames
@@ -978,7 +978,7 @@ void CL_AddViewWeapon(player_state_t* ps, player_state_t* ops)
 	}
 
 	gun.flags = RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL;
-	gun.backlerp = 1.0 - cl.lerpfrac;
+	gun.backlerp = 1.0f - cl.lerpfrac;
 	VectorCopy(gun.origin, gun.oldorigin);	// don't lerp at all
 	Render3D_AddEntity(&gun);
 }
@@ -1027,8 +1027,8 @@ void CL_CalcViewValues()
 	if ((cl_predict->value) && !(cl.frame.playerstate.pmove.pm_flags & PMF_NO_PREDICTION))
 	{
 		// use predicted values
-		uint32_t	delta;
-		backlerp = 1.0 - lerp;
+		uint32_t delta;
+		backlerp = 1.0f - lerp;
 
 		for (i = 0; i < 3; i++)
 		{
@@ -1040,7 +1040,7 @@ void CL_CalcViewValues()
 		// smooth out stair climbing
 		delta = cls.realtime - cl.predicted_step_time;
 		if (delta < 100)
-			cl.refdef.vieworigin[2] -= cl.predicted_step * (100 - delta) * 0.01;
+			cl.refdef.vieworigin[2] -= cl.predicted_step * (100.0f - delta) * 0.01f;
 	}
 	else
 	{	// just use interpolated values
@@ -1115,10 +1115,10 @@ void CL_AddEntities()
 		cl.lerpfrac = 0;
 	}
 	else
-		cl.lerpfrac = 1.0 - (cl.frame.servertime - cl.time) * 0.01;
+		cl.lerpfrac = 1.0f - (cl.frame.servertime - cl.time) * 0.01f;
 
 	if (cl_timedemo->value)
-		cl.lerpfrac = 1.0;
+		cl.lerpfrac = 1.0f;
 
 	CL_CalcViewValues();
 	// PMM - moved this here so the heat beam has the right values for the vieworg, and can lock the beam to the gun

@@ -227,7 +227,7 @@ typedef struct
 	void	(*Vid_MenuInit)(void);
 	void	(*Vid_ChangeResolution)();
 
-	void	(*Com_Quit)(void);
+	void	(*Com_Quit)();
 } refimport_t;
 
 

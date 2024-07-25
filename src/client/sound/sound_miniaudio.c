@@ -309,7 +309,7 @@ void Miniaudio_Update()
 				if (loopcounter == s_loopcount->value)
 				{
 					Miniaudio_Stop();
-					Miniaudio_Play(s_looptrack->value, true);
+					Miniaudio_Play((int32_t)s_looptrack->value, true);
 				}
 				else
 				{

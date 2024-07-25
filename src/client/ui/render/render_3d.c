@@ -259,7 +259,7 @@ void Render3D_PrepRefresh()
 	// set sky textures and speed
 	Com_Printf("sky\r", i);
 	Render_UpdateScreen();
-	rotate = atof(cl.configstrings[CS_SKYROTATE]);
+	rotate = (float)atof(cl.configstrings[CS_SKYROTATE]);
 	sscanf(cl.configstrings[CS_SKYAXIS], "%f %f %f",
 		&axis[0], &axis[1], &axis[2]);
 	re.SetSky(cl.configstrings[CS_SKY], rotate, axis);
@@ -295,11 +295,11 @@ float Render3D_CalcFov(float fov_x, float width, float height)
 
 	// calculate 4:3 fov 
 
-	x = width / tan(fov_x / 360 * M_PI);
+	x = width / tanf(fov_x / 360.0f * M_PI);
 
-	a = atan(height / x);
+	a = atanf(height / x);
 
-	a = a * 360 / M_PI;
+	a = a * 360.0f / M_PI;
 
 	// adapt to current aspect ratio (i stole this code from yamagi quake2)
 
@@ -393,7 +393,7 @@ void Render3D_RenderView()
 		cl.refdef.width = scr_vrect.width;
 		cl.refdef.height = scr_vrect.height;
 		cl.refdef.fov_y = Render3D_CalcFov(cl.refdef.fov_x, cl.refdef.width, cl.refdef.height);
-		cl.refdef.time = cl.time * 0.001;
+		cl.refdef.time = cl.time * 0.001f;
 
 		cl.refdef.areabits = cl.frame.areabits;
 
@@ -407,9 +407,7 @@ void Render3D_RenderView()
 			r_numdlights = 0;
 
 		if (!cl_add_blend->value)
-		{
 			VectorClear(cl.refdef.blend);
-		}
 
 		cl.refdef.num_entities = r_numentities;
 		cl.refdef.entities = r_entities;

@@ -46,7 +46,7 @@ CURLM*	curl_obj;											// The multi nonblocking transfer curl interface obje
 
 int32_t	netservices_running_transfers;						// The number of curl transfers currently running.
 
-void	(*netservices_on_complete_callback)(bool successful);	// The callback to use when the current transfer is complete.
+void	(*netservices_on_complete_callback)();	// The callback to use when the current transfer is complete.
 
 // functions only used within this file
 size_t Netservices_Init_WriteCallback(char *ptr, size_t size, size_t nmemb, char* received_data);				// Callback function on CURL receive
@@ -97,7 +97,7 @@ bool Netservices_Init()
 	}
 
 	// test if teh string was correct (if it isn't it should be a bug)
-	if (strncmp(&netservices_connect_test_buffer, connect_test_string, strlen(connect_test_string)))
+	if (strncmp(netservices_connect_test_buffer, connect_test_string, strlen(connect_test_string)))
 	{
 		Com_Printf("Received invalid connect test string from updates.zombono.com (%s, not %s) (Probably a bug)\n", netservices_connect_test_buffer, connect_test_string);
 		return false;
@@ -150,7 +150,7 @@ void Netservices_DestroyCurlObject(CURL* object, bool multi)
 	curl_easy_cleanup(object);
 }
 
-void Netservices_SetOnCompleteCallback(void on_complete(bool successful))
+void Netservices_SetOnCompleteCallback(void on_complete())
 {
 	netservices_on_complete_callback = on_complete;
 }
@@ -219,7 +219,7 @@ size_t Netservices_Init_WriteCallback(char* ptr, size_t size, size_t nmemb, char
  		return nmemb;
 	}
 
-	strncpy(&netservices_connect_test_buffer, ptr, nmemb);
+	strncpy(netservices_connect_test_buffer, ptr, nmemb);
 	netservices_connect_test_buffer[nmemb] = '\0'; // null terminate string (curl does not do that by default)
 
 	return nmemb;

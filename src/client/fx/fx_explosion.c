@@ -42,8 +42,8 @@ void CL_AddExplosions()
 	{
 		if (ex->type == ex_free)
 			continue;
-		frac = (cl.time - ex->start) / 100.0;
-		f = floor(frac);
+		frac = (cl.time - ex->start) / 100.0f;
+		f = (int32_t)floorf(frac);
 
 		ent = &ex->ent;
 
@@ -59,7 +59,7 @@ void CL_AddExplosions()
 				ex->type = ex_free;
 				break;
 			}
-			ent->alpha = 1.0 - frac / (ex->frames - 1);
+			ent->alpha = 1.0f - frac / (ex->frames - 1);
 			break;
 		case ex_flash:
 			if (f >= 1)
@@ -67,7 +67,7 @@ void CL_AddExplosions()
 				ex->type = ex_free;
 				break;
 			}
-			ent->alpha = 1.0;
+			ent->alpha = 1.0f;
 			break;
 		case ex_poly:
 			if (f >= ex->frames - 1)
@@ -76,7 +76,7 @@ void CL_AddExplosions()
 				break;
 			}
 
-			ent->alpha = (16.0 - (float)f) / 16.0;
+			ent->alpha = (16.0f - (float)f) / 16.0f;
 
 			if (f < 10)
 			{
@@ -100,7 +100,7 @@ void CL_AddExplosions()
 				break;
 			}
 
-			ent->alpha = (5.0 - (float)f) / 5.0;
+			ent->alpha = (5.0f - (float)f) / 5.0f;
 			ent->skinnum = 0;
 			ent->flags |= RF_TRANSLUCENT;
 			break;
@@ -123,7 +123,7 @@ void CL_AddExplosions()
 			f = 0;
 		ent->frame = ex->baseframe + f + 1;
 		ent->oldframe = ex->baseframe + f;
-		ent->backlerp = 1.0 - cl.lerpfrac;
+		ent->backlerp = 1.0f - cl.lerpfrac;
 
 		Render3D_AddEntity(ent);
 	}
@@ -155,7 +155,7 @@ explosion_t* CL_AllocExplosion()
 	for (i = 0; i < MAX_EXPLOSIONS; i++)
 		if (cl_explosions[i].start < time)
 		{
-			time = cl_explosions[i].start;
+			time = (int32_t)cl_explosions[i].start;
 			index = i;
 		}
 	memset(&cl_explosions[index], 0, sizeof(cl_explosions[index]));

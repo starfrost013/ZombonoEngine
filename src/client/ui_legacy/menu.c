@@ -343,7 +343,7 @@ void Menu_DrawTextBox(int32_t x, int32_t y, int32_t width, int32_t lines)
 	Menu_DrawCenteredImage(cx, cy, "2d/textbox_top_03");
 	for (n = 0; n < lines; n++)
 	{
-		cy += 8 * vid_hudscale->value;
+		cy += 8.0f * vid_hudscale->value;
 		Menu_DrawCenteredImage(cx, cy, "2d/textbox_middle_03");
 	}
 	Menu_DrawCenteredImage(cx, cy + 8 * vid_hudscale->value, "2d/textbox_bottom_03");
@@ -513,7 +513,7 @@ static void StartNetworkServerFunc(void* unused)
 
 void Multiplayer_MenuInit(void)
 {
-	s_multiplayer_menu.x = r_width->value * 0.50 - 64 * vid_hudscale->value;
+	s_multiplayer_menu.x = r_width->value * 0.5f - 64 * vid_hudscale->value;
 	s_multiplayer_menu.nitems = 0;
 
 	s_browse_servers_action.generic.type = MTYPE_ACTION;
@@ -3347,7 +3347,7 @@ void PlayerConfig_MenuDraw(void)
 	refdef.height = 168 * vid_hudscale->value;
 	refdef.fov_x = 40;
 	refdef.fov_y = Render3D_CalcFov(refdef.fov_x, refdef.width, refdef.height);
-	refdef.time = cls.realtime * 0.001;
+	refdef.time = cls.realtime * 0.001f;
 
 	if (s_pmi[s_player_model_box.curvalue].skindisplaynames)
 	{

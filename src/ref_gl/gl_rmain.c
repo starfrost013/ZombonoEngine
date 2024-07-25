@@ -185,13 +185,13 @@ void R_DrawNullModel()
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3f(0, 0, -16);
 	for (i = 0; i <= 4; i++)
-		glVertex3f(16 * cos(i * M_PI / 2), 16 * sin(i * M_PI / 2), 0);
+		glVertex3f(16.0f * cosf(i * M_PI / 2), 16 * sinf(i * M_PI / 2), 0);
 	glEnd();
 
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3f(0, 0, 16);
 	for (i = 4; i >= 0; i--)
-		glVertex3f(16 * cos(i * M_PI / 2), 16 * sin(i * M_PI / 2), 0);
+		glVertex3f(16.0f * cosf(i * M_PI / 2), 16 * sinf(i * M_PI / 2), 0);
 	glEnd();
 
 	glColor3f(1, 1, 1);
@@ -508,10 +508,10 @@ void R_SetupGL()
 	//
 	// set up viewport
 	//
-	x = floor(r_newrefdef.x * vid.width / vid.width);
-	x2 = ceil((r_newrefdef.x + r_newrefdef.width) * vid.width / vid.width);
-	y = floor(vid.height - r_newrefdef.y * vid.height / vid.height);
-	y2 = ceil(vid.height - (r_newrefdef.y + r_newrefdef.height) * vid.height / vid.height);
+	x = (int32_t)floor(r_newrefdef.x * vid.width / vid.width);
+	x2 = (int32_t)ceil((r_newrefdef.x + r_newrefdef.width) * vid.width / vid.width);
+	y = (int32_t)floor(vid.height - r_newrefdef.y * vid.height / vid.height);
+	y2 = (int32_t)ceil(vid.height - (r_newrefdef.y + r_newrefdef.height) * vid.height / vid.height);
 
 	w = x2 - x;
 	h = y - y2;
@@ -933,7 +933,7 @@ void R_BeginFrame()
 	if (r_width->modified
 		|| r_height->modified)
 	{
-		GL_SetResolution(r_width->value, r_height->value);
+		GL_SetResolution((int32_t)r_width->value, (int32_t)r_height->value);
 		// tell the client/server about it
 		ri.Vid_ChangeResolution();
 		r_width->modified = false;
@@ -1051,7 +1051,7 @@ void R_DrawBeam(entity_t* e)
 		return;
 
 	PerpendicularVector(perpvec, normalized_direction);
-	VectorScale(perpvec, e->frame / 2, perpvec);
+	VectorScale(perpvec, e->frame / 2.0f, perpvec);
 
 	for (i = 0; i < 6; i++)
 	{

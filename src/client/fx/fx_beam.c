@@ -72,7 +72,7 @@ void CL_AddBeams()
 		{
 			// PMM - fixed to correct for pitch of 0
 			if (dist[0])
-				yaw = (atan2(dist[1], dist[0]) * 180 / M_PI);
+				yaw = (atan2f(dist[1], dist[0]) * 180.0f / M_PI);
 			else if (dist[1] > 0)
 				yaw = 90;
 			else
@@ -80,8 +80,8 @@ void CL_AddBeams()
 			if (yaw < 0)
 				yaw += 360;
 
-			forward = sqrt(dist[0] * dist[0] + dist[1] * dist[1]);
-			pitch = (atan2(dist[2], forward) * -180.0 / M_PI);
+			forward = sqrtf(dist[0] * dist[0] + dist[1] * dist[1]);
+			pitch = (atan2f(dist[2], forward) * -180.0f / M_PI);
 			if (pitch < 0)
 				pitch += 360.0;
 		}
@@ -95,7 +95,7 @@ void CL_AddBeams()
 
 		model_length = 30.0;
 
-		steps = ceil(d / model_length);
+		steps = ceilf(d / model_length);
 		len = (d - model_length) / (steps - 1);
 
 		while (d > 0)
@@ -107,7 +107,7 @@ void CL_AddBeams()
 			ent.angles[1] = yaw;
 			ent.angles[2] = rand() % 360;
 
-			//			Com_Printf("B: %d -> %d\n", b->entity, b->dest_entity);
+			// Com_Printf("B: %d -> %d\n", b->entity, b->dest_entity);
 			Render3D_AddEntity(&ent);
 
 			for (j = 0; j < 3; j++)
@@ -184,7 +184,7 @@ void CL_AddPlayerBeams()
 		{
 			// PMM - fixed to correct for pitch of 0
 			if (dist[0])
-				yaw = (atan2(dist[1], dist[0]) * 180 / M_PI);
+				yaw = (atan2f(dist[1], dist[0]) * 180 / M_PI);
 			else if (dist[1] > 0)
 				yaw = 90;
 			else
@@ -192,8 +192,8 @@ void CL_AddPlayerBeams()
 			if (yaw < 0)
 				yaw += 360;
 
-			forward = sqrt(dist[0] * dist[0] + dist[1] * dist[1]);
-			pitch = (atan2(dist[2], forward) * -180.0 / M_PI);
+			forward = sqrtf(dist[0] * dist[0] + dist[1] * dist[1]);
+			pitch = (atan2f(dist[2], forward) * -180.0 / M_PI);
 			if (pitch < 0)
 				pitch += 360.0;
 		}
@@ -205,7 +205,7 @@ void CL_AddPlayerBeams()
 
 		model_length = 30.0;
 
-		steps = ceil(d / model_length);
+		steps = ceilf(d / model_length);
 		len = (d - model_length) / (steps - 1);
 
 		// special case for lightning model .. if the real length is shorter than the model,

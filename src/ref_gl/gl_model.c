@@ -243,7 +243,7 @@ void GL_DrawAliasFrameLerp(dmdl_t* paliashdr, float backlerp)
 	if (currententity->flags & (RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE))
 		glDisable(GL_TEXTURE_2D);
 
-	frontlerp = 1.0 - backlerp;
+	frontlerp = 1.0f - backlerp;
 
 	// move should be the delta back to the previous frame * backlerp
 	VectorSubtract(currententity->oldorigin, currententity->origin, delta);
@@ -430,7 +430,7 @@ void GL_DrawAliasShadow(dmdl_t* paliashdr, int32_t posenum)
 
 	order = (int32_t*)((uint8_t*)paliashdr + paliashdr->ofs_glcmds);
 
-	height = -lheight + 1.0;
+	height = -lheight + 1.0f;
 
 	while (1)
 	{
@@ -698,13 +698,13 @@ void R_DrawAliasModel(entity_t* e)
 
 	if (currententity->flags & RF_GLOW)
 	{	// bonus items will pulse with time
-		float	scale;
-		float	min;
+		float scale;
+		float min;
 
-		scale = 0.1 * sin(r_newrefdef.time * 7);
+		scale = 0.1f * sinf(r_newrefdef.time * 7);
 		for (i = 0; i < 3; i++)
 		{
-			min = shadelight[i] * 0.8;
+			min = shadelight[i] * 0.8f;
 			shadelight[i] += scale;
 			if (shadelight[i] < min)
 				shadelight[i] = min;
@@ -714,8 +714,8 @@ void R_DrawAliasModel(entity_t* e)
 	shadedots = r_avertexnormal_dots[((int32_t)(currententity->angles[1] * (SHADEDOT_QUANT / 360.0))) & (SHADEDOT_QUANT - 1)];
 
 	an = currententity->angles[1] / 180 * M_PI;
-	shadevector[0] = cos(-an);
-	shadevector[1] = sin(-an);
+	shadevector[0] = cosf(-an);
+	shadevector[1] = sinf(-an);
 	shadevector[2] = 1;
 	VectorNormalize(shadevector);
 

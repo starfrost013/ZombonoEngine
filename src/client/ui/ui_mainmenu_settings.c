@@ -33,7 +33,7 @@ bool UI_MainMenuSettingsUICreate()
 	UI_SetImageIsStretched("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
 	UI_UseScaledAssets("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);
 
-	UI_AddImage("MainMenuSettingsUI", "MainMenuSettingsUI_Back", "2d/ui/global_btn_back", 0.1f, 0.77f, 256, 64);
+	UI_AddImage("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
 	UI_SetImageOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_Back", UI_MainMenuSettingsUIOnBackPressed);
 
@@ -42,7 +42,7 @@ bool UI_MainMenuSettingsUICreate()
 }
 
 // is this enough to justify adding global UI assets?
-void UI_MainMenuSettingsUIOnBackPressed(uint32_t btn, int32_t x, int32_t y)
+void UI_MainMenuSettingsUIOnBackPressed(int32_t btn, int32_t x, int32_t y)
 {
 	UI_Pop();
 }

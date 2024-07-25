@@ -177,7 +177,7 @@ static void ApplyChanges(void* unused)
 	/*
 	** invert sense so greater = brighter, and scale to a range of 0.5 to 1.3
 	*/
-	gamma = (0.8 - (s_brightness_slider[s_current_menu_index].curvalue / 10.0 - 0.5)) + 0.5;
+	gamma = (0.8f - (s_brightness_slider[s_current_menu_index].curvalue / 10.0f - 0.5f)) + 0.5f;
 
 	Cvar_SetValue("vid_gamma", gamma);
 	Cvar_SetValue("gl_picmip", 3 - s_tq_slider.curvalue);
@@ -351,7 +351,7 @@ void Vid_MenuInit()
 		s_brightness_slider[i].generic.callback = BrightnessCallback;
 		s_brightness_slider[i].minvalue = 5;
 		s_brightness_slider[i].maxvalue = 13;
-		s_brightness_slider[i].curvalue = (1.3 - vid_gamma->value + 0.5) * 10;
+		s_brightness_slider[i].curvalue = (1.3f - vid_gamma->value + 0.5f) * 10;
 
 		s_fullscreen_box[i].generic.type = MTYPE_SPINCONTROL;
 		s_fullscreen_box[i].generic.x = 0;

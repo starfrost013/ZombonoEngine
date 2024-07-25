@@ -33,13 +33,13 @@
     <ClCompile Include="client\base\client_prediction.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\render\render_2d.c">
+    <ClCompile Include="client\ui\render\render_2d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\entity\entity_tempent.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\render\render_3d.c">
+    <ClCompile Include="client\ui\render\render_3d.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\console\console.c">
@@ -168,7 +168,7 @@
     <ClCompile Include="client\loadout\loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\render\render_interface.c">
+    <ClCompile Include="client\ui\render\render_interface.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui_legacy\menu_video.c">

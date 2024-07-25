@@ -68,9 +68,9 @@ void Loadout_Add()
 		}
 	}
 
-	strncpy(&cl.loadout.items[cl.loadout.num_items].item_name, str, LOADOUT_MAX_STRLEN);
+	strncpy(cl.loadout.items[cl.loadout.num_items].item_name, str, LOADOUT_MAX_STRLEN);
 	str = MSG_ReadString(&net_message);
-	strncpy(&cl.loadout.items[cl.loadout.num_items].icon, str, LOADOUT_MAX_STRLEN);
+	strncpy(cl.loadout.items[cl.loadout.num_items].icon, str, LOADOUT_MAX_STRLEN);
 
 	cl.loadout.items[cl.loadout.num_items].type = MSG_ReadByte(&net_message);
 	cl.loadout.items[cl.loadout.num_items].amount = MSG_ReadShort(&net_message);

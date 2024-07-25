@@ -174,8 +174,8 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 
 	// open up json, load targa as a texture.
 	// .tga is *assumed* by LoadPic!!
-	snprintf(&tga_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s", file_name);
-	snprintf(&json_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s.json", file_name);
+	snprintf(tga_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s", file_name);
+	snprintf(json_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s.json", file_name);
 
 	Com_DPrintf("Font_LoadFont: Loading Font TGA %s.tga\n", tga_filename);
 	// TODO: MERGE PICS AND IMAGES!!!
@@ -308,12 +308,12 @@ bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 			if (!strcmp(json_string, "size"))
 			{	
 				next_type = JSON_next(json_stream);
-				font_ptr->size = JSON_get_number(json_stream);
+				font_ptr->size = (int32_t)JSON_get_number(json_stream);
 			}
 			else if (!strcmp(json_string, "charHeight"))
 			{
 				next_type = JSON_next(json_stream);
-				font_ptr->line_height = JSON_get_number(json_stream);
+				font_ptr->line_height = (int32_t)JSON_get_number(json_stream);
 			}
 			else if (!strcmp(json_string, "face"))
 			{
@@ -362,7 +362,7 @@ bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 				switch (next_type)
 				{
 				case JSON_NUMBER:
-					json_number = JSON_get_number(json_stream);
+					json_number = (int32_t)JSON_get_number(json_stream);
 					break;
 				case JSON_STRING:
 					json_string = JSON_get_string(json_stream, NULL);
@@ -371,47 +371,47 @@ bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr)
 					if (!strcmp(json_string, "height"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->height = JSON_get_number(json_stream);
+						current_glyph->height = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "width"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->width = JSON_get_number(json_stream);
+						current_glyph->width = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "id"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->char_code = JSON_get_number(json_stream);
+						current_glyph->char_code = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "x"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->x_start = JSON_get_number(json_stream);
+						current_glyph->x_start = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "xadvance"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->x_advance = JSON_get_number(json_stream);
+						current_glyph->x_advance = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "xoffset"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->x_offset = JSON_get_number(json_stream);
+						current_glyph->x_offset = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "y"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->y_start = JSON_get_number(json_stream);
+						current_glyph->y_start = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "yadvance"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->y_advance = JSON_get_number(json_stream);
+						current_glyph->y_advance = (int32_t)JSON_get_number(json_stream);
 					}
 					else if (!strcmp(json_string, "yoffset"))
 					{
 						next_type = JSON_next(json_stream);
-						current_glyph->y_offset = JSON_get_number(json_stream);
+						current_glyph->y_offset = (int32_t)JSON_get_number(json_stream);
 					}
 					break;
 				case JSON_ERROR:

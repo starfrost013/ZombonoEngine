@@ -288,7 +288,7 @@ void Load_Pic(char* name); // load but don't draw a pic.
 void Draw_Pic(int32_t x, int32_t y, char* name, color4_t color, bool use_scaled_assets);
 void Draw_PicRegion(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, bool use_scaled_assets);
 void Draw_PicStretch(int32_t x, int32_t y, int32_t w, int32_t h, char* name, color4_t color, bool use_scaled_assets);
-void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color);
+void Draw_FontChar(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_t end_x, int32_t end_y, char* pic, color4_t color, bool use_scaled_assets);
 
 void Draw_TileClear(int32_t x, int32_t y, int32_t w, int32_t h, char* name);
 void Draw_Fill(int32_t x, int32_t y, int32_t w, int32_t h, color4_t color);
@@ -323,7 +323,7 @@ bool GL_Init();
 void GL_SetMousePressedProc(void proc(void* unused, int32_t button, int32_t action, int32_t mods));
 void GL_SetMouseScrollProc(void proc(void* unused, double xoffset, double yoffset));
 void GL_SetKeyPressedProc(void proc(void* unused, int32_t key, int32_t scancode, int32_t action, int32_t mods));
-void GL_SetMouseMovedProc(void proc(void* unused, int32_t xpos, int32_t ypos));
+void GL_SetMouseMovedProc(void proc(void* unused, double xpos, double ypos));
 void GL_SetWindowFocusProc(void proc(void* unused, int32_t focused));
 void GL_SetWindowIconifyProc(void proc(void* unused, int32_t iconified));
 void GL_GetCursorPosition(double* x, double* y);
@@ -353,5 +353,5 @@ IMPLEMENTATION SPECIFIC FUNCTIONS
 void	GL_BeginFrame();
 void	GL_EndFrame(void);
 void	GL_Shutdown(void);
-void	GL_ShutdownEverything(void);
+void	GL_ShutdownEverything(GLFWwindow* window);
 rserr_t GL_SetMode(int32_t* pwidth, int32_t* pheight, bool fullscreen);

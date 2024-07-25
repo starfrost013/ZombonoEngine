@@ -117,7 +117,7 @@ void Render2D_EndLoadingPlaque()
 
 }
 
-void Render2D_DebugGraph()
+void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 
 }

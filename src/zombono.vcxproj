@@ -47,7 +47,7 @@
     <ClCompile Include="client\base\client_main.c" />
     <ClCompile Include="client\base\client_parse.c" />
     <ClCompile Include="client\base\client_prediction.c" />
-    <ClCompile Include="client\render\render_2d.c" />
+    <ClCompile Include="client\ui\render\render_2d.c" />
     <ClCompile Include="client\entity\entity_tempent.c" />
     <ClCompile Include="client\text\text_font.c" />
     <ClCompile Include="client\ui\ui.c" />
@@ -59,7 +59,7 @@
     <ClCompile Include="client\ui\ui_mainmenu_settings.c" />
     <ClCompile Include="client\ui\ui_mainmenu_zombietv.c" />
     <ClCompile Include="client\ui\ui_scripts.c" />
-    <ClCompile Include="client\render\render_3d.c" />
+    <ClCompile Include="client\ui\render\render_3d.c" />
     <ClCompile Include="client\console\console.c" />
     <ClCompile Include="client\input\input_events.c" />
     <ClCompile Include="client\ui_legacy\menu.c" />
@@ -69,7 +69,7 @@
     <ClCompile Include="client\sound\sound_mem.c" />
     <ClCompile Include="client\sound\sound_miniaudio.c" />
     <ClCompile Include="client\sound\sound_mix.c" />
-    <ClCompile Include="client\render\render_interface.c" />
+    <ClCompile Include="client\ui\render\render_interface.c" />
     <ClCompile Include="game\gameplay\game_monster_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="common\cmd.c" />
@@ -220,7 +220,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -233,12 +233,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_engine</IntDir>
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -42,10 +42,11 @@ Obtains scaled asset path
 =============
 */
 
+// not thread safe buffer
+char scaled_asset_path[MAX_QPATH] = { 0 };
+
 char* Draw_GetScaledImagePath(char* name)
 {
-	char scaled_asset_path[MAX_QPATH] = { 0 };
-
 	if (r_scaled_assets_basewidth->value == 0
 		|| r_width->value > (r_scaled_assets_basewidth->value / 2))
 	{
@@ -102,8 +103,8 @@ void Draw_GetPicSize(int32_t* w, int32_t* h, char* pic)
 
 	cvar_t* scale = ri.Cvar_Get("hudscale", "1", 0);
 
-	*w = gl->width * scale->value;
-	*h = gl->height * scale->value;
+	*w = (int32_t)gl->width * scale->value;
+	*h = (int32_t)gl->height * scale->value;
 }
 
 /*
@@ -150,7 +151,10 @@ void Draw_Pic(int32_t x, int32_t y, char* pic, color4_t color, bool use_scaled_a
 
 	if (color != NULL)
 	{
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glColor4f(1.0f, 
+			1.0f, 
+			1.0f, 
+			1.0f);
 		glDisable(GL_BLEND);
 	}
 }
@@ -210,7 +214,10 @@ void Draw_PicArea(int32_t x, int32_t y, int32_t start_x, int32_t start_y, int32_
 
 	if (color != NULL)
 	{
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glColor4f(1.0f,
+			1.0f, 
+			1.0f, 
+			1.0f);
 		glDisable(GL_BLEND);
 	}
 }
@@ -241,7 +248,10 @@ void Draw_PicStretch(int32_t x, int32_t y, int32_t w, int32_t h, char* pic, colo
 	{
 		glEnable(GL_BLEND);
 		GL_TexEnv(GL_MODULATE); // multiply the glColor4f by the texture -> create a coloured texture.
-		glColor4f(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f, color[3] / 255.0f);
+		glColor4f(color[0] / 255.0f, 
+			color[1] / 255.0f, 
+			color[2] / 255.0f, 
+			color[3] / 255.0f);
 	}
 
 	glBegin(GL_QUADS);
@@ -332,13 +342,13 @@ void Draw_TileClear(int32_t x, int32_t y, int32_t w, int32_t h, char* pic)
 
 	GL_Bind(image->texnum);
 	glBegin(GL_QUADS);
-	glTexCoord2f(x / 64.0, y / 64.0);
+	glTexCoord2f(x / 64.0f, y / 64.0f);
 	glVertex2f(x, y);
-	glTexCoord2f((x + w) / 64.0, y / 64.0);
+	glTexCoord2f((x + w) / 64.0f, y / 64.0f);
 	glVertex2f(x + w, y);
-	glTexCoord2f((x + w) / 64.0, (y + h) / 64.0);
+	glTexCoord2f((x + w) / 64.0f, (y + h) / 64.0f);
 	glVertex2f(x + w, y + h);
-	glTexCoord2f(x / 64.0, (y + h) / 64.0);
+	glTexCoord2f(x / 64.0f, (y + h) / 64.0f);
 	glVertex2f(x, y + h);
 	glEnd();
 
@@ -356,10 +366,10 @@ void Draw_Fill(int32_t x, int32_t y, int32_t w, int32_t h, color4_t color)
 	glEnable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4f(color[0] / 255.0,
-		color[1] / 255.0,
-		color[2] / 255.0,
-		color[3] / 255.0);
+	glColor4f(color[0] / 255.0f,
+		color[1] / 255.0f,
+		color[2] / 255.0f,
+		color[3] / 255.0f);
 
 	glBegin(GL_QUADS);
 
@@ -387,7 +397,7 @@ void Draw_FadeScreen()
 {
 	glEnable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
-	glColor4f(0, 0, 0, 0.8);
+	glColor4f(0, 0, 0, 0.8f);
 	glBegin(GL_QUADS);
 
 	glVertex2f(0, 0);
