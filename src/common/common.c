@@ -1180,7 +1180,7 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 	if (log_memalloc
 		&& log_memalloc->value)
 	{
-		Com_DPrintf("Z_TagMalloc: Allocated %d bytes for tag ID %d @ %0x\n", size, tag, z);
+		Com_DPrintf("Z_TagMalloc: Allocated %d bytes for tag ID %d @ 0x%0X\n", size, tag, z);
 	}
 
 	return (void*)(z + 1);

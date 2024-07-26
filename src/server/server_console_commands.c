@@ -765,6 +765,7 @@ void SV_Status_f()
 		if (!cl->state)
 			continue;
 		Com_Printf("%3i ", i);
+
 		Com_Printf("%5i ", cl->edict->client->ps.stats[STAT_FRAGS]);
 
 		if (cl->state == cs_connected)
