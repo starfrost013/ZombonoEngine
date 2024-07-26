@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	MAXPRINTMSG	8192
 
-#define MAX_NUM_ARGVS	50
+#define MAX_NUM_ARGVS 50
 
 int32_t com_argc;
 char* com_argv[MAX_NUM_ARGVS + 1];
@@ -41,6 +41,7 @@ FILE* log_stats_file;
 cvar_t* profile_all;
 
 cvar_t* log_stats;
+cvar_t* log_memalloc;
 cvar_t* developer;
 cvar_t* timescale;
 cvar_t* fixedtime;
@@ -107,8 +108,8 @@ to the apropriate place.
 */
 void Com_Printf(char* fmt, ...)
 {
-	va_list		argptr;
-	char		msg[MAXPRINTMSG];
+	va_list	 argptr;
+	char	 msg[MAXPRINTMSG];
 
 	va_start(argptr, fmt);
 	vsnprintf(msg, MAXPRINTMSG, fmt, argptr);
@@ -133,7 +134,7 @@ void Com_Printf(char* fmt, ...)
 	// logfile
 	if (logfile_active && logfile_active->value)
 	{
-		char	name[MAX_QPATH];
+		char name[MAX_QPATH];
 
 		if (!logfile)
 		{
@@ -184,8 +185,8 @@ do the apropriate things.
 void Com_Error(int32_t code, char* fmt, ...)
 {
 	va_list		argptr;
-	static char		msg[MAXPRINTMSG];
-	static	bool	recursive;
+	static char	msg[MAXPRINTMSG];
+	static bool recursive;
 
 	if (recursive)
 		Sys_Error("recursive error after: %s", msg);
@@ -1176,7 +1177,11 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 	z_chain.next->prev = z;
 	z_chain.next = z;
 
-	Com_DPrintf("Z_TagMalloc: Allocated %d bytes for tag ID %d @ %0x", size, tag, z);
+	if (log_memalloc
+		&& log_memalloc->value)
+	{
+		Com_DPrintf("Z_TagMalloc: Allocated %d bytes for tag ID %d @ %0x\n", size, tag, z);
+	}
 
 	return (void*)(z + 1);
 }
@@ -1385,8 +1390,10 @@ void Common_Init(int32_t argc, char** argv)
 	Cmd_AddCommand("error", Com_Error_f);
 
 	profile_all = Cvar_Get("profile_all", "0", 0);
+	log_memalloc = Cvar_Get("log_memalloc", "0", 0);
 #ifndef NDEBUG
 	log_stats = Cvar_Get("log_stats", "1", 0);
+
 	developer = Cvar_Get("developer", "1", 0);
 #else
 	log_stats = Cvar_Get("log_stats", "0", 0);
