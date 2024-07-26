@@ -603,11 +603,11 @@ void CL_Frame(int32_t msec)
 		Render3D_PrepRefresh();
 
 	// update the screen
-	if (host_speeds->value)
-		time_before_ref = Sys_Milliseconds();
+	if (profile_all->value)
+		time_before_ref = Sys_Nanoseconds();
 	Render_UpdateScreen();
-	if (host_speeds->value)
-		time_after_ref = Sys_Milliseconds();
+	if (profile_all->value)
+		time_after_ref = Sys_Nanoseconds();
 
 	// update audio
 	S_Update(cl.refdef.vieworigin, cl.v_forward, cl.v_right, cl.v_up);

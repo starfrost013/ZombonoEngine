@@ -781,18 +781,18 @@ float crand();	// -1 to 1
 
 extern cvar_t* developer;
 extern cvar_t* dedicated;
-extern cvar_t* host_speeds;
+extern cvar_t* profile_all;
 extern cvar_t* log_stats;
 extern cvar_t* debug_console;
 extern cvar_t* engine_version;
 
 extern FILE* log_stats_file;
 
-// host_speeds times
-extern int32_t time_before_game;
-extern int32_t time_after_game;
-extern int32_t time_before_ref;
-extern int32_t time_after_ref;
+// profile_all times
+extern int64_t time_before_game;
+extern int64_t time_after_game;
+extern int64_t time_before_ref;
+extern int64_t time_after_ref;
 
 void Z_Free(void* ptr);
 void* Z_Malloc(int32_t size);			// returns 0 filled memory

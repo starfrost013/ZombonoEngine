@@ -139,7 +139,7 @@ void main (int argc, char **argv)
 
 	while (1)
 	{
-		Common_Frame (0.1);
+		Common_Frame (FRAMETIME);
 	}
 }
 

@@ -45,10 +45,10 @@ bool UI_MainMenuQuickstartUICreate()
 	// first level menu options
 	// aligned with the back sign
 	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "[STRING_QUICKSTARTUI_STARTGAMECOOP]", 
-		1.00f - ((float)size_x/UI_SCALE_BASE_X), 0.75f);
+		1.00f - ((float)size_x/UI_SCALE_BASE_X) + 0.045f, 0.75f);
 	Text_GetSize("bahnschrift_bold_18", &size_x, &size_y, "[STRING_QUICKSTARTUI_STARTGAMECOMPETITIVE]");
 	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Competitive", "[STRING_QUICKSTARTUI_STARTGAMECOMPETITIVE]", 
-		1.00f - ((float)size_x / UI_SCALE_BASE_X), 0.81f);
+		1.00f - ((float)size_x / UI_SCALE_BASE_X) + 0.062f, 0.81f);
 
 	// set the font to big bahnschrift
 	UI_SetFont("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "bahnschrift_bold_18");

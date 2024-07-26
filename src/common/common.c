@@ -37,7 +37,9 @@ static bool shutdown_game = false;
 
 FILE* log_stats_file;
 
-cvar_t* host_speeds;
+// profiling cvars
+cvar_t* profile_all;
+
 cvar_t* log_stats;
 cvar_t* developer;
 cvar_t* timescale;
@@ -53,10 +55,10 @@ FILE* logfile;
 int32_t server_state;
 
 // host_speeds times
-int32_t time_before_game;
-int32_t time_after_game;
-int32_t time_before_ref;
-int32_t time_after_ref;
+int64_t time_before_game;
+int64_t time_after_game;
+int64_t time_before_ref;
+int64_t time_after_ref;
 
 /*
 ============================================================================
@@ -1158,8 +1160,10 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 
 	size = size + sizeof(zhead_t);
 	z = malloc(size);
+
 	if (!z)
 		Com_Error(ERR_FATAL, "Z_Malloc: failed on allocation of %i bytes", size);
+
 	memset(z, 0, size);
 	z_count++;
 	z_bytes += size;
@@ -1171,6 +1175,8 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 	z->prev = &z_chain;
 	z_chain.next->prev = z;
 	z_chain.next = z;
+
+	Com_DPrintf("Z_TagMalloc: Allocated %d bytes for tag ID %d @ %0x", size, tag, z);
 
 	return (void*)(z + 1);
 }
@@ -1378,7 +1384,7 @@ void Common_Init(int32_t argc, char** argv)
 	Cmd_AddCommand("z_stats", Z_Stats_f);
 	Cmd_AddCommand("error", Com_Error_f);
 
-	host_speeds = Cvar_Get("host_speeds", "0", 0);
+	profile_all = Cvar_Get("profile_all", "0", 0);
 #ifndef NDEBUG
 	log_stats = Cvar_Get("log_stats", "1", 0);
 	developer = Cvar_Get("developer", "1", 0);
@@ -1477,7 +1483,7 @@ Qcommon_Frame
 void Common_Frame(int32_t msec)
 {
 	char* s;
-	int32_t 	time_before, time_between, time_after;
+	int64_t 	time_before, time_between, time_after;
 
 	if (setjmp(abortframe))
 	{
@@ -1542,32 +1548,32 @@ void Common_Frame(int32_t msec)
 	// Poll for netservices transfers
 	Netservices_Frame();
 
-	if (host_speeds->value)
-		time_before = Sys_Milliseconds();
+	if (profile_all->value)
+		time_before = Sys_Nanoseconds();
 
 	SV_Frame(msec);
 
-	if (host_speeds->value)
-		time_between = Sys_Milliseconds();
+	if (profile_all->value)
+		time_between = Sys_Nanoseconds();
 
 	CL_Frame(msec);
 
-	if (host_speeds->value)
-		time_after = Sys_Milliseconds();
+	if (profile_all->value)
+		time_after = Sys_Nanoseconds();
 
-	if (host_speeds->value)
+	if (profile_all->value)
 	{
-		int32_t 		all, sv, gm, cl, rf;
+		float all, sv, gm, cl, rf;
 
-		all = time_after - time_before;
-		sv = time_between - time_before;
-		cl = time_after - time_between;
-		gm = time_after_game - time_before_game;
-		rf = time_after_ref - time_before_ref;
+		all = (time_after - time_before) / 1000000.0f;
+		sv = (time_between - time_before) / 1000000.0f;
+		cl = (time_after - time_between) / 1000000.0f;
+		gm = (time_after_game - time_before_game) / 1000000.0f;
+		rf = (time_after_ref - time_before_ref) / 1000000.0f;
 		sv -= gm;
 		cl -= rf;
-		Com_Printf("all:%3i sv:%3i gm:%3i cl:%3i rf:%3i\n",
-			all, sv, gm, cl, rf);
+		Com_Printf("Server: %3f GameDLL: %3f Client: %3f Renderer: %3f Total: %3f\n",
+			sv, gm, cl, rf, all);
 	}
 }
 

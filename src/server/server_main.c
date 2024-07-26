@@ -461,7 +461,7 @@ for their command moves.  If they exceed it, assume cheating.
 */
 void SV_GiveMsec()
 {
-	int32_t 		i;
+	int32_t i;
 	client_t* cl;
 
 	if (sv.framenum & 15)
@@ -611,8 +611,8 @@ SV_RunGameFrame
 */
 void SV_RunGameFrame()
 {
-	if (host_speeds->value)
-		time_before_game = Sys_Milliseconds();
+	if (profile_all->value)
+		time_before_game = Sys_Nanoseconds();
 
 	// we always need to bump framenum, even if we
 	// don't run the world, otherwise the delta
@@ -635,8 +635,8 @@ void SV_RunGameFrame()
 		}
 	}
 
-	if (host_speeds->value)
-		time_after_game = Sys_Milliseconds();
+	if (profile_all->value)
+		time_after_game = Sys_Nanoseconds();
 
 }
 

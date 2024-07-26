@@ -539,14 +539,14 @@ The current net_message is parsed for the given client
 */
 void SV_ExecuteClientMessage(client_t* cl)
 {
-	int32_t 	c;
-	char* s;
+	int32_t c;
+	char*	s;
 
 	usercmd_t	nullcmd;
 	usercmd_t	oldest, oldcmd, newcmd;
-	int32_t 	stringCmdCount;
-	int32_t 	checksum, calculatedChecksum;
-	int32_t 	checksumIndex;
+	int32_t 	string_cmd_count;
+	int32_t 	checksum, calculated_checksum;
+	int32_t 	checksum_index;
 	bool		move_issued;
 	int32_t 	lastframe;
 
@@ -555,7 +555,7 @@ void SV_ExecuteClientMessage(client_t* cl)
 
 	// only allow one move command
 	move_issued = false;
-	stringCmdCount = 0;
+	string_cmd_count = 0;
 
 	while (1)
 	{
@@ -590,7 +590,7 @@ void SV_ExecuteClientMessage(client_t* cl)
 				return;		// someone is trying to cheat...
 
 			move_issued = true;
-			checksumIndex = net_message.readcount;
+			checksum_index = net_message.readcount;
 			checksum = MSG_ReadByte(&net_message);
 			lastframe = MSG_ReadInt(&net_message);
 			if (lastframe != cl->lastframe) {
@@ -613,23 +613,21 @@ void SV_ExecuteClientMessage(client_t* cl)
 			}
 
 			// if the checksum fails, ignore the rest of the packet
-			calculatedChecksum = Com_BlockSequenceCRCByte(
-				net_message.data + checksumIndex + 1,
-				net_message.readcount - checksumIndex - 1,
+			calculated_checksum = Com_BlockSequenceCRCByte(
+				net_message.data + checksum_index + 1,
+				net_message.readcount - checksum_index - 1,
 				cl->netchan.incoming_sequence);
 
-			if (calculatedChecksum != checksum)
+			if (calculated_checksum != checksum)
 			{
 				Com_DPrintf("Failed command checksum for %s (%d != %d)/%d\n",
-					cl->name, calculatedChecksum, checksum,
+					cl->name, calculated_checksum, checksum,
 					cl->netchan.incoming_sequence);
 				return;
 			}
 
 			if (!sv_paused->value)
-			{
 				SV_ClientThink(cl, &newcmd);
-			}
 
 			cl->lastcmd = newcmd;
 			break;
@@ -638,7 +636,7 @@ void SV_ExecuteClientMessage(client_t* cl)
 			s = MSG_ReadString(&net_message);
 
 			// malicious users may try using too many string commands
-			if (++stringCmdCount < MAX_STRINGCMDS)
+			if (++string_cmd_count < MAX_STRINGCMDS)
 				SV_ExecuteUserCommand(s, false);
 
 			if (cl->state == cs_zombie)
