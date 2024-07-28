@@ -33,7 +33,7 @@ bool UI_MainMenuBrowseServersUICreate()
 	UI_SetImageIsStretched("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", true);
 	UI_UseScaledAssets("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", true);
 
-	UI_AddImage("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
+	UI_AddImage("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
 	UI_SetImageOnHover("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", UI_MainMenuBrowseServersUIOnBackPressed);
 

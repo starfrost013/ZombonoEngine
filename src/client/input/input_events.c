@@ -1095,7 +1095,6 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 				UI_SetEnabled("MainMenuUI", !is_active);
 				UI_SetActivated("MainMenuUI", !is_active);
 
-				/*
 				// let the player toggle the menu if it's connected
 				if (cls.state == ca_active
 					|| cls.state == ca_connecting)
@@ -1105,14 +1104,13 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 				}
 				else // otherwise don't
 				{
-					// TODO: this is temporary logic, because the player will be sent back to the main menu when conecting. We need a stack system for this...
+					// TODO: this is temporary logic, because the player will be sent back to the main menu when connecting. We need a stack system for this...
 					if (!mainmenu_ptr->enabled)
 					{
 						UI_SetEnabled("MainMenuUI", true);
 						UI_SetActivated("MainMenuUI", true);
 					}
 				}
-				*/
 
 			}
 			else

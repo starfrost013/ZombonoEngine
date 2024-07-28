@@ -203,6 +203,13 @@ void CL_Disconnect()
 	}
 
 	cls.state = ca_disconnected;
+
+	// put up the main menu
+	if (ui_newmenu->value)
+	{
+		UI_SetEnabled("MainMenuUI", true);
+		UI_SetActivated("MainMenuUI", true);
+	}
 }
 
 /*
@@ -741,6 +748,14 @@ void CL_Init()
 
 	if (cl_showintro->value)
 		Intro_Start();
+
+	// put up the main menu
+
+	if (ui_newmenu->value)
+	{
+		UI_SetEnabled("MainMenuUI", true);
+		UI_SetActivated("MainMenuUI", true);
+	}
 }
 
 /*
