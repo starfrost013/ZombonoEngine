@@ -161,12 +161,12 @@ MULTICAST_PHS	send to clients potentially hearable from org
 */
 void SV_Multicast (vec3_t origin, multicast_t to)
 {
-	client_t	*client;
-	uint8_t		*mask;
-	int32_t 		leafnum, cluster;
-	int32_t 		j;
-	bool	reliable;
-	int32_t 		area1, area2;
+	client_t*	client;
+	uint8_t*	mask;
+	int32_t 	leafnum, cluster;
+	int32_t 	j;
+	bool		reliable;
+	int32_t 	area1, area2;
 
 	reliable = false;
 

@@ -559,7 +559,7 @@ For development work
 void SV_Map_f()
 {
 	char* map;
-	char	expanded[MAX_QPATH];
+	char expanded[MAX_QPATH];
 
 	// if not a tga or demo, check to make sure the level exists
 	map = Cmd_Argv(1);

@@ -561,9 +561,19 @@ NET
 #define	MAX_MSGLEN		16384		// max length of a message (Quake 3)
 #define	PACKET_HEADER	10			// two ints and a short
 
-typedef enum { NA_LOOPBACK, NA_BROADCAST, NA_IP } netadrtype_t;
+typedef enum
+{ 
+	NA_LOOPBACK,
+	NA_BROADCAST, 
+	NA_IP 
+} netadrtype_t;
 
-typedef enum { NS_CLIENT, NS_SERVER } netsrc_t;
+typedef enum 
+{ 
+	NS_CLIENT, 
+	NS_SERVER,
+	NS_MAX = NS_SERVER
+} netsrc_t;
 
 // Defines aNetwork address
 typedef struct netadr_s
@@ -582,10 +592,11 @@ bool Net_GetPacket(netsrc_t sock, netadr_t* net_from, sizebuf_t* net_message);
 void Net_SendPacket(netsrc_t sock, int32_t length, void* data, netadr_t to);
 
 bool Net_CompareAdr(netadr_t a, netadr_t b);
-bool NET_CompareBaseAdr(netadr_t a, netadr_t b);
+bool Net_CompareBaseAdr(netadr_t a, netadr_t b);
 bool Net_IsLocalAddress(netadr_t adr);
 char* Net_AdrToString(netadr_t a);
 bool Net_StringToAdr(char* s, netadr_t* a);
+void Net_ResetLoopback(netsrc_t sock);
 void Net_Sleep(int32_t msec);
 
 //============================================================================

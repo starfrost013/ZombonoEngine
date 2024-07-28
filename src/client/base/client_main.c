@@ -201,6 +201,11 @@ void CL_Disconnect()
 		cls.download = NULL;
 	}
 
+	// fix for not properly resetting the loopback when disconnecting
+	// leading to, in some cases, not being able to reconnect to loopback
+	if (cls.netchan.remote_address.type == NA_LOOPBACK)
+		Net_ResetLoopback(NS_CLIENT);
+
 	cls.state = ca_disconnected;
 }
 

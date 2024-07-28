@@ -398,7 +398,7 @@ SV_Map
   map [*]<map>$<startspot>+<nextserver>
 
 command from the console or game dll
-Map can also be a .tga or .dm2 file
+Map can also be a .dm2 file
 ======================
 */
 void SV_Map(bool attractloop, char* levelstring, bool loadgame)

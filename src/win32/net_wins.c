@@ -102,7 +102,7 @@ NET_CompareBaseAdr
 Compares without the port
 ===================
 */
-bool NET_CompareBaseAdr(netadr_t a, netadr_t b)
+bool Net_CompareBaseAdr(netadr_t a, netadr_t b)
 {
 	if (a.type != b.type)
 		return false;
@@ -264,6 +264,43 @@ void Net_SendLoopPacket(netsrc_t sock, int32_t length, void* data, netadr_t to)
 
 	memcpy(loop->msgs[i].data, data, length);
 	loop->msgs[i].datalen = length;
+}
+
+void Net_ResetLoopback(netsrc_t sock)
+{
+	// fail gracefully
+	if (sock >= NS_MAX)
+	{
+		Com_Printf("Warning: Tried to reset invalid loopback channel %d\n", sock);
+		return;
+	}
+
+	loopback_t* loop = &loopbacks[sock];
+
+	// clear out the messages
+
+	for (int32_t i = 0; i < MAX_LOOPBACK; i++)
+	{
+		// failsafe, clear whole 16kb if the datalen is invalid
+		if (loop->msgs[i].datalen == 0)
+		{
+			memset(loop->msgs[i].data, 0x00, MAX_MSGLEN);
+		}
+		else
+		{
+			memset(loop->msgs[i].data, 0x00, loop->msgs[i].datalen);
+		}
+
+		loop->msgs[i].datalen = 0;
+	}
+
+	loop->get = 0;
+
+	// clear out the net_message buffer from the last run so that the client does not read it forever
+	// safety check - make it client only as this only exists on client
+
+	if (sock == NS_CLIENT)
+		memset(net_message.data, 0x00, net_message.cursize);
 }
 
 //=============================================================================
