@@ -1092,6 +1092,10 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 
 				cls.input_dest == (is_active) ? key_menu : key_game;
 
+				UI_SetEnabled("MainMenuUI", !is_active);
+				UI_SetActivated("MainMenuUI", !is_active);
+
+				/*
 				// let the player toggle the menu if it's connected
 				if (cls.state == ca_active
 					|| cls.state == ca_connecting)
@@ -1108,6 +1112,8 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 						UI_SetActivated("MainMenuUI", true);
 					}
 				}
+				*/
+
 			}
 			else
 			{

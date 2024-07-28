@@ -596,7 +596,6 @@ bool Net_CompareBaseAdr(netadr_t a, netadr_t b);
 bool Net_IsLocalAddress(netadr_t adr);
 char* Net_AdrToString(netadr_t a);
 bool Net_StringToAdr(char* s, netadr_t* a);
-void Net_ResetLoopback(netsrc_t sock);
 void Net_Sleep(int32_t msec);
 
 //============================================================================

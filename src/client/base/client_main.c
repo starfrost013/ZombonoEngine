@@ -179,6 +179,7 @@ void CL_Disconnect()
 	VectorClear(cl.refdef.blend);
 
 	M_ForceMenuOff();
+	UI_Reset();
 
 	cls.connect_time = 0;
 
@@ -200,11 +201,6 @@ void CL_Disconnect()
 		fclose(cls.download);
 		cls.download = NULL;
 	}
-
-	// fix for not properly resetting the loopback when disconnecting
-	// leading to, in some cases, not being able to reconnect to loopback
-	if (cls.netchan.remote_address.type == NA_LOOPBACK)
-		Net_ResetLoopback(NS_CLIENT);
 
 	cls.state = ca_disconnected;
 }
@@ -528,8 +524,11 @@ void CL_SendCommand()
 	// Kill input when a UI that captures input and is (slight hack) NOT the leaderboard is active.
 	// sys_frame_time being frozen effectively breaks input
 
-	if (ui_active
-		&& !(ui_active && current_ui != NULL && current_ui->passive))
+	if (cls.state == ca_active
+		&& ui_active 
+		&& !(ui_active 
+			&& current_ui != NULL 
+			&& current_ui->passive))
 	{
 		// disable movement
 		return;

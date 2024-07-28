@@ -148,7 +148,7 @@ Netchan_Setup
 called to open a channel to a remote system
 ==============
 */
-void Netchan_Setup (netsrc_t sock, netchan_t *chan, netadr_t adr, int32_t qport)
+void Netchan_Setup(netsrc_t sock, netchan_t *chan, netadr_t adr, int32_t qport)
 {
 	memset (chan, 0, sizeof(*chan));
 	
