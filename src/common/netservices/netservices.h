@@ -48,7 +48,7 @@ extern cvar_t* ns_usetestserver;
 
 #define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 
-#define	ZOMBONO_USER_AGENT			"Zombono/" ENGINE_VERSION
+#define	ENGINE_USER_AGENT			"EuphoriaEngine/" ENGINE_VERSION
 
 extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];	// The data actually received from the connect test.
 
@@ -60,10 +60,18 @@ extern char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];	// The data ac
 extern bool		netservices_connected;							// TRUE if you are connected to the internet and can use netservices, FALSE otherwise.
 extern CURLM*	curl_obj;										// The curl multi object (used for multiple nonblocking transfers)
 
+// Enumerates HTTP methods
+typedef enum http_method_e
+{
+	http_method_get = 0,
+
+	http_method_post = 1,
+} http_method;
+
 // Function
 bool Netservices_Init();								// Initialises Netservices and determines if we are connected to the internet.
 // Sets up an easy curl object for use with a particular URL and the write callback write_callback
-CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
+CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
 void Netservices_DestroyCurlObject(CURL* object, bool multi);	// Destroys the easy curl object represented by object and optionally removes it from the multi object.
 void Netservices_SetOnCompleteCallback(void on_complete()); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
 void Netservices_StartPendingTransfers();					// Starts the current netservices transfers

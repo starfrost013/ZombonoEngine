@@ -83,12 +83,12 @@ void Netservices_UpdaterGetUpdate()
 		|| ns_disabled->value)
 			return;
 
-	// initialise the updateinfo struct
+	// initialise the updateinfo structs
 	memset(&update_info, 0x00, sizeof(game_update_t));
 
 	Com_Printf("Checking for updates...\n");
 
-	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, Netservices_UpdateInfoJsonReceive);
+	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, http_method_get, Netservices_UpdateInfoJsonReceive);
 
 	// create a temporary file
 	tmpnam(update_json_file_name_ptr);
@@ -352,7 +352,7 @@ void Netservices_UpdaterStartUpdate()
 	Com_Printf("Downloading update package %s...\n", update_binary_path);
 
 	// cannot be called if noupdatecheck is not set so dont bother
-	update_binary_curl_obj = Netservices_AddCurlObject(update_binary_path, true, Netservices_UpdateInfoBinaryReceive);
+	update_binary_curl_obj = Netservices_AddCurlObject(update_binary_path, true, http_method_get, Netservices_UpdateInfoBinaryReceive);
 
 	// override timeout because it's a large file
 	curl_easy_setopt(update_binary_curl_obj, CURLOPT_TIMEOUT, 120000);

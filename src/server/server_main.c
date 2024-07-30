@@ -619,7 +619,7 @@ void SV_RunGameFrame()
 	// compression can get confused when a client
 	// has the "current" frame
 	sv.framenum++;
-	sv.time = sv.framenum * 100;
+	sv.time = sv.framenum * (1000*FRAMETIME);
 
 	// don't run if paused
 	if (!sv_paused->value || maxclients->value > 1)

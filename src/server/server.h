@@ -51,7 +51,7 @@ typedef struct
 	bool			attractloop;		// running cinematics and demos for the local system only
 	bool			loadgame;			// client begins should reuse existing entity
 
-	uint32_t		time;				// always sv.framenum * 100 msec
+	uint32_t		time;				// always sv.framenum * (1/FRAMETIME) msec
 	int32_t 		framenum;
 
 	char			name[MAX_QPATH];			// map name

@@ -80,7 +80,7 @@ bool Netservices_Init()
 
 	// init both curl objects
 
-	curl_obj_connect_test = Netservices_AddCurlObject(connect_test_url, false, Netservices_Init_WriteCallback);
+	curl_obj_connect_test = Netservices_AddCurlObject(connect_test_url, false, http_method_get, Netservices_Init_WriteCallback);
 	curl_obj = curl_multi_init();
 
 	if (!curl_obj_connect_test)
@@ -115,7 +115,7 @@ bool Netservices_Init()
 	return true;
 }
 
-CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
+CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
 {
 	CURL* new_obj = curl_easy_init();
 
@@ -129,7 +129,7 @@ CURL* Netservices_AddCurlObject(const char* url, bool multi, size_t write_callba
 	if (curl_easy_setopt(new_obj, CURLOPT_WRITEFUNCTION, write_callback))
 		return NULL;
 
-	if (curl_easy_setopt(new_obj, CURLOPT_USERAGENT, ZOMBONO_USER_AGENT))
+	if (curl_easy_setopt(new_obj, CURLOPT_USERAGENT, ENGINE_USER_AGENT))
 		return NULL;
 
 	if (curl_easy_setopt(new_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
