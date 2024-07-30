@@ -20,16 +20,16 @@ bool quietMode = false; // If true, everything except errors are hushed
 // Localise here!
 #region Strings
 const string STRING_SIGNON = $"Asset Build Tool {ASSETBUILD_VERSION}";
-      string STRING_DESCRIPTION = $"Builds assets for {gameName}";
+string STRING_DESCRIPTION = $"Builds assets for {gameName}";
 const string STRING_USAGE = "Assetbuild <game> <release cfg> [-q]\n\n" +
     "<game>: Path to directory contaning game files\n" +
     "[directory]: Optional - base directory (default is ../../../../../assets/<game name>) ('_raw' after it for raw bsps, TEMP) \n" +
     "[release cfg]: Configuration to release the game for (Debug, Playtest or Release)\n" +
     "[-q]: Optional - quiets everything except errors";
-      string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
-      string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
+string STRING_DELETING_OLD_FILES = $"Deleting old game files for {gameName}...";
+string STRING_BUILDING_FILES = $"Building game files for {gameName}...";
 const string STRING_BUILDING_DONE = "Done!";
-      string STRING_ERROR_NO_GAMEDIR = $"The base directory {gameDir} does not exist!"; // includes variable in variables section
+string STRING_ERROR_NO_GAMEDIR = $"The base directory {gameDir} does not exist!"; // includes variable in variables section
 const string STRING_ERROR_GENERIC = "An exception occurred: ";
 #endregion
 
@@ -105,7 +105,7 @@ try
     // copy them all to the output directory
 
     // exclude raw assets
-    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "save0", 
+    string[] excludedPatterns = [".pdn", ".map", ".prt", ".log", ".pts", ".texinfo.json", ".ssv", @"save\", "save/", "save0",
         "scrnshot", "screenshot", "screenshots", ".skp", ".skb", ".mtl", ".obj", ".fbx"];
 
     foreach (string gameFile in gameFiles)
@@ -114,7 +114,7 @@ try
 
         foreach (string excludedPattern in excludedPatterns)
         {
-            if (gameFile.Contains(excludedPattern)) excluded = true;        
+            if (gameFile.Contains(excludedPattern)) excluded = true;
         }
 
         // create the output dir for this file and then copy

@@ -52,11 +52,13 @@ typedef struct areanode_s
 #define	AREA_NODES	32
 
 areanode_t	sv_areanodes[AREA_NODES];
-int32_t 		sv_numareanodes;
+int32_t 	sv_numareanodes;
 
-float* area_mins, * area_maxs;
-edict_t** area_list;
-int32_t 	area_count, area_maxcount;
+float*		area_mins;
+float*		area_maxs;
+edict_t**	area_list;
+int32_t 	area_count;
+int32_t		area_maxcount;
 int32_t 	area_type;
 
 int32_t SV_HullForEntity(edict_t* ent);
@@ -169,12 +171,12 @@ Links an edict into the chain so it can be acutally used
 void SV_LinkEdict(edict_t* ent)
 {
 	areanode_t* node;
-	int32_t 		leafs[MAX_TOTAL_ENT_LEAFS];
-	int32_t 		clusters[MAX_TOTAL_ENT_LEAFS];
-	int32_t 		num_leafs;
-	int32_t 		i, j, k;
-	int32_t 		area;
-	int32_t 		topnode;
+	int32_t 	leafs[MAX_TOTAL_ENT_LEAFS];
+	int32_t 	clusters[MAX_TOTAL_ENT_LEAFS];
+	int32_t 	num_leafs;
+	int32_t 	i, j, k;
+	int32_t 	area;
+	int32_t 	topnode;
 
 	if (ent->area.prev)
 		SV_UnlinkEdict(ent);	// unlink from old position

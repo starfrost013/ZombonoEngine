@@ -73,6 +73,9 @@ bool Netservices_Init()
 		return true;
 	}
 
+	// initialise cURL
+	curl_global_init(CURL_GLOBAL_ALL);
+	
 	Com_Printf("Netservices_Init: Determining if you are connected to the Internet...\n");
 
 	// init both curl objects
@@ -161,9 +164,7 @@ void Netservices_StartPendingTransfers()
 	CURLMcode error_code = curl_multi_perform(curl_obj, &netservices_running_transfers);
 
 	if (error_code)
-	{
 		Com_Printf("Initial curl_multi_perform failed %d", error_code);
-	}
 }
 
 // Checks for a game update and polls
@@ -229,4 +230,7 @@ void Netservices_Shutdown()
 {
 	Netservices_DestroyCurlObject(curl_obj_connect_test, false);
 	curl_multi_cleanup(curl_obj);
+
+	// uninitialise curl
+	curl_global_cleanup();
 }
