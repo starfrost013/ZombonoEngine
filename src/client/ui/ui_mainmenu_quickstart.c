@@ -37,20 +37,16 @@ bool UI_MainMenuQuickstartUICreate()
 	UI_SetImageOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuQuickstartUI", "MainMenuQuickstartUI_Back", UI_MainMenuQuickstartUIOnBackPressed);
 
-	uint32_t size_x = 0, size_y = 0;
-
-
-	Text_GetSize("bahnschrift_bold_18", &size_x, &size_y, "[STRING_QUICKSTARTUI_STARTGAMECOOP]");
+	float x = 0.01f;
+	float y = 0.54f;
 
 	// first level menu options
 	// aligned with the back sign
-	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "[STRING_QUICKSTARTUI_STARTGAMECOOP]", 
-		1.00f - ((float)size_x/UI_SCALE_BASE_X) + 0.045f, 0.70f);
-	Text_GetSize("bahnschrift_bold_18", &size_x, &size_y, "[STRING_QUICKSTARTUI_STARTGAMECOMPETITIVE]");
-	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Competitive", "[STRING_QUICKSTARTUI_STARTGAMECOMPETITIVE]", 
-		1.00f - ((float)size_x / UI_SCALE_BASE_X) + 0.062f, 0.76f);
-	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_AdvancedOptions", "[STRING_QUICKSTARTUI_STARTGAMEADVANCEDOPTIONS]",
-		1.00f - ((float)size_x / UI_SCALE_BASE_X) + 0.062f, 0.81f);
+	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "[STRING_QUICKSTARTUI_STARTGAMECOOP]", x, y);
+	y += 0.06f;	
+	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_Competitive", "[STRING_QUICKSTARTUI_STARTGAMECOMPETITIVE]", x, y);
+	y += 0.06f;
+	UI_AddText("MainMenuQuickstartUI", "MainMenuQuickstartUI_AdvancedOptions", "[STRING_QUICKSTARTUI_STARTGAMEADVANCEDOPTIONS]",x, y);
 
 	// set the font to big bahnschrift
 	UI_SetFont("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", "bahnschrift_bold_18");

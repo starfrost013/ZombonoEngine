@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
-void UI_MainMenuQuitUIOnYesPressed(uint32_t btn, int32_t x, int32_t y);
-void UI_MainMenuQuitUIOnNoPressed(uint32_t btn, int32_t x, int32_t y);
+void UI_MainMenuQuitUIOnYesPressed(int32_t btn, int32_t x, int32_t y);
+void UI_MainMenuQuitUIOnNoPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuQuitUICreate()
 {
@@ -34,18 +34,34 @@ bool UI_MainMenuQuitUICreate()
 	UI_SetImageIsStretched("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", true);
 	UI_UseScaledAssets("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", true);
 
-	// create uI
+	//todo: randomised quit messgaes 
+
+	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_Box", 0.3f, 0.3f, 384, 192, 0, 0, 0, 180);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_AreYouSure", "[STRING_AREYOUSURE]", 0.4f, 0.31f);
+	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_YesBox", 0.39f, 0.55f, 64, 24, 0, 200, 0, 180);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_Yes", "[STRING_YES]", 0.4f, 0.55f);
+	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_NoBox", 0.575f, 0.55f, 64, 24, 200, 0, 0, 180);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_No", "[STRING_NO]", 0.6f, 0.55f);
+	
+	// set the font
+	UI_SetFont("MainMenuQuitUI", "MainMenuQuitUI_AreYouSure", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuQuitUI", "MainMenuQuitUI_Yes", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuQuitUI", "MainMenuQuitUI_No", "bahnschrift_bold_18");
+
+	UI_SetEventOnClickDown("MainMenuQuitUI", "MainMenuQuitUI_YesBox", UI_MainMenuQuitUIOnYesPressed);
+	UI_SetEventOnClickDown("MainMenuQuitUI", "MainMenuQuitUI_NoBox", UI_MainMenuQuitUIOnNoPressed);
+	// create ui
 	return true;
 }
 
-void UI_MainMenuQuitUIOnYesPressed(uint32_t btn, int32_t x, int32_t y)
+void UI_MainMenuQuitUIOnYesPressed(int32_t btn, int32_t x, int32_t y)
 {
 	// perform same action as quitting using "quit" command
 	CL_Quit_f();
 }
 
 // is this enough to justify adding global UI assets?
-void UI_MainMenuQuitUIOnNoPressed(uint32_t btn, int32_t x, int32_t y)
+void UI_MainMenuQuitUIOnNoPressed(int32_t btn, int32_t x, int32_t y)
 {
 	UI_Pop();
 }
