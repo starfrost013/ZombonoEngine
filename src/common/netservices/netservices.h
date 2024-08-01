@@ -70,8 +70,8 @@ typedef enum http_method_e
 
 // Function
 bool Netservices_Init();								// Initialises Netservices and determines if we are connected to the internet.
-// Sets up an easy curl object for use with a particular URL and the write callback write_callback
-CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata));
+// Sets up an easy curl object for use with a particular URL and the write callback write_callback (optional query_string)
+CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata), char* query_string);
 void Netservices_DestroyCurlObject(CURL* object, bool multi);	// Destroys the easy curl object represented by object and optionally removes it from the multi object.
 void Netservices_SetOnCompleteCallback(void on_complete()); // Sets the current on-complete callback to use when performing a nonblocking Netservices transfer.
 void Netservices_StartPendingTransfers();					// Starts the current netservices transfers

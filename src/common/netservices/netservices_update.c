@@ -88,7 +88,7 @@ void Netservices_UpdaterGetUpdate()
 
 	Com_Printf("Checking for updates...\n");
 
-	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, http_method_get, Netservices_UpdateInfoJsonReceive);
+	update_json_curl_obj = Netservices_AddCurlObject(UPDATE_JSON_URL, true, http_method_get, Netservices_UpdateInfoJsonReceive, NULL);
 
 	// create a temporary file
 	tmpnam(update_json_file_name_ptr);
@@ -352,7 +352,7 @@ void Netservices_UpdaterStartUpdate()
 	Com_Printf("Downloading update package %s...\n", update_binary_path);
 
 	// cannot be called if noupdatecheck is not set so dont bother
-	update_binary_curl_obj = Netservices_AddCurlObject(update_binary_path, true, http_method_get, Netservices_UpdateInfoBinaryReceive);
+	update_binary_curl_obj = Netservices_AddCurlObject(update_binary_path, true, http_method_get, Netservices_UpdateInfoBinaryReceive, NULL);
 
 	// override timeout because it's a large file
 	curl_easy_setopt(update_binary_curl_obj, CURLOPT_TIMEOUT, 120000);

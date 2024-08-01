@@ -80,7 +80,7 @@ bool Netservices_Init()
 
 	// init both curl objects
 
-	curl_obj_connect_test = Netservices_AddCurlObject(connect_test_url, false, http_method_get, Netservices_Init_WriteCallback);
+	curl_obj_connect_test = Netservices_AddCurlObject(connect_test_url, false, http_method_get, Netservices_Init_WriteCallback, NULL);
 	curl_obj = curl_multi_init();
 
 	if (!curl_obj_connect_test)
@@ -115,32 +115,81 @@ bool Netservices_Init()
 	return true;
 }
 
-CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata))
+#define MAX_URL_QUERY_STRING_LENGTH	0x1000
+
+CURL* Netservices_AddCurlObject(const char* url, bool multi, http_method http_method, size_t write_callback(char* ptr, size_t size, size_t nmemb, char* userdata), char* query_string)
 {
 	CURL* new_obj = curl_easy_init();
 
+	// Wow, a decent use for Goto! 
+	// It's so we don't have to duplicate curl_easy_cleanup...
+
 	// 40 byte text file should take maximum of 2 seconds to download to minimise user wait time
 	if (curl_easy_setopt(new_obj, CURLOPT_TIMEOUT_MS, 2000))
-		return NULL;
+		goto on_fail;
 
 	if (curl_easy_setopt(new_obj, CURLOPT_URL, url))
-		return NULL;
+		goto on_fail;
 
 	if (curl_easy_setopt(new_obj, CURLOPT_WRITEFUNCTION, write_callback))
-		return NULL;
+		goto on_fail;
 
 	if (curl_easy_setopt(new_obj, CURLOPT_USERAGENT, ENGINE_USER_AGENT))
-		return NULL;
+		goto on_fail;
 
 	if (curl_easy_setopt(new_obj, CURLOPT_ERRORBUFFER, &connect_test_error_buffer))
-		return NULL;
+		goto on_fail;
+
+	// If the user provided a query string, check the specified HTTP method
+	// If it's a get snprintf into the query string (this is a weird libcurl stupidity)
+	// If it's a post, use CURLOPT_POSTFIELDS
+	if (query_string)
+	{
+		switch (http_method)
+		{
+		case http_method_get:
+
+			//only allocate if we need tp
+			char full_url_buf[MAX_URL_QUERY_STRING_LENGTH] = { 0 };
+
+			if (strlen(url) + strlen(query_string) >= MAX_URL_QUERY_STRING_LENGTH)
+			{
+				Com_Printf("Netservices_AddCurlObject: strlen(url) + strlen(query_string) >= MAX_URL_QUERY_STRING_LENGTH!");
+				goto on_fail;
+			}
+
+			snprintf(full_url_buf, MAX_URL_QUERY_STRING_LENGTH, "%s%s", url, query_string);
+			// set the url to the full url
+			if (curl_easy_setopt(new_obj, CURLOPT_URL, full_url_buf))
+				goto on_fail;
+
+			break;
+		// set POST options
+		case http_method_post:
+			if (curl_easy_setopt(new_obj, CURLOPT_POST, true))
+				goto on_fail;
+
+			if (curl_easy_setopt(new_obj, CURLOPT_POSTFIELDS, query_string))
+				goto on_fail;
+
+			break;
+		}
+
+	}
 
 	if (multi)
 	{
 		if (curl_multi_add_handle(curl_obj, new_obj))
-			return NULL;
+			goto on_fail;
 	}
 
+	goto on_success;
+
+on_fail:
+	curl_easy_cleanup(curl_obj);
+	return NULL;
+
+on_success:
 	return new_obj;
 }
 
