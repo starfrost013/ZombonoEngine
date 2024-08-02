@@ -207,16 +207,15 @@ void Text_DrawChar(const char* font, int32_t x, int32_t y, char text)
 	Text_Draw(font, x, y, new_string);
 }
 
-void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
+void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t* draw_color, const char* text, va_list args)
 {
-	va_list args;
-	// TODO: VARARGS
-	va_start(args, text);
+	// color4_t* is for functions above
+	//va_start(args, text);
 
 	// setup the text
 	char final_text[MAX_STRING_LENGTH] = { 0 };
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
-	va_end(args);
+
 
 	// localise the text
 	char* final_text_ptr = &final_text;
@@ -243,7 +242,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 	if (string_length == 0)
 		return;
-	
+
 	if (string_length > MAX_STRING_LENGTH)
 	{
 		Com_Printf("Tried to print text of pre-colour code length %d, max %d", string_length, MAX_STRING_LENGTH);
@@ -256,7 +255,12 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 	int32_t current_y = y;
 
 	// default is white
+
 	color4_t color = { 255, 255, 255, 255 };
+
+	//...unless it was overridden
+	if (draw_color)
+		VectorCopy(*draw_color, color);
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
@@ -268,7 +272,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		// value by reference because i can't be bothered to change the above to a pointer and add millions of deref operations
 		if ((next_char == '\n'
 			|| next_char == '\v')
-			|| ((string_length - char_num > 1) 
+			|| ((string_length - char_num > 1)
 				&& final_text_ptr[char_num] == '\\'
 				&& final_text_ptr[char_num + 1] == 'n')) // uses vertical tabs as well? 
 		{
@@ -277,7 +281,7 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 
 			// skip next character
 			if (next_char == '\\')
-				char_num++; 
+				char_num++;
 
 			continue; // skip newlines
 		}
@@ -355,4 +359,21 @@ void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
 		// move to next char
 		current_x += (glyph->x_advance * font_scale);
 	}
+}
+
+void Text_Draw(const char* font, int32_t x, int32_t y, const char* text, ...)
+{
+	va_list args;
+
+	va_start(args, text);
+	Text_DrawPerform(font, x, y, NULL, text, args);
+	va_end(args);
+}
+
+void Text_DrawColor(const char* font, int32_t x, int32_t y, color4_t color, const char* text, ...)
+{
+	va_list args;
+	va_start(args, text);
+	Text_DrawPerform(font, x, y, &color, text, args);
+	va_end(args);
 }

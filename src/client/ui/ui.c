@@ -801,12 +801,12 @@ void UI_DrawSlider(ui_control_t* slider)
 		slider->position_y * r_height->value,
 		slider->text);
 
-	float AI_GetRange = (slider->value_current - slider->value_min) / (float)(slider->value_max - slider->value_min);
+	float range = (slider->value_current - slider->value_min) / (float)(slider->value_max - slider->value_min);
 
-	if (AI_GetRange < 0)
-		AI_GetRange = 0;
-	if (AI_GetRange > 1)
-		AI_GetRange = 1;
+	if (range < 0)
+		range = 0;
+	if (range > 1)
+		range = 1;
 
 	re.DrawPic(slider->position_x * r_width->value  + RCOLUMN_OFFSET, slider->position_y * r_height->value, "2d/slider_01", NULL, false);
 	
@@ -815,7 +815,7 @@ void UI_DrawSlider(ui_control_t* slider)
 	
 	re.DrawPic(RCOLUMN_OFFSET + slider->position_x * r_width->value + i * 8 * vid_hudscale->value + 8 * vid_hudscale->value, slider->position_y * r_height->value, "2d/slider_03", NULL, false);
 	
-	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * r_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * AI_GetRange), slider->position_y * r_height->value, "2d/slider_value", NULL, false);
+	re.DrawPic((int32_t)(8 * vid_hudscale->value + RCOLUMN_OFFSET  + slider->position_x * r_width->value + (SLIDER_RANGE - 1) * 8 * vid_hudscale->value * range), slider->position_y * r_height->value, "2d/slider_value", NULL, false);
 }
 
 void UI_DrawCheckbox(ui_control_t* checkbox)
