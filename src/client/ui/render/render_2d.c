@@ -892,7 +892,8 @@ void Render2D_ExecuteLayoutString(char* s)
 		}
 
 		if (!strcmp(token, "num"))
-		{	// draw a number
+		{	
+			// draw a number
 			token = COM_Parse(&s);
 			width = atoi(token);
 			token = COM_Parse(&s);
@@ -902,7 +903,8 @@ void Render2D_ExecuteLayoutString(char* s)
 		}
 
 		if (!strcmp(token, "hnum"))
-		{	// health number
+		{	
+			// health number
 			int32_t 	color;
 
 			width = 3;

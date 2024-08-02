@@ -38,7 +38,7 @@ bool	ui_initialised = false;
 ui_t*	current_ui;
 
 // Functions only in this file
-bool UI_AddControl(ui_t* ui, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
+bool UI_AddControl(ui_t* ui, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
 // Draw functions
 void UI_DrawText(ui_control_t* text);															// Draws a text control.
@@ -90,9 +90,9 @@ bool UI_Init()
 	return successful;
 }
 
-bool UI_AddUI(char* name, bool(*on_create)())
+bool UI_AddUI(char* control_name, bool(*on_create)())
 {
-	Com_DPrintf("Creating UI: %s\n", name);
+	Com_DPrintf("Creating UI: %s\n", control_name);
 	current_ui = &ui_list[num_uis];
 
 	if (num_uis > MAX_UIS)
@@ -103,13 +103,13 @@ bool UI_AddUI(char* name, bool(*on_create)())
 
 	num_uis++;
 
-	if (strlen(name) > MAX_UI_STRLEN)
+	if (strlen(control_name) > MAX_UI_STRLEN)
 	{
-		Sys_Error("Tried to create a UI with name more than %d characters!", MAX_UI_STRLEN);
+		Sys_Error("Tried to create a UI with control_name more than %d characters!", MAX_UI_STRLEN);
 		return false;
 	}
 
-	strcpy(current_ui->name, name);
+	strcpy(current_ui->name, control_name);
 
 	if (on_create == NULL)
 	{
@@ -121,7 +121,7 @@ bool UI_AddUI(char* name, bool(*on_create)())
 
 	if (!on_create())
 	{
-		Sys_Error("UI create function failed for UI %s", name); // should these be fatal?
+		Sys_Error("UI create function failed for UI %s", control_name); // should these be fatal?
 		return false; 
 	}
 
@@ -129,24 +129,24 @@ bool UI_AddUI(char* name, bool(*on_create)())
 }
 
 // return a pointer to a UI
-ui_t* UI_GetUI(char* name)
+ui_t* UI_GetUI(char* control_name)
 {
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
-		if (!stricmp(ui_ptr->name, name))
+		if (!stricmp(ui_ptr->name, control_name))
 		{
 			return ui_ptr;
 		}
 	}
 
-	Com_Printf("UI_GetUI: Couldn't find UI: %s\n", name);
+	Com_Printf("UI_GetUI: Couldn't find UI: %s\n", control_name);
 	return NULL;
 }
 
 // get a UI control on the UI ui
-ui_control_t* UI_GetControl(char* ui_name, char* name)
+ui_control_t* UI_GetControl(char* ui_name, char* control_name)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -158,7 +158,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 	{
 		ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-		if (!stricmp(ui_control_ptr->name, name))
+		if (!stricmp(ui_control_ptr->name, control_name))
 			return ui_control_ptr;
 
 	}
@@ -166,7 +166,7 @@ ui_control_t* UI_GetControl(char* ui_name, char* name)
 	return NULL;
 }
 
-bool UI_AddControl(ui_t* ui_ptr, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y)
+bool UI_AddControl(ui_t* ui_ptr, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y)
 {
 	if (ui_ptr->num_controls >= CONTROLS_PER_UI)
 	{
@@ -177,7 +177,7 @@ bool UI_AddControl(ui_t* ui_ptr, char* name, float position_x, float position_y,
 	ui_control_t* current_control = &ui_ptr->controls[ui_ptr->num_controls];
 	ui_ptr->num_controls++;
 
-	strcpy(current_control->name, name);
+	strcpy(current_control->name, control_name);
 
 	current_control->position_x = position_x;
 	current_control->position_y = position_y;
@@ -187,7 +187,7 @@ bool UI_AddControl(ui_t* ui_ptr, char* name, float position_x, float position_y,
 	return true;
 }
 
-bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float position_y)
+bool UI_AddText(char* ui_name, char* control_name, char* text, float position_x, float position_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -199,7 +199,7 @@ bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float p
 	// not recommended to buffer overflow
 	if (strlen(text) > MAX_UI_STRLEN)
 	{
-		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!\n", name, text, MAX_UI_STRLEN);
+		Com_Printf("Tried to set UI control text %s to %s - too long (max length %d)!\n", control_name, text, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -218,10 +218,10 @@ bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float p
 	}
 
 
-	return UI_AddControl(ui_ptr, name, position_x, position_y, 0, 0);
+	return UI_AddControl(ui_ptr, control_name, position_x, position_y, 0, 0);
 }
 
-bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, float position_y, int32_t size_x, int32_t size_y)
+bool UI_AddImage(char* ui_name, char* control_name, char* image_path, float position_x, float position_y, int32_t size_x, int32_t size_y)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -236,7 +236,7 @@ bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, 
 	// not recommended to buffer overflow
 	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("The UI control %s's image path %s is too long (max length %d)!\n", name, image_path, MAX_UI_STRLEN);
+		Com_Printf("The UI control %s's image path %s is too long (max length %d)!\n", control_name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -244,10 +244,10 @@ bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, 
 
 	ui_control->type = ui_control_image;
 
-	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max)
+bool UI_AddSlider(char* ui_name, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -263,10 +263,10 @@ bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y,
 	ui_control->value_min = value_min;
 	ui_control->value_max = value_max;
 
-	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked)
+bool UI_AddCheckbox(char* ui_name, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -281,10 +281,10 @@ bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_
 	ui_control->checked = checked;
 	ui_control->type = ui_control_checkbox;
 
-	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
+bool UI_AddBox(char* ui_name, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -303,7 +303,7 @@ bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, in
 
 	ui_control->type = ui_control_box;
 
-	return UI_AddControl(ui_ptr, name, position_x, position_y, size_x, size_y);
+	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
 
 bool UI_SetEnabled(char* ui_name, bool enabled)
@@ -451,19 +451,19 @@ bool UI_SetFont(char* ui_name, char* control_name, char* font)
 }
 
 
-bool UI_SetImage(char* ui_name, char* name, char* image_path)
+bool UI_SetImage(char* ui_name, char* control_name, char* image_path)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control image path %s to %s!\n", name, image_path);
+		Com_Printf("Tried to set NULL UI control image path %s to %s!\n", control_name, image_path);
 		return false;
 	}
 
 	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI image path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STRLEN);
+		Com_Printf("UI image path for control %s, %s, was too long (max %d)\n", control_name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -508,19 +508,19 @@ bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path)
 	return true;
 }
 
-bool UI_SetImageOnClick(char* ui_name, char* name, char* image_path)
+bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control image on click path %s to %s!\n", name, image_path);
+		Com_Printf("Tried to set NULL UI control image on click path %s to %s!\n", control_name, image_path);
 		return false;
 	}
 
 	if (strlen(image_path) > MAX_UI_STRLEN)
 	{
-		Com_Printf("UI image on click path for control %s, %s, was too long (max %d)\n", name, image_path, MAX_UI_STRLEN);
+		Com_Printf("UI image on click path for control %s, %s, was too long (max %d)\n", control_name, image_path, MAX_UI_STRLEN);
 		return false;
 	}
 
@@ -529,13 +529,45 @@ bool UI_SetImageOnClick(char* ui_name, char* name, char* image_path)
 	return true;
 }
 
-bool UI_SetImageIsStretched(char* ui_name, char* name, bool is_stretched)
+bool UI_SetColorOnHover(char* ui_name, char* control_name, color4_t color)
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, name);
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
 	if (ui_control_ptr == NULL)
 	{
-		Com_Printf("Tried to set NULL UI control image is stretched %s to %d!\n", name, is_stretched);
+		Com_Printf("Tried to set NULL UI control hover colour %s to %f,%f,%f,%f!\n", control_name, color[0], color[1], color[2], color[3]);
+		return false;
+	}
+
+	//color4_t is a vector
+	VectorCopy(color, ui_control_ptr->color_on_hover);
+
+	return true;
+}
+
+bool UI_SetColorOnClick(char* ui_name, char* control_name, color4_t color)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control pressed colour %s to %f,%f,%f,%f!\n", control_name, color[0], color[1], color[2], color[3]);
+		return false;
+	}
+
+	//color4_t is a vector
+	VectorCopy(color, ui_control_ptr->color_on_click);
+
+	return true;
+}
+
+bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (ui_control_ptr == NULL)
+	{
+		Com_Printf("Tried to set NULL UI control image is stretched %s to %d!\n", control_name, is_stretched);
 		return false;
 	}
 	
@@ -726,8 +758,7 @@ void UI_DrawImage(ui_control_t* image)
 	{
 		image_path = image->image_path_on_click;
 	}
-
-	if (image->hovered
+	else if (image->hovered
 		&& image->image_path_on_hover != NULL
 		&& strlen(image->image_path_on_hover) > 0)
 	{
@@ -800,7 +831,19 @@ void UI_DrawBox(ui_control_t* box)
 	int32_t final_size_x = box->size_x * vid_hudscale->value;
 	int32_t final_size_y = box->size_y * vid_hudscale->value;
 
-	re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
+	if (box->focused)
+	{
+		re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color_on_click);
+	}
+	else if (box->hovered)
+	{
+		re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color_on_hover);
+	}
+	else
+	{
+		re.DrawFill(final_pos_x, final_pos_y, final_size_x, final_size_y, box->color);
+	}
+
 }
 
 void UI_SpinControlDoEnter(ui_control_t* spin_control)

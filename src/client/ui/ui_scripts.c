@@ -209,7 +209,7 @@ bool UI_LoadoutUICreate()
 
 	// create the text
 	y += 0.01f;
-	UI_AddText("LoadoutUI", "LoadoutUI_Text", "Test Text", x, y);
+	UI_AddText("LoadoutUI", "LoadoutUI_Text", "THIS IS A BUG", x, y);
 
 	// create 10 placeholder icons
 	y += 0.02f;

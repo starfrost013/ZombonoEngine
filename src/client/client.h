@@ -646,6 +646,8 @@ typedef struct ui_control_s
 	bool			checked;							// Checkbox UI control: Is it checked?
 	// box
 	color4_t		color;								// The color of this UI element.
+	color4_t		color_on_hover;						// The hover colour of this UI element.
+	color4_t		color_on_click;						// The pressed colour of this UI element.
 	// spin control
 	char**			item_names;							// Spin control: Item names (pointer to string arrays)
 	// entry
@@ -697,7 +699,10 @@ bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										
 bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible);									// Updates a UI control's invisibility.
 bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-hover image.
 bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);								// Updates a UI control's on-click image.
+bool UI_SetColorOnHover(char* ui_name, char* control_name, color4_t color);									// Updates a UI control's on-hover colour.
+bool UI_SetColorOnClick(char* ui_name, char* control_name, color4_t color);									// Updates a UI control's on-click colour.
 bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched);							// Updates a UI control's stretched status.
+
 
 bool UI_SetPassive(char* ui_name, bool passive);															// Sets a UI to passive (does not capture the mouse).
 bool UI_SetStackable(char* ui_name, bool stackable);														// Allows a UI to be pushed to the UI stack.
