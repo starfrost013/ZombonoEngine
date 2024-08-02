@@ -53,6 +53,12 @@ bool UI_MainMenuQuickstartUICreate()
 	UI_SetFont("MainMenuQuickstartUI", "MainMenuQuickstartUI_Competitive", "bahnschrift_bold_18");
 	UI_SetFont("MainMenuQuickstartUI", "MainMenuQuickstartUI_AdvancedOptions", "bahnschrift_bold_18");
 
+	color4_t hover_colour = { 200, 200, 255, 255 };
+
+	UI_SetColorOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_Coop", hover_colour);
+	UI_SetColorOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_Competitive", hover_colour);
+	UI_SetColorOnHover("MainMenuQuickstartUI", "MainMenuQuickstartUI_AdvancedOptions", hover_colour);
+
 	// create ui
 	return true;
 }

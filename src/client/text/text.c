@@ -207,7 +207,7 @@ void Text_DrawChar(const char* font, int32_t x, int32_t y, char text)
 	Text_Draw(font, x, y, new_string);
 }
 
-void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t* draw_color, const char* text, va_list args)
+void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t draw_color, const char* text, va_list args)
 {
 	// color4_t* is for functions above
 	//va_start(args, text);
@@ -215,7 +215,6 @@ void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t* draw_col
 	// setup the text
 	char final_text[MAX_STRING_LENGTH] = { 0 };
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
-
 
 	// localise the text
 	char* final_text_ptr = &final_text;
@@ -260,7 +259,9 @@ void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t* draw_col
 
 	//...unless it was overridden
 	if (draw_color)
-		VectorCopy(*draw_color, color);
+	{
+		VectorCopy(draw_color, color);
+	}
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)
 	{
@@ -374,6 +375,6 @@ void Text_DrawColor(const char* font, int32_t x, int32_t y, color4_t color, cons
 {
 	va_list args;
 	va_start(args, text);
-	Text_DrawPerform(font, x, y, &color, text, args);
+	Text_DrawPerform(font, x, y, color, text, args);
 	va_end(args);
 }

@@ -205,8 +205,6 @@ bool UI_AddText(char* ui_name, char* control_name, char* text, float position_x,
 
 	strcpy(ui_control_ptr->text, text);
 
-	ui_control_ptr->type = ui_control_text;
-
 	if (!ui_control_ptr->font
 		|| strlen(ui_control_ptr->font) == 0)
 	{
@@ -217,7 +215,18 @@ bool UI_AddText(char* ui_name, char* control_name, char* text, float position_x,
 		Text_GetSize(ui_control_ptr->font, &ui_control_ptr->size_x, &ui_control_ptr->size_y, text);
 	}
 
+	// set default colour to white
+	ui_control_ptr->color[0] = 255;
+	ui_control_ptr->color[1] = 255;
+	ui_control_ptr->color[2] = 255;
+	ui_control_ptr->color[3] = 255;
 
+	// by default hover and click colour are the same as the normal colour so set them
+
+	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_hover);
+	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_click);
+
+	ui_control_ptr->type = ui_control_text;
 	return UI_AddControl(ui_ptr, control_name, position_x, position_y, 0, 0);
 }
 
@@ -289,19 +298,21 @@ bool UI_AddBox(char* ui_name, char* control_name, float position_x, float positi
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
 	if (!ui_ptr)
-	{
-		// message already printed
-		return false;
-	}
+		return false; // message already printed
 
-	ui_control_t* ui_control = &ui_ptr->controls[ui_ptr->num_controls];
+	ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_ptr->num_controls];
 
-	ui_control->color[0] = r;
-	ui_control->color[1] = g;
-	ui_control->color[2] = b;
-	ui_control->color[3] = a;
+	ui_control_ptr->color[0] = r;
+	ui_control_ptr->color[1] = g;
+	ui_control_ptr->color[2] = b;
+	ui_control_ptr->color[3] = a;
 
-	ui_control->type = ui_control_box;
+	// by default hover and click colour are the same as the normal colour so set them
+
+	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_hover);
+	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_click);
+
+	ui_control_ptr->type = ui_control_box;
 
 	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
@@ -314,6 +325,16 @@ bool UI_SetEnabled(char* ui_name, bool enabled)
 	{
 		// otherwise enable the ui
 		ui_ptr->enabled = enabled;
+
+		// disable the current UI if the UI is stacked and not the top of the stack
+		if (current_ui
+			&& current_ui->stackable
+			&& ui_ptr->stackable
+			&& ui_ptr->enabled)
+		{
+			UI_SetActivated(current_ui->name, false);
+			UI_SetEnabled(current_ui->name, false);
+		}
 
 		current_ui = (ui_ptr->enabled) ? ui_ptr : NULL;
 
@@ -446,6 +467,11 @@ bool UI_SetFont(char* ui_name, char* control_name, char* font)
 	}
 
 	strcpy(ui_control_ptr->font, font);
+
+	//re-evaluate the size of the UI control, now that the font changed
+	//todo - doesn't take into account varargs
+	if (!Text_GetSize(ui_control_ptr->font, &ui_control_ptr->size_x, &ui_control_ptr->size_y, ui_control_ptr->text))
+		Com_Printf("Warning: Failed to get size of text for font %s\n", font);
 
 	return true;
 }
@@ -649,7 +675,7 @@ void UI_Draw()
 // draw debug/playtest indicator
 	
 // this is NOT!! efficient don't do this (esp. getting the length of the string every frame and stuff) but not used in release 
-#if defined(PLAYTEST) || !defined(NDEBUG)
+#if defined(PLAYTEST) || defined(DEBUG)
 	time_t		raw_time;
 	struct tm*	local_time;
 
@@ -730,15 +756,34 @@ void UI_DrawText(ui_control_t* text)
 	int32_t final_pos_x = text->position_x * r_width->value;
 	int32_t final_pos_y = text->position_y * r_height->value;
 
+	color4_t color = { 255, 255, 255, 255 };
+
+
+	
+	if (text->hovered) // allow text to disappear when hovered
+	{
+		VectorCopy(text->color_on_hover, color);
+	}
+	else if (text->focused)
+	{
+		VectorCopy(text->color_on_click, color);
+	}
+	// if the colour snot entirely transparent, use it
+	else
+	{
+		VectorCopy(text->color, color);
+	}
+
+
 	// initialised to 0
 	// if the font is not set use the system font
 	if (strlen(text->font) == 0)
 	{
-		Text_Draw(cl_system_font->string, final_pos_x, final_pos_y, text->text);
+		Text_DrawColor(cl_system_font->string, final_pos_x, final_pos_y, color, text->text);
 	}
 	else
 	{
-		Text_Draw(text->font, final_pos_x, final_pos_y, text->text);
+		Text_DrawColor(text->font, final_pos_x, final_pos_y, color, text->text);
 	}
 }
 
