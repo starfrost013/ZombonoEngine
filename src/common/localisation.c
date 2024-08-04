@@ -28,10 +28,13 @@ cvar_t* language;
 
 // globals
 localisation_entry_t localisation_entries[LOCALISATION_ENTRIES_MAX];
-localised_string_t localised_strings[LOCALISATION_ENTRIES_MAX];
+cached_string_t cached_strings[LOCALISATION_ENTRIES_MAX];
 
-uint32_t localisation_entries_count;
-uint32_t localised_strings_count;
+uint32_t localisation_entries_count;		// Counts the number of localisation string entries for the current language.
+uint32_t cached_strings_count;			// Counts the number of cached localisation strings for the current language.
+
+// Determines if the localisation subsystem has been initialised.
+bool localisation_initialised;
 
 // functions only used in this translation unit
 void Localisation_LoadCurrentLanguage();
@@ -42,6 +45,7 @@ void Localisation_Init()
 {
 	language = Cvar_Get("language", "english", CVAR_ARCHIVE);
 	Localisation_LoadCurrentLanguage();
+	localisation_initialised = true;
 }
 
 #define LINE_BUFFER_LENGTH	LOCALISATION_MAX_LENGTH_KEY + LOCALISATION_MAX_LENGTH_VALUE + 1
@@ -68,7 +72,7 @@ void Localisation_LoadCurrentLanguage()
 	// temporarily allocate some storage
 	// this function is rarely called, so we can CALLOC it
 
-	void* file_ptr = calloc(1, file_size);
+	uint8_t* file_ptr = (uint8_t*)calloc(1, file_size);
 
 	token_ptr = file_ptr;
 
@@ -81,79 +85,96 @@ void Localisation_LoadCurrentLanguage()
 	fread(file_ptr, 1, file_size, localisation_lang_ptr);
 	fseek(localisation_lang_ptr, 0, SEEK_SET);
 
-	while (token_ptr < ((uint8_t*)file_ptr + file_size))
+	while (token_ptr < (file_ptr + file_size))
 	{
-		int32_t string_length = 0;
+		int32_t key_length = 0;
+		int32_t value_length = 0;
 
-		// find the newline
+		// If there is a newline, continue. This is an empty line
+		if (*token_ptr == '\r'
+			|| *token_ptr == '\n')
+		{
+			// comment
+			if (*token_ptr == '/'
+				&& *(token_ptr + 1) == '/')
+			{
+				goto on_fail;
+			}
+
+			token_ptr++;
+
+			continue;
+		}
+
+		// find the = sign
+		while (*token_ptr != '=')
+		{
+			if (*token_ptr == '/'
+				&& *(token_ptr + 1) == '/')
+			{
+				goto on_fail;
+			}
+
+			key_length++;
+			token_ptr++;
+		}
+		
+		// in the case of a malformed file, abort processing and move on to the next line
+
+		strncpy(localisation_entries[localisation_entries_count].key, (token_ptr - key_length), key_length);
+
+		// don't include the "=" in the description so just advance by a single byte
+		token_ptr++;
+
+		// now copy the value
+		while (*token_ptr != '\r'
+			&& *token_ptr != '\n')
+		{
+			if (*token_ptr == '/'
+				&& *(token_ptr + 1) == '/')
+			{
+				Com_Printf("Comment in the middle of localisation string value??? Malformed string!\n");
+				goto on_fail;
+			}
+
+			value_length++;
+			token_ptr++;
+		}
+
+		strncpy(localisation_entries[localisation_entries_count].value, (token_ptr - value_length), value_length);
+
+		goto on_success;
+
+	on_fail:
+		// In the case the line was not finished, continue until the newline and then go to the end.
 		while (*token_ptr != '\r'
 			&& *token_ptr != '\n')
 		{
 			token_ptr++;
-			string_length++;
-
-			// don't search forever if there is only one line
-			if (token_ptr == ((uint8_t*)file_ptr + file_size))
-				break;
 		}
 
-		// don't clobber random memory if there is no newline or anything
-		if (string_length >= file_size)
-			return; 
-
-		// cut off the line
-		*token_ptr = '\0';
-		token_ptr++;
-
-		// skip empty lines
-		if (string_length <= 1)
-			continue; 
-
-		strncpy(line_buf, token_ptr - string_length - 1, LINE_BUFFER_LENGTH);
-
-		// handle comment lines
-		char* comment_ptr = strstr(line_buf, "//");
-		char* line_no_comment_ptr = line_buf;
-
-		// obliterate the comment
-		if (comment_ptr)
+		// continue until after the end so the condition at the start of this is satisfied
+		while (*token_ptr == '\r'
+			|| *token_ptr == '\n')
 		{
-			*comment_ptr = '\0';
-
-			// only commented
-			if (strlen(comment_ptr) == 0)
-				continue;
+			token_ptr++;
 		}
 
-		char* equals_ptr = strstr(line_buf, "=");
+		continue; 
 
-		// malformed
-		if (!equals_ptr)
+	on_success:
+
+		// continue until after the end so the condition at the start of this is satisfied
+		while (*token_ptr == '\r'
+			|| *token_ptr == '\n')
 		{
-			Com_DPrintf("Malformed localisation string, skipping...\n");
-			continue;
+			token_ptr++;
 		}
-
-		if (equals_ptr - line_buf > LOCALISATION_MAX_LENGTH_KEY)
-		{
-			Com_DPrintf("Localisation key too long, skipping...\n");
-			continue;
-		}
-
-		// figure out the length after the key
-		int32_t value_length = strlen((const char*)equals_ptr + 1);
-
-		if (value_length >= LOCALISATION_MAX_LENGTH_VALUE)
-		{
-			Com_DPrintf("Localisation value too long, skipping...\n");
-			continue;
-		}
-
-		// copy it
-		strncpy(localisation_entries[localisation_entries_count].key, line_buf, (equals_ptr - line_buf));
-		strncpy(localisation_entries[localisation_entries_count].value, equals_ptr + 1, value_length); // +1 to skip equals sign
 
 		localisation_entries_count++;
+		continue;
+
+
 	}
 
 	Com_Printf("Loaded %d localisation strings\n", localisation_entries_count);
@@ -301,18 +322,18 @@ char* Localisation_ProcessString(char* value)
 			break;
 	}
 
-	if (localised_strings_count >= LOCALISATION_ENTRIES_MAX)
+	if (cached_strings_count >= LOCALISATION_ENTRIES_MAX)
 	{
-		Com_Printf("Too many localisation strings! (%d > %d)", localised_strings_count, LOCALISATION_ENTRIES_MAX);
+		Com_Printf("Too many localisation strings! (%d > %d)", cached_strings_count, LOCALISATION_ENTRIES_MAX);
 		return NULL;
 	}
 
 	// allocate memory for the string
 	// zero it since loading this happens rarely
 	
-	localised_strings[localised_strings_count].value = (char*)calloc(1, string_length);
+	cached_strings[cached_strings_count].value = (char*)calloc(1, string_length);
 
-	if (!localised_strings[localised_strings_count].value)
+	if (!cached_strings[cached_strings_count].value)
 	{
 		Sys_Error("Failed to allocate memory for localisation string information");
 		return NULL;
@@ -342,7 +363,7 @@ char* Localisation_ProcessString(char* value)
 		char* key_end_ptr = key_start_ptr;
 
 		// copy part before the localisation string
-		strncpy(localised_strings[localised_strings_count].value, token_ptr, (key_start_ptr - token_ptr) - 1); // -1 to cut off the [
+		strncpy(cached_strings[cached_strings_count].value, token_ptr, (key_start_ptr - token_ptr) - 1); // -1 to cut off the [
 
 		// iterate through each part of the string
 
@@ -360,12 +381,12 @@ char* Localisation_ProcessString(char* value)
 		if (!loc_string)
 			return value;
 
-		localised_strings[localised_strings_count].key = loc_string->key;
+		cached_strings[cached_strings_count].key = loc_string->key;
 
-		uint32_t loc_string_current_length = strlen(localised_strings[localised_strings_count].value);
+		uint32_t loc_string_current_length = strlen(cached_strings[cached_strings_count].value);
 
 		// copy the localisation string
-		strncpy(localised_strings[localised_strings_count].value + loc_string_current_length, loc_string->value, strlen(loc_string->value));
+		strncpy(cached_strings[cached_strings_count].value + loc_string_current_length, loc_string->value, strlen(loc_string->value));
 
 		token_ptr = strtok(NULL, LOCALISATION_KEY_START);
 
@@ -375,8 +396,8 @@ char* Localisation_ProcessString(char* value)
 	}
 
 	// we are done
-	localised_strings_count++;
-	return localised_strings[localised_strings_count - 1].value;
+	cached_strings_count++;
+	return cached_strings[cached_strings_count - 1].value;
 }
 
 // Frees all localisation strins
@@ -384,7 +405,7 @@ void Localisation_Shutdown()
 {
 	for (int32_t localisation_string_id = 0; localisation_string_id < localisation_entries_count; localisation_string_id++)
 	{
-		if (localised_strings[localisation_string_id].value != NULL)
-			free((void*)localised_strings[localisation_string_id].value);
+		if (cached_strings[localisation_string_id].value != NULL)
+			free((void*)cached_strings[localisation_string_id].value);
 	}
 }

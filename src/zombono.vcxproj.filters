@@ -237,6 +237,9 @@
     <ClCompile Include="common\localisation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="common\cpuid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc">

@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-/* crc.c */
+/* crc.c - performs CRC16 checks on received data */
 
 #include "common.h"
 
@@ -90,4 +90,3 @@ uint16_t CRC_Block (uint8_t *start, int32_t count)
 
 	return crc;
 }
-

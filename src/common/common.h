@@ -456,9 +456,7 @@ void Cmd_ForwardToServer();
 
 /*
 ==============================================================
-
 CVAR
-
 ==============================================================
 */
 
@@ -523,7 +521,7 @@ char* Cvar_Userinfo();
 char* Cvar_Serverinfo();
 // returns an info string containing all the CVAR_SERVERINFO cvars
 
-extern	bool	userinfo_modified;
+extern bool userinfo_modified;
 // this is set each time a CVAR_USERINFO variable is changed
 // so that the client knows to send it to the server
 
@@ -547,6 +545,40 @@ extern cvar_t* game_asset_path;
 
 // Sys_Error on fail
 void Gameinfo_Load();
+
+/*
+==============================================================
+CPU Identification
+==============================================================
+*/
+
+enum cpu_feature_e
+{
+	// Don't bother with 'RDTSC' since it's been around since P5 (Pentium1)
+	cpu_feature_mmx = 0x1,				// Pentium MMX (1997)
+	cpu_feature_3dnow = 0x2,			// AMD K6-2 (1999), removed in Zen 1 (2017)
+	cpu_feature_sse1 = 0x4,				// Intel Pentium III 'Katmai' (1999)
+	cpu_feature_sse2 = 0x6,				// Intel Pentium 4 'Williamette' (2000)
+	cpu_feature_sse3 = 0x8,				// Intel Pentium 4 'Prescott' (2004)
+	cpu_feature_ssse3 = 0x10,			// Intel Core 2 'Merom' (2006) / Tejas (cancelled)
+	cpu_feature_sse4a = 0x20,			// AMD K10/Phenom II (2007)
+	cpu_feature_sse41 = 0x40,			// Intel Core 2 'Penryn' (2007)
+	cpu_feature_sse42 = 0x80,			// Intel Core i 'Nehalem' 1st gen (2008) / AMD K10/Phenom II (2007)
+	cpu_feature_avx1 = 0x100,			// Intel Core i 'Sandy Bridge' 2nd gen (2011) / AMD FX 'Bulldozer' (2011)
+	cpu_feature_fma3 = 0x200,			// AMD FX 'Piledriver' (2012) / Intel Core i 'Haswell' 4th gen (2013)
+	cpu_feature_avx2 = 0x400,			// Intel Core i 'Haswell' 4th gen (2013) / AMD FX 'Excavator' (2015)
+	// AVX 512 has a convoluted mess of support and 20 different feature flags
+	// Most other extensions are for virtualisation or security and can't be used for games. 
+	// The only one that isn't is Intel AMX, which is intended for AI and still slower than GPU
+	// ARM_NEON would go here...
+} cpu_feature;
+
+extern cvar_t* cpu_name;
+extern cvar_t* cpu_vendor; // "AuthenticAMD", "GenuineIntel",...
+extern cvar_t* cpu_features;
+
+void CPUID_Init();
+bool CPUID_IsDefectiveIntelCPU(); // Intel Core 13th and 14th generation. These CPUs may fail due to a combination of manufacturing and microcode defects
 
 /*
 ==============================================================
@@ -834,6 +866,8 @@ void Render2D_DebugGraph(float value, int32_t r, int32_t g, int32_t b, int32_t a
 // cvars
 extern cvar_t* language;
 
+extern bool localisation_initialised;						// Determine if the localisation system is running.
+
 typedef struct localisation_entry_s
 {
 	char key[LOCALISATION_MAX_LENGTH_KEY];
@@ -843,14 +877,14 @@ typedef struct localisation_entry_s
 // As we cannot change the size of a preallocated const char*, we have to dynamically allocate localised strings.
 // This struct lets us do that...
 
-typedef struct localised_string_s
+typedef struct cached_string_s
 {
 	char* key; // the key the localised string is tied to
 	char* value;
-} localised_string_t;
+} cached_string_t;
 
 extern localisation_entry_t localisation_entries[LOCALISATION_ENTRIES_MAX];
-extern localised_string_t localised_strings[LOCALISATION_ENTRIES_MAX];
+extern cached_string_t cached_strings[LOCALISATION_ENTRIES_MAX];
 
 void Localisation_Init();
 localisation_entry_t* Localisation_GetString(char* key);

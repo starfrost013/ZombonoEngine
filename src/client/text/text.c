@@ -71,7 +71,7 @@ bool Text_GetSize(const char* font, int32_t *x, int32_t *y, const char* text, ..
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
 	va_end(args);
 
-	char* final_text_ptr = &final_text;
+	char* final_text_ptr = final_text;
 
 	// localise the text
 	final_text_ptr = Localisation_ProcessString(final_text);
@@ -217,7 +217,7 @@ void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t draw_colo
 	vsnprintf(final_text, MAX_STRING_LENGTH, text, args);
 
 	// localise the text
-	char* final_text_ptr = &final_text;
+	char* final_text_ptr = final_text;
 	final_text_ptr = Localisation_ProcessString(final_text);
 
 	// get the font to be used for drawing the text

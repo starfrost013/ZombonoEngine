@@ -1070,13 +1070,20 @@ void PM_InitialSnapPosition()
 
 	VectorCopy(pm->s.origin, base);
 
-	for (z = 0; z < 3; z++) {
+	for (z = 0; z < 3; z++)
+	{
 		pm->s.origin[2] = base[2] + offset[z];
-		for (y = 0; y < 3; y++) {
+
+		for (y = 0; y < 3; y++)
+		{
 			pm->s.origin[1] = base[1] + offset[y];
-			for (x = 0; x < 3; x++) {
+
+			for (x = 0; x < 3; x++)
+			{
 				pm->s.origin[0] = base[0] + offset[x];
-				if (PM_GoodPosition()) {
+
+				if (PM_GoodPosition())
+				{
 					pml.origin[0] = pm->s.origin[0];
 					pml.origin[1] = pm->s.origin[1];
 					pml.origin[2] = pm->s.origin[2];

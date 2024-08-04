@@ -1428,9 +1428,10 @@ void Common_Init(int32_t argc, char** argv)
 	Net_Init();					// Open sockets
 	Netchan_Init();				// Initialise networking channels
 
-	Localisation_Init();
+	Localisation_Init();		// Initialise localisaiton system
+	CPUID_Init();				// Initialise CPUID
 
-	if (!Netservices_Init())		// Initialise CURL/the game's network services
+	if (!Netservices_Init())	// Initialise CURL/the game's network services
 	{
 		if (!ns_disabled->value
 			&& !ns_nointernetcheck->value) // make sure we actually KNOW netservices are down and the user didn't jsut turn it off

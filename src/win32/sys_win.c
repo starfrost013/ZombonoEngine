@@ -91,7 +91,16 @@ int32_t Sys_Msgbox(char* title, uint32_t buttons, char* text, ...)
 	vsnprintf(text_processed, 1024, text, args);
 	va_end(args);
 
-	return MessageBox(NULL, &text_processed, title, buttons);
+	char* title_processed_ptr = title;
+	char* text_processed_ptr = text_processed;
+
+	if (localisation_initialised)
+	{
+		title_processed_ptr = Localisation_ProcessString(title);
+		text_processed_ptr = Localisation_ProcessString(text);
+	}
+
+	return MessageBox(NULL, text_processed_ptr, title_processed_ptr, buttons);
 }
 
 int32_t Sys_MsgboxV(char* title, uint32_t buttons, char* text, va_list args)
