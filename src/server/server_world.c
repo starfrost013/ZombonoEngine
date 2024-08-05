@@ -110,17 +110,17 @@ areanode_t* SV_CreateAreaNode(int32_t depth, vec3_t mins, vec3_t maxs)
 		return anode;
 	}
 
-	VectorSubtract(maxs, mins, size);
+	VectorSubtract3(maxs, mins, size);
 	if (size[0] > size[1])
 		anode->axis = 0;
 	else
 		anode->axis = 1;
 
 	anode->dist = 0.5f * (maxs[anode->axis] + mins[anode->axis]);
-	VectorCopy(mins, mins1);
-	VectorCopy(mins, mins2);
-	VectorCopy(maxs, maxs1);
-	VectorCopy(maxs, maxs2);
+	VectorCopy3(mins, mins1);
+	VectorCopy3(mins, mins2);
+	VectorCopy3(maxs, maxs1);
+	VectorCopy3(maxs, maxs2);
 
 	maxs1[anode->axis] = mins2[anode->axis] = anode->dist;
 
@@ -188,7 +188,7 @@ void SV_LinkEdict(edict_t* ent)
 		return;
 
 	// set the size
-	VectorSubtract(ent->maxs, ent->mins, ent->size);
+	VectorSubtract3(ent->maxs, ent->mins, ent->size);
 
 	// encode the size into the entity_state for client prediction
 	if (ent->solid == SOLID_BBOX && !(ent->svflags & SVF_DEADMONSTER))
@@ -249,8 +249,8 @@ void SV_LinkEdict(edict_t* ent)
 	}
 	else
 	{	// normal
-		VectorAdd(ent->s.origin, ent->mins, ent->absmin);
-		VectorAdd(ent->s.origin, ent->maxs, ent->absmax);
+		VectorAdd3(ent->s.origin, ent->mins, ent->absmin);
+		VectorAdd3(ent->s.origin, ent->maxs, ent->absmax);
 	}
 
 	// because movement is clipped an epsilon away from an actual edge,
@@ -323,7 +323,7 @@ void SV_LinkEdict(edict_t* ent)
 	// if first time, make sure old_origin is valid
 	if (!ent->linkcount)
 	{
-		VectorCopy(ent->s.origin, ent->s.old_origin);
+		VectorCopy3(ent->s.origin, ent->s.old_origin);
 	}
 	ent->linkcount++;
 
@@ -647,8 +647,8 @@ trace_t SV_Trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, edict_t* pa
 	clip.maxs = maxs;
 	clip.passedict = passedict;
 
-	VectorCopy(mins, clip.mins2);
-	VectorCopy(maxs, clip.maxs2);
+	VectorCopy3(mins, clip.mins2);
+	VectorCopy3(maxs, clip.maxs2);
 
 	// create the bounding box of the entire move
 	SV_TraceBounds(start, clip.mins2, clip.maxs2, end, clip.boxmins, clip.boxmaxs);

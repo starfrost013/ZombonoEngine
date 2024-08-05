@@ -117,7 +117,7 @@ void CL_AddExplosions()
 				ex->lightcolor[0], ex->lightcolor[1], ex->lightcolor[2]);
 		}
 
-		VectorCopy(ent->origin, ent->oldorigin);
+		VectorCopy3(ent->origin, ent->oldorigin);
 
 		if (f < 0)
 			f = 0;
@@ -172,7 +172,7 @@ void CL_SmokeAndFlash(vec3_t origin)
 	explosion_t* ex;
 
 	ex = CL_AllocExplosion();
-	VectorCopy(origin, ex->ent.origin);
+	VectorCopy3(origin, ex->ent.origin);
 	ex->type = ex_misc;
 	ex->frames = 4;
 	ex->ent.flags = RF_TRANSLUCENT;
@@ -180,7 +180,7 @@ void CL_SmokeAndFlash(vec3_t origin)
 	ex->ent.model = cl_mod_smoke;
 
 	ex = CL_AllocExplosion();
-	VectorCopy(origin, ex->ent.origin);
+	VectorCopy3(origin, ex->ent.origin);
 	ex->type = ex_flash;
 	ex->ent.flags = RF_FULLBRIGHT;
 	ex->frames = 2;

@@ -335,7 +335,7 @@ void SV_StartSound (vec3_t origin, edict_t *entity, int32_t channel,
 		}
 		else
 		{
-			VectorCopy (entity->s.origin, origin_v);
+			VectorCopy3 (entity->s.origin, origin_v);
 		}
 	}
 

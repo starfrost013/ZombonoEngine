@@ -90,7 +90,7 @@ void SubdividePolygon(int32_t numverts, float* verts)
 		// wrap cases
 		dist[j] = dist[0];
 		v -= i;
-		VectorCopy(verts, v);
+		VectorCopy3(verts, v);
 
 		f = b = 0;
 		v = verts;
@@ -98,12 +98,12 @@ void SubdividePolygon(int32_t numverts, float* verts)
 		{
 			if (dist[j] >= 0)
 			{
-				VectorCopy(v, front[f]);
+				VectorCopy3(v, front[f]);
 				f++;
 			}
 			if (dist[j] <= 0)
 			{
-				VectorCopy(v, back[b]);
+				VectorCopy3(v, back[b]);
 				b++;
 			}
 			if (dist[j] == 0 || dist[j + 1] == 0)
@@ -129,24 +129,24 @@ void SubdividePolygon(int32_t numverts, float* verts)
 	poly->next = warpface->polys;
 	warpface->polys = poly;
 	poly->numverts = numverts + 2;
-	VectorClear(total);
+	VectorClear3(total);
 	total_s = 0;
 	total_t = 0;
 	for (i = 0; i < numverts; i++, verts += 3)
 	{
-		VectorCopy(verts, poly->verts[i + 1]);
-		s = DotProduct(verts, warpface->texinfo->vecs[0]);
-		t = DotProduct(verts, warpface->texinfo->vecs[1]);
+		VectorCopy3(verts, poly->verts[i + 1]);
+		s = DotProduct3(verts, warpface->texinfo->vecs[0]);
+		t = DotProduct3(verts, warpface->texinfo->vecs[1]);
 
 		total_s += s;
 		total_t += t;
-		VectorAdd(total, verts, total);
+		VectorAdd3(total, verts, total);
 
 		poly->verts[i + 1][3] = s;
 		poly->verts[i + 1][4] = t;
 	}
 
-	VectorScale(total, (1.0 / numverts), poly->verts[0]);
+	VectorScale3(total, (1.0 / numverts), poly->verts[0]);
 	poly->verts[0][3] = total_s / numverts;
 	poly->verts[0][4] = total_t / numverts;
 
@@ -185,7 +185,7 @@ void GL_SubdivideSurface(msurface_t* fa)
 			vec = loadmodel->vertexes[loadmodel->edges[lindex].v[0]].position;
 		else
 			vec = loadmodel->vertexes[loadmodel->edges[-lindex].v[1]].position;
-		VectorCopy(vec, verts[numverts]);
+		VectorCopy3(vec, verts[numverts]);
 		numverts++;
 	}
 
@@ -297,10 +297,10 @@ void DrawSkyPolygon(int32_t nump, vec3_t vecs)
 	c_sky++;
 
 	// decide which face it maps to
-	VectorCopy(vec3_origin, v);
+	VectorCopy3(vec3_origin, v);
 	for (i = 0, vp = vecs; i < nump; i++, vp += 3)
 	{
-		VectorAdd(vp, v, v);
+		VectorAdd3(vp, v, v);
 	}
 	av[0] = fabsf(v[0]);
 	av[1] = fabsf(v[1]);
@@ -385,7 +385,7 @@ void ClipSkyPolygon(int32_t nump, vec3_t vecs, int32_t stage)
 	norm = skyclip[stage];
 	for (i = 0, v = vecs; i < nump; i++, v += 3)
 	{
-		d = DotProduct(v, norm);
+		d = DotProduct3(v, norm);
 		if (d > ON_EPSILON)
 		{
 			front = true;
@@ -410,7 +410,7 @@ void ClipSkyPolygon(int32_t nump, vec3_t vecs, int32_t stage)
 	// clip it
 	sides[i] = sides[0];
 	dists[i] = dists[0];
-	VectorCopy(vecs, (vecs + (i * 3)));
+	VectorCopy3(vecs, (vecs + (i * 3)));
 	newc[0] = newc[1] = 0;
 
 	for (i = 0, v = vecs; i < nump; i++, v += 3)
@@ -418,17 +418,17 @@ void ClipSkyPolygon(int32_t nump, vec3_t vecs, int32_t stage)
 		switch (sides[i])
 		{
 		case SIDE_FRONT:
-			VectorCopy(v, newv[0][newc[0]]);
+			VectorCopy3(v, newv[0][newc[0]]);
 			newc[0]++;
 			break;
 		case SIDE_BACK:
-			VectorCopy(v, newv[1][newc[1]]);
+			VectorCopy3(v, newv[1][newc[1]]);
 			newc[1]++;
 			break;
 		case SIDE_ON:
-			VectorCopy(v, newv[0][newc[0]]);
+			VectorCopy3(v, newv[0][newc[0]]);
 			newc[0]++;
-			VectorCopy(v, newv[1][newc[1]]);
+			VectorCopy3(v, newv[1][newc[1]]);
 			newc[1]++;
 			break;
 		}
@@ -468,7 +468,7 @@ void R_AddSkySurface(msurface_t* fa)
 	{
 		for (i = 0; i < p->numverts; i++)
 		{
-			VectorSubtract(p->verts[i], r_origin, verts[i]);
+			VectorSubtract3(p->verts[i], r_origin, verts[i]);
 		}
 		ClipSkyPolygon(p->numverts, verts[0], 0);
 	}
@@ -610,7 +610,7 @@ void R_SetSky(char* name, float rotate, vec3_t axis)
 
 	strncpy(skyname, name, sizeof(skyname) - 1);
 	skyrotate = rotate;
-	VectorCopy(axis, skyaxis);
+	VectorCopy3(axis, skyaxis);
 
 	for (i = 0; i < 6; i++)
 	{

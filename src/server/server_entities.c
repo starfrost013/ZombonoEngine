@@ -541,8 +541,8 @@ void SV_BuildClientFrame (client_t *client)
 					vec3_t	delta;
 					float	len;
 
-					VectorSubtract (org, ent->s.origin, delta);
-					len = VectorLength (delta);
+					VectorSubtract3 (org, ent->s.origin, delta);
+					len = VectorLength3 (delta);
 					if (len > 400)
 						continue;
 				}

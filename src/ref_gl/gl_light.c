@@ -43,7 +43,7 @@ void R_RenderDlight(dlight_t* light)
 
 	rad = light->intensity * 0.35f;
 
-	VectorSubtract(light->origin, r_origin, v);
+	VectorSubtract3(light->origin, r_origin, v);
 
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(light->color[0] * 0.2f, light->color[1] * 0.2f, light->color[2] * 0.2f);
@@ -119,7 +119,7 @@ void R_MarkLights(dlight_t* light, int32_t bit, mnode_t* node)
 		return;
 
 	splitplane = node->plane;
-	dist = DotProduct(light->origin, splitplane->normal) - splitplane->dist;
+	dist = DotProduct3(light->origin, splitplane->normal) - splitplane->dist;
 
 	if (dist > light->intensity - DLIGHT_CUTOFF)
 	{
@@ -203,8 +203,8 @@ int32_t RecursiveLightPoint(mnode_t* node, vec3_t start, vec3_t end)
 
 	// FIXME: optimize for axial
 	plane = node->plane;
-	front = DotProduct(start, plane->normal) - plane->dist;
-	back = DotProduct(end, plane->normal) - plane->dist;
+	front = DotProduct3(start, plane->normal) - plane->dist;
+	back = DotProduct3(end, plane->normal) - plane->dist;
 	side = front < 0;
 
 	if ((back < 0) == side)
@@ -224,7 +224,7 @@ int32_t RecursiveLightPoint(mnode_t* node, vec3_t start, vec3_t end)
 		return -1;		// didn't hit anuthing
 
 	// check for impact on this node
-	VectorCopy(mid, lightspot);
+	VectorCopy3(mid, lightspot);
 	lightplane = plane;
 
 	surf = r_worldmodel->surfaces + node->firstsurface;
@@ -235,8 +235,8 @@ int32_t RecursiveLightPoint(mnode_t* node, vec3_t start, vec3_t end)
 
 		tex = surf->texinfo;
 
-		s = DotProduct(mid, tex->vecs[0]) + tex->vecs[0][3];
-		t = DotProduct(mid, tex->vecs[1]) + tex->vecs[1][3];;
+		s = DotProduct3(mid, tex->vecs[0]) + tex->vecs[0][3];
+		t = DotProduct3(mid, tex->vecs[1]) + tex->vecs[1][3];;
 
 		if (s < surf->texturemins[0] ||
 			t < surf->texturemins[1])
@@ -255,7 +255,7 @@ int32_t RecursiveLightPoint(mnode_t* node, vec3_t start, vec3_t end)
 		dt >>= 4;
 
 		lightmap = surf->samples;
-		VectorCopy(vec3_origin, pointcolor);
+		VectorCopy3(vec3_origin, pointcolor);
 		if (lightmap)
 		{
 			vec3_t scale;
@@ -312,11 +312,11 @@ void R_LightPoint(vec3_t p, vec3_t color)
 
 	if (r == -1)
 	{
-		VectorCopy(vec3_origin, color);
+		VectorCopy3(vec3_origin, color);
 	}
 	else
 	{
-		VectorCopy(pointcolor, color);
+		VectorCopy3(pointcolor, color);
 	}
 
 	//
@@ -326,16 +326,16 @@ void R_LightPoint(vec3_t p, vec3_t color)
 	dl = r_newrefdef.dlights;
 	for (lnum = 0; lnum < r_newrefdef.num_dlights; lnum++, dl++)
 	{
-		VectorSubtract(currententity->origin, dl->origin, dist);
+		VectorSubtract3(currententity->origin, dl->origin, dist);
 
-		add = dl->intensity - VectorLength(dist);
+		add = dl->intensity - VectorLength3(dist);
 		add *= (1.0 / 256);
 
 		if (add > 0)
-			VectorMA(color, add, dl->color, color);
+			VectorMA3(color, add, dl->color, color);
 	}
 
-	VectorScale(color, gl_modulate->value, color);
+	VectorScale3(color, gl_modulate->value, color);
 }
 
 
@@ -372,7 +372,7 @@ void R_AddDynamicLights(msurface_t* surf)
 
 		dl = &r_newrefdef.dlights[lnum];
 		frad = dl->intensity;
-		fdist = DotProduct(dl->origin, surf->plane->normal) -
+		fdist = DotProduct3(dl->origin, surf->plane->normal) -
 			surf->plane->dist;
 		frad -= fabsf(fdist);
 		// rad is now the highest intensity on the plane
@@ -388,8 +388,8 @@ void R_AddDynamicLights(msurface_t* surf)
 				surf->plane->normal[i] * fdist;
 		}
 
-		local[0] = DotProduct(impact, tex->vecs[0]) + tex->vecs[0][3] - surf->texturemins[0];
-		local[1] = DotProduct(impact, tex->vecs[1]) + tex->vecs[1][3] - surf->texturemins[1];
+		local[0] = DotProduct3(impact, tex->vecs[0]) + tex->vecs[0][3] - surf->texturemins[0];
+		local[1] = DotProduct3(impact, tex->vecs[1]) + tex->vecs[1][3] - surf->texturemins[1];
 
 		pfBL = s_blocklights;
 		for (t = 0, ftacc = 0; t < tmax; t++, ftacc += 16)
@@ -400,7 +400,7 @@ void R_AddDynamicLights(msurface_t* surf)
 
 			for (s = 0, fsacc = 0; s < smax; s++, fsacc += 16, pfBL += 3)
 			{
-				sd = Q_ftol(local[0] - fsacc);
+				sd = (int32_t)(local[0] - fsacc);
 
 				if (sd < 0)
 					sd = -sd;
@@ -572,9 +572,9 @@ store:
 	{
 		for (j = 0; j < smax; j++)
 		{
-			r = Q_ftol(bl[0]);
-			g = Q_ftol(bl[1]);
-			b = Q_ftol(bl[2]);
+			r = (int32_t)bl[0];
+			g = (int32_t)bl[1];
+			b = (int32_t)bl[2];
 
 			// catch negative lights
 			if (r < 0)

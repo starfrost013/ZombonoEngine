@@ -108,7 +108,7 @@ void Render3D_AddParticle(vec3_t org, color4_t color)
 	}
 
 	p = &r_particles[r_numparticles++];
-	VectorCopy(org, p->origin);
+	VectorCopy3(org, p->origin);
 
 	// wtf is wrong with msvc vectorcopy does nothing. KILL THIS COMPILER! DO IT NOW!
 	p->color[0] = color[0];
@@ -134,7 +134,7 @@ void Render3D_AddLight(vec3_t org, float intensity, float r, float g, float b)
 	}
 
 	dl = &r_dlights[r_numdlights++];
-	VectorCopy(org, dl->origin);
+	VectorCopy3(org, dl->origin);
 	dl->intensity = intensity;
 	dl->color[0] = r;
 	dl->color[1] = g;
@@ -407,7 +407,7 @@ void Render3D_RenderView()
 			r_numdlights = 0;
 
 		if (!cl_add_blend->value)
-			VectorClear(cl.refdef.blend);
+			VectorClear3(cl.refdef.blend);
 
 		cl.refdef.num_entities = r_numentities;
 		cl.refdef.entities = r_entities;

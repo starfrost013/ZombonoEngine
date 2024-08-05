@@ -365,7 +365,7 @@ void CL_BaseMove(usercmd_t* cmd)
 
 	memset(cmd, 0, sizeof(*cmd));
 
-	VectorCopy(cl.viewangles, cmd->angles);
+	VectorCopy3(cl.viewangles, cmd->angles);
 
 	cmd->sidemove += cl_sidespeed->value * CL_KeyState(&input_moveright);
 	cmd->sidemove -= cl_sidespeed->value * CL_KeyState(&input_moveleft);

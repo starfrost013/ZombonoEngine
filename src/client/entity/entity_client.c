@@ -90,7 +90,7 @@ void CL_ParseDelta(entity_state_t* from, entity_state_t* to, int32_t number, int
 	// set everything to the state we are delta'ing from
 	*to = *from;
 
-	VectorCopy(from->origin, to->old_origin);
+	VectorCopy3(from->origin, to->old_origin);
 	to->number = number;
 
 	if (bits & U_MODEL)
@@ -200,13 +200,13 @@ void CL_DeltaEntity(frame_t* frame, int32_t newnum, entity_state_t* old, int32_t
 		ent->prev = *state;
 		if (state->event == EV_OTHER_TELEPORT)
 		{
-			VectorCopy(state->origin, ent->prev.origin);
-			VectorCopy(state->origin, ent->lerp_origin);
+			VectorCopy3(state->origin, ent->prev.origin);
+			VectorCopy3(state->origin, ent->lerp_origin);
 		}
 		else
 		{
-			VectorCopy(state->old_origin, ent->prev.origin);
-			VectorCopy(state->old_origin, ent->lerp_origin);
+			VectorCopy3(state->old_origin, ent->prev.origin);
+			VectorCopy3(state->old_origin, ent->lerp_origin);
 		}
 	}
 	else
@@ -587,7 +587,7 @@ void CL_ParseFrame()
 			cl.predicted_origin[1] = cl.frame.playerstate.vieworigin[1];
 			cl.predicted_origin[2] = cl.frame.playerstate.vieworigin[2];
 
-			VectorCopy(cl.frame.playerstate.viewangles, cl.predicted_angles);
+			VectorCopy3(cl.frame.playerstate.viewangles, cl.predicted_angles);
 
 			if (cls.disable_servercount != cl.servercount
 				&& cl.refresh_prepped)
@@ -726,8 +726,8 @@ void CL_AddPacketEntities(frame_t* frame)
 		if (renderfx & (RF_FRAMELERP | RF_BEAM))
 		{	// step origin discretely, because the frames
 			// do the animation properly
-			VectorCopy(cent->current.origin, ent.origin);
-			VectorCopy(cent->current.old_origin, ent.oldorigin);
+			VectorCopy3(cent->current.origin, ent.origin);
+			VectorCopy3(cent->current.old_origin, ent.oldorigin);
 		}
 		else
 		{	// interpolate origin
@@ -927,7 +927,7 @@ void CL_AddPacketEntities(frame_t* frame)
 			}
 		}
 
-		VectorCopy(ent.origin, cent->lerp_origin);
+		VectorCopy3(ent.origin, cent->lerp_origin);
 	}
 }
 
@@ -979,7 +979,7 @@ void CL_AddViewWeapon(player_state_t* ps, player_state_t* ops)
 
 	gun.flags = RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL;
 	gun.backlerp = 1.0f - cl.lerpfrac;
-	VectorCopy(gun.origin, gun.oldorigin);	// don't lerp at all
+	VectorCopy3(gun.origin, gun.oldorigin);	// don't lerp at all
 	Render3D_AddEntity(&gun);
 }
 
@@ -1145,7 +1145,7 @@ void CL_GetEntitySoundOrigin(int32_t ent, vec3_t org)
 	if (ent < 0 || ent >= MAX_EDICTS)
 		Com_Error(ERR_DROP, "CL_GetEntitySoundOrigin: bad ent");
 	old = &cl_entities[ent];
-	VectorCopy(old->lerp_origin, org);
+	VectorCopy3(old->lerp_origin, org);
 
 	// FIXME: bmodel issues...
 }

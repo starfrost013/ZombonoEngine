@@ -404,7 +404,7 @@ void R_SetFrustum()
 	for (i = 0; i < 4; i++)
 	{
 		frustum[i].type = PLANE_ANYZ;
-		frustum[i].dist = DotProduct(r_origin, frustum[i].normal);
+		frustum[i].dist = DotProduct3(r_origin, frustum[i].normal);
 		frustum[i].signbits = SignbitsForPlane(&frustum[i]);
 	}
 }
@@ -424,7 +424,7 @@ void R_SetupFrame()
 	r_framecount++;
 
 	// build the transformation matrix for the given view angles
-	VectorCopy(r_newrefdef.vieworigin, r_origin);
+	VectorCopy3(r_newrefdef.vieworigin, r_origin);
 
 	AngleVectors(r_newrefdef.viewangles, vpn, vright, vup);
 
@@ -441,7 +441,7 @@ void R_SetupFrame()
 		{	// look down a bit
 			vec3_t	temp;
 
-			VectorCopy(r_origin, temp);
+			VectorCopy3(r_origin, temp);
 			temp[2] -= 16;
 			leaf = Mod_PointInLeaf(temp, r_worldmodel);
 			if (!(leaf->contents & CONTENTS_SOLID) &&
@@ -452,7 +452,7 @@ void R_SetupFrame()
 		{	// look up a bit
 			vec3_t	temp;
 
-			VectorCopy(r_origin, temp);
+			VectorCopy3(r_origin, temp);
 			temp[2] += 16;
 			leaf = Mod_PointInLeaf(temp, r_worldmodel);
 			if (!(leaf->contents & CONTENTS_SOLID) &&
@@ -1047,17 +1047,17 @@ void R_DrawBeam(entity_t* e)
 	normalized_direction[1] = direction[1] = oldorigin[1] - origin[1];
 	normalized_direction[2] = direction[2] = oldorigin[2] - origin[2];
 
-	if (VectorNormalize(normalized_direction) == 0)
+	if (VectorNormalize3(normalized_direction) == 0)
 		return;
 
 	PerpendicularVector(perpvec, normalized_direction);
-	VectorScale(perpvec, e->frame / 2.0f, perpvec);
+	VectorScale3(perpvec, e->frame / 2.0f, perpvec);
 
 	for (i = 0; i < 6; i++)
 	{
 		RotatePointAroundVector(start_points[i], normalized_direction, perpvec, (360.0 / NUM_BEAM_SEGS) * i);
-		VectorAdd(start_points[i], origin, start_points[i]);
-		VectorAdd(start_points[i], direction, end_points[i]);
+		VectorAdd3(start_points[i], origin, start_points[i]);
+		VectorAdd3(start_points[i], direction, end_points[i]);
 	}
 
 	glDisable(GL_TEXTURE_2D);

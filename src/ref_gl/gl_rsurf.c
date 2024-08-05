@@ -767,7 +767,7 @@ void R_DrawInlineBModel()
 		// find which side of the node we are on
 		pplane = psurf->plane;
 
-		dot = DotProduct(modelorg, pplane->normal) - pplane->dist;
+		dot = DotProduct3(modelorg, pplane->normal) - pplane->dist;
 
 		// draw the polygon
 		if (((psurf->flags & SURF_PLANEBACK) && (dot < -BACKFACE_EPSILON)) ||
@@ -832,8 +832,8 @@ void R_DrawBrushModel(entity_t* e)
 	else
 	{
 		rotated = false;
-		VectorAdd(e->origin, currentmodel->mins, mins);
-		VectorAdd(e->origin, currentmodel->maxs, maxs);
+		VectorAdd3(e->origin, currentmodel->mins, mins);
+		VectorAdd3(e->origin, currentmodel->maxs, maxs);
 	}
 
 	if (R_CullBox(mins, maxs))
@@ -842,17 +842,17 @@ void R_DrawBrushModel(entity_t* e)
 	glColor3f(1, 1, 1);
 	memset(gl_lms.lightmap_surfaces, 0, sizeof(gl_lms.lightmap_surfaces));
 
-	VectorSubtract(r_newrefdef.vieworigin, e->origin, modelorg);
+	VectorSubtract3(r_newrefdef.vieworigin, e->origin, modelorg);
 	if (rotated)
 	{
 		vec3_t	temp;
 		vec3_t	forward, right, up;
 
-		VectorCopy(modelorg, temp);
+		VectorCopy3(modelorg, temp);
 		AngleVectors(e->angles, forward, right, up);
-		modelorg[0] = DotProduct(temp, forward);
-		modelorg[1] = -DotProduct(temp, right);
-		modelorg[2] = DotProduct(temp, up);
+		modelorg[0] = DotProduct3(temp, forward);
+		modelorg[1] = -DotProduct3(temp, right);
+		modelorg[2] = DotProduct3(temp, up);
 	}
 
 	glPushMatrix();
@@ -951,7 +951,7 @@ void R_RecursiveWorldNode(mnode_t* node)
 		dot = modelorg[2] - plane->dist;
 		break;
 	default:
-		dot = DotProduct(modelorg, plane->normal) - plane->dist;
+		dot = DotProduct3(modelorg, plane->normal) - plane->dist;
 		break;
 	}
 
@@ -1030,7 +1030,7 @@ void R_DrawWorld()
 
 	currentmodel = r_worldmodel;
 
-	VectorCopy(r_newrefdef.vieworigin, modelorg);
+	VectorCopy3(r_newrefdef.vieworigin, modelorg);
 
 	// auto cycle the world frame for texture animation
 	memset(&ent, 0, sizeof(ent));
@@ -1273,7 +1273,7 @@ void GL_BuildPolygonFromSurface(msurface_t* fa)
 	lnumverts = fa->numedges;
 	vertpage = 0;
 
-	VectorClear(total);
+	VectorClear3(total);
 	//
 	// draw texture
 	//
@@ -1297,27 +1297,27 @@ void GL_BuildPolygonFromSurface(msurface_t* fa)
 			r_pedge = &pedges[-lindex];
 			vec = currentmodel->vertexes[r_pedge->v[1]].position;
 		}
-		s = DotProduct(vec, fa->texinfo->vecs[0]) + fa->texinfo->vecs[0][3];
+		s = DotProduct3(vec, fa->texinfo->vecs[0]) + fa->texinfo->vecs[0][3];
 		s /= fa->texinfo->image->width;
 
-		t = DotProduct(vec, fa->texinfo->vecs[1]) + fa->texinfo->vecs[1][3];
+		t = DotProduct3(vec, fa->texinfo->vecs[1]) + fa->texinfo->vecs[1][3];
 		t /= fa->texinfo->image->height;
 
-		VectorAdd(total, vec, total);
-		VectorCopy(vec, poly->verts[i]);
+		VectorAdd3(total, vec, total);
+		VectorCopy3(vec, poly->verts[i]);
 		poly->verts[i][3] = s;
 		poly->verts[i][4] = t;
 
 		//
 		// lightmap texture coordinates
 		//
-		s = DotProduct(vec, fa->texinfo->vecs[0]) + fa->texinfo->vecs[0][3];
+		s = DotProduct3(vec, fa->texinfo->vecs[0]) + fa->texinfo->vecs[0][3];
 		s -= fa->texturemins[0];
 		s += fa->light_s * 16;
 		s += 8;
 		s /= BLOCK_WIDTH * 16; //fa->texinfo->texture->width;
 
-		t = DotProduct(vec, fa->texinfo->vecs[1]) + fa->texinfo->vecs[1][3];
+		t = DotProduct3(vec, fa->texinfo->vecs[1]) + fa->texinfo->vecs[1][3];
 		t -= fa->texturemins[1];
 		t += fa->light_t * 16;
 		t += 8;

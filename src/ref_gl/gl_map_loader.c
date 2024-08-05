@@ -63,7 +63,7 @@ mleaf_t* Mod_PointInLeaf(vec3_t p, model_t* model)
 		if (node->contents != -1)
 			return (mleaf_t*)node;
 		plane = node->plane;
-		d = DotProduct(p, plane->normal) - plane->dist;
+		d = DotProduct3(p, plane->normal) - plane->dist;
 		if (d > 0)
 			node = node->children[0];
 		else
@@ -365,7 +365,7 @@ float RadiusFromBounds(vec3_t mins, vec3_t maxs)
 		corner[i] = fabsf(mins[i]) > fabsf(maxs[i]) ? fabsf(mins[i]) : fabsf(maxs[i]);
 	}
 
-	return VectorLength(corner);
+	return VectorLength3(corner);
 }
 
 
@@ -886,8 +886,8 @@ void MapRenderer_Load(model_t* mod, void* buffer)
 		if (starmod->firstnode >= loadmodel->numnodes)
 			ri.Sys_Error(ERR_DROP, "Inline model %i has bad firstnode", i);
 
-		VectorCopy(bm->maxs, starmod->maxs);
-		VectorCopy(bm->mins, starmod->mins);
+		VectorCopy3(bm->maxs, starmod->maxs);
+		VectorCopy3(bm->mins, starmod->mins);
 		starmod->radius = bm->radius;
 
 		if (i == 0)

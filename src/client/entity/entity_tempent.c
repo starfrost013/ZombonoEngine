@@ -269,7 +269,7 @@ void CL_ParseTEnt()
 		CL_BlasterParticles(pos, dir);
 
 		ex = CL_AllocExplosion();
-		VectorCopy(pos, ex->ent.origin);
+		VectorCopy3(pos, ex->ent.origin);
 		ex->ent.angles[0] = acosf(dir[2]) / M_PI * 180.0f;
 		// PMM - fixed to correct for pitch of 0
 		if (dir[0])
@@ -305,7 +305,7 @@ void CL_ParseTEnt()
 		MSG_ReadPos(&net_message, pos);
 
 		ex = CL_AllocExplosion();
-		VectorCopy(pos, ex->ent.origin);
+		VectorCopy3(pos, ex->ent.origin);
 		ex->type = ex_poly;
 		ex->ent.flags = RF_FULLBRIGHT;
 		ex->start = cl.frame.servertime - 100;
@@ -330,7 +330,7 @@ void CL_ParseTEnt()
 		MSG_ReadPos(&net_message, pos);
 
 		ex = CL_AllocExplosion();
-		VectorCopy(pos, ex->ent.origin);
+		VectorCopy3(pos, ex->ent.origin);
 		ex->type = ex_poly;
 		ex->ent.flags = RF_FULLBRIGHT;
 		ex->start = cl.frame.servertime - 100;

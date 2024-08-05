@@ -43,13 +43,13 @@ void CL_CheckPredictionError()
 	frame &= (CMD_BACKUP - 1);
 
 	// compare what the server returned with what we had predicted it to be
-	VectorSubtract(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame], delta);
+	VectorSubtract3(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame], delta);
 
 	// save the prediction error for interpolation
 	len = abs(delta[0]) + abs(delta[1]) + abs(delta[2]);
 	if (len > 640)	// 80 world units
 	{	// a teleport or something
-		VectorClear(cl.prediction_error);
+		VectorClear3(cl.prediction_error);
 	}
 	else
 	{
@@ -57,7 +57,7 @@ void CL_CheckPredictionError()
 			Com_Printf("prediction miss on %i: %i\n", cl.frame.serverframe,
 				delta[0] + delta[1] + delta[2]);
 
-		VectorCopy(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame]);
+		VectorCopy3(cl.frame.playerstate.vieworigin, cl.predicted_origins[frame]);
 
 		// save for error itnerpolation
 		for (i = 0; i < 3; i++)
@@ -251,7 +251,7 @@ void CL_PredictMovement()
 	phys_friction = (float)atof(cl.configstrings[CS_PHYS_FRICTION]);
 	phys_waterfriction = (float)atof(cl.configstrings[CS_PHYS_FRICTION_WATER]);
 
-	VectorCopy(cl.frame.playerstate.vieworigin, pm.vieworigin);
+	VectorCopy3(cl.frame.playerstate.vieworigin, pm.vieworigin);
 	pm.s = cl.frame.playerstate.pmove;
 
 	frame = 0;
@@ -266,7 +266,7 @@ void CL_PredictMovement()
 		Player_Move(&pm);
 
 		// save for debug checking
-		VectorCopy(pm.vieworigin, cl.predicted_origins[frame]);
+		VectorCopy3(pm.vieworigin, cl.predicted_origins[frame]);
 	}
 
 	oldframe = (ack - 2) & (CMD_BACKUP - 1);
@@ -285,5 +285,5 @@ void CL_PredictMovement()
 	cl.predicted_origin[1] = pm.vieworigin[1];
 	cl.predicted_origin[2] = pm.vieworigin[2];
 
-	VectorCopy(pm.viewangles, cl.predicted_angles);
+	VectorCopy3(pm.viewangles, cl.predicted_angles);
 }

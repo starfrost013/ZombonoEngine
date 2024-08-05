@@ -50,6 +50,13 @@ bool UI_MainMenuQuitUICreate()
 
 	UI_SetEventOnClickDown("MainMenuQuitUI", "MainMenuQuitUI_YesBox", UI_MainMenuQuitUIOnYesPressed);
 	UI_SetEventOnClickDown("MainMenuQuitUI", "MainMenuQuitUI_NoBox", UI_MainMenuQuitUIOnNoPressed);
+
+	color4_t yes_color_hover = { 0, 160, 0, 180 };
+	color4_t no_color_hover = { 160, 0, 0, 180 };
+
+	UI_SetColorOnHover("MainMenuQuitUI", "MainMenuQuitUI_YesBox", yes_color_hover);
+	UI_SetColorOnHover("MainMenuQuitUI", "MainMenuQuitUI_NoBox", no_color_hover);
+
 	// create ui
 	return true;
 }

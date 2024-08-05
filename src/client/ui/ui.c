@@ -223,8 +223,8 @@ bool UI_AddText(char* ui_name, char* control_name, char* text, float position_x,
 
 	// by default hover and click colour are the same as the normal colour so set them
 
-	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_hover);
-	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_click);
+	VectorCopy4(ui_control_ptr->color, ui_control_ptr->color_on_hover);
+	VectorCopy4(ui_control_ptr->color, ui_control_ptr->color_on_click);
 
 	ui_control_ptr->type = ui_control_text;
 	return UI_AddControl(ui_ptr, control_name, position_x, position_y, 0, 0);
@@ -309,8 +309,8 @@ bool UI_AddBox(char* ui_name, char* control_name, float position_x, float positi
 
 	// by default hover and click colour are the same as the normal colour so set them
 
-	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_hover);
-	VectorCopy(ui_control_ptr->color, ui_control_ptr->color_on_click);
+	VectorCopy4(ui_control_ptr->color, ui_control_ptr->color_on_hover);
+	VectorCopy4(ui_control_ptr->color, ui_control_ptr->color_on_click);
 
 	ui_control_ptr->type = ui_control_box;
 
@@ -566,7 +566,7 @@ bool UI_SetColorOnHover(char* ui_name, char* control_name, color4_t color)
 	}
 
 	//color4_t is a vector
-	VectorCopy(color, ui_control_ptr->color_on_hover);
+	VectorCopy4(color, ui_control_ptr->color_on_hover);
 
 	return true;
 }
@@ -582,7 +582,7 @@ bool UI_SetColorOnClick(char* ui_name, char* control_name, color4_t color)
 	}
 
 	//color4_t is a vector
-	VectorCopy(color, ui_control_ptr->color_on_click);
+	VectorCopy4(color, ui_control_ptr->color_on_click);
 
 	return true;
 }
@@ -758,20 +758,19 @@ void UI_DrawText(ui_control_t* text)
 
 	color4_t color = { 255, 255, 255, 255 };
 
-
 	
 	if (text->hovered) // allow text to disappear when hovered
 	{
-		VectorCopy(text->color_on_hover, color);
+		VectorCopy3(text->color_on_hover, color);
 	}
 	else if (text->focused)
 	{
-		VectorCopy(text->color_on_click, color);
+		VectorCopy3(text->color_on_click, color);
 	}
 	// if the colour snot entirely transparent, use it
 	else
 	{
-		VectorCopy(text->color, color);
+		VectorCopy3(text->color, color);
 	}
 
 

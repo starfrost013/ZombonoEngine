@@ -52,13 +52,13 @@ void CL_AddBeams()
 		// if coming from the player, update the start position
 		if (b->entity == cl.playernum + 1)	// entity 0 is the world
 		{
-			VectorCopy(cl.refdef.vieworigin, b->start);
+			VectorCopy3(cl.refdef.vieworigin, b->start);
 			b->start[2] -= 22;	// adjust for view height
 		}
-		VectorAdd(b->start, b->offset, org);
+		VectorAdd3(b->start, b->offset, org);
 
 		// calculate pitch and yaw
-		VectorSubtract(b->end, org, dist);
+		VectorSubtract3(b->end, org, dist);
 
 		if (dist[1] == 0 && dist[0] == 0)
 		{
@@ -87,7 +87,7 @@ void CL_AddBeams()
 		}
 
 		// add new entities for the beams
-		d = VectorNormalize(dist);
+		d = VectorNormalize3(dist);
 
 		memset(&ent, 0, sizeof(ent));
 
@@ -100,7 +100,7 @@ void CL_AddBeams()
 
 		while (d > 0)
 		{
-			VectorCopy(org, ent.origin);
+			VectorCopy3(org, ent.origin);
 			ent.model = b->model;
 
 			ent.angles[0] = pitch;
@@ -164,13 +164,13 @@ void CL_AddPlayerBeams()
 		// if coming from the player, update the start position
 		if (b->entity == cl.playernum + 1)	// entity 0 is the world
 		{
-			VectorCopy(cl.refdef.vieworigin, b->start);
+			VectorCopy3(cl.refdef.vieworigin, b->start);
 			b->start[2] -= 22;	// adjust for view height
 		}
-		VectorAdd(b->start, b->offset, org);
+		VectorAdd3(b->start, b->offset, org);
 
 		// calculate pitch and yaw
-		VectorSubtract(b->end, org, dist);
+		VectorSubtract3(b->end, org, dist);
 
 		if (dist[1] == 0 && dist[0] == 0)
 		{
@@ -199,7 +199,7 @@ void CL_AddPlayerBeams()
 		}
 
 		// add new entities for the beams
-		d = VectorNormalize(dist);
+		d = VectorNormalize3(dist);
 
 		memset(&ent, 0, sizeof(ent));
 
@@ -213,7 +213,7 @@ void CL_AddPlayerBeams()
 		// through the tesla mine (instead it goes through the target)
 		if (d <= model_length)
 		{
-			VectorCopy(b->end, ent.origin);
+			VectorCopy3(b->end, ent.origin);
 			// offset to push beam outside of tesla model (negative because dist is from end to start
 			// for this beam)
 //			for (j=0 ; j<3 ; j++)
@@ -228,7 +228,7 @@ void CL_AddPlayerBeams()
 		}
 		while (d > 0)
 		{
-			VectorCopy(org, ent.origin);
+			VectorCopy3(org, ent.origin);
 			ent.model = b->model;
 
 			ent.angles[0] = pitch;
@@ -270,9 +270,9 @@ int32_t CL_ParseBeam(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorClear(b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorClear3(b->offset);
 			return ent;
 		}
 
@@ -284,9 +284,9 @@ int32_t CL_ParseBeam(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorClear(b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorClear3(b->offset);
 			return ent;
 		}
 	}
@@ -322,9 +322,9 @@ int32_t CL_ParseBeam2(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorCopy(offset, b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorCopy3(offset, b->offset);
 			return ent;
 		}
 
@@ -336,9 +336,9 @@ int32_t CL_ParseBeam2(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorCopy(offset, b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorCopy3(offset, b->offset);
 			return ent;
 		}
 	}
@@ -378,9 +378,9 @@ int32_t CL_ParsePlayerBeam(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorCopy(offset, b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorCopy3(offset, b->offset);
 			return ent;
 		}
 	}
@@ -393,9 +393,9 @@ int32_t CL_ParsePlayerBeam(struct model_s* model)
 			b->entity = ent;
 			b->model = model;
 			b->endtime = cl.time + 100;		// PMM - this needs to be 100 to prevent multiple heatbeams
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorCopy(offset, b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorCopy3(offset, b->offset);
 			return ent;
 		}
 	}
@@ -430,9 +430,9 @@ int32_t CL_ParseLightning(struct model_s* model)
 			b->dest_entity = destEnt;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorClear(b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorClear3(b->offset);
 			return srcEnt;
 		}
 
@@ -446,9 +446,9 @@ int32_t CL_ParseLightning(struct model_s* model)
 			b->dest_entity = destEnt;
 			b->model = model;
 			b->endtime = cl.time + 200;
-			VectorCopy(start, b->start);
-			VectorCopy(end, b->end);
-			VectorClear(b->offset);
+			VectorCopy3(start, b->start);
+			VectorCopy3(end, b->end);
+			VectorClear3(b->offset);
 			return srcEnt;
 		}
 	}

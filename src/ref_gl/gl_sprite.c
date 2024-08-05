@@ -76,23 +76,23 @@ void R_DrawSpriteModel (entity_t *e)
 	glBegin (GL_QUADS);
 
 	glTexCoord2f (0, 1);
-	VectorMA (e->origin, -frame->origin_y, up, point);
-	VectorMA (point, -frame->origin_x, right, point);
+	VectorMA3 (e->origin, -frame->origin_y, up, point);
+	VectorMA3 (point, -frame->origin_x, right, point);
 	glVertex3fv (point);
 
 	glTexCoord2f (0, 0);
-	VectorMA (e->origin, frame->height - frame->origin_y, up, point);
-	VectorMA (point, -frame->origin_x, right, point);
+	VectorMA3 (e->origin, frame->height - frame->origin_y, up, point);
+	VectorMA3 (point, -frame->origin_x, right, point);
 	glVertex3fv (point);
 
 	glTexCoord2f (1, 0);
-	VectorMA (e->origin, frame->height - frame->origin_y, up, point);
-	VectorMA (point, frame->width - frame->origin_x, right, point);
+	VectorMA3 (e->origin, frame->height - frame->origin_y, up, point);
+	VectorMA3 (point, frame->width - frame->origin_x, right, point);
 	glVertex3fv (point);
 
 	glTexCoord2f (1, 1);
-	VectorMA (e->origin, -frame->origin_y, up, point);
-	VectorMA (point, frame->width - frame->origin_x, right, point);
+	VectorMA3 (e->origin, -frame->origin_y, up, point);
+	VectorMA3 (point, frame->width - frame->origin_x, right, point);
 	glVertex3fv (point);
 	
 	glEnd ();

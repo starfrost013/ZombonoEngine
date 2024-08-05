@@ -246,14 +246,14 @@ void GL_DrawAliasFrameLerp(dmdl_t* paliashdr, float backlerp)
 	frontlerp = 1.0f - backlerp;
 
 	// move should be the delta back to the previous frame * backlerp
-	VectorSubtract(currententity->oldorigin, currententity->origin, delta);
+	VectorSubtract3(currententity->oldorigin, currententity->origin, delta);
 	AngleVectors(currententity->angles, vectors[0], vectors[1], vectors[2]);
 
-	move[0] = DotProduct(delta, vectors[0]);	// forward
-	move[1] = -DotProduct(delta, vectors[1]);	// left
-	move[2] = DotProduct(delta, vectors[2]);	// up
+	move[0] = DotProduct3(delta, vectors[0]);	// forward
+	move[1] = -DotProduct3(delta, vectors[1]);	// left
+	move[2] = DotProduct3(delta, vectors[2]);	// up
 
-	VectorAdd(move, oldframe->translate, move);
+	VectorAdd3(move, oldframe->translate, move);
 
 	for (i = 0; i < 3; i++)
 	{
@@ -557,13 +557,13 @@ static bool R_CullAliasModel(vec3_t bbox[8], entity_t* e)
 		else
 			tmp[2] = maxs[2];
 
-		VectorCopy(tmp, bbox[i]);
+		VectorCopy3(tmp, bbox[i]);
 	}
 
 	/*
 	** rotate the bounding box
 	*/
-	VectorCopy(e->angles, angles);
+	VectorCopy3(e->angles, angles);
 	angles[YAW] = -angles[YAW];
 	AngleVectors(angles, vectors[0], vectors[1], vectors[2]);
 
@@ -571,13 +571,13 @@ static bool R_CullAliasModel(vec3_t bbox[8], entity_t* e)
 	{
 		vec3_t tmp;
 
-		VectorCopy(bbox[i], tmp);
+		VectorCopy3(bbox[i], tmp);
 
-		bbox[i][0] = DotProduct(vectors[0], tmp);
-		bbox[i][1] = -DotProduct(vectors[1], tmp);
-		bbox[i][2] = DotProduct(vectors[2], tmp);
+		bbox[i][0] = DotProduct3(vectors[0], tmp);
+		bbox[i][1] = -DotProduct3(vectors[1], tmp);
+		bbox[i][2] = DotProduct3(vectors[2], tmp);
 
-		VectorAdd(e->origin, bbox[i], bbox[i]);
+		VectorAdd3(e->origin, bbox[i], bbox[i]);
 	}
 
 	{
@@ -589,7 +589,7 @@ static bool R_CullAliasModel(vec3_t bbox[8], entity_t* e)
 
 			for (f = 0; f < 4; f++)
 			{
-				float dp = DotProduct(frustum[f].normal, bbox[p]);
+				float dp = DotProduct3(frustum[f].normal, bbox[p]);
 
 				if ((dp - frustum[f].dist) < 0)
 				{
@@ -642,7 +642,7 @@ void R_DrawAliasModel(entity_t* e)
 	//
 	if (currententity->flags & (RF_SHELL_GREEN | RF_SHELL_RED | RF_SHELL_BLUE))
 	{
-		VectorClear(shadelight);
+		VectorClear3(shadelight);
 		if (currententity->flags & RF_SHELL_RED)
 			shadelight[0] = 1.0;
 		if (currententity->flags & RF_SHELL_GREEN)
@@ -717,7 +717,7 @@ void R_DrawAliasModel(entity_t* e)
 	shadevector[0] = cosf(-an);
 	shadevector[1] = sinf(-an);
 	shadevector[2] = 1;
-	VectorNormalize(shadevector);
+	VectorNormalize3(shadevector);
 
 	//
 	// locate the proper data

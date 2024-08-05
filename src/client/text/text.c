@@ -260,7 +260,7 @@ void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t draw_colo
 	//...unless it was overridden
 	if (draw_color)
 	{
-		VectorCopy(draw_color, color);
+		VectorCopy3(draw_color, color);
 	}
 
 	for (int32_t char_num = 0; char_num < string_length; char_num++)

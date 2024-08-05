@@ -53,10 +53,10 @@ void CL_ParseMuzzleFlash()
 	pl = &cl_entities[i];
 
 	dl = CL_AllocDlight(i);
-	VectorCopy(pl->current.origin, dl->origin);
+	VectorCopy3(pl->current.origin, dl->origin);
 	AngleVectors(pl->current.angles, fv, rv, NULL);
-	VectorMA(dl->origin, 18, fv, dl->origin);
-	VectorMA(dl->origin, 16, rv, dl->origin);
+	VectorMA3(dl->origin, 18, fv, dl->origin);
+	VectorMA3(dl->origin, 16, rv, dl->origin);
 	if (silenced)
 		dl->radius = 100 + (rand() & 31);
 	else
@@ -176,7 +176,7 @@ void CL_ParseMuzzleFlash2()
 	origin[2] = cl_entities[ent].current.origin[2] + forward[2] * monster_flash_offset[flash_number][0] + right[2] * monster_flash_offset[flash_number][1] + monster_flash_offset[flash_number][2];
 
 	dl = CL_AllocDlight(ent);
-	VectorCopy(origin, dl->origin);
+	VectorCopy3(origin, dl->origin);
 	dl->radius = 200 + (rand() & 31);
 	dl->minlight = 32;
 	dl->die = cl.time;	// + 0.1;
@@ -309,7 +309,7 @@ void CL_ParticleEffect2(vec3_t org, vec3_t dir, color4_t color, int32_t count)
 		active_particles = p;
 
 		p->time = cl.time;
-		VectorCopy(color, p->color);
+		VectorCopy3(color, p->color);
 
 		d = rand() & 7;
 		for (j = 0; j < 3; j++)
@@ -630,12 +630,12 @@ void CL_BlasterTrail(vec3_t start, vec3_t end)
 	cparticle_t*	p;
 	int32_t 		dec;
 
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	dec = 5;
-	VectorScale(vec, 5, vec);
+	VectorScale3(vec, 5, vec);
 
 	// FIXME: this is a really silly way to have a loop
 	while (len > 0)
@@ -648,7 +648,7 @@ void CL_BlasterTrail(vec3_t start, vec3_t end)
 		free_particles = p->next;
 		p->next = active_particles;
 		active_particles = p;
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 
 		p->time = cl.time;
 
@@ -666,7 +666,7 @@ void CL_BlasterTrail(vec3_t start, vec3_t end)
 			p->accel[j] = 0;
 		}
 
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
@@ -684,12 +684,12 @@ void CL_QuadTrail(vec3_t start, vec3_t end)
 	cparticle_t*	p;
 	int32_t 		dec;
 
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	dec = 5;
-	VectorScale(vec, 5, vec);
+	VectorScale3(vec, 5, vec);
 
 	while (len > 0)
 	{
@@ -701,7 +701,7 @@ void CL_QuadTrail(vec3_t start, vec3_t end)
 		free_particles = p->next;
 		p->next = active_particles;
 		active_particles = p;
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 
 		p->time = cl.time;
 
@@ -719,7 +719,7 @@ void CL_QuadTrail(vec3_t start, vec3_t end)
 			p->accel[j] = 0;
 		}
 
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
@@ -740,12 +740,12 @@ void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags
 	float			orgscale;
 	float			velscale;
 
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	dec = 0.5;
-	VectorScale(vec, dec, vec);
+	VectorScale3(vec, dec, vec);
 
 	if (old->trailcount > 900)
 	{
@@ -777,7 +777,7 @@ void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags
 			free_particles = p->next;
 			p->next = active_particles;
 			active_particles = p;
-			VectorClear(p->accel);
+			VectorClear3(p->accel);
 
 			p->time = cl.time;
 
@@ -821,13 +821,13 @@ void CL_DiminishingTrail(vec3_t start, vec3_t end, centity_t* old, int32_t flags
 		old->trailcount -= 5;
 		if (old->trailcount < 100)
 			old->trailcount = 100;
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
 void MakeNormalVectors(vec3_t forward, vec3_t right, vec3_t up)
 {
-	float		d;
+	float d;
 
 	// this rotate and negat guarantees a vector
 	// not colinear with the original
@@ -835,10 +835,10 @@ void MakeNormalVectors(vec3_t forward, vec3_t right, vec3_t up)
 	right[2] = forward[1];
 	right[0] = forward[2];
 
-	d = DotProduct(right, forward);
-	VectorMA(right, -d, forward, right);
-	VectorNormalize(right);
-	CrossProduct(right, forward, up);
+	d = DotProduct3(right, forward);
+	VectorMA3(right, -d, forward, right);
+	VectorNormalize3(right);
+	VectorCrossProduct(right, forward, up);
 }
 
 /*
@@ -860,12 +860,12 @@ void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old)
 	CL_DiminishingTrail(start, end, old, EF_ROCKET);
 
 	// fire
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	dec = 1;
-	VectorScale(vec, dec, vec);
+	VectorScale3(vec, dec, vec);
 
 	while (len > 0)
 	{
@@ -881,7 +881,7 @@ void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old)
 			p->next = active_particles;
 			active_particles = p;
 
-			VectorClear(p->accel);
+			VectorClear3(p->accel);
 			p->time = cl.time;
 
 			p->alphavel = -1.0f / (1 + frand() * 0.2f);
@@ -898,7 +898,7 @@ void CL_RocketTrail(vec3_t start, vec3_t end, centity_t* old)
 			}
 			p->accel[2] = -PARTICLE_GRAVITY;
 		}
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
@@ -921,9 +921,9 @@ void CL_RailTrail(vec3_t start, vec3_t end)
 	float			d, c, s;
 	vec3_t			dir;
 
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	MakeNormalVectors(vec, right, up);
 
@@ -938,14 +938,14 @@ void CL_RailTrail(vec3_t start, vec3_t end)
 		active_particles = p;
 
 		p->time = cl.time;
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 
 		d = i * 0.1f;
 		c = cosf(d);
 		s = sinf(d);
 
-		VectorScale(right, c, dir);
-		VectorMA(dir, s, up, dir);
+		VectorScale3(right, c, dir);
+		VectorMA3(dir, s, up, dir);
 
 		p->alphavel = -1.0f / (1 + frand() * 0.2f);
 
@@ -960,12 +960,12 @@ void CL_RailTrail(vec3_t start, vec3_t end)
 			p->vel[j] = dir[j] * 6;
 		}
 
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 
 	dec = 0.75;
-	VectorScale(vec, dec, vec);
-	VectorCopy(start, move);
+	VectorScale3(vec, dec, vec);
+	VectorCopy3(start, move);
 
 	while (len > 0)
 	{
@@ -979,7 +979,7 @@ void CL_RailTrail(vec3_t start, vec3_t end)
 		active_particles = p;
 
 		p->time = cl.time;
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 
 		p->alphavel = -1.0f / (0.6f + frand() * 0.2f);
 
@@ -996,7 +996,7 @@ void CL_RailTrail(vec3_t start, vec3_t end)
 			p->accel[j] = 0;
 		}
 
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
@@ -1015,12 +1015,12 @@ void CL_BubbleTrail(vec3_t start, vec3_t end)
 	cparticle_t*	p;
 	float			dec;
 
-	VectorCopy(start, move);
-	VectorSubtract(end, start, vec);
-	len = VectorNormalize(vec);
+	VectorCopy3(start, move);
+	VectorSubtract3(end, start, vec);
+	len = VectorNormalize3(vec);
 
 	dec = 32;
-	VectorScale(vec, dec, vec);
+	VectorScale3(vec, dec, vec);
 
 	for (i = 0; i < len; i += dec)
 	{
@@ -1032,7 +1032,7 @@ void CL_BubbleTrail(vec3_t start, vec3_t end)
 		p->next = active_particles;
 		active_particles = p;
 
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 		p->time = cl.time;
 
 		p->alphavel = -1.0f / (1.0f + frand() * 0.2f);
@@ -1049,7 +1049,7 @@ void CL_BubbleTrail(vec3_t start, vec3_t end)
 		}
 		p->vel[2] += 6;
 
-		VectorAdd(move, vec, move);
+		VectorAdd3(move, vec, move);
 	}
 }
 
@@ -1117,8 +1117,8 @@ void CL_FlyParticles(vec3_t origin, int32_t count)
 		p->org[1] = origin[1] + bytedirs[i][1] * dist + forward[1] * BEAMLENGTH;
 		p->org[2] = origin[2] + bytedirs[i][2] * dist + forward[2] * BEAMLENGTH;
 
-		VectorClear(p->vel);
-		VectorClear(p->accel);
+		VectorClear3(p->vel);
+		VectorClear3(p->accel);
 
 		p->color[0] = 0;
 		p->color[1] = 0;
@@ -1206,9 +1206,9 @@ void CL_TeleportParticles(vec3_t org)
 				dir[1] = i * 8;
 				dir[2] = k * 8;
 
-				VectorNormalize(dir);
+				VectorNormalize3(dir);
 				vel = 50 + (rand() & 63);
-				VectorScale(dir, vel, p->vel);
+				VectorScale3(dir, vel, p->vel);
 
 				p->accel[0] = p->accel[1] = 0;
 				p->accel[2] = -PARTICLE_GRAVITY;
@@ -1316,7 +1316,7 @@ void CL_Flashlight(int32_t ent, vec3_t pos)
 	cdlight_t* dl;
 
 	dl = CL_AllocDlight(ent);
-	VectorCopy(pos, dl->origin);
+	VectorCopy3(pos, dl->origin);
 	dl->radius = 400;
 	dl->minlight = 250;
 	dl->die = cl.time + 100;
@@ -1335,7 +1335,7 @@ void CL_ColorFlash(int32_t ent, vec3_t pos, int32_t intensity, color4_t color)
 	cdlight_t* dl;
 
 	dl = CL_AllocDlight(ent);
-	VectorCopy(pos, dl->origin);
+	VectorCopy3(pos, dl->origin);
 	dl->radius = intensity;
 	dl->minlight = 250;
 	dl->die = cl.time + 100;
@@ -1362,7 +1362,7 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 		p->next = active_particles;
 		active_particles = p;
 
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 		p->time = cl.time;
 
 		p->alphavel = -1.0f / (1 + frand() * 0.2f);
@@ -1390,7 +1390,7 @@ void CL_FlameEffects(centity_t* ent, vec3_t origin)
 		free_particles = p->next;
 		p->next = active_particles;
 		active_particles = p;
-		VectorClear(p->accel);
+		VectorClear3(p->accel);
 
 		p->time = cl.time;
 
@@ -1434,7 +1434,7 @@ void CL_GenericParticleEffect(vec3_t org, vec3_t dir, color4_t color, int32_t co
 		p->time = cl.time;
 		p->lifetime = lifetime;
 
-		VectorAdd(color, run, p->color);
+		VectorAdd3(color, run, p->color);
 
 		d = rand() & dirspread;
 		for (j = 0; j < 3; j++)
@@ -1492,11 +1492,11 @@ void CL_ParticleSteamEffect(vec3_t org, vec3_t dir, color4_t color, int32_t coun
 			p->org[j] = org[j] + magnitude * 0.1f * crand();
 		}
 
-		VectorScale(dir, magnitude, p->vel);
+		VectorScale3(dir, magnitude, p->vel);
 		d = crand() * magnitude / 3;
-		VectorMA(p->vel, d, r, p->vel);
+		VectorMA3(p->vel, d, r, p->vel);
 		d = crand() * magnitude / 3;
-		VectorMA(p->vel, d, u, p->vel);
+		VectorMA3(p->vel, d, u, p->vel);
 
 		p->accel[0] = p->accel[1] = 0;
 		p->accel[2] = -PARTICLE_GRAVITY / 2;
@@ -1538,11 +1538,11 @@ void CL_ParticleSmokeEffect(vec3_t org, vec3_t dir, color4_t color, int32_t coun
 		{
 			p->org[j] = org[j] + magnitude * 0.1f * crand();
 		}
-		VectorScale(dir, magnitude, p->vel);
+		VectorScale3(dir, magnitude, p->vel);
 		d = crand() * magnitude / 3;
-		VectorMA(p->vel, d, r, p->vel);
+		VectorMA3(p->vel, d, r, p->vel);
 		d = crand() * magnitude / 3;
-		VectorMA(p->vel, d, u, p->vel);
+		VectorMA3(p->vel, d, u, p->vel);
 
 		p->accel[0] = p->accel[1] = p->accel[2] = 0;
 

@@ -448,15 +448,15 @@ void S_SpatializeOrigin(vec3_t origin, float master_vol, float dist_mult, int32_
 	}
 
 	// calculate stereo seperation and distance attenuation
-	VectorSubtract(origin, listener_origin, source_vec);
+	VectorSubtract3(origin, listener_origin, source_vec);
 
-	dist = VectorNormalize(source_vec);
+	dist = VectorNormalize3(source_vec);
 	dist -= SOUND_FULLVOLUME;
 	if (dist < 0)
 		dist = 0;			// close enough to be at full volume
 	dist *= dist_mult;		// different attenuation levels
 
-	dot = DotProduct(listener_right, source_vec);
+	dot = DotProduct3(listener_right, source_vec);
 
 	if (dma.channels == 1 || !dist_mult)
 	{ // no attenuation = no spatialization
@@ -502,7 +502,7 @@ void S_Spatialize(channel_t* ch)
 
 	if (ch->fixed_origin)
 	{
-		VectorCopy(ch->origin, origin);
+		VectorCopy3(ch->origin, origin);
 	}
 	else
 	{
@@ -588,7 +588,7 @@ void S_IssuePlaysound(playsound_t* ps)
 	ch->entnum = ps->entnum;
 	ch->entchannel = ps->entchannel;
 	ch->sfx = ps->sfx;
-	VectorCopy(ps->origin, ch->origin);
+	VectorCopy3(ps->origin, ch->origin);
 	ch->fixed_origin = ps->fixed_origin;
 
 	S_Spatialize(ch);
@@ -700,7 +700,7 @@ void S_StartSound(vec3_t origin, int32_t entnum, int32_t entchannel, sfx_t* sfx,
 
 	if (origin)
 	{
-		VectorCopy(origin, ps->origin);
+		VectorCopy3(origin, ps->origin);
 		ps->fixed_origin = true;
 	}
 	else
@@ -949,10 +949,10 @@ void S_Update(vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 	if (s_volume_sfx->modified)
 		S_InitScaletable();
 
-	VectorCopy(origin, listener_origin);
-	VectorCopy(forward, listener_forward);
-	VectorCopy(right, listener_right);
-	VectorCopy(up, listener_up);
+	VectorCopy3(origin, listener_origin);
+	VectorCopy3(forward, listener_forward);
+	VectorCopy3(right, listener_right);
+	VectorCopy3(up, listener_up);
 
 	combine = NULL;
 

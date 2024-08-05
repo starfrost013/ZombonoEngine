@@ -3364,7 +3364,7 @@ void PlayerConfig_MenuDraw(void)
 		entity.origin[0] = 80;
 		entity.origin[1] = 0;
 		entity.origin[2] = 0;
-		VectorCopy(entity.origin, entity.oldorigin);
+		VectorCopy3(entity.origin, entity.oldorigin);
 		entity.frame = 0;
 		entity.oldframe = 0;
 		entity.backlerp = 0.0;

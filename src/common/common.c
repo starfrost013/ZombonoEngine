@@ -433,7 +433,7 @@ void MSG_WriteDir(sizebuf_t* sb, vec3_t dir)
 	best = 0;
 	for (i = 0; i < NUM_VERTEX_NORMALS; i++)
 	{
-		d = DotProduct(dir, bytedirs[i]);
+		d = DotProduct3(dir, bytedirs[i]);
 		if (d > bestd)
 		{
 			bestd = d;
@@ -459,7 +459,7 @@ void MSG_ReadDir(sizebuf_t* sb, vec3_t dir)
 	if (b >= NUM_VERTEX_NORMALS)
 		Com_Error(ERR_DROP, "MSF_ReadDir: out of range");
 
-	VectorCopy(bytedirs[b], dir);
+	VectorCopy3(bytedirs[b], dir);
 }
 
 
@@ -1415,7 +1415,6 @@ void Common_Init(int32_t argc, char** argv)
 #else
 	debug_console = Cvar_Get("debug_console", "0", CVAR_NOSET);
 #endif
-
 
 	s = va("%d.%d.%d.%d %s %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, BUILD_PLATFORM, __DATE__, __TIME__, BUILD_CONFIG);
 	engine_version = Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);

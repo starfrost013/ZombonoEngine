@@ -757,13 +757,13 @@ void Map_InitBoxHull ()
 		p = &box_planes[i*2];
 		p->type = i>>1;
 		p->signbits = 0;
-		VectorClear (p->normal);
+		VectorClear3 (p->normal);
 		p->normal[i>>1] = 1;
 
 		p = &box_planes[i*2+1];
 		p->type = 3 + (i>>1);
 		p->signbits = 0;
-		VectorClear (p->normal);
+		VectorClear3 (p->normal);
 		p->normal[i>>1] = -1;
 	}	
 }
@@ -816,7 +816,7 @@ int32_t Map_PointLeafnum_r (vec3_t p, int32_t num)
 		if (plane->type < 3)
 			d = p[plane->type] - plane->dist;
 		else
-			d = DotProduct (plane->normal, p) - plane->dist;
+			d = DotProduct3 (plane->normal, p) - plane->dist;
 		if (d < 0)
 			num = node->children[1];
 		else
@@ -946,7 +946,7 @@ int32_t Map_TransformedPointContents (vec3_t p, int32_t headnode, vec3_t origin,
 	int32_t 		l;
 
 	// subtract origin offset
-	VectorSubtract (p, origin, p_l);
+	VectorSubtract3 (p, origin, p_l);
 
 	// rotate start and end into the models frame of reference
 	if (headnode != box_headnode && 
@@ -954,10 +954,10 @@ int32_t Map_TransformedPointContents (vec3_t p, int32_t headnode, vec3_t origin,
 	{
 		AngleVectors (angles, forward, right, up);
 
-		VectorCopy (p_l, temp);
-		p_l[0] = DotProduct (temp, forward);
-		p_l[1] = -DotProduct (temp, right);
-		p_l[2] = DotProduct (temp, up);
+		VectorCopy3 (p_l, temp);
+		p_l[0] = DotProduct3 (temp, forward);
+		p_l[1] = -DotProduct3 (temp, right);
+		p_l[2] = DotProduct3 (temp, up);
 	}
 
 	l = Map_PointLeafnum_r (p_l, headnode);
@@ -1036,7 +1036,7 @@ void Map_ClipBoxToBrush (vec3_t mins, vec3_t maxs, vec3_t p1, vec3_t p2,
 				else
 					ofs[j] = mins[j];
 			}
-			dist = DotProduct (ofs, plane->normal);
+			dist = DotProduct3 (ofs, plane->normal);
 			dist = plane->dist - dist;
 		}
 		else
@@ -1044,8 +1044,8 @@ void Map_ClipBoxToBrush (vec3_t mins, vec3_t maxs, vec3_t p1, vec3_t p2,
 			dist = plane->dist;
 		}
 
-		d1 = DotProduct (p1, plane->normal) - dist;
-		d2 = DotProduct (p2, plane->normal) - dist;
+		d1 = DotProduct3 (p1, plane->normal) - dist;
+		d2 = DotProduct3 (p2, plane->normal) - dist;
 
 		if (d2 > 0)
 			getout = true;	// endpoint is not in solid
@@ -1136,10 +1136,10 @@ void Map_TestBoxInBrush (vec3_t mins, vec3_t maxs, vec3_t p1,
 			else
 				ofs[j] = mins[j];
 		}
-		dist = DotProduct (ofs, plane->normal);
+		dist = DotProduct3 (ofs, plane->normal);
 		dist = plane->dist - dist;
 
-		d1 = DotProduct (p1, plane->normal) - dist;
+		d1 = DotProduct3 (p1, plane->normal) - dist;
 
 		// if completely in front of face, no intersection
 		if (d1 > 0)
@@ -1264,8 +1264,8 @@ void Map_RecursiveHullCheck (int32_t num, float p1f, float p2f, vec3_t p1, vec3_
 	}
 	else
 	{
-		t1 = DotProduct (plane->normal, p1) - plane->dist;
-		t2 = DotProduct (plane->normal, p2) - plane->dist;
+		t1 = DotProduct3 (plane->normal, p1) - plane->dist;
+		t2 = DotProduct3 (plane->normal, p2) - plane->dist;
 		if (trace_ispoint)
 			offset = 0;
 		else
@@ -1360,10 +1360,10 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 		return trace_trace;
 
 	trace_contents = brushmask;
-	VectorCopy (start, trace_start);
-	VectorCopy (end, trace_end);
-	VectorCopy (mins, trace_mins);
-	VectorCopy (maxs, trace_maxs);
+	VectorCopy3 (start, trace_start);
+	VectorCopy3 (end, trace_end);
+	VectorCopy3 (mins, trace_mins);
+	VectorCopy3 (maxs, trace_maxs);
 
 	//
 	// check for position test special case
@@ -1375,8 +1375,8 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 		vec3_t	c1, c2;
 		int32_t 	topnode;
 
-		VectorAdd (start, mins, c1);
-		VectorAdd (start, maxs, c2);
+		VectorAdd3 (start, mins, c1);
+		VectorAdd3 (start, maxs, c2);
 		for (i=0 ; i<3 ; i++)
 		{
 			c1[i] -= 1;
@@ -1390,7 +1390,7 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 			if (trace_trace.allsolid)
 				break;
 		}
-		VectorCopy (start, trace_trace.endpos);
+		VectorCopy3 (start, trace_trace.endpos);
 		return trace_trace;
 	}
 
@@ -1401,7 +1401,7 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 		&& maxs[0] == 0 && maxs[1] == 0 && maxs[2] == 0)
 	{
 		trace_ispoint = true;
-		VectorClear (trace_extents);
+		VectorClear3 (trace_extents);
 	}
 	else
 	{
@@ -1418,7 +1418,7 @@ trace_t		Map_BoxTrace (vec3_t start, vec3_t end,
 
 	if (trace_trace.fraction == 1)
 	{
-		VectorCopy (end, trace_trace.endpos);
+		VectorCopy3 (end, trace_trace.endpos);
 	}
 	else
 	{
@@ -1455,8 +1455,8 @@ trace_t		Map_TransformedBoxTrace (vec3_t start, vec3_t end,
 	bool	rotated;
 
 	// subtract origin offset
-	VectorSubtract (start, origin, start_l);
-	VectorSubtract (end, origin, end_l);
+	VectorSubtract3 (start, origin, start_l);
+	VectorSubtract3 (end, origin, end_l);
 
 	// rotate start and end into the models frame of reference
 	if (headnode != box_headnode && 
@@ -1469,15 +1469,15 @@ trace_t		Map_TransformedBoxTrace (vec3_t start, vec3_t end,
 	{
 		AngleVectors (angles, forward, right, up);
 
-		VectorCopy (start_l, temp);
-		start_l[0] = DotProduct (temp, forward);
-		start_l[1] = -DotProduct (temp, right);
-		start_l[2] = DotProduct (temp, up);
+		VectorCopy3 (start_l, temp);
+		start_l[0] = DotProduct3 (temp, forward);
+		start_l[1] = -DotProduct3 (temp, right);
+		start_l[2] = DotProduct3 (temp, up);
 
-		VectorCopy (end_l, temp);
-		end_l[0] = DotProduct (temp, forward);
-		end_l[1] = -DotProduct (temp, right);
-		end_l[2] = DotProduct (temp, up);
+		VectorCopy3 (end_l, temp);
+		end_l[0] = DotProduct3 (temp, forward);
+		end_l[1] = -DotProduct3 (temp, right);
+		end_l[2] = DotProduct3 (temp, up);
 	}
 
 	// sweep the box through the model
@@ -1486,13 +1486,13 @@ trace_t		Map_TransformedBoxTrace (vec3_t start, vec3_t end,
 	if (rotated && trace.fraction != 1.0)
 	{
 		// FIXME: figure out how to do this with existing angles
-		VectorNegate (angles, a);
+		VectorNegate3 (angles, a);
 		AngleVectors (a, forward, right, up);
 
-		VectorCopy (trace.plane.normal, temp);
-		trace.plane.normal[0] = DotProduct (temp, forward);
-		trace.plane.normal[1] = -DotProduct (temp, right);
-		trace.plane.normal[2] = DotProduct (temp, up);
+		VectorCopy3 (trace.plane.normal, temp);
+		trace.plane.normal[0] = DotProduct3 (temp, forward);
+		trace.plane.normal[1] = -DotProduct3 (temp, right);
+		trace.plane.normal[2] = DotProduct3 (temp, up);
 	}
 
 	trace.endpos[0] = start[0] + trace.fraction * (end[0] - start[0]);

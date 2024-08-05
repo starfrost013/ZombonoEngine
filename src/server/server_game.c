@@ -195,8 +195,8 @@ void PF_setmodel(edict_t* ent, char* name)
 	if (name[0] == '*')
 	{
 		mod = Map_LoadInlineModel(name);
-		VectorCopy(mod->mins, ent->mins);
-		VectorCopy(mod->maxs, ent->maxs);
+		VectorCopy3(mod->mins, ent->mins);
+		VectorCopy3(mod->maxs, ent->maxs);
 		SV_LinkEdict(ent);
 	}
 
