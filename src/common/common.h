@@ -195,8 +195,9 @@ PROTOCOL
 #define	UPDATE_MASK		(UPDATE_BACKUP-1)
 
 
+
 //==================
-// the svc_strings[] array in cl_parse.c should mirror this
+// the svc_strings[] array in client/client_parse.c should mirror this
 //==================
 
 //
@@ -211,16 +212,8 @@ typedef enum svc_ops_e
 	svc_muzzleflash2,
 	svc_temp_entity,
 
-	svc_uidraw,					// <ui name>
-	svc_uisettext,				// <ui control name> <text>
-	svc_uisetimage,				// <ui control name> <image path in pics folder>
-	svc_leaderboard,			// <leaderboard_t struct>
-	svc_leaderboarddraw,		// nothing
 	svc_drawtext,				// <font name> <x> <y> <text>
-	svc_loadout_add,			// <loadout_entry_t struct>
-	svc_loadout_remove,			// <index, or -1 for current>
-	svc_loadout_setcurrent,		// <item id>
-	svc_loadout_clear,			// none
+	svc_event,					// <event type> <event information>
 
 	// the rest are private to the client and server
 	svc_disconnect,
@@ -251,7 +244,8 @@ typedef enum clc_ops_e
 	clc_move,				// [[usercmd_t]
 	clc_userinfo,			// [[userinfo string]
 	clc_stringcmd,			// [string] message
-	clc_stringcmd_noconsole,			// [int] teamflag
+	clc_stringcmd_noconsole,// [int] teamflag
+	clc_event,				// [byte] event id [event information]
 } clc_ops;
 
 //==============================================

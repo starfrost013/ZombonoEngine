@@ -29,16 +29,8 @@ char* svc_strings[256] =
 	"svc_muzzleflash",
 	"svc_muzzleflash2",
 	"svc_temp_entity",
-	"svc_uidraw",
-	"svc_uisettext",
-	"svc_uisetimage",
-	"svc_leaderboard",
-	"svc_leaderboarddraw",		// Hack for TDM mode
 	"svc_drawtext",
-	"svc_loadout_add",
-	"svc_loadout_remove",
-	"svc_loadout_setcurrent",
-	"svc_loadout_clear",
+	"svc_event",
 
 	"svc_disconnect",
 	"svc_reconnect",
@@ -569,68 +561,16 @@ void CL_ParseServerMessage()
 		case svc_frame:
 			CL_ParseFrame();
 			break;
-
-		case svc_leaderboard:
-			UI_LeaderboardUIUpdate();
-			break;
-
-		case svc_leaderboarddraw:
-			UI_LeaderboardUIEnable(K_TAB);
-			break;
-
-		case svc_loadout_add:
-			Loadout_Add();
-			break;
-
-		case svc_loadout_clear:
-			Loadout_Clear();
-			break;
-
-		case svc_loadout_remove:
-			Loadout_Remove(MSG_ReadString(&net_message));
-			break;
-
-		case svc_loadout_setcurrent:
-			Loadout_SetCurrent(MSG_ReadByte(&net_message));
+			
+		case svc_event:
+			// handle the event
+			CL_ParseEvent();
 			break;
 
 		case svc_playerinfo:
 		case svc_packetentities:
 		case svc_deltapacketentities:
 			Com_Error(ERR_DROP, "Out of place frame data");
-			break;
-
-		case svc_uidraw:
-			s = MSG_ReadString(&net_message);
-			// Active can only be changed from UI script
-
-			bool enabled = (bool)MSG_ReadByte(&net_message);
-			bool activated = (bool)MSG_ReadByte(&net_message);
-
-			UI_SetEnabled(s, enabled);
-			UI_SetActivated(s, activated);
-			break;
-
-		case svc_uisettext:
-			s = MSG_ReadString(&net_message); // UI name
-			strncpy(str_tempbuf, s, MAX_UI_STRLEN);
-			s = MSG_ReadString(&net_message); // Name
-			strncpy(str_tempbuf2, s, MAX_UI_STRLEN);
-			s = MSG_ReadString(&net_message); // New Text
-
-			UI_SetText(str_tempbuf, str_tempbuf2, s);
-
-			break;
-
-		case svc_uisetimage:
-			s = MSG_ReadString(&net_message); // UI name
-			strncpy(str_tempbuf, s, MAX_UI_STRLEN);
-			s = MSG_ReadString(&net_message); // Name
-			strncpy(str_tempbuf2, s, MAX_UI_STRLEN);
-			s = MSG_ReadString(&net_message); // New image path
-
-			UI_SetImage(str_tempbuf, str_tempbuf2, s);
-
 			break;
 
 		case svc_drawtext:

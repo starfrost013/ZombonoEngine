@@ -27,12 +27,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ai\ai_base.c" />
-    <ClCompile Include="ai\ai_monster.c" />
     <ClCompile Include="client\base\client_commands.c" />
     <ClCompile Include="client\base\client_commands_download.c" />
     <ClCompile Include="client\base\client_cvars.c" />
     <ClCompile Include="client\base\client_commands_demo.c" />
+    <ClCompile Include="client\base\client_event.c" />
     <ClCompile Include="client\entity\entity_client.c" />
     <ClCompile Include="client\fx\fx_beam.c" />
     <ClCompile Include="client\fx\fx_dlight.c" />

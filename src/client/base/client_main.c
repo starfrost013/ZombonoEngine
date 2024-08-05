@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// cl_main.c  -- client main loop, init, shutdown
+// client_main.c  -- client main loop, init, shutdown
 
 #include <client/client.h>
 
@@ -28,7 +28,6 @@ client_state_t	cl;
 centity_t		cl_entities[MAX_EDICTS];
 
 entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
-
 
 /*
 ================

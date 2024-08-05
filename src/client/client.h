@@ -434,7 +434,7 @@ void CL_RegisterSounds();
 void CL_Quit_f();
 
 //
-// cl_main
+// client_main.c
 //
 extern	refexport_t	re;		// interface to refresh .dll
 
@@ -466,7 +466,7 @@ void CL_Stop_f();
 void CL_Record_f();
 
 //
-// cl_parse.c
+// client_parse.c
 //
 extern char* svc_strings[256];
 
@@ -475,6 +475,7 @@ void CL_LoadClientinfo(clientinfo_t* ci, char* s);
 void CL_ShowNet(char* s);
 void CL_ParseClientinfo(int32_t player);
 void CL_Download_f();
+void CL_ParseEvent();
 
 //
 // cl_tent.c
