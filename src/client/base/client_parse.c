@@ -507,10 +507,10 @@ void CL_ParseServerMessage()
 
 		case svc_print:
 			i = MSG_ReadByte(&net_message);
+
 			if (i == PRINT_CHAT)
-			{
 				S_StartLocalSound("misc/talk.wav");
-			}
+
 			Com_Printf("%s", MSG_ReadString(&net_message));
 
 			break;

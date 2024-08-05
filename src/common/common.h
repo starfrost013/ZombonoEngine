@@ -115,13 +115,12 @@ char* MSG_ReadStringLine(sizebuf_t* sb);
 
 float MSG_ReadCoord(sizebuf_t* msg_read);
 void MSG_ReadPos(sizebuf_t* msg_read, vec3_t pos);
+void MSG_ReadDir(sizebuf_t* sb, vec3_t vector);
 float MSG_ReadAngle(sizebuf_t* msg_read);
 float MSG_ReadAngle16(sizebuf_t* msg_read);
 void MSG_ReadColor(sizebuf_t* msg_read, color4_t color);
 
 void MSG_ReadDeltaUsercmd(sizebuf_t* msg_read, usercmd_t* from, usercmd_t* move);
-
-void MSG_ReadDir(sizebuf_t* sb, vec3_t vector);
 
 void MSG_ReadData(sizebuf_t* sb, void* buffer, int32_t size);
 
@@ -244,7 +243,6 @@ typedef enum clc_ops_e
 	clc_move,				// [[usercmd_t]
 	clc_userinfo,			// [[userinfo string]
 	clc_stringcmd,			// [string] message
-	clc_stringcmd_noconsole,// [int] teamflag
 	clc_event,				// [byte] event id [event information]
 } clc_ops;
 

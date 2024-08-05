@@ -34,8 +34,9 @@ void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 
 	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
-	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
-	MSG_WriteString(&cls.netchan.message, "setteam 1");
+	MSG_WriteByte(&cls.netchan.message, clc_event);
+	MSG_WriteByte(&cls.netchan.message, event_type_cl_player_set_team);
+	MSG_WriteByte(&cls.netchan.message, 1);
 }
 
 void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
@@ -45,8 +46,9 @@ void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 
 	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
-	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
-	MSG_WriteString(&cls.netchan.message, "setteam 2");
+	MSG_WriteByte(&cls.netchan.message, clc_event);
+	MSG_WriteByte(&cls.netchan.message, event_type_cl_player_set_team);
+	MSG_WriteByte(&cls.netchan.message, 2);
 }
 
 bool UI_TeamUICreate()
@@ -81,8 +83,9 @@ void UI_TeamWavesUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 
 	UI_SetActivated("TeamWavesUI", false);
 	UI_SetEnabled("TeamWavesUI", false);
-	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
-	MSG_WriteString(&cls.netchan.message, "setteam 1");
+	MSG_WriteByte(&cls.netchan.message, clc_event);
+	MSG_WriteByte(&cls.netchan.message, event_type_cl_player_set_team);
+	MSG_WriteByte(&cls.netchan.message, 1);
 }
 
 void UI_TeamWavesUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
@@ -92,10 +95,10 @@ void UI_TeamWavesUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 
 	UI_SetActivated("TeamWavesUI", false);
 	UI_SetEnabled("TeaWavesUI", false);
-	MSG_WriteByte(&cls.netchan.message, clc_stringcmd_noconsole);
-	MSG_WriteString(&cls.netchan.message, "setteam 2");
+	MSG_WriteByte(&cls.netchan.message, clc_event);
+	MSG_WriteByte(&cls.netchan.message, event_type_cl_player_set_team);
+	MSG_WriteByte(&cls.netchan.message, 2);
 }
-
 
 bool UI_TeamWavesUICreate()
 {

@@ -230,6 +230,19 @@ void PF_Configstring(int32_t index, char* val)
 	}
 }
 
+// These aren't safe to use at all times.
+// Make sure you are reading from a real client when you use these.
+int32_t PF_ReadChar() { return MSG_ReadChar(&net_message); }
+int32_t PF_ReadByte() { return MSG_ReadByte(&net_message); }
+int32_t PF_ReadShort() { return MSG_ReadShort(&net_message); }
+int32_t PF_ReadInt() { return MSG_ReadInt(&net_message); }
+float PF_ReadFloat() { return MSG_ReadFloat(&net_message); }
+char* PF_ReadString() { return MSG_ReadString(&net_message); }
+void PF_ReadPos(vec3_t pos) { MSG_ReadPos(&net_message, pos); }
+void PF_ReadDir(vec3_t dir) { MSG_ReadDir(&net_message, dir); }
+void PF_ReadColor(color4_t color) { MSG_ReadColor(&net_message, color); }
+void PF_ReadAngle(float f) { MSG_ReadAngle(&net_message, f); }
+
 void PF_WriteChar(int32_t c) { MSG_WriteChar(&sv.multicast, c); }
 void PF_WriteByte(int32_t c) { MSG_WriteByte(&sv.multicast, c); }
 void PF_WriteShort(int32_t c) { MSG_WriteShort(&sv.multicast, c); }
@@ -240,7 +253,6 @@ void PF_WritePos(vec3_t pos) { MSG_WritePos(&sv.multicast, pos); }
 void PF_WriteDir(vec3_t dir) { MSG_WriteDir(&sv.multicast, dir); }
 void PF_WriteColor(color4_t color) { MSG_WriteColor(&sv.multicast, color); }
 void PF_WriteAngle(float f) { MSG_WriteAngle(&sv.multicast, f); }
-
 
 /*
 =================
@@ -373,6 +385,17 @@ void SV_InitGameProgs()
 	import.configstring = PF_Configstring;
 	import.sound = PF_StartSound;
 	import.positioned_sound = SV_StartSound;
+
+	import.ReadChar = PF_ReadChar;
+	import.ReadByte = PF_ReadByte;
+	import.ReadShort = PF_ReadShort;
+	import.ReadInt = PF_ReadInt;
+	import.ReadFloat = PF_ReadFloat;
+	import.ReadString = PF_ReadString;
+	import.ReadPos = PF_ReadPos;
+	import.ReadDir = PF_ReadDir;
+	import.ReadColor = PF_ReadColor;
+	import.ReadAngle = PF_ReadAngle;
 
 	import.WriteChar = PF_WriteChar;
 	import.WriteByte = PF_WriteByte;

@@ -233,7 +233,8 @@ int32_t SV_ModelIndex(char* name);
 int32_t SV_SoundIndex(char* name);
 int32_t SV_ImageIndex(char* name);
 
-void SV_ExecuteUserCommand(char* s, bool no_console);
+void SV_ExecuteUserCommand(char* s);
+void SV_ExecuteUserEvent();
 void SV_InitOperatorCommands();
 
 void SV_UserinfoChanged(client_t* cl);

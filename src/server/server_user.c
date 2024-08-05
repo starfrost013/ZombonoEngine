@@ -475,7 +475,7 @@ ucmd_t ucmds[] =
 SV_ExecuteUserCommand
 ==================
 */
-void SV_ExecuteUserCommand(char* s, bool no_console)
+void SV_ExecuteUserCommand(char* s)
 {
 	ucmd_t* u;
 
@@ -493,15 +493,19 @@ void SV_ExecuteUserCommand(char* s, bool no_console)
 
 	if (!u->name && sv.state == ss_game)
 	{
-		if (no_console)
-		{
-			ge->Client_CommandNoConsole(sv_player);
-		}
-		else
-		{
-			ge->Client_Command(sv_player);
-		}
+		ge->Client_Command(sv_player);
 	}
+}
+
+/* 
+======================
+Client Events
+======================
+*/
+
+void SV_ExecuteUserEvent()
+{
+	ge->Client_Event(sv_player);
 }
 
 /*
@@ -637,16 +641,14 @@ void SV_ExecuteClientMessage(client_t* cl)
 
 			// malicious users may try using too many string commands
 			if (++string_cmd_count < MAX_STRINGCMDS)
-				SV_ExecuteUserCommand(s, false);
+				SV_ExecuteUserCommand(s);
 
 			if (cl->state == cs_zombie)
 				return;	// disconnect command
 			break;
 
-		case clc_stringcmd_noconsole:
-			s = MSG_ReadString(&net_message); // shutup compiler
-
-			SV_ExecuteUserCommand(s, true);
+		case clc_event:
+			SV_ExecuteUserEvent();
 			break;
 		}
 	}
