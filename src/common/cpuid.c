@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 cvar_t* cpu_name;
 cvar_t* cpu_vendor; // "AuthenticAMD", "GenuineIntel",...
 cvar_t* cpu_features;
+cvar_t* cpu_warning_dismissed;
 
 #ifdef DEBUG
 cvar_t* fake_defective_cpu;
@@ -86,6 +87,7 @@ void CPUID_Init()
 	cpu_name = Cvar_Get("cpu_name", "Intel Pentium 5 Tejas @ 7.4Ghz, 10000W TDP", CVAR_NOSET);
 	cpu_vendor = Cvar_Get("cpu_vendor", "S3 Graphics", CVAR_NOSET);
 	cpu_features = Cvar_Get("cpu_features", "69696969", CVAR_NOSET);
+	cpu_warning_dismissed = Cvar_Get("cpu_warning_dismissed", "0", CVAR_ARCHIVE);
 
 #ifdef DEBUG
 	fake_defective_cpu = Cvar_Get("fake_defective_cpu", "0", 0);
@@ -233,14 +235,16 @@ void CPUID_Init()
 
 	Com_Printf("CPUID_Init: %s (%s, Feature Flags: 0x%2x)\n", cpu_name->string, cpu_vendor->string, (uint32_t)cpu_features->value);
 
-	if (CPUID_IsDefectiveIntelCPU())
+	if (CPUID_IsDefectiveIntelCPU()
+		&& !cpu_warning_dismissed->value)
 	{
 		Com_Printf("CPUID_Init: WARNING: Intel CPU with high failure rates found\n");
 		Sys_Msgbox(cpu_known_defective_warning_title, 0x30, cpu_known_defective_warning_description); // warning box
+
+		// make sure the warning is only displayed once
+		Cvar_SetValue("cpu_warning_dismissed", 1.0f);
 	}
 }
-
-
 
 bool CPUID_IsDefectiveIntelCPU()
 {

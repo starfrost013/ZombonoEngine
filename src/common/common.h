@@ -180,7 +180,7 @@ PROTOCOL
 // 36 - Zombono with larger map bounds
 // 37 - Zombono 0.04 final
 // Then incremented by one for each version.
-#define	PROTOCOL_VERSION	45
+#define	PROTOCOL_VERSION	46
 
 //=========================================
 
@@ -210,7 +210,7 @@ typedef enum svc_ops_e
 	svc_muzzleflash,
 	svc_muzzleflash2,
 	svc_temp_entity,
-	svc_layout,					// will be removed!!!
+
 	svc_uidraw,					// <ui name>
 	svc_uisettext,				// <ui control name> <text>
 	svc_uisetimage,				// <ui control name> <image path in pics folder>

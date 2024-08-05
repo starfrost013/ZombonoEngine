@@ -112,6 +112,7 @@ void Localisation_LoadCurrentLanguage()
 			if (*token_ptr == '/'
 				&& *(token_ptr + 1) == '/')
 			{
+				// comment so skip
 				goto on_fail;
 			}
 
@@ -130,13 +131,6 @@ void Localisation_LoadCurrentLanguage()
 		while (*token_ptr != '\r'
 			&& *token_ptr != '\n')
 		{
-			if (*token_ptr == '/'
-				&& *(token_ptr + 1) == '/')
-			{
-				Com_Printf("Comment in the middle of localisation string value??? Malformed string!\n");
-				goto on_fail;
-			}
-
 			value_length++;
 			token_ptr++;
 		}

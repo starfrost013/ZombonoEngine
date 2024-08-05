@@ -240,6 +240,12 @@
     <ClCompile Include="common\cpuid.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ai\ai_base.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ai\ai_monster.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc">
