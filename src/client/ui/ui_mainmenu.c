@@ -43,8 +43,6 @@ bool UI_MainMenuUICreate()
 	float y = 0.54f;
 	//todo: scale these?
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuickstart", "Quickstart", x, y);
-
-	UI_AddImage("MainMenuUI", "MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart", x, y, 256, 40); 
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuickstart", UI_MainMenuGoToQuickstart);
 	y += 0.08f;
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnBrowseServers", "Browse Servers", x, y);
