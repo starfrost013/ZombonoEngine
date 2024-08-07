@@ -70,9 +70,9 @@ void Localisation_LoadCurrentLanguage()
 		Sys_Error("Failed to load language strings file %s!", loc_filename);
 
 	// temporarily allocate some storage
-	// this function is rarely called, so we can CALLOC it
+	// changed from calloc to (now calloc but with slight overhead) Z_TagMalloc for the purposes of tracking
 
-	uint8_t* file_ptr = (uint8_t*)calloc(1, file_size);
+	uint8_t* file_ptr = (uint8_t*)Z_TagMalloc(file_size, TAG_LOCALISATION);
 
 	token_ptr = file_ptr;
 
@@ -167,8 +167,6 @@ void Localisation_LoadCurrentLanguage()
 
 		localisation_entries_count++;
 		continue;
-
-
 	}
 
 	Com_Printf("Loaded %d localisation strings\n", localisation_entries_count);
@@ -325,7 +323,7 @@ char* Localisation_ProcessString(char* value)
 	// allocate memory for the string
 	// zero it since loading this happens rarely
 	
-	cached_strings[cached_strings_count].value = (char*)calloc(1, string_length);
+	cached_strings[cached_strings_count].value = (char*)Z_TagMalloc(string_length, TAG_LOCALISATION);
 
 	if (!cached_strings[cached_strings_count].value)
 	{
@@ -400,6 +398,6 @@ void Localisation_Shutdown()
 	for (int32_t localisation_string_id = 0; localisation_string_id < localisation_entries_count; localisation_string_id++)
 	{
 		if (cached_strings[localisation_string_id].value != NULL)
-			free((void*)cached_strings[localisation_string_id].value);
+			Z_Free((void*)cached_strings[localisation_string_id].value);
 	}
 }

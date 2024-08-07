@@ -436,7 +436,7 @@ void CL_Quit_f();
 //
 // client_main.c
 //
-extern	refexport_t	re;		// interface to refresh .dll
+extern refexport_t re;		// interface to refresh .dll
 
 void CL_Init();
 
@@ -769,6 +769,9 @@ bool UI_ScoreUICreate();
 // LoadoutUI
 bool UI_LoadoutUICreate();
 
+// Defines for all main menus
+#define MAIN_MENU_HOVER_COLOR { 200, 200, 255, 255 }
+
 // MainMenuUI
 bool UI_MainMenuUICreate();
 
@@ -789,15 +792,37 @@ bool UI_MainMenuQuitUICreate();
 
 // KillFeedUI
 bool UI_KillFeedUICreate();
+void UI_KillFeedAdd();
+void UI_KillFeedUpdate();
+
+// Killfeed UI support struct
+// Allows us to put up a nice killfeed in the top right 
+// See: svc_event documentation, event_type_sv_player_killed
+
+#define MAX_KILLFEED_ENTRIES 8					// The maximum number of killfeed entries
+#define MAX_DEATHSTRING_LENGTH 64					// The maximum length of a method of death string
+
+typedef struct killfeed_entry_s
+{
+	char death_string[MAX_DEATHSTRING_LENGTH];	// The death string to display.
+	char icon_path[MAX_QPATH];					// The icon to draw.
+	int32_t time;								// The time the killfeed entry was added.
+	bool inuse;									// Determines if the killfeed entry is actually in use.
+} killfeed_entry_t;
+
+extern killfeed_entry_t killfeed_entries[MAX_KILLFEED_ENTRIES];
+extern int32_t killfeed_entry_count;
+
+extern cvar_t* killfeed_entry_display_time;
 
 // UI: Required CVars
 
 extern cvar_t* vid_hudscale;
-
-#define	MAX_FONTS				64				// Maximum number of fonts that can be loaded at any one time.
-#define MAX_GLYPHS				256				// Maximum number of glyphs that can be loaded, per font, at any one time.
-#define FONT_LIST_FILENAME		"fonts\\fonts.txt"	// File name of the font list.
-#define MAX_STRING_LENGTH		2048			// Maximum length of a log string.
+	
+#define	MAX_FONTS			64					// Maximum number of fonts that can be loaded at any one time.
+#define MAX_GLYPHS			256					// Maximum number of glyphs that can be loaded, per font, at any one time.
+#define FONT_LIST_FILENAME	"fonts\\fonts.txt"	// File name of the font list.
+#define MAX_STRING_LENGTH	2048				// Maximum length of a log string.
 
 //
 // cl_font.c

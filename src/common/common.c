@@ -1160,12 +1160,11 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 	zhead_t* z;
 
 	size = size + sizeof(zhead_t);
-	z = malloc(size);
+	z = calloc(1, size);
 
 	if (!z)
 		Com_Error(ERR_FATAL, "Z_Malloc: failed on allocation of %i bytes", size);
 
-	memset(z, 0, size);
 	z_count++;
 	z_bytes += size;
 	z->magic = Z_MAGIC;
@@ -1273,11 +1272,11 @@ For proxy protecting
 */
 uint8_t	Com_BlockSequenceCRCByte(uint8_t* base, int32_t length, int32_t sequence)
 {
-	int32_t 	n;
-	uint8_t* p;
+	int32_t		n;
+	uint8_t*	p;
 	int32_t 	x;
-	uint8_t chkb[60 + 4];
-	uint16_t crc;
+	uint8_t		chkb[60 + 4];
+	uint16_t	crc;
 
 
 	if (sequence < 0)

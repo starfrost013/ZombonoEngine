@@ -35,35 +35,51 @@ bool UI_MainMenuUICreate()
 		return true; 
 
 	UI_SetStackable("MainMenuUI", true);
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, r_width->value, r_height->value);
-	UI_SetImageIsStretched("MainMenuUI", "UI_MainMenuUI_Background", true);
-	UI_UseScaledAssets("MainMenuUI", "UI_MainMenuUI_Background", true);
+	UI_AddImage("MainMenuUI", "MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("MainMenuUI", "MainMenuUI_Background", true);
+	UI_UseScaledAssets("MainMenuUI", "MainMenuUI_Background", true);
 
 	float x = 0.01f;
 	float y = 0.54f;
 	//todo: scale these?
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart", x, y, 256, 40); 
-	UI_SetEventOnClickDown("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", UI_MainMenuGoToQuickstart);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuickstart", "Quickstart", x, y);
+
+	UI_AddImage("MainMenuUI", "MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart", x, y, 256, 40); 
+	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuickstart", UI_MainMenuGoToQuickstart);
 	y += 0.08f;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers", x, y, 256, 40);
-	UI_SetEventOnClickDown("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", UI_MainMenuGoToBrowseServers);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnBrowseServers", "Browse Servers", x, y);
+	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnBrowseServers", UI_MainMenuGoToBrowseServers);
 	y += 0.08f;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnZombieTV", "2d/ui/mainmenuui_btn_zombietelevision", x, y, 256, 40);
-	UI_SetEventOnClickDown("MainMenuUI", "UI_MainMenuUI_BtnZombieTV", UI_MainMenuGoToZombieTV);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnZombieTelevision", "Zombie Television", x, y);
+	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnZombieTV", UI_MainMenuGoToZombieTV);
 	y += 0.08f;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings", x, y, 256, 40);
-	UI_SetEventOnClickDown("MainMenuUI", "UI_MainMenuUI_BtnSettings", UI_MainMenuGoToSettings);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnSettings", "Settings", x, y);
+	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnSettings", UI_MainMenuGoToSettings);
 	y += 0.08f;
-	UI_AddImage("MainMenuUI", "UI_MainMenuUI_BtnQuit", "2d/ui/mainmenuui_btn_quit", x, y, 256, 40);
-	UI_SetEventOnClickDown("MainMenuUI", "UI_MainMenuUI_BtnQuit", UI_MainMenuGoToQuit);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuit", "Quit", x, y);
+	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuit", UI_MainMenuGoToQuit);
 	y += 0.08f;
 
+	UI_SetFont("MainMenuUI", "MainMenuUI_BtnQuickstart", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuUI", "MainMenuUI_BtnBrowseServers", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuUI", "MainMenuUI_BtnZombieTelevision", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuUI", "MainMenuUI_BtnSettings", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuUI", "MainMenuUI_BtnQuit", "bahnschrift_bold_18");
+
+	color4_t hover_colour = MAIN_MENU_HOVER_COLOR;
+
+	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnQuickstart", hover_colour);
+	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnBrowseServers", hover_colour);
+	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnZombieTelevision", hover_colour);
+	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnSettings", hover_colour);
+	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnQuit", hover_colour);
+
 	// Main Menu buttons onhover images
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart_hover");
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers_hover");
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnZombieTV", "2d/ui/mainmenuui_btn_zombietelevision_hover");
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings_hover");
-	UI_SetImageOnHover("MainMenuUI", "UI_MainMenuUI_BtnQuit", "2d/ui/mainmenuui_btn_quit_hover");
+	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart_hover");
+	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers_hover");
+	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnZombieTV", "2d/ui/mainmenuui_btn_zombietelevision_hover");
+	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings_hover");
+	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnQuit", "2d/ui/mainmenuui_btn_quit_hover");
 
 	return true;
 }

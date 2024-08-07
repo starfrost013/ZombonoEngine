@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// cl_ui_scripts.c: ZombonoUI UI creation scripts
+// ui_scripts.c: ZombonoUI UI creation scripts
 // 12/14/2023: Created
 // Note - LeaderboardUI is in cl_ui_leaderboard.c
 
@@ -68,7 +68,6 @@ bool UI_TeamUICreate()
 	UI_SetEventOnClickDown("TeamUI", "TeamUI_PlayerTeam", UI_TeamUISetPlayerTeam);
 	return true; 
 }
-
 
 //
 // TeamWavesUI
@@ -263,9 +262,4 @@ bool UI_LoadoutUICreate()
 	UI_SetInvisible("LoadoutUI", "LoadoutUI_Option9", true);
 
 	return true; 
-}
-
-bool UI_KillFeedUICreate()
-{
-	return true;
 }
