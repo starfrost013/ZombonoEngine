@@ -42,19 +42,19 @@ bool UI_MainMenuUICreate()
 	float x = 0.01f;
 	float y = 0.54f;
 	//todo: scale these?
-	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuickstart", "Quickstart", x, y);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuickstart", "[STRING_MAINMENUUI_QUICKSTART]", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuickstart", UI_MainMenuGoToQuickstart);
 	y += 0.06f;
-	UI_AddText("MainMenuUI", "MainMenuUI_BtnBrowseServers", "Browse Servers", x, y);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnBrowseServers", "[STRING_MAINMENUUI_BROWSESERVERS]", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnBrowseServers", UI_MainMenuGoToBrowseServers);
 	y += 0.06f;
-	UI_AddText("MainMenuUI", "MainMenuUI_BtnZombieTelevision", "Zombie Television", x, y);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnZombieTelevision", "[STRING_MAINMENUUI_ZOMBIETELEVISION]", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnZombieTV", UI_MainMenuGoToZombieTV);
 	y += 0.06f;
-	UI_AddText("MainMenuUI", "MainMenuUI_BtnSettings", "Settings", x, y);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnSettings", "[STRING_MAINMENUUI_SETTINGS]", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnSettings", UI_MainMenuGoToSettings);
 	y += 0.06f;
-	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuit", "Quit", x, y);
+	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuit", "[STRING_MAINMENUUI_QUIT]", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuit", UI_MainMenuGoToQuit);
 	y += 0.06f;
 

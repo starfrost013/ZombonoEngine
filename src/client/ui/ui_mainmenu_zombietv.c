@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
-void UI_MainMenuZombieTVUIOnBackPressed(uint32_t btn, int32_t x, int32_t y);
+void UI_MainMenuZombieTVUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuZombieTVUICreate()
 {

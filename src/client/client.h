@@ -661,7 +661,7 @@ typedef struct ui_control_s
 	void			(*on_click_up)(int32_t btn, int32_t x, int32_t y);		// C function to call on click starting with X and Y coordinates.
 	void			(*on_key_down)(int32_t btn);							// C function to call on a key starting to bressed.
 	void			(*on_key_up)(int32_t btn);								// C function to call on a key stopping being pressed. 
-	void			(*on_update)();											// C function to call on an update. 
+	void			(*on_update)();											// C function to call every client frame.
 } ui_control_t;
 
 typedef struct ui_s
@@ -669,11 +669,13 @@ typedef struct ui_s
 	int32_t 		num_controls;				// Number of controls in the UI.
 	char			name[MAX_UI_STRLEN];		// The name of this UI	
 	bool			(*on_create)();				// A function to call when creating this UI.
+	void			(*on_update)();				// C function to call every client frame.
 	bool			enabled;					// True if the UI is currently being drawn.
 	bool			activated;					// True if the UI is currently interactable.
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
 	bool			stackable;					// True if the UI is stackable
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
+
 } ui_t;
 
 extern ui_t		ui_list[MAX_UIS];	// The list of UIs.
@@ -715,18 +717,25 @@ bool UI_SetEnabled(char* name, bool enabled);																// Sets a UI's enab
 bool UI_SetActivated(char* name, bool activated);															// Sets a UI's active (tangible) state.
 
 // UI: Set Event Handler
-bool UI_SetEventOnClickDown(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's OnClickDown handler.
-bool UI_SetEventOnKeyDown(char* ui_name, char* control_name, void (*func)(int32_t btn));							// Sets a UI's OnKeyDown handler.
-bool UI_SetEventOnClickUp(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y));		// Sets a UI's OnClickUp handler.
-bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t btn));								// Sets a UI's OnKeyUp handler.
-bool UI_SetEventOnUpdate(char* ui_name, char* control_name, void (*func)());
+
+// Events for entire UIs
+bool UI_SetEventOnUpdate(char* ui_name, void (*func)());													// Sets a UI's on_update handler
+
+// Events for UI controls
+bool UI_SetEventOnClickDown(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y));	// Sets a UI's on_click_down handler.
+bool UI_SetEventOnKeyDown(char* ui_name, char* control_name, void (*func)(int32_t btn));							// Sets a UI's on_key_down handler.
+bool UI_SetEventOnClickUp(char* ui_name, char* control_name, void (*func)(int32_t btn, int32_t x, int32_t y));		// Sets a UI's on_click_up handler.
+bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t btn));								// Sets a UI's on_key_up handler.
+bool UI_SetEventOnUpdateControl(char* ui_name, char* control_name, void (*func)());									// Sets a UI control's on_update handler.
 
 // UI: Event Handling
-void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y);											// Handles click down events.
-void UI_HandleEventOnKeyDown(int32_t btn);																	// Handles key down events.
-void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y);											// Handles click up events.
-void UI_HandleEventOnKeyUp(int32_t btn);																	// Handles key up events.
-void UI_HandleEventOnUpdate(ui_control_t* control);															// Handles udpate events.
+void UI_FireEventOnUpdate(ui_t* ui_ptr);																	// Fires UI on_update events.
+
+void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y);											// Fires UI on_click_down events.
+void UI_FireEventOnKeyDown(int32_t btn);																	// Fires UI on_key_down events.
+void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y);												// Fires UI on_click_up events.
+void UI_FireEventOnKeyUp(int32_t btn);																		// Fires UI on_key_up events.
+void UI_FireEventOnUpdateControl(ui_control_t* control);													// Fires UI control on_update events.
 
 // UI: Draw
 void UI_Draw();																								// Draws a UI.

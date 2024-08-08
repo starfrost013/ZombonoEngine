@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
-void UI_MainMenuSettingsUIOnBackPressed(uint32_t btn, int32_t x, int32_t y);
+void UI_MainMenuSettingsUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuSettingsUICreate()
 {
@@ -37,7 +37,37 @@ bool UI_MainMenuSettingsUICreate()
 	UI_SetImageOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_Back", UI_MainMenuSettingsUIOnBackPressed);
 
-	// create uI
+	float x = 0.01f;
+	float y = 0.54f;
+
+	// first level menu options
+	// aligned with the back sign
+	UI_AddText("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGame", "[STRING_SETTINGSUI_OPTIONSGAME]", x, y);
+	y += 0.06f;
+	UI_AddText("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsControls", "[STRING_SETTINGSUI_OPTIONSCONTROLS]", x, y);
+	y += 0.06f;
+	UI_AddText("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGraphics", "[STRING_SETTINGSUI_OPTIONSGRAPHICS]", x, y);
+	y += 0.06f;
+	UI_AddText("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsSound", "[STRING_SETTINGSUI_OPTIONSSOUND]", x, y);
+	y += 0.06f;
+	UI_AddText("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsReset", "[STRING_SETTINGSUI_OPTIONSRESET]", x, y);
+
+	// set the font to big bahnschrift
+	UI_SetFont("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGame", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsControls", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGraphics", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsSound", "bahnschrift_bold_18");
+	UI_SetFont("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsReset", "bahnschrift_bold_18");
+
+	color4_t hover_colour = MAIN_MENU_HOVER_COLOR;
+
+	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGame", hover_colour);
+	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsControls", hover_colour);
+	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGraphics", hover_colour);
+	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsSound", hover_colour);
+	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsReset", hover_colour);
+
+	// create ui
 	return true;
 }
 

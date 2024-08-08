@@ -30,6 +30,7 @@ cvar_t* killfeed_entry_display_time;
 bool UI_KillFeedUICreate()
 {
 	// this doesn't do anything other than set the update event
+	UI_SetEventOnUpdate("KillFeedUI", UI_KillFeedUpdate);
 	return true;
 }
 

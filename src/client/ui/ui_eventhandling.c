@@ -27,13 +27,13 @@ bool UI_SetEventOnClickDown(char* ui_name, char* control_name, void (*func)(int3
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI click-down event callback for unknown control %s for UI %s!", control_name, ui_name);
 		return false;
 	}
 
 	if (!func)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI click-down event callback for control %s on UI %s to null!", control_name, ui_name);
 		return false;
 	}
 
@@ -47,13 +47,13 @@ bool UI_SetEventOnClickUp(char* ui_name, char* control_name, void (*func)(int32_
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		Com_Printf("WARNING: Tried to set cUI click-up event callback for unknown control %s for UI %s!", control_name, ui_name);
 		return false;
 	}
 
 	if (!func)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI click-up event callback for control %s on UI %s to null!", control_name, ui_name);
 		return false;
 	}
 
@@ -67,13 +67,13 @@ bool UI_SetEventOnKeyDown(char* ui_name, char* control_name, void (*func)(int32_
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI key-down event callback for unknown control %s for UI %s!", control_name, ui_name);
 		return false;
 	}
 
 	if (!func)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI key-down event callback for control %s on UI %s to null!", control_name, ui_name);
 		return false;
 	}
 
@@ -87,13 +87,13 @@ bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t 
 
 	if (!ui_control_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI key-up event callback for unknown control %s for UI %s!", control_name, ui_name);
 		return false;
 	}
 
 	if (!func)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI key-up event callback for control %s on UI %s to null!", control_name, ui_name);
 		return false;
 	}
 
@@ -101,19 +101,39 @@ bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t 
 	return true;
 }
 
-bool UI_SetEventOnUpdate(char* ui_name, char* control_name, void (*func)())
+bool UI_SetEventOnUpdate(char* ui_name, void (*func)())
 {
-	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+	ui_t* ui_ptr = UI_GetUI(ui_name);
 
-	if (!ui_control_ptr)
+	if (!ui_ptr)
 	{
-		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI clicked event callback for unknown UI %s", ui_name);
 		return false;
 	}
 
 	if (!func)
 	{
-		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		Com_Printf("WARNING: Tried to set UI clicked event callback for UI %s to null!", ui_name);
+		return false;
+	}
+
+	ui_ptr->on_update = func;
+	return true;
+}
+
+bool UI_SetEventOnUpdateControl(char* ui_name, char* control_name, void (*func)())
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (!ui_control_ptr)
+	{
+		Com_Printf("WARNING: Tried to set UI update event callback handler for unknown control %s for UI %s!", control_name, ui_name);
+		return false;
+	}
+
+	if (!func)
+	{
+		Com_Printf("WARNING: Tried to set UI update event callback for control %s on UI %s to null!", control_name, ui_name);
 		return false;
 	}
 
@@ -121,7 +141,7 @@ bool UI_SetEventOnUpdate(char* ui_name, char* control_name, void (*func)())
 	return true;
 }
 
-void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
+void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 {
 	if (current_ui == NULL) return;
 
@@ -164,7 +184,7 @@ void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 	}
 }
 
-void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y)
+void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 {
 	if (current_ui == NULL) return;
 
@@ -202,7 +222,7 @@ void UI_HandleEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 	}
 }
 
-void UI_HandleEventOnKeyDown(int32_t btn)
+void UI_FireEventOnKeyDown(int32_t btn)
 {
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
@@ -219,7 +239,7 @@ void UI_HandleEventOnKeyDown(int32_t btn)
 	}
 }
 
-void UI_HandleEventOnKeyUp(int32_t btn)
+void UI_FireEventOnKeyUp(int32_t btn)
 {
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
@@ -236,7 +256,13 @@ void UI_HandleEventOnKeyUp(int32_t btn)
 	}
 }
 
-void UI_HandleEventOnUpdate(ui_control_t* ui_control_ptr)
+void UI_FireEventOnUpdate(ui_t* ui_ptr)
+{
+	if (ui_ptr->on_update)
+		ui_ptr->on_update();
+}
+
+void UI_FireEventOnUpdateControl(ui_control_t* ui_control_ptr)
 {
 	if (ui_control_ptr->on_update)
 		ui_control_ptr->on_update();

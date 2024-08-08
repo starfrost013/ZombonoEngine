@@ -37,11 +37,11 @@ bool UI_MainMenuQuitUICreate()
 	//todo: randomised quit messgaes 
 
 	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_Box", 0.3f, 0.3f, 384, 192, 0, 0, 0, 180);
-	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_AreYouSure", "[STRING_AREYOUSURE]", 0.4f, 0.31f);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_AreYouSure", "[STRING_AREYOUSURE]", 0.441f, 0.31f);
 	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_YesBox", 0.39f, 0.55f, 64, 24, 0, 200, 0, 180);
-	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_Yes", "[STRING_YES]", 0.4f, 0.55f);
-	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_NoBox", 0.575f, 0.55f, 64, 24, 200, 0, 0, 180);
-	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_No", "[STRING_NO]", 0.6f, 0.55f);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_Yes", "[STRING_YES]", 0.408f, 0.555f);
+	UI_AddBox("MainMenuQuitUI", "MainMenuQuitUI_NoBox", 0.543f, 0.55f, 64, 24, 200, 0, 0, 180);
+	UI_AddText("MainMenuQuitUI", "MainMenuQuitUI_No", "[STRING_NO]", 0.564f, 0.555f);
 	
 	// set the font
 	UI_SetFont("MainMenuQuitUI", "MainMenuQuitUI_AreYouSure", "bahnschrift_bold_18");

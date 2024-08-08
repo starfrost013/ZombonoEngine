@@ -1037,13 +1037,13 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 		if (key >= K_MOUSE1 && key <= K_MOUSE5)
 		{
 			// todo: send mouse button
-			UI_HandleEventOnClickDown(key, x, y);
+			UI_FireEventOnClickDown(key, x, y);
 			mouse_event_handled = true;
 		}
 		else if (key != K_ESCAPE
 			&& !mouse_event_handled) // KEY IS FUCKING HARDBOUND
 		{
-			UI_HandleEventOnKeyDown(key);
+			UI_FireEventOnKeyDown(key);
 		}
 	}
 	else
@@ -1051,12 +1051,12 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 		if (key >= K_MOUSE1 && key <= K_MOUSE5)
 		{
 			// todo: send mouse button
-			UI_HandleEventOnClickUp(key, x, y);
+			UI_FireEventOnClickUp(key, x, y);
 		}
 		else if (key != K_ESCAPE
 			&& !mouse_event_handled) // KEY IS FUCKING HARDBOUND
 		{
-			UI_HandleEventOnKeyUp(key);
+			UI_FireEventOnKeyUp(key);
 			mouse_event_handled = true;
 		}
 	}

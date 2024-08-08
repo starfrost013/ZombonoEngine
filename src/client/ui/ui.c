@@ -703,6 +703,8 @@ void UI_Draw()
 		// draw the current UI if enabled (*ACTIVE* means it's receiving input events0
 		ui_t* current_ui = &ui_list[ui_num];
 
+		UI_FireEventOnUpdate(current_ui);
+
 		if (current_ui->enabled)
 		{
 			for (int32_t ui_control_num = 0; ui_control_num < current_ui->num_controls; ui_control_num++)
@@ -722,7 +724,7 @@ void UI_Draw()
 							&& last_mouse_pos_y <= (final_pos_y + (current_ui_control->size_y * vid_hudscale->value)));
 
 					// fire the update event
-					UI_HandleEventOnUpdate(current_ui_control);
+					UI_FireEventOnUpdateControl(current_ui_control);
 
 					switch (current_ui_control->type)
 					{
