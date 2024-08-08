@@ -31,7 +31,7 @@ bool UI_SetEventOnClickDown(char* ui_name, char* control_name, void (*func)(int3
 		return false;
 	}
 
-	if (func == NULL)
+	if (!func)
 	{
 		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
 		return false;
@@ -51,7 +51,7 @@ bool UI_SetEventOnClickUp(char* ui_name, char* control_name, void (*func)(int32_
 		return false;
 	}
 
-	if (func == NULL)
+	if (!func)
 	{
 		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
 		return false;
@@ -71,7 +71,7 @@ bool UI_SetEventOnKeyDown(char* ui_name, char* control_name, void (*func)(int32_
 		return false;
 	}
 
-	if (func == NULL)
+	if (!func)
 	{
 		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
 		return false;
@@ -91,7 +91,7 @@ bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t 
 		return false;
 	}
 
-	if (func == NULL)
+	if (!func)
 	{
 		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
 		return false;
@@ -101,6 +101,25 @@ bool UI_SetEventOnKeyUp(char* ui_name, char* control_name, void (*func)(int32_t 
 	return true;
 }
 
+bool UI_SetEventOnUpdate(char* ui_name, char* control_name, void (*func)())
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (!ui_control_ptr)
+	{
+		Com_Printf("ERROR: Tried to set unknown control on-click handler %s for UI %s!", control_name, current_ui->name);
+		return false;
+	}
+
+	if (!func)
+	{
+		Com_Printf("ERROR: Tried to set UI clicked event callback for control %s on UI %s to null!", ui_control_ptr->name, current_ui->name);
+		return false;
+	}
+
+	ui_control_ptr->on_update = func;
+	return true;
+}
 
 void UI_HandleEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 {
@@ -215,4 +234,10 @@ void UI_HandleEventOnKeyUp(int32_t btn)
 				ui_control_ptr->on_key_up(btn);
 		}
 	}
+}
+
+void UI_HandleEventOnUpdate(ui_control_t* ui_control_ptr)
+{
+	if (ui_control_ptr->on_update)
+		ui_control_ptr->on_update();
 }

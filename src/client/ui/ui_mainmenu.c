@@ -44,19 +44,19 @@ bool UI_MainMenuUICreate()
 	//todo: scale these?
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuickstart", "Quickstart", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuickstart", UI_MainMenuGoToQuickstart);
-	y += 0.08f;
+	y += 0.06f;
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnBrowseServers", "Browse Servers", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnBrowseServers", UI_MainMenuGoToBrowseServers);
-	y += 0.08f;
+	y += 0.06f;
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnZombieTelevision", "Zombie Television", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnZombieTV", UI_MainMenuGoToZombieTV);
-	y += 0.08f;
+	y += 0.06f;
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnSettings", "Settings", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnSettings", UI_MainMenuGoToSettings);
-	y += 0.08f;
+	y += 0.06f;
 	UI_AddText("MainMenuUI", "MainMenuUI_BtnQuit", "Quit", x, y);
 	UI_SetEventOnClickDown("MainMenuUI", "MainMenuUI_BtnQuit", UI_MainMenuGoToQuit);
-	y += 0.08f;
+	y += 0.06f;
 
 	UI_SetFont("MainMenuUI", "MainMenuUI_BtnQuickstart", "bahnschrift_bold_18");
 	UI_SetFont("MainMenuUI", "MainMenuUI_BtnBrowseServers", "bahnschrift_bold_18");

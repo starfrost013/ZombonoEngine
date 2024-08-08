@@ -721,6 +721,9 @@ void UI_Draw()
 							&& last_mouse_pos_y >= final_pos_y
 							&& last_mouse_pos_y <= (final_pos_y + (current_ui_control->size_y * vid_hudscale->value)));
 
+					// fire the update event
+					UI_HandleEventOnUpdate(current_ui_control);
+
 					switch (current_ui_control->type)
 					{
 					case ui_control_text:
@@ -758,7 +761,6 @@ void UI_DrawText(ui_control_t* text)
 
 	color4_t color = { 255, 255, 255, 255 };
 
-	
 	if (text->hovered) // allow text to disappear when hovered
 	{
 		VectorCopy3(text->color_on_hover, color);
@@ -772,7 +774,6 @@ void UI_DrawText(ui_control_t* text)
 	{
 		VectorCopy3(text->color, color);
 	}
-
 
 	// initialised to 0
 	// if the font is not set use the system font
