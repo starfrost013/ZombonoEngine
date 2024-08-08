@@ -804,8 +804,10 @@ bool UI_MainMenuQuitUICreate();
 
 // KillFeedUI
 bool UI_KillFeedUICreate();
-void UI_KillFeedAdd();
-void UI_KillFeedUpdate();
+
+// Killfeed support functions
+void Killfeed_Add();
+void Killfeed_Update();
 
 // Killfeed UI support struct
 // Allows us to put up a nice killfeed in the top right 

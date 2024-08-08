@@ -43,8 +43,10 @@ void CL_ParseEvent()
 	case event_type_sv_game_end:
 	case event_type_sv_player_joined:
 	case event_type_sv_player_left:
-	case event_type_sv_player_killed: //killfeed
 		Com_Printf("Server-to-client event type %d not yet implemented\n", event_id);
+		break;
+	case event_type_sv_player_killed: //killfeed
+		Killfeed_Add();
 		break;
 	// Loadout events
 	case event_type_sv_loadout_add:

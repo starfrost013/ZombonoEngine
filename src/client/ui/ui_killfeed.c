@@ -30,7 +30,7 @@ cvar_t* killfeed_entry_display_time;
 bool UI_KillFeedUICreate()
 {
 	// this doesn't do anything other than set the update event
-	UI_SetEventOnUpdate("KillFeedUI", UI_KillFeedUpdate);
+	UI_SetEventOnUpdate("KillFeedUI", Killfeed_Update);
 	return true;
 }
 
@@ -39,9 +39,12 @@ bool UI_KillFeedUICreate()
 #define KILLFEEDUI_NAME_VICTIM "KillFeedUI_KillFeedEntry%dText"
 #define KILLFEEDUI_NAME_ICON "KillFeedUI_KillFeedEntry%dIcon"
 
-void UI_KillFeedAdd()
+void Killfeed_Add()
 {
 	char* msg_string;
+
+	// for the ui names, we need to come up with a unique string identifier for the UI 
+	// this is required to remove the killfeed entries when we're done with them
 	char name_buf[TEMP_NAME_BUF_SIZE] = { 0 };
 
 	// Overwrite the oldest entry if we have reached the maximum number of entries.
@@ -62,8 +65,6 @@ void UI_KillFeedAdd()
 
 	// use a bitflag here for slightly better structured code
 
-	// add the ui, we need to come up with a unique string identifier for the UI 
-	// this is required to remove it later
 
 
 	//when we make UI_AddBox be consistent with the *SetColor UI functions a color4_t
@@ -84,12 +85,26 @@ void UI_KillFeedAdd()
 	killfeed_entry_count++;
 }
 
-void UI_KillFeedUpdate()
+void Killfeed_Update()
 {
+	if (killfeed_entry_count <= 0)
+		return;
 
+	// start x,y coord
+	float x = 0.84f;
+	float y = 0.15f;
+
+	// print the position
+	
+
+	// newest first
+	for (int32_t entry_num = killfeed_entry_count; entry_num > 0; entry_num--)
+	{
+		
+	}
 }
 
-void UI_KillFeedDelete()
+void Killfeed_Delete()
 {
 
 }
