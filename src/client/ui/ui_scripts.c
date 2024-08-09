@@ -29,9 +29,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 {
-	if (current_ui == NULL) return;
-	if (strncmp(current_ui->name, "TeamUI", 6)) return;
-
 	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_event);
@@ -41,9 +38,6 @@ void UI_TeamUISetDirectorTeam(int32_t btn, int32_t x, int32_t y)
 
 void UI_TeamUISetPlayerTeam(int32_t btn, int32_t x, int32_t y)
 {
-	if (current_ui == NULL) return;
-	if (strncmp(current_ui->name, "TeamUI", 6)) return;
-
 	UI_SetActivated("TeamUI", false);
 	UI_SetEnabled("TeamUI", false);
 	MSG_WriteByte(&cls.netchan.message, clc_event);

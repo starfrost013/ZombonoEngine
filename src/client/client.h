@@ -697,6 +697,8 @@ bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_
 bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
 
 // UI: Update Properties 
+bool UI_SetPosition(char* ui_name, char* control_name, float x, float y);									// Updates a UI control's position.
+bool UI_SetSize(char* ui_name, char* control_name, int32_t x, int32_t y);									// Updates a UI control's size.
 bool UI_SetText(char* ui_name, char* control_name, char* text);												// Updates a UI control's text.
 bool UI_SetFont(char* ui_name, char* control_name, char* font);												// Updates a UI control's font.
 bool UI_SetImage(char* ui_name, char* control_name, char* image_path);										// Updates a UI control's image.
@@ -706,7 +708,6 @@ bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path);			
 bool UI_SetColorOnHover(char* ui_name, char* control_name, color4_t color);									// Updates a UI control's on-hover colour.
 bool UI_SetColorOnClick(char* ui_name, char* control_name, color4_t color);									// Updates a UI control's on-click colour.
 bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched);							// Updates a UI control's stretched status.
-
 
 bool UI_SetPassive(char* ui_name, bool passive);															// Sets a UI to passive (does not capture the mouse).
 bool UI_SetStackable(char* ui_name, bool stackable);														// Allows a UI to be pushed to the UI stack.
@@ -827,7 +828,7 @@ typedef struct killfeed_entry_s
 extern killfeed_entry_t killfeed_entries[MAX_KILLFEED_ENTRIES];
 extern int32_t killfeed_entry_count;
 
-extern cvar_t* killfeed_entry_display_time;
+extern cvar_t* ui_killfeed_entry_time;
 
 // UI: Required CVars
 

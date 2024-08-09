@@ -143,8 +143,6 @@ bool UI_SetEventOnUpdateControl(char* ui_name, char* control_name, void (*func)(
 
 void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 {
-	if (current_ui == NULL) return;
-
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
@@ -156,7 +154,7 @@ void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 			float final_pos_x = ui_control_ptr->position_x * r_width->value;
 			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
-			if (!current_ui->passive && !current_ui->activated)
+			if (!ui_ptr->passive && !ui_ptr->activated)
 				return;
 
 			// Handle focus changes for key events
@@ -165,7 +163,7 @@ void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 				&& y >= final_pos_y
 				&& x <= final_pos_x + ((ui_control_ptr->size_x) * vid_hudscale->value)
 				&& y <= final_pos_y + ((ui_control_ptr->size_y) * vid_hudscale->value)
-				&& ui_ptr == current_ui)
+				&& ui_ptr->activated)
 			{
 				ui_control_ptr->focused = true; 
 
@@ -186,8 +184,6 @@ void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 
 void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 {
-	if (current_ui == NULL) return;
-
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
@@ -199,13 +195,16 @@ void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 			float final_pos_x = ui_control_ptr->position_x * r_width->value;
 			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
+			if (!ui_ptr->passive && !ui_ptr->activated)
+				return;
+
 			// Handle focus changes for key events
 			// TODO: Scaling
 			if (x >= final_pos_x
 				&& y >= final_pos_y
 				&& x <= final_pos_x + ((ui_control_ptr->size_x) * vid_hudscale->value)
 				&& y <= final_pos_y + ((ui_control_ptr->size_y) * vid_hudscale->value)
-				&& ui_ptr == current_ui)
+				&& ui_ptr->activated)
 			{
 				ui_control_ptr->focused = true;
 

@@ -37,7 +37,9 @@ bool	ui_initialised = false;
 // You can only access UI elements through the current UI.
 ui_t*	current_ui;
 
-// Functions only in this file
+// Functions defined only in this file
+
+// Utility
 bool UI_AddControl(ui_t* ui, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y);// Shared function that adds controls.
 
 // Draw functions
@@ -61,10 +63,16 @@ bool UI_EntryOnKeyDown(ui_control_t* entry, int32_t key);										// Handles a 
 void UI_Push();																					// Pushes the UI stack
 void UI_Pop();																					// Pops the UI stack
 
-bool UI_Init()
+void UI_InitCvars()
 {
 	// init UI cvars
 	ui_newmenu = Cvar_Get("ui_newmenu", "0", 0);
+	ui_killfeed_entry_time = Cvar_Get("ui_killfeed_entry_time", "5000", 0);
+}
+
+bool UI_Init()
+{
+	UI_InitCvars();
 
 	// they are not statically initalised here because UI gets reinit'd on vidmode change so we need to wipe everything clean
 	memset(&ui_list, 0x00, sizeof(ui_t) * num_uis); // only clear the uis that actually exist
@@ -415,7 +423,7 @@ bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_asset
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr != NULL)
+	if (ui_control_ptr)
 	{
 		ui_control_ptr->use_scaled_assets = use_scaled_assets;
 		return true;
@@ -424,11 +432,41 @@ bool UI_UseScaledAssets(char* ui_name, char* control_name, bool use_scaled_asset
 	return false;
 }
 
+// Updates a UI control's position.
+bool UI_SetPosition(char* ui_name, char* control_name, float x, float y)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (!ui_control_ptr)
+	{
+		Com_Printf("Couldn't find UI control %s to set position to %f, %f!\n", control_name, x, y);
+		return false;
+	}
+
+	ui_control_ptr->position_x = x;
+	ui_control_ptr->position_y = y;
+}
+
+// Updates a UI control's size.
+bool UI_SetSize(char* ui_name, char* control_name, int32_t x, int32_t y)
+{
+	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
+
+	if (!ui_control_ptr)
+	{
+		Com_Printf("Couldn't find UI control %s to set position to %d, %d!\n", control_name, x, y);
+		return false;
+	}
+
+	ui_control_ptr->size_x = x;
+	ui_control_ptr->size_y = y;
+}
+
 bool UI_SetText(char* ui_name, char* control_name, char* text)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Couldn't find UI control %s to set text to %s!\n", control_name, text);
 		return false;
@@ -454,7 +492,7 @@ bool UI_SetFont(char* ui_name, char* control_name, char* font)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Couldn't find UI control %s to set text to %s!\n", control_name, font);
 		return false;
@@ -481,7 +519,7 @@ bool UI_SetImage(char* ui_name, char* control_name, char* image_path)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control image path %s to %s!\n", control_name, image_path);
 		return false;
@@ -502,7 +540,7 @@ bool UI_SetInvisible(char* ui_name, char* control_name, bool invisible)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control image on hover path %s to %b!\n", control_name, invisible);
 		return false;
@@ -517,7 +555,7 @@ bool UI_SetImageOnHover(char* ui_name, char* control_name, char* image_path)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control image on hover path %s to %s!\n", control_name, image_path);
 		return false;
@@ -538,7 +576,7 @@ bool UI_SetImageOnClick(char* ui_name, char* control_name, char* image_path)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control image on click path %s to %s!\n", control_name, image_path);
 		return false;
@@ -559,7 +597,7 @@ bool UI_SetColorOnHover(char* ui_name, char* control_name, color4_t color)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control hover colour %s to %f,%f,%f,%f!\n", control_name, color[0], color[1], color[2], color[3]);
 		return false;
@@ -575,7 +613,7 @@ bool UI_SetColorOnClick(char* ui_name, char* control_name, color4_t color)
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control pressed colour %s to %f,%f,%f,%f!\n", control_name, color[0], color[1], color[2], color[3]);
 		return false;
@@ -591,7 +629,7 @@ bool UI_SetImageIsStretched(char* ui_name, char* control_name, bool is_stretched
 {
 	ui_control_t* ui_control_ptr = UI_GetControl(ui_name, control_name);
 
-	if (ui_control_ptr == NULL)
+	if (!ui_control_ptr)
 	{
 		Com_Printf("Tried to set NULL UI control image is stretched %s to %d!\n", control_name, is_stretched);
 		return false;
