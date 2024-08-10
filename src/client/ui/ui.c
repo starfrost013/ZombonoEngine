@@ -67,7 +67,7 @@ void UI_InitCvars()
 {
 	// init UI cvars
 	ui_newmenu = Cvar_Get("ui_newmenu", "0", 0);
-	ui_killfeed_entry_time = Cvar_Get("ui_killfeed_entry_time", "5000", 0);
+	ui_killfeed_entry_time = Cvar_Get("ui_killfeed_entry_time", "7500", 0);
 }
 
 bool UI_Init()

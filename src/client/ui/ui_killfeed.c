@@ -71,13 +71,13 @@ void Killfeed_Add()
 	strncpy(killfeed_entry->icon_path, msg_string, MAX_QPATH);
 
 	//when we make UI_AddBox be consistent with the *SetColor UI functions a color4_t
-	//color4_t killfeed_colour = { 255, 172, 117, 180 };
+	//color4_t killfeed_colour = { 32, 32, 32, 180 };
 
 	// the positions get moved around later so just put them offscreen. the UI elements will literally last less than a frame in their initial positions
 	// (see UI_KillFeedUpdate below)
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_BOX, current_entry_num);
 
-	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 160, 16, 255, 172, 117, 180);
+	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 160, 16, 32, 32, 32, 180);
 	memset(name_buf, 0x00, sizeof(name_buf));
 
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_TEXT, killfeed_entry_count);
@@ -100,7 +100,7 @@ void Killfeed_Update()
 	char name_buf[TEMP_NAME_BUF_SIZE] = { 0 };
 
 	// start x,y coord
-	float x = 0.83f;
+	float x = 0.8325f;
 	float y = 0.05f;
 	int32_t size_x = 0, size_y = 0;
 
@@ -128,7 +128,7 @@ void Killfeed_Update()
 		// we use system font for this
 		Text_GetSize(cl_system_font->string, &size_x, &size_y, name_buf);
 
-		UI_SetPosition("KillFeedUI", name_buf, x + ((160.0f/UI_SCALE_BASE_X)/2) - (((float)size_x/2)/UI_SCALE_BASE_X), y + 0.005f);
+		UI_SetPosition("KillFeedUI", name_buf, x + ((160.0f/UI_SCALE_BASE_X)/2) - (((float)size_x/2)/UI_SCALE_BASE_X), y + 0.0075f);
 
 		y += 0.06f;
 	}
@@ -144,7 +144,7 @@ void Killfeed_Update()
 		if (!killfeed_entry_ptr->inuse)
 			continue;
 
-		if (Sys_Milliseconds() > killfeed_entry_ptr->time > ui_killfeed_entry_time->value)
+		if (Sys_Milliseconds() > killfeed_entry_ptr->time + ui_killfeed_entry_time->value)
 		{
 			killfeed_entry_ptr->inuse = false;
 			memset(killfeed_entry_ptr, 0x00, sizeof(killfeed_entry_t)); // to be safe
