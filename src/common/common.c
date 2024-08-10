@@ -61,6 +61,11 @@ int64_t time_after_game;
 int64_t time_before_ref;
 int64_t time_after_ref;
 
+#if DEBUG
+cvar_t* hunk_total;
+cvar_t* hunk_areas;
+#endif
+
 /*
 ============================================================================
 
@@ -1097,8 +1102,9 @@ typedef struct zhead_s
 	int32_t 	size;
 } zhead_t;
 
-zhead_t		z_chain;
-int32_t 	z_count, z_bytes;
+zhead_t	 z_chain;
+int32_t  z_count;
+int32_t	 z_bytes;
 
 /*
 ========================
@@ -1390,10 +1396,12 @@ void Common_Init(int32_t argc, char** argv)
 
 	profile_all = Cvar_Get("profile_all", "0", 0);
 	log_memalloc = Cvar_Get("log_memalloc", "0", 0);
-#ifndef NDEBUG
+#ifdef DEBUG
 	log_stats = Cvar_Get("log_stats", "1", 0);
 
 	developer = Cvar_Get("developer", "1", 0);
+	hunk_total = Cvar_Get("hunk_total", "0", 0); // not cvar_noset because i can't be bothered to write code to convert to string and i didn't add setvalueforce yet
+	hunk_areas = Cvar_Get("hunk_areas", "0", 0); // not cvar_noset because i can't be bothered to write code to convert to string and i didn't add setvalueforce yet
 #else
 	log_stats = Cvar_Get("log_stats", "0", 0);
 	developer = Cvar_Get("developer", "0", 0);

@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -30,73 +30,75 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //===============================================================================
 
-int32_t 	hunkcount;
+int32_t hunk_count;
 
-uint8_t *membase;
-int32_t 	hunkmaxsize;
-int32_t 	cursize;
-
+uint8_t* membase;
+int32_t hunk_max_size;
+int32_t hunk_current_size;
+int32_t hunk_total_size = 0;
 #define	VIRTUAL_ALLOC
 
-void *Hunk_Begin (int32_t maxsize)
+void* Hunk_Begin(int32_t maxsize)
 {
 	// reserve a huge chunk of memory, but don't commit any yet
-	cursize = 0;
-	hunkmaxsize = maxsize;
+	hunk_current_size = 0;
+	hunk_max_size = maxsize;
 #ifdef VIRTUAL_ALLOC
-	membase = VirtualAlloc (NULL, maxsize, MEM_RESERVE, PAGE_NOACCESS);
+	membase = VirtualAlloc(NULL, maxsize, MEM_RESERVE, PAGE_NOACCESS);
 #else
-	membase = malloc (maxsize);
-	memset (membase, 0, maxsize);
+	membase = malloc(maxsize);
+	memset(membase, 0, maxsize);
 #endif
 	if (!membase)
-		Sys_Error ("VirtualAlloc reserve failed");
-	return (void *)membase;
+		Sys_Error("VirtualAlloc reserve failed");
+	return (void*)membase;
 }
 
-void *Hunk_Alloc (int32_t size)
+void* Hunk_Alloc(int32_t size)
 {
-	void	*buf;
+	void* buf;
 
 	// round to cacheline
-	size = (size+31)&~31;
+	size = (size + 31) & ~31;
 
 #ifdef VIRTUAL_ALLOC
 	// commit pages as needed
-	buf = VirtualAlloc (membase, cursize+size, MEM_COMMIT, PAGE_READWRITE);
+	buf = VirtualAlloc(membase, hunk_current_size + size, MEM_COMMIT, PAGE_READWRITE);
 	if (!buf)
 	{
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &buf, 0, NULL);
-		Sys_Error ("VirtualAlloc commit failed.\n%s", buf);
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&buf, 0, NULL);
+		Sys_Error("VirtualAlloc commit failed.\n%s", buf);
 	}
 #endif
-	cursize += size;
+	hunk_current_size += size;
+	hunk_total_size += size;
 
-	if (cursize > hunkmaxsize)
-		Sys_Error ("Hunk_Alloc: overflow");
+	if (hunk_current_size > hunk_max_size)
+		Sys_Error("Hunk_Alloc: overflow");
 
-	return (void *)(membase+cursize-size);
+	return (void*)(membase + hunk_current_size - size);
 }
 
-int32_t Hunk_End ()
+int32_t Hunk_End()
 {
 	// free the remaining unused virtual memory
 
-	hunkcount++;
-//Com_Printf ("hunkcount: %i\n", hunkcount);
-	return cursize;
+	hunk_count++;
+	//Com_Printf ("hunkcount: %i\n", hunkcount);
+	return hunk_current_size;
 }
 
-void Hunk_Free (void *base)
+void Hunk_Free(void* base)
 {
-	if ( base )
+	if (base)
 #ifdef VIRTUAL_ALLOC
-		VirtualFree (base, 0, MEM_RELEASE);
+		VirtualFree(base, 0, MEM_RELEASE);
 #else
-		free (base);
+		free(base);
 #endif
+	hunk_total_size -= hunk_current_size;
 
-	hunkcount--;
+	hunk_count--;
 }
 
 //===============================================================================
@@ -108,7 +110,7 @@ Sys_Milliseconds
 ================
 */
 int32_t curtime;
-int64_t curtime_ns; 
+int64_t curtime_ns;
 
 // Returns the number of milliseconds since the engine started.
 int32_t Sys_Milliseconds()
@@ -122,7 +124,7 @@ int32_t Sys_Milliseconds()
 		initialized = true;
 	}
 
-	curtime = timeGetTime() - base; 
+	curtime = timeGetTime() - base;
 
 	return curtime;
 }
@@ -156,9 +158,9 @@ int64_t Sys_Nanoseconds()
 }
 
 
-void Sys_Mkdir (char *path)
+void Sys_Mkdir(char* path)
 {
-	_mkdir (path);
+	_mkdir(path);
 }
 
 //============================================
@@ -169,68 +171,68 @@ intptr_t	findhandle;
 
 static bool CompareAttributes(uint32_t found, uint32_t musthave, uint32_t canthave)
 {
-	if ( ( found & _A_RDONLY ) && ( canthave & SFF_RDONLY ) )
+	if ((found & _A_RDONLY) && (canthave & SFF_RDONLY))
 		return false;
-	if ( ( found & _A_HIDDEN ) && ( canthave & SFF_HIDDEN ) )
+	if ((found & _A_HIDDEN) && (canthave & SFF_HIDDEN))
 		return false;
-	if ( ( found & _A_SYSTEM ) && ( canthave & SFF_SYSTEM ) )
+	if ((found & _A_SYSTEM) && (canthave & SFF_SYSTEM))
 		return false;
-	if ( ( found & _A_SUBDIR ) && ( canthave & SFF_SUBDIR ) )
+	if ((found & _A_SUBDIR) && (canthave & SFF_SUBDIR))
 		return false;
-	if ( ( found & _A_ARCH ) && ( canthave & SFF_ARCH ) )
+	if ((found & _A_ARCH) && (canthave & SFF_ARCH))
 		return false;
 
-	if ( ( musthave & SFF_RDONLY ) && !( found & _A_RDONLY ) )
+	if ((musthave & SFF_RDONLY) && !(found & _A_RDONLY))
 		return false;
-	if ( ( musthave & SFF_HIDDEN ) && !( found & _A_HIDDEN ) )
+	if ((musthave & SFF_HIDDEN) && !(found & _A_HIDDEN))
 		return false;
-	if ( ( musthave & SFF_SYSTEM ) && !( found & _A_SYSTEM ) )
+	if ((musthave & SFF_SYSTEM) && !(found & _A_SYSTEM))
 		return false;
-	if ( ( musthave & SFF_SUBDIR ) && !( found & _A_SUBDIR ) )
+	if ((musthave & SFF_SUBDIR) && !(found & _A_SUBDIR))
 		return false;
-	if ( ( musthave & SFF_ARCH ) && !( found & _A_ARCH ) )
+	if ((musthave & SFF_ARCH) && !(found & _A_ARCH))
 		return false;
 
 	return true;
 }
 
-char *Sys_FindFirst (char *path, uint32_t musthave, uint32_t canthave)
+char* Sys_FindFirst(char* path, uint32_t musthave, uint32_t canthave)
 {
 	struct _finddata_t findinfo;
 
 	if (findhandle)
-		Sys_Error ("Sys_BeginFind without close");
+		Sys_Error("Sys_BeginFind without close");
 	findhandle = 0;
 
-	COM_FilePath (path, findbase);
-	findhandle = _findfirst (path, &findinfo);
+	COM_FilePath(path, findbase);
+	findhandle = _findfirst(path, &findinfo);
 	if (findhandle == -1)
 		return NULL;
-	if ( !CompareAttributes( findinfo.attrib, musthave, canthave ) )
+	if (!CompareAttributes(findinfo.attrib, musthave, canthave))
 		return NULL;
-	Com_sprintf (findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
+	Com_sprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
 	return findpath;
 }
 
-char *Sys_FindNext (uint32_t musthave, uint32_t canthave)
+char* Sys_FindNext(uint32_t musthave, uint32_t canthave)
 {
 	struct _finddata_t findinfo;
 
 	if (findhandle == -1)
 		return NULL;
-	if (_findnext (findhandle, &findinfo) == -1)
+	if (_findnext(findhandle, &findinfo) == -1)
 		return NULL;
-	if ( !CompareAttributes( findinfo.attrib, musthave, canthave ) )
+	if (!CompareAttributes(findinfo.attrib, musthave, canthave))
 		return NULL;
 
-	Com_sprintf (findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
+	Com_sprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
 	return findpath;
 }
 
-void Sys_FindClose ()
+void Sys_FindClose()
 {
 	if (findhandle != -1)
-		_findclose (findhandle);
+		_findclose(findhandle);
 	findhandle = 0;
 }
 

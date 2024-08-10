@@ -1062,13 +1062,33 @@ void Render2D_DrawInfo()
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
-	int32_t y = (r_height->value - (155 * vid_hudscale->value));
+	int32_t y = (r_height->value - (202 * vid_hudscale->value));
 
 	// used for Text_GetSize calls
 	int32_t size_x = 0, size_y = 0;
 
 	// cls.frametime limited to 0.2s for sim purposes
 	float real_frametime = (1000.0f / cls.fps);
+
+	// draw dynamically allocated memory information
+
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y, "Zone memory: %d bytes (count: %d)", 
+		z_bytes, z_count);
+
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y, "Hunk memory: %.0f bytes (count: %.0f)", 
+		hunk_total->value, hunk_areas->value);
+
+	float total_bytes = hunk_total->value + (float)z_bytes;
+	float total_areas = hunk_total->value + hunk_areas->value;
+	float total_megabytes = (total_bytes) / 1000000.0f;
+
+	y += console_font_ptr->line_height * vid_hudscale->value;
+	Text_Draw(cl_console_font->string, x, y, "Total dynamically allocated: %.0f bytes, %.2f MB (count: %.0f)", 
+		total_bytes, total_megabytes, hunk_areas->value);
+
+	y += console_font_ptr->line_height * vid_hudscale->value * 2;
 
 	if (cls.fps < alarm_fps)
 	{

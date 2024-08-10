@@ -52,6 +52,12 @@ typedef struct
 extern viddef_t	vid;
 extern int32_t	modfilelen; // for gl_sprite.c
 
+// called from ref only
+#ifdef DEBUG
+extern int32_t hunk_total_size; // ref only
+extern int32_t hunk_count;
+#endif
+
 /*
 
   skins will be outline flood filled and mip mapped
@@ -129,7 +135,8 @@ extern gl_state_t	gl_state;
 
 void GL_SetDefaultState(void);
 
-extern	float	gldepthmin, gldepthmax;
+extern float gldepthmin;
+extern float gldepthmax;
 
 typedef struct
 {

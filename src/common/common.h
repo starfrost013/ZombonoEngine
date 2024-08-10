@@ -828,10 +828,22 @@ extern int64_t time_after_game;
 extern int64_t time_before_ref;
 extern int64_t time_after_ref;
 
+// memalloc info
+extern int32_t z_count;
+extern int32_t z_bytes;
+
 void Z_Free(void* ptr);
 void* Z_Malloc(int32_t size);			// returns 0 filled memory
 void* Z_TagMalloc(int32_t size, int32_t tag);
 void Z_FreeTags(int32_t tag);
+
+// hunk stuff
+// since hunk_alloc is called from renderer but ocmpiled from both engine and renderer so if we use an ordinary variable
+// it will always show up as 0 when used from engine
+#ifdef DEBUG
+extern cvar_t* hunk_total;
+extern cvar_t* hunk_areas;
+#endif
 
 void Common_Init(int32_t argc, char** argv);
 void Common_Frame(int32_t msec);

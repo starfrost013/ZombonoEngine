@@ -918,6 +918,13 @@ R_BeginFrame
 */
 void R_BeginFrame()
 {
+	// hunk_alloc called from renderer but ocmpiled from both engine and renderer so if we use an ordinary variable
+	// it will always show up as 0 when used from engine
+#if DEBUG
+	ri.Cvar_SetValue("hunk_total", hunk_total_size);
+	ri.Cvar_SetValue("hunk_count", hunk_count);
+#endif
+
 	/*
 	** change modes if necessary
 	*/
