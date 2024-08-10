@@ -192,6 +192,8 @@ extern netadr_t			master_adr[MAX_MASTERS];	// address of the master server
 extern server_static_t	svs;				// persistant server info
 extern server_t			sv;					// local server
 
+extern cvar_t* sv_tickrate;			// server tickrate
+
 extern cvar_t* hostname;
 extern cvar_t* sv_paused;
 extern cvar_t* sv_maxclients;

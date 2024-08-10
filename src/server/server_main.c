@@ -22,6 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 client_t* sv_client;			// current client
 
+cvar_t* sv_tickrate;			// server tickrate
+
 cvar_t* sv_paused;
 cvar_t* sv_timedemo;
 
@@ -619,7 +621,7 @@ void SV_RunGameFrame()
 	// compression can get confused when a client
 	// has the "current" frame
 	sv.framenum++;
-	sv.time = sv.framenum * (1000*FRAMETIME);
+	sv.time = sv.framenum * (1000*(1/sv_tickrate->value));
 
 	// don't run if paused
 	if (!sv_paused->value || sv_maxclients->value > 1)
@@ -759,7 +761,8 @@ void SV_Init()
 	Cvar_Get("fraglimit", "0", CVAR_SERVERINFO);
 	Cvar_Get("timelimit", "0", CVAR_SERVERINFO);
 	Cvar_Get("cheats", "0", CVAR_SERVERINFO | CVAR_LATCH);
-	Cvar_Get("protocol", va("%i", PROTOCOL_VERSION), CVAR_SERVERINFO | CVAR_NOSET);;
+	Cvar_Get("protocol", va("%i", PROTOCOL_VERSION), CVAR_SERVERINFO | CVAR_NOSET);
+	sv_tickrate = Cvar_Get("sv_tickrate", "40", CVAR_SERVERINFO | CVAR_LATCH);
 	sv_maxclients = Cvar_Get("sv_maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
 	hostname = Cvar_Get("hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE);
 	sv_msg_timeout = Cvar_Get("sv_msg_timeout", "125", 0);

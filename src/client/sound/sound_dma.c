@@ -723,7 +723,8 @@ void S_StartSound(vec3_t origin, int32_t entnum, int32_t entchannel, sfx_t* sfx,
 	}
 	else if (start > paintedtime + 0.3f * dma.speed)
 	{
-		start = paintedtime + FRAMETIME * dma.speed;
+		// why did this scale with frametime?
+		start = paintedtime + 0.025f * dma.speed;
 		s_beginofs = (int32_t)start - (cl.frame.servertime * 0.001f * dma.speed);
 	}
 	else
