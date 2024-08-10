@@ -73,7 +73,7 @@ void Con_ToggleConsole_f()
 		M_ForceMenuOff();
 		cls.input_dest = key_console;
 
-		if (Cvar_VariableValue("maxclients") == 1
+		if (Cvar_VariableValue("sv_maxclients") == 1
 			&& Com_ServerState())
 			Cvar_Set("paused", "1");
 	}

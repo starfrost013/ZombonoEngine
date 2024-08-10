@@ -233,7 +233,7 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 	strcpy(sv.name, server);
 
 	// leave slots at start for clients only
-	for (i = 0; i < maxclients->value; i++)
+	for (i = 0; i < sv_maxclients->value; i++)
 	{
 		// needs to reconnect
 		if (svs.clients[i].state > cs_connected)
@@ -340,26 +340,26 @@ void SV_InitGame()
 
 	// init clients
 
-	if (maxclients->value <= 1)
-		Cvar_FullSet("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
-	else if (maxclients->value > MAX_CLIENTS)
-		Cvar_FullSet("maxclients", va("%i", MAX_CLIENTS), CVAR_SERVERINFO | CVAR_LATCH);
+	if (sv_maxclients->value <= 1)
+		Cvar_FullSet("sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
+	else if (sv_maxclients->value > MAX_CLIENTS)
+		Cvar_FullSet("sv_maxclients", va("%i", MAX_CLIENTS), CVAR_SERVERINFO | CVAR_LATCH);
 
 	// remove if we decide to not have that 6 level singleplayer campaign#
 	/*
 	if (Cvar_VariableValue("singleplayer"))
 	{
-		Cvar_FullSet("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
+		Cvar_FullSet("sv_maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
 	}
 	*/
 
 	svs.spawncount = rand();
-	svs.clients = Z_Malloc(sizeof(client_t) * maxclients->value);
-	svs.num_client_entities = maxclients->value * UPDATE_BACKUP * 64;
+	svs.clients = Z_Malloc(sizeof(client_t) * sv_maxclients->value);
+	svs.num_client_entities = sv_maxclients->value * UPDATE_BACKUP * 64;
 	svs.client_entities = Z_Malloc(sizeof(entity_state_t) * svs.num_client_entities);
 
 	// init network stuff
-	Net_Config((maxclients->value > 1));
+	Net_Config((sv_maxclients->value > 1));
 
 	// heartbeats will always be sent to the id master
 	svs.last_heartbeat = -99999;		// send immediately
@@ -379,7 +379,7 @@ void SV_InitGame()
 
 	// init game
 	SV_InitGameProgs();
-	for (i = 0; i < maxclients->value; i++)
+	for (i = 0; i < sv_maxclients->value; i++)
 	{
 		ent = EDICT_NUM(i + 1);
 		ent->s.number = i + 1;

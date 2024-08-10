@@ -194,7 +194,7 @@ extern server_t			sv;					// local server
 
 extern cvar_t* hostname;
 extern cvar_t* sv_paused;
-extern cvar_t* maxclients;
+extern cvar_t* sv_maxclients;
 extern cvar_t* sv_noreload;			// don't reload level state when reentering
 
 // physics parameters (override client default to prevent cheating)

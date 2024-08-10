@@ -105,7 +105,7 @@ bool SV_SetPlayer()
 	if (s[0] >= '0' && s[0] <= '9')
 	{
 		idnum = atoi(Cmd_Argv(1));
-		if (idnum < 0 || idnum >= maxclients->value)
+		if (idnum < 0 || idnum >= sv_maxclients->value)
 		{
 			Com_Printf("Bad client slot: %i\n", idnum);
 			return false;
@@ -122,7 +122,7 @@ bool SV_SetPlayer()
 	}
 
 	// check for a name match
-	for (i = 0, cl = svs.clients; i < maxclients->value; i++, cl++)
+	for (i = 0, cl = svs.clients; i < sv_maxclients->value; i++, cl++)
 	{
 		if (!cl->state)
 			continue;
@@ -518,8 +518,8 @@ void SV_GameMap_f()
 			// clear all the client inuse flags before saving so that
 			// when the level is re-entered, the clients will spawn
 			// at spawn points instead of occupying body shells
-			savedInuse = malloc(maxclients->value * sizeof(bool));
-			for (i = 0, cl = svs.clients; i < maxclients->value; i++, cl++)
+			savedInuse = malloc(sv_maxclients->value * sizeof(bool));
+			for (i = 0, cl = svs.clients; i < sv_maxclients->value; i++, cl++)
 			{
 				savedInuse[i] = cl->edict->inuse;
 				cl->edict->inuse = false;
@@ -528,7 +528,7 @@ void SV_GameMap_f()
 			SV_WriteLevelFile();
 
 			// we must restore these for clients to transfer over correctly
-			for (i = 0, cl = svs.clients; i < maxclients->value; i++, cl++)
+			for (i = 0, cl = svs.clients; i < sv_maxclients->value; i++, cl++)
 				cl->edict->inuse = savedInuse[i];
 			free(savedInuse);
 		}
@@ -677,7 +677,7 @@ void SV_Savegame_f()
 		return;
 	}
 
-	if (maxclients->value == 1 && svs.clients[0].edict->client->ps.stats[STAT_HEALTH] <= 0)
+	if (sv_maxclients->value == 1 && svs.clients[0].edict->client->ps.stats[STAT_HEALTH] <= 0)
 	{
 		Com_Printf("\nCan't savegame while dead!\n");
 		return;
@@ -760,7 +760,7 @@ void SV_Status_f()
 
 	Com_Printf("num score ping name            lastmsg address               qport \n");
 	Com_Printf("--- ----- ---- --------------- ------- --------------------- ------\n");
-	for (i = 0, cl = svs.clients; i < maxclients->value; i++, cl++)
+	for (i = 0, cl = svs.clients; i < sv_maxclients->value; i++, cl++)
 	{
 		if (!cl->state)
 			continue;
@@ -824,7 +824,7 @@ void SV_ConSay_f()
 
 	strcat(text, p);
 
-	for (j = 0, client = svs.clients; j < maxclients->value; j++, client++)
+	for (j = 0, client = svs.clients; j < sv_maxclients->value; j++, client++)
 	{
 		if (client->state != cs_spawned)
 			continue;

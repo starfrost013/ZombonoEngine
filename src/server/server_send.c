@@ -111,7 +111,7 @@ void SV_BroadcastPrintf (int32_t level, char *fmt, ...)
 		Com_Printf ("%s", copy);
 	}
 
-	for (i=0, cl = svs.clients ; i<maxclients->value; i++, cl++)
+	for (i=0, cl = svs.clients ; i<sv_maxclients->value; i++, cl++)
 	{
 		if (level < cl->messagelevel)
 			continue;
@@ -216,7 +216,7 @@ void SV_Multicast (vec3_t origin, multicast_t to)
 	}
 
 	// send the data to all relevent clients
-	for (j = 0, client = svs.clients; j < maxclients->value; j++, client++)
+	for (j = 0, client = svs.clients; j < sv_maxclients->value; j++, client++)
 	{
 		if (client->state == cs_free || client->state == cs_zombie)
 			continue;
@@ -495,7 +495,7 @@ void SV_SendClientMessages ()
 	}
 
 	// send a message to each connected client
-	for (i=0, c = svs.clients ; i<maxclients->value; i++, c++)
+	for (i=0, c = svs.clients ; i<sv_maxclients->value; i++, c++)
 	{
 		if (!c->state)
 			continue;

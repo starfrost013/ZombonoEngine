@@ -47,7 +47,7 @@ void PF_Unicast(edict_t* ent, bool reliable)
 		Sys_Error("Tried to unicast data to a non-client?!");
 
 	p = NUM_FOR_EDICT(ent);
-	if (p < 1 || p > maxclients->value)
+	if (p < 1 || p > sv_maxclients->value)
 		return;
 
 	client = svs.clients + (p - 1);
@@ -97,7 +97,7 @@ void PF_cprintf(edict_t* ent, int32_t level, char* fmt, ...)
 	if (ent)
 	{
 		n = NUM_FOR_EDICT(ent);
-		if (n < 1 || n > maxclients->value)
+		if (n < 1 || n > sv_maxclients->value)
 			Com_Error(ERR_DROP, "cprintf to a non-client");
 	}
 
@@ -138,7 +138,7 @@ void PF_centerprintf(edict_t* ent, char* fmt, ...)
 	int32_t 	n;
 
 	n = NUM_FOR_EDICT(ent);
-	if (n < 1 || n > maxclients->value)
+	if (n < 1 || n > sv_maxclients->value)
 		return;	// Com_Error (ERR_DROP, "centerprintf to a non-client");
 
 	va_start(argptr, fmt);

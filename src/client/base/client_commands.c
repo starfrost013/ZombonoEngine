@@ -121,7 +121,7 @@ CL_Pause_f
 void CL_Pause_f()
 {
 	// never pause in multiplayer
-	if (Cvar_VariableValue("maxclients") > 1 || !Com_ServerState())
+	if (Cvar_VariableValue("sv_maxclients") > 1 || !Com_ServerState())
 	{
 		Cvar_SetValue("paused", 0);
 		return;

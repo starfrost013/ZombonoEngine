@@ -59,7 +59,7 @@ char* SV_StatusString()
 	int32_t		num_clients = 0;
 
 	// get the number of clients
-	for (i = 0; i < maxclients->value; i++)
+	for (i = 0; i < sv_maxclients->value; i++)
 	{
 		cl = &svs.clients[i];
 
@@ -75,7 +75,7 @@ char* SV_StatusString()
 
 	status_length = (int32_t)strlen(status);
 
-	for (i = 0; i < maxclients->value; i++)
+	for (i = 0; i < sv_maxclients->value; i++)
 	{
 		cl = &svs.clients[i];
 		if (cl->state == cs_connected || cl->state == cs_spawned)
@@ -130,7 +130,7 @@ void SVC_Info()
 	int32_t i, count;
 	int32_t version;
 
-	if (maxclients->value == 1)
+	if (sv_maxclients->value == 1)
 		return;		// ignore in single player
 
 	version = atoi(Cmd_Argv(1));
@@ -140,11 +140,11 @@ void SVC_Info()
 	else
 	{
 		count = 0;
-		for (i = 0; i < maxclients->value; i++)
+		for (i = 0; i < sv_maxclients->value; i++)
 			if (svs.clients[i].state >= cs_connected)
 				count++;
 
-		Com_sprintf(string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)maxclients->value);
+		Com_sprintf(string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)sv_maxclients->value);
 	}
 
 	Netchan_OutOfBandPrint(NS_SERVER, net_from, "info\n%s", string);
