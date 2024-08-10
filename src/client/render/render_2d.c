@@ -1062,7 +1062,11 @@ void Render2D_DrawInfo()
 	float alarm_fps = (target_fps / 2);
 
 	int32_t x = (10 * vid_hudscale->value);
+#ifdef DEBUG
 	int32_t y = (r_height->value - (202 * vid_hudscale->value));
+#else
+	int32_t y = (r_height->value - (155 * vid_hudscale->value));
+#endif
 
 	// used for Text_GetSize calls
 	int32_t size_x = 0, size_y = 0;
@@ -1070,7 +1074,10 @@ void Render2D_DrawInfo()
 	// cls.frametime limited to 0.2s for sim purposes
 	float real_frametime = (1000.0f / cls.fps);
 
-	// draw dynamically allocated memory information
+	// draw dynamically allocated memory information on debug builds
+	// this is slow so turn it off on relase
+
+#ifdef DEBUG
 
 	y += console_font_ptr->line_height * vid_hudscale->value;
 	Text_Draw(cl_console_font->string, x, y, "Zone memory: %d bytes (count: %d)", 
@@ -1089,6 +1096,7 @@ void Render2D_DrawInfo()
 		total_bytes, total_megabytes, hunk_areas->value);
 
 	y += console_font_ptr->line_height * vid_hudscale->value * 2;
+#endif
 
 	if (cls.fps < alarm_fps)
 	{

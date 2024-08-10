@@ -127,7 +127,7 @@ int32_t 	c_traces, c_brush_traces;
 ===============================================================================
 */
 
-uint8_t* cmod_base;
+uint8_t* map_base;
 
 /*
 =================
@@ -138,9 +138,9 @@ void Map_LoadSubmodels (lump_t *l)
 {
 	dmodel_t	*in;
 	cmodel_t	*out;
-	int32_t 		i, j, count;
+	int32_t 	i, j, count;
 
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadSubmodels: incorrect submodel lump size");
 	count = l->filelen / sizeof(*in);
@@ -178,7 +178,7 @@ void Map_LoadSurfaces (lump_t *l)
 	mapsurface_t	*out;
 	int32_t 		i, count;
 
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadSurfaces: incorrect surface lump size");
 	count = l->filelen / sizeof(*in);
@@ -213,7 +213,7 @@ void Map_LoadNodes (lump_t *l)
 	cnode_t		*out;
 	int32_t 		i, j, count;
 	
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadNodes: incorrect nodes lump size");
 	count = l->filelen / sizeof(*in);
@@ -251,7 +251,7 @@ void Map_LoadBrushes (lump_t *l)
 	cbrush_t	*out;
 	int32_t 		i, count;
 	
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadBrushes: incorrect brushes lump size");
 	count = l->filelen / sizeof(*in);
@@ -284,7 +284,7 @@ void Map_LoadLeafs (lump_t *l)
 	dleaf_t 	*in;
 	int32_t 		count;
 	
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadLeafs: incorrect leafs lump size");
 	count = l->filelen / sizeof(*in);
@@ -340,7 +340,7 @@ void Map_LoadPlanes (lump_t *l)
 	int32_t 	count;
 	int32_t 	bits;
 	
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadPlanes: incorrect planes lump size");
 	count = l->filelen / sizeof(*in);
@@ -382,7 +382,7 @@ void Map_LoadLeafBrushes (lump_t *l)
 	uint32_t 	*in;
 	int32_t 		count;
 	
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadLeafBrushes: incorrect leafbrushes lump size");
 	count = l->filelen / sizeof(*in);
@@ -413,7 +413,7 @@ void Map_LoadBrushSides (lump_t *l)
 	int32_t 		count;
 	uint32_t	num;
 
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadBrushSides: incorrect brushsides lump size");
 	count = l->filelen / sizeof(*in);
@@ -448,7 +448,7 @@ void Map_LoadAreas (lump_t *l)
 	darea_t 	*in;
 	int32_t 		count;
 
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadAreas: incorrect areas lump size");
 	count = l->filelen / sizeof(*in);
@@ -480,7 +480,7 @@ void Map_LoadAreaPortals (lump_t *l)
 	dareaportal_t 	*in;
 	int32_t 		count;
 
-	in = (void *)(cmod_base + l->fileofs);
+	in = (void *)(map_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
 		Com_Error (ERR_DROP, "Map_LoadAreaPortals: incorrect areaportals lump size");
 	count = l->filelen / sizeof(*in);
@@ -516,7 +516,7 @@ void Map_LoadVisibility (lump_t *l)
 		Com_DPrintf("Warning: Very large visibility lump (0x%X bytes, max 0x%X). Add more detail brushes\nto exclude complicated geometry from VIS, or use less wide open spaces.", l->filelen, MAX_MAP_VISIBILITY);
 	}
 
-	memcpy (map_visibility, cmod_base + l->fileofs, l->filelen);
+	memcpy (map_visibility, map_base + l->fileofs, l->filelen);
 
 	map_vis->numclusters = LittleInt (map_vis->numclusters);
 	for (i=0 ; i<map_vis->numclusters ; i++)
@@ -538,7 +538,7 @@ void Map_LoadEntityString (lump_t *l)
 	if (l->filelen > MAX_MAP_ENTSTRING)
 		Com_Error (ERR_DROP, "Map has too large entity lump");
 
-	memcpy (map_entitystring, cmod_base + l->fileofs, l->filelen);
+	memcpy (map_entitystring, map_base + l->fileofs, l->filelen);
 }
 
 
@@ -608,7 +608,7 @@ cmodel_t* Map_Load (char *name, bool clientload, uint32_t *checksum)
 		Com_Error (ERR_DROP, "Map_Load: %s has wrong version number (%i should be %i)"
 		, name, header.version, ZBSP_VERSION);
 
-	cmod_base = (uint8_t *)buf;
+	map_base = (uint8_t *)buf;
 
 	// load into heap
 	Map_LoadSurfaces (&header.lumps[LUMP_TEXINFO]);

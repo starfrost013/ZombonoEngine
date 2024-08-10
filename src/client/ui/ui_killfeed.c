@@ -77,7 +77,7 @@ void Killfeed_Add()
 	// (see UI_KillFeedUpdate below)
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_BOX, current_entry_num);
 
-	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 160, 16, 32, 32, 32, 180);
+	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 189, 16, 32, 32, 32, 180);
 	memset(name_buf, 0x00, sizeof(name_buf));
 
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_TEXT, killfeed_entry_count);
@@ -100,7 +100,7 @@ void Killfeed_Update()
 	char name_buf[TEMP_NAME_BUF_SIZE] = { 0 };
 
 	// start x,y coord
-	float x = 0.8325f;
+	float x = 0.8025f;
 	float y = 0.05f;
 	int32_t size_x = 0, size_y = 0;
 
