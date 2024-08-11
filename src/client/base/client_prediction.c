@@ -147,7 +147,7 @@ void CL_ClipMoveToEntities(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, t
 CL_PMTrace
 ================
 */
-trace_t	 CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
+trace_t	CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 {
 	trace_t	t;
 
@@ -162,7 +162,7 @@ trace_t	 CL_PMTrace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 	return t;
 }
 
-int32_t  CL_PMpointcontents(vec3_t point)
+int32_t CL_PMpointcontents(vec3_t point)
 {
 	int32_t 		i;
 	entity_state_t* ent;

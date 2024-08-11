@@ -196,7 +196,7 @@ void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
 			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
 			if (!ui_ptr->passive && !ui_ptr->activated)
-				return;
+				continue;
 
 			// Handle focus changes for key events
 			// TODO: Scaling
