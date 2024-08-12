@@ -167,7 +167,7 @@ int32_t CL_PMpointcontents(vec3_t point)
 	int32_t 		i;
 	entity_state_t* ent;
 	int32_t 		num;
-	cmodel_t* cmodel;
+	cmodel_t*		cmodel;
 	int32_t 		contents;
 
 	contents = Map_PointContents(point, 0);
