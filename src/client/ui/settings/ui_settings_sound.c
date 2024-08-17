@@ -28,15 +28,16 @@ bool UI_SettingsSoundUICreate()
 	if (!ui_newmenu->value)
 		return true;
 
-	UI_AddImage("SettingsSoundUI", "SettingsSoundUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
-	UI_SetImageOnHover("SettingsSoundUI", "SettingsSoundUI_Back", "2d/ui/global_btn_back_hover");
-	UI_SetEventOnClickDown("SettingsSoundUI", "SettingsSoundUI_Back", UI_SettingsSoundUIOnBackPressed);
 	UI_SetStackable("SettingsSoundUI", true);
 
 	// background
-	UI_AddImage("SettingsSoundUI", "UI_SettingsSoundUI_Background", "2d/ui/mainmenu/SettingsSoundUI_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("SettingsSoundUI", "UI_SettingsSoundUI_Background", "2d/ui/mainmenu/settingssoundui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("SettingsSoundUI", "UI_SettingsSoundUI_Background", true);
 	UI_UseScaledAssets("SettingsSoundUI", "UI_SettingsSoundUI_Background", true);
+
+	UI_AddImage("SettingsSoundUI", "SettingsSoundUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
+	UI_SetImageOnHover("SettingsSoundUI", "SettingsSoundUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("SettingsSoundUI", "SettingsSoundUI_Back", UI_SettingsSoundUIOnBackPressed);
 
 	return true;
 }

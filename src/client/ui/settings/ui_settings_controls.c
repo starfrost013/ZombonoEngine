@@ -28,9 +28,6 @@ bool UI_SettingsControlsUICreate()
 	if (!ui_newmenu->value)
 		return true;
 
-	UI_AddImage("SettingsControlsUI", "SettingsControlsUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
-	UI_SetImageOnHover("SettingsControlsUI", "SettingsControlsUI_Back", "2d/ui/global_btn_back_hover");
-	UI_SetEventOnClickDown("SettingsControlsUI", "SettingsControlsUI_Back", UI_SettingsControlsUIOnBackPressed);
 	UI_SetStackable("SettingsControlsUI", true);
 
 	// background
@@ -38,6 +35,9 @@ bool UI_SettingsControlsUICreate()
 	UI_SetImageIsStretched("SettingsControlsUI", "UI_SettingsControlsUI_Background", true);
 	UI_UseScaledAssets("SettingsControlsUI", "UI_SettingsControlsUI_Background", true);
 
+	UI_AddImage("SettingsControlsUI", "SettingsControlsUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
+	UI_SetImageOnHover("SettingsControlsUI", "SettingsControlsUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("SettingsControlsUI", "SettingsControlsUI_Back", UI_SettingsControlsUIOnBackPressed);
 
 	return true;
 }

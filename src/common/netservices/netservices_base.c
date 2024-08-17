@@ -28,9 +28,9 @@ bool netservices_connected = false;					// Determines if netservices is initiali
 // String downloaded from the below url to 
 const char* connect_test_string = "This is a connect test file for Zombono Network Services";
 const char* connect_test_url = SERVICE_BASE_URL_UPDATER "/connecttest.txt"; // Just use updater service for thi
-char	netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
+char netservices_connect_test_buffer[CURL_MAX_WRITE_SIZE];			// Buffer to use for receiving data from curl
 	
-char	connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
+char connect_test_error_buffer[CURL_ERROR_SIZE];			// Error string buffer returned by CURL functions
 
 //TODO: EXTREMELY NON-REENTRANT BUT WE DO NOT HAVE MULTITHREADING ANYWAY
 

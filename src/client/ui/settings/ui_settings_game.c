@@ -28,15 +28,16 @@ bool UI_SettingsGameUICreate()
 	if (!ui_newmenu->value)
 		return true;
 
-	UI_AddImage("SettingsGameUI", "SettingsGameUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
-	UI_SetImageOnHover("SettingsGameUI", "SettingsGameUI_Back", "2d/ui/global_btn_back_hover");
-	UI_SetEventOnClickDown("SettingsGameUI", "SettingsGameUI_Back", UI_SettingsGameUIOnBackPressed);
 	UI_SetStackable("SettingsGameUI", true);
 
 	// background
-	UI_AddImage("SettingsGameUI", "UI_SettingsGameUI_Background", "2d/ui/mainmenu/SettingsGameUI_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("SettingsGameUI", "UI_SettingsGameUI_Background", "2d/ui/mainmenu/settingsgameui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("SettingsGameUI", "UI_SettingsGameUI_Background", true);
 	UI_UseScaledAssets("SettingsGameUI", "UI_SettingsGameUI_Background", true);
+
+	UI_AddImage("SettingsGameUI", "SettingsGameUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
+	UI_SetImageOnHover("SettingsGameUI", "SettingsGameUI_Back", "2d/ui/global_btn_back_hover");
+	UI_SetEventOnClickDown("SettingsGameUI", "SettingsGameUI_Back", UI_SettingsGameUIOnBackPressed);
 
 	return true;
 }

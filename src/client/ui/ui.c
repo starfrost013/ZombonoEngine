@@ -839,8 +839,15 @@ void UI_DrawImage(ui_control_t* image)
 	int32_t final_pos_x = image->position_x * r_width->value;
 	int32_t final_pos_y = image->position_y * r_height->value;
 
-	int32_t final_size_x = image->size_x * vid_hudscale->value;
-	int32_t final_size_y = image->size_y * vid_hudscale->value;
+	int32_t final_size_x = image->size_x;
+	int32_t final_size_y = image->size_y;
+
+	// don't scale stretched images
+	if (!image->image_is_stretched)
+	{
+		final_size_x *= vid_hudscale->value;
+		final_size_y *= vid_hudscale->value;
+	}
 
 	char* image_path = image->image_path;
 
