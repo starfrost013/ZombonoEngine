@@ -616,7 +616,6 @@ typedef enum ui_control_type_e
 	ui_control_box = 4,										// A simple box.
 	ui_control_spin = 5,									// A "spinnable" set of options.
 	ui_control_entry = 6,									// A textbox that can have text entered into it.
-	ui_control_tabcontrol = 7,								// A tab control.
 } ui_control_type;
 
 //forward declaration
@@ -659,9 +658,6 @@ typedef struct ui_control_s
 	int32_t			cursor_position;					// Entry: The position of the cursor
 	int32_t			cursor_last_visible;				// Entry: Last visible cursor position
 	char			entry_text_buffer[MAX_ENTRY_TEXT_LENGTH];// Entry: Maximum text length
-	// tab control
-
-	struct ui_s*			ui_tabs[MAX_TABCONTROL_TABS];	// list of ui pointers
 
 	// events
 	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
@@ -684,23 +680,27 @@ typedef struct ui_s
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
 } ui_t;
 
-extern ui_t		ui_list[MAX_UIS];	// The list of UIs.
+extern ui_t		ui_list[MAX_UIS];		// The list of UIs.
 extern ui_t*	ui_stack_list[MAX_UIS];	// The list of stacked UIs
-extern ui_t*	current_ui;			// The current UI being displayed
-extern int32_t 	num_uis;			// The current number of UIs
-extern bool		ui_active;			// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
-extern bool		ui_initialised;		// Determines if the UI engine has been initialised or not.
+extern ui_t*	current_ui;				// The current UI being displayed
+extern int32_t 	num_uis;				// The current number of UIs
+extern bool		ui_active;				// Is a UI active - set in UI_SetActive so we don't have to search through every single UI type
+extern bool		ui_initialised;			// Determines if the UI engine has been initialised or not.
 
 // UI: Init
 bool UI_Init();
 bool UI_AddUI(char* name, bool (*on_create)());
 
 // UI: Init Controls
-bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float position_y);												// Draws text.
-bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, float position_y, int32_t size_x, int32_t size_y);				// Draws an image.
-bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max);	// Draws a slider.
-bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, bool checked);			// Draws a checkbox.
-bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);		// Draws a regular ole box.
+bool UI_AddText(char* ui_name, char* name, char* text, float position_x, float position_y);			// Draws text.
+bool UI_AddImage(char* ui_name, char* name, char* image_path, float position_x, float position_y, 
+	int32_t size_x, int32_t size_y);																// Draws an image.
+bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y,
+	int32_t size_x, int32_t size_y, int32_t value_min, int32_t value_max);							// Draws a slider.
+bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, 
+	int32_t size_x, int32_t size_y, bool checked);													// Draws a checkbox.
+bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, 
+	int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);					// Draws a regular ole box.
 
 // UI: Update Properties 
 bool UI_SetPosition(char* ui_name, char* control_name, float x, float y);									// Updates a UI control's position.
@@ -737,7 +737,6 @@ bool UI_SetEventOnUpdateControl(char* ui_name, char* control_name, void (*func)(
 
 // UI: Event Handling
 void UI_FireEventOnUpdate(ui_t* ui_ptr);																	// Fires UI on_update events.
-
 void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y);											// Fires UI on_click_down events.
 void UI_FireEventOnKeyDown(int32_t btn);																	// Fires UI on_key_down events.
 void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y);												// Fires UI on_click_up events.
@@ -751,7 +750,7 @@ void UI_Draw();																								// Draws a UI.
 void UI_Clear(char* name);																					// Removes all the controls in a UI.
 
 // UI: Stack
-// UI_PUSH IS NOT RECOMMENDED TO CALL - PUSHES A UI TO THE STACK
+// UI_PUSH IS NOT RECOMMENDED TO CALL - PUSHES A UI TO THE STACK! Used for internal purposes.
 void UI_Push();																								// Pushes a UI to the UI stack.
 void UI_Pop();																								// Pops a UI from the UI stack.
 
