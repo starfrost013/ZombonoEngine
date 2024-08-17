@@ -391,13 +391,13 @@ void SV_ConnectionlessPacket()
 	Com_DPrintf("Packet %s : %s\n", Net_AdrToString(net_from), c);
 
 	if (!strcmp(c, "ping"))
-		SVC_Ping();
+		Master_SvcPing();
 	else if (!strcmp(c, "ack"))
-		SVC_Ack();
+		Master_SvcAck();
 	else if (!strcmp(c, "status"))
-		SVC_Status();
+		Master_SvcStatus();
 	else if (!strcmp(c, "info"))
-		SVC_Info();
+		Master_SvcInfo();
 	else if (!strcmp(c, "getchallenge"))
 		SVC_GetChallenge();
 	else if (!strcmp(c, "connect"))
@@ -407,6 +407,11 @@ void SV_ConnectionlessPacket()
 	else
 		Com_Printf("bad connectionless packet from %s:\n%s\n"
 			, Net_AdrToString(net_from), s);
+}
+
+void SV_MasterOnReadPost()
+{
+
 }
 
 
@@ -696,7 +701,7 @@ void SV_Frame(int32_t msec)
 	SV_RecordDemoMessage();
 
 	// send a heartbeat to the master if needed
-	Master_Heartbeat();
+	Netservices_MasterHeartbeatLegacy();
 
 	// clear teleport flags, etc for next frame
 	SV_PrepWorldFrame();

@@ -126,8 +126,8 @@ void	SNDDMA_Submit();
 #define	MAX_CHANNELS			32
 extern	channel_t   channels[MAX_CHANNELS];
 
-extern	int32_t 	paintedtime;
-extern	int32_t 	s_rawend;
+extern	int32_t paintedtime;
+extern	int32_t s_rawend;
 extern	vec3_t	listener_origin;
 extern	vec3_t	listener_forward;
 extern	vec3_t	listener_right;

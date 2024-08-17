@@ -73,6 +73,7 @@
     <ClCompile Include="client\sound\sound_miniaudio.c" />
     <ClCompile Include="client\sound\sound_mix.c" />
     <ClCompile Include="client\render\render_interface.c" />
+    <ClCompile Include="common\netservices\netservices_account.c" />
     <ClCompile Include="game\gameplay\game_monster_flash.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="common\cmd.c" />

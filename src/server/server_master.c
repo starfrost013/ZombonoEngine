@@ -41,6 +41,9 @@ let it know we are alive, and log information
 #define	HEARTBEAT_SECONDS		300
 #define HEARTBEAT_SECONDS_DEBUG	2		// Used on debug builds when sv_debug_heartbeat is used
 
+// move these to header if needed
+
+
 /*
 ===============
 SV_StatusString
@@ -100,7 +103,7 @@ SVC_Status
 Responds with all the info that qplug or qspy can see
 ================
 */
-void SVC_Status()
+void Master_SvcStatus()
 {
 	Netchan_OutOfBandPrint(NS_SERVER, net_from, "print\n%s", SV_StatusString());
 }
@@ -111,7 +114,7 @@ SVC_Ack
 
 ================
 */
-void SVC_Ack()
+void Master_SvcAck()
 {
 	Com_Printf("Ping acknowledge from %s\n", Net_AdrToString(net_from));
 }
@@ -124,7 +127,7 @@ Responds with int16_t info for broadcast scans
 The second parameter should be the current protocol version number.
 ================
 */
-void SVC_Info()
+void Master_SvcInfo()
 {
 	char	string[64];
 	int32_t i, count;
@@ -157,12 +160,12 @@ SVC_Ping
 Just responds with an acknowledgement
 ================
 */
-void SVC_Ping()
+void Master_SvcPing()
 {
 	Netchan_OutOfBandPrint(NS_SERVER, net_from, "ack");
 }
 
-void Master_Heartbeat()
+void Netservices_MasterHeartbeatLegacy()
 {
 	char* string;
 	int32_t i;
@@ -206,6 +209,8 @@ void Master_Heartbeat()
 		if (master_adr[i].port)
 		{
 			Com_Printf("Sending heartbeat to %s\n", Net_AdrToString(master_adr[i]));
+
+			Netservices_AddCurlObject()
 			Netchan_OutOfBandPrint(NS_SERVER, master_adr[i], "heartbeat\n%s", string);
 		}
 	}

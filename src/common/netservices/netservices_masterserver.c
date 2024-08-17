@@ -22,7 +22,48 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "netservices.h"
 
-void Netservices_MasterServerUpdate()
+// Defines
+#define URL_QUERY_STRING_LENGTH	512
+
+// Globals
+master_server_entry_t master_server_entries[MAX_MASTER_SERVER_ENTRIES];
+
+// Functions only defined in this translation unit are also defined here if they end up being called earlier in the file than when they are declared
+
+// Called on JSON receive.
+void Netservices_OnMasterHeartbeatRecv(char* ptr, size_t size, size_t nmemb, char* userdata)
+{
+
+}
+
+void Netservices_MasterHeartbeat()
+{
+	char heartbeat_query_string[URL_QUERY_STRING_LENGTH] = { 0 };
+
+	Netservices_AddCurlObject(SERVICE_BASE_URL_HEARTBEAT, true, http_method_post, Netservices_OnMasterHeartbeatRecv, "?heartbeat_id=");
+}
+
+void Netservices_MasterAddServer(master_server_entry_t entry)
+{
+
+}
+
+void Netservices_MasterDeleteServer()
+{
+
+}
+
+void Netservices_MasterGetServer()
+{
+
+}
+
+void Netservices_MasterListServers()
+{
+
+}
+
+void Netservices_IdToString(char* str)
 {
 
 }

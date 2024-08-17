@@ -246,12 +246,14 @@ char* SV_StatusString();
 //
 // sv_master.c
 //
-void Master_Heartbeat();
+
+
+
 // Connectionless stuff
-void SVC_Ack();
-void SVC_Info();
-void SVC_Ping();
-void SVC_Status();
+void Master_SvcAck();
+void Master_SvcInfo();
+void Master_SvcPing();
+void Master_SvcStatus();
 
 
 //

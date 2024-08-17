@@ -588,7 +588,7 @@ void M_AddToServerList(netadr_t adr, char* info);
 void CL_PredictMovement();
 
 //
-// cl_ui.c
+// ui/*.c
 // This is like the Zombono-Q1 UI system, except not broken and not having the server depend on stuff only the client can possibly know.
 // This time the server can ONLY tell the client to draw a predefined (on the client side) UI.
 //
@@ -605,6 +605,10 @@ void CL_PredictMovement();
 #define UI_SCALE_BASE_X			960.0f			// Horizontal resolution used as the base for UI scaling.
 #define UI_SCALE_BASE_Y			480.0f			// Vertical resolution used as the base for UI scaling.
 
+#define MAX_ENTRY_TEXT_LENGTH	128				// Maximum length of text in an entry control
+
+#define MAX_TABCONTROL_TABS		16				// Maximum number of tabs in a tab control
+
 typedef enum ui_control_type_e
 {
 	ui_control_text = 0,									// Simple text.
@@ -612,11 +616,12 @@ typedef enum ui_control_type_e
 	ui_control_slider = 2,									// A slider between different values.
 	ui_control_checkbox = 3,								// A checkable box.
 	ui_control_box = 4,										// A simple box.
-	ui_control_spin = 5,								// A "spinnable" set of options.
+	ui_control_spin = 5,									// A "spinnable" set of options.
 	ui_control_entry = 6,									// A textbox that can have text entered into it.
+	ui_control_tabcontrol = 7,								// A tab control.
 } ui_control_type;
 
-#define MAX_ENTRY_TEXT_LENGTH		128
+
 
 typedef struct ui_control_s
 {

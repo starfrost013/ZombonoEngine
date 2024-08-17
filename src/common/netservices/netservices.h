@@ -44,7 +44,7 @@ extern cvar_t* ns_usetestserver;
 #define GAME_WEBSITE_URL_STAGING	"https://staging.zombono.com"	// Staging URL for test servers
 
 #define SERVICE_BASE_URL_UPDATER	"https://updates.zombono.com"	// Base URL for the updater service
-#define SERVICE_BASE_URL_SERVERS	"https://servers.zombono.com"	// Base URL for the master sercer services
+#define SERVICE_BASE_URL_API	"https://servers.zombono.com"	// Base URL for the master sercer services
 
 #define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 
@@ -119,17 +119,47 @@ bool Netservices_UpdaterPromptForUpdate();		// Prompts for an update. Returns tr
 void Netservices_UpdaterStartUpdate();			// Starts the update process.
 
 //
+// netservices_account.c
+// Account system 
+//
+
+//
 // netservices_masterserver.c
 // The Zombono master server protocol
 //
+
+#define SERVICE_API_VERSION "1"
+
+// API endpoints
+#define SERVICE_BASE_URL_HEARTBEAT SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerHeartbeat.php"
+#define SERVICE_BASE_URL_SERVER_ADD SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerAdd.php"
+#define SERVICE_BASE_URL_SERVER_DELETE SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerDelete.php"
+#define SERVICE_BASE_URL_SERVER_UPDATE SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerUpdate.php"
+#define SERVICE_BASE_URL_SERVER_GET SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerGet.php"
+#define SERVICE_BASE_URL_SERVER_LIST SERVICE_BASE_URL_API "/masterserver/v" SERVICE_API_VERSION "/ServerList.php"
+
+// other defines
+#define MAX_MASTER_SERVER_ENTRIES		2048 //hopium
 
 typedef struct master_server_entry_s
 {
 	uint32_t	ip;
 	uint16_t	port;
-	uint32_t	ping; // lets hope the upper two bytes never get used here
-	char		map[NETWORK_MAX_MAP_NAME_LENGTH]; // The map name
+	// lets hope the upper two bytes never get used here
+	uint32_t	ping; 
+	uint64_t	id;													// Server ID
+	char		map[NETWORK_MAX_MAP_NAME_LENGTH];					// The name of the map currently running on the server.
+	char		gamemode[NETWORK_MAX_GAMEMODE_NAME_LENGTH];			// The name of the gamemode currently running on the server
 	// TODO: country, etc
 } master_server_entry_t;
 
-void Netservices_MasterServerUpdate();
+extern master_server_entry_t master_server_entries[MAX_MASTER_SERVER_ENTRIES];
+
+void Netservices_MasterHeartbeat();									// Sends a heartbeat to the current master server ui.
+void Netservices_MasterAddServer(master_server_entry_t entry);		// Adds a server entry to the master server.
+void Netservices_MasterDeleteServer();								// Deletes the current server from the master server
+void Netservices_MasterGetServerByCriteria();						// Searches the master server
+void Netservices_MasterListServers();								// List servers
+
+void Netservices_MasterIDToString(char* str);						// Converts a master ID to a hex filled string in the buffer str. Does this need to be a function?
+
