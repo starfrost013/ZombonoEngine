@@ -93,6 +93,10 @@ bool UI_Init()
 	if (successful) successful = UI_AddUI("MainMenuSettingsUI", UI_MainMenuSettingsUICreate);
 	if (successful) successful = UI_AddUI("MainMenuZombieTVUI", UI_MainMenuZombieTVUICreate);
 	if (successful) successful = UI_AddUI("MainMenuQuitUI", UI_MainMenuQuitUICreate);
+	if (successful) successful = UI_AddUI("SettingsControlsUI", UI_SettingsControlsUICreate);
+	if (successful) successful = UI_AddUI("SettingsGameUI", UI_SettingsGameUICreate);
+	if (successful) successful = UI_AddUI("SettingsGraphicsUI", UI_SettingsGraphicsUICreate);
+	if (successful) successful = UI_AddUI("SettingsSoundUI", UI_SettingsSoundUICreate);
 	if (successful) successful = UI_AddUI("KillFeedUI", UI_KillFeedUICreate);
 	ui_initialised = successful;
 	return successful;
@@ -681,7 +685,6 @@ void UI_Push()
 		Com_Printf("Warning: Tried to push the same UI twice...\n");
 		return;
 	}
-
 
 	if (ui_stack_top >= (MAX_UIS - 1))
 	{

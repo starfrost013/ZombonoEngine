@@ -44,7 +44,7 @@ extern cvar_t* ns_usetestserver;
 #define GAME_WEBSITE_URL_STAGING	"https://staging.zombono.com"	// Staging URL for test servers
 
 #define SERVICE_BASE_URL_UPDATER	"https://updates.zombono.com"	// Base URL for the updater service
-#define SERVICE_BASE_URL_API	"https://servers.zombono.com"	// Base URL for the master sercer services
+#define SERVICE_BASE_URL_API		"https://servers.zombono.com"	// Base URL for the master sercer services
 
 #define MAX_UPDATE_STR_LENGTH		1024							// Maximum length of an update description string
 

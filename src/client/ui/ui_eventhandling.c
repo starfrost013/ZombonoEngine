@@ -141,82 +141,120 @@ bool UI_SetEventOnUpdateControl(char* ui_name, char* control_name, void (*func)(
 	return true;
 }
 
+// This mechanism is used to prevent a situation where under the following conditions:
+// - A UI control has an event where the firing is dependent on the position of the control (e.g. a mouse event)
+// - This event handler changes the active UI
+// - A UI control in the UI being switched to is in the same position as the UI firing the event
+//
+// both events will fire
+// This is an issue caused by the status of the UI changing during this function. Therefore this function has been redesigned
+// to store the events being fired in a list and then fire them separately.
+
+#define MAX_UI_FIRE_EVENT	16
+
 void UI_FireEventOnClickUp(int32_t btn, int32_t x, int32_t y)
 {
+	ui_control_t* fire_event[MAX_UI_FIRE_EVENT] = { 0 };
+	int32_t fire_event_num = 0;
+
 	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
 	{
 		ui_t* ui_ptr = &ui_list[ui_num];
 
+		// find the UIs that we need to fire the event on
 		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
 		{
 			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
 
-			float final_pos_x = ui_control_ptr->position_x * r_width->value;
-			float final_pos_y = ui_control_ptr->position_y * r_height->value;
-
-			if (!ui_ptr->passive && !ui_ptr->activated)
-				return;
-
-			// Handle focus changes for key events
-			// TODO: Scaling
-			if (x >= final_pos_x
-				&& y >= final_pos_y
-				&& x <= final_pos_x + ((ui_control_ptr->size_x) * vid_hudscale->value)
-				&& y <= final_pos_y + ((ui_control_ptr->size_y) * vid_hudscale->value)
-				&& ui_ptr->activated)
-			{
-				ui_control_ptr->focused = true; 
-
-				// if the UI has an onclickdown event handler, call it
-				if (ui_control_ptr->on_click_up)
-				{
-					// YES this is terribly inefficient because you have to check 8 billion uis. I dont care. Fuck UI
-					ui_control_ptr->on_click_up(btn, x, y);
-				}
-			}
-			else
-			{
-				ui_control_ptr->focused = false;
-			}
-		}
-	}
-}
-
-void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
-{
-	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
-	{
-		ui_t* ui_ptr = &ui_list[ui_num];
-
-		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
-		{
-			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
-
+			// transform [0,1] coordinate system used by the ui engine to the actual xy screen coordinates
 			float final_pos_x = ui_control_ptr->position_x * r_width->value;
 			float final_pos_y = ui_control_ptr->position_y * r_height->value;
 
 			if (!ui_ptr->passive && !ui_ptr->activated)
 				continue;
 
-			// Handle focus changes for key events
-			// TODO: Scaling
+			if (ui_control_ptr->focused)
+				ui_control_ptr->focused = false;
+
+			// Handle focus changes for key events (events we need to fire on are below)
 			if (x >= final_pos_x
 				&& y >= final_pos_y
 				&& x <= final_pos_x + ((ui_control_ptr->size_x) * vid_hudscale->value)
 				&& y <= final_pos_y + ((ui_control_ptr->size_y) * vid_hudscale->value)
-				&& ui_ptr->activated)
+				&& ui_ptr->activated
+				&& fire_event_num <= MAX_UI_FIRE_EVENT)
 			{
-				ui_control_ptr->focused = true;
+				fire_event[fire_event_num] = ui_control_ptr;
+				fire_event_num++;
+			}
+		}
+	}
 
-				// if the UI has an onclickdown event handler, call it
-				// YES this is terribly inefficient because you have to check 8 billion uis. I dont care. Fuck UI
-				if (ui_control_ptr->on_click_down)
-					ui_control_ptr->on_click_down(btn, x, y);
-			}
-			else
-			{
+	// now fire the events
+	for (int32_t fire_event_id = 0; fire_event_id < fire_event_num; fire_event_id++)
+	{
+		ui_control_t* ui_control_ptr = fire_event[fire_event_id];
+
+		ui_control_ptr->focused = true;
+
+		// if the UI has an onclickdown event handler, call it
+		if (ui_control_ptr->on_click_up)
+		{
+			// YES this is terribly inefficient because you have to check 8 billion uis. I dont care. Fuck UI
+			ui_control_ptr->on_click_up(btn, x, y);
+		}
+	}
+}
+
+void UI_FireEventOnClickDown(int32_t btn, int32_t x, int32_t y)
+{
+	ui_control_t* fire_event[MAX_UI_FIRE_EVENT] = { 0 };
+	int32_t fire_event_num = 0;
+
+	for (int32_t ui_num = 0; ui_num < num_uis; ui_num++)
+	{
+		ui_t* ui_ptr = &ui_list[ui_num];
+
+		// find the UIs that we need to fire the event on
+		for (int32_t ui_control_num = 0; ui_control_num < ui_ptr->num_controls; ui_control_num++)
+		{
+			ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_control_num];
+
+			float final_pos_x = ui_control_ptr->position_x * r_width->value;
+			float final_pos_y = ui_control_ptr->position_y * r_height->value;
+
+			// Handle focus changes for key events (ui elements we actually focused are below)
+			if (!ui_ptr->passive && !ui_ptr->activated)
+				continue;
+
+			if (ui_control_ptr->focused)
 				ui_control_ptr->focused = false;
+
+			if (x >= final_pos_x
+				&& y >= final_pos_y
+				&& x <= final_pos_x + ((ui_control_ptr->size_x) * vid_hudscale->value)
+				&& y <= final_pos_y + ((ui_control_ptr->size_y) * vid_hudscale->value)
+				&& ui_ptr->activated
+				&& fire_event_num <= MAX_UI_FIRE_EVENT)
+			{
+				fire_event[fire_event_num] = ui_control_ptr;
+				fire_event_num++;
 			}
+		}
+	}
+
+	// now fire the events
+	for (int32_t fire_event_id = 0; fire_event_id < fire_event_num; fire_event_id++)
+	{
+		ui_control_t* ui_control_ptr = fire_event[fire_event_id];
+
+		ui_control_ptr->focused = true;
+
+		// if the UI has an onclickdown event handler, call it
+		if (ui_control_ptr->on_click_down)
+		{
+			// YES this is terribly inefficient because you have to check 8 billion uis. I dont care. Fuck UI
+			ui_control_ptr->on_click_down(btn, x, y);
 		}
 	}
 }

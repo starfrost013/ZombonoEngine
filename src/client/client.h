@@ -808,6 +808,18 @@ bool UI_MainMenuZombieTVUICreate();
 // MainMenuQuitUI
 bool UI_MainMenuQuitUICreate();
 
+// SettingsControlsUI
+bool UI_SettingsControlsUICreate();
+
+// SettingsGameUI
+bool UI_SettingsGameUICreate();
+
+// SettingsGraphicsUI
+bool UI_SettingsGraphicsUICreate();
+
+// SettingsSoundUI
+bool UI_SettingsSoundUICreate();
+
 // KillFeedUI
 bool UI_KillFeedUICreate();
 
@@ -820,7 +832,7 @@ void Killfeed_Update();
 // See: svc_event documentation, event_type_sv_player_killed
 
 #define MAX_KILLFEED_ENTRIES 8					// The maximum number of killfeed entries
-#define MAX_DEATHSTRING_LENGTH 64					// The maximum length of a method of death string
+#define MAX_DEATHSTRING_LENGTH 64				// The maximum length of a method of death string
 
 typedef struct killfeed_entry_s
 {

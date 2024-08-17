@@ -21,7 +21,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
+// Functions only used in this translation unit
 void UI_MainMenuSettingsUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
+void UI_MainMenuSettingsUIOnOptionsGamePressed(int32_t btn, int32_t x, int32_t y);
+void UI_MainMenuSettingsUIOnOptionsControlsPressed(int32_t btn, int32_t x, int32_t y);
+void UI_MainMenuSettingsUIOnOptionsGraphicsPressed(int32_t btn, int32_t x, int32_t y);
+void UI_MainMenuSettingsUIOnOptionsSoundPressed(int32_t btn, int32_t x, int32_t y);
+
 
 bool UI_MainMenuSettingsUICreate()
 {
@@ -67,6 +73,12 @@ bool UI_MainMenuSettingsUICreate()
 	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsSound", hover_colour);
 	UI_SetColorOnHover("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsReset", hover_colour);
 
+	// Setup controls
+	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsGame", UI_MainMenuSettingsUIOnOptionsGamePressed);
+	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsControls", UI_MainMenuSettingsUIOnOptionsControlsPressed);
+	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsSound", UI_MainMenuSettingsUIOnOptionsGraphicsPressed);
+	UI_SetEventOnClickDown("MainMenuSettingsUI", "MainMenuSettingsUI_OptionsReset", UI_MainMenuSettingsUIOnOptionsSoundPressed);
+
 	// create ui
 	return true;
 }
@@ -75,4 +87,28 @@ bool UI_MainMenuSettingsUICreate()
 void UI_MainMenuSettingsUIOnBackPressed(int32_t btn, int32_t x, int32_t y)
 {
 	UI_Pop();
+}
+
+void UI_MainMenuSettingsUIOnOptionsGamePressed(int32_t btn, int32_t x, int32_t y)
+{
+	UI_SetEnabled("SettingsGameUI", true);
+	UI_SetActivated("SettingsGameUI", true);
+}
+
+void UI_MainMenuSettingsUIOnOptionsControlsPressed(int32_t btn, int32_t x, int32_t y)
+{
+	UI_SetEnabled("SettingsControlsUI", true);
+	UI_SetActivated("SettingsControlsUI", true);
+}
+
+void UI_MainMenuSettingsUIOnOptionsGraphicsPressed(int32_t btn, int32_t x, int32_t y)
+{
+	UI_SetEnabled("SettingsGameUI", true);
+	UI_SetActivated("SettingsGameUI", true);
+}
+
+void UI_MainMenuSettingsUIOnOptionsSoundPressed(int32_t btn, int32_t x, int32_t y)
+{
+	UI_SetEnabled("SettingsSoundUI", true);
+	UI_SetActivated("SettingsSoundUI", true);
 }

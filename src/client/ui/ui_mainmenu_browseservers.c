@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/client.h>
 
-void UI_MainMenuBrowseServersUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
+void UI_SettingsBrowseServersUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuBrowseServersUICreate()
 {
@@ -35,14 +35,14 @@ bool UI_MainMenuBrowseServersUICreate()
 
 	UI_AddImage("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", "2d/ui/global_btn_back", 0.75f, 0.87f, 256, 64);
 	UI_SetImageOnHover("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", "2d/ui/global_btn_back_hover");
-	UI_SetEventOnClickDown("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", UI_MainMenuBrowseServersUIOnBackPressed);
+	UI_SetEventOnClickDown("MainMenuBrowseServersUI", "MainMenuBrowseServersUI_Back", UI_SettingsBrowseServersUIOnBackPressed);
 
 	// create ui
 	return true;
 }
 
 // is this enough to justify adding global UI assets?
-void UI_MainMenuBrowseServersUIOnBackPressed(int32_t btn, int32_t x, int32_t y)
+void UI_SettingsBrowseServersUIOnBackPressed(int32_t btn, int32_t x, int32_t y)
 {
 	UI_Pop();
 }
