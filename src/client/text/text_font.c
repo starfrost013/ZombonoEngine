@@ -32,7 +32,7 @@ bool	fonts_initialised = false;		// Determines if the font engine is initialised
 
 // Functions not exposed in headers
 // TODO: HANDLE JSON_ERROR IN THESE FUNCTIONS!!!
-bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN]);
+bool Font_LoadFont(char file_name[MAX_QPATH]);
 bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr);
 bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 
@@ -41,7 +41,7 @@ bool Font_LoadFontGlyphs(JSON_stream* json_stream, font_t* font_ptr);
 bool Font_Init()
 {
 	FILE*	font_list_stream;
-	char	file_name_font[MAX_FONT_FILENAME_LEN] = { 0 };
+	char	file_name_font[MAX_QPATH] = { 0 };
 	long	file_location = 0;
 	char*	token;
 	char*	file;
@@ -106,9 +106,9 @@ bool Font_Init()
 				n++;
 				token++;
 
-				if (n > MAX_FONT_FILENAME_LEN - 2) // -2 because of expression below
+				if (n > MAX_QPATH - 2) // -2 because of expression below
 				{
-					file_name_font[MAX_FONT_FILENAME_LEN - 1] = '\0'; // terminate string
+					file_name_font[MAX_QPATH - 1] = '\0'; // terminate string
 
 					Com_Printf("Tried to load font with path name > 256 chars (not allowed): truncated name %s", file_name_font);
 				}
@@ -159,7 +159,7 @@ bool Font_Init()
 	return true; 
 }
 
-bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
+bool Font_LoadFont(char file_name[MAX_QPATH])
 {
 	Com_DPrintf("Loading font %s\n", file_name);
 
@@ -169,13 +169,13 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 	font_t*			font = &fonts[num_fonts];
 
 	//+4 for extension
-	char tga_filename[MAX_FONT_FILENAME_LEN+4] = {0};
-	char json_filename[MAX_FONT_FILENAME_LEN+4] = {0};
+	char tga_filename[MAX_QPATH+4] = {0};
+	char json_filename[MAX_QPATH+4] = {0};
 
 	// open up json, load targa as a texture.
 	// .tga is *assumed* by LoadPic!!
-	snprintf(tga_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s", file_name);
-	snprintf(json_filename, MAX_FONT_FILENAME_LEN + 4, "fonts/%s.json", file_name);
+	snprintf(tga_filename, MAX_QPATH + 4, "fonts/%s", file_name);
+	snprintf(json_filename, MAX_QPATH + 4, "fonts/%s.json", file_name);
 
 	Com_DPrintf("Font_LoadFont: Loading Font TGA %s.tga\n", tga_filename);
 	// TODO: MERGE PICS AND IMAGES!!!
@@ -277,7 +277,7 @@ bool Font_LoadFont(char file_name[MAX_FONT_FILENAME_LEN])
 	}
 
 	// set the font name to what fonts.lst indicated
-	strncpy(font->name, file_name, MAX_FONT_FILENAME_LEN);
+	strncpy(font->name, file_name, MAX_QPATH);
 
 	// increment the number of fonts
 	num_fonts++;
@@ -318,7 +318,7 @@ bool Font_LoadFontConfig(JSON_stream* json_stream, font_t* font_ptr)
 			else if (!strcmp(json_string, "face"))
 			{
 				next_type = JSON_next(json_stream);
-				strncpy(font_ptr->name, json_string, MAX_FONT_FILENAME_LEN);
+				strncpy(font_ptr->name, json_string, MAX_QPATH);
 			}
 
 			// go to the next one
@@ -451,7 +451,7 @@ font_t* Font_GetByName(const char* name)
 	{
 		font_t* fnt_ptr = &fonts[font_num];
 
-		if (!strncmp(fnt_ptr->name, name, MAX_FONT_FILENAME_LEN))
+		if (!strncmp(fnt_ptr->name, name, MAX_QPATH))
 		{
 			return fnt_ptr;
 		}

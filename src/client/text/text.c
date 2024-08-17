@@ -350,9 +350,9 @@ void Text_DrawPerform(const char* font, int32_t x, int32_t y, color4_t draw_colo
 		int32_t draw_y = current_y + glyph->y_offset * font_scale;
 
 		// convert to a file path that drawpicregion in the fonts folder
-		char final_name[MAX_FONT_FILENAME_LEN] = { 0 };
+		char final_name[MAX_QPATH] = { 0 };
 
-		snprintf(final_name, MAX_FONT_FILENAME_LEN, "fonts/%s", font_ptr->name);
+		snprintf(final_name, MAX_QPATH, "fonts/%s", font_ptr->name);
 
 		// draw it
 		re.DrawFontChar(draw_x, draw_y, glyph->x_start, glyph->y_start, glyph->x_start + glyph->width, glyph->y_start + glyph->height, final_name, color, false);

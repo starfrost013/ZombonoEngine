@@ -445,6 +445,8 @@ bool UI_SetPosition(char* ui_name, char* control_name, float x, float y)
 
 	ui_control_ptr->position_x = x;
 	ui_control_ptr->position_y = y;
+
+	return true;
 }
 
 // Updates a UI control's size.
@@ -460,6 +462,8 @@ bool UI_SetSize(char* ui_name, char* control_name, int32_t x, int32_t y)
 
 	ui_control_ptr->size_x = x;
 	ui_control_ptr->size_y = y;
+
+	return true;
 }
 
 bool UI_SetText(char* ui_name, char* control_name, char* text)

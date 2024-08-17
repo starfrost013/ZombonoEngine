@@ -254,7 +254,7 @@ void Master_SvcAck();
 void Master_SvcInfo();
 void Master_SvcPing();
 void Master_SvcStatus();
-
+void Netservices_MasterHeartbeatLegacy(); // DEPRECATED!!!!
 
 //
 // sv_init.c

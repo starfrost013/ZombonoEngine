@@ -594,13 +594,11 @@ void CL_PredictMovement();
 //
 
 #define CONTROLS_PER_UI			256				// The maximum number of controls per UI.
-#define MAX_UIS					32				// The maximum number of UIS
+#define MAX_UIS					32				// The maximum number of UIs
+#define MAX_UI_NAMELEN			96				// The maximum length of a UI name
 #define MAX_UI_STRLEN			256				// The maximum string length for various UI elements.
 
 #define MAX_UIS_STACKED			256				// The maximum number of stacked UIs. Same as the maximum number of UIs because they just get stacked.
-
-// Defined here for use by UI
-#define	MAX_FONT_FILENAME_LEN	256				// Maximum length of a font filename. (+4 added when lodaing).
 
 #define UI_SCALE_BASE_X			960.0f			// Horizontal resolution used as the base for UI scaling.
 #define UI_SCALE_BASE_Y			480.0f			// Vertical resolution used as the base for UI scaling.
@@ -621,7 +619,8 @@ typedef enum ui_control_type_e
 	ui_control_tabcontrol = 7,								// A tab control.
 } ui_control_type;
 
-
+//forward declaration
+typedef struct ui_s ui_t;
 
 typedef struct ui_control_s
 {
@@ -629,21 +628,21 @@ typedef struct ui_control_s
 	ui_control_type	type;								// Type of this UI control.
 	float 			position_x;							// UI control position (x-component).
 	float			position_y;							// UI control position (y-component).
-	char			font[MAX_FONT_FILENAME_LEN];
+	char			font[MAX_QPATH];
 	int32_t 		size_x;								// UI control size (x-component).
 	int32_t  		size_y;								// UI control size (y-component).
-	char			name[MAX_UI_STRLEN];				// UI control name (for code)
+	char			name[MAX_UI_NAMELEN];				// UI control name (for code)
 	bool			invisible;							// Is this UI control invisible?
 	bool			focused;							// Is this UI control focused?
 	bool			hovered;							// Is the mouse hovering over this UI control?
 	// text
 	char			text[MAX_UI_STRLEN];				// Text UI control: Text to display.
 	// image
-	char			image_path[MAX_UI_STRLEN];			// Image path to display for Image controls
-	char			image_path_on_hover[MAX_UI_STRLEN];	// Image path when the UI control has been hovered over.
-	char			image_path_on_click[MAX_UI_STRLEN];	// Image path when the UI control clicked on.
+	char			image_path[MAX_QPATH];				// Image path to display for Image controls
+	char			image_path_on_hover[MAX_QPATH];		// Image path when the UI control has been hovered over.
+	char			image_path_on_click[MAX_QPATH];		// Image path when the UI control clicked on.
 	bool			image_is_stretched;					// Is this UI control's image stretched?
-	bool			use_scaled_assets;							// Does this image autoscale?
+	bool			use_scaled_assets;					// Does this image autoscale?
 	// slider (also used by spin control)
 	float	 		value_min;							// Slider UI control: minimum value
 	float	 		value_max;							// Slider UI control: maximum value
@@ -660,6 +659,9 @@ typedef struct ui_control_s
 	int32_t			cursor_position;					// Entry: The position of the cursor
 	int32_t			cursor_last_visible;				// Entry: Last visible cursor position
 	char			entry_text_buffer[MAX_ENTRY_TEXT_LENGTH];// Entry: Maximum text length
+	// tab control
+
+	struct ui_s*			ui_tabs[MAX_TABCONTROL_TABS];	// list of ui pointers
 
 	// events
 	void			(*on_click_down)(int32_t btn, int32_t x, int32_t y);	// C function to call on click starting with X and Y coordinates.
@@ -680,7 +682,6 @@ typedef struct ui_s
 	bool			passive;					// True if the UI is "passive" (does not capture mouse) - it will still receive events!
 	bool			stackable;					// True if the UI is stackable
 	ui_control_t	controls[CONTROLS_PER_UI];	// Control list.
-
 } ui_t;
 
 extern ui_t		ui_list[MAX_UIS];	// The list of UIs.
@@ -874,7 +875,7 @@ typedef struct glyph_s
 // font_t defines a font
 typedef struct font_s
 {
-	char			name[MAX_FONT_FILENAME_LEN];	// The name of the current font.
+	char			name[MAX_QPATH];	// The name of the current font.
 	int32_t 		size;							// The size of the current font.
 	int32_t 		num_glyphs;						// The number of loaded glyphs.
 	int32_t 		line_height;					// Height of one line in this font.

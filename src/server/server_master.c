@@ -209,8 +209,6 @@ void Netservices_MasterHeartbeatLegacy()
 		if (master_adr[i].port)
 		{
 			Com_Printf("Sending heartbeat to %s\n", Net_AdrToString(master_adr[i]));
-
-			Netservices_AddCurlObject()
 			Netchan_OutOfBandPrint(NS_SERVER, master_adr[i], "heartbeat\n%s", string);
 		}
 	}
