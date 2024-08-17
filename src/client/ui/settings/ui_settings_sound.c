@@ -33,6 +33,11 @@ bool UI_SettingsSoundUICreate()
 	UI_SetEventOnClickDown("SettingsSoundUI", "SettingsSoundUI_Back", UI_SettingsSoundUIOnBackPressed);
 	UI_SetStackable("SettingsSoundUI", true);
 
+	// background
+	UI_AddImage("SettingsSoundUI", "UI_SettingsSoundUI_Background", "2d/ui/mainmenu/SettingsSoundUI_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("SettingsSoundUI", "UI_SettingsSoundUI_Background", true);
+	UI_UseScaledAssets("SettingsSoundUI", "UI_SettingsSoundUI_Background", true);
+
 	return true;
 }
 

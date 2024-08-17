@@ -29,7 +29,7 @@ bool UI_MainMenuBrowseServersUICreate()
 		return true;
 
 	UI_SetStackable("MainMenuBrowseServersUI", true);
-	UI_AddImage("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", "2d/ui/mainmenubrowseserversui_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", "2d/ui/mainmenu/mainmenubrowseserversui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", true);
 	UI_UseScaledAssets("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", true);
 

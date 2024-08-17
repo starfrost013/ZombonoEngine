@@ -33,6 +33,12 @@ bool UI_SettingsControlsUICreate()
 	UI_SetEventOnClickDown("SettingsControlsUI", "SettingsControlsUI_Back", UI_SettingsControlsUIOnBackPressed);
 	UI_SetStackable("SettingsControlsUI", true);
 
+	// background
+	UI_AddImage("SettingsControlsUI", "UI_SettingsControlsUI_Background", "2d/ui/mainmenu/settingscontrolsui_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("SettingsControlsUI", "UI_SettingsControlsUI_Background", true);
+	UI_UseScaledAssets("SettingsControlsUI", "UI_SettingsControlsUI_Background", true);
+
+
 	return true;
 }
 

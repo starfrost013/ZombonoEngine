@@ -249,6 +249,18 @@
     <ClCompile Include="common\netservices\netservices_account.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="client\ui\settings\ui_settings_sound.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\settings\ui_settings_graphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\settings\ui_settings_controls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client\ui\settings\ui_settings_game.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32\Zombono.rc">

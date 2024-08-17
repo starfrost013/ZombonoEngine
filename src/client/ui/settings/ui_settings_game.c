@@ -33,6 +33,11 @@ bool UI_SettingsGameUICreate()
 	UI_SetEventOnClickDown("SettingsGameUI", "SettingsGameUI_Back", UI_SettingsGameUIOnBackPressed);
 	UI_SetStackable("SettingsGameUI", true);
 
+	// background
+	UI_AddImage("SettingsGameUI", "UI_SettingsGameUI_Background", "2d/ui/mainmenu/SettingsGameUI_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("SettingsGameUI", "UI_SettingsGameUI_Background", true);
+	UI_UseScaledAssets("SettingsGameUI", "UI_SettingsGameUI_Background", true);
+
 	return true;
 }
 

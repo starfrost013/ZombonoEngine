@@ -269,7 +269,7 @@ void Render3D_PrepRefresh()
 	re.EndRegistration();
 
 	// clear any lines of console text
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 
 	Render_UpdateScreen();
 	cl.refresh_prepped = true;

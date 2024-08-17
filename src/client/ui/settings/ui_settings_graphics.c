@@ -33,6 +33,11 @@ bool UI_SettingsGraphicsUICreate()
 	UI_SetEventOnClickDown("SettingsGraphicsUI", "SettingsGraphicsUI_Back", UI_SettingsGraphicsUIOnBackPressed);
 	UI_SetStackable("SettingsGraphicsUI", true);
 
+	// background
+	UI_AddImage("SettingsGraphicsUI", "UI_SettingsGraphicsUI_Background", "2d/ui/mainmenu/SettingsGraphicsUI_background", 0, 0, r_width->value, r_height->value);
+	UI_SetImageIsStretched("SettingsGraphicsUI", "UI_SettingsGraphicsUI_Background", true);
+	UI_UseScaledAssets("SettingsGraphicsUI", "UI_SettingsGraphicsUI_Background", true);
+
 	return true;
 }
 

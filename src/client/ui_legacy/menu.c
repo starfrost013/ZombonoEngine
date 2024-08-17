@@ -1133,7 +1133,7 @@ static void ConsoleFunc(void* unused)
 	}
 
 	Key_ClearTyping();
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 
 	M_ForceMenuOff();
 	cls.input_dest = key_console;

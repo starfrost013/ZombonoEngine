@@ -35,7 +35,7 @@ bool UI_MainMenuUICreate()
 		return true; 
 
 	UI_SetStackable("MainMenuUI", true);
-	UI_AddImage("MainMenuUI", "MainMenuUI_Background", "2d/ui/mainmenuui_background", 0, 0, r_width->value, r_height->value);
+	UI_AddImage("MainMenuUI", "MainMenuUI_Background", "2d/ui/mainmenu/mainmenuui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuUI", "MainMenuUI_Background", true);
 	UI_UseScaledAssets("MainMenuUI", "MainMenuUI_Background", true);
 
@@ -71,13 +71,6 @@ bool UI_MainMenuUICreate()
 	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnZombieTelevision", hover_colour);
 	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnSettings", hover_colour);
 	UI_SetColorOnHover("MainMenuUI", "MainMenuUI_BtnQuit", hover_colour);
-
-	// Main Menu buttons onhover images
-	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnQuickstart", "2d/ui/mainmenuui_btn_quickstart_hover");
-	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnBrowseServers", "2d/ui/mainmenuui_btn_browseservers_hover");
-	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnZombieTV", "2d/ui/mainmenuui_btn_zombietelevision_hover");
-	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnSettings", "2d/ui/mainmenuui_btn_settings_hover");
-	UI_SetImageOnHover("MainMenuUI", "MainMenuUI_BtnQuit", "2d/ui/mainmenuui_btn_quit_hover");
 
 	return true;
 }

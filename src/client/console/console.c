@@ -61,7 +61,7 @@ void Con_ToggleConsole_f()
 	}
 
 	Key_ClearTyping();
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 
 	if (cls.input_dest == key_console)
 	{
@@ -99,7 +99,7 @@ void Con_ToggleChat_f()
 	else
 		cls.input_dest = key_console;
 
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 }
 
 /*
@@ -184,7 +184,7 @@ void Con_Dump_f()
 Con_ClearNotify
 ================
 */
-void Con_ClearNotify()
+void Con_ClearRecentHistory()
 {
 	int32_t 	i;
 
@@ -268,7 +268,7 @@ void Con_CheckResize()
 			}
 		}
 
-		Con_ClearNotify();
+		Con_ClearRecentHistory();
 	}
 
 	con.current = con.totallines - 1;
@@ -475,7 +475,7 @@ Con_DrawNotify
 Draws the last few lines of output transparently over the game top
 ================
 */
-void Con_DrawNotify()
+void Con_DrawRecentHistory()
 {
 	int32_t v = 0;
 	int32_t skip_size_x = 0, skip_size_y = 0;
@@ -515,13 +515,13 @@ void Con_DrawNotify()
 	{
 		if (chat_team)
 		{
-			const char* say_text = "^4Chat (Team):^7";
+			const char* say_text = "[STRING_CHATUI_CHATTEAM]";
 			Text_GetSize(cl_console_font->string, &skip_size_x, &skip_size_y, say_text);
 			Text_Draw(cl_console_font->string, 8, v * vid_hudscale->value, say_text);
 		}
 		else
 		{
-			const char* say_text = "^2Chat:^7";
+			const char* say_text = "[STRING_CHATUI_CHAT]";
 			Text_GetSize(cl_console_font->string, &skip_size_x, &skip_size_y, say_text);
 			Text_Draw(cl_console_font->string, 8, v * vid_hudscale->value, say_text);
 		}
@@ -533,7 +533,7 @@ void Con_DrawNotify()
 		// terminator for text engine
 		char original = s[chat_bufferlen];
 		s[chat_bufferlen] = '\0';
-		Text_Draw(cl_console_font->string, 8 + (skip_size_x)+console_font_ptr->size / 2, v, s);
+		Text_Draw(cl_console_font->string, 8 + (skip_size_x)+console_font_ptr->size / 2, v * vid_hudscale->value, s);
 
 		// wtf does this do? it draws a newline or vertical tab depending on if its realtime?
 		Text_DrawChar(cl_console_font->string, 8 * skip_size_x * vid_hudscale->value, v * vid_hudscale->value, 10 + ((cls.realtime >> 8) & 1));

@@ -216,7 +216,7 @@ void Render2D_CenterPrint(char* str)
 	Com_Printf("%s", str);
 
 	Com_Printf("\n\n");
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 }
 
 
@@ -494,7 +494,7 @@ void Render2D_DrawConsole()
 	else
 	{
 		if (cls.input_dest == key_game || cls.input_dest == key_message)
-			Con_DrawNotify();	// only draw notify in game
+			Con_DrawRecentHistory();	// only draw notify in game
 	}
 }
 
@@ -534,7 +534,7 @@ SCR_EndLoadingPlaque
 void Render2D_EndLoadingPlaque()
 {
 	cls.disable_screen = 0;
-	Con_ClearNotify();
+	Con_ClearRecentHistory();
 }
 
 /*
