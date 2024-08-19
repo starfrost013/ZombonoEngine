@@ -25,14 +25,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // mouse variables
 
-bool	mlooking;
+bool mlooking;
 
-void Input_MLookDown() { mlooking = true; }
+void Input_MLookDown()
+{ 
+	mlooking = true; 
+}
+
 void Input_MLookUp()
 {
 	mlooking = false;
-	if (!freelook->value && lookspring->value)
-		Input_CenterView();
 }
 
 int32_t mouse_buttons;

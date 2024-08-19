@@ -252,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\cpuid.c" />
+    <ClCompile Include="common\netservices\netservices_account.c" />
     <ClCompile Include="game\q_shared.c" />
     <ClCompile Include="null\cl_null.c" />
     <ClCompile Include="null\glfw_null.c" />

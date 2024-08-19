@@ -152,10 +152,9 @@ Key_Event (int32_t key, bool down, uint32_t time);
 */
 
 
-kbutton_t	input_klook;
 kbutton_t	input_left, input_right, input_forward, input_back;
-kbutton_t	input_lookup, input_lookdown, input_moveleft, input_moveright;
-kbutton_t	input_speed, input_use, input_attack1, input_attack2;
+kbutton_t	input_moveleft, input_moveright;
+kbutton_t	input_sprint, input_use, input_attack1, input_attack2;
 kbutton_t	input_up, input_down;
 
 int32_t 	input_impulse;
@@ -237,8 +236,6 @@ void Input_KeyUp(kbutton_t* b)
 	b->state |= 4; 		// impulse up
 }
 
-void Input_KLookDown() { Input_KeyDown(&input_klook); }
-void Input_KLookUp() { Input_KeyUp(&input_klook); }
 void Input_UpDown() { Input_KeyDown(&input_up); }
 void Input_UpUp() { Input_KeyUp(&input_up); }
 void Input_DownDown() { Input_KeyDown(&input_down); }
@@ -251,17 +248,13 @@ void Input_ForwardDown() { Input_KeyDown(&input_forward); }
 void Input_ForwardUp() { Input_KeyUp(&input_forward); }
 void Input_BackDown() { Input_KeyDown(&input_back); }
 void Input_BackUp() { Input_KeyUp(&input_back); }
-void Input_LookupDown() { Input_KeyDown(&input_lookup); }
-void Input_LookupUp() { Input_KeyUp(&input_lookup); }
-void Input_LookdownDown() { Input_KeyDown(&input_lookdown); }
-void Input_LookdownUp() { Input_KeyUp(&input_lookdown); }
 void Input_MoveleftDown() { Input_KeyDown(&input_moveleft); }
 void Input_MoveleftUp() { Input_KeyUp(&input_moveleft); }
 void Input_MoverightDown() { Input_KeyDown(&input_moveright); }
 void Input_MoverightUp() { Input_KeyUp(&input_moveright); }
 
-void Input_SpeedDown() { Input_KeyDown(&input_speed); }
-void Input_SpeedUp() { Input_KeyUp(&input_speed); }
+void Input_SprintDown() { Input_KeyDown(&input_sprint); }
+void Input_SprintUp() { Input_KeyUp(&input_sprint); }
 
 void Input_Attack1Down() { Input_KeyDown(&input_attack1); }
 void Input_Attack1Up() { Input_KeyUp(&input_attack1); }
@@ -328,28 +321,15 @@ Moves the local angle positions
 */
 void CL_AdjustAngles()
 {
-	float	speed;
-	float	up, down;
+	float speed;
 
-	if (input_speed.state & 1)
+	if (input_sprint.state & 1)
 		speed = cls.frametime * cl_anglespeedkey->value;
 	else
 		speed = cls.frametime;
 
 	cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&input_right);
 	cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&input_left);
-
-	if (input_klook.state & 1)
-	{
-		cl.viewangles[PITCH] -= speed * cl_pitchspeed->value * CL_KeyState(&input_forward);
-		cl.viewangles[PITCH] += speed * cl_pitchspeed->value * CL_KeyState(&input_back);
-	}
-
-	up = CL_KeyState(&input_lookup);
-	down = CL_KeyState(&input_lookdown);
-
-	cl.viewangles[PITCH] -= speed * cl_pitchspeed->value * up;
-	cl.viewangles[PITCH] += speed * cl_pitchspeed->value * down;
 }
 
 /*
@@ -373,16 +353,13 @@ void CL_BaseMove(usercmd_t* cmd)
 	cmd->upmove += cl_upspeed->value * CL_KeyState(&input_up);
 	cmd->upmove -= cl_upspeed->value * CL_KeyState(&input_down);
 
-	if (!(input_klook.state & 1))
-	{
-		cmd->forwardmove += cl_forwardspeed->value * CL_KeyState(&input_forward);
-		cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState(&input_back);
-	}
+	cmd->forwardmove += cl_forwardspeed->value * CL_KeyState(&input_forward);
+	cmd->forwardmove -= cl_forwardspeed->value * CL_KeyState(&input_back);
 
 	//
 	// adjust for speed key / running
 	//
-	if ((input_speed.state & 1) ^ (int32_t)(cl_run->value))
+	if ((input_sprint.state & 1) ^ (int32_t)(cl_run->value))
 	{
 		cmd->forwardmove *= 2;
 		cmd->sidemove *= 2;
@@ -483,12 +460,6 @@ usercmd_t CL_CreateCmd()
 	return cmd;
 }
 
-
-void Input_CenterView()
-{
-	cl.viewangles[PITCH] = -SHORT2ANGLE(cl.frame.playerstate.pmove.delta_angles[PITCH]);
-}
-
 /*
 ============
 CL_InitInput
@@ -496,12 +467,10 @@ CL_InitInput
 */
 void CL_InitInput()
 {
-	Cmd_AddCommand("centerview", Input_CenterView);
-
-	Cmd_AddCommand("+moveup", Input_UpDown);
-	Cmd_AddCommand("-moveup", Input_UpUp);
-	Cmd_AddCommand("+movedown", Input_DownDown);
-	Cmd_AddCommand("-movedown", Input_DownUp);
+	Cmd_AddCommand("+jump", Input_UpDown);
+	Cmd_AddCommand("-jump", Input_UpUp);
+	Cmd_AddCommand("+crouch", Input_DownDown);
+	Cmd_AddCommand("-crouch", Input_DownUp);
 	Cmd_AddCommand("+left", Input_LeftDown);
 	Cmd_AddCommand("-left", Input_LeftUp);
 	Cmd_AddCommand("+right", Input_RightDown);
@@ -510,16 +479,12 @@ void CL_InitInput()
 	Cmd_AddCommand("-forward", Input_ForwardUp);
 	Cmd_AddCommand("+back", Input_BackDown);
 	Cmd_AddCommand("-back", Input_BackUp);
-	Cmd_AddCommand("+lookup", Input_LookupDown);
-	Cmd_AddCommand("-lookup", Input_LookupUp);
-	Cmd_AddCommand("+lookdown", Input_LookdownDown);
-	Cmd_AddCommand("-lookdown", Input_LookdownUp);
 	Cmd_AddCommand("+moveleft", Input_MoveleftDown);
 	Cmd_AddCommand("-moveleft", Input_MoveleftUp);
 	Cmd_AddCommand("+moveright", Input_MoverightDown);
 	Cmd_AddCommand("-moveright", Input_MoverightUp);
-	Cmd_AddCommand("+speed", Input_SpeedDown);
-	Cmd_AddCommand("-speed", Input_SpeedUp);
+	Cmd_AddCommand("+sprint", Input_SprintDown);
+	Cmd_AddCommand("-sprint", Input_SprintUp);
 	Cmd_AddCommand("+attack1", Input_Attack1Down);
 	Cmd_AddCommand("-attack1", Input_Attack1Up);
 	Cmd_AddCommand("+attack2", Input_Attack2Down);
@@ -527,8 +492,6 @@ void CL_InitInput()
 	Cmd_AddCommand("+use", Input_UseDown);
 	Cmd_AddCommand("-use", Input_UseUp);
 	Cmd_AddCommand("impulse", Input_Impulse);
-	Cmd_AddCommand("+klook", Input_KLookDown);
-	Cmd_AddCommand("-klook", Input_KLookUp);
 
 	cl_nodelta = Cvar_Get("cl_nodelta", "0", 0);
 }

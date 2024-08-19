@@ -51,8 +51,8 @@ typedef struct
 	int32_t 		state;			// state of this key
 } kbutton_t;
 
-extern kbutton_t	input_mlook, input_klook;
-extern kbutton_t 	input_speed;
+extern kbutton_t	input_mlook;
+extern kbutton_t 	input_sprint;
 
 void CL_InitInput();
 void CL_SendCmd();
@@ -62,8 +62,6 @@ void CL_ClearState();
 void CL_ReadPackets();
 
 void CL_BaseMove(usercmd_t* cmd);
-
-void Input_CenterView();
 
 extern double last_mouse_pos_x, last_mouse_pos_y;
 

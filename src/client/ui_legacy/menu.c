@@ -584,16 +584,12 @@ char* bindnames[][2] =
 {"+back", 			"^5[STRING_BINDING_BACK]"},
 {"+left", 			"^5[STRING_BINDING_LEFT]"},
 {"+right", 			"^5[STRING_BINDING_RIGHT]"},
-{"+speed", 			"^5[STRING_BINDING_SPEED]"},
+{"+sprint", 		"^5[STRING_BINDING_SPEED]"},
 {"+moveleft", 		"^5[STRING_BINDING_MOVELEFT]"},
 {"+moveright", 		"^5[STRING_BINDING_MOVERIGHT]"},
-{"+lookup", 		"^5[STRING_BINDING_LOOKUP]"},
-{"+lookdown", 		"^5[STRING_BINDING_LOOKDOWN]"},
-{"centerview", 		"^5[STRING_BINDING_CENTERVIEW]"},
 {"+mlook", 			"^5[STRING_BINDING_MLOOK]"},
-{"+klook", 			"^5[STRING_BINDING_KLOOK]"},
-{"+moveup",			"^5[STRING_BINDING_MOVEUP]"},
-{"+movedown",		"^5[STRING_BINDING_MOVEDOWN]"},
+{"+jump",			"^5[STRING_BINDING_MOVEUP]"},
+{"+crouch",		"^5[STRING_BINDING_MOVEDOWN]"},
 
 {"invuse",			"^5[STRING_BINDING_INVUSE]"},
 {"invdrop",			"^5[STRING_BINDING_INVDROP]"},
@@ -1019,7 +1015,6 @@ static menuslider_t		s_options_sensitivity_slider;
 static menulist_t		s_options_freelook_box;
 static menulist_t		s_options_alwaysrun_box;
 static menulist_t		s_options_invertmouse_box;
-static menulist_t		s_options_lookspring_box;
 static menulist_t		s_options_lookstrafe_box;
 static menulist_t		s_options_crosshair_box;
 static menuslider_t		s_options_sfxvolume_slider;
@@ -1073,9 +1068,6 @@ static void ControlsSetMenuItemValues(void)
 
 	s_options_invertmouse_box.curvalue = m_pitch->value < 0;
 
-	Cvar_SetValue("lookspring", ClampCvar(0, 1, lookspring->value));
-	s_options_lookspring_box.curvalue = lookspring->value;
-
 	Cvar_SetValue("lookstrafe", ClampCvar(0, 1, lookstrafe->value));
 	s_options_lookstrafe_box.curvalue = lookstrafe->value;
 
@@ -1097,11 +1089,6 @@ static void ControlsResetDefaultsFunc(void* unused)
 static void InvertMouseFunc(void* unused)
 {
 	Cvar_SetValue("m_pitch", -m_pitch->value);
-}
-
-static void LookspringFunc(void* unused)
-{
-	Cvar_SetValue("lookspring", !lookspring->value);
 }
 
 static void LookstrafeFunc(void* unused)
@@ -1252,49 +1239,42 @@ void Options_MenuInit(void)
 	s_options_invertmouse_box.generic.callback = InvertMouseFunc;
 	s_options_invertmouse_box.itemnames = yes_no_names;
 
-	s_options_lookspring_box.generic.type = MTYPE_SPINCONTROL;
-	s_options_lookspring_box.generic.x = 0;
-	s_options_lookspring_box.generic.y = 80 * vid_hudscale->value;
-	s_options_lookspring_box.generic.name = "^5[STRING_SETTINGSUI_MOUSESENSITIVITY]";
-	s_options_lookspring_box.generic.callback = LookspringFunc;
-	s_options_lookspring_box.itemnames = yes_no_names;
-
 	s_options_lookstrafe_box.generic.type = MTYPE_SPINCONTROL;
 	s_options_lookstrafe_box.generic.x = 0;
-	s_options_lookstrafe_box.generic.y = 90 * vid_hudscale->value;
+	s_options_lookstrafe_box.generic.y = 80 * vid_hudscale->value;
 	s_options_lookstrafe_box.generic.name = "^5[STRING_SETTINGSUI_LOOKSTRAFE]";
 	s_options_lookstrafe_box.generic.callback = LookstrafeFunc;
 	s_options_lookstrafe_box.itemnames = yes_no_names;
 
 	s_options_freelook_box.generic.type = MTYPE_SPINCONTROL;
 	s_options_freelook_box.generic.x = 0;
-	s_options_freelook_box.generic.y = 100 * vid_hudscale->value;
+	s_options_freelook_box.generic.y = 90 * vid_hudscale->value;
 	s_options_freelook_box.generic.name = "^5[STRING_SETTINGSUI_FREELOOK]";
 	s_options_freelook_box.generic.callback = FreeLookFunc;
 	s_options_freelook_box.itemnames = yes_no_names;
 
 	s_options_crosshair_box.generic.type = MTYPE_SPINCONTROL;
 	s_options_crosshair_box.generic.x = 0;
-	s_options_crosshair_box.generic.y = 110 * vid_hudscale->value;
+	s_options_crosshair_box.generic.y = 100 * vid_hudscale->value;
 	s_options_crosshair_box.generic.name = "^5[STRING_SETTINGSUI_CROSSHAIR]";
 	s_options_crosshair_box.generic.callback = CrosshairFunc;
 	s_options_crosshair_box.itemnames = crosshair_names;
 
 	s_options_customize_options_action.generic.type = MTYPE_ACTION;
 	s_options_customize_options_action.generic.x = 0;
-	s_options_customize_options_action.generic.y = 140 * vid_hudscale->value;
+	s_options_customize_options_action.generic.y = 130 * vid_hudscale->value;
 	s_options_customize_options_action.generic.name = "^3[STRING_SETTINGSUI_CUSTOMISECONTROLS]";
 	s_options_customize_options_action.generic.callback = CustomizeControlsFunc;
 
 	s_options_defaults_action.generic.type = MTYPE_ACTION;
 	s_options_defaults_action.generic.x = 0;
-	s_options_defaults_action.generic.y = 150 * vid_hudscale->value;
+	s_options_defaults_action.generic.y = 140 * vid_hudscale->value;
 	s_options_defaults_action.generic.name = "^3[STRING_SETTINGSUI_RESET]";
 	s_options_defaults_action.generic.callback = ControlsResetDefaultsFunc;
 
 	s_options_console_action.generic.type = MTYPE_ACTION;
 	s_options_console_action.generic.x = 0;
-	s_options_console_action.generic.y = 160 * vid_hudscale->value;
+	s_options_console_action.generic.y = 150 * vid_hudscale->value;
 	s_options_console_action.generic.name = "^3[STRING_SETTINGSUI_GOTOCONSOLE]";
 	s_options_console_action.generic.callback = ConsoleFunc;
 
@@ -1307,7 +1287,7 @@ void Options_MenuInit(void)
 	Menu_AddItem(&s_options_menu, (void*)&s_options_sensitivity_slider);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_alwaysrun_box);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_invertmouse_box);
-	Menu_AddItem(&s_options_menu, (void*)&s_options_lookspring_box);
+
 	Menu_AddItem(&s_options_menu, (void*)&s_options_lookstrafe_box);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_freelook_box);
 	Menu_AddItem(&s_options_menu, (void*)&s_options_crosshair_box);
