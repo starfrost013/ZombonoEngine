@@ -241,7 +241,7 @@ char* PF_ReadString() { return MSG_ReadString(&net_message); }
 void PF_ReadPos(vec3_t pos) { MSG_ReadPos(&net_message, pos); }
 void PF_ReadDir(vec3_t dir) { MSG_ReadDir(&net_message, dir); }
 void PF_ReadColor(color4_t color) { MSG_ReadColor(&net_message, color); }
-void PF_ReadAngle(float f) { MSG_ReadAngle(&net_message, f); }
+void PF_ReadAngle(float f) { return MSG_ReadAngle(&net_message); }
 
 void PF_WriteChar(int32_t c) { MSG_WriteChar(&sv.multicast, c); }
 void PF_WriteByte(int32_t c) { MSG_WriteByte(&sv.multicast, c); }

@@ -1093,11 +1093,11 @@ cluster
 */
 void R_MarkLeaves()
 {
-	uint8_t* vis;
-	byte	fatvis[MAX_MAP_LEAFS / 8];
-	mnode_t* node;
+	uint8_t*	vis;
+	byte		fatvis[MAX_MAP_LEAFS / 8];
+	mnode_t*	node;
 	int32_t		i, c;
-	mleaf_t* leaf;
+	mleaf_t*	leaf;
 	int32_t		cluster;
 
 	if (r_oldviewcluster == r_viewcluster && r_oldviewcluster2 == r_viewcluster2 && !r_novis->value && r_viewcluster != -1)
@@ -1142,13 +1142,15 @@ void R_MarkLeaves()
 		if (vis[cluster >> 3] & (1 << (cluster & 7)))
 		{
 			node = (mnode_t*)leaf;
+
 			do
 			{
 				if (node->visframe == r_visframecount)
 					break;
 				node->visframe = r_visframecount;
 				node = node->parent;
-			} while (node);
+			} 
+			while (node);
 		}
 	}
 }

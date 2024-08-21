@@ -200,12 +200,6 @@ void Miniaudio_Play(int32_t track, bool looping)
 
 	result = LoadTrack(FS_Gamedir(), track);
 
-	// try the baseq2 folder if loading the track from a custom gamedir failed
-	if (result != MA_SUCCESS && Q_stricmp(FS_Gamedir(), "./%s", game_asset_path->string) != 0)
-	{
-		result = LoadTrack(game_asset_path->string, track);
-	}
-
 	if (result != MA_SUCCESS)
 	{
 		Com_Printf("Failed to open %s/music/track%s%i.[ogg/flac/mp3/wav]: error %i\n", FS_Gamedir(), track < 10 ? "0" : "", track, result);
