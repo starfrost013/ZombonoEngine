@@ -67,14 +67,18 @@ bool UI_SettingsControlsUICreate()
 	float x = 0.40f;
 	float y = 0.23f;
 
-	UI_AddText("SettingsControlsUI", "SettingsControlsUI_Header", "Modify Controls:", x, y);
-
-	UI_SetFont("SettingsControlsUI", "SettingsControlsUI_Header", "bahnschrift_bold_18");
-
 	int32_t bind_num = 0;
 
 	// generate a name for the ui elements
 	char name_buf[MAX_UI_NAMELEN] = { 0 };
+
+	color4_t colour = { 0, 0, 0, 127 };
+	// todo: add zindex, too lazy to NOT hardcode this rn
+	UI_AddBox("SettingsControlsUI", "SettingsControlsUI_Box", x - 0.01f, y - 0.01f, 0.25f * UI_SCALE_BASE_X, ((0.025f * 23) + 0.07f) * UI_SCALE_BASE_Y, colour);
+
+	UI_AddText("SettingsControlsUI", "SettingsControlsUI_Header", "Modify Controls:", x, y);
+
+	UI_SetFont("SettingsControlsUI", "SettingsControlsUI_Header", "bahnschrift_bold_18");
 
 	y += 0.06f;
 

@@ -29,7 +29,10 @@ bool UI_LeaderboardUICreate()
 {
 	UI_SetPassive("LeaderboardUI", true);
 	// SIZE SHOULDN'T HAVE TO BE MULTIPLIED BY VID_HUDSCALE
-	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", 0.17f, 0.2f, 640, 384, 0, 0, 0, 150); 
+
+	color4_t color = { 0, 0, 0, 150 };
+
+	UI_AddBox("LeaderboardUI", "LeaderboardUI_Box", 0.17f, 0.2f, 640, 384, color);
 	UI_SetEventOnKeyDown("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIEnable);
 	UI_SetEventOnKeyUp("LeaderboardUI", "LeaderboardUI_Box", UI_LeaderboardUIDisable);
 	UI_AddImage("LeaderboardUI", "LeaderboardUI_Header", "2d/ui/leaderboardui_header", 0.333f, 0.2f, 320, 64);
@@ -131,22 +134,26 @@ void UI_LeaderboardUIUpdate()
 		int32_t box_size_x = 8 * 11; // a bit of padding
 		int32_t box_size_y = (system_font_ptr->line_height - 1); // -1 because it looks weird with noen
 
+		color4_t color_director = { 87, 0, 127, 255 };
+		color4_t color_team = { 219, 87, 0, 255 };
+		color4_t color_unassigned = { 127, 127, 127, 255 };
+		
 		if (leaderboard_entry.team == team_director)
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 87, 0, 127, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, color_director);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Director", x, y);
 			director_score += leaderboard_entry.score;
 
 		}
 		else if (leaderboard_entry.team == team_player)
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 219, 87, 0, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, color_team);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Player", x, y);
 			player_score += leaderboard_entry.score;
 		}
 		else
 		{
-			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, 127, 127, 127, 255);
+			UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempTeamBox", x, y, box_size_x, box_size_y, color_unassigned);
 			UI_AddText("LeaderboardUI", "LeaderboardUIText_TempTeam", "Unassigned", x, y);
 		}
 
@@ -236,13 +243,17 @@ void UI_LeaderboardUIUpdate()
 	snprintf(director_text, TEXT_BUF_LENGTH, "Directors: %d", director_score);
 	snprintf(player_text, TEXT_BUF_LENGTH, "Players: %d", player_score);
 
+	color4_t color_director = { 87, 0, 127, 255 };
+	color4_t color_player = { 219, 87, 0, 255 };
+
+
 	int32_t box_size_large = (8 * 14);
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), 87, 0, 127, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempDirectorScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), color_director); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempDirectorScore", director_text, x, y);
 
 	x = 0.50f;
 
-	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), 219, 87, 0, 255); 	// todo: define team colours somewhere
+	UI_AddBox("LeaderboardUI", "LeaderboardUIText_TempPlayerScoreBox", x, y, box_size_large, (system_font_ptr->line_height - 1), color_player); 	// todo: define team colours somewhere
 	UI_AddText("LeaderboardUI", "LeaderboardUIText_TempPlayerScore", player_text, x, y);
 }

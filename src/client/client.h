@@ -699,7 +699,7 @@ bool UI_AddSlider(char* ui_name, char* name, float position_x, float position_y,
 bool UI_AddCheckbox(char* ui_name, char* name, float position_x, float position_y, 
 	int32_t size_x, int32_t size_y, bool checked);													// Draws a checkbox.
 bool UI_AddBox(char* ui_name, char* name, float position_x, float position_y, 
-	int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a);					// Draws a regular ole box.
+	int32_t size_x, int32_t size_y, color4_t color);												// Draws a regular ole box.
 
 // UI: Update Properties 
 bool UI_SetPosition(char* ui_name, char* control_name, float x, float y);									// Updates a UI control's position.

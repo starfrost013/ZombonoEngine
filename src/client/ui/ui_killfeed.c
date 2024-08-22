@@ -77,7 +77,9 @@ void Killfeed_Add()
 	// (see UI_KillFeedUpdate below)
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_BOX, current_entry_num);
 
-	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 189, 16, 32, 32, 32, 180);
+	color4_t color = { 32, 32, 32, 180 };
+
+	UI_AddBox("KillFeedUI", name_buf, -0.1f, -0.1f, 189, 16, color);
 	memset(name_buf, 0x00, sizeof(name_buf));
 
 	snprintf(name_buf, TEMP_NAME_BUF_SIZE, KILLFEEDUI_NAME_TEXT, killfeed_entry_count);

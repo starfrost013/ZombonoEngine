@@ -305,7 +305,7 @@ bool UI_AddCheckbox(char* ui_name, char* control_name, float position_x, float p
 	return UI_AddControl(ui_ptr, control_name, position_x, position_y, size_x, size_y);
 }
 
-bool UI_AddBox(char* ui_name, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y, int32_t r, int32_t g, int32_t b, int32_t a)
+bool UI_AddBox(char* ui_name, char* control_name, float position_x, float position_y, int32_t size_x, int32_t size_y, color4_t color)
 {
 	ui_t* ui_ptr = UI_GetUI(ui_name);
 
@@ -314,10 +314,7 @@ bool UI_AddBox(char* ui_name, char* control_name, float position_x, float positi
 
 	ui_control_t* ui_control_ptr = &ui_ptr->controls[ui_ptr->num_controls];
 
-	ui_control_ptr->color[0] = r;
-	ui_control_ptr->color[1] = g;
-	ui_control_ptr->color[2] = b;
-	ui_control_ptr->color[3] = a;
+	VectorCopy4(color, ui_control_ptr->color);
 
 	// by default hover and click colour are the same as the normal colour so set them
 

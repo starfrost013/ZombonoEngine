@@ -39,6 +39,12 @@ bool UI_SettingsGameUICreate()
 	UI_SetImageOnHover("SettingsGameUI", "SettingsGameUI_Back", "2d/ui/global_btn_back_hover");
 	UI_SetEventOnClickDown("SettingsGameUI", "SettingsGameUI_Back", UI_SettingsGameUIOnBackPressed);
 
+	float x = 0.40f;
+	float y = 0.23f;
+
+	// Game options
+	UI_AddText("SettingsGameUI", "SettingsGameUI_Header", "Game Settings", x, y);
+
 	return true;
 }
 

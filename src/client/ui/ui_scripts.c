@@ -126,8 +126,11 @@ bool UI_BamfuslicatorUICreate()
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	float x = 0.375f;
 	float y = 0.87f;
+
+	color4_t color = { 232, 96, 0, 127 };
+
 	UI_AddBox("BamfuslicatorUI", "BamfuslicatorUI_TextBackground", x, 
-		y, 240, size_y, 232, 96, 0, 127);
+		y, 240, size_y, color);
 	// terrible manual positioning because we don't know what the text is (changed at runtime)
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_Text", temp_text, (x + 0.0675f), y + 0.001f);
 	UI_AddText("BamfuslicatorUI", "BamfuslicatorUI_TextHelp", "Right click to change type of monster to spawn",
@@ -148,8 +151,10 @@ bool UI_TimeUICreate()
 	const char* temp_text = "00:00";
 	Text_GetSize("bahnschrift_bold_18", &size_x, &size_y, temp_text);
 
+	color4_t colour = { 255, 0, 0, 150 };
+
 	UI_AddBox("TimeUI", "TimeUI_TextBox", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.03f, 0.051f,
-		size_x + 72, size_y, 255, 0, 0, 150); // add a buffer of 10 pixels for larger numbers
+		size_x + 72, size_y, colour); // add a buffer of 10 pixels for larger numbers
 
 	// text is set by gamecode
 	UI_AddText("TimeUI", "TimeUI_Text", "N/A", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2), 0.056f); //padding/advance reasons
@@ -168,13 +173,16 @@ bool UI_ScoreUICreate()
 
 	UI_SetPassive("ScoreUI", true);
 
+	color4_t director_colour = { 87, 0, 127, 255 };
+	color4_t player_colour = { 255, 106, 0, 255 };
+
 	const char* temp_text = "Directors 0 : Players 0";
 	Text_GetSize(cl_system_font->string, &size_x, &size_y, temp_text);
 	//87, 0, 127, 255
 	UI_AddBox("ScoreUI", "ScoreUI_TextBoxDirector", 0.5f - ((size_x/UI_SCALE_BASE_X) / 2) - 0.05f, 0.02f,
-		(size_x + 48 / 2), size_y, 87, 0, 127, 255); // add a buffer of 10 pixels for larger numbers 
+		(size_x + 48 / 2), size_y, director_colour); // add a buffer of 10 pixels for larger numbers 
 	UI_AddBox("ScoreUI", "ScoreUI_TextBoxPlayer", 0.5f - ((size_x / UI_SCALE_BASE_X) / 2) + (size_x/UI_SCALE_BASE_X)/2, 0.02f,
-		(size_x + 48 / 2), size_y, 255, 106, 0, 255); // add a buffer of 10 pixels for larger numbers 
+		(size_x + 48 / 2), size_y, player_colour); // add a buffer of 10 pixels for larger numbers 
 
 	// text is set by gamecode
 	UI_AddText("ScoreUI", "ScoreUI_Text", "N/A", 0.5f - ((size_x)/UI_SCALE_BASE_X / 2) + 0.01f, 
@@ -195,11 +203,13 @@ bool UI_LoadoutUICreate()
 	int32_t size_x = 288;
 	int32_t size_y = 68;
 
+	color4_t background_color = { 0, 0, 0, 127 };
+
 	float x = ((0.5f) - ((float)size_x/2)/UI_SCALE_BASE_X); 
 	float y = 0.725f;
 
 	UI_AddBox("LoadoutUI", "LoadoutUI_Background", x, y, size_x, size_y,
-		0, 0, 0, 127);
+		background_color);
 
 	x += 0.02f;
 
