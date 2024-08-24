@@ -468,8 +468,11 @@ void Key_Console(int32_t key, int32_t mods)
 
 	// translate from virtual to physical keys
 
+	bool shift_required = (caps_lock || shift_down)
+		&& (!(caps_lock && shift_down));
+
 	// HACK: WE NEED MULTIBYTE CHARACTER SUPPORT
-	key = Key_VirtualToPhysical(key, (caps_lock || shift_down) && (!(caps_lock && shift_down)))[0];
+	key = Key_VirtualToPhysical(key, shift_required)[0];
 
 	if (key_linepos < MAXCMDLINE - 1)
 	{
