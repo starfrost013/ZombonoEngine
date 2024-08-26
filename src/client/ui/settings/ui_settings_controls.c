@@ -50,8 +50,6 @@ void UI_SettingsControlsUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_SettingsControlsUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
 
 	UI_SetStackable("SettingsControlsUI", true);
 

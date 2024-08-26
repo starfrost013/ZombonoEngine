@@ -25,8 +25,6 @@ void UI_SettingsGameUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_SettingsGameUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
 
 	UI_SetStackable("SettingsGameUI", true);
 

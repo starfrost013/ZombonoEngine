@@ -30,10 +30,6 @@ void UI_MainMenuGoToQuit(int32_t btn, int32_t x, int32_t y);
 // Create the root of the main menu UI
 bool UI_MainMenuUICreate()
 {
-	// don't bother creating it if ui_newmenu is not set to 1
-	if (!ui_newmenu->value)
-		return true; 
-
 	UI_SetStackable("MainMenuUI", true);
 	UI_AddImage("MainMenuUI", "MainMenuUI_Background", "2d/ui/mainmenu/mainmenuui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuUI", "MainMenuUI_Background", true);

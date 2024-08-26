@@ -85,11 +85,6 @@ cvar_t* m_side;
 cvar_t* cl_lightlevel;
 
 //
-// UI CVar
-//
-cvar_t* ui_newmenu;
-
-//
 // userinfo
 //
 cvar_t* info_password;

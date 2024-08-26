@@ -25,9 +25,6 @@ void UI_SettingsBrowseServersUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuBrowseServersUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
-
 	UI_SetStackable("MainMenuBrowseServersUI", true);
 	UI_AddImage("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", "2d/ui/mainmenu/mainmenubrowseserversui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuBrowseServersUI", "UI_MainMenuBrowseServersUI_Background", true);

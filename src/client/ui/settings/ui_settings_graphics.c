@@ -25,8 +25,6 @@ void UI_SettingsGraphicsUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_SettingsGraphicsUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
 
 	UI_SetStackable("SettingsGraphicsUI", true);
 

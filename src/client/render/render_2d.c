@@ -1331,9 +1331,6 @@ void Render_UpdateScreen()
 			if (!cl_console_disabled->value)
 				Render2D_DrawConsole();
 
-			if (!ui_newmenu->value)
-				M_Draw();
-
 			Render2D_DrawLoading();
 		}
 	}

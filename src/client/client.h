@@ -266,7 +266,6 @@ extern cvar_t* cl_predict;
 extern cvar_t* cl_footsteps;
 extern cvar_t* cl_noskins;
 extern cvar_t* cl_autoskins;
-extern cvar_t* ui_newmenu;
 
 extern cvar_t* cl_upspeed;
 extern cvar_t* cl_forwardspeed;

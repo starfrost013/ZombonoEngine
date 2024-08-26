@@ -25,8 +25,6 @@ void UI_SettingsSoundUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_SettingsSoundUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
 
 	UI_SetStackable("SettingsSoundUI", true);
 

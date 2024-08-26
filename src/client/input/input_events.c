@@ -1073,49 +1073,35 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 			Key_Message(key, 0);
 			break;
 		case key_menu:
-			if (!ui_newmenu->value)
-			{
-				M_Keydown(key, 0);
-				break;
-			}
-			// otherwise, fall through
+			// maybe not fall through?
 		case key_game:
 		case key_console:
 
-			// TODO: still hardcoded: TODO - GET FROM CONFIG FILE
-			if (ui_newmenu->value)
+			ui_t* mainmenu_ptr = UI_GetUI("MainMenuUI");
+
+			// for this UI enabled == activated
+			bool is_active = (mainmenu_ptr->enabled);
+
+			cls.input_dest == (is_active) ? key_menu : key_game;
+
+			UI_SetEnabled("MainMenuUI", !is_active);
+			UI_SetActivated("MainMenuUI", !is_active);
+
+			// let the player toggle the menu if it's connected
+			if (cls.state == ca_active
+				|| cls.state == ca_connecting)
 			{
-				ui_t* mainmenu_ptr = UI_GetUI("MainMenuUI");
-
-				// for this UI enabled == activated
-				bool is_active = (mainmenu_ptr->enabled);
-
-				cls.input_dest == (is_active) ? key_menu : key_game;
-
 				UI_SetEnabled("MainMenuUI", !is_active);
 				UI_SetActivated("MainMenuUI", !is_active);
-
-				// let the player toggle the menu if it's connected
-				if (cls.state == ca_active
-					|| cls.state == ca_connecting)
-				{
-					UI_SetEnabled("MainMenuUI", !is_active);
-					UI_SetActivated("MainMenuUI", !is_active);
-				}
-				else // otherwise don't
-				{
-					// TODO: this is temporary logic, because the player will be sent back to the main menu when connecting. We need a stack system for this...
-					if (!mainmenu_ptr->enabled)
-					{
-						UI_SetEnabled("MainMenuUI", true);
-						UI_SetActivated("MainMenuUI", true);
-					}
-				}
-
 			}
-			else
+			else // otherwise don't
 			{
-				M_Menu_Main_f(); // hardcoded 
+				// TODO: this is temporary logic, because the player will be sent back to the main menu when connecting. We need a stack system for this...
+				if (!mainmenu_ptr->enabled)
+				{
+					UI_SetEnabled("MainMenuUI", true);
+					UI_SetActivated("MainMenuUI", true);
+				}
 			}
 
 			break;

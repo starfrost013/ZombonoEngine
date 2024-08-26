@@ -26,9 +26,6 @@ void UI_MainMenuQuitUIOnNoPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuQuitUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
-
 	UI_SetStackable("MainMenuQuitUI", true);
 	UI_AddImage("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", "2d/ui/mainmenu/mainmenuui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuQuitUI", "UI_MainMenuQuitUI_Background", true);

@@ -69,9 +69,6 @@
     <ClCompile Include="client\render\render_3d.c" />
     <ClCompile Include="client\console\console.c" />
     <ClCompile Include="client\input\input_events.c" />
-    <ClCompile Include="client\ui_legacy\menu.c" />
-    <ClCompile Include="client\ui_legacy\menu_video.c" />
-    <ClCompile Include="client\ui_legacy\menu_framework.c" />
     <ClCompile Include="client\sound\sound_dma.c" />
     <ClCompile Include="client\sound\sound_mem.c" />
     <ClCompile Include="client\sound\sound_miniaudio.c" />

@@ -25,9 +25,6 @@ void UI_MainMenuZombieTVUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuZombieTVUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
-
 	UI_SetStackable("MainMenuZombieTVUI", true);
 	UI_AddImage("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", "2d/ui/mainmenu/mainmenuzombietvui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuZombieTVUI", "UI_MainMenuZombieTVUI_Background", true);

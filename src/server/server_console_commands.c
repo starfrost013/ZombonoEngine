@@ -586,6 +586,43 @@ void SV_Map_f()
 	SV_GameMap_f();
 }
 
+void SV_StartServer_f()
+{
+	char*	startmap = Cmd_Argv(0);
+	int32_t timelimit;
+	int32_t fraglimit;
+	int32_t maxclients;
+	char*	hostname;
+
+	int32_t gamemode = atoi(Cmd_Argv(1));
+
+	// various optional things
+	if (Cmd_Argc() >= 2)
+		maxclients = atoi(Cmd_Argv(2));
+
+	if (Cmd_Argc() >= 3)
+		timelimit = atoi(Cmd_Argv(3));
+
+	if (Cmd_Argc() >= 4)
+		fraglimit = atoi(Cmd_Argv(4));
+
+	if (Cmd_Argc() >= 5)
+		hostname = atoi(Cmd_Argv(5));
+
+	if (maxclients <= 0) maxclients = 0;
+	if (timelimit <= 0) timelimit = 0;
+	if (fraglimit <= 0) fraglimit = 0;
+
+	Cvar_SetValue("sv_maxclients", maxclients);
+	Cvar_SetValue("timelimit", timelimit);
+	Cvar_SetValue("fraglimit", fraglimit);
+	Cvar_Set("hostname", hostname);
+
+	Cvar_SetValue("gamemode", gamemode);
+
+	Cbuf_AddText(va("map %s\n", startmap));
+}
+
 /*
 =====================================================================
 
@@ -1043,6 +1080,7 @@ void SV_InitOperatorCommands()
 	Cmd_AddCommand("dumpuser", SV_DumpUser_f);
 
 	Cmd_AddCommand("map", SV_Map_f);
+	Cmd_AddCommand("startserver", SV_StartServer_f);
 	Cmd_AddCommand("demomap", SV_DemoMap_f);
 	Cmd_AddCommand("gamemap", SV_GameMap_f);
 	Cmd_AddCommand("setmaster", SV_SetMaster_f);

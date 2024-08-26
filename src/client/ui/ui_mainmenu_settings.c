@@ -31,9 +31,6 @@ void UI_MainMenuSettingsUIOnOptionsSoundPressed(int32_t btn, int32_t x, int32_t 
 
 bool UI_MainMenuSettingsUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
-
 	UI_SetStackable("MainMenuSettingsUI", true);
 	UI_AddImage("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", "2d/ui/mainmenu/mainmenusettingsui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuSettingsUI", "UI_MainMenuSettingsUI_Background", true);

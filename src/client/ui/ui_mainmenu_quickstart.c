@@ -25,9 +25,6 @@ void UI_MainMenuQuickstartUIOnBackPressed(int32_t btn, int32_t x, int32_t y);
 
 bool UI_MainMenuQuickstartUICreate()
 {
-	if (!ui_newmenu->value)
-		return true;
-
 	UI_SetStackable("MainMenuQuickstartUI", true);
 	UI_AddImage("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", "2d/ui/mainmenu/mainmenuquickstartui_background", 0, 0, r_width->value, r_height->value);
 	UI_SetImageIsStretched("MainMenuQuickstartUI", "UI_MainMenuQuickstartUI_Background", true);

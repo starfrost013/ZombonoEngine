@@ -48,12 +48,6 @@
     <ClCompile Include="client\input\input_events.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client\ui_legacy\menu.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="client\ui_legacy\menu_framework.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\sound\sound_dma.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -169,9 +163,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\render\render_interface.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="client\ui_legacy\menu_video.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui_mainmenu.c">
