@@ -177,7 +177,6 @@ void CL_Disconnect()
 
 	VectorClear3(cl.refdef.blend);
 
-	M_ForceMenuOff();
 	UI_Reset();
 
 	cls.connect_time = 0;
@@ -221,7 +220,6 @@ void CL_ParseStatusMessage()
 	s = MSG_ReadString(&net_message);
 
 	Com_Printf("%s\n", s);
-	M_AddToServerList(net_from, s);
 }
 
 
@@ -716,8 +714,6 @@ void CL_Init()
 
 	net_message.data = net_message_buffer;
 	net_message.maxsize = sizeof(net_message_buffer);
-
-	M_Init();
 
 	Render2D_Init();
 	cls.disable_screen = true;	// don't draw yet

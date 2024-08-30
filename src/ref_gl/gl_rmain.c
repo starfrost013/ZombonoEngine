@@ -849,8 +849,6 @@ bool R_Init()
 		return false;
 	}
 
-	ri.Vid_MenuInit();
-
 	GL_SetTextureMode(gl_texturemode->string);
 
 	strcpy(renderer_buffer, gl_config.renderer_string);

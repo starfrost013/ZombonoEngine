@@ -5,9 +5,11 @@ Version 0.2.0-alpha1
 ?????? ??, 2024
 
 NEW FEATURES:
+	* Removed legacy UI engine
+		* Renderer API version 14 - removes Vid_MenuInit
 	* Added a "startserver" command
 		* It takes the form startserver map [gamemode] [maxplayers] [fraglimit] [timelimit] [hostname]
-
+	
 BUG FIXES:
 REMOVALS:
 OTHER CHANGES:

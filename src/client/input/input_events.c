@@ -1186,7 +1186,7 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 		Key_Message(key, mods);
 		break;
 	case key_menu:
-		M_Keydown(key, mods);
+		//M_Keydown(key, mods); // move to new ui system?
 		break;
 
 	case key_game:

@@ -65,12 +65,10 @@ void Con_ToggleConsole_f()
 
 	if (cls.input_dest == key_console)
 	{
-		M_ForceMenuOff();
 		Cvar_Set("paused", "0");
 	}
 	else
 	{
-		M_ForceMenuOff();
 		cls.input_dest = key_console;
 
 		if (Cvar_VariableValue("sv_maxclients") == 1
@@ -92,7 +90,6 @@ void Con_ToggleChat_f()
 	{
 		if (cls.state == ca_active)
 		{
-			M_ForceMenuOff();
 			cls.input_dest = key_game;
 		}
 	}
@@ -606,7 +603,10 @@ void Con_DrawConsole(float frac)
 	Render2D_AddDirtyPoint(0, 0);
 	Render2D_AddDirtyPoint(r_width->value - 1, lines - 1);
 
-	Com_sprintf(version, sizeof(version), "^2Zombono v%s", ENGINE_VERSION);
+	cvar_t* gameversion = Cvar_Get("gameversion", "***NOT LOADED***", 0);
+
+	Com_sprintf(version, sizeof(version), "^2Euphoria v%s, %s version %s", ENGINE_VERSION, gameinfo.name, gameversion->string);
+
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);
 	Text_Draw(cl_console_font->string, r_width->value - size_x, lines - 12 * vid_hudscale->value, version);
 

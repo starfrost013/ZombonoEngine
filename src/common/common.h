@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <common/formats/bsp.h>
 #include <common/formats/md2.h>
 #include <common/formats/sp2.h>
-#include <game/q_shared.h>
+#include <../game/src/q_shared.h>
 #include "netservices/netservices.h" // hmm
 #include "pdjson.h"
 #include "version.h"

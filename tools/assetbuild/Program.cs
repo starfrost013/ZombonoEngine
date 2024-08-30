@@ -1,15 +1,15 @@
 ﻿// Assetbuild Utility
 // Copyright © 2023-2024 starfrost
 // 
-// This is a mess primarily due to the fact it was rushed,
-// and due to the fact pak.exe sucks ass
+// Code sucks lol
+// Version 2.1.0 used for Euhp
 
 #region Constants & Variables
 
-const string ASSETBUILD_VERSION = "2.1.0"; // Version
-const string DEFAULT_GAME_NAME = "zombonogame"; // Default engine game name folder to use
+const string ASSETBUILD_VERSION = "2.2.0"; // Version
+const string DEFAULT_GAME_NAME = "examplegame"; // Default engine game name folder to use
 string gameName = DEFAULT_GAME_NAME; // Name of the game to compile.
-string gameDir = $@"..\..\..\..\..\assets\{gameName}"; // Complete relative path to game dir
+string gameDir = $@"..\..\..\..\..\game\assets\{gameName}"; // Complete relative path to game dir
 string outputDirectory = string.Empty; //set later
 string releaseConfiguration = string.Empty;
 
@@ -69,11 +69,7 @@ try
         string currentArg = args[argNum];
 
         if (string.Equals(currentArg, "-q", StringComparison.InvariantCultureIgnoreCase))
-        {
-            string nextArg = args[argNum++];
-
-            quietMode = Convert.ToBoolean(nextArg);
-        }
+            quietMode = true;
     }
 
     // set the final directory

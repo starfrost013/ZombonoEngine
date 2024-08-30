@@ -34,10 +34,6 @@ extern cvar_t* r_height;
 extern bool graphics_mode;
 
 // Video module initialisation etc
-void	Vid_Init ();
-void	Vid_Shutdown ();
-void	Vid_CheckChanges ();
-
-void	Vid_MenuInit( void );
-void	Vid_MenuDraw( void );
-const char *Vid_MenuKey( int32_t );
+void Vid_Init();
+void Vid_Shutdown();
+void Vid_CheckChanges();

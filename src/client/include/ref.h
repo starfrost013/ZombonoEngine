@@ -128,7 +128,7 @@ typedef struct refdef_s
 	particle_t*		particles;
 } refdef_t;
 
-#define	API_VERSION		13
+#define	API_VERSION		14
 
 //
 // these are the functions exported by the refresh module
@@ -225,7 +225,6 @@ typedef struct
 	void	(*Cvar_SetValue)(char* name, float value);
 	cvar_t* (*Cvar_ForceSet) (char* var_name, char* value);
 
-	void	(*Vid_MenuInit)(void);
 	void	(*Vid_ChangeResolution)();
 
 	void	(*Com_Quit)();

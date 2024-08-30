@@ -124,7 +124,7 @@ void GL_ScreenShot_f()
 	time(&time_unix);
 	time_now = localtime(&time_unix);
 
-	// should work on all FSes
+	// todo: change
 	strftime(picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
 
 	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots/%s", ri.FS_Gamedir(), picname);

@@ -99,10 +99,6 @@ void Vid_CheckChanges(void)
 {
 }
 
-void Vid_MenuInit(void)
-{
-}
-
 void Vid_MenuDraw(void)
 {
 }
