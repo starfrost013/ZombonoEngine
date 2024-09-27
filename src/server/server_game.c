@@ -268,12 +268,12 @@ bool PF_inPVS(vec3_t p1, vec3_t p2)
 	int32_t 	area1, area2;
 	uint8_t* mask;
 
-	leafnum = CM_PointLeafnum(p1);
+	leafnum = Map_PointLeafnum(p1);
 	cluster = Map_GetLeafCluster(leafnum);
 	area1 = Map_LeafArea(leafnum);
 	mask = Map_ClusterPVS(cluster);
 
-	leafnum = CM_PointLeafnum(p2);
+	leafnum = Map_PointLeafnum(p2);
 	cluster = Map_GetLeafCluster(leafnum);
 	area2 = Map_LeafArea(leafnum);
 	if (mask && (!(mask[cluster >> 3] & (1 << (cluster & 7)))))
@@ -298,12 +298,12 @@ bool PF_inPHS(vec3_t p1, vec3_t p2)
 	int32_t 	area1, area2;
 	uint8_t* mask;
 
-	leafnum = CM_PointLeafnum(p1);
+	leafnum = Map_PointLeafnum(p1);
 	cluster = Map_GetLeafCluster(leafnum);
 	area1 = Map_LeafArea(leafnum);
 	mask = Map_ClusterPHS(cluster);
 
-	leafnum = CM_PointLeafnum(p2);
+	leafnum = Map_PointLeafnum(p2);
 	cluster = Map_GetLeafCluster(leafnum);
 	area2 = Map_LeafArea(leafnum);
 	if (mask && (!(mask[cluster >> 3] & (1 << (cluster & 7)))))
@@ -337,7 +337,7 @@ void SV_ShutdownGameProgs()
 	if (!ge)
 		return;
 	ge->Game_Shutdown();
-	Sys_UnloadGame();
+	Sys_UnloadGameLibrary();
 	ge = NULL;
 }
 
@@ -408,9 +408,9 @@ void SV_InitGameProgs()
 	import.WriteColor = PF_WriteColor;
 	import.WriteAngle = PF_WriteAngle;
 
-	import.TagMalloc = Z_TagMalloc;
-	import.TagFree = Z_Free;
-	import.FreeTags = Z_FreeTags;
+	import.TagMalloc = Memory_ZoneMallocTagged;
+	import.TagFree = Memory_ZoneFree;
+	import.FreeTags = Memory_ZoneFreeTags;
 
 	import.Cvar_Get = Cvar_Get;
 	import.Cvar_Set = Cvar_Set;
@@ -427,7 +427,7 @@ void SV_InitGameProgs()
 	import.SetAreaPortalState = Map_SetAreaPortalState;
 	import.AreasConnected = Map_AreasConnected;
 
-	ge = (game_export_t*)Sys_GetGameAPI(&import);
+	ge = (game_export_t*)Sys_LoadGameLibrary(&import);
 
 	if (!ge)
 	{

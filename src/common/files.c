@@ -26,7 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // if a packfile directory differs from this, it is assumed to be hacked
 // Full version
-// ***** IGNORE THIS UNTIL ZOMBONO 1.0 *****
+
+// This is for quake2, if you ship a game, change this...
 #define	PAK0_CHECKSUM	0x40e614e0
 
 /*
@@ -170,7 +171,7 @@ int32_t FS_FOpenFile(char* filename, FILE** file)
 	{
 		if (!strncmp(filename, link->from, link->fromlength))
 		{
-			Com_sprintf(netpath, sizeof(netpath), "%s%s", link->to, filename + link->fromlength);
+			snprintf(netpath, sizeof(netpath), "%s%s", link->to, filename + link->fromlength);
 			*file = fopen(netpath, "rb");
 			if (*file)
 			{
@@ -208,7 +209,7 @@ int32_t FS_FOpenFile(char* filename, FILE** file)
 		{
 			// check a file in the directory tree
 
-			Com_sprintf(netpath, sizeof(netpath), "%s/%s", search->filename, filename);
+			snprintf(netpath, sizeof(netpath), "%s/%s", search->filename, filename);
 #ifndef _WIN32
 			// some expansion packs use backslashes in file paths which works only on Windows
 			char* np = netpath;
@@ -303,7 +304,7 @@ int32_t FS_LoadFile(char* path, void** buffer)
 		return len;
 	}
 
-	buf = Z_Malloc(len);
+	buf = Memory_ZoneMalloc(len);
 	*buffer = buf;
 
 	FS_Read(buf, len, h);
@@ -321,7 +322,7 @@ FS_FreeFile
 */
 void FS_FreeFile(void* buffer)
 {
-	Z_Free(buffer);
+	Memory_ZoneFree(buffer);
 }
 
 /*
@@ -360,7 +361,7 @@ pack_t* FS_LoadPackFile(char* packfile)
 	if (numpackfiles > MAX_FILES_IN_PACK)
 		Com_Error(ERR_FATAL, "%s has %i files", packfile, numpackfiles);
 
-	newfiles = Z_Malloc(numpackfiles * sizeof(packfile_t));
+	newfiles = Memory_ZoneMalloc(numpackfiles * sizeof(packfile_t));
 
 	fseek(packhandle, header.dirofs, SEEK_SET);
 	fread(info, 1, header.dirlen, packhandle);
@@ -380,7 +381,7 @@ pack_t* FS_LoadPackFile(char* packfile)
 		newfiles[i].filelen = LittleInt(info[i].filelen);
 	}
 
-	pack = Z_Malloc(sizeof(pack_t));
+	pack = Memory_ZoneMalloc(sizeof(pack_t));
 	strcpy(pack->filename, packfile);
 	pack->handle = packhandle;
 	pack->numfiles = numpackfiles;
@@ -409,7 +410,7 @@ void FS_AddGameDirectory(char* dir)
 	//
 	// add the directory to the search path
 	//
-	search = Z_Malloc(sizeof(searchpath_t));
+	search = Memory_ZoneMalloc(sizeof(searchpath_t));
 	strcpy(search->filename, dir);
 	search->next = fs_searchpaths;
 	fs_searchpaths = search;
@@ -419,11 +420,11 @@ void FS_AddGameDirectory(char* dir)
 	//
 	for (i = 0; i < 10; i++)
 	{
-		Com_sprintf(pakfile, sizeof(pakfile), "%s/pak%i.pak", dir, i);
+		snprintf(pakfile, sizeof(pakfile), "%s/pak%i.pak", dir, i);
 		pak = FS_LoadPackFile(pakfile);
 		if (!pak)
 			continue;
-		search = Z_Malloc(sizeof(searchpath_t));
+		search = Memory_ZoneMalloc(sizeof(searchpath_t));
 		search->pack = pak;
 		search->next = fs_searchpaths;
 		fs_searchpaths = search;
@@ -456,9 +457,9 @@ void FS_ExecAutoexec()
 
 	dir = Cvar_VariableString("game_asset_path");
 	if (*dir)
-		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, dir);
+		snprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, dir);
 	else
-		Com_sprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, game_asset_path->string);
+		snprintf(name, sizeof(name), "%s/%s/autoexec.cfg", game_basedir->string, game_asset_path->string);
 
 	if (Sys_FindFirst(name, 0, SFF_SUBDIR | SFF_HIDDEN | SFF_SYSTEM))
 		Cbuf_AddText("exec autoexec.cfg\n");
@@ -493,11 +494,11 @@ void FS_SetGamedir(char* dir)
 		if (fs_searchpaths->pack)
 		{
 			fclose(fs_searchpaths->pack->handle);
-			Z_Free(fs_searchpaths->pack->files);
-			Z_Free(fs_searchpaths->pack);
+			Memory_ZoneFree(fs_searchpaths->pack->files);
+			Memory_ZoneFree(fs_searchpaths->pack);
 		}
 		next = fs_searchpaths->next;
-		Z_Free(fs_searchpaths);
+		Memory_ZoneFree(fs_searchpaths);
 		fs_searchpaths = next;
 	}
 
@@ -542,12 +543,12 @@ void FS_Link_f()
 	{
 		if (!strcmp(l->from, Cmd_Argv(1)))
 		{
-			Z_Free(l->to);
+			Memory_ZoneFree(l->to);
 			if (!strlen(Cmd_Argv(2)))
 			{	// delete it
 				*prev = l->next;
-				Z_Free(l->from);
-				Z_Free(l);
+				Memory_ZoneFree(l->from);
+				Memory_ZoneFree(l);
 				return;
 			}
 			l->to = CopyString(Cmd_Argv(2));
@@ -557,7 +558,7 @@ void FS_Link_f()
 	}
 
 	// create a new link
-	l = Z_Malloc(sizeof(*l));
+	l = Memory_ZoneMalloc(sizeof(*l));
 	l->next = fs_links;
 	fs_links = l;
 	l->from = CopyString(Cmd_Argv(1));
@@ -616,13 +617,13 @@ char** FS_ListFiles(char* findname, int32_t* numfiles, unsigned musthave, unsign
 */
 void FS_Dir_f(void)
 {
-	char* path = NULL;
+	char*	path = NULL;
 	char	findname[1024];
 	char	wildcard[1024] = "*.*";
-	char** dirnames;
-	int32_t 	ndirs;
+	char**	dirnames;
+	int32_t ndirs;
 
-	if (Cmd_Argc() != 1)
+	if (Cmd_Argc() > 1)
 	{
 		strcpy(wildcard, Cmd_Argv(1));
 	}
@@ -631,7 +632,7 @@ void FS_Dir_f(void)
 	{
 		char* tmp = findname;
 
-		Com_sprintf(findname, sizeof(findname), "%s/%s", path, wildcard);
+		snprintf(findname, sizeof(findname), "%s/%s", path, wildcard);
 
 		while (*tmp != 0)
 		{

@@ -161,12 +161,12 @@ void SV_WipeSavegame(char* savename)
 
 	Com_DPrintf("SV_WipeSaveGame(%s)\n", savename);
 
-	Com_sprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), savename);
+	snprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), savename);
 	remove(name);
-	Com_sprintf(name, sizeof(name), "%s/save/%s/game.ssv", FS_Gamedir(), savename);
+	snprintf(name, sizeof(name), "%s/save/%s/game.ssv", FS_Gamedir(), savename);
 	remove(name);
 
-	Com_sprintf(name, sizeof(name), "%s/save/%s/*.sav", FS_Gamedir(), savename);
+	snprintf(name, sizeof(name), "%s/save/%s/*.sav", FS_Gamedir(), savename);
 	s = Sys_FindFirst(name, 0, 0);
 	while (s)
 	{
@@ -174,7 +174,7 @@ void SV_WipeSavegame(char* savename)
 		s = Sys_FindNext(0, 0);
 	}
 	Sys_FindClose();
-	Com_sprintf(name, sizeof(name), "%s/save/%s/*.sv2", FS_Gamedir(), savename);
+	snprintf(name, sizeof(name), "%s/save/%s/*.sv2", FS_Gamedir(), savename);
 	s = Sys_FindFirst(name, 0, 0);
 	while (s)
 	{
@@ -237,24 +237,24 @@ void SV_CopySaveGame(char* src, char* dst)
 	SV_WipeSavegame(dst);
 
 	// copy the savegame over
-	Com_sprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), src);
-	Com_sprintf(name2, sizeof(name2), "%s/save/%s/server.ssv", FS_Gamedir(), dst);
+	snprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), src);
+	snprintf(name2, sizeof(name2), "%s/save/%s/server.ssv", FS_Gamedir(), dst);
 	FS_CreatePath(name2);
 	SV_CopyFile(name, name2);
 
-	Com_sprintf(name, sizeof(name), "%s/save/%s/game.ssv", FS_Gamedir(), src);
-	Com_sprintf(name2, sizeof(name2), "%s/save/%s/game.ssv", FS_Gamedir(), dst);
+	snprintf(name, sizeof(name), "%s/save/%s/game.ssv", FS_Gamedir(), src);
+	snprintf(name2, sizeof(name2), "%s/save/%s/game.ssv", FS_Gamedir(), dst);
 	SV_CopyFile(name, name2);
 
-	Com_sprintf(name, sizeof(name), "%s/save/%s/", FS_Gamedir(), src);
+	snprintf(name, sizeof(name), "%s/save/%s/", FS_Gamedir(), src);
 	len = (int32_t)strlen(name);
-	Com_sprintf(name, sizeof(name), "%s/save/%s/*.sav", FS_Gamedir(), src);
+	snprintf(name, sizeof(name), "%s/save/%s/*.sav", FS_Gamedir(), src);
 	found = Sys_FindFirst(name, 0, 0);
 	while (found)
 	{
 		strcpy(name + len, found + len);
 
-		Com_sprintf(name2, sizeof(name2), "%s/save/%s/%s", FS_Gamedir(), dst, found + len);
+		snprintf(name2, sizeof(name2), "%s/save/%s/%s", FS_Gamedir(), dst, found + len);
 		SV_CopyFile(name, name2);
 
 		// change sav to sv2
@@ -283,7 +283,7 @@ void SV_WriteLevelFile()
 
 	Com_DPrintf("SV_WriteLevelFile()\n");
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sv2", FS_Gamedir(), sv.name);
+	snprintf(name, sizeof(name), "%s/save/current/%s.sv2", FS_Gamedir(), sv.name);
 	f = fopen(name, "wb");
 	if (!f)
 	{
@@ -294,7 +294,7 @@ void SV_WriteLevelFile()
 	Map_WritePortalState(f);
 	fclose(f);
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
+	snprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
 	ge->Level_Write(name);
 }
 
@@ -311,7 +311,7 @@ void SV_ReadLevelFile()
 
 	Com_DPrintf("SV_ReadLevelFile()\n");
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sv2", FS_Gamedir(), sv.name);
+	snprintf(name, sizeof(name), "%s/save/current/%s.sv2", FS_Gamedir(), sv.name);
 	f = fopen(name, "rb");
 	if (!f)
 	{
@@ -322,7 +322,7 @@ void SV_ReadLevelFile()
 	Map_ReadPortalState(f);
 	fclose(f);
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
+	snprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
 	ge->Level_Read(name);
 }
 
@@ -343,7 +343,7 @@ void SV_WriteServerFile(bool autosave)
 
 	Com_DPrintf("SV_WriteServerFile(%s)\n", autosave ? "true" : "false");
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/server.ssv", FS_Gamedir());
+	snprintf(name, sizeof(name), "%s/save/current/server.ssv", FS_Gamedir());
 	f = fopen(name, "wb");
 	if (!f)
 	{
@@ -357,14 +357,14 @@ void SV_WriteServerFile(bool autosave)
 	{
 		time(&aclock);
 		newtime = localtime(&aclock);
-		Com_sprintf(comment, sizeof(comment), "%2i:%i%i %2i/%2i  ", newtime->tm_hour
+		snprintf(comment, sizeof(comment), "%2i:%i%i %2i/%2i  ", newtime->tm_hour
 			, newtime->tm_min / 10, newtime->tm_min % 10,
 			newtime->tm_mon + 1, newtime->tm_mday);
 		strncat(comment, sv.configstrings[CS_NAME], sizeof(comment) - 1 - strlen(comment));
 	}
 	else
 	{	// autosaved
-		Com_sprintf(comment, sizeof(comment), "ENTERING %s", sv.configstrings[CS_NAME]);
+		snprintf(comment, sizeof(comment), "ENTERING %s", sv.configstrings[CS_NAME]);
 	}
 
 	fwrite(comment, 1, sizeof(comment), f);
@@ -395,7 +395,7 @@ void SV_WriteServerFile(bool autosave)
 	fclose(f);
 
 	// write game state
-	Com_sprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
+	snprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
 	ge->Game_Write(name, autosave);
 }
 
@@ -414,7 +414,7 @@ void SV_ReadServerFile()
 
 	Com_DPrintf("SV_ReadServerFile()\n");
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/server.ssv", FS_Gamedir());
+	snprintf(name, sizeof(name), "%s/save/current/server.ssv", FS_Gamedir());
 	f = fopen(name, "rb");
 	if (!f)
 	{
@@ -446,7 +446,7 @@ void SV_ReadServerFile()
 	strcpy(svs.mapcmd, mapcmd);
 
 	// read game state
-	Com_sprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
+	snprintf(name, sizeof(name), "%s/save/current/game.ssv", FS_Gamedir());
 	ge->Game_Read(name);
 }
 
@@ -573,7 +573,7 @@ void SV_Map_f()
 		}
 #endif
 
-		Com_sprintf(expanded, sizeof(expanded), "maps/%s.bsp", map);
+		snprintf(expanded, sizeof(expanded), "maps/%s.bsp", map);
 		if (FS_LoadFile(expanded, NULL) == -1)
 		{
 			Com_Printf("Can't find %s\n", expanded);
@@ -589,10 +589,10 @@ void SV_Map_f()
 void SV_StartServer_f()
 {
 	char*	startmap = Cmd_Argv(0);
-	int32_t timelimit;
-	int32_t fraglimit;
-	int32_t maxclients;
-	char*	hostname;
+	int32_t timelimit = 0;
+	int32_t fraglimit = 0;
+	int32_t maxclients = 0;
+	char*	hostname = NULL;
 
 	int32_t gamemode = atoi(Cmd_Argv(1));
 
@@ -659,7 +659,7 @@ void SV_Loadgame_f()
 	}
 
 	// make sure the server.ssv file exists
-	Com_sprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), Cmd_Argv(1));
+	snprintf(name, sizeof(name), "%s/save/%s/server.ssv", FS_Gamedir(), Cmd_Argv(1));
 	f = fopen(name, "rb");
 	if (!f)
 	{
@@ -957,7 +957,7 @@ void SV_ServerRecord_f()
 	//
 	// open the demo file
 	//
-	Com_sprintf(name, sizeof(name), "%s/demos/%s.dm2", FS_Gamedir(), Cmd_Argv(1));
+	snprintf(name, sizeof(name), "%s/demos/%s.dm2", FS_Gamedir(), Cmd_Argv(1));
 
 	Com_Printf("recording to %s.\n", name);
 	FS_CreatePath(name);

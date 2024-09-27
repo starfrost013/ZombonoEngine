@@ -38,7 +38,7 @@ int32_t hunk_current_size;
 int32_t hunk_total_size = 0;
 #define	VIRTUAL_ALLOC
 
-void* Hunk_Begin(int32_t maxsize)
+void* Memory_HunkBegin(int32_t maxsize)
 {
 	// reserve a huge chunk of memory, but don't commit any yet
 	hunk_current_size = 0;
@@ -54,7 +54,7 @@ void* Hunk_Begin(int32_t maxsize)
 	return (void*)membase;
 }
 
-void* Hunk_Alloc(int32_t size)
+void* Memory_HunkAlloc(int32_t size)
 {
 	void* buf;
 
@@ -79,7 +79,7 @@ void* Hunk_Alloc(int32_t size)
 	return (void*)(membase + hunk_current_size - size);
 }
 
-int32_t Hunk_End()
+int32_t Memory_HunkEnd()
 {
 	// free the remaining unused virtual memory
 
@@ -88,7 +88,7 @@ int32_t Hunk_End()
 	return hunk_current_size;
 }
 
-void Hunk_Free(void* base)
+void Memory_HunkFree(void* base)
 {
 	if (base)
 #ifdef VIRTUAL_ALLOC
@@ -210,7 +210,7 @@ char* Sys_FindFirst(char* path, uint32_t musthave, uint32_t canthave)
 		return NULL;
 	if (!CompareAttributes(findinfo.attrib, musthave, canthave))
 		return NULL;
-	Com_sprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
+	snprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
 	return findpath;
 }
 
@@ -225,7 +225,7 @@ char* Sys_FindNext(uint32_t musthave, uint32_t canthave)
 	if (!CompareAttributes(findinfo.attrib, musthave, canthave))
 		return NULL;
 
-	Com_sprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
+	snprintf(findpath, sizeof(findpath), "%s/%s", findbase, findinfo.name);
 	return findpath;
 }
 

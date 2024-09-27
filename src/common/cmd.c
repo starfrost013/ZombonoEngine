@@ -121,7 +121,7 @@ void Cbuf_InsertText (char *text)
 	templen = cmd_text.cursize;
 	if (templen)
 	{
-		temp = Z_Malloc (templen);
+		temp = Memory_ZoneMalloc (templen);
 		memcpy (temp, cmd_text.data, templen);
 		SZ_Clear (&cmd_text);
 	}
@@ -135,7 +135,7 @@ void Cbuf_InsertText (char *text)
 	if (templen)
 	{
 		SZ_Write (&cmd_text, temp, templen);
-		Z_Free (temp);
+		Memory_ZoneFree (temp);
 	}
 }
 
@@ -312,7 +312,7 @@ bool Cbuf_AddLateCommands ()
 	if (!s)
 		return false;
 		
-	text = Z_Malloc (s+1);
+	text = Memory_ZoneMalloc (s+1);
 	text[0] = 0;
 	for (i=1 ; i<argc ; i++)
 	{
@@ -322,7 +322,7 @@ bool Cbuf_AddLateCommands ()
 	}
 	
 // pull out the commands
-	build = Z_Malloc (s+1);
+	build = Memory_ZoneMalloc (s+1);
 	build[0] = 0;
 	
 	for (i=0 ; i<s-1 ; i++)
@@ -348,8 +348,8 @@ bool Cbuf_AddLateCommands ()
 	if (ret)
 		Cbuf_AddText (build);
 	
-	Z_Free (text);
-	Z_Free (build);
+	Memory_ZoneFree (text);
+	Memory_ZoneFree (build);
 
 	return ret;
 }
@@ -389,13 +389,13 @@ void Cmd_Exec_f ()
 	Com_Printf ("execing %s\n",Cmd_Argv(1));
 	
 	// the file doesn't have a trailing 0, so we need to copy it off
-	f2 = Z_Malloc(len+1);
+	f2 = Memory_ZoneMalloc(len+1);
 	memcpy (f2, f, len);
 	f2[len] = 0;
 
 	Cbuf_InsertText (f2);
 
-	Z_Free (f2);
+	Memory_ZoneFree (f2);
 	FS_FreeFile (f);
 }
 
@@ -450,14 +450,14 @@ void Cmd_Alias_f ()
 	{
 		if (!strcmp(s, a->name))
 		{
-			Z_Free (a->value);
+			Memory_ZoneFree (a->value);
 			break;
 		}
 	}
 
 	if (!a)
 	{
-		a = Z_Malloc (sizeof(cmdalias_t));
+		a = Memory_ZoneMalloc (sizeof(cmdalias_t));
 		a->next = cmd_alias;
 		cmd_alias = a;
 	}
@@ -618,21 +618,22 @@ Parses the given string into command line tokens.
 $Cvars will be expanded unless they are in a quoted token
 ============
 */
-void Cmd_TokenizeString (char *text, bool macroExpand)
+void Cmd_TokenizeString (char *text, bool macro_expand)
 {
 	int32_t 	i;
 	char	*com_token;
 
 // clear the args from the last string
 	for (i=0 ; i<cmd_argc ; i++)
-		Z_Free (cmd_argv[i]);
+		Memory_ZoneFree (cmd_argv[i]);
 		
 	cmd_argc = 0;
 	cmd_args[0] = 0;
 	
 	// macro expand the text
-	if (macroExpand)
+	if (macro_expand)
 		text = Cmd_MacroExpandString (text);
+
 	if (!text)
 		return;
 
@@ -675,7 +676,7 @@ void Cmd_TokenizeString (char *text, bool macroExpand)
 
 		if (cmd_argc < MAX_STRING_TOKENS)
 		{
-			cmd_argv[cmd_argc] = Z_Malloc ((int32_t)strlen(com_token)+1);
+			cmd_argv[cmd_argc] = Memory_ZoneMalloc ((int32_t)strlen(com_token)+1);
 			strcpy (cmd_argv[cmd_argc], com_token);
 			cmd_argc++;
 		}
@@ -710,7 +711,7 @@ void Cmd_AddCommand (char *cmd_name, xcommand_t function)
 		}
 	}
 
-	cmd = Z_Malloc (sizeof(cmd_function_t));
+	cmd = Memory_ZoneMalloc (sizeof(cmd_function_t));
 	cmd->name = cmd_name;
 	cmd->function = function;
 	cmd->next = cmd_functions;
@@ -738,7 +739,7 @@ void Cmd_RemoveCommand (char *cmd_name)
 		if (!strcmp (cmd_name, cmd->name))
 		{
 			*back = cmd->next;
-			Z_Free (cmd);
+			Memory_ZoneFree (cmd);
 			return;
 		}
 		back = &cmd->next;
@@ -772,9 +773,9 @@ Cmd_CompleteCommand
 */
 char *Cmd_CompleteCommand (char *partial)
 {
-	cmd_function_t	*cmd;
-	int32_t 			len;
-	cmdalias_t		*a;
+	cmd_function_t*	cmd;
+	int32_t 		len;
+	cmdalias_t*		a;
 	
 	len = (int32_t)strlen(partial);
 	

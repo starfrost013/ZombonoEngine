@@ -72,7 +72,7 @@ void Localisation_LoadCurrentLanguage()
 	// temporarily allocate some storage
 	// changed from calloc to (now calloc but with slight overhead) Z_TagMalloc for the purposes of tracking
 
-	uint8_t* file_ptr = (uint8_t*)Z_TagMalloc(file_size, TAG_LOCALISATION);
+	uint8_t* file_ptr = (uint8_t*)Memory_ZoneMallocTagged(file_size, TAG_LOCALISATION);
 
 	token_ptr = file_ptr;
 
@@ -323,7 +323,7 @@ char* Localisation_ProcessString(char* value)
 	// allocate memory for the string
 	// zero it since loading this happens rarely
 	
-	cached_strings[cached_strings_count].value = (char*)Z_TagMalloc(string_length, TAG_LOCALISATION);
+	cached_strings[cached_strings_count].value = (char*)Memory_ZoneMallocTagged(string_length, TAG_LOCALISATION);
 
 	if (!cached_strings[cached_strings_count].value)
 	{
@@ -398,6 +398,6 @@ void Localisation_Shutdown()
 	for (int32_t localisation_string_id = 0; localisation_string_id < localisation_entries_count; localisation_string_id++)
 	{
 		if (cached_strings[localisation_string_id].value != NULL)
-			Z_Free((void*)cached_strings[localisation_string_id].value);
+			Memory_ZoneFree((void*)cached_strings[localisation_string_id].value);
 	}
 }

@@ -110,7 +110,7 @@ void GL_ScreenShot_f()
 	FILE*	f;
 
 	// create the scrnshots directory if it doesn't exist
-	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
+	snprintf(checkname, sizeof(checkname), "%s/screenshots", ri.FS_Gamedir());
 	Sys_Mkdir(checkname);
 
 	// 
@@ -127,7 +127,7 @@ void GL_ScreenShot_f()
 	// todo: change
 	strftime(picname, 80, "zombono-%Y-%m-%d-%H-%M-%S.tga", time_now);
 
-	Com_sprintf(checkname, sizeof(checkname), "%s/screenshots/%s", ri.FS_Gamedir(), picname);
+	snprintf(checkname, sizeof(checkname), "%s/screenshots/%s", ri.FS_Gamedir(), picname);
 
 	f = fopen(checkname, "rb");
 

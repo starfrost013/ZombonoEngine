@@ -9,8 +9,11 @@ NEW FEATURES:
 		* Renderer API version 14 - removes Vid_MenuInit
 	* Added a "startserver" command
 		* It takes the form startserver map [gamemode] [maxplayers] [fraglimit] [timelimit] [hostname]
-	
+	* Replaced com_sprintf with snprintf
+
 BUG FIXES:
+	* Fixed possible copy of invalid Cmd_Argc(1) to wildcard parameter of "dir" command
+
 REMOVALS:
 OTHER CHANGES:
 

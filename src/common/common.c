@@ -143,7 +143,7 @@ void Com_Printf(char* fmt, ...)
 
 		if (!logfile)
 		{
-			Com_sprintf(name, sizeof(name), "%s/qconsole.log", FS_Gamedir());
+			snprintf(name, sizeof(name), "%s/qconsole.log", FS_Gamedir());
 			if (logfile_active->value > 2)
 				logfile = fopen(name, "a");
 			else
@@ -260,7 +260,7 @@ void Com_Quit()
 Com_ServerState
 ==================
 */
-int32_t Com_ServerState()
+int32_t Com_GetServerState()
 {
 	return server_state;
 }
@@ -952,27 +952,6 @@ void SZ_Print(sizebuf_t* buf, char* data)
 //============================================================================
 
 
-/*
-================
-COM_CheckParm
-
-Returns the position (1 to argc-1) in the program's argument list
-where the given parameter apears, or 0 if not present
-================
-*/
-int32_t COM_CheckParm(char* parm)
-{
-	int32_t 	i;
-
-	for (i = 1; i < com_argc; i++)
-	{
-		if (!strcmp(parm, com_argv[i]))
-			return i;
-	}
-
-	return 0;
-}
-
 int32_t COM_Argc()
 {
 	return com_argc;
@@ -1014,26 +993,12 @@ void COM_InitArgv(int32_t argc, char** argv)
 	}
 }
 
-/*
-================
-COM_AddParm
-
-Adds the given string at the end of the current argument list
-================
-*/
-void COM_AddParm(char* parm)
-{
-	if (com_argc == MAX_NUM_ARGVS)
-		Com_Error(ERR_FATAL, "COM_AddParm: MAX_NUM)ARGS");
-	com_argv[com_argc++] = parm;
-}
-
 
 char* CopyString(char* in)
 {
 	char* out;
 
-	out = Z_Malloc((int32_t)strlen(in) + 1);
+	out = Memory_ZoneMalloc((int32_t)strlen(in) + 1);
 	strcpy(out, in);
 	return out;
 }
@@ -1111,7 +1076,7 @@ int32_t	 z_bytes;
 Z_Free
 ========================
 */
-void Z_Free(void* ptr)
+void Memory_ZoneFree(void* ptr)
 {
 	zhead_t* z;
 
@@ -1144,7 +1109,7 @@ void Z_Stats_f()
 Z_FreeTags
 ========================
 */
-void Z_FreeTags(int32_t tag)
+void Memory_ZoneFreeTags(int32_t tag)
 {
 	zhead_t* z, * next;
 
@@ -1152,7 +1117,7 @@ void Z_FreeTags(int32_t tag)
 	{
 		next = z->next;
 		if (z->tag == tag)
-			Z_Free((void*)(z + 1));
+			Memory_ZoneFree((void*)(z + 1));
 	}
 }
 
@@ -1161,7 +1126,7 @@ void Z_FreeTags(int32_t tag)
 Z_TagMalloc
 ========================
 */
-void* Z_TagMalloc(int32_t size, int32_t tag)
+void* Memory_ZoneMallocTagged(int32_t size, int32_t tag)
 {
 	zhead_t* z;
 
@@ -1196,9 +1161,9 @@ void* Z_TagMalloc(int32_t size, int32_t tag)
 Z_Malloc
 ========================
 */
-void* Z_Malloc(int32_t size)
+void* Memory_ZoneMalloc(int32_t size)
 {
-	return Z_TagMalloc(size, 0);
+	return Memory_ZoneMallocTagged(size, 0);
 }
 
 
@@ -1423,7 +1388,7 @@ void Common_Init(int32_t argc, char** argv)
 	debug_console = Cvar_Get("debug_console", "0", CVAR_NOSET);
 #endif
 
-	s = va("%d.%d.%d.%d %s %s %s %s", ZOMBONO_VERSION_MAJOR, ZOMBONO_VERSION_MINOR, ZOMBONO_VERSION_REVISION, ZOMBONO_VERSION_BUILD, BUILD_PLATFORM, __DATE__, __TIME__, BUILD_CONFIG);
+	s = va("%d.%d.%d.%d %s %s %s %s", ENGINE_VERSION_MAJOR, ENGINE_VERSION_MINOR, ENGINE_VERSION_REVISION, ENGINE_VERSION_BUILD, BUILD_PLATFORM, __DATE__, __TIME__, BUILD_CONFIG);
 	engine_version = Cvar_Get("version", s, CVAR_SERVERINFO | CVAR_NOSET);
 
 	if (dedicated->value)

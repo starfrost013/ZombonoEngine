@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <client/include/ref.h>
 
-#define	REF_VERSION	"Zombono Legacy OpenGL 1.x"
+#define	REF_VERSION	"Legacy OpenGL 1.x"
 
 #define	PITCH	0 // up / down
 #define	YAW		1 // left / right

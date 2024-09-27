@@ -761,8 +761,8 @@ void R_Register(void)
 	vid_gamma = ri.Cvar_Get("vid_gamma", "1.0", CVAR_ARCHIVE);
 	vid_ref = ri.Cvar_Get("vid_ref", "gl", CVAR_ARCHIVE);
 
-	game_name = ri.Cvar_Get("game_name", "Zombono", CVAR_LATCH | CVAR_SERVERINFO);
-	game_asset_path = ri.Cvar_Get("game_asset_path", "zombonogame", CVAR_LATCH | CVAR_SERVERINFO);
+	game_name = ri.Cvar_Get("game_name", "Euphoria Example", CVAR_LATCH | CVAR_SERVERINFO);
+	game_asset_path = ri.Cvar_Get("game_asset_path", "examplegame", CVAR_LATCH | CVAR_SERVERINFO);
 
 	ri.Cmd_AddCommand("imagelist", GL_ImageList_f);
 	ri.Cmd_AddCommand("screenshot", GL_ScreenShot_f);

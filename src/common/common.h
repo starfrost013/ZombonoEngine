@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "version.h"
 
 // Due to awk(wardness) we can't put this in version.h
-#define ENGINE_VERSION STR(ZOMBONO_VERSION_MAJOR) "." STR(ZOMBONO_VERSION_MINOR) "." STR(ZOMBONO_VERSION_REVISION) "." STR(ZOMBONO_VERSION_BUILD)
+#define ENGINE_VERSION STR(ENGINE_VERSION_MAJOR) "." STR(ENGINE_VERSION_MINOR) "." STR(ENGINE_VERSION_REVISION) "." STR(ENGINE_VERSION_BUILD)
 
 //BUILD_PLATFORM - Used for updates
 
@@ -61,7 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #elif defined __aarch64__
 #define BUILD_PLATFORM "linuxarm64"
 #endif	// !WIN32 and !__LINUX__
-
+#else
 #define BUILD_PLATFORM "Define the Platform Name!"
 #endif
 
@@ -71,7 +71,7 @@ typedef struct sizebuf_s
 {
 	bool		allowoverflow;	// if false, do a Com_Error
 	bool		overflowed;		// set to true if the buffer size failed
-	uint8_t* data;
+	uint8_t*	data;
 	int32_t 	maxsize;
 	int32_t 	cursize;
 	int32_t 	readcount;
@@ -145,8 +145,6 @@ char*	va(char* format, ...);
 int32_t	COM_Argc();
 char*	 COM_Argv(int32_t arg);	// range and null checked
 void	COM_ClearArgv(int32_t arg);
-int32_t COM_CheckParm(char* parm);
-void	COM_AddParm(char* parm);
 
 void	COM_InitArgv(int32_t argc, char** argv);
 
@@ -174,12 +172,9 @@ PROTOCOL
 // protocol.h -- communications protocols
 
 // The game protocol version
-// 34 - Vanilla Q2
-// 35 - Zombono start (0.04).
-// 36 - Zombono with larger map bounds
-// 37 - Zombono 0.04 final
-// Then incremented by one for each version.
-#define	PROTOCOL_VERSION	46
+// reset to 1 9/27/2024
+
+#define	PROTOCOL_VERSION	1
 
 //=========================================
 
@@ -720,7 +715,7 @@ bool		Map_HeadnodeVisible(int32_t headnode, uint8_t* visbits);
 
 void		Map_WritePortalState(FILE* f);
 void		Map_ReadPortalState(FILE* f);
-int32_t 	CM_PointLeafnum(vec3_t p);
+int32_t 	Map_PointLeafnum(vec3_t p);
 
 /*
 ==============================================================
@@ -804,7 +799,7 @@ void Com_DPrintf(char* fmt, ...);
 void Com_Error(int32_t code, char* fmt, ...);
 void Com_Quit();
 
-int32_t Com_ServerState();		// this should have just been a cvar...
+int32_t Com_GetServerState();		// this should have just been a cvar...
 void	Com_SetServerState(int32_t state);
 
 uint32_t Com_BlockChecksum(void* buffer, int32_t length);
@@ -832,10 +827,10 @@ extern int64_t time_after_ref;
 extern int32_t z_count;
 extern int32_t z_bytes;
 
-void Z_Free(void* ptr);
-void* Z_Malloc(int32_t size);			// returns 0 filled memory
-void* Z_TagMalloc(int32_t size, int32_t tag);
-void Z_FreeTags(int32_t tag);
+void Memory_ZoneFree(void* ptr);
+void* Memory_ZoneMalloc(int32_t size);			// returns 0 filled memory
+void* Memory_ZoneMallocTagged(int32_t size, int32_t tag);
+void Memory_ZoneFreeTags(int32_t tag);
 
 // hunk stuff
 // since hunk_alloc is called from renderer but ocmpiled from both engine and renderer so if we use an ordinary variable
@@ -905,8 +900,12 @@ NON-PORTABLE SYSTEM SERVICES
 
 void	Sys_Init();
 
-void	Sys_UnloadGame();
-void*	Sys_GetGameAPI(void* parms);
+void*	Sys_LoadCommonLibrary();
+
+
+void*	Sys_LoadGameLibrary(void* parms);
+void	Sys_UnloadGameLibrary();
+
 // loads the game dll and calls the api init function
 
 char*	Sys_ConsoleInput();

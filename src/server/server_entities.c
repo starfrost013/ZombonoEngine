@@ -456,7 +456,7 @@ void SV_BuildClientFrame (client_t *client)
 	for (i=0 ; i<3 ; i++)
 		org[i] = clent->client->ps.pmove.origin[i] + clent->client->ps.viewoffset[i];
 
-	leafnum = CM_PointLeafnum (org);
+	leafnum = Map_PointLeafnum (org);
 	clientarea = Map_LeafArea (leafnum);
 	clientcluster = Map_GetLeafCluster (leafnum);
 

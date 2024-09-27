@@ -73,9 +73,9 @@ then a packet only needs to be delivered if there is something in the
 unacknowledged reliable
 */
 
-cvar_t		*showpackets;
-cvar_t		*showdrop;
-cvar_t		*qport;
+cvar_t*	showpackets;
+cvar_t*	showdrop;
+cvar_t*	qport;
 
 netadr_t	net_from;
 sizebuf_t	net_message;
@@ -87,9 +87,9 @@ Netchan_Init
 
 ===============
 */
-void Netchan_Init ()
+void Netchan_Init()
 {
-	int32_t 	port;
+	int32_t port;
 
 	// pick a port value that should be nice and random
 	port = Sys_Milliseconds() & 0xffff;
@@ -181,7 +181,7 @@ bool Netchan_CanReliable (netchan_t *chan)
 
 bool Netchan_NeedReliable (netchan_t *chan)
 {
-	bool	send_reliable;
+	bool send_reliable;
 
 // if the remote side dropped the last reliable message, resend it
 	send_reliable = false;
@@ -294,7 +294,7 @@ called when the current net_message is from remote_address
 modifies net_message so that it points to the packet payload
 =================
 */
-bool Netchan_Process (netchan_t *chan, sizebuf_t *msg)
+bool Netchan_Process(netchan_t *chan, sizebuf_t *msg)
 {
 	uint32_t	sequence, sequence_ack;
 	uint32_t	reliable_ack, reliable_message;

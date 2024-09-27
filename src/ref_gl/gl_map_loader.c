@@ -243,17 +243,17 @@ model_t* Mod_ForName(char* name, bool crash)
 	switch (LittleInt(*(uint32_t*)buf))
 	{
 	case IDALIASHEADER:
-		loadmodel->extradata = Hunk_Begin(MAX_MD2_ALLOC);
+		loadmodel->extradata = Memory_HunkBegin(MAX_MD2_ALLOC);
 		Mod_LoadAliasModel(mod, buf);
 		break;
 
 	case IDSPRITEHEADER:
-		loadmodel->extradata = Hunk_Begin(MAX_SP2_ALLOC);
+		loadmodel->extradata = Memory_HunkBegin(MAX_SP2_ALLOC);
 		Mod_LoadSpriteModel(mod, buf);
 		break;
 
 	case ZBSP_HEADER:
-		loadmodel->extradata = Hunk_Begin(MAX_BSP_ALLOC);
+		loadmodel->extradata = Memory_HunkBegin(MAX_BSP_ALLOC);
 		MapRenderer_Load(mod, buf);
 		break;
 
@@ -262,7 +262,7 @@ model_t* Mod_ForName(char* name, bool crash)
 		break;
 	}
 
-	loadmodel->extradatasize = Hunk_End();
+	loadmodel->extradatasize = Memory_HunkEnd();
 
 	ri.FS_FreeFile(buf);
 
@@ -291,7 +291,7 @@ void MapRenderer_LoadLighting(lump_t* l)
 		loadmodel->lightdata = NULL;
 		return;
 	}
-	loadmodel->lightdata = Hunk_Alloc(l->filelen);
+	loadmodel->lightdata = Memory_HunkAlloc(l->filelen);
 	memcpy(loadmodel->lightdata, mod_base + l->fileofs, l->filelen);
 }
 
@@ -310,7 +310,7 @@ void MapRenderer_LoadVisibility(lump_t* l)
 		loadmodel->vis = NULL;
 		return;
 	}
-	loadmodel->vis = Hunk_Alloc(l->filelen);
+	loadmodel->vis = Memory_HunkAlloc(l->filelen);
 	memcpy(loadmodel->vis, mod_base + l->fileofs, l->filelen);
 
 	loadmodel->vis->numclusters = LittleInt(loadmodel->vis->numclusters);
@@ -337,7 +337,7 @@ void MapRenderer_LoadVertexes(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny vertexes lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->vertexes = out;
 	loadmodel->numvertexes = count;
@@ -384,7 +384,7 @@ void MapRenderer_LoadSubmodels(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny submodels lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->submodels = out;
 	loadmodel->numsubmodels = count;
@@ -419,7 +419,7 @@ void MapRenderer_LoadEdges(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny edges lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc((count + 1) * sizeof(*out));
+	out = Memory_HunkAlloc((count + 1) * sizeof(*out));
 
 	loadmodel->edges = out;
 	loadmodel->numedges = count;
@@ -448,7 +448,7 @@ void MapRenderer_LoadTexinfo(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny texinfo lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->texinfo = out;
 	loadmodel->numtexinfo = count;
@@ -467,7 +467,7 @@ void MapRenderer_LoadTexinfo(lump_t* l)
 			out->next = loadmodel->texinfo + next;
 		else
 			out->next = NULL;
-		Com_sprintf(name, sizeof(name), "textures/%s.tga", in->texture);
+		snprintf(name, sizeof(name), "textures/%s.tga", in->texture);
 
 		out->image = GL_FindImage(name, it_wall);
 		if (!out->image)
@@ -561,7 +561,7 @@ void MapRenderer_LoadFaces(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny faces lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->surfaces = out;
 	loadmodel->numsurfaces = count;
@@ -656,7 +656,7 @@ void MapRenderer_LoadNodes(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny nodes lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->nodes = out;
 	loadmodel->numnodes = count;
@@ -704,7 +704,7 @@ void MapRenderer_LoadLeafs(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny leafs lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->leafs = out;
 	loadmodel->numleafs = count;
@@ -745,7 +745,7 @@ void MapRenderer_LoadMarksurfaces(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny marksurfaces lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->marksurfaces = out;
 	loadmodel->nummarksurfaces = count;
@@ -777,7 +777,7 @@ void MapRenderer_LoadSurfedges(lump_t* l)
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: bad surfedges count in %s: %i",
 			loadmodel->name, count);
 
-	out = Hunk_Alloc(count * sizeof(*out));
+	out = Memory_HunkAlloc(count * sizeof(*out));
 
 	loadmodel->surfedges = out;
 	loadmodel->numsurfedges = count;
@@ -804,7 +804,7 @@ void MapRenderer_LoadPlanes(lump_t* l)
 	if (l->filelen % sizeof(*in))
 		ri.Sys_Error(ERR_DROP, "MOD_LoadBrushModel: funny planes lump size in %s", loadmodel->name);
 	count = l->filelen / sizeof(*in);
-	out = Hunk_Alloc(count * 2 * sizeof(*out));
+	out = Memory_HunkAlloc(count * 2 * sizeof(*out));
 
 	loadmodel->planes = out;
 	loadmodel->numplanes = count;
@@ -917,7 +917,7 @@ void R_BeginRegistration(char* model)
 	registration_sequence++;
 	r_oldviewcluster = -1;		// force markleafs
 
-	Com_sprintf(fullname, sizeof(fullname), "maps/%s.bsp", model);
+	snprintf(fullname, sizeof(fullname), "maps/%s.bsp", model);
 
 	// explicitly free the old map if different
 	// this guarantees that mod_known[0] is the world map
@@ -1009,7 +1009,7 @@ Mod_Free
 */
 void Mod_Free(model_t* mod)
 {
-	Hunk_Free(mod->extradata);
+	Memory_HunkFree(mod->extradata);
 	memset(mod, 0, sizeof(*mod));
 }
 

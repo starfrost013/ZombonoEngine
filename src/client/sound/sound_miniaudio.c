@@ -177,7 +177,7 @@ static ma_result LoadTrack(const char *gamedir, int32_t track)
 	do
 	{
 		char trackPath[64];
-		Com_sprintf(trackPath, sizeof(trackPath), "%s/music/track%s%i.%s", gamedir, track < 10 ? "0" : "", track, trackExts[trackExtIdx]);
+		snprintf(trackPath, sizeof(trackPath), "%s/music/track%s%i.%s", gamedir, track < 10 ? "0" : "", track, trackExts[trackExtIdx]);
 		result = ma_decoder_init_file(trackPath, NULL, &decoder);
 	} while (result != MA_SUCCESS && ++trackExtIdx < 4);
 

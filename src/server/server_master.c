@@ -83,7 +83,7 @@ char* SV_StatusString()
 		cl = &svs.clients[i];
 		if (cl->state == cs_connected || cl->state == cs_spawned)
 		{
-			Com_sprintf(player, sizeof(player), "%i %i \"%s\"\n",
+			snprintf(player, sizeof(player), "%i %i \"%s\"\n",
 				cl->edict->client->ps.stats[STAT_FRAGS], cl->ping, cl->name);
 			player_length = (int32_t)strlen(player);
 			if (status_length + player_length >= sizeof(status))
@@ -139,7 +139,7 @@ void Master_SvcInfo()
 	version = atoi(Cmd_Argv(1));
 
 	if (version != PROTOCOL_VERSION)
-		Com_sprintf(string, sizeof(string), "%s: wrong version\n", hostname->string, sizeof(string));
+		snprintf(string, sizeof(string), "%s: wrong version\n", hostname->string, sizeof(string));
 	else
 	{
 		count = 0;
@@ -147,7 +147,7 @@ void Master_SvcInfo()
 			if (svs.clients[i].state >= cs_connected)
 				count++;
 
-		Com_sprintf(string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)sv_maxclients->value);
+		snprintf(string, sizeof(string), "%16s %8s %2i/%2i\n", hostname->string, sv.name, count, (int32_t)sv_maxclients->value);
 	}
 
 	Netchan_OutOfBandPrint(NS_SERVER, net_from, "info\n%s", string);

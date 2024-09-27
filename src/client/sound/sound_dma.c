@@ -185,7 +185,7 @@ void S_Shutdown()
 		if (!sfx->name[0])
 			continue;
 		if (sfx->cache)
-			Z_Free(sfx->cache);
+			Memory_ZoneFree(sfx->cache);
 		memset(sfx, 0, sizeof(*sfx));
 	}
 
@@ -265,7 +265,7 @@ sfx_t* S_AliasName(char* aliasname, char* truename)
 	char* s;
 	int32_t 	i;
 
-	s = Z_Malloc(MAX_QPATH);
+	s = Memory_ZoneMalloc(MAX_QPATH);
 	strcpy(s, truename);
 
 	// find a free sfx
@@ -350,7 +350,7 @@ void S_EndRegistration()
 		if (sfx->registration_sequence != s_registration_sequence)
 		{	// don't need this sound
 			if (sfx->cache)	// it is possible to have a leftover
-				Z_Free(sfx->cache);	// from a server that didn't finish loading
+				Memory_ZoneFree(sfx->cache);	// from a server that didn't finish loading
 			memset(sfx, 0, sizeof(*sfx));
 		}
 		else
@@ -631,7 +631,7 @@ struct sfx_s* S_RegisterModelSound(entity_state_t* ent, char* base)
 		strcpy(model, "male");
 
 	// see if we already know of the model specific sound
-	Com_sprintf(model_filename, sizeof(model_filename), "#players/%s/%s", model, base + 1);
+	snprintf(model_filename, sizeof(model_filename), "#players/%s/%s", model, base + 1);
 	sfx = S_FindName(model_filename, false);
 
 	if (!sfx)
@@ -647,7 +647,7 @@ struct sfx_s* S_RegisterModelSound(entity_state_t* ent, char* base)
 		else
 		{
 			// no, revert to the male sound in the pak0.pak
-			Com_sprintf(male_filename, sizeof(male_filename), "player/%s/%s", "male", base + 1);
+			snprintf(male_filename, sizeof(male_filename), "player/%s/%s", "male", base + 1);
 			sfx = S_AliasName(model_filename, male_filename);
 		}
 	}

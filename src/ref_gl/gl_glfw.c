@@ -75,14 +75,14 @@ bool Vid_CreateWindow(int32_t width, int32_t height, bool fullscreen)
 
 	if (!game_asset_path->string) // placeholder
 	{
-		snprintf(window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", "Euphoria Retro Game Engine - set gameinfo.json!");
+		snprintf(window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", "Euphoria Game Engine - set gameinfo.json!");
 	}
 	else
 	{
 		snprintf(window_title_buffer, MAX_QPATH, "%s (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", game_name->string);
 	}
 
-	gl_state.window = glfwCreateWindow(width, height, "Zombono (Legacy OpenGL 1.5 "BUILD_PLATFORM " " BUILD_CONFIG ")", monitor, NULL);
+	gl_state.window = glfwCreateWindow(width, height, window_title_buffer, monitor, NULL);
 
 	if (!gl_state.window)
 	{

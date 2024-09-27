@@ -93,7 +93,7 @@ void CL_CheckForResend()
 
 	// if the local server is running and we aren't
 	// then connect
-	if (cls.state == ca_disconnected && Com_ServerState())
+	if (cls.state == ca_disconnected && Com_GetServerState())
 	{
 		cls.state = ca_connecting;
 		strncpy(cls.servername, "localhost", sizeof(cls.servername) - 1);
@@ -429,9 +429,9 @@ void CL_WriteConfiguration()
 		return;
 
 #ifdef PLAYTEST
-	Com_sprintf(path, sizeof(path), "%s/config_playtest.cfg", FS_Gamedir());
+	snprintf(path, sizeof(path), "%s/config_playtest.cfg", FS_Gamedir());
 #else
-	Com_sprintf(path, sizeof(path), "%s/config.cfg", FS_Gamedir());
+	snprintf(path, sizeof(path), "%s/config.cfg", FS_Gamedir());
 #endif
 
 	f = fopen(path, "w");

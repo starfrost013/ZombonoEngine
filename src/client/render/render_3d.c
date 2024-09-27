@@ -334,7 +334,7 @@ void Render3D_Gun_Model_f()
 		gun_model = NULL;
 		return;
 	}
-	Com_sprintf(name, sizeof(name), "models/%s/tris.md2", Cmd_Argv(1));
+	snprintf(name, sizeof(name), "models/%s/tris.md2", Cmd_Argv(1));
 	gun_model = re.RegisterModel(name);
 }
 

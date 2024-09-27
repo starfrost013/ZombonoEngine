@@ -360,23 +360,71 @@ char* Sys_GetClipboardData(void)
 /*
 ========================================================================
 
-GAME DLL
+Euphoria game libraries
+
+	game*.dll (e.g. gamex64.dll)		Game Server DLL
+	ui*.dll (e.g. uix64.dll)			Game Client/ UI DLL
+	EuphoriaCommon.dll					Common API (shared across client + server = game)
 
 ========================================================================
 */
 
-static HINSTANCE	game_library;
+static HINSTANCE common_library;
+static HINSTANCE game_library;
+
+#define GET_COMMON_API_PROC "GetCommonAPI"
+#define GET_GAME_API_PROC "GetGameAPI"
+
+#define COMMON_LIBRARY_NAME	"EuphoriaCommon.dll"
+
+HINSTANCE Sys_LoadLibrary(char* name)
+{
+	char* path = NULL;
+
+	while (path = FS_NextPath(path))
+	{
+		// to be safe...
+		if (!path)
+			break;
+
+		sprintf(path, "%s/%s", path, name);
+		
+		HINSTANCE library_ptr = LoadLibrary(path);
+
+		if (library_ptr)
+		{
+			Com_Printf("Sys_LoadLibrary: Loaded library %s", path);
+			return library_ptr;
+		}
+			
+
+		// failure case is handled by the calling function
+	}
+
+	return NULL;
+}
 
 /*
-=================
-Sys_UnloadGame
-=================
+Sys_LoadCommonLibrary
+
+Loads common api dll
 */
-void Sys_UnloadGame()
+void* Sys_LoadCommonLibrary()
 {
-	if (!FreeLibrary(game_library))
-		Com_Error(ERR_FATAL, "FreeLibrary failed for game library");
-	game_library = NULL;
+	void* (*common_api_proc_ptr)();
+
+	// load the library
+	common_library = Sys_LoadLibrary(COMMON_LIBRARY_NAME);
+
+	if (!common_library)
+		Sys_Error("Initialisation failure: Failed to load EuphoriaCommon");
+
+	common_api_proc_ptr = (void*)GetProcAddress(game_library, GET_COMMON_API_PROC);
+
+	if (!common_api_proc_ptr)
+		Sys_Error("Initialisation failure: EuphoriaCommon does not contain GetCommonAPI");
+
+	return common_api_proc_ptr;
 }
 
 /*
@@ -386,81 +434,53 @@ Sys_GetGameAPI
 Loads the game dll
 =================
 */
-void* Sys_GetGameAPI(void* parms)
+void* Sys_LoadGameLibrary(void* parms)
 {
-	void* (*GetGameAPI) (void*);
-	char	name[MAX_OSPATH];
-	char* path;
-	char	cwd[MAX_OSPATH];
+	void* (*game_api_proc_ptr) (void*);
+	char	name[MAX_OSPATH] = { 0 };
+	char*	path;
+
 #if defined _M_IX86
 	const char* gamename = "gamex86.dll";
-#ifdef NDEBUG
-	const char* debugdir = "release";
-#else
-	const char* debugdir = "debug";
-#endif
-
 #elif defined _M_X64
 	const char* gamename = "gamex64.dll";
-
-#ifdef NDEBUG
-	const char* debugdir = "releasex64";
-#else
-	const char* debugdir = "debugx64";
-#endif
-
 #endif
 
 	if (game_library)
 		Com_Error(ERR_FATAL, "Sys_GetGameAPI without Sys_UnloadingGame");
 
-	// check the current debug directory first for development purposes
-	_getcwd(cwd, sizeof(cwd));
-	Com_sprintf(name, sizeof(name), "%s/%s/%s", cwd, debugdir, gamename);
-	game_library = LoadLibrary(name);
-	if (game_library)
-	{
-		Com_DPrintf("LoadLibrary (%s)\n", name);
-	}
-	else
-	{
-#ifdef DEBUG
-		// check the current directory for other development purposes
-		Com_sprintf(name, sizeof(name), "%s/%s", cwd, gamename);
-		game_library = LoadLibrary(name);
-		if (game_library)
-		{
-			Com_DPrintf("LoadLibrary (%s)\n", name);
-		}
-		else
-#endif
-		{
-			// now run through the search paths
-			path = NULL;
-			while (1)
-			{
-				path = FS_NextPath(path);
-				if (!path)
-					return NULL;		// couldn't find one anywhere
-				Com_sprintf(name, sizeof(name), "%s/%s", path, gamename);
-				game_library = LoadLibrary(name);
-				if (game_library)
-				{
-					Com_DPrintf("LoadLibrary (%s)\n", name);
-					break;
-				}
-			}
-		}
-	}
+	// now run through the search paths
+	path = NULL;
 
-	GetGameAPI = (void*)GetProcAddress(game_library, "GetGameAPI");
-	if (!GetGameAPI)
+	game_library = Sys_LoadLibrary(gamename);
+
+	if (!game_library)
 	{
-		Sys_UnloadGame();
+		Com_Printf("Failed to load game library %s", gamename);
 		return NULL;
 	}
 
-	return GetGameAPI(parms);
+	game_api_proc_ptr = (void*)GetProcAddress(game_library, GET_GAME_API_PROC);
+	if (!game_api_proc_ptr)
+	{
+		Sys_UnloadGameLibrary();
+		return NULL;
+	}
+
+	return game_api_proc_ptr(parms);
+}
+
+
+/*
+=================
+Sys_UnloadGameLibrary
+=================
+*/
+void Sys_UnloadGameLibrary()
+{
+	if (!FreeLibrary(game_library))
+		Com_Error(ERR_FATAL, "FreeLibrary failed for game library");
+	game_library = NULL;
 }
 
 //=======================================================================

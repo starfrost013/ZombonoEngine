@@ -157,7 +157,7 @@ cvar_t* Cvar_Get(char* var_name, char* var_value, int32_t flags)
 		}
 	}
 
-	var = Z_Malloc(sizeof(*var));
+	var = Memory_ZoneMalloc(sizeof(*var));
 	var->name = CopyString(var_name);
 	var->string = CopyString(var_value);
 	var->modified = true;
@@ -210,7 +210,7 @@ cvar_t* Cvar_Set2(char* var_name, char* value, bool force)
 			{
 				if (strcmp(value, var->latched_string) == 0)
 					return var;
-				Z_Free(var->latched_string);
+				Memory_ZoneFree(var->latched_string);
 			}
 			else
 			{
@@ -218,7 +218,7 @@ cvar_t* Cvar_Set2(char* var_name, char* value, bool force)
 					return var;
 			}
 
-			if (Com_ServerState())
+			if (Com_GetServerState())
 			{
 				Com_Printf("%s will be changed for next game.\n", var_name);
 				var->latched_string = CopyString(value);
@@ -241,7 +241,7 @@ cvar_t* Cvar_Set2(char* var_name, char* value, bool force)
 	{
 		if (var->latched_string)
 		{
-			Z_Free(var->latched_string);
+			Memory_ZoneFree(var->latched_string);
 			var->latched_string = NULL;
 		}
 	}
@@ -254,7 +254,7 @@ cvar_t* Cvar_Set2(char* var_name, char* value, bool force)
 	if (var->flags & CVAR_USERINFO)
 		userinfo_modified = true;	// transmit at next oportunity
 
-	Z_Free(var->string);	// free the old value string
+	Memory_ZoneFree(var->string);	// free the old value string
 
 	var->string = CopyString(value);
 	var->value = strtof(var->string, NULL);
@@ -302,7 +302,7 @@ cvar_t* Cvar_FullSet(char* var_name, char* value, int32_t flags)
 	if (var->flags & CVAR_USERINFO)
 		userinfo_modified = true;	// transmit at next oportunity
 
-	Z_Free(var->string);	// free the old value string
+	Memory_ZoneFree(var->string);	// free the old value string
 
 	var->string = CopyString(value);
 	var->value = strtof(var->string, NULL);
@@ -321,9 +321,9 @@ void Cvar_SetValue(char* var_name, float value)
 	char	val[32];
 
 	if (value == (int32_t)value)
-		Com_sprintf(val, sizeof(val), "%i", (int32_t)value);
+		snprintf(val, sizeof(val), "%i", (int32_t)value);
 	else
-		Com_sprintf(val, sizeof(val), "%f", value);
+		snprintf(val, sizeof(val), "%f", value);
 	Cvar_Set(var_name, val);
 }
 
@@ -344,7 +344,7 @@ void Cvar_GetLatchedVars()
 		if (!var->latched_string)
 			continue;
 
-		Z_Free(var->string);
+		Memory_ZoneFree(var->string);
 		var->string = var->latched_string;
 		var->latched_string = NULL;
 		var->value = strtof(var->string, NULL);
@@ -445,7 +445,7 @@ void Cvar_WriteVariables(char* path)
 	{
 		if (var->flags & CVAR_ARCHIVE)
 		{
-			Com_sprintf(buffer, sizeof(buffer), "set %s \"%s\"\n", var->name, var->string);
+			snprintf(buffer, sizeof(buffer), "set %s \"%s\"\n", var->name, var->string);
 			fprintf(f, "%s", buffer);
 		}
 	}

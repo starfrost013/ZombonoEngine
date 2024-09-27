@@ -118,7 +118,7 @@ void Mod_LoadSpriteModel(model_t* mod, void* buffer)
 	int32_t    i;
 
 	sprin = (dsprite_t*)buffer;
-	sprout = Hunk_Alloc(modfilelen);
+	sprout = Memory_HunkAlloc(modfilelen);
 
 	sprout->ident = LittleInt(sprin->ident);
 	sprout->version = LittleInt(sprin->version);

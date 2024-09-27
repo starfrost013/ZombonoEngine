@@ -125,7 +125,7 @@ void SubdividePolygon(int32_t numverts, float* verts)
 	}
 
 	// add a point in the center to help keep warp valid
-	poly = Hunk_Alloc(sizeof(glpoly_t) + ((numverts - 4) + 2) * VERTEXSIZE * sizeof(float));
+	poly = Memory_HunkAlloc(sizeof(glpoly_t) + ((numverts - 4) + 2) * VERTEXSIZE * sizeof(float));
 	poly->next = warpface->polys;
 	warpface->polys = poly;
 	poly->numverts = numverts + 2;
@@ -618,7 +618,7 @@ void R_SetSky(char* name, float rotate, vec3_t axis)
 		if (gl_skymip->value || skyrotate)
 			gl_picmip->value++;
 
-		Com_sprintf(pathname, sizeof(pathname), "env/%s%s.tga", skyname, suf[i]);
+		snprintf(pathname, sizeof(pathname), "env/%s%s.tga", skyname, suf[i]);
 
 		sky_images[i] = GL_FindImage(pathname, it_sky);
 		if (!sky_images[i])

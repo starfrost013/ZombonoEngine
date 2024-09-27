@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zombono", "src\zombono.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EuphoriaEngine", "src\zombono.vcxproj", "{311C3C36-E612-47A7-B4E8-443ABF32CBA6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{089318CF-012D-4723-BCAC-036EEF68344E} = {089318CF-012D-4723-BCAC-036EEF68344E}
 		{B21C65E1-7AE4-43DD-A648-F8920414B75D} = {B21C65E1-7AE4-43DD-A648-F8920414B75D}
@@ -28,6 +28,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EuphoriaDS", "src\EuphoriaD
 		{B21C65E1-7AE4-43DD-A648-F8920414B75D} = {B21C65E1-7AE4-43DD-A648-F8920414B75D}
 		{FE638112-A5C1-4796-82A7-749622BA1F0F} = {FE638112-A5C1-4796-82A7-749622BA1F0F}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EuphoriaCommon", "src\common\EuphoriaCommon.vcxproj", "{56C97148-D3CF-493B-9AA4-29863AAAFEF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +134,24 @@ Global
 		{DB3F2BF7-08E4-4BCF-B2B6-5DA865CDF3E1}.Release|x64.Build.0 = Release|x64
 		{DB3F2BF7-08E4-4BCF-B2B6-5DA865CDF3E1}.Release|x86.ActiveCfg = Release|Win32
 		{DB3F2BF7-08E4-4BCF-B2B6-5DA865CDF3E1}.Release|x86.Build.0 = Release|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|Any CPU.Build.0 = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|x64.ActiveCfg = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|x64.Build.0 = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|x86.ActiveCfg = Debug|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Debug|x86.Build.0 = Debug|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|Any CPU.ActiveCfg = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|Any CPU.Build.0 = Debug|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|x64.ActiveCfg = Playtest|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|x64.Build.0 = Playtest|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|x86.ActiveCfg = Debug|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Playtest|x86.Build.0 = Debug|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|Any CPU.ActiveCfg = Release|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|Any CPU.Build.0 = Release|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|x64.ActiveCfg = Release|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|x64.Build.0 = Release|x64
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|x86.ActiveCfg = Release|Win32
+		{56C97148-D3CF-493B-9AA4-29863AAAFEF0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

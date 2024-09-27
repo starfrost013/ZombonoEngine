@@ -76,7 +76,7 @@ void CL_RegisterTEntSounds()
 
 	for (i = 0; i < 4; i++)
 	{
-		Com_sprintf(name, sizeof(name), "player/step%i.wav", i + 1);
+		snprintf(name, sizeof(name), "player/step%i.wav", i + 1);
 		cl_sfx_footsteps[i] = S_RegisterSound(name);
 	}
 }

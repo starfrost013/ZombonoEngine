@@ -738,7 +738,7 @@ void Render2D_DrawField(int32_t x, int32_t y, int32_t color, int32_t width, int3
 	Render2D_AddDirtyPoint(x, y);
 	Render2D_AddDirtyPoint(x + width * CHAR_WIDTH + 2, y + 23);
 
-	Com_sprintf(num, sizeof(num), "%i", value);
+	snprintf(num, sizeof(num), "%i", value);
 	l = (int32_t)strlen(num);
 	if (l > width)
 		l = width;
@@ -782,7 +782,7 @@ void Render2D_TouchPics()
 		if (crosshair->value > 3 || crosshair->value < 0)
 			crosshair->value = 3;
 
-		Com_sprintf(crosshair_pic, sizeof(crosshair_pic), "2d/ch%i", (int32_t)(crosshair->value));
+		snprintf(crosshair_pic, sizeof(crosshair_pic), "2d/ch%i", (int32_t)(crosshair->value));
 		re.DrawGetPicSize(&crosshair_width, &crosshair_height, crosshair_pic);
 
 		// remove scaling - it will be applied during draw with proper screen centering

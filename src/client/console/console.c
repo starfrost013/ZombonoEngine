@@ -72,7 +72,7 @@ void Con_ToggleConsole_f()
 		cls.input_dest = key_console;
 
 		if (Cvar_VariableValue("sv_maxclients") == 1
-			&& Com_ServerState())
+			&& Com_GetServerState())
 			Cvar_Set("paused", "1");
 	}
 }
@@ -131,7 +131,7 @@ void Con_Dump_f()
 		return;
 	}
 
-	Com_sprintf(name, sizeof(name), "%s/%s.txt", FS_Gamedir(), Cmd_Argv(1));
+	snprintf(name, sizeof(name), "%s/%s.txt", FS_Gamedir(), Cmd_Argv(1));
 
 	Com_Printf("Dumped console text to %s.\n", name);
 	FS_CreatePath(name);
@@ -291,7 +291,7 @@ void Con_Init()
 
 	Com_Printf("Console initialized.\n");
 
-	Com_Printf("Euphoria Retro Game Engine\n");
+	Com_Printf("Euphoria\n");
 	Com_Printf("© 2023 - 2024 starfrost.\n");
 	Com_Printf("Version %s\n", ENGINE_VERSION);
 
@@ -605,7 +605,7 @@ void Con_DrawConsole(float frac)
 
 	cvar_t* gameversion = Cvar_Get("gameversion", "***NOT LOADED***", 0);
 
-	Com_sprintf(version, sizeof(version), "^2Euphoria v%s, %s version %s", ENGINE_VERSION, gameinfo.name, gameversion->string);
+	snprintf(version, sizeof(version), "^2Euphoria v%s, %s version %s", ENGINE_VERSION, gameinfo.name, gameversion->string);
 
 	Text_GetSize(cl_console_font->string, &size_x, &size_y, version);
 	Text_Draw(cl_console_font->string, r_width->value - size_x, lines - 12 * vid_hudscale->value, version);

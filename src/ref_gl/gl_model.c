@@ -72,7 +72,7 @@ void Mod_LoadAliasModel(model_t* mod, void* buffer)
 		ri.Sys_Error(ERR_DROP, "%s has wrong version number (%i should be %i)",
 			mod->name, version, ALIAS_VERSION);
 
-	pheader = Hunk_Alloc(LittleInt(pinmodel->ofs_end));
+	pheader = Memory_HunkAlloc(LittleInt(pinmodel->ofs_end));
 
 	// byte swap the header fields and sanity check
 	for (i = 0; i < sizeof(dmdl_t) / 4; i++)

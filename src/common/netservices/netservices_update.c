@@ -270,10 +270,10 @@ void Netservices_UpdateInfoJsonComplete()
 	// Run a check on the version number.
 
 	// Only build has to be explicitly higher than the current version. Major, minor or revision can be larger
-	if ((update_info.version.major >= ZOMBONO_VERSION_MAJOR
-		|| (update_info.version.minor >= ZOMBONO_VERSION_MINOR)
-		|| (update_info.version.revision >= ZOMBONO_VERSION_REVISION))
-		&& update_info.version.build > ZOMBONO_VERSION_BUILD)
+	if ((update_info.version.major >= ENGINE_VERSION_MAJOR
+		|| (update_info.version.minor >= ENGINE_VERSION_MINOR)
+		|| (update_info.version.revision >= ENGINE_VERSION_REVISION))
+		&& update_info.version.build > ENGINE_VERSION_BUILD)
 	{
 		// make sure the update has been released yet,
 		// this gives us time for testing jic we fuck it up and allows us to rollout at specific times

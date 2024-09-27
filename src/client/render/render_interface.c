@@ -248,7 +248,7 @@ void Vid_CheckChanges()
 		cl.refresh_prepped = false;
 		cls.disable_screen = true;
 
-		Com_sprintf(name, sizeof(name), "ref_%s.dll", vid_ref->string);
+		snprintf(name, sizeof(name), "ref_%s.dll", vid_ref->string);
 		if (!Vid_LoadRefresh(name))
 		{
 			Com_Error(ERR_FATAL, "Failed to initialise renderer. Renderer name: %s", vid_ref->string);

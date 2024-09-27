@@ -72,7 +72,7 @@ bool Font_Init()
 	fseek(font_list_stream, 0, SEEK_END);
 
 	// msvc does not support VLAs
-	file = Z_TagMalloc(file_size, TAG_TEXT_ENGINE);
+	file = Memory_ZoneMallocTagged(file_size, TAG_TEXT_ENGINE);
 
 	assert(file != NULL);
 
@@ -136,7 +136,7 @@ bool Font_Init()
 
 	// close it
 	fclose(font_list_stream); 
-	Z_Free(file);
+	Memory_ZoneFree(file);
 
 	// check if the system font (font used by in game text) was loaded properly.
 	// Sys_Error if it failed

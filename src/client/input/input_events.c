@@ -609,13 +609,13 @@ void Key_SetBinding(int32_t keynum, char* binding)
 	// free old bindings
 	if (keybindings[keynum])
 	{
-		Z_Free(keybindings[keynum]);
+		Memory_ZoneFree(keybindings[keynum]);
 		keybindings[keynum] = NULL;
 	}
 
 	// allocate memory for new binding
 	l = (int32_t)strlen(binding);
-	new = Z_Malloc(l + 1);
+	new = Memory_ZoneMalloc(l + 1);
 	strcpy(new, binding);
 	new[l] = 0;
 	keybindings[keynum] = new;
@@ -1136,7 +1136,7 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 
 		if (kb && kb[0] == '+')
 		{
-			Com_sprintf(cmd, sizeof(cmd), "-%s %i %i\n", kb + 1, key, time);
+			snprintf(cmd, sizeof(cmd), "-%s %i %i\n", kb + 1, key, time);
 			Cbuf_AddText(cmd);
 		}
 
@@ -1145,7 +1145,7 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 			kb = keybindings[keyshift[key]];
 			if (kb && kb[0] == '+')
 			{
-				Com_sprintf(cmd, sizeof(cmd), "-%s %i %i\n", kb + 1, key, time);
+				snprintf(cmd, sizeof(cmd), "-%s %i %i\n", kb + 1, key, time);
 				Cbuf_AddText(cmd);
 			}
 		}
@@ -1165,7 +1165,7 @@ void Input_Event(int32_t key, int32_t mods, bool down, uint32_t time, int32_t x,
 		{
 			if (kb[0] == '+')
 			{	// button commands add keynum and time as a parm
-				Com_sprintf(cmd, sizeof(cmd), "%s %i %i\n", kb, key, time);
+				snprintf(cmd, sizeof(cmd), "%s %i %i\n", kb, key, time);
 				Cbuf_AddText(cmd);
 			}
 			else
@@ -1205,7 +1205,7 @@ Key_ClearStates
 */
 void Key_ClearStates()
 {
-	int32_t 	i;
+	int32_t  i;
 
 	anykeydown = false;
 

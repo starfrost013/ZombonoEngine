@@ -172,7 +172,7 @@ void SV_Multicast (vec3_t origin, multicast_t to)
 
 	if (to != MULTICAST_ALL_R && to != MULTICAST_ALL)
 	{
-		leafnum = CM_PointLeafnum (origin);
+		leafnum = Map_PointLeafnum (origin);
 		area1 = Map_LeafArea (leafnum);
 	}
 	else
@@ -197,7 +197,7 @@ void SV_Multicast (vec3_t origin, multicast_t to)
 	case MULTICAST_PHS_R:
 		reliable = true;	// intentional fallthrough
 	case MULTICAST_PHS:
-		leafnum = CM_PointLeafnum (origin);
+		leafnum = Map_PointLeafnum (origin);
 		cluster = Map_GetLeafCluster (leafnum);
 		mask = Map_ClusterPHS (cluster);
 		break;
@@ -205,7 +205,7 @@ void SV_Multicast (vec3_t origin, multicast_t to)
 	case MULTICAST_PVS_R:
 		reliable = true;	// intentional fallthrough
 	case MULTICAST_PVS:
-		leafnum = CM_PointLeafnum (origin);
+		leafnum = Map_PointLeafnum (origin);
 		cluster = Map_GetLeafCluster (leafnum);
 		mask = Map_ClusterPVS (cluster);
 		break;
@@ -225,7 +225,7 @@ void SV_Multicast (vec3_t origin, multicast_t to)
 
 		if (mask)
 		{
-			leafnum = CM_PointLeafnum (client->edict->s.origin);
+			leafnum = Map_PointLeafnum (client->edict->s.origin);
 			cluster = Map_GetLeafCluster (leafnum);
 			area2 = Map_LeafArea (leafnum);
 			if (!Map_AreasConnected (area1, area2))

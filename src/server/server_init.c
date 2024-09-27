@@ -129,7 +129,7 @@ void SV_CheckForSavegame()
 	if (Cvar_VariableValue("gamemode"))
 		return;
 
-	Com_sprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
+	snprintf(name, sizeof(name), "%s/save/current/%s.sav", FS_Gamedir(), sv.name);
 	f = fopen(name, "rb");
 	if (!f)
 		return;		// no savegame
@@ -252,11 +252,11 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 	}
 	else
 	{
-		Com_sprintf(sv.configstrings[CS_MODELS + 1], sizeof(sv.configstrings[CS_MODELS + 1]),
+		snprintf(sv.configstrings[CS_MODELS + 1], sizeof(sv.configstrings[CS_MODELS + 1]),
 			"maps/%s.bsp", server);
 		sv.models[1] = Map_Load(sv.configstrings[CS_MODELS + 1], false, &checksum);
 	}
-	Com_sprintf(sv.configstrings[CS_MAPCHECKSUM], sizeof(sv.configstrings[CS_MAPCHECKSUM]),
+	snprintf(sv.configstrings[CS_MAPCHECKSUM], sizeof(sv.configstrings[CS_MAPCHECKSUM]),
 		"%i", checksum);
 
 	//
@@ -266,7 +266,7 @@ void SV_SpawnServer(char* server, char* spawnpoint, server_state_t serverstate, 
 
 	for (i = 1; i < Map_NumInlineModels(); i++)
 	{
-		Com_sprintf(sv.configstrings[CS_MODELS + 1 + i], sizeof(sv.configstrings[CS_MODELS + 1 + i]),
+		snprintf(sv.configstrings[CS_MODELS + 1 + i], sizeof(sv.configstrings[CS_MODELS + 1 + i]),
 			"*%i", i);
 		sv.models[i + 1] = Map_LoadInlineModel(sv.configstrings[CS_MODELS + 1 + i]);
 	}
@@ -354,20 +354,20 @@ void SV_InitGame()
 	*/
 
 	svs.spawncount = rand();
-	svs.clients = Z_Malloc(sizeof(client_t) * sv_maxclients->value);
+	svs.clients = Memory_ZoneMalloc(sizeof(client_t) * sv_maxclients->value);
 	svs.num_client_entities = sv_maxclients->value * UPDATE_BACKUP * 64;
-	svs.client_entities = Z_Malloc(sizeof(entity_state_t) * svs.num_client_entities);
+	svs.client_entities = Memory_ZoneMalloc(sizeof(entity_state_t) * svs.num_client_entities);
 
 	// init network stuff
 	Net_Config((sv_maxclients->value > 1));
 
 	// heartbeats will always be sent to the id master
 	svs.last_heartbeat = -99999;		// send immediately
-	Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_base, PORT_MASTER);
+	snprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_base, PORT_MASTER);
 
 	if (!Net_StringToAdr(zombono_master, &master_adr[0]))
 	{
-		Com_sprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_alternative, PORT_MASTER);
+		snprintf(zombono_master, sizeof(zombono_master), "%s:%i", master_alternative, PORT_MASTER);
 
 		if (!Net_StringToAdr(zombono_master, &master_adr[0]))
 		{

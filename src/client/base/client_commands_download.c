@@ -47,9 +47,9 @@ extern cvar_t* allow_download_maps;
 void CL_DownloadFileName(char* dest, int32_t destlen, char* fn)
 {
 	if (strncmp(fn, "players", 7) == 0)
-		Com_sprintf(dest, destlen, "%s/%s", game_asset_path->string, fn);
+		snprintf(dest, destlen, "%s/%s", game_asset_path->string, fn);
 	else
-		Com_sprintf(dest, destlen, "%s/%s", FS_Gamedir(), fn);
+		snprintf(dest, destlen, "%s/%s", FS_Gamedir(), fn);
 }
 
 /*
@@ -217,7 +217,7 @@ void CL_Download_f()
 		return;
 	}
 
-	Com_sprintf(filename, sizeof(filename), "%s", Cmd_Argv(1));
+	snprintf(filename, sizeof(filename), "%s", Cmd_Argv(1));
 
 	if (strstr(filename, ".."))
 	{
@@ -362,7 +362,7 @@ void CL_RequestNextDownload()
 					continue;
 				}
 
-				Com_sprintf(fn, sizeof(fn), "sound/%s", cl.configstrings[precache_check++]);
+				snprintf(fn, sizeof(fn), "sound/%s", cl.configstrings[precache_check++]);
 
 				if (!CL_CheckOrDownloadFile(fn))
 					return; // started a download
@@ -380,7 +380,7 @@ void CL_RequestNextDownload()
 		while (precache_check < CS_IMAGES + MAX_IMAGES &&
 			cl.configstrings[precache_check][0])
 		{
-			Com_sprintf(fn, sizeof(fn), "%s.tga", cl.configstrings[precache_check++]);
+			snprintf(fn, sizeof(fn), "%s.tga", cl.configstrings[precache_check++]);
 			if (!CL_CheckOrDownloadFile(fn))
 				return; // started a download
 		}
@@ -433,7 +433,7 @@ void CL_RequestNextDownload()
 				switch (n)
 				{
 				case 0: // model
-					Com_sprintf(fn, sizeof(fn), "players/%s/tris.md2", model);
+					snprintf(fn, sizeof(fn), "players/%s/tris.md2", model);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 1;
 						return; // started a download
@@ -442,7 +442,7 @@ void CL_RequestNextDownload()
 					/*FALL THROUGH*/
 
 				case 1: // weapon model
-					Com_sprintf(fn, sizeof(fn), "players/%s/weapon.md2", model);
+					snprintf(fn, sizeof(fn), "players/%s/weapon.md2", model);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 2;
 						return; // started a download
@@ -451,7 +451,7 @@ void CL_RequestNextDownload()
 					/*FALL THROUGH*/
 
 				case 2: // weapon skin
-					Com_sprintf(fn, sizeof(fn), "players/%s/weapon.tga", model);
+					snprintf(fn, sizeof(fn), "players/%s/weapon.tga", model);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 3;
 						return; // started a download
@@ -460,7 +460,7 @@ void CL_RequestNextDownload()
 					/*FALL THROUGH*/
 
 				case 3: // skin
-					Com_sprintf(fn, sizeof(fn), "players/%s/%s.tga", model, skin);
+					snprintf(fn, sizeof(fn), "players/%s/%s.tga", model, skin);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 4;
 						return; // started a download
@@ -469,7 +469,7 @@ void CL_RequestNextDownload()
 					/*FALL THROUGH*/
 
 				case 4: // skin_i
-					Com_sprintf(fn, sizeof(fn), "players/%s/%s_i.tga", model, skin);
+					snprintf(fn, sizeof(fn), "players/%s/%s_i.tga", model, skin);
 					if (!CL_CheckOrDownloadFile(fn)) {
 						precache_check = CS_PLAYERSKINS + i * PLAYER_MULT + 5;
 						return; // started a download
@@ -506,10 +506,10 @@ void CL_RequestNextDownload()
 				int32_t n = precache_check++ - ENV_CNT - 1;
 
 				if (n & 1)
-					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga",
+					snprintf(fn, sizeof(fn), "env/%s%s.tga",
 						cl.configstrings[CS_SKY], env_suf[n / 2]);
 				else
-					Com_sprintf(fn, sizeof(fn), "env/%s%s.tga",
+					snprintf(fn, sizeof(fn), "env/%s%s.tga",
 						cl.configstrings[CS_SKY], env_suf[n / 2]);
 				if (!CL_CheckOrDownloadFile(fn))
 					return; // started a download

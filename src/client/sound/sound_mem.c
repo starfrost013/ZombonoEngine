@@ -124,7 +124,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	if (name[0] == '#')
 		strcpy(namebuffer, &name[1]);
 	else
-		Com_sprintf (namebuffer, sizeof(namebuffer), "sound/%s", name);
+		snprintf (namebuffer, sizeof(namebuffer), "sound/%s", name);
 
 //	Com_Printf ("loading %s\n",namebuffer);
 
@@ -149,7 +149,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 
 	len = len * info.width * info.channels;
 
-	sc = s->cache = Z_Malloc (len + sizeof(sfxcache_t));
+	sc = s->cache = Memory_ZoneMalloc (len + sizeof(sfxcache_t));
 	if (!sc)
 	{
 		FS_FreeFile (data);

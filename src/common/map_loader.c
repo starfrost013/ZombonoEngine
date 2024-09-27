@@ -828,7 +828,7 @@ int32_t Map_PointLeafnum_r (vec3_t p, int32_t num)
 	return -1 - num;
 }
 
-int32_t CM_PointLeafnum (vec3_t p)
+int32_t Map_PointLeafnum (vec3_t p)
 {
 	if (!numplanes)
 		return 0;		// sound may call this without map loaded

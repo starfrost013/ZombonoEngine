@@ -121,7 +121,7 @@ CL_Pause_f
 void CL_Pause_f()
 {
 	// never pause in multiplayer
-	if (Cvar_VariableValue("sv_maxclients") > 1 || !Com_ServerState())
+	if (Cvar_VariableValue("sv_maxclients") > 1 || !Com_GetServerState())
 	{
 		Cvar_SetValue("paused", 0);
 		return;
@@ -189,7 +189,7 @@ void CL_PingServers_f()
 	// send a packet to each address book entry
 	for (i = 0; i < 16; i++)
 	{
-		Com_sprintf(name, sizeof(name), "adr%i", i);
+		snprintf(name, sizeof(name), "adr%i", i);
 		adrstring = Cvar_VariableString(name);
 		if (!adrstring || !adrstring[0])
 			continue;
@@ -306,7 +306,7 @@ void CL_Connect_f()
 		return;
 	}
 
-	if (Com_ServerState())
+	if (Com_GetServerState())
 	{	// if running a local server, kill it and reissue
 		SV_Shutdown(va("Server quit\n", msg), false);
 		SV_ShutdownGameProgs();

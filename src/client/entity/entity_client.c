@@ -636,19 +636,19 @@ struct model_s* S_RegisterPlayerModel(entity_state_t* ent, char* base)
 	if (!model[0])
 		strcpy(model, "male");
 
-	Com_sprintf(buffer, sizeof(buffer), "players/%s/%s", model, base + 1);
+	snprintf(buffer, sizeof(buffer), "players/%s/%s", model, base + 1);
 	mdl = re.RegisterModel(buffer);
 	if (!mdl) {
 		// not found, try default weapon model
-		Com_sprintf(buffer, sizeof(buffer), "players/%s/weapon.md2", model);
+		snprintf(buffer, sizeof(buffer), "players/%s/weapon.md2", model);
 		mdl = re.RegisterModel(buffer);
 		if (!mdl) {
 			// no, revert to the male model
-			Com_sprintf(buffer, sizeof(buffer), "players/%s/%s", "male", base + 1);
+			snprintf(buffer, sizeof(buffer), "players/%s/%s", "male", base + 1);
 			mdl = re.RegisterModel(buffer);
 			if (!mdl) {
 				// last try, default male weapon.md2
-				Com_sprintf(buffer, sizeof(buffer), "players/male/weapon.md2");
+				snprintf(buffer, sizeof(buffer), "players/male/weapon.md2");
 				mdl = re.RegisterModel(buffer);
 			}
 		}

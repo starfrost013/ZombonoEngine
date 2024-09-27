@@ -873,9 +873,9 @@ void SV_Shutdown(char* finalmsg, bool reconnect)
 
 	// free server static data
 	if (svs.clients)
-		Z_Free(svs.clients);
+		Memory_ZoneFree(svs.clients);
 	if (svs.client_entities)
-		Z_Free(svs.client_entities);
+		Memory_ZoneFree(svs.client_entities);
 	if (svs.demofile)
 		fclose(svs.demofile);
 	memset(&svs, 0, sizeof(svs));

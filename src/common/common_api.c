@@ -1,5 +1,5 @@
 /*
-Copyright (C) 1997-2001 Id Software, Inc.
+Euphoria Game Engine
 Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
@@ -15,15 +15,20 @@ See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// If we need this string helper macro anywhere else we can move it
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+#pragma once
+#include "common_api.h"
 
-#define ENGINE_VERSION_MAJOR 0
-#define ENGINE_VERSION_MINOR 2
-#define ENGINE_VERSION_REVISION 0
-#define ENGINE_VERSION_BUILD 888
+// common_api.c: Implements initialisation and shutdown for EuphoriaCommon.dll
+// September 24, 2024
+
+common_api_export_t CommonAPI_Init()
+{
+	Com_Printf("Initialising Common API version %d", COMMON_API_VERSION);
+
+	common.api_version = COMMON_API_VERSION;
+	common.Cmd_ForwardToServer = Cmd_ForwardToServer;
+}
