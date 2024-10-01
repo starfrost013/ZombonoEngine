@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #pragma once
-#include "common.h"
+#include <common/common.h>
 
 // common_api.h: Provides common API stuff for initing euphoriacommon.dll - SHARED across client, server, gamedll
 // September 21, 2024
@@ -37,7 +37,6 @@ typedef struct common_api_export_s
 	void		(*EuphoriaCommon_Shutdown);										// Shut down the common API
 		
 	// Command
-	void		(*Cmd_ForwardToServer);						
 	int32_t		(*Cmd_Argc)();
 	char*		(*Cmd_Argv)(int32_t n);
 	char*		(*Cmd_Args)();	// concatenation of all argv >= 1
@@ -68,11 +67,9 @@ typedef struct common_api_export_s
 	cvar_t*		(*Cvar_ForceSet)(char* var_name, char* value);					// Force-set a cvar
 	cvar_t*		(*Cvar_FullSet)(char* var_name, char* value, int32_t flags);	// Set a cvar including flags
 
-	// Gameinfo
-	gameinfo_t	(*Gameinfo_Get)();												// Get the game information
+	// Gameinfo is handled with cvars
 
 	// JSON
-	void		(*JSON_Init);													// Initialise the JSON API.
 	void		(*JSON_OpenStream)(JSON_stream* json, FILE* stream);			// Open a JSON stream
 	enum JSON_type (*JSON_Next)(JSON_stream* json);								// Get the next JSON object
 	const char* (*JSON_GetError)(JSON_stream* json);							// Get the most recent error from a JSON stream
@@ -179,9 +176,24 @@ typedef struct common_api_export_s
 
 	// Miscellaneous crap
 	void		(*Info_Print)(char* s);
+
+	int16_t		(*BigShort) (int16_t l);
+	int16_t		(*LittleShort) (int16_t l);
+	uint16_t	(*BigShortUnsigned) (int16_t l);
+	uint16_t	(*LittleShortUnsigned) (int16_t l);
+	int32_t		(*BigInt) (int32_t l);
+	int32_t		(*LittleInt) (int32_t l);
+	uint32_t	(*BigIntUnsigned) (int32_t l);
+	uint32_t	(*LittleIntUnsigned) (int32_t l);
+	float		(*BigFloat) (float l);
+	float		(*LittleFloat) (float l);
+
 	// System-specific Services
 
 } common_api_export_t;
 
 // the instance of the common_api_export
 extern common_api_export_t common;
+
+void CommonAPI_Init();
+common_api_export_t CommonAPI_Get();

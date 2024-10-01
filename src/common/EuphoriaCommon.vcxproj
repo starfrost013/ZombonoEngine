@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -100,12 +100,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_common\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_common\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\obj_common\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,15 +158,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/src</AdditionalIncludeDirectories>
-      <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);winmm.lib;wldap32.lib;crypt32.lib;Ws2_32.lib;wsock32.lib;Normaliz.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\src\lib\win64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -172,10 +178,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;RELEASE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;RELEASE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/src</AdditionalIncludeDirectories>
-      <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -183,6 +190,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);winmm.lib;wldap32.lib;crypt32.lib;Ws2_32.lib;wsock32.lib;Normaliz.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\src\lib\win64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Playtest|x64'">
@@ -191,10 +200,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;PLAYTEST;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;PLAYTEST;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/src</AdditionalIncludeDirectories>
-      <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -202,10 +212,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);winmm.lib;wldap32.lib;crypt32.lib;Ws2_32.lib;wsock32.lib;Normaliz.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\src\lib\win64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="common_api.h" />
+    <ClInclude Include="include\common_api.h" />
     <ClInclude Include="curl\curl.h" />
     <ClInclude Include="curl\curlver.h" />
     <ClInclude Include="curl\easy.h" />
@@ -222,6 +234,7 @@
     <ClInclude Include="formats\md2.h" />
     <ClInclude Include="formats\pak.h" />
     <ClInclude Include="formats\sp2.h" />
+    <ClInclude Include="mathlib.h" />
     <ClInclude Include="netservices\netservices.h" />
     <ClInclude Include="pdjson.h" />
     <ClInclude Include="common.h" />
@@ -234,10 +247,11 @@
     <ClCompile Include="common_api.c" />
     <ClCompile Include="crc.c" />
     <ClCompile Include="cvar.c" />
-    <ClCompile Include="files.c" />
+    <ClCompile Include="filesystem.c" />
     <ClCompile Include="gameinfo.c" />
     <ClCompile Include="localisation.c" />
     <ClCompile Include="map_loader.c" />
+    <ClCompile Include="mathlib.c" />
     <ClCompile Include="md4.c" />
     <ClCompile Include="netservices\netservices_base.c" />
     <ClCompile Include="netservices\netservices_masterserver.c" />
@@ -247,6 +261,7 @@
     <ClCompile Include="pmove.c" />
     <ClCompile Include="cpuid.c" />
     <ClCompile Include="netservices\netservices_account.c" />
+    <ClCompile Include="swap.c" />
     <ClInclude Include="..\..\game\src\q_shared.c" />
   </ItemGroup>
   <ItemGroup>

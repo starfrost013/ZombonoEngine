@@ -1,0 +1,3 @@
+EXPORTS
+	ClientAPI_Get
+	ServerAPI_Get

@@ -27,7 +27,7 @@
     <ClCompile Include="cvar.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="files.c">
+    <ClCompile Include="filesystem.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gameinfo.c">
@@ -67,6 +67,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="common_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mathlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="swap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,7 +137,7 @@
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common_api.h">
+    <ClInclude Include="include\common_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\src\q_shared.h">
@@ -139,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\src\q_shared.c">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mathlib.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

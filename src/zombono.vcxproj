@@ -83,7 +83,7 @@
     <ClCompile Include="common\common.c" />
     <ClCompile Include="common\crc.c" />
     <ClCompile Include="common\cvar.c" />
-    <ClCompile Include="common\files.c" />
+    <ClCompile Include="common\filesystem.c" />
     <ClCompile Include="common\md4.c" />
     <ClCompile Include="common\netservices\netservices_base.c" />
     <ClCompile Include="common\netservices\netservices_masterserver.c" />
@@ -91,6 +91,12 @@
     <ClCompile Include="common\net_chan.c" />
     <ClCompile Include="common\pdjson.c" />
     <ClCompile Include="common\pmove.c" />
+    <ClCompile Include="sys_api.c" />
+    <ClCompile Include="platform\win32\win32_conproc.c" />
+    <ClCompile Include="platform\win32\win32_net_winsock.c" />
+    <ClCompile Include="platform\win32\win32_alloc.c" />
+    <ClCompile Include="platform\win32\win32_main.c" />
+    <ClCompile Include="platform\win32\win32_sound.c" />
     <ClCompile Include="server\server_console_commands.c" />
     <ClCompile Include="server\server_entities.c" />
     <ClCompile Include="server\server_game.c" />
@@ -101,16 +107,9 @@
     <ClCompile Include="server\server_user.c" />
     <ClCompile Include="server\server_world.c" />
     <ClCompile Include="server\server_hack_protection.c" />
-    <ClCompile Include="win32\conproc.c" />
-    <ClCompile Include="win32\net_wins.c" />
-    <ClCompile Include="win32\q_shwin.c" />
-    <ClCompile Include="win32\snd_win.c" />
-    <ClCompile Include="win32\sys_win.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="win32\Zombono.rc" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="client\client_api.h" />
     <ClInclude Include="client\include\anorms.h" />
     <ClInclude Include="client\client.h" />
     <ClInclude Include="client\include\console.h" />
@@ -147,13 +146,21 @@
     <ClInclude Include="common\common.h" />
     <ClInclude Include="common\formats\sp2.h" />
     <ClInclude Include="common\version.h" />
+    <ClInclude Include="platform\win32\win32_conproc.h" />
+    <ClInclude Include="platform\win32\resource.h" />
+    <ClInclude Include="platform\win32\win32_api.h" />
     <ClInclude Include="server\server.h" />
-    <ClInclude Include="win32\conproc.h" />
-    <ClInclude Include="win32\resource.h" />
-    <ClInclude Include="win32\winquake.h" />
+    <ClInclude Include="server\server_api.h" />
+    <ClInclude Include="sys_api.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="win32\zombono.ico" />
+    <Image Include="platform\win32\zombono.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="platform\win32\Zombono.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EuphoriaEngine.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{311C3C36-E612-47A7-B4E8-443ABF32CBA6}</ProjectGuid>

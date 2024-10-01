@@ -111,8 +111,8 @@ bool			portalopen[MAX_MAP_AREAPORTALS];
 
 cvar_t*			map_noareas;
 
-void	Map_InitBoxHull ();
-void	Map_FloodAreaConnections ();
+void Map_InitBoxHull();
+void Map_FloodAreaConnections();
 
 
 int32_t 	c_pointcontents;
@@ -1442,7 +1442,7 @@ rotating entities
 //#endif
 
 
-trace_t		Map_TransformedBoxTrace (vec3_t start, vec3_t end,
+trace_t	 Map_TransformedBoxTrace (vec3_t start, vec3_t end,
 						  vec3_t mins, vec3_t maxs,
 						  int32_t headnode, int32_t brushmask,
 						  vec3_t origin, vec3_t angles)
@@ -1565,7 +1565,7 @@ uint8_t	pvsrow[MAX_MAP_LEAFS/8];
 
 uint8_t	phsrow[MAX_MAP_LEAFS/8];
 
-uint8_t* Map_ClusterPVS (int32_t cluster)
+uint8_t* Map_ClusterPVS(int32_t cluster)
 {
 	if (cluster == -1)
 		memset (pvsrow, 0, (numclusters+7)>>3);
@@ -1574,7 +1574,7 @@ uint8_t* Map_ClusterPVS (int32_t cluster)
 	return pvsrow;
 }
 
-uint8_t* Map_ClusterPHS (int32_t cluster)
+uint8_t* Map_ClusterPHS(int32_t cluster)
 {
 	if (cluster == -1)
 		memset (phsrow, 0, (numclusters+7)>>3);
@@ -1583,6 +1583,10 @@ uint8_t* Map_ClusterPHS (int32_t cluster)
 	return phsrow;
 }
 
+char* Map_GetCurrentName()
+{
+	return map_name;
+}
 
 /*
 ===============================================================================

@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <common/formats/sp2.h>
 #include <../game/src/q_shared.h>
 #include "netservices/netservices.h" // hmm
+#include "mathlib.h"
 #include "pdjson.h"
 #include "version.h"
 
@@ -160,6 +161,23 @@ void CRC_Init(uint16_t* crcvalue);
 void CRC_ProcessByte(uint16_t* crcvalue, uint8_t data);
 uint16_t CRC_Value(uint16_t crcvalue);
 uint16_t CRC_Block(uint8_t* start, int32_t count);
+
+// portable case insensitive compare
+int32_t Q_stricmp(char* s1, char* s2);
+int32_t Q_strcasecmp(char* s1, char* s2);
+int32_t Q_strncasecmp(char* s1, char* s2, int32_t n);
+
+
+//=============================================
+
+char* COM_SkipPath(char* pathname);
+void COM_StripExtension(char* in, char* out);
+void COM_FileBase(char* in, char* out);
+void COM_FilePath(char* in, char* out);
+void COM_DefaultExtension(char* path, char* extension);
+
+char* COM_Parse(char** data_p);
+// data is an in/out parm, returns a parsed out token
 
 /*
 ==============================================================
@@ -685,6 +703,7 @@ cmodel_t*	Map_LoadInlineModel(char* name);	// *1, *2, etc
 int32_t 	Map_GetNumClusters();
 int32_t 	Map_NumInlineModels();
 char*		Map_GetEntityString();
+char*		Map_GetCurrentName();
 
 // creates a clipping hull for an arbitrary box
 int32_t 	Map_HeadnodeForBox(vec3_t mins, vec3_t maxs);

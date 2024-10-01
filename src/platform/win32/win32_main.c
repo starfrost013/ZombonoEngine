@@ -299,7 +299,7 @@ Print text to the dedicated console
 */
 void Sys_ConsoleOutput(char* string)
 {
-	int32_t 	dummy;
+	int32_t dummy;
 	char	text[256];
 
 	if (!dedicated || !dedicated->value)

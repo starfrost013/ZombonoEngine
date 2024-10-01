@@ -1,2 +1,3 @@
 EXPORTS
-	CommonAPI_Init
+	CommonAPI_Get
+	SysAPI_Get

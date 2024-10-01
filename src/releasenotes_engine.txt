@@ -10,13 +10,17 @@ NEW FEATURES:
 	* Added a "startserver" command
 		* It takes the form startserver map [gamemode] [maxplayers] [fraglimit] [timelimit] [hostname]
 	* Replaced com_sprintf with snprintf
+	* Reset the protocol version to 1 
 
 BUG FIXES:
 	* Fixed possible copy of invalid Cmd_Argc(1) to wildcard parameter of "dir" command
 
 REMOVALS:
-OTHER CHANGES:
 
+OTHER CHANGES:
+	* Renamed "hunk" and "Z_" (zone) functions to "Memory_Hunk" and "Memory_Zone" respectively
+	* Renamed z_stats function to memory_zonestats
+	
 
 Version 0.1.0-pre2
 August 24, 2024

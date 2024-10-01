@@ -1003,6 +1003,56 @@ char* CopyString(char* in)
 	return out;
 }
 
+/*
+============================================================================
+
+					LIBRARY REPLACEMENT FUNCTIONS
+
+============================================================================
+*/
+
+// FIXME: replace all Q_stricmp with Q_strcasecmp
+int32_t Q_stricmp(char* s1, char* s2)
+{
+#if defined(WIN32)
+	return _stricmp(s1, s2);
+#else
+	return strcasecmp(s1, s2);
+#endif
+}
+
+
+int32_t Q_strncasecmp(char* s1, char* s2, int32_t n)
+{
+	int32_t 	c1, c2;
+
+	do
+	{
+		c1 = *s1++;
+		c2 = *s2++;
+
+		if (!n--)
+			return 0;		// strings are equal until end point
+
+		if (c1 != c2)
+		{
+			if (c1 >= 'a' && c1 <= 'z')
+				c1 -= ('a' - 'A');
+			if (c2 >= 'a' && c2 <= 'z')
+				c2 -= ('a' - 'A');
+			if (c1 != c2)
+				return -1;		// strings not equal
+		}
+	} while (c1);
+
+	return 0;		// strings are equal
+}
+
+int32_t Q_strcasecmp(char* s1, char* s2)
+{
+	return Q_strncasecmp(s1, s2, 99999);
+}
+
 void Info_Print(char* s)
 {
 	char	key[512] = { 0 };
@@ -1072,6 +1122,28 @@ int32_t  z_count;
 int32_t	 z_bytes;
 
 /*
+============
+va
+
+does a varargs printf into a temp buffer, so I don't need to have
+varargs versions of all text functions.
+FIXME: make this buffer size safe someday
+============
+*/
+char* va(char* format, ...)
+{
+	va_list		argptr;
+	static char	string[1024];
+
+	va_start(argptr, format);
+	vsnprintf(string, 1024, format, argptr);
+	va_end(argptr);
+
+	return string;
+}
+
+
+/*
 ========================
 Z_Free
 ========================
@@ -1099,7 +1171,7 @@ void Memory_ZoneFree(void* ptr)
 Z_Stats_f
 ========================
 */
-void Z_Stats_f()
+void Memory_ZoneStats_f()
 {
 	Com_Printf("%i bytes in %i blocks\n", z_bytes, z_count);
 }
@@ -1356,7 +1428,7 @@ void Common_Init(int32_t argc, char** argv)
 	//
 	// init commands and vars
 	//
-	Cmd_AddCommand("z_stats", Z_Stats_f);
+	Cmd_AddCommand("memory_zonestats", Memory_ZoneStats_f);
 	Cmd_AddCommand("error", Com_Error_f);
 
 	profile_all = Cvar_Get("profile_all", "0", 0);

@@ -57,9 +57,6 @@
     <ClCompile Include="client\sound\sound_mix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\q_shared.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="common\pmove.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,7 +75,7 @@
     <ClCompile Include="common\cvar.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\files.c">
+    <ClCompile Include="common\filesystem.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="common\md4.c">
@@ -111,21 +108,6 @@
     <ClCompile Include="server\server_user.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32\conproc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32\net_wins.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32\q_shwin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32\snd_win.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32\sys_win.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\sound\sound_miniaudio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -154,9 +136,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="common\netservices\netservices_base.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game\gameplay\game_monster_flash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\loadout\loadout.c">
@@ -252,11 +231,30 @@
     <ClCompile Include="client\ui\settings\ui_settings_game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="win32\Zombono.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClCompile Include="..\game\src\gameplay\game_monster_flash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\game\src\q_shared.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\win32\win32_sound.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\win32\win32_conproc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\win32\win32_net_winsock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\win32\win32_alloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\win32\win32_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sys_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client\include\sound.h">
@@ -289,9 +287,6 @@
     <ClInclude Include="client\include\sound_local.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\q_shared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -301,19 +296,10 @@
     <ClInclude Include="server\server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32\winquake.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32\conproc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="client\include\miniaudio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\include\sound_miniaudio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\pdjson.h">
@@ -379,10 +365,41 @@
     <ClInclude Include="client\include\ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\game\src\q_shared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="client\client_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="server\server_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\win32\win32_conproc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\win32\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\win32\win32_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sys_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="win32\zombono.ico">
+    <Image Include="platform\win32\zombono.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="platform\win32\Zombono.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EuphoriaEngine.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

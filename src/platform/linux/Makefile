@@ -1,5 +1,5 @@
 #
-# Zombono Makefile for Linux big.number
+# Zombono Makefile for Linux big.number [DEPRECATED]
 # 64-bit version
 #
 # Nov '97 by Zoid <zoid@idsoftware.com>
@@ -8,6 +8,7 @@
 #
 # Mar 10, 2024: Remove all sorts of legacy nonsense
 # May 24, 2024: Make it actually work after modernising the codebase
+# Sep 29, 2024: ***DEPRECATED***
 
 # ELF only
 #

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 1997-2001 Id Software, Inc.
+Euphoria Game Engine
 Copyright (C) 2023-2024 starfrost
 
 This program is free software; you can redistribute it and/or
@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the GNU General Public License for more details.
 
@@ -19,11 +19,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-// winquake.h: Win32-specific Zombono header file
-// Todo: get rid of this legacy cruft
+#pragma once
+#include <common/common.h>
 
-#pragma warning( disable : 4229 )  // mgraph gets this
+// sys_api.h: Provides system-specific APIs, so euphoriacommon can use them
+// // September 21, 2024
 
-#include <windows.h>
+#define SYS_API_VERSION		1
 
-extern DWORD gSndBufSize;
+typedef struct sys_api_s
+{
+	char*	(*Sys_ConsoleInput);
+	void	(*Sys_ConsoleOutput)(char* string);
+	void	(*Sys_Error)(char* error, ...);
+	void	(*Sys_Init)();
+	int32_t	(*Sys_Milliseconds)();
+	int32_t	(*Sys_Msgbox)(char* title, uint32_t buttons, char* text, ...);
+	int64_t	(*Sys_Nanoseconds)();
+	void	(*Sys_Quit)();
+} sys_api_t;
+
+extern sys_api_t system;
+
+void SystemAPI_Init();
+sys_api_t SystemAPI_Get();
