@@ -255,6 +255,12 @@
     <ClCompile Include="sys_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="client\base\client_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server\server_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client\include\sound.h">
@@ -368,7 +374,7 @@
     <ClInclude Include="..\game\src\q_shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="client\client_api.h">
+    <ClInclude Include="client\include\client_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="server\server_api.h">

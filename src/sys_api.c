@@ -29,10 +29,17 @@ sys_api_t system;
 
 void SystemAPI_Init()
 {
-
+	system.Sys_ConsoleInput = Sys_ConsoleInput;
+	system.Sys_ConsoleOutput = Sys_ConsoleOutput;
+	system.Sys_Error = Sys_Error; 
+	system.Sys_Init = Sys_Init;
+	system.Sys_Milliseconds = Sys_Milliseconds;
+	system.Sys_Msgbox = Sys_Msgbox;
+	system.Sys_Nanoseconds = Sys_Nanoseconds;
+	system.Sys_Quit = Sys_Quit;
 }
 
 sys_api_t SystemAPI_Get()
 {
-
+	return system;
 }

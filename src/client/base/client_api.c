@@ -18,29 +18,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// server_api.h: Server interface object for euphoriacommon import
-// September 30, 2024
+// client_api.c: Client interface object for euphoriacommon import implementation
+// October 3, 2024
 
-#pragma once
+#pragma once 
+#include <client/include/client_api.h>
 
-#include <stdint.h>
-#include <stdbool.h>
-#include "server.h"
+client_api_export_t client;
 
-#define SERVER_API_VERSION	1
-
-typedef struct server_api_s
+void ClientAPI_Init()
 {
-	int32_t	api_version;
+	client.api_version = CLIENT_API_VERSION;
+	client.CL_Drop = CL_Drop;
+	client.CL_ForwardCmdToServer = Cmd_ForwardToServer;
+	client.CL_Frame = CL_Frame;
+	client.CL_Init = CL_Init;
+	client.CL_Shutdown = CL_Shutdown;
+}
 
-	void	(*SV_Init)();
-	void	(*SV_Shutdown)();
-	void	(*SV_Frame)(int32_t msec);
-	void	(*SV_ShutdownGame)();
-
-} server_api_t;
-
-extern server_api_t server;
-
-void ServerAPI_Init();
-server_api_t ServerAPI_Get();
+client_api_export_t ClientAPI_Get()
+{
+	return client; 
+}

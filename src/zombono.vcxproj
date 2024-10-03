@@ -45,6 +45,7 @@
     <ClCompile Include="client\ui\ui_killfeed.c" />
     <ClCompile Include="client\ui\settings\ui_settings_controls.c" />
     <ClCompile Include="client\ui\settings\ui_settings_game.c" />
+    <ClCompile Include="client\base\client_api.c" />
     <ClCompile Include="common\cpuid.c" />
     <ClCompile Include="common\localisation.c" />
     <ClCompile Include="client\ui\ui_mainmenu.c" />
@@ -91,6 +92,7 @@
     <ClCompile Include="common\net_chan.c" />
     <ClCompile Include="common\pdjson.c" />
     <ClCompile Include="common\pmove.c" />
+    <ClCompile Include="server\server_api.c" />
     <ClCompile Include="sys_api.c" />
     <ClCompile Include="platform\win32\win32_conproc.c" />
     <ClCompile Include="platform\win32\win32_net_winsock.c" />
@@ -109,7 +111,7 @@
     <ClCompile Include="server\server_hack_protection.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="client\client_api.h" />
+    <ClInclude Include="client\include\client_api.h" />
     <ClInclude Include="client\include\anorms.h" />
     <ClInclude Include="client\client.h" />
     <ClInclude Include="client\include\console.h" />

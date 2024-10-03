@@ -23,13 +23,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once 
 
-
 #include <stdint.h>
 #include <stdbool.h>
+#include <client/client.h>
 
 #define CLIENT_API_VERSION	1
 
-typedef struct client_api_s
+typedef struct client_api_export_s
 {
 	int32_t	api_version;
 	
@@ -41,6 +41,9 @@ typedef struct client_api_s
 
 	void	(*Con_Print)();						// Print to the console - will move this to common eventually but the console is basically a graphical subsystem and is separate to logging
 
-} client_api_t;
+} client_api_export_t;
 
-extern client_api_t client_api;
+extern client_api_export_t client_api;
+
+void ClientAPI_Init();
+client_api_export_t ClientAPI_Get();
