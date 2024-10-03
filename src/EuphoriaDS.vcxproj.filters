@@ -27,28 +27,28 @@
     <ClInclude Include="win32\winquake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\q_shared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\curl.h">
+    <ClInclude Include="..\game\src\q_shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\curlver.h">
+    <ClInclude Include="common\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\easy.h">
+    <ClInclude Include="common\include\common_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\header.h">
+    <ClInclude Include="common\curl\websockets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\mprintf.h">
+    <ClInclude Include="common\curl\urlapi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\multi.h">
+    <ClInclude Include="common\curl\typecheck-gcc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\curl\options.h">
@@ -57,40 +57,22 @@
     <ClInclude Include="common\curl\stdcheaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\system.h">
+    <ClInclude Include="common\curl\multi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\typecheck-gcc.h">
+    <ClInclude Include="common\curl\mprintf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\urlapi.h">
+    <ClInclude Include="common\curl\header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\curl\websockets.h">
+    <ClInclude Include="common\curl\easy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\formats\bsp.h">
+    <ClInclude Include="common\curl\curlver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\formats\md2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\pak.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\sp2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\netservices\netservices.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\pdjson.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\version.h">
+    <ClInclude Include="common\curl\curl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,58 +131,10 @@
     <ClCompile Include="null\in_null.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\q_shared.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cmd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\common.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\crc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cvar.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="common\files.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\gameinfo.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\localisation.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\map_loader.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\md4.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_base.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_masterserver.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_update.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\net_chan.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\pdjson.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\pmove.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cpuid.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_account.c">
+    <ClCompile Include="..\game\src\q_shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

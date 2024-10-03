@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // common.c -- misc functions used in client and server
 #include "common.h"
+#include <client/include/client_api.h>
 #include <setjmp.h>
 
 #define	MAXPRINTMSG	8192
@@ -203,7 +204,7 @@ void Com_Error(int32_t code, char* fmt, ...)
 
 	if (code == ERR_DISCONNECT)
 	{
-		CL_Drop();
+		client.CL_Drop();
 		recursive = false;
 		longjmp(abortframe, -1);
 	}
@@ -211,7 +212,7 @@ void Com_Error(int32_t code, char* fmt, ...)
 	{
 		Com_Printf("********************\nERROR: %s\n********************\n", msg);
 		SV_Shutdown(va("Server crashed: %s\n", msg), false);
-		CL_Drop();
+		client.CL_Drop();
 		recursive = false;
 		shutdown_game = true;
 		longjmp(abortframe, -1);
@@ -220,7 +221,7 @@ void Com_Error(int32_t code, char* fmt, ...)
 	{
 		SV_Shutdown(va("Server fatal crashed: %s\n", msg), false);
 		SV_ShutdownGameProgs();
-		CL_Shutdown();
+		client.CL_Shutdown();
 	}
 
 	if (logfile)
@@ -244,7 +245,7 @@ void Com_Quit()
 {
 	SV_Shutdown("Server quit\n", false);
 	SV_ShutdownGameProgs();
-	CL_Shutdown();
+	client.CL_Shutdown();
 
 	if (logfile)
 	{
@@ -1495,7 +1496,7 @@ void Common_Init(int32_t argc, char** argv)
 	}
 
 	SV_Init();						// Initialise server variables
-	CL_Init();						// Initialise the actual game if it's not a dedicated server
+	client.CL_Init();						// Initialise the actual game if it's not a dedicated server
 
 	// add + commands from command line
 	if (!Cbuf_AddLateCommands())
@@ -1607,7 +1608,7 @@ void Common_Frame(int32_t msec)
 	if (profile_all->value)
 		time_between = Sys_Nanoseconds();
 
-	CL_Frame(msec);
+	client.CL_Frame(msec);
 
 	if (profile_all->value)
 		time_after = Sys_Nanoseconds();

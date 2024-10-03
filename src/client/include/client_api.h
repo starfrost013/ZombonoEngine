@@ -43,7 +43,7 @@ typedef struct client_api_export_s
 
 } client_api_export_t;
 
-extern client_api_export_t client_api;
+extern client_api_export_t client;
 
 void ClientAPI_Init();
 client_api_export_t ClientAPI_Get();

@@ -51,7 +51,7 @@ void	(*netservices_on_complete_callback)();	// The callback to use when the curr
 // functions only used within this file
 size_t Netservices_Init_WriteCallback(char *ptr, size_t size, size_t nmemb, char* received_data);				// Callback function on CURL receive
 
-// This function runs before SV_Init and CL_Init, so take that into account
+// This function runs before SV_Init and client.CL_Init, so take that into account
 bool Netservices_Init()
 {
 	ns_nointernetcheck = Cvar_Get("ns_nointernetcheck", "0", CVAR_ARCHIVE);

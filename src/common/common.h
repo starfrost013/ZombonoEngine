@@ -25,9 +25,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <common/formats/bsp.h>
 #include <common/formats/md2.h>
 #include <common/formats/sp2.h>
-#include <../game/src/q_shared.h>
+#include <util/shared.h>
 #include "netservices/netservices.h" // hmm
-#include "mathlib.h"
+#include <util/mathlib.h>
 #include "pdjson.h"
 #include "version.h"
 
@@ -453,10 +453,7 @@ void Cmd_ExecuteString(char* text);
 // Parses a single line of text into arguments and tries to execute it
 // as if it was typed at the console
 
-void Cmd_ForwardToServer();
-// adds the current command line as a clc_stringcmd to the client message.
-// things like godmode, noclip, etc, are commands directed to the server,
-// so when they are typed in at the console, they will need to be forwarded.
+
 
 
 /*
@@ -934,21 +931,4 @@ int32_t	Sys_Msgbox(char* title, uint32_t buttons, char* text, ...);
 void	Sys_Quit();
 char*	Sys_GetClipboardData(void);
 
-/*
-==============================================================
 
-CLIENT / SERVER SYSTEMS
-
-==============================================================
-*/
-
-void CL_Init();
-void CL_Drop();
-void CL_Shutdown();
-void CL_Frame(int32_t msec);
-void Con_Print(char* text);
-void Render2D_BeginLoadingPlaque();
-
-void SV_Init();
-void SV_Shutdown(char* finalmsg, bool reconnect);
-void SV_Frame(int32_t msec);

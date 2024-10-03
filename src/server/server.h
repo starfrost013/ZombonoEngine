@@ -225,6 +225,11 @@ extern edict_t* sv_player;
 
 //===========================================================
 
+// Init, Main Loop and Shutdown
+void SV_Init();
+void SV_Frame(int32_t msec);
+void SV_Shutdown(char* finalmsg, bool reconnect);
+
 //
 // sv_main.c
 //
@@ -246,8 +251,6 @@ char* SV_StatusString();
 //
 // sv_master.c
 //
-
-
 
 // Connectionless stuff
 void Master_SvcAck();

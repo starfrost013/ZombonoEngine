@@ -21,8 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // cmd.c -- Quake script command processing module
 
 #include "common.h"
-
-void Cmd_ForwardToServer ();
+#include <client/include/client_api.h>
 
 #define	MAX_ALIAS_NAME	32
 
@@ -856,7 +855,7 @@ void	Cmd_ExecuteString (char *text)
 		return;
 
 	// send it as a server command if we are connected
-	Cmd_ForwardToServer ();
+	client.CL_ForwardCmdToServer();
 }
 
 /*

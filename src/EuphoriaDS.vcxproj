@@ -223,8 +223,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="game\game.h" />
-    <ClInclude Include="..\game\src\q_shared.h" />
+    <ClInclude Include="common\common.h" />
     <ClInclude Include="common\curl\curl.h" />
     <ClInclude Include="common\curl\curlver.h" />
     <ClInclude Include="common\curl\easy.h" />
@@ -237,42 +236,21 @@
     <ClInclude Include="common\curl\typecheck-gcc.h" />
     <ClInclude Include="common\curl\urlapi.h" />
     <ClInclude Include="common\curl\websockets.h" />
-    <ClInclude Include="common\formats\bsp.h" />
-    <ClInclude Include="common\formats\md2.h" />
-    <ClInclude Include="common\formats\pak.h" />
-    <ClInclude Include="common\formats\sp2.h" />
-    <ClInclude Include="common\netservices\netservices.h" />
-    <ClInclude Include="common\pdjson.h" />
-    <ClInclude Include="common\common.h" />
-    <ClInclude Include="common\version.h" />
+    <ClInclude Include="common\include\common_api.h" />
+    <ClInclude Include="game\game.h" />
+    <ClInclude Include="..\game\src\q_shared.h" />
     <ClInclude Include="server\server.h" />
     <ClInclude Include="win32\conproc.h" />
     <ClInclude Include="win32\resource.h" />
     <ClInclude Include="win32\winquake.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="common\cpuid.c" />
-    <ClCompile Include="common\netservices\netservices_account.c" />
     <ClCompile Include="..\game\src\q_shared.c" />
     <ClCompile Include="null\cl_null.c" />
     <ClCompile Include="null\glfw_null.c" />
     <ClCompile Include="null\in_null.c" />
     <ClCompile Include="null\vid_null.c" />
-    <ClCompile Include="common\cmd.c" />
-    <ClCompile Include="common\common.c" />
-    <ClCompile Include="common\crc.c" />
-    <ClCompile Include="common\cvar.c" />
     <ClCompile Include="common\files.c" />
-    <ClCompile Include="common\gameinfo.c" />
-    <ClCompile Include="common\localisation.c" />
-    <ClCompile Include="common\map_loader.c" />
-    <ClCompile Include="common\md4.c" />
-    <ClCompile Include="common\netservices\netservices_base.c" />
-    <ClCompile Include="common\netservices\netservices_masterserver.c" />
-    <ClCompile Include="common\netservices\netservices_update.c" />
-    <ClCompile Include="common\net_chan.c" />
-    <ClCompile Include="common\pdjson.c" />
-    <ClCompile Include="common\pmove.c" />
     <ClCompile Include="server\server_console_commands.c" />
     <ClCompile Include="server\server_entities.c" />
     <ClCompile Include="server\server_game.c" />

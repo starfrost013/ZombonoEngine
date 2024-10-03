@@ -164,7 +164,7 @@ typedef struct client_state_s
 	clientinfo_t	baseclientinfo;
 } client_state_t;
 
-extern	client_state_t	cl;
+extern client_state_t cl;
 
 /*
 ==================================================================
@@ -247,7 +247,7 @@ typedef struct
 	FILE* demofile;
 } client_static_t;
 
-extern client_static_t	cls;
+extern client_static_t cls;
 
 //=============================================================================
 
@@ -342,8 +342,8 @@ typedef struct cdlight_s
 	float	minlight;			// don't add when contributing less
 } cdlight_t;
 
-extern	centity_t	cl_entities[MAX_EDICTS];
-extern	cdlight_t	cl_dlights[MAX_DLIGHTS];
+extern centity_t cl_entities[MAX_EDICTS];
+extern cdlight_t cl_dlights[MAX_DLIGHTS];
 
 int32_t CL_CountReceivedEntities();		// Count the received entity count
 
@@ -358,6 +358,19 @@ extern	entity_state_t	cl_parse_entities[MAX_PARSE_ENTITIES];
 bool app_active;
 bool app_minimized;
 void App_Activate(bool fActive, bool minimize);
+
+// Initialisation etc
+void CL_Init();
+void CL_Drop();
+void CL_Shutdown();
+void CL_Frame(int32_t msec);
+void Con_Print(char* text);
+void Render2D_BeginLoadingPlaque();
+
+// adds the current command line as a clc_stringcmd to the client message.
+// things like godmode, noclip, etc, are commands directed to the server,
+// so when they are typed in at the console, they will need to be forwarded.
+void Cmd_ForwardToServer();
 
 //=============================================================================
 
@@ -436,7 +449,7 @@ void CL_Quit_f();
 //
 extern refexport_t re;		// interface to refresh .dll
 
-void CL_Init();
+
 
 void CL_FixUpGender();
 void CL_Disconnect();

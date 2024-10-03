@@ -57,33 +57,6 @@
     <ClCompile Include="client\sound\sound_mix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\pmove.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cmd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\map_loader.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\common.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\crc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cvar.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\filesystem.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\md4.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\net_chan.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="server\server_world.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,15 +102,6 @@
     <ClCompile Include="client\text\text_font.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\pdjson.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_update.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_base.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client\loadout\loadout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -163,9 +127,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="server\server_master.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_masterserver.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui_mainmenu_quickstart.c">
@@ -198,25 +159,13 @@
     <ClCompile Include="client\base\client_commands_download.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\gameinfo.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="server\server_hack_protection.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\localisation.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\cpuid.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\base\client_event.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\ui_killfeed.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="common\netservices\netservices_account.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="client\ui\settings\ui_settings_sound.c">
@@ -296,9 +245,6 @@
     <ClInclude Include="game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="server\server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -306,63 +252,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\include\sound_miniaudio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\pdjson.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\netservices\netservices.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\curl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\curlver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\easy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\mprintf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\multi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\options.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\stdcheaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\typecheck-gcc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\urlapi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\curl\websockets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\bsp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\md2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\sp2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\formats\pak.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client\include\console.h">
@@ -390,6 +279,60 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sys_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\formats\sp2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\formats\pak.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\formats\md2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\formats\bsp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\websockets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\urlapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\typecheck-gcc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\stdcheaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\multi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\mprintf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\easy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\curl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\curl\curlver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\include\common_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
