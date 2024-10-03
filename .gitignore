@@ -382,3 +382,7 @@ FodyWeavers.xsd
 # linux things
 engine/linux/[Dd]ebugx64/
 engine/Linux/[Rr]eleasex64/
+/src/common/formats/bsp.h
+/src/common/formats/md2.h
+/src/common/formats/pak.h
+/src/common/formats/sp2.h
