@@ -234,12 +234,12 @@
     <ClInclude Include="formats\md2.h" />
     <ClInclude Include="formats\pak.h" />
     <ClInclude Include="formats\sp2.h" />
-    <ClInclude Include="mathlib.h" />
     <ClInclude Include="netservices\netservices.h" />
     <ClInclude Include="pdjson.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="version.h" />
-    <ClInclude Include="..\..\game\src\q_shared.h" />
+	<ClInclude Include="..\..\src\util\mathlib.h" />
+    <ClInclude Include="..\..\src\util\shared.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cmd.c" />
@@ -251,7 +251,7 @@
     <ClCompile Include="gameinfo.c" />
     <ClCompile Include="localisation.c" />
     <ClCompile Include="map_loader.c" />
-    <ClCompile Include="mathlib.c" />
+
     <ClCompile Include="md4.c" />
     <ClCompile Include="netservices\netservices_base.c" />
     <ClCompile Include="netservices\netservices_masterserver.c" />
@@ -262,7 +262,8 @@
     <ClCompile Include="cpuid.c" />
     <ClCompile Include="netservices\netservices_account.c" />
     <ClCompile Include="swap.c" />
-    <ClInclude Include="..\..\game\src\q_shared.c" />
+	<ClCompile Include="..\..\src\util\mathlib.c" />
+    <ClCompile Include="..\..\src\util\shared.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EuphoriaCommon.def" />

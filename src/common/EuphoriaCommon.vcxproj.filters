@@ -140,10 +140,10 @@
     <ClInclude Include="include\common_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game\src\q_shared.h">
+    <ClInclude Include="..\..\game\src\util_shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game\src\q_shared.c">
+    <ClInclude Include="..\..\game\src\util_shared.c">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="mathlib.h">
